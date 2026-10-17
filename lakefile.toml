@@ -1,0 +1,13 @@
+name = "FontaineWintenberger"
+version = "0.1.0"
+requiresModuleSystem = true
+defaultTargets = ["FontaineWintenberger"]
+packagesDir = ".lake/packages"
+
+[[require]]
+name = "mathlib"
+git = "https://github.com/leanprover-community/mathlib4.git"
+rev = "f0b4c8150aa0dbc758aff1291410c5ae335aff3a"
+
+[[lean_lib]]
+name = "FontaineWintenberger"

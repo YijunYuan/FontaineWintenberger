@@ -1,0 +1,85 @@
+module
+
+public import FontaineWintenberger.FieldOfNorms.SeparableClosedUnion
+public import FontaineWintenberger.FieldOfNorms.FiniteSubfieldReconstruction
+
+/-!
+# Actual finite essential image of the norm-field functor
+
+The proved separable closure of the original norm field and reconstruction
+of its actual finite subfields realize every finite separable target as an
+original finite norm field.
+-/
+
+@[expose] public section
+
+noncomputable section
+
+namespace FontaineWintenberger
+
+variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K]
+    [CompleteSpace K]
+    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+    [PerfectField (IsLocalRing.ResidueField
+      (NormedField.valuation (K := K)).valuationSubring)]
+    (L Ω : Type*) [Field L] [Field Ω]
+    [Algebra K L] [Algebra K Ω] [Algebra L Ω] [IsScalarTower K L Ω]
+    [Algebra.IsSeparable K L] [IsSepClosure L Ω]
+    (p : ℕ) [Fact p.Prime]
+    [CharP (IsLocalRing.ResidueField
+      (NormedField.valuation (K := K)).valuationSubring) p]
+    (hL : IsAPF K L) (hInfinite : ¬ Module.Finite K L)
+
+/-- Every actual finite separable extension of the original norm field is
+isomorphic over that same field to an original finite norm-field stage in
+the prescribed original separable closure. -/
+theorem exists_finite_normLimit_algEquiv_of_separableClosure :
+    letI := normLimitField K L p hL hInfinite
+    ∀ (F : Type*) [Field F] [Algebra (NormLimit K L) F]
+      [Module.Finite (NormLimit K L) F] [Algebra.IsSeparable (NormLimit K L) F],
+      ∃ N : FiniteLayer L Ω,
+        letI : Algebra.IsSeparable K N.val := Algebra.IsSeparable.trans K L N.val
+        letI := separableNormUnionStageField K L Ω p hL hInfinite N
+        letI := separableNormUnionStageAlgebra K L Ω p hL hInfinite N
+        Nonempty (NormLimit K N.val ≃ₐ[NormLimit K L] F) := by
+  let := normLimitField K L p hL hInfinite
+  intro F _ _ _ _
+  let : IsSepClosure K Ω :=
+    ⟨IsSepClosure.sep_closed L, Algebra.IsSeparable.trans K L Ω⟩
+  let := separableNormUnionField K L Ω p hL hInfinite
+  let := separableNormUnionAlgebra K L Ω p hL hInfinite
+  let : Module (NormLimit K L) (SeparableNormUnion K L Ω p hL hInfinite) := Algebra.toModule
+  let : MulAction (NormLimit K L) (SeparableNormUnion K L Ω p hL hInfinite) :=
+    (Algebra.toModule : Module (NormLimit K L)
+      (SeparableNormUnion K L Ω p hL hInfinite)).toDistribMulAction.toMulAction
+  let : IsSepClosed (SeparableNormUnion K L Ω p hL hInfinite) :=
+    separableNormUnion_isSepClosed K L Ω p hL hInfinite
+  let t : F →ₐ[NormLimit K L] SeparableNormUnion K L Ω p hL hInfinite := IsSepClosed.lift
+  let : Module.Finite (NormLimit K L) t.fieldRange :=
+    Module.Finite.equiv t.equivFieldRange.toLinearEquiv
+  obtain ⟨N, hN, _⟩ := separableNormUnion_existsUnique_finite_subfield_preimage
+    K L Ω p hL hInfinite t.fieldRange
+  let : Algebra.IsSeparable K N.val := Algebra.IsSeparable.trans K L N.val
+  let := separableNormUnionStageField K L Ω p hL hInfinite N
+  let := separableNormUnionStageAlgebra K L Ω p hL hInfinite N
+  let i := separableNormUnionOfAlgHom K L Ω p hL hInfinite N
+  refine ⟨N, ⟨i.equivFieldRange.trans ((IntermediateField.equivOfEq hN).trans
+    t.equivFieldRange.symm)⟩⟩
+
+/-- Without prescribing an original separable closure, every finite
+separable target is still an actual original finite norm-field stage. -/
+theorem exists_finite_normLimit_algEquiv :
+    letI := normLimitField K L p hL hInfinite
+    ∀ (F : Type*) [Field F] [Algebra (NormLimit K L) F]
+      [Module.Finite (NormLimit K L) F] [Algebra.IsSeparable (NormLimit K L) F],
+      ∃ N : FiniteLayer L (SeparableClosure L),
+        letI : Algebra.IsSeparable K N.val := Algebra.IsSeparable.trans K L N.val
+        letI := separableNormUnionStageField K L (SeparableClosure L) p hL hInfinite N
+        letI := separableNormUnionStageAlgebra K L (SeparableClosure L) p hL hInfinite N
+        Nonempty (NormLimit K N.val ≃ₐ[NormLimit K L] F) := by
+  let := normLimitField K L p hL hInfinite
+  intro F _ _ _ _
+  exact exists_finite_normLimit_algEquiv_of_separableClosure
+    K L (SeparableClosure L) p hL hInfinite F
+
+end FontaineWintenberger

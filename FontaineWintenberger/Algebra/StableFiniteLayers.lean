@@ -1,0 +1,56 @@
+module
+
+public import Mathlib.FieldTheory.Normal.Closure
+
+/-!
+# Finite original subfields stable under every original automorphism
+
+Mathlib's actual compositum of all embedding images is finite for a finite
+source field, without normality of the ambient field. We prove its invariance
+under ambient automorphisms and retain their original restrictions.
+-/
+
+@[expose] public section
+
+noncomputable section
+
+namespace IntermediateField
+
+variable {K L : Type*} [Field K] [Field L] [Algebra K L]
+
+/-- All embedding images remain in their actual compositum after any ambient embedding. -/
+theorem map_normalClosure_le (D : IntermediateField K L) (σ : L →ₐ[K] L) :
+    (normalClosure K D L).map σ ≤ normalClosure K D L := by
+  rw [normalClosure_def, map_iSup]
+  apply iSup_le
+  intro f
+  rw [AlgHom.map_fieldRange]
+  exact (σ.comp f).fieldRange_le_normalClosure
+
+/-- The actual finite-image compositum is stable under every original automorphism,
+with no normality hypothesis on the ambient field. -/
+theorem map_normalClosure_eq (D : IntermediateField K L) (σ : L ≃ₐ[K] L) :
+    (normalClosure K D L).map σ.toAlgHom = normalClosure K D L := by
+  apply le_antisymm (map_normalClosure_le D σ.toAlgHom)
+  have h := map_mono σ.toAlgHom (map_normalClosure_le D σ.symm.toAlgHom)
+  simpa only [map_map, AlgEquiv.comp_symm, map_id] using h
+
+/-- Restriction of the original ambient automorphism to the actual image compositum. -/
+def normalClosureRestrict (D : IntermediateField K L) (σ : L ≃ₐ[K] L) :
+    normalClosure K D L ≃ₐ[K] normalClosure K D L :=
+  (equivMap (normalClosure K D L) σ.toAlgHom).trans
+    (equivOfEq (map_normalClosure_eq D σ))
+
+@[simp]
+theorem coe_normalClosureRestrict (D : IntermediateField K L) (σ : L ≃ₐ[K] L)
+    (x : normalClosure K D L) :
+    (normalClosureRestrict D σ x : L) = σ (x : L) := rfl
+
+/-- An actual finite field is contained in an actual finite field stable under
+all original automorphisms; finiteness comes from the canonical existing construction. -/
+theorem exists_finite_aut_stable (D : IntermediateField K L) [FiniteDimensional K D] :
+    ∃ E : IntermediateField K L, FiniteDimensional K E ∧ D ≤ E ∧
+      ∀ σ : L ≃ₐ[K] L, E.map σ.toAlgHom = E :=
+  ⟨normalClosure K D L, inferInstance, le_normalClosure D, map_normalClosure_eq D⟩
+
+end IntermediateField

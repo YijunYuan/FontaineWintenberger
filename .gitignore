@@ -1,0 +1,10 @@
+.lake/
+*.olean
+*.ilean
+blueprint/build/
+*.aux
+*.log
+*.out
+*.toc
+*.bbl
+*.blg

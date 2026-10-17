@@ -1,0 +1,329 @@
+module
+
+public import FontaineWintenberger.APF.CountableStages
+public import FontaineWintenberger.APF.DeepTail
+public import FontaineWintenberger.FieldOfNorms.PrimeValuation
+public import FontaineWintenberger.FieldOfNorms.Valuation
+public import FontaineWintenberger.FieldOfNorms.TruncatedNorms
+
+/-!
+# Actual deep cofinal finite towers
+
+The original abstract APF extension supplies an increasing cofinal sequence
+of actual finite subfields with growing norm precision. Every stage contains
+the actual wild and stable-valuation witnesses and the residue prime lies in
+the required original maximal-ideal power.
+-/
+
+@[expose] public section
+
+noncomputable section
+
+namespace FontaineWintenberger
+
+variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
+    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
+
+/-- Actual finite composita enlarge any prescribed sequence of finite layers
+inside a monotone cofinal sequence of the original APF extension. -/
+theorem IsAPF.exists_monotone_cofinal_finiteLayers_ge (hL : IsAPF K L)
+    (A : ℕ → FiniteLayer K L) :
+    ∃ E : ℕ → FiniteLayer K L, Monotone E ∧ (∀ n, A n ≤ E n) ∧
+      ∀ D : FiniteLayer K L, ∃ n : ℕ, D ≤ E n := by
+  obtain ⟨C, _hCmono, hC⟩ := IsAPF.exists_monotone_cofinal_finiteLayers K L hL
+  let B (n : ℕ) := FiniteLayer.sup (A n) (C n)
+  let E : ℕ → FiniteLayer K L :=
+    Nat.rec (B 0) (fun n D => FiniteLayer.sup D (B (n + 1)))
+  have hBE (n : ℕ) : B n ≤ E n := by
+    cases n with
+    | zero => exact le_rfl
+    | succ n => exact FiniteLayer.le_sup_right (E n) (B (n + 1))
+  refine ⟨E, monotone_nat_of_le_succ (fun n => ?_), fun n => ?_, fun D => ?_⟩
+  · exact FiniteLayer.le_sup_left (E n) (B (n + 1))
+  · exact (FiniteLayer.le_sup_left (A n) (C n)).trans (hBE n)
+  · obtain ⟨n, hn⟩ := hC D
+    exact ⟨n, hn.trans ((FiniteLayer.le_sup_right (A n) (C n)).trans (hBE n))⟩
+
+variable [PerfectField (IsLocalRing.ResidueField
+  (NormedField.valuation (K := K)).valuationSubring)]
+variable (p : ℕ) [Fact p.Prime]
+    [CharP (IsLocalRing.ResidueField
+      (NormedField.valuation (K := K)).valuationSubring) p]
+
+/-- The actual deep first-bound parameter at the growing integer precision. -/
+def deepFiniteTowerBound (n : ℕ) : ℝ :=
+  (p : ℝ) / ((p - 1 : ℕ) : ℝ) * (n + 2)
+
+/-- The chosen real first bound gives exactly the required integer precision. -/
+@[simp]
+theorem ceil_deepFiniteTowerBound (n : ℕ) :
+    ⌈((p - 1 : ℕ) : ℝ) / p * deepFiniteTowerBound p n⌉₊ = n + 2 := by
+  have hp : (p : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (Fact.out : p.Prime).ne_zero
+  have hp₁ : ((p - 1 : ℕ) : ℝ) ≠ 0 :=
+    Nat.cast_ne_zero.mpr (by have := (Fact.out : p.Prime).two_le; omega)
+  have hc : ((p - 1 : ℕ) : ℝ) / p * deepFiniteTowerBound p n = ((n + 2 : ℕ) : ℝ) := by
+    dsimp only [deepFiniteTowerBound]
+    push_cast
+    field_simp
+  rw [hc, Nat.ceil_natCast]
+
+/-- An infinite original abstract APF extension has an actual increasing
+cofinal tower with growing precision, the original stable valuation, an
+entire wild tail, and all later actual relative first bounds. -/
+theorem IsAPF.exists_deep_finiteTower (hL : IsAPF K L)
+    (hInfinite : ¬ Module.Finite K L) (D : FiniteLayer K L) :
+    ∃ E : ℕ → FiniteLayer K L, Monotone E ∧ (∀ n, D ≤ E n) ∧
+      (∀ F : FiniteLayer K L, ∃ n : ℕ, F ≤ E n) ∧
+      (∀ n α, normLimitValuation K L hL α = normLimitCoordinateValuation K L (E n) α) ∧
+      (∀ n, (p : spectralIntegerRing K (E n).val) ∈
+        IsLocalRing.maximalIdeal (spectralIntegerRing K (E n).val) ^ (n + 2)) ∧
+      (∀ A B : FiniteLayer K L, E 0 ≤ A → ∀ hAB : A ≤ B,
+        Function.Surjective (spectralResidueInclusion K (IntermediateField.inclusion hAB)) ∧
+          (∃ d : ℕ, Module.finrank A.val (IntermediateField.extendScalars hAB) = p ^ d) ∧
+          letI : Algebra A.val B.val := (IntermediateField.inclusion hAB).toRingHom.toAlgebra
+          letI : IsScalarTower K A.val B.val := IsScalarTower.of_algebraMap_eq' rfl
+          letI := spectralValuation_hasExtension_tower K (E := A.val) (L := B.val)
+          (IsLocalRing.maximalIdeal (spectralIntegerRing K B.val)).ramificationIdx
+            (spectralIntegerRing K A.val) =
+              Module.finrank A.val (IntermediateField.extendScalars hAB)) ∧
+      (∀ n (F : FiniteLayer K L) (hEF : E n ≤ F),
+        letI := spectralNorm.nontriviallyNormedField K (E n).val
+        letI := spectralNorm.normedAlgebra K (E n).val
+        letI := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
+          (isNonarchimedean_spectralNorm (K := K) (L := (E n).val))
+        letI := spectralNorm.completeSpace K (E n).val
+        letI := normedAlgebra_unitBall_isDiscreteValuationRing K (E n).val
+        (deepFiniteTowerBound p n : EReal) ≤
+          apfRamificationBound (E n).val (IntermediateField.extendScalars hEF)) := by
+  obtain ⟨W, hW⟩ := IsAPF.exists_finiteLayer_wild_tail K L p hL
+  obtain ⟨V, hV⟩ := IsAPF.exists_normLimitValuation_eq_coordinate K L hL
+  choose T hT using fun n : ℕ =>
+    IsAPF.exists_finiteLayer_relativeFirstBound_ge K L hL (deepFiniteTowerBound p n)
+  choose P hP using fun n : ℕ =>
+    IsAPF.exists_finiteLayer_natCast_mem_maximalIdeal_pow K L p hL hInfinite (n + 2)
+  let A (n : ℕ) := FiniteLayer.sup D (FiniteLayer.sup W
+    (FiniteLayer.sup V (FiniteLayer.sup (T n) (P n))))
+  obtain ⟨E, hmono, hA, hcofinal⟩ :=
+    IsAPF.exists_monotone_cofinal_finiteLayers_ge K L hL A
+  have hD (n : ℕ) : D ≤ E n :=
+    (FiniteLayer.le_sup_left _ _).trans (hA n)
+  have hWn (n : ℕ) : W ≤ E n :=
+    (FiniteLayer.le_sup_left W _).trans ((FiniteLayer.le_sup_right D _).trans (hA n))
+  have hVn (n : ℕ) : V ≤ E n :=
+    (FiniteLayer.le_sup_left V _).trans ((FiniteLayer.le_sup_right W _).trans
+      ((FiniteLayer.le_sup_right D _).trans (hA n)))
+  have hTn (n : ℕ) : T n ≤ E n :=
+    (FiniteLayer.le_sup_left (T n) (P n)).trans ((FiniteLayer.le_sup_right V _).trans
+      ((FiniteLayer.le_sup_right W _).trans ((FiniteLayer.le_sup_right D _).trans (hA n))))
+  have hPn (n : ℕ) : P n ≤ E n :=
+    (FiniteLayer.le_sup_right (T n) (P n)).trans ((FiniteLayer.le_sup_right V _).trans
+      ((FiniteLayer.le_sup_right W _).trans ((FiniteLayer.le_sup_right D _).trans (hA n))))
+  exact ⟨E, hmono, hD, hcofinal, fun n => hV (E n) (hVn n),
+    fun n => hP n (E n) (hPn n),
+    fun A B hEA hAB => hW A B ((hWn 0).trans hEA) hAB,
+    fun n F hEF => hT n (E n) F (hTn n) hEF⟩
+
+/-- A choice of the proved actual deep finite tower, with no tower hypothesis. -/
+def deepFiniteTower (hL : IsAPF K L) (hInfinite : ¬ Module.Finite K L)
+    (D : FiniteLayer K L) : ℕ → FiniteLayer K L :=
+  (IsAPF.exists_deep_finiteTower K L p hL hInfinite D).choose
+
+variable (hL : IsAPF K L) (hInfinite : ¬ Module.Finite K L) (D : FiniteLayer K L)
+
+local notation "𝔈" => deepFiniteTower K L p hL hInfinite D
+
+/-- The actual selected deep tower is increasing. -/
+theorem deepFiniteTower_monotone : Monotone 𝔈 :=
+  (IsAPF.exists_deep_finiteTower K L p hL hInfinite D).choose_spec.1
+
+/-- Every actual selected stage contains the specified original finite layer. -/
+theorem le_deepFiniteTower (n : ℕ) : D ≤ 𝔈 n :=
+  (IsAPF.exists_deep_finiteTower K L p hL hInfinite D).choose_spec.2.1 n
+
+/-- The actual selected tower is cofinal among all original finite subfields. -/
+theorem deepFiniteTower_cofinal (F : FiniteLayer K L) : ∃ n, F ≤ 𝔈 n :=
+  (IsAPF.exists_deep_finiteTower K L p hL hInfinite D).choose_spec.2.2.1 F
+
+/-- Every selected original finite coordinate computes the same original stable valuation. -/
+theorem normLimitValuation_eq_deepFiniteTower (n : ℕ) (α : NormLimit K L) :
+    normLimitValuation K L hL α = normLimitCoordinateValuation K L (𝔈 n) α :=
+  (IsAPF.exists_deep_finiteTower K L p hL hInfinite D).choose_spec.2.2.2.1 n α
+
+/-- The residue prime is in the required original ideal power at every selected stage. -/
+theorem natCast_mem_deepFiniteTower_maximalIdeal_pow (n : ℕ) :
+    (p : spectralIntegerRing K (𝔈 n).val) ∈
+      IsLocalRing.maximalIdeal (spectralIntegerRing K (𝔈 n).val) ^ (n + 2) :=
+  (IsAPF.exists_deep_finiteTower K L p hL hInfinite D).choose_spec.2.2.2.2.1 n
+
+/-- The first selected original finite stage begins an entire actual wild tail. -/
+theorem deepFiniteTower_wild_tail (A B : FiniteLayer K L) (hEA : 𝔈 0 ≤ A) (hAB : A ≤ B) :
+    Function.Surjective (spectralResidueInclusion K (IntermediateField.inclusion hAB)) ∧
+      (∃ d : ℕ, Module.finrank A.val (IntermediateField.extendScalars hAB) = p ^ d) ∧
+      letI : Algebra A.val B.val := (IntermediateField.inclusion hAB).toRingHom.toAlgebra
+      letI : IsScalarTower K A.val B.val := IsScalarTower.of_algebraMap_eq' rfl
+      letI := spectralValuation_hasExtension_tower K (E := A.val) (L := B.val)
+      (IsLocalRing.maximalIdeal (spectralIntegerRing K B.val)).ramificationIdx
+        (spectralIntegerRing K A.val) =
+          Module.finrank A.val (IntermediateField.extendScalars hAB) :=
+  (IsAPF.exists_deep_finiteTower K L p hL hInfinite D).choose_spec.2.2.2.2.2.1 A B hEA hAB
+
+/-- Every later original finite extension has the requested actual first bound. -/
+theorem deepFiniteTower_relativeFirstBound_ge (n : ℕ) (F : FiniteLayer K L) (hEF : 𝔈 n ≤ F) :
+    letI := spectralNorm.nontriviallyNormedField K (𝔈 n).val
+    letI := spectralNorm.normedAlgebra K (𝔈 n).val
+    letI := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
+      (isNonarchimedean_spectralNorm (K := K) (L := (𝔈 n).val))
+    letI := spectralNorm.completeSpace K (𝔈 n).val
+    letI := normedAlgebra_unitBall_isDiscreteValuationRing K (𝔈 n).val
+    (deepFiniteTowerBound p n : EReal) ≤
+      apfRamificationBound (𝔈 n).val (IntermediateField.extendScalars hEF) :=
+  (IsAPF.exists_deep_finiteTower K L p hL hInfinite D).choose_spec.2.2.2.2.2.2 n F hEF
+
+/-- The actual integer-ring quotient at the stage's growing precision. -/
+abbrev deepFiniteTowerQuotient (n : ℕ) :=
+  spectralIntegerRing K (𝔈 n).val ⧸
+    IsLocalRing.maximalIdeal (spectralIntegerRing K (𝔈 n).val) ^ (n + 2)
+
+instance deepFiniteTowerQuotient_nontrivial (n : ℕ) :
+    Nontrivial (deepFiniteTowerQuotient K L p hL hInfinite D n) :=
+  Ideal.Quotient.nontrivial_iff.mpr
+    (ne_top_of_le_ne_top (IsLocalRing.maximalIdeal.isMaximal _).ne_top
+      (Ideal.pow_le_self (by omega)))
+
+instance deepFiniteTowerQuotient_isLocalRing (n : ℕ) :
+    IsLocalRing (deepFiniteTowerQuotient K L p hL hInfinite D n) :=
+  IsLocalRing.of_surjective' (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective
+
+instance deepFiniteTowerQuotient_charP (n : ℕ) :
+    CharP (deepFiniteTowerQuotient K L p hL hInfinite D n) p := by
+  apply (CharP.charP_iff_prime_eq_zero (Fact.out : p.Prime)).mpr
+  rw [← map_natCast (Ideal.Quotient.mk _), Ideal.Quotient.eq_zero_iff_mem]
+  exact natCast_mem_deepFiniteTower_maximalIdeal_pow K L p hL hInfinite D n
+
+/-- The actual quotient's maximal ideal vanishes to its stated precision. -/
+theorem deepFiniteTowerQuotient_maximalIdeal_pow (n : ℕ) :
+    IsLocalRing.maximalIdeal (deepFiniteTowerQuotient K L p hL hInfinite D n) ^ (n + 2) = ⊥ := by
+  rw [← IsLocalRing.map_maximalIdeal_of_surjective
+    (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective, ← Ideal.map_pow,
+    Ideal.map_quotient_self]
+
+/-- The actual exponent of the finite relative degree, chosen from the proved wild tail. -/
+def deepFiniteTowerRelativeDegree (n : ℕ) (F : FiniteLayer K L) (hEF : 𝔈 n ≤ F) : ℕ :=
+  (deepFiniteTower_wild_tail K L p hL hInfinite D (𝔈 n) F
+    (deepFiniteTower_monotone K L p hL hInfinite D (Nat.zero_le n)) hEF).2.1.choose
+
+/-- The selected degree exponent computes the original finite field degree. -/
+theorem deepFiniteTower_finrank (n : ℕ) (F : FiniteLayer K L) (hEF : 𝔈 n ≤ F) :
+    Module.finrank (𝔈 n).val (IntermediateField.extendScalars hEF) =
+      p ^ deepFiniteTowerRelativeDegree K L p hL hInfinite D n F hEF :=
+  (deepFiniteTower_wild_tail K L p hL hInfinite D (𝔈 n) F
+    (deepFiniteTower_monotone K L p hL hInfinite D (Nat.zero_le n)) hEF).2.1.choose_spec
+
+/-- Every later original finite layer has an actual quotient norm at this
+stage's precision; the map is induced by the original integer norm. -/
+def deepFiniteTowerNorm (n : ℕ) (F : FiniteLayer K L) (hEF : 𝔈 n ≤ F)
+    (s : ℕ) (hs : n + 2 ≤ s) :
+    (spectralIntegerRing K F.val ⧸ IsLocalRing.maximalIdeal (spectralIntegerRing K F.val) ^ s) →+*
+      deepFiniteTowerQuotient K L p hL hInfinite D n :=
+  FiniteLayer.truncatedNorm (𝔈 n) F hEF p
+    (deepFiniteTowerRelativeDegree K L p hL hInfinite D n F hEF)
+    (deepFiniteTowerBound p n)
+    (deepFiniteTower_wild_tail K L p hL hInfinite D (𝔈 n) F
+      (deepFiniteTower_monotone K L p hL hInfinite D (Nat.zero_le n)) hEF).2.2
+    (deepFiniteTower_finrank K L p hL hInfinite D n F hEF)
+    (deepFiniteTower_relativeFirstBound_ge K L p hL hInfinite D n F hEF)
+    (n + 2) s hs (by rw [ceil_deepFiniteTowerBound])
+
+@[simp]
+theorem deepFiniteTowerNorm_mk (n : ℕ) (F : FiniteLayer K L) (hEF : 𝔈 n ≤ F)
+    (s : ℕ) (hs : n + 2 ≤ s) (x : spectralIntegerRing K F.val) :
+    deepFiniteTowerNorm K L p hL hInfinite D n F hEF s hs (Ideal.Quotient.mk _ x) =
+      Ideal.Quotient.mk _ (FiniteLayer.integerNorm (𝔈 n) F hEF x) := rfl
+
+/-- Actual perfect-residue norm digits prove surjectivity from every later finite layer. -/
+theorem deepFiniteTowerNorm_surjective (n : ℕ) (F : FiniteLayer K L) (hEF : 𝔈 n ≤ F)
+    (s : ℕ) (hs : n + 2 ≤ s) :
+    Function.Surjective (deepFiniteTowerNorm K L p hL hInfinite D n F hEF s hs) :=
+  FiniteLayer.truncatedNorm_surjective (𝔈 n) F hEF p
+    (deepFiniteTowerRelativeDegree K L p hL hInfinite D n F hEF)
+    (deepFiniteTowerBound p n)
+    (deepFiniteTower_wild_tail K L p hL hInfinite D (𝔈 n) F
+      (deepFiniteTower_monotone K L p hL hInfinite D (Nat.zero_le n)) hEF).2.2
+    (deepFiniteTower_finrank K L p hL hInfinite D n F hEF)
+    (deepFiniteTower_relativeFirstBound_ge K L p hL hInfinite D n F hEF)
+    (n + 2) s hs (by rw [ceil_deepFiniteTowerBound])
+
+/-- Every later original finite norm is additive to the tower stage's precision. -/
+theorem deepFiniteTower_integerNorm_add_congruence (n : ℕ) (F : FiniteLayer K L)
+    (hEF : 𝔈 n ≤ F) (x y : spectralIntegerRing K F.val) :
+    FiniteLayer.integerNorm (𝔈 n) F hEF (x + y) -
+      FiniteLayer.integerNorm (𝔈 n) F hEF x - FiniteLayer.integerNorm (𝔈 n) F hEF y ∈
+        IsLocalRing.maximalIdeal (spectralIntegerRing K (𝔈 n).val) ^ (n + 2) := by
+  let q := deepFiniteTowerNorm K L p hL hInfinite D n F hEF (n + 2) le_rfl
+  have h := q.map_add (Ideal.Quotient.mk _ x) (Ideal.Quotient.mk _ y)
+  change q (Ideal.Quotient.mk _ (x + y)) =
+    q (Ideal.Quotient.mk _ x) + q (Ideal.Quotient.mk _ y) at h
+  simp only [q, deepFiniteTowerNorm_mk] at h
+  apply Ideal.Quotient.eq_zero_iff_mem.mp
+  simp only [map_sub]
+  linear_combination h
+
+/-- The original norms induce the actual ring transition maps between tower stages. -/
+def deepFiniteTowerTransition (n m : ℕ) (hnm : n ≤ m) :
+    deepFiniteTowerQuotient K L p hL hInfinite D m →+*
+      deepFiniteTowerQuotient K L p hL hInfinite D n :=
+  deepFiniteTowerNorm K L p hL hInfinite D n (𝔈 m)
+    (deepFiniteTower_monotone K L p hL hInfinite D hnm) (m + 2) (by omega)
+
+@[simp]
+theorem deepFiniteTowerTransition_mk (n m : ℕ) (hnm : n ≤ m)
+    (x : spectralIntegerRing K (𝔈 m).val) :
+    deepFiniteTowerTransition K L p hL hInfinite D n m hnm (Ideal.Quotient.mk _ x) =
+      Ideal.Quotient.mk _ (FiniteLayer.integerNorm (𝔈 n) (𝔈 m)
+        (deepFiniteTower_monotone K L p hL hInfinite D hnm) x) := rfl
+
+/-- Every actual transition in the constructed tower is surjective. -/
+theorem deepFiniteTowerTransition_surjective (n m : ℕ) (hnm : n ≤ m) :
+    Function.Surjective (deepFiniteTowerTransition K L p hL hInfinite D n m hnm) :=
+  deepFiniteTowerNorm_surjective K L p hL hInfinite D n (𝔈 m)
+    (deepFiniteTower_monotone K L p hL hInfinite D hnm) (m + 2) (by omega)
+
+/-- Actual norm transitivity gives the exact quotient transition tower law. -/
+theorem deepFiniteTowerTransition_comp (i n m : ℕ) (hin : i ≤ n) (hnm : n ≤ m) :
+    (deepFiniteTowerTransition K L p hL hInfinite D i n hin).comp
+        (deepFiniteTowerTransition K L p hL hInfinite D n m hnm) =
+      deepFiniteTowerTransition K L p hL hInfinite D i m (hin.trans hnm) := by
+  apply Ideal.Quotient.ringHom_ext
+  ext x
+  simp only [RingHom.comp_apply, deepFiniteTowerTransition_mk]
+  rw [FiniteLayer.integerNorm_integerNorm]
+
+/-- The actual identity step induces the identity map at the same precision. -/
+@[simp]
+theorem deepFiniteTowerTransition_self (n : ℕ) :
+    deepFiniteTowerTransition K L p hL hInfinite D n n le_rfl =
+      RingHom.id (deepFiniteTowerQuotient K L p hL hInfinite D n) := by
+  apply Ideal.Quotient.ringHom_ext
+  ext x
+  simp only [RingHom.comp_apply, deepFiniteTowerTransition_mk,
+    FiniteLayer.integerNorm_self, RingHom.id_apply]
+
+/-- The actual quotient transitions preserve normalized valuation truncated
+at the target precision, including zero and the identity step. -/
+theorem deepFiniteTowerTransition_truncatedAddVal (n m : ℕ) (hnm : n ≤ m)
+    (x : deepFiniteTowerQuotient K L p hL hInfinite D m) :
+    truncatedAddVal (spectralIntegerRing K (𝔈 n).val) (n + 2)
+        (deepFiniteTowerTransition K L p hL hInfinite D n m hnm x) =
+      min (truncatedAddVal (spectralIntegerRing K (𝔈 m).val) (m + 2) x)
+        ((n + 2 : ℕ) : ℕ∞) := by
+  obtain ⟨x, rfl⟩ := Ideal.Quotient.mk_surjective x
+  rw [deepFiniteTowerTransition_mk, truncatedAddVal_mk, truncatedAddVal_mk,
+    FiniteLayer.addVal_integerNorm_of_totallyRamified (𝔈 n) (𝔈 m)
+      (deepFiniteTower_monotone K L p hL hInfinite D hnm)
+      (deepFiniteTower_wild_tail K L p hL hInfinite D (𝔈 n) (𝔈 m)
+        (deepFiniteTower_monotone K L p hL hInfinite D (Nat.zero_le n))
+        (deepFiniteTower_monotone K L p hL hInfinite D hnm)).2.2,
+    min_assoc, min_eq_right (show ((n + 2 : ℕ) : ℕ∞) ≤ (m + 2 : ℕ) by exact_mod_cast (show n + 2 ≤ m + 2 by omega))]
+
+end FontaineWintenberger

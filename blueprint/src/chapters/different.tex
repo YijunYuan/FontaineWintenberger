@@ -1,0 +1,183 @@
+\chapter{The different and trace estimates}
+
+Throughout this chapter $E'/E$ is a finite separable extension of
+complete discretely valued fields, with actual integer rings $B/A$.
+The residue fields need not be finite.
+
+\begin{definition}[The different and codifferent]
+\label{fw:different}
+\source{serre-1979-local-fields:page-0057}
+\lean{differentIdeal, coeIdeal_differentIdeal}
+\mathlibok
+The codifferent is the fractional $B$-ideal
+\[
+ \mathfrak D_{B/A}^{-1}
+ =\{x\in E':\operatorname{Tr}_{E'/E}(xB)\subseteq A\},
+\]
+and the different is its inverse, a nonzero integral ideal of $B$.
+Write $d(E'/E)=v_{E'}(\mathfrak D_{B/A})$.
+\end{definition}
+
+\begin{lemma}[The conductor and the different]
+\label{fw:conductor-different}
+\uses{fw:different}
+\lean{conductor_mul_differentIdeal}
+\mathlibok
+If $\theta\in B$ generates $E'$ over $E$, and $f\in A[X]$ is its
+monic minimal polynomial, let
+$\mathfrak f=\{b\in B:bB\subseteq A[\theta]\}$. Then
+$\mathfrak f\mathfrak D_{B/A}=f'(\theta)B$.
+\end{lemma}
+
+\begin{lemma}[An integral generator generates the fraction field]
+\label{fw:integral-fraction-generator}
+\lean{FontaineWintenberger.adjoin_algebraMap_eq_top_of_integral_adjoin_eq_top}
+\leanok
+If $B=A[\theta]$, then $E'=E[\theta]$.
+\end{lemma}
+\begin{proof}
+The field $E(\theta)$ contains the image of every element of
+$A[\theta]=B$, and hence every quotient of two elements of $B$.
+Since $E'$ is the fraction field of $B$, this proves
+$E'=E(\theta)$. The element $\theta$ is algebraic over $E$,
+so $E[\theta]$ is already a field and equals $E(\theta)$.
+\end{proof}
+
+\begin{lemma}[The different of a monogenic extension]
+\label{fw:monogenic-different}
+\source{serre-1979-local-fields:page-0063}
+\dcref{Serre, Chapter III, Section 6, Corollary 2}
+\uses{fw:conductor-different,fw:integral-fraction-generator,fw:totally-ramified-uniformizer-generation}
+\lean{FontaineWintenberger.differentIdeal_eq_span_derivative_of_adjoin_eq_top, FontaineWintenberger.extensionValuationSubring_different_uniformizer}
+\leanok
+If $B=A[\theta]$ and $f\in A[X]$ is its monic minimal polynomial,
+then $\mathfrak D_{B/A}=f'(\theta)B$.
+In particular, in a totally ramified extension the formula applies to
+every uniformizer of $B$.
+\end{lemma}
+\begin{proof}
+The preceding lemma gives $E'=E[\theta]$. The conductor of
+$A[\theta]=B$ in $B$ is the unit ideal, since every product of two
+elements of $B$ is in $B$. The conductor--different identity
+therefore gives $\mathfrak D_{B/A}=f'(\theta)B$.
+Every uniformizer generates the integer ring in a totally ramified
+extension, so the preceding argument applies to each such uniformizer.
+\end{proof}
+
+\begin{lemma}[Ideal orders and normalized integral valuations]
+\label{fw:ideal-order-generator}
+\uses{fw:ideal-power-valuation}
+\lean{FontaineWintenberger.maximalIdeal_emultiplicity_span}
+\leanok
+For a discrete valuation ring $B$ and $x\in B$, the multiplicity
+of its maximal ideal in $(x)$ is $v_B(x)$, including infinite
+multiplicity for $x=0$.
+\end{lemma}
+\begin{proof}
+For every integer $n\geq0$, $\mathfrak m_B^n$ divides $(x)$ exactly
+when $(x)\subseteq\mathfrak m_B^n$, exactly when
+$x\in\mathfrak m_B^n$, and hence exactly when $n\leq v_B(x)$.
+These tests for all natural $n$ determine an element of
+$\mathbb N\cup\{+\infty\}$ uniquely.
+\end{proof}
+
+\begin{lemma}[The different as a product of conjugate displacements]
+\label{fw:different-conjugate-product}
+\source{serre-1979-local-fields:page-0071}
+\dcref{Serre, Chapter IV, Section 1, proof of Proposition 4}
+\uses{fw:monogenic-different,fw:galois-generator-conjugates,fw:generator-evaluation,fw:ideal-order-generator}
+\lean{FontaineWintenberger.aeval_derivative_minpoly_eq_prod_displacements, FontaineWintenberger.differentIdeal_eq_span_prod_displacements, FontaineWintenberger.differentIdeal_order_eq_sum_ramificationOrder}
+\leanok
+Suppose $E'/E$ is Galois with group $G$ and $B=A[\theta]$. Then
+\[
+ \mathfrak D_{B/A}
+ =\left(\prod_{g\in G,\ g\ne1}(\theta-g\theta)\right),\qquad
+ d(E'/E)=\sum_{g\ne1}j_{E'}(g).
+\]
+\end{lemma}
+\begin{proof}
+The minimal polynomial satisfies
+$f(X)=\prod_{g\in G}(X-g\theta)$. Separate its identity factor:
+$f(X)=(X-\theta)\prod_{g\ne1}(X-g\theta)$.
+The product rule, evaluated at $\theta$, gives
+$f'(\theta)=\prod_{g\ne1}(\theta-g\theta)$.
+The monogenic different formula proves the ideal equality.
+The order of a principal ideal equals the normalized valuation of
+its generator. Multiplicativity of that valuation gives the sum
+of $v_{E'}(\theta-g\theta)$, and generator evaluation identifies
+each summand with $j_{E'}(g)$.
+\end{proof}
+
+\begin{theorem}[Hilbert's different formula]
+\label{fw:hilbert-different}
+\source{serre-1979-local-fields:page-0071}
+\dcref{Serre, Chapter IV, Section 1, Proposition 4}
+\uses{fw:different-conjugate-product,fw:integral-generator,fw:ramification-filtration,fw:integral-order-function,fw:local-inertia-size}
+\lean{FontaineWintenberger.sum_ramificationOrder_eq_sum_lower_card, FontaineWintenberger.exists_sum_ramificationOrder_eq_sum_lower_card, FontaineWintenberger.spectralIntegerRing_different_order_eq_sum_ramificationOrder, FontaineWintenberger.spectralIntegerRing_different_order_eq_sum_lower_card}
+\leanok
+For a finite Galois extension $E'/E$ with group $G$ and perfect residue
+field $k_E$,
+\[
+ d(E'/E)=\sum_{g\ne1}j_{E'}(g)
+         =\sum_{n\geq0}(|G_n|-1).
+\]
+\end{theorem}
+\begin{proof}
+Choose an integral generator and apply the preceding lemma for the
+first equality. For nonidentity $g$, $j_{E'}(g)$ is a finite natural
+integer, and it equals the number of positive integers $n+1$ with
+$n+1\leq j_{E'}(g)$. For fixed $n$, this inequality holds exactly
+for $g\in G_n$. Counting the same finite set of pairs $(g,n)$ first
+by $g$ and then by $n$ proves the second equality. Finiteness follows
+from the eventual triviality of the lower groups.
+\end{proof}
+
+\begin{lemma}[The trace ideal of an integral ideal]
+\label{fw:trace-ideal}
+\source{serre-1979-local-fields:page-0057,serre-1979-local-fields:page-0058,serre-1979-local-fields:page-0090}
+\dcref{Serre, Chapter III, Section 3, Proposition 7; Chapter V, Section 3, Lemma 4}
+\uses{fw:different,fw:normalized-valuation-scaling,fw:ideal-order-generator}
+\lean{FontaineWintenberger.trace_integral_iff_le_codifferent, FontaineWintenberger.trace_principal_iff_le_mul_codifferent, FontaineWintenberger.trace_principal_iff_mul_different_le, FontaineWintenberger.intTrace_mem_principal_iff_mul_different_le, FontaineWintenberger.intTraceIdeal, FontaineWintenberger.intTraceIdeal_le_iff, FontaineWintenberger.ideal_eq_pow_emultiplicity, FontaineWintenberger.intTraceIdeal_pow_le_pow_iff, FontaineWintenberger.intTraceIdeal_pow, FontaineWintenberger.extensionValuationSubring_intTraceIdeal_pow}
+\leanok
+Put $e=e(E'/E)$ and $d=d(E'/E)$. For every integer $n\geq0$,
+\[
+ \operatorname{Tr}_{E'/E}(\mathfrak m_B^n)
+       =\mathfrak m_A^{\lfloor(d+n)/e\rfloor}.
+\]
+\end{lemma}
+\begin{proof}
+The trace image is the actual $A$-module image under the integral
+trace, hence an ideal of $A$. For a fractional $B$-ideal $J$ and
+nonzero principal fractional $A$-ideal $I$,
+the codifferent definition gives
+\[
+ \operatorname{Tr}(J)\subseteq I
+ \ \Longleftrightarrow\
+ \operatorname{Tr}(I^{-1}J)\subseteq A
+ \ \Longleftrightarrow\
+ I^{-1}J\subseteq\mathfrak D^{-1}
+ \ \Longleftrightarrow\
+ J\subseteq I\mathfrak D^{-1}.
+\]
+The middle equivalence holds because $I^{-1}J$ is a $B$-module:
+requiring its trace to lie in $A$ also requires the trace after
+multiplication by every element of $B$ to lie in $A$.
+Multiplying the last inclusion by the nonzero different gives the
+equivalent condition $J\mathfrak D\subseteq IB$. Apply this with
+$J=\mathfrak m_B^n$ and $I=\mathfrak m_A^s$, for $s\geq0$.
+Every nonzero ideal of a discrete valuation ring is a power of its
+maximal ideal, with exponent its maximal-ideal multiplicity. The
+condition is therefore
+\[
+ \mathfrak m_B^{n+d}\subseteq\mathfrak m_B^{es},
+ \quad\text{equivalently}\quad es\leq d+n.
+\]
+Here $e>0$. If the trace ideal were zero, it would be contained in
+every $\mathfrak m_A^s$, forcing this inequality for arbitrarily
+large $s$, a contradiction. Write the trace ideal as
+$\mathfrak m_A^t$. Its containment in $\mathfrak m_A^s$ is exactly
+$s\leq t$, so the same criterion gives
+$s\leq t\Longleftrightarrow es\leq d+n$ for every $s\geq0$.
+Taking $s=t$ and $s=\lfloor(d+n)/e\rfloor$ proves
+$t=\lfloor(d+n)/e\rfloor$.
+\end{proof}
