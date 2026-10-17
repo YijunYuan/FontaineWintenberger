@@ -16,4 +16,4 @@ name = "FontaineWintenberger"
 pp.unicode.fun = true # pretty-prints `fun a ↦ b`
 relaxedAutoImplicit = false
 weak.linter.mathlibStandardSet = true
-maxSynthPendingDepth = 3
+# maxSynthPendingDepth = 3   -- re-enable after F5 (abbrev carriers make failed instance search expensive)
