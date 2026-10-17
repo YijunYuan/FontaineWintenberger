@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Yijun Yuan. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Yijun Yuan
+-/
 module
 
 public import FontaineWintenberger.Ramification.EmbeddingFiniteBase
@@ -319,7 +324,8 @@ def algebraicResidueAut (σ : L ≃ₐ[K] L) :
     IsLocalRing.ResidueField
       (integralClosure (NormedField.valuation (K := K)).valuationSubring L) :=
   IsLocalRing.ResidueField.mapEquiv
-    (σ.restrictScalars (NormedField.valuation (K := K)).valuationSubring).mapIntegralClosure.toRingEquiv
+    (σ.restrictScalars (NormedField.valuation (K :=
+        K)).valuationSubring).mapIntegralClosure.toRingEquiv
 
 omit [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
   [PerfectField (IsLocalRing.ResidueField
@@ -329,7 +335,8 @@ theorem algebraicResidueAut_residue (σ : L ≃ₐ[K] L)
     (a : integralClosure (NormedField.valuation (K := K)).valuationSubring L) :
     algebraicResidueAut K L σ (IsLocalRing.residue _ a) =
       IsLocalRing.residue _
-        ((σ.restrictScalars (NormedField.valuation (K := K)).valuationSubring).mapIntegralClosure a) := rfl
+        ((σ.restrictScalars (NormedField.valuation (K := K)).valuationSubring).mapIntegralClosure a)
+            := rfl
 
 omit [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
   [PerfectField (IsLocalRing.ResidueField

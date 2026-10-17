@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Yijun Yuan. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Yijun Yuan
+-/
 module
 
 public import FontaineWintenberger.APF.FirstBound
@@ -87,8 +92,11 @@ omit [IsUltrametricDist L] [FiniteDimensional K L]
   [PerfectField (IsLocalRing.ResidueField
     (NormedField.valuation (K := K)).valuationSubring)] in
 private theorem wild_compositum_fixing_map (J : Subgroup G) :
-    ((IntermediateField.fixedField P ⊔ IntermediateField.fixedField J).fixingSubgroup.subgroupOf (A).fixingSubgroup).map
-      (A).fixingSubgroupEquiv.toMonoidHom = (IntermediateField.extendScalars (le_sup_left : IntermediateField.fixedField P ≤ (IntermediateField.fixedField P ⊔ IntermediateField.fixedField J))).fixingSubgroup := by
+    ((IntermediateField.fixedField P ⊔ IntermediateField.fixedField J).fixingSubgroup.subgroupOf
+        (A).fixingSubgroup).map
+      (A).fixingSubgroupEquiv.toMonoidHom = (IntermediateField.extendScalars (le_sup_left :
+          IntermediateField.fixedField P ≤ (IntermediateField.fixedField P ⊔
+              IntermediateField.fixedField J))).fixingSubgroup := by
   rw [Subgroup.map_equiv_eq_comap_symm']
   ext g
   rfl
@@ -98,19 +106,25 @@ omit [IsUltrametricDist L]
   [PerfectField (IsLocalRing.ResidueField
     (NormedField.valuation (K := K)).valuationSubring)] in
 private theorem wild_compositum_fixing_proper (J : Subgroup G) (hH : J ≠ ⊤) (hHP : J ⊔ P = ⊤) :
-    (IntermediateField.extendScalars (le_sup_left : IntermediateField.fixedField P ≤ (IntermediateField.fixedField P ⊔ IntermediateField.fixedField J))).fixingSubgroup ≠ ⊤ := by
+    (IntermediateField.extendScalars (le_sup_left : IntermediateField.fixedField P ≤
+        (IntermediateField.fixedField P ⊔ IntermediateField.fixedField J))).fixingSubgroup ≠ ⊤ := by
   intro ht
-  have hfix : (IntermediateField.extendScalars (le_sup_left : IntermediateField.fixedField P ≤ (IntermediateField.fixedField P ⊔ IntermediateField.fixedField J))).fixingSubgroup =
-      ((IntermediateField.fixedField P ⊔ IntermediateField.fixedField J).fixingSubgroup.subgroupOf (A).fixingSubgroup).comap
+  have hfix : (IntermediateField.extendScalars (le_sup_left : IntermediateField.fixedField P ≤
+      (IntermediateField.fixedField P ⊔ IntermediateField.fixedField J))).fixingSubgroup =
+      ((IntermediateField.fixedField P ⊔ IntermediateField.fixedField J).fixingSubgroup.subgroupOf
+          (A).fixingSubgroup).comap
         (A).fixingSubgroupEquiv.symm.toMonoidHom := by
     rw [← wild_compositum_fixing_map K L J, Subgroup.map_equiv_eq_comap_symm']
   have hle : P ≤ J := by
     intro g hg
     let gA : (A).fixingSubgroup := ⟨g, by
       simpa only [IntermediateField.fixingSubgroup_fixedField] using hg⟩
-    have hm : (A).fixingSubgroupEquiv gA ∈ (IntermediateField.extendScalars (le_sup_left : IntermediateField.fixedField P ≤ (IntermediateField.fixedField P ⊔ IntermediateField.fixedField J))).fixingSubgroup := ht ▸ Subgroup.mem_top _
+    have hm : (A).fixingSubgroupEquiv gA ∈ (IntermediateField.extendScalars (le_sup_left :
+        IntermediateField.fixedField P ≤ (IntermediateField.fixedField P ⊔
+            IntermediateField.fixedField J))).fixingSubgroup := ht ▸ Subgroup.mem_top _
     rw [hfix] at hm
-    change g ∈ (IntermediateField.fixedField P ⊔ IntermediateField.fixedField J).fixingSubgroup at hm
+    change g ∈ (IntermediateField.fixedField P ⊔
+      IntermediateField.fixedField J).fixingSubgroup at hm
     rw [IntermediateField.fixingSubgroup_sup,
       IntermediateField.fixingSubgroup_fixedField,
       IntermediateField.fixingSubgroup_fixedField] at hm
@@ -119,7 +133,8 @@ private theorem wild_compositum_fixing_proper (J : Subgroup G) (hH : J ≠ ⊤) 
 
 private theorem wild_compositum_upper_product_eq_top_iff (J : Subgroup G)
     (hHP : J ⊔ P = ⊤) {u : ℝ} (hu : 0 < u) :
-    J ⊔ U u = ⊤ ↔ (IntermediateField.extendScalars (le_sup_left : IntermediateField.fixedField P ≤ (IntermediateField.fixedField P ⊔ IntermediateField.fixedField J))).fixingSubgroup ⊔
+    J ⊔ U u = ⊤ ↔ (IntermediateField.extendScalars (le_sup_left : IntermediateField.fixedField P ≤
+        (IntermediateField.fixedField P ⊔ IntermediateField.fixedField J))).fixingSubgroup ⊔
       upperRamificationGroup (R := spectralIntegerRing A L) (L ≃ₐ[A] L)
         ((e : ℝ) * u) = ⊤ := by
   have hpsi : apfPsi K A u = (e : ℝ) * u := by
@@ -127,7 +142,8 @@ private theorem wild_compositum_upper_product_eq_top_iff (J : Subgroup G)
       wild_fixedField_inverseHerbrandFunction K L hu.le]
   rw [← hpsi, finiteBase_upperRamificationGroup_of_finiteGalois K L A (by linarith),
     ← wild_compositum_fixing_map K L J, ← Subgroup.map_sup]
-  have hsub : (IntermediateField.fixedField P ⊔ IntermediateField.fixedField J).fixingSubgroup.subgroupOf (A).fixingSubgroup =
+  have hsub : (IntermediateField.fixedField P ⊔ IntermediateField.fixedField
+      J).fixingSubgroup.subgroupOf (A).fixingSubgroup =
       J.subgroupOf (A).fixingSubgroup := by
     ext g
     simp only [Subgroup.mem_subgroupOf, IntermediateField.fixingSubgroup_sup,

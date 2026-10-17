@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Yijun Yuan. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Yijun Yuan
+-/
 module
 
 public import FontaineWintenberger.FieldOfNorms.Residue
@@ -23,22 +28,24 @@ variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [Complete
       (NormedField.valuation (K := K)).valuationSubring)]
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
-local instance (E : FiniteLayer K L) : NontriviallyNormedField E.val :=
+local instance FiniteLayer.instNontriviallyNormedField (E : FiniteLayer K L) :
+    NontriviallyNormedField E.val :=
   spectralNorm.nontriviallyNormedField K E.val
-local instance (E : FiniteLayer K L) : NormedAlgebra K E.val :=
+local instance FiniteLayer.instNormedAlgebra (E : FiniteLayer K L) : NormedAlgebra K E.val :=
   spectralNorm.normedAlgebra K E.val
-local instance (E : FiniteLayer K L) : IsUltrametricDist E.val :=
+local instance FiniteLayer.instIsUltrametricDist (E : FiniteLayer K L) : IsUltrametricDist E.val :=
   IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
     (isNonarchimedean_spectralNorm (K := K) (L := E.val))
-local instance (E : FiniteLayer K L) : CompleteSpace E.val :=
+local instance FiniteLayer.instCompleteSpace (E : FiniteLayer K L) : CompleteSpace E.val :=
   spectralNorm.completeSpace K E.val
-local instance (E : FiniteLayer K L) :
+local instance FiniteLayer.instIsDiscreteValuationRing (E : FiniteLayer K L) :
     IsDiscreteValuationRing (NormedField.valuation (K := E.val)).valuationSubring :=
   normedAlgebra_unitBall_isDiscreteValuationRing K E.val
-local instance (E : FiniteLayer K L) : PerfectField (IsLocalRing.ResidueField
+local instance FiniteLayer.instPerfectFieldResidueField (E : FiniteLayer K L) : PerfectField
+    (IsLocalRing.ResidueField
     (NormedField.valuation (K := E.val)).valuationSubring) :=
   normedAlgebra_residueField_perfectField K E.val
-local instance (E : FiniteLayer K L) : Algebra.IsSeparable E.val L :=
+local instance FiniteLayer.instIsSeparable (E : FiniteLayer K L) : Algebra.IsSeparable E.val L :=
   Algebra.isSeparable_tower_top_of_isSeparable K E.val L
 
 /-- The source high-break condition is the actual full relative upper product,
@@ -376,7 +383,8 @@ variable (hInfinite : ¬ Module.Finite K L)
 /-- Integral evaluation in any original finite layer, with no chosen model. -/
 def normLimitIntegralCoordinateAt (E : FiniteLayer K L) :
     letI := normLimitField K L p hL hInfinite
-    (normLimitFieldValuation K L p hL hInfinite).valuationSubring → spectralIntegerRing K E.val := by
+    (normLimitFieldValuation K L p hL hInfinite).valuationSubring → spectralIntegerRing K E.val :=
+        by
   letI := normLimitField K L p hL hInfinite
   exact fun α ↦ ⟨normLimitEval K L E α.val,
     normLimitEval_mem_of_valuation_le_one K L hL α.val α.property E⟩

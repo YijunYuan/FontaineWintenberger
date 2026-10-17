@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Yijun Yuan. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Yijun Yuan
+-/
 module
 
 public import FontaineWintenberger.Ramification.HilbertDifferent
@@ -95,7 +100,8 @@ theorem trace_principal_iff_mul_different_le (I : FractionalIdeal B⁰ L)
         FractionalIdeal.spanSingleton B⁰ (algebraMap K L a) := by
   have hD : (differentIdeal A B : FractionalIdeal B⁰ L) ≠ 0 := by
     rw [coeIdeal_differentIdeal A K L B]
-    exact inv_ne_zero (FractionalIdeal.dual_ne_zero A K (I := (1 : FractionalIdeal B⁰ L)) one_ne_zero)
+    exact inv_ne_zero (FractionalIdeal.dual_ne_zero A K (I := (1 : FractionalIdeal B⁰ L))
+        one_ne_zero)
   rw [trace_principal_iff_le_mul_codifferent A B K L I ha, ← div_eq_mul_inv]
   exact FractionalIdeal.le_div_iff_mul_le hD
 

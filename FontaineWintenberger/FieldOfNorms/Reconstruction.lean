@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Yijun Yuan. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Yijun Yuan
+-/
 module
 
 public import FontaineWintenberger.FieldOfNorms.DeepTruncatedTower
@@ -298,7 +303,8 @@ theorem deepNormFamily_mem (a : 𝒜) (F : FiniteLayer K L) :
   let n := deepNormFamilyIndex K L p hL hInfinite D F
   let z : spectralIntegerRing K (𝔈 n).val :=
     ⟨deepNormCoordinate K L p hL hInfinite D a n, deepNormCoordinate_mem K L p hL hInfinite D a n⟩
-  have h := (FiniteLayer.integerNorm F (𝔈 n) (le_deepNormFamilyIndex K L p hL hInfinite D F) z).property
+  have h := (FiniteLayer.integerNorm F (𝔈 n) (le_deepNormFamilyIndex K L p hL hInfinite D F)
+      z).property
   rw [FiniteLayer.coe_integerNorm] at h
   exact h
 

@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Yijun Yuan. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Yijun Yuan
+-/
 module
 
 public import FontaineWintenberger.APF.StrictBaseChange
@@ -109,7 +114,8 @@ theorem apfRamificationBound_le_finiteBase :
   (IsAPF.le_apfHerbrandERealOrderIso K M (isAPF_of_finite K M) _).trans
     (apfHerbrandERealOrderIso_bound_le K M N)
 
-/-- Above a positive old first bound the extended strictness constant increases under finite base. -/
+/-- Above a positive old first bound the extended strictness constant increases under finite
+base. -/
 theorem apfStrictnessConstant_le_finiteBase (hN : IsAPF K N)
     (hi : (0 : EReal) < apfRamificationBound K N) :
     apfStrictnessConstant K N ≤ apfStrictnessConstant M N := by

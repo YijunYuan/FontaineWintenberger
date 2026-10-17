@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Yijun Yuan. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Yijun Yuan
+-/
 module
 
 public import FontaineWintenberger.APF.Residue
@@ -53,7 +58,8 @@ theorem normalizedValuation_norm_of_residueInclusion_surjective
       (spectralValuation K E.val) (spectralValuation K F.val)
   have hf : Module.finrank (IsLocalRing.ResidueField (spectralIntegerRing K E.val))
       (IsLocalRing.ResidueField (spectralIntegerRing K F.val)) = 1 :=
-    Algebra.finrank_eq_one_iff_bijective_algebraMap.mpr ⟨(spectralResidueInclusion K (IntermediateField.inclusion hEF)).injective, hs⟩
+    Algebra.finrank_eq_one_iff_bijective_algebraMap.mpr ⟨(spectralResidueInclusion K
+        (IntermediateField.inclusion hEF)).injective, hs⟩
   have hv := normalizedValuation_norm (spectralIntegerRing K E.val)
     (spectralIntegerRing K F.val) E.val F.val x
   rw [local_inertiaDeg_eq_finrank_residueField, hf, pow_one] at hv
@@ -64,7 +70,8 @@ end FiniteLayer
 
 /-- Evaluate the original multiplicative limit and then use the actual
 normalized valuation of that finite field. -/
-def normLimitCoordinateValuation (E : FiniteLayer K L) : NormLimit K L →*₀ WithZero (Multiplicative ℤ) :=
+def normLimitCoordinateValuation (E : FiniteLayer K L) : NormLimit K L →*₀ WithZero (Multiplicative
+    ℤ) :=
   let v := (IsDiscreteValuationRing.maximalIdeal (spectralIntegerRing K E.val)).valuation E.val
   v.toMonoidWithZeroHom.comp (normLimitEval K L E)
 

@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Yijun Yuan. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Yijun Yuan
+-/
 module
 
 public import FontaineWintenberger.APF.FiniteGaloisOverfield
@@ -21,7 +26,8 @@ variable (E : Type*) [NontriviallyNormedField E] [NormedAlgebra K E]
 
 variable (M : IntermediateField K E)
 
-local instance finiteOverfieldBase_completeSpace : CompleteSpace M := IntermediateField.completeSpace_of_finiteDimensional M
+local instance finiteOverfieldBase_completeSpace : CompleteSpace M :=
+    IntermediateField.completeSpace_of_finiteDimensional M
 
 variable [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
 

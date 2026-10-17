@@ -11,3 +11,9 @@ rev = "f0b4c8150aa0dbc758aff1291410c5ae335aff3a"
 
 [[lean_lib]]
 name = "FontaineWintenberger"
+
+[leanOptions]
+pp.unicode.fun = true # pretty-prints `fun a ↦ b`
+relaxedAutoImplicit = false
+weak.linter.mathlibStandardSet = true
+maxSynthPendingDepth = 3

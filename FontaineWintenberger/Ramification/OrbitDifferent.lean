@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Yijun Yuan. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Yijun Yuan
+-/
 module
 
 public import FontaineWintenberger.Ramification.HilbertDifferent
@@ -32,7 +37,8 @@ variable (B : Type*) [CommRing B] [IsDomain B] [IsDiscreteValuationRing B]
 including the zero ideal. -/
 theorem maximalIdeal_emultiplicity_mul (I J : Ideal B) :
     emultiplicity (IsLocalRing.maximalIdeal B) (I * J) =
-      emultiplicity (IsLocalRing.maximalIdeal B) I + emultiplicity (IsLocalRing.maximalIdeal B) J := by
+      emultiplicity (IsLocalRing.maximalIdeal B) I + emultiplicity (IsLocalRing.maximalIdeal B) J :=
+          by
   obtain ⟨x, rfl⟩ := (inferInstance : I.IsPrincipal).principal
   obtain ⟨y, rfl⟩ := (inferInstance : J.IsPrincipal).principal
   rw [Ideal.span_singleton_mul_span_singleton, maximalIdeal_emultiplicity_span,
@@ -53,7 +59,8 @@ variable (C : Type*) [CommRing C] [IsDomain C] [IsDiscreteValuationRing C]
 canonical ramification index. -/
 theorem maximalIdeal_emultiplicity_map (I : Ideal B) :
     emultiplicity (IsLocalRing.maximalIdeal C) (I.map (algebraMap B C)) =
-      ((IsLocalRing.maximalIdeal C).ramificationIdx B : ℕ∞) * emultiplicity (IsLocalRing.maximalIdeal B) I := by
+      ((IsLocalRing.maximalIdeal C).ramificationIdx B : ℕ∞) * emultiplicity
+          (IsLocalRing.maximalIdeal B) I := by
   obtain ⟨x, rfl⟩ := (inferInstance : I.IsPrincipal).principal
   rw [Ideal.map_span, Set.image_singleton, maximalIdeal_emultiplicity_span,
     maximalIdeal_emultiplicity_span, addVal_algebraMap]
@@ -327,7 +334,7 @@ variable (A C : Type*) [CommRing A] [IsDomain A] [IsDiscreteValuationRing A]
     [HenselianLocalRing C]
     [Algebra.IsSeparable (IsLocalRing.ResidueField A) (IsLocalRing.ResidueField C)]
     [Algebra.IsSeparable (FractionRing A) (FractionRing C)]
-variable (G : Type*) [Group G] [Fintype G] [DecidableEq G]
+variable (G : Type*) [Group G] [Finite G]
     [MulSemiringAction G C] [IsGaloisGroup G A C]
 
 /-- Hilbert's formula at any actual lower cutoff, on canonical integer rings
@@ -337,6 +344,8 @@ theorem differentIdeal_order_eq_sum_lower_card_of_cutoff {N : ℕ}
     emultiplicity (IsLocalRing.maximalIdeal C) (differentIdeal A C) =
       ∑ i ∈ Finset.range N,
         ((Nat.card (lowerRamificationGroup G (IsLocalRing.maximalIdeal C) i) - 1 : ℕ) : ℕ∞) := by
+  classical
+  let := Fintype.ofFinite G
   let : FiniteDimensional (FractionRing A) (FractionRing C) :=
     .of_isLocalization A C A⁰
   obtain ⟨θ, hθ⟩ := exists_integral_generator (R := A) (S := C)
@@ -363,6 +372,8 @@ theorem differentIdeal_order_toReal_eq_sum_lower_card_of_cutoff {N : ℕ}
     ((emultiplicity (IsLocalRing.maximalIdeal C) (differentIdeal A C)).toNat : ℝ) =
       ∑ i ∈ Finset.range N,
         ((Nat.card (lowerRamificationGroup G (IsLocalRing.maximalIdeal C) i) : ℝ) - 1) := by
+  classical
+  let := Fintype.ofFinite G
   have h := differentIdeal_order_eq_sum_lower_card_of_cutoff A C G hN
   let S : ℕ := ∑ i ∈ Finset.range N,
     (Nat.card (lowerRamificationGroup G (IsLocalRing.maximalIdeal C) i) - 1)
@@ -396,7 +407,7 @@ variable (A B C : Type*) [CommRing A] [IsDomain A] [IsDiscreteValuationRing A]
     [IsLocalHom (algebraMap B C)] [HenselianLocalRing C]
     [PerfectField (IsLocalRing.ResidueField A)] [PerfectField (IsLocalRing.ResidueField B)]
     [Algebra.IsSeparable (FractionRing A) (FractionRing C)]
-variable (G : Type*) [Group G] [Fintype G] [DecidableEq G]
+variable (G : Type*) [Group G] [Finite G]
     [MulSemiringAction G C] [IsGaloisGroup G A C]
 variable (H : Subgroup G) [IsGaloisGroup H B C]
 
@@ -413,6 +424,8 @@ theorem subextension_different_order_mul_inertia_eq_lower_sum {N : ℕ}
       ∑ i ∈ Finset.range N,
         ((Nat.card (lowerRamificationGroup G (IsLocalRing.maximalIdeal C) i) : ℝ) -
           Nat.card ↥(H ⊓ lowerRamificationGroup G (IsLocalRing.maximalIdeal C) i)) := by
+  classical
+  let := Fintype.ofFinite G
   classical
   let : Algebra.IsSeparable (FractionRing B) (FractionRing C) :=
     Algebra.isSeparable_tower_top_of_isSeparable (FractionRing A) (FractionRing B) (FractionRing C)
@@ -461,6 +474,8 @@ theorem subextension_different_order_eq_upperRelIndex_integral [FaithfulSMul G C
       (Nat.card I₀ : ℝ) / Nat.card H₀ - 1 +
         ∫ u in (0 : ℝ)..(herbrandFunction (R := C) G N),
           ((Nat.card I₀ : ℝ) / Nat.card H₀ - ((H₀ ⊔ U u).relIndex I₀ : ℝ)) := by
+  classical
+  let := Fintype.ofFinite G
   let F : ℕ → ℝ := fun i =>
     (Nat.card (lowerRamificationGroup G (IsLocalRing.maximalIdeal C) i) : ℝ) -
       Nat.card ↥(H ⊓ lowerRamificationGroup G (IsLocalRing.maximalIdeal C) i)
@@ -490,8 +505,7 @@ theorem subextension_different_order_eq_upperRelIndex_integral [FaithfulSMul G C
   linarith
 
 omit [Module.Finite A B] [FaithfulSMul A B]
-    [Algebra.IsSeparable (FractionRing A) (FractionRing C)] [DecidableEq G]
-    in
+    [Algebra.IsSeparable (FractionRing A) (FractionRing C)] in
 /-- The inertia-order ratio is the actual ramification index of the
 intermediate extension, even when the full ambient extension has a residue
 extension and the intermediate extension is nonnormal. -/
@@ -517,6 +531,8 @@ theorem subextension_different_order_eq_ramificationIdx_integral [FaithfulSMul G
         ∫ u in (0 : ℝ)..(herbrandFunction (R := C) G N),
           (((IsLocalRing.maximalIdeal B).ramificationIdx A : ℝ) -
             ((H₀ ⊔ U u).relIndex I₀ : ℝ)) := by
+  classical
+  let := Fintype.ofFinite G
   simpa only [card_inertia_div_card_subgroup_inertia A B C G H] using
     subextension_different_order_eq_upperRelIndex_integral A B C G H hN
 
@@ -530,6 +546,8 @@ theorem subextension_different_order_eq_upperOrbitIndex_integral [FaithfulSMul G
       (H.index : ℝ) - (H ⊔ I₀).index +
         ∫ u in (0 : ℝ)..(herbrandFunction (R := C) G N),
           ((H.index : ℝ) - (H ⊔ U u).index) := by
+  classical
+  let := Fintype.ofFinite G
   have hN' : (-1 : ℝ) ≤ (N : ℝ) := by linarith [Nat.cast_nonneg (α := ℝ) N]
   have hU : 0 ≤ herbrandFunction (R := C) G N := by
     have h := (strictMonoOn_herbrandFunction (R := C) G).monotoneOn
@@ -567,6 +585,8 @@ theorem subextension_prime_degree_different_profile [FaithfulSMul G C]
       (∀ u : ℝ, 0 ≤ u → (H ⊔ U u).index = if u ≤ b then 1 else H.index) ∧
       ((emultiplicity (IsLocalRing.maximalIdeal B) (differentIdeal A B)).toNat : ℝ) =
         ((H.index : ℝ) - 1) * (b + 1) := by
+  classical
+  let := Fintype.ofFinite G
   have hn := fixingIndex_eq_zeroIndex_mul_inertiaRatio (R := C) G H
   rw [card_inertia_div_card_subgroup_inertia A B C G H, he] at hn
   have hnonzero : (H.index : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hp.ne_zero

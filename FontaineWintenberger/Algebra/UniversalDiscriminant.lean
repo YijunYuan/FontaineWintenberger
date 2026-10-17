@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Yijun Yuan. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Yijun Yuan
+-/
 module
 
 public import FontaineWintenberger.Algebra.PolynomialDiscriminant
@@ -33,7 +38,8 @@ theorem monicDiscriminantPolynomial_eval {R : Type*} [CommRing R]
   let P : MonicDegreeEq R f.natDegree :=
     ⟨f, by simpa only [coeff_natDegree] using hf.leadingCoeff,
       fun i hi => coeff_eq_zero_of_natDegree_lt hi⟩
-  have hmap := congrArg Subtype.val ((MvPolynomial.mapEquivMonic ℤ R f.natDegree).apply_symm_apply P)
+  have hmap := congrArg Subtype.val ((MvPolynomial.mapEquivMonic ℤ R f.natDegree).apply_symm_apply
+      P)
   change (freeMonic ℤ f.natDegree).map
     (MvPolynomial.aeval (fun i : Fin f.natDegree => f.coeff i)).toRingHom = f at hmap
   change (MvPolynomial.aeval (fun i : Fin f.natDegree => f.coeff i))

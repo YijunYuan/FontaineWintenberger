@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Yijun Yuan. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Yijun Yuan
+-/
 module
 
 public import FontaineWintenberger.Ramification.PrimeDegree
@@ -155,7 +160,7 @@ private theorem prod_add_sub_eq_sum_middle (G B : Type*)
 /-- For a prime-order action, the defect of multiplicativity across addition
 is a genuine transfer of an element of the same ring. -/
 theorem exists_prod_add_sub_eq_sum_smul (G B : Type*)
-    [Group G] [Fintype G] [DecidableEq G] [Fact (Nat.card G).Prime]
+    [Group G] [Fintype G] [Fact (Nat.card G).Prime]
     [CommRing B] [MulSemiringAction G B] (α β : B) :
     ∃ z : B, (∏ g : G, g • (α + β)) - (∏ g : G, g • α) - (∏ g : G, g • β) =
       ∑ g : G, g • z := by
@@ -169,7 +174,7 @@ theorem exists_prod_add_sub_eq_sum_smul (G B : Type*)
 /-- The actual transfer representative stays in any stable ideal containing
 one input. This controls the precision of the prime norm defect. -/
 theorem exists_prod_add_sub_eq_sum_smul_mem (G B : Type*)
-    [Group G] [Fintype G] [DecidableEq G] [Fact (Nat.card G).Prime]
+    [Group G] [Fintype G] [Fact (Nat.card G).Prime]
     [CommRing B] [MulSemiringAction G B] (I : Ideal B)
     (hI : ∀ (g : G) (x : B), x ∈ I → g • x ∈ I) (α β : B) (hα : α ∈ I) :
     ∃ z ∈ I, (∏ g : G, g • (α + β)) - (∏ g : G, g • α) - (∏ g : G, g • β) =

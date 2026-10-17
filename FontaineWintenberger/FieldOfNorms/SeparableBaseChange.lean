@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Yijun Yuan. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Yijun Yuan
+-/
 module
 
 public import FontaineWintenberger.Ramification.PolynomialSplitting
@@ -556,7 +561,8 @@ theorem finrank_root_adjunction_eq_commonClosure
     (x : Ω) (hx : aeval x f = 0) :
     Module.finrank L (IntermediateField.adjoin L {x}) =
       Module.finrank K (IntermediateField.adjoin K {x}) := by
-  have he := (rootAdjunctionTensorEquivCommonClosure K L f hf hsep hb htop x hx).toLinearEquiv.finrank_eq
+  have he := (rootAdjunctionTensorEquivCommonClosure K L f hf hsep hb htop x
+      hx).toLinearEquiv.finrank_eq
   simpa only [Module.finrank_tensorProduct, Module.finrank_self, one_mul] using he.symm
 
 /-- The original upper group in the chosen common closure fixes the whole

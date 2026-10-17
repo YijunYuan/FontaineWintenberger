@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Yijun Yuan. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Yijun Yuan
+-/
 module
 
 public import FontaineWintenberger.Ramification.EmbeddingFiniteBase
@@ -85,8 +90,10 @@ theorem apfPsi_originalBase_eq_fixing_herbrand (i : F →ₐ[M] Ω)
     letI : FiniteDimensional K (i.restrictScalars K).fieldRange :=
       Module.Finite.equiv (i.restrictScalars K).equivFieldRange.toLinearEquiv
     apfPsi M F u =
-      herbrandFunction (R := spectralIntegerRing K Ω) (i.restrictScalars K).fieldRange.fixingSubgroup
-        (inverseHerbrandFunction (R := spectralIntegerRing K Ω) (jM).fieldRange.fixingSubgroup u) := by
+      herbrandFunction (R := spectralIntegerRing K Ω) (i.restrictScalars
+          K).fieldRange.fixingSubgroup
+        (inverseHerbrandFunction (R := spectralIntegerRing K Ω) (jM).fieldRange.fixingSubgroup u) :=
+            by
   let := normedAlgebra_unitBall_isDiscreteValuationRing K M
   let := Algebra.isSeparable_tower_top_of_isSeparable K M F
   let : FiniteDimensional K (jM).fieldRange :=

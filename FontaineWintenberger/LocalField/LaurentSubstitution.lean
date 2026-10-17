@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Yijun Yuan. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Yijun Yuan
+-/
 module
 
 public import Mathlib.RingTheory.PowerSeries.Substitution
@@ -127,7 +132,8 @@ theorem iterate_ofPowerSeries_eq_subst_iterate
     (hX : F (HahnSeries.single (1 : ℤ) (1 : k)) = HahnSeries.ofPowerSeries ℤ k g)
     (A : PowerSeries k) (n : ℕ) :
     (F : LaurentSeries k → LaurentSeries k)^[n] (HahnSeries.ofPowerSeries ℤ k A) =
-      HahnSeries.ofPowerSeries ℤ k ((PowerSeries.subst g : PowerSeries k → PowerSeries k)^[n] A) := by
+      HahnSeries.ofPowerSeries ℤ k ((PowerSeries.subst g : PowerSeries k → PowerSeries k)^[n] A) :=
+          by
   induction n with
   | zero => rfl
   | succ n ih =>

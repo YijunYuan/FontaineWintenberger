@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Yijun Yuan. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Yijun Yuan
+-/
 module
 
 public import FontaineWintenberger.Ramification.Real
@@ -17,7 +22,7 @@ defined by its integral of the actual real lower-group cardinalities.
 
 namespace FontaineWintenberger
 
-open scoped ENNReal Classical
+open scoped ENNReal
 open MeasureTheory
 
 variable (G : Type*) {R : Type*} [Group G] [CommRing R] [IsDomain R]
@@ -75,6 +80,7 @@ theorem truncatedRamificationOrder_one (t : ℝ) (ht : -1 ≤ t) :
   rw [truncatedRamificationOrder_of_order_top G (ramificationOrder_one G)]
   exact max_eq_left (by linarith)
 
+open scoped Classical in
 theorem truncatedRamificationOrder_zero (g : G) :
     truncatedRamificationOrder (R := R) G g 0 =
       if g ∈ lowerRamificationGroup G (IsLocalRing.maximalIdeal R) 0 then 1 else 0 := by
@@ -92,6 +98,7 @@ theorem truncatedRamificationOrder_zero (g : G) :
       have hr : (1 : ℝ) ≤ n := by exact_mod_cast hn'
       simp [min_eq_right hr, show (1 : ℕ∞) ≤ n by exact_mod_cast hn']
 
+open scoped Classical in
 /-- Away from the integer breaks, a capped order has derivative its lower-group indicator. -/
 theorem hasDerivAt_truncatedRamificationOrder (g : G) {t : ℝ} (ht : -1 < t)
     (hbreak : ∀ n : ℕ, t + 1 ≠ n) :
@@ -161,6 +168,7 @@ noncomputable def herbrandSum (t : ℝ) : ℝ :=
   (∑ g : G, truncatedRamificationOrder (R := R) G g t) /
     Nat.card (lowerRamificationGroup G (IsLocalRing.maximalIdeal R) 0) - 1
 
+open scoped Classical in
 theorem sum_truncatedRamificationOrder_zero :
     letI := Fintype.ofFinite G
     (∑ g : G, truncatedRamificationOrder (R := R) G g 0) =
@@ -177,8 +185,10 @@ theorem herbrandSum_zero : herbrandSum (R := R) G 0 = 0 := by
 theorem continuous_herbrandSum : Continuous (herbrandSum (R := R) G) := by
   let := Fintype.ofFinite G
   exact ((continuous_finsetSum Finset.univ
-    (fun g _ => continuous_truncatedRamificationOrder (R := R) G g)).div_const _).sub continuous_const
+    (fun g _ => continuous_truncatedRamificationOrder (R := R) G g)).div_const _).sub
+        continuous_const
 
+open scoped Classical in
 /-- The finite sum has the actual lower-cardinality ratio as derivative away from breaks. -/
 theorem hasDerivAt_herbrandSum {t : ℝ} (ht : -1 < t)
     (hbreak : ∀ n : ℕ, t + 1 ≠ n) :

@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Yijun Yuan. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Yijun Yuan
+-/
 module
 
 public import FontaineWintenberger.FieldOfNorms.HighBreakCoordinates
@@ -269,7 +274,8 @@ theorem eventually_normLimitCoordinatePolynomial_discr_stable
     ∀ f : Oₓ[X], f.Monic → (f.map (algebraMap Oₓ (NormLimit K L))).Separable →
       ∀ᶠ n in Filter.atTop,
         (IsDiscreteValuationRing.maximalIdeal (spectralIntegerRing K (F n).val)).valuation
-            (F n).val ((normLimitCoordinatePolynomial K L p hL hInfinite (F n) f).discr : (F n).val) =
+            (F n).val ((normLimitCoordinatePolynomial K L p hL hInfinite (F n) f).discr : (F n).val)
+                =
           normLimitValuation K L hL (f.discr : NormLimit K L) ∧
         ((normLimitCoordinatePolynomial K L p hL hInfinite (F n) f).map
           (algebraMap (spectralIntegerRing K (F n).val) (F n).val)).Separable := by
@@ -300,7 +306,8 @@ theorem exists_cofinal_normLimitCoordinatePolynomial_discr_stable :
       ∀ f : Oₓ[X], f.Monic → (f.map (algebraMap Oₓ (NormLimit K L))).Separable →
         ∀ᶠ n in Filter.atTop,
           (IsDiscreteValuationRing.maximalIdeal (spectralIntegerRing K (F n).val)).valuation
-              (F n).val ((normLimitCoordinatePolynomial K L p hL hInfinite (F n) f).discr : (F n).val) =
+              (F n).val ((normLimitCoordinatePolynomial K L p hL hInfinite (F n) f).discr : (F
+                  n).val) =
             normLimitValuation K L hL (f.discr : NormLimit K L) ∧
           ((normLimitCoordinatePolynomial K L p hL hInfinite (F n) f).map
             (algebraMap (spectralIntegerRing K (F n).val) (F n).val)).Separable := by

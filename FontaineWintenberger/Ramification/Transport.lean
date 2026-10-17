@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Yijun Yuan. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Yijun Yuan
+-/
 module
 
 public import FontaineWintenberger.Ramification.Upper
@@ -122,7 +127,8 @@ theorem intermediate_map_upperRamificationGroup (u : ℝ) (hu : -1 ≤ u) :
   simpa only [fixedFieldDecompositionRestriction, intermediateDecompositionRestriction] using
     fixedField_map_upperRamificationGroup K L H u hu
 
-/-- Ordinary field restriction maps actual spectral upper groups onto actual spectral upper groups. -/
+/-- Ordinary field restriction maps actual spectral upper groups onto actual spectral upper
+groups. -/
 theorem restrictNormalHom_map_upperRamificationGroup (u : ℝ) (hu : -1 ≤ u) :
     (upperRamificationGroup (R := B₀) (L ≃ₐ[K] L) u).map (AlgEquiv.restrictNormalHom F) =
       upperRamificationGroup (R := spectralIntegerRing K F) (F ≃ₐ[K] F) u := by

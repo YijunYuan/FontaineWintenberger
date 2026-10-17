@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Yijun Yuan. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Yijun Yuan
+-/
 module
 
 public import FontaineWintenberger.FieldOfNorms.SeparableEssentialImage
@@ -196,6 +201,9 @@ theorem separableNormUnion_exists_subfield_preimage :
     exact separableNormUnionFiniteImage_le_fieldRange_of_le
       K L Ω p hL hInfinite M (A P) (le_iSup (fun P => (A P).val) P) hzA
 
+set_option synthInstance.maxHeartbeats 80000 in
+-- TODO(F5): remove once `SeparableNormUnion` is a `def` with genuine instances; as an
+-- `abbrev` of `DirectLimit`, instance search tries the generic `DirectLimit` instances first.
 /-- Every actual separable algebraic target is the same canonical union
 of an actual original intermediate field in the prescribed separable
 closure. Both identifications are the actual canonical image maps. -/

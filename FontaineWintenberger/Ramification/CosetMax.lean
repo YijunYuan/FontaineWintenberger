@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Yijun Yuan. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Yijun Yuan
+-/
 module
 
 public import FontaineWintenberger.Ramification.FixedField
@@ -15,7 +20,7 @@ average then gives the source Herbrand value, including maximum zero.
 
 namespace FontaineWintenberger
 
-open scoped ENNReal Classical
+open scoped ENNReal
 
 section GroupAction
 

@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Yijun Yuan. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Yijun Yuan
+-/
 module
 
 public import FontaineWintenberger.FieldOfNorms.DiscriminantStability
@@ -107,7 +112,8 @@ variable (K L : Type*) [Field K] [Field L] [Algebra K L]
 adjunction to the literal original scalar image in a common ambient field. -/
 theorem fieldRange_rootCompositum (x : Ω) :
     ((IntermediateField.adjoin L {x}).val.restrictScalars K).fieldRange =
-      (IntermediateField.adjoin (IsScalarTower.toAlgHom K L Ω).fieldRange {x}).restrictScalars K := by
+      (IntermediateField.adjoin (IsScalarTower.toAlgHom K L Ω).fieldRange {x}).restrictScalars K :=
+          by
   let A := (IsScalarTower.toAlgHom K L Ω).fieldRange
   let M := IntermediateField.adjoin L {x}
   let R := IntermediateField.adjoin A {x}
@@ -256,13 +262,13 @@ variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K]
     [Algebra L Ω] [IsScalarTower K L Ω]
 
 attribute [local instance]
-  instNontriviallyNormedFieldSubtypeMemIntermediateFieldValFiniteDimensional_fontaineWintenberger
-  instNormedAlgebraSubtypeMemIntermediateFieldValFiniteDimensional_fontaineWintenberger
-  instIsUltrametricDistSubtypeMemIntermediateFieldValFiniteDimensional_fontaineWintenberger
-  instCompleteSpaceSubtypeMemIntermediateFieldValFiniteDimensional_fontaineWintenberger
-  instIsDiscreteValuationRingSubtypeMemIntermediateFieldValFiniteDimensionalValuationSubringValuationSubringNNRealValuation_fontaineWintenberger
-  instPerfectFieldResidueFieldSubtypeMemIntermediateFieldValFiniteDimensionalValuationSubringValuationSubringNNRealValuation_fontaineWintenberger
-  instIsSeparableSubtypeMemIntermediateFieldValFiniteDimensional_fontaineWintenberger
+  FiniteLayer.instNontriviallyNormedField
+  FiniteLayer.instNormedAlgebra
+  FiniteLayer.instIsUltrametricDist
+  FiniteLayer.instCompleteSpace
+  FiniteLayer.instIsDiscreteValuationRing
+  FiniteLayer.instPerfectFieldResidueField
+  FiniteLayer.instIsSeparable
 
 omit [PerfectField (IsLocalRing.ResidueField
     (NormedField.valuation (K := K)).valuationSubring)] in
@@ -306,7 +312,8 @@ theorem exists_good_rootFiniteLayer_of_fullUpper
   have hldΩ := linearDisjoint_root_of_fullUpper_abstract E.val L f hf hsep hcut ht x hx
   have hld := linearDisjoint_adjoin_of_injective_algHom K L E xM hxi M.val hldΩ
   have hgen : Algebra.adjoin L {xM} = ⊤ := by
-    exact (IntermediateField.adjoin.powerBasis (Algebra.IsIntegral.isIntegral (R := L) x)).adjoin_gen_eq_top
+    exact (IntermediateField.adjoin.powerBasis (Algebra.IsIntegral.isIntegral (R := L)
+        x)).adjoin_gen_eq_top
   refine ⟨rootFiniteLayer K L E xM hxi,
     finiteLayerPullback_rootFiniteLayer K L E xM hxi hld,
     isGoodFiniteLayer_rootFiniteLayer K L E xM hxi hld hgen,
@@ -335,13 +342,13 @@ variable (hL : IsAPF K L) (hM : IsAPF K M)
     (hInfiniteL : ¬ Module.Finite K L) (hInfiniteM : ¬ Module.Finite K M)
 
 attribute [local instance]
-  instNontriviallyNormedFieldSubtypeMemIntermediateFieldValFiniteDimensional_fontaineWintenberger
-  instNormedAlgebraSubtypeMemIntermediateFieldValFiniteDimensional_fontaineWintenberger
-  instIsUltrametricDistSubtypeMemIntermediateFieldValFiniteDimensional_fontaineWintenberger
-  instCompleteSpaceSubtypeMemIntermediateFieldValFiniteDimensional_fontaineWintenberger
-  instIsDiscreteValuationRingSubtypeMemIntermediateFieldValFiniteDimensionalValuationSubringValuationSubringNNRealValuation_fontaineWintenberger
-  instPerfectFieldResidueFieldSubtypeMemIntermediateFieldValFiniteDimensionalValuationSubringValuationSubringNNRealValuation_fontaineWintenberger
-  instIsSeparableSubtypeMemIntermediateFieldValFiniteDimensional_fontaineWintenberger
+  FiniteLayer.instNontriviallyNormedField
+  FiniteLayer.instNormedAlgebra
+  FiniteLayer.instIsUltrametricDist
+  FiniteLayer.instCompleteSpace
+  FiniteLayer.instIsDiscreteValuationRing
+  FiniteLayer.instPerfectFieldResidueField
+  FiniteLayer.instIsSeparable
 
 omit [Module.Finite L M] in
 /-- A fixing-subgroup inclusion in the actual pullback closure gives the
@@ -565,13 +572,13 @@ variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K]
     [Algebra L Ω] [IsScalarTower K L Ω]
 
 attribute [local instance]
-  instNontriviallyNormedFieldSubtypeMemIntermediateFieldValFiniteDimensional_fontaineWintenberger
-  instNormedAlgebraSubtypeMemIntermediateFieldValFiniteDimensional_fontaineWintenberger
-  instIsUltrametricDistSubtypeMemIntermediateFieldValFiniteDimensional_fontaineWintenberger
-  instCompleteSpaceSubtypeMemIntermediateFieldValFiniteDimensional_fontaineWintenberger
-  instIsDiscreteValuationRingSubtypeMemIntermediateFieldValFiniteDimensionalValuationSubringValuationSubringNNRealValuation_fontaineWintenberger
-  instPerfectFieldResidueFieldSubtypeMemIntermediateFieldValFiniteDimensionalValuationSubringValuationSubringNNRealValuation_fontaineWintenberger
-  instIsSeparableSubtypeMemIntermediateFieldValFiniteDimensional_fontaineWintenberger
+  FiniteLayer.instNontriviallyNormedField
+  FiniteLayer.instNormedAlgebra
+  FiniteLayer.instIsUltrametricDist
+  FiniteLayer.instCompleteSpace
+  FiniteLayer.instIsDiscreteValuationRing
+  FiniteLayer.instPerfectFieldResidueField
+  FiniteLayer.instIsSeparable
 
 /-- The actual good root coordinate has the full original relative upper
 product at the original depth. The root-field fixing inclusion discharges
@@ -657,13 +664,13 @@ variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K]
     (hL : IsAPF K L) (hInfinite : ¬ Module.Finite K L)
 
 attribute [local instance]
-  instNontriviallyNormedFieldSubtypeMemIntermediateFieldValFiniteDimensional_fontaineWintenberger
-  instNormedAlgebraSubtypeMemIntermediateFieldValFiniteDimensional_fontaineWintenberger
-  instIsUltrametricDistSubtypeMemIntermediateFieldValFiniteDimensional_fontaineWintenberger
-  instCompleteSpaceSubtypeMemIntermediateFieldValFiniteDimensional_fontaineWintenberger
-  instIsDiscreteValuationRingSubtypeMemIntermediateFieldValFiniteDimensionalValuationSubringValuationSubringNNRealValuation_fontaineWintenberger
-  instPerfectFieldResidueFieldSubtypeMemIntermediateFieldValFiniteDimensionalValuationSubringValuationSubringNNRealValuation_fontaineWintenberger
-  instIsSeparableSubtypeMemIntermediateFieldValFiniteDimensional_fontaineWintenberger
+  FiniteLayer.instNontriviallyNormedField
+  FiniteLayer.instNormedAlgebra
+  FiniteLayer.instIsUltrametricDist
+  FiniteLayer.instCompleteSpace
+  FiniteLayer.instIsDiscreteValuationRing
+  FiniteLayer.instPerfectFieldResidueField
+  FiniteLayer.instIsSeparable
 
 local notation "Oₓ" => Valuation.valuationSubring
   (normLimitFieldValuation K L p hL hInfinite)
@@ -779,7 +786,8 @@ theorem exists_normLimit_approximate_root_at_precision (r : ℕ) :
     (degree_ne_of_natDegree_ne (Nat.ne_of_gt hpos))
   have hxg : aeval x g = 0 := by
     simpa only [Polynomial.map_map, Polynomial.eval_map_algebraMap,
-      ← IsScalarTower.algebraMap_eq (NormedField.valuation (K := E.val)).valuationSubring E.val Ω] using hx
+      ← IsScalarTower.algebraMap_eq (NormedField.valuation (K := E.val)).valuationSubring E.val Ω]
+          using hx
   let M := IntermediateField.adjoin L {x}
   let : Module.Finite L M := IntermediateField.adjoin.finiteDimensional
     (Algebra.IsIntegral.isIntegral (R := L) x)
@@ -862,10 +870,12 @@ theorem isLocalHom_finiteNormLimitIntegralRingHom :
   obtain ⟨e, he, hv⟩ := exists_finiteNormLimitMap_valuation_scaling K L M hL hM
   constructor
   intro a ha
-  have hu := (Valuation.valuationSubring.integers (normLimitFieldValuation K M p hM hInfiniteM)).isUnit_iff_valuation_eq_one.mp ha
+  have hu := (Valuation.valuationSubring.integers (normLimitFieldValuation K M p hM
+      hInfiniteM)).isUnit_iff_valuation_eq_one.mp ha
   change normLimitValuation K M hM (finiteNormLimitMap K L M a.val) = 1 at hu
   rw [hv] at hu
-  apply (Valuation.valuationSubring.integers (normLimitFieldValuation K L p hL hInfiniteL)).isUnit_iff_valuation_eq_one.mpr
+  apply (Valuation.valuationSubring.integers (normLimitFieldValuation K L p hL
+      hInfiniteL)).isUnit_iff_valuation_eq_one.mpr
   change normLimitValuation K L hL a.val = 1
   apply le_antisymm a.property
   apply (pow_le_pow_iff_left₀ zero_le zero_le he.ne').mp

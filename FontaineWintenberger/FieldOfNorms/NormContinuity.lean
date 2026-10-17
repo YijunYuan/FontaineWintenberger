@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Yijun Yuan. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Yijun Yuan
+-/
 module
 
 public import FontaineWintenberger.FieldOfNorms.WildNorms
@@ -126,7 +131,8 @@ theorem integerNorm_prime_sub_congruence
       Algebra.intNorm (NormedField.valuation (K := E.val)).valuationSubring T (e z) =
         f (integerNorm E F hEF z) := by
     apply Subtype.ext
-    change ((Algebra.intNorm (NormedField.valuation (K := E.val)).valuationSubring T (e z)) : E.val) =
+    change ((Algebra.intNorm (NormedField.valuation (K := E.val)).valuationSubring T (e z)) : E.val)
+        =
       ((integerNorm E F hEF z) : E.val)
     rw [coe_integerNorm]
     exact Algebra.algebraMap_intNorm

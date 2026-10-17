@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Yijun Yuan. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Yijun Yuan
+-/
 module
 
 public import FontaineWintenberger.FieldOfNorms.SeparableFullFaithful
@@ -49,9 +54,11 @@ theorem exists_common_finiteGalois_embeddings
   let : FiniteDimensional F D := inferInstance
   let P := finiteGaloisNormalClosure F D
   have hi (a : A) : i a ∈ P.toIntermediateField :=
-    le_finiteGaloisNormalClosure F D ((show i.fieldRange ≤ D from le_sup_left) (⟨a, rfl⟩ : i a ∈ i.fieldRange))
+    le_finiteGaloisNormalClosure F D ((show i.fieldRange ≤ D from le_sup_left) (⟨a, rfl⟩ : i a ∈
+        i.fieldRange))
   have hj (b : B) : j b ∈ P.toIntermediateField :=
-    le_finiteGaloisNormalClosure F D ((show j.fieldRange ≤ D from le_sup_right) (⟨b, rfl⟩ : j b ∈ j.fieldRange))
+    le_finiteGaloisNormalClosure F D ((show j.fieldRange ≤ D from le_sup_right) (⟨b, rfl⟩ : j b ∈
+        j.fieldRange))
   exact ⟨P, ⟨i.codRestrict P.toIntermediateField.toSubalgebra hi⟩,
     ⟨j.codRestrict P.toIntermediateField.toSubalgebra hj⟩⟩
 

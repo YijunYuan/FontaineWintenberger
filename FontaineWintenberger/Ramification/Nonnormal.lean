@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Yijun Yuan. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Yijun Yuan
+-/
 module
 
 public import FontaineWintenberger.Ramification.TameField
@@ -77,7 +82,8 @@ private theorem norm_compositum_of_linearDisjoint
     rw [← IntermediateField.lift_inj, IntermediateField.lift_sup,
       IntermediateField.lift_restrict, IntermediateField.lift_restrict,
       IntermediateField.lift_top]
-  let : Algebra A C := (IntermediateField.inclusion (show A ≤ C from le_sup_left)).toRingHom.toAlgebra
+  let : Algebra A C := (IntermediateField.inclusion (show A ≤ C from
+      le_sup_left)).toRingHom.toAlgebra
   have hn := hd.norm_algebraMap ht (b x)
   rw [Algebra.norm_eq_of_algEquiv b] at hn
   apply a.injective
@@ -219,7 +225,8 @@ theorem fixedField_wild_norm_baseChange (p : ℕ) [Fact p.Prime]
     (x : IntermediateField.fixedField H) :
     Algebra.norm (IntermediateField.fixedField P)
       (⟨(x : L), (show IntermediateField.fixedField H ≤
-        IntermediateField.fixedField P ⊔ IntermediateField.fixedField H from le_sup_right) x.property⟩ :
+        IntermediateField.fixedField P ⊔ IntermediateField.fixedField H from le_sup_right)
+            x.property⟩ :
           IntermediateField.extendScalars
             (show IntermediateField.fixedField P ≤
               IntermediateField.fixedField P ⊔ IntermediateField.fixedField H from le_sup_left)) =

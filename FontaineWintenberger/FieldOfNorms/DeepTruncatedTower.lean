@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Yijun Yuan. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Yijun Yuan
+-/
 module
 
 public import FontaineWintenberger.APF.CountableStages
@@ -324,6 +329,7 @@ theorem deepFiniteTowerTransition_truncatedAddVal (n m : ℕ) (hnm : n ≤ m)
       (deepFiniteTower_wild_tail K L p hL hInfinite D (𝔈 n) (𝔈 m)
         (deepFiniteTower_monotone K L p hL hInfinite D (Nat.zero_le n))
         (deepFiniteTower_monotone K L p hL hInfinite D hnm)).2.2,
-    min_assoc, min_eq_right (show ((n + 2 : ℕ) : ℕ∞) ≤ (m + 2 : ℕ) by exact_mod_cast (show n + 2 ≤ m + 2 by omega))]
+    min_assoc, min_eq_right (show ((n + 2 : ℕ) : ℕ∞) ≤ (m + 2 : ℕ) by exact_mod_cast (show n + 2 ≤ m
+        + 2 by omega))]
 
 end FontaineWintenberger

@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Yijun Yuan. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Yijun Yuan
+-/
 module
 
 public import FontaineWintenberger.Ramification.AbsoluteGalois
@@ -27,7 +32,8 @@ noncomputable def apfSubgroup (L : IntermediateField K (SeparableClosure K)) (u 
     Subgroup (SeparableClosure K ≃ₐ[K] SeparableClosure K) :=
   L.fixingSubgroup ⊔ absoluteUpperRamificationGroup K u
 
-/-- Arithmetic profiniteness for an arbitrary separable extension inside the fixed separable closure. -/
+/-- Arithmetic profiniteness for an arbitrary separable extension inside the fixed separable
+closure. -/
 def IsAPFSubextension (L : IntermediateField K (SeparableClosure K)) : Prop :=
   ∀ u : ℝ, -1 ≤ u →
     IsOpen (apfSubgroup K L u : Set (SeparableClosure K ≃ₐ[K] SeparableClosure K))
@@ -71,13 +77,15 @@ theorem isAPFSubextension_iff_finiteIndex (L : IntermediateField K (SeparableClo
     IsAPFSubextension K L ↔ ∀ u : ℝ, -1 ≤ u → (apfSubgroup K L u).FiniteIndex := by
   simp only [IsAPFSubextension, isOpen_apfSubgroup_iff_finiteIndex]
 
-theorem IsAPFSubextension.index_pos {L : IntermediateField K (SeparableClosure K)} (hL : IsAPFSubextension K L)
+theorem IsAPFSubextension.index_pos {L : IntermediateField K (SeparableClosure K)} (hL :
+    IsAPFSubextension K L)
     (u : ℝ) (hu : -1 ≤ u) : 0 < (apfSubgroup K L u).index := by
   exact Nat.pos_of_ne_zero (Subgroup.finiteIndex_iff.mp
     ((isAPFSubextension_iff_finiteIndex K L).mp hL u hu))
 
 /-- Every finite separable subextension is APF, without a Galois hypothesis. -/
-theorem isAPFSubextension_of_finite (L : IntermediateField K (SeparableClosure K)) [FiniteDimensional K L] :
+theorem isAPFSubextension_of_finite (L : IntermediateField K (SeparableClosure K))
+    [FiniteDimensional K L] :
     IsAPFSubextension K L := by
   intro u _
   exact Subgroup.isOpen_mono (show L.fixingSubgroup ≤ apfSubgroup K L u from le_sup_left)

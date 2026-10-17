@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Yijun Yuan. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Yijun Yuan
+-/
 module
 
 public import FontaineWintenberger.Ramification.DifferentOrder
@@ -61,7 +66,8 @@ theorem sum_ramificationOrder_eq_sum_lower_card {N : ℕ}
       simp only [hmem, ← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul, mul_one]
       have hfilter : ((Finset.univ.erase (1 : G)).filter
           (fun g => g ∈ lowerRamificationGroup G (maximalIdeal B) n)) =
-          (Finset.univ.filter (fun g => g ∈ lowerRamificationGroup G (maximalIdeal B) n)).erase 1 := by
+          (Finset.univ.filter (fun g => g ∈ lowerRamificationGroup G (maximalIdeal B) n)).erase 1 :=
+              by
         ext g
         simp
       rw [hfilter, Finset.card_erase_of_mem (by simp)]
@@ -117,7 +123,8 @@ theorem spectralIntegerRing_different_order_eq_sum_lower_card :
       (∀ n : ℕ, N ≤ n → lowerRamificationGroup G₀ (IsLocalRing.maximalIdeal OL) n = ⊥) ∧
       emultiplicity (IsLocalRing.maximalIdeal OL) (differentIdeal OK OL) =
         ∑ n ∈ Finset.range N,
-          ((Nat.card (lowerRamificationGroup G₀ (IsLocalRing.maximalIdeal OL) n) - 1 : ℕ) : ℕ∞) := by
+          ((Nat.card (lowerRamificationGroup G₀ (IsLocalRing.maximalIdeal OL) n) - 1 : ℕ) : ℕ∞) :=
+              by
   classical
   obtain ⟨N, hN, hsum⟩ := exists_sum_ramificationOrder_eq_sum_lower_card (B := OL) G₀
   exact ⟨N, hN, (spectralIntegerRing_different_order_eq_sum_ramificationOrder K L).trans hsum⟩

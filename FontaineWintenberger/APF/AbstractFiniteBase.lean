@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Yijun Yuan. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Yijun Yuan
+-/
 module
 
 public import FontaineWintenberger.APF.StrictBaseChange
@@ -26,7 +31,8 @@ variable (K : Type*) [Field K] (M : Type*) [Field M] [Algebra K M]
 local notation "S₀" => AlgHom.fieldRange (IsScalarTower.toAlgHom K M (SeparableClosure K))
 
 local instance : FiniteDimensional K S₀ :=
-  Module.Finite.equiv (IsScalarTower.toAlgHom K M (SeparableClosure K)).equivFieldRange.toLinearEquiv
+  Module.Finite.equiv (IsScalarTower.toAlgHom K M (SeparableClosure
+      K)).equivFieldRange.toLinearEquiv
 
 local instance : Algebra.IsSeparable M (SeparableClosure K) :=
   Algebra.isSeparable_tower_top_of_isSeparable K M (SeparableClosure K)
@@ -111,7 +117,8 @@ variable [IsDiscreteValuationRing (NormedField.valuation (K := M)).valuationSubr
 local notation "S₀" => AlgHom.fieldRange (IsScalarTower.toAlgHom K M (SeparableClosure K))
 
 local instance : FiniteDimensional K S₀ :=
-  Module.Finite.equiv (IsScalarTower.toAlgHom K M (SeparableClosure K)).equivFieldRange.toLinearEquiv
+  Module.Finite.equiv (IsScalarTower.toAlgHom K M (SeparableClosure
+      K)).equivFieldRange.toLinearEquiv
 
 omit [IsUltrametricDist K] [CompleteSpace K]
     [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
@@ -352,7 +359,8 @@ theorem index_mul {u : ℝ} (hu : 0 ≤ u) :
     (image_le_embedding K M i) hu
   rw [apfIndex_eq_embedding K _ (embedding K M i).fieldRange.val,
     IntermediateField.fieldRange_val, ← index_eq_factor K M i hu] at hfac
-  rw [← apfIndex_algEquiv K M (IsScalarTower.toAlgHom K M (SeparableClosure K)).equivFieldRange] at hfac
+  rw [← apfIndex_algEquiv K M
+    (IsScalarTower.toAlgHom K M (SeparableClosure K)).equivFieldRange] at hfac
   exact hfac
 
 open MeasureTheory Filter
@@ -379,7 +387,8 @@ theorem exists_comp_derivative (hN : IsAPF K N) :
     simpa only [Nat.cast_mul, mul_comm] using he'.symm
   simpa only [apfHerbrandSlope, max_eq_left hu.le, max_eq_left hψ, he] using hd
 
-/-- Genuine Herbrand integrals compose over the original normed finite base on all real parameters. -/
+/-- Genuine Herbrand integrals compose over the original normed finite base on all real
+parameters. -/
 theorem psi_comp (hN : IsAPF K N) (u : ℝ) :
     apfPsi M N (apfPsi K M u) = apfPsi K N u := by
   by_cases hu : 0 ≤ u
@@ -478,7 +487,8 @@ variable (M : Type*) [NontriviallyNormedField M] [IsUltrametricDist M]
 variable (N : Type*) [Field N] [Algebra K N] [Algebra M N]
     [IsScalarTower K M N] [Algebra.IsSeparable K N]
 
-/-- APF is invariant under finite change to any abstract scalar field with its original compatible norm. -/
+/-- APF is invariant under finite change to any abstract scalar field with its original compatible
+norm. -/
 theorem isAPF_finiteBase_iff_of_normedAlgebra :
     letI := normedAlgebra_unitBall_isDiscreteValuationRing K M
     letI := Algebra.isSeparable_tower_top_of_isSeparable K M N

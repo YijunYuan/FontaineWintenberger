@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Yijun Yuan. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Yijun Yuan
+-/
 module
 
 public import FontaineWintenberger.FieldOfNorms.FiniteFunctor
@@ -216,7 +221,8 @@ theorem exists_goodFiniteLayer_finiteNormLimitMap_valuation
       hD₀ D hD₀D _
     _ = (IsDiscreteValuationRing.maximalIdeal (spectralIntegerRing K D.val)).valuation
         D.val (finiteLayerPullbackTo K M D (normLimitEval K M C x)) :=
-      congrArg ((IsDiscreteValuationRing.maximalIdeal (spectralIntegerRing K D.val)).valuation D.val)
+      congrArg ((IsDiscreteValuationRing.maximalIdeal (spectralIntegerRing K D.val)).valuation
+          D.val)
         (normLimitEval_finiteNormLimitMap K M N D hD x)
     _ = normLimitCoordinateValuation K M C x ^
         embeddingRamificationIdx K (finiteLayerPullbackTo K M D) :=

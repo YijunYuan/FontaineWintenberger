@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Yijun Yuan. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Yijun Yuan
+-/
 module
 
 public import FontaineWintenberger.FieldOfNorms.SeparableFunctor
@@ -36,7 +41,8 @@ variable (K : Type u) [NontriviallyNormedField K] [IsUltrametricDist K]
     (hL : IsAPF K L) (hInfinite : ¬ Module.Finite K L)
 
 
-/-- An actual original-union algebra isomorphism gives the same canonical categorical isomorphism. -/
+/-- An actual original-union algebra isomorphism gives the same canonical categorical
+isomorphism. -/
 def separableNormUnionObjectIso
     (M : Type (max u v w)) [Field M]
     [Algebra K M] [Algebra L M] [IsScalarTower K L M] [Algebra.IsSeparable L M]

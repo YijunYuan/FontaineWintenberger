@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Yijun Yuan. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Yijun Yuan
+-/
 module
 
 public import FontaineWintenberger.Ramification.FieldEquiv
@@ -31,7 +36,8 @@ theorem spectral_residueDegree_algEquiv {M : Type*} [Field M] [Algebra K M]
         (IsLocalRing.ResidueField (spectralIntegerRing K M)) =
       Module.finrank (IsLocalRing.ResidueField R)
         (IsLocalRing.ResidueField (spectralIntegerRing K L)) :=
-  (IsLocalRing.ResidueField.mapAlgEquiv' (spectralIntegerRingEquiv K e)).toLinearEquiv.finrank_eq.symm
+  (IsLocalRing.ResidueField.mapAlgEquiv' (spectralIntegerRingEquiv K
+      e)).toLinearEquiv.finrank_eq.symm
 
 /-- Any compatible actual extension valuation has the same residue degree
 as the spectral valuation on the same original finite separable field. -/
@@ -44,6 +50,7 @@ theorem extensionValuationSubring_residueDegree_eq_spectral
         (IsLocalRing.ResidueField (spectralIntegerRing K L)) := by
   have := extensionValuationSubring_isDiscreteValuationRing K L w
   exact (IsLocalRing.ResidueField.mapAlgEquiv'
-    (IsIntegralClosure.equiv R (spectralIntegerRing K L) L w.valuationSubring)).toLinearEquiv.finrank_eq.symm
+    (IsIntegralClosure.equiv R (spectralIntegerRing K L) L
+        w.valuationSubring)).toLinearEquiv.finrank_eq.symm
 
 end FontaineWintenberger

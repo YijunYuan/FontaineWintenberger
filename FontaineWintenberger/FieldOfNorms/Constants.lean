@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Yijun Yuan. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Yijun Yuan
+-/
 module
 
 public import FontaineWintenberger.FieldOfNorms.Residue
@@ -135,9 +140,11 @@ theorem sourceResidueDegree_spec (E : FiniteLayer K L) (hE : K₁ ≤ E) :
 
 /-- The actual source-normalized residue root, transported from the
 intrinsic residue field to the actual maximal unramified field. -/
-def sourceResidueRoot (E : FiniteLayer K L) (hE : K₁ ≤ E) : κL ≃+* (IsLocalRing.ResidueField (spectralIntegerRing K (K₀).val)) :=
+def sourceResidueRoot (E : FiniteLayer K L) (hE : K₁ ≤ E) : κL ≃+* (IsLocalRing.ResidueField
+    (spectralIntegerRing K (K₀).val)) :=
   (apfMaximalUnramifiedResidueEquiv K L hL).symm.toRingEquiv.trans
-    (iterateFrobeniusEquiv (IsLocalRing.ResidueField (spectralIntegerRing K (K₀).val)) p (sourceResidueDegree K L p hL E hE)).symm
+    (iterateFrobeniusEquiv (IsLocalRing.ResidueField (spectralIntegerRing K (K₀).val)) p
+        (sourceResidueDegree K L p hL E hE)).symm
 
 /-- Transported back to the intrinsic original residue field, the actual
 source root has precisely the prescribed p-power degree as its exponent. -/

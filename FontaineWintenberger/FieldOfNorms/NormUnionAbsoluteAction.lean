@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Yijun Yuan. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Yijun Yuan
+-/
 module
 
 public import FontaineWintenberger.FieldOfNorms.NormUnionAbsoluteStages
@@ -163,11 +168,13 @@ theorem separableNormUnionAbsoluteMap_mul_apply
 def separableNormUnionAbsoluteAut :
     letI unionField : Field (SeparableNormUnion K L (SeparableClosure K) p hL hInfinite) :=
       separableNormUnionField K L (SeparableClosure K) p hL hInfinite
-    letI unionRing : NonAssocSemiring (SeparableNormUnion K L (SeparableClosure K) p hL hInfinite) :=
+    letI unionRing : NonAssocSemiring (SeparableNormUnion K L (SeparableClosure K) p hL hInfinite)
+        :=
       unionField.toSemifield.toCommSemiring.toSemiring.toNonAssocSemiring
     letI : Mul (SeparableNormUnion K L (SeparableClosure K) p hL hInfinite) := unionRing.toMul
     letI : Add (SeparableNormUnion K L (SeparableClosure K) p hL hInfinite) := unionRing.toAdd
-    letI : Group (RingAut (SeparableNormUnion K L (SeparableClosure K) p hL hInfinite)) := RingAut.instGroup _
+    letI : Group (RingAut (SeparableNormUnion K L (SeparableClosure K) p hL hInfinite)) :=
+        RingAut.instGroup _
     (SeparableClosure K ≃ₐ[K] SeparableClosure K) →*
       (SeparableNormUnion K L (SeparableClosure K) p hL hInfinite ≃+*
         SeparableNormUnion K L (SeparableClosure K) p hL hInfinite) :=
@@ -177,7 +184,8 @@ def separableNormUnionAbsoluteAut :
     unionField.toSemifield.toCommSemiring.toSemiring.toNonAssocSemiring
   letI : Mul (SeparableNormUnion K L (SeparableClosure K) p hL hInfinite) := unionRing.toMul
   letI : Add (SeparableNormUnion K L (SeparableClosure K) p hL hInfinite) := unionRing.toAdd
-  letI : Group (RingAut (SeparableNormUnion K L (SeparableClosure K) p hL hInfinite)) := RingAut.instGroup _
+  letI : Group (RingAut (SeparableNormUnion K L (SeparableClosure K) p hL hInfinite)) :=
+      RingAut.instGroup _
   let f (σ : SeparableClosure K ≃ₐ[K] SeparableClosure K) :
       SeparableNormUnion K L (SeparableClosure K) p hL hInfinite ≃+*
         SeparableNormUnion K L (SeparableClosure K) p hL hInfinite :=

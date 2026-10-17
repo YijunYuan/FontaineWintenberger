@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Yijun Yuan. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Yijun Yuan
+-/
 module
 
 public import FontaineWintenberger.FieldOfNorms.ApproximateRoots
@@ -395,7 +400,8 @@ theorem separableNormUnion_exists_root_of_monic :
     rw [hv]
     exact separableNormUnionOf_transition K L Ω p hL hInfinite N R hNR x
   have hroot := congrArg j ha
-  change j (Polynomial.eval₂ (algebraMap (NormLimit K N.val) (NormLimit K Q.val)) a f) = j 0 at hroot
+  change j (Polynomial.eval₂ (algebraMap (NormLimit K N.val) (NormLimit K Q.val)) a f) =
+    j 0 at hroot
   rw [map_zero, Polynomial.hom_eval₂] at hroot
   change f.eval₂ (j.comp φ) (j a) = 0 at hroot
   rw [hcomm] at hroot

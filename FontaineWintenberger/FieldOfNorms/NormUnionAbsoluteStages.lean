@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Yijun Yuan. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Yijun Yuan
+-/
 module
 
 public import FontaineWintenberger.FieldOfNorms.AbsoluteBaseAction
@@ -122,7 +127,8 @@ variable (p : ℕ) [Fact p.Prime]
       (NormedField.valuation (K := K)).valuationSubring) p]
 variable (hL : IsAPF K L) (hInfinite : ¬ Module.Finite K L)
 
-/-- A field isomorphism between actual finite indices gives their original norm-field isomorphism. -/
+/-- A field isomorphism between actual finite indices gives their original norm-field
+isomorphism. -/
 def normUnionStageEquiv (N P : FiniteLayer L M) (e : N.val ≃ₐ[K] P.val) :
     letI := separableNormUnionStageField K L M p hL hInfinite N
     letI := separableNormUnionStageField K L M p hL hInfinite P
@@ -200,6 +206,9 @@ variable (p : ℕ) [Fact p.Prime]
       (NormedField.valuation (K := K)).valuationSubring) p]
 variable (hL : IsAPF K L) (hInfinite : ¬ Module.Finite K L)
 
+set_option synthInstance.maxHeartbeats 80000 in
+-- TODO(F5): remove once `NormLimit` is a `def` with genuine instances; as an `abbrev` of
+-- `WithZero`, instance search for `Add`/`AddMonoid` tries the generic `WithZero` instances first.
 /-- The actual ambient restriction gives the existing isomorphism of original norm fields. -/
 def normUnionAbsoluteStageMap (σ : SeparableClosure K ≃ₐ[K] SeparableClosure K)
     (N : FiniteLayer L (SeparableClosure K)) :

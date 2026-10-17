@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Yijun Yuan. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Yijun Yuan
+-/
 module
 
 public import FontaineWintenberger.Ramification.Absolute
@@ -75,7 +80,8 @@ variable [IsGalois K Ω]
 variable [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
 
-/-- A finite list of prescribed subextension restrictions is realized inside the actual upper group. -/
+/-- A finite list of prescribed subextension restrictions is realized inside the actual upper
+group. -/
 theorem exists_lift_finite_infinite_upper_restrictions
     (S : Finset (FiniteGaloisIntermediateField K L)) (u : ℝ) (hu : -1 ≤ u)
     (q : L ≃ₐ[K] L) (hq : q ∈ upperRamificationGroupInfinite K L u) :

@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Yijun Yuan. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Yijun Yuan
+-/
 module
 
 public import FontaineWintenberger.Ramification.HerbrandOrder
@@ -14,13 +19,15 @@ faithful action.
 
 namespace FontaineWintenberger
 
-open scoped Classical ENNReal
+open scoped ENNReal
 open MeasureTheory
 
 variable (G : Type*) {R : Type*} [Group G] [CommRing R] [IsDomain R]
     [IsDiscreteValuationRing R] [MulSemiringAction G R]
 
-/-- Each capped order is affine on an integer interval, with the next lower-group indicator slope. -/
+open scoped Classical in
+/-- Each capped order is affine on an integer interval, with the next lower-group indicator
+slope. -/
 theorem truncatedRamificationOrder_affine (g : G) (n : ℕ) {t : ℝ}
     (ht : (n : ℝ) ≤ t) (ht' : t ≤ n + 1) :
     truncatedRamificationOrder (R := R) G g t =
@@ -56,6 +63,7 @@ theorem truncatedRamificationOrder_affine (g : G) (n : ℕ) {t : ℝ}
 
 variable [Finite G]
 
+open scoped Classical in
 /-- Explicit affine formula on every nonnegative integer interval. -/
 theorem herbrandFunction_affine (n : ℕ) {t : ℝ} (ht : (n : ℝ) ≤ t)
     (ht' : t ≤ n + 1) :

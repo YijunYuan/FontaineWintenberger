@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Yijun Yuan. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Yijun Yuan
+-/
 module
 
 public import FontaineWintenberger.FieldOfNorms.Reconstruction
@@ -221,13 +226,15 @@ theorem normLimitFieldValuation_eq_normalized (hL : IsAPF K L)
   let := normLimitField K L p hL hInfinite
   let v := normLimitFieldValuation K L p hL hInfinite
   let R := v.valuationSubring
-  let : IsDiscreteValuationRing R := normLimitFieldValuation_isDiscreteValuationRing K L p hL hInfinite
+  let : IsDiscreteValuationRing R := normLimitFieldValuation_isDiscreteValuationRing K L p hL
+      hInfinite
   let π := normLimitUniformizerInteger K L p hL hInfinite
   have hπ : Irreducible π := normLimitUniformizerInteger_irreducible K L p hL hInfinite
   let w := (IsDiscreteValuationRing.maximalIdeal R).valuation (NormLimit K L)
   have hwπ : w (algebraMap R (NormLimit K L) π) = WithZero.exp (-1 : ℤ) := by
     rw [IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap]
-    exact (IsDiscreteValuationRing.maximalIdeal R).intValuation_singleton hπ.ne_zero hπ.maximalIdeal_eq
+    exact (IsDiscreteValuationRing.maximalIdeal R).intValuation_singleton hπ.ne_zero
+        hπ.maximalIdeal_eq
   have hvπ : v (algebraMap R (NormLimit K L) π) = WithZero.exp (-1 : ℤ) :=
     normLimitValuation_normLimitUniformizer K L p hL hInfinite
   have hval (a : R) : w (algebraMap R (NormLimit K L) a) = v (algebraMap R (NormLimit K L) a) := by

@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Yijun Yuan. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Yijun Yuan
+-/
 module
 
 public import FontaineWintenberger.APF.Finite
@@ -55,7 +60,8 @@ omit [PerfectField (IsLocalRing.ResidueField
 theorem fixingSubgroup_sup_upper_inf_zero {u : ℝ} (hu : 0 ≤ u) :
     (H₀ ⊔ U₀ u) ⊓ U₀ 0 = (H₀ ⊓ U₀ 0) ⊔ U₀ u := by
   have hU : U₀ u ≤ U₀ 0 := upperRamificationGroup_antitoneOn
-    (R := spectralIntegerRing K E) (E ≃ₐ[K] E) (by norm_num : -1 ≤ (0 : ℝ)) (by linarith : -1 ≤ u) hu
+    (R := spectralIntegerRing K E) (E ≃ₐ[K] E) (by norm_num : -1 ≤ (0 : ℝ)) (by linarith : -1 ≤ u)
+        hu
   apply le_antisymm
   · rintro g ⟨hg, hg₀⟩
     obtain ⟨h, hh, n, hn, rfl⟩ := Subgroup.mem_sup_of_normal_right.mp hg

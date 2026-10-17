@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Yijun Yuan. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Yijun Yuan
+-/
 module
 
 public import FontaineWintenberger.APF.BaseClosure
@@ -34,7 +39,8 @@ variable (M : IntermediateField K (SeparableClosure K)) [FiniteDimensional K M]
 theorem exists_finiteGalois_over_base_layer
     (D : FiniteGaloisIntermediateField M (SeparableClosure K)) :
     ∃ E : FiniteGaloisIntermediateField K (SeparableClosure K),
-      M ≤ E.toIntermediateField ∧ D.toIntermediateField.restrictScalars K ≤ E.toIntermediateField := by
+      M ≤ E.toIntermediateField ∧ D.toIntermediateField.restrictScalars K ≤ E.toIntermediateField :=
+          by
   let : FiniteDimensional K D := FiniteDimensional.trans K M D
   let S := D.toIntermediateField.restrictScalars K
   let : FiniteDimensional K S := inferInstanceAs (FiniteDimensional K D)

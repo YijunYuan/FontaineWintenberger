@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Yijun Yuan. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Yijun Yuan
+-/
 module
 
 public import FontaineWintenberger.FieldOfNorms.FiniteFunctorLaws
@@ -92,7 +97,8 @@ theorem coe_normLimitEval_finiteNormLimitEmbeddingRingHom (τ : L →ₐ[K] M)
     (D : FiniteLayer K M) (hD : IsGoodFiniteLayer K τ.fieldRange D) (x : NormLimit K L) :
     letI := normLimitField K L p hL hInfiniteL
     letI := normLimitField K M p hM hInfiniteM
-    (normLimitEval K M D (finiteNormLimitEmbeddingRingHom K p τ hL hM hInfiniteL hInfiniteM x) : M) =
+    (normLimitEval K M D (finiteNormLimitEmbeddingRingHom K p τ hL hM hInfiniteL hInfiniteM x) : M)
+        =
       τ (normLimitEval K L (FiniteLayer.map τ.equivFieldRange.symm.toAlgHom
         (finiteLayerPullbackLayer K τ.fieldRange D)) x : L) := by
   exact coe_normLimitEval_finiteNormLimitEmbeddingMap K τ D hD x
@@ -147,7 +153,8 @@ theorem uniformContinuous_finiteNormLimitEmbeddingMap (τ : L →ₐ[K] M)
   let := normLimitField K τ.fieldRange p hR hInfiniteR
   let := normLimitValued K τ.fieldRange p hR hInfiniteR
   exact (uniformContinuous_finiteNormLimitMap K τ.fieldRange M p hR hM hInfiniteR hInfiniteM).comp
-    (normLimitUniformEquiv K p hL hR hInfiniteL hInfiniteR τ.equivFieldRange).uniformContinuous_toFun
+    (normLimitUniformEquiv K p hL hR hInfiniteL hInfiniteR
+        τ.equivFieldRange).uniformContinuous_toFun
 
 /-- Continuity is for the original valuation topologies on the original fields. -/
 theorem continuous_finiteNormLimitEmbeddingMap (τ : L →ₐ[K] M)

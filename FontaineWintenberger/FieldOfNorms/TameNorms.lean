@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Yijun Yuan. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Yijun Yuan
+-/
 module
 
 public import FontaineWintenberger.FieldOfNorms.WildNorms
@@ -63,7 +68,8 @@ local instance tameNorm_completeSpace (M : IntermediateField K Ω) : CompleteSpa
 local instance tameNorm_discreteValuationRing (M : IntermediateField K Ω) :
     IsDiscreteValuationRing (NormedField.valuation (K := M)).valuationSubring :=
   normedAlgebra_unitBall_isDiscreteValuationRing K M
-local instance tameNorm_perfectField (M : IntermediateField K Ω) : PerfectField (IsLocalRing.ResidueField
+local instance tameNorm_perfectField (M : IntermediateField K Ω) : PerfectField
+    (IsLocalRing.ResidueField
     (NormedField.valuation (K := M)).valuationSubring) :=
   Algebra.IsAlgebraic.perfectField (IsLocalRing.ResidueField
     (NormedField.valuation (K := K)).valuationSubring)

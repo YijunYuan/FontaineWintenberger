@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Yijun Yuan. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Yijun Yuan
+-/
 module
 
 public import FontaineWintenberger.Ramification.TraceIdeal
@@ -35,7 +40,8 @@ theorem ramificationOrder_eq_of_prime_card {g h : G} (hg : g ≠ 1) (hh : h ≠ 
       simpa using mem_lowerRamificationGroup_iff_le_order (R := B) G (n : ℤ) s
     have heq : g ∈ lowerRamificationGroup G (IsLocalRing.maximalIdeal B) (n : ℤ) ↔
         h ∈ lowerRamificationGroup G (IsLocalRing.maximalIdeal B) (n : ℤ) := by
-      rcases (lowerRamificationGroup G (IsLocalRing.maximalIdeal B) (n : ℤ)).eq_bot_or_eq_top_of_prime_card
+      rcases (lowerRamificationGroup G (IsLocalRing.maximalIdeal B) (n :
+          ℤ)).eq_bot_or_eq_top_of_prime_card
         with hb | ht
       · simp [hb, hg, hh]
       · simp [ht]
@@ -212,7 +218,8 @@ theorem apfRamificationBound_eq_common_break [Nontrivial GL] {t : ℕ}
       exact bot_ne_top hg
     exact EReal.coe_le_coe_iff.mpr hut
   · apply le_sSup
-    exact ⟨t, ht0, by rw [upperRamificationGroup_of_common_order GL ht ht0, ite_eq_left le_rfl], rfl⟩
+    exact ⟨t, ht0, by rw [upperRamificationGroup_of_common_order GL ht ht0, ite_eq_left le_rfl],
+        rfl⟩
 
 /-- The actual trace ideal at a common break, with its exact floor exponent. -/
 theorem spectralIntegerRing_intTraceIdeal_of_common_break {t : ℕ}
@@ -221,7 +228,8 @@ theorem spectralIntegerRing_intTraceIdeal_of_common_break {t : ℕ}
     intTraceIdeal OK OL ⊤ = IsLocalRing.maximalIdeal OK ^
       (((Module.finrank K L - 1) * (t + 1)) / Module.finrank K L) := by
   have h := intTraceIdeal_pow OK OL K L 0
-  simpa only [pow_zero, Ideal.one_eq_top, spectralIntegerRing_different_order_of_common_order K L ht,
+  simpa only [pow_zero, Ideal.one_eq_top, spectralIntegerRing_different_order_of_common_order K L
+      ht,
     ENat.toNat_natCast, Nat.add_zero, he] using h
 
 private theorem trace_exponent_mul_le (p t : ℕ) (hp : 0 < p) :

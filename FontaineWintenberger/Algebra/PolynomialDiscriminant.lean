@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Yijun Yuan. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Yijun Yuan
+-/
 module
 
 public import Mathlib.RingTheory.Polynomial.Resultant.Basic
@@ -94,14 +99,16 @@ theorem monic_root_valuation_le_one (f : v.valuationSubring[X]) (hf : f.Monic)
 one of the polynomial and derivative values, over any valued field. -/
 theorem valuation_discr_le_max (f : v.valuationSubring[X]) (hf : f.Monic)
     (hdegree : 0 < f.natDegree) (z : v.valuationSubring) :
-    v (f.discr : C) ≤ max (v ((f.eval z : v.valuationSubring) : C)) (v ((f.derivative.eval z : v.valuationSubring) : C)) := by
+    v (f.discr : C) ≤ max (v ((f.eval z : v.valuationSubring) : C)) (v ((f.derivative.eval z :
+        v.valuationSubring) : C)) := by
   obtain ⟨A, B, h⟩ := exists_mul_add_mul_eq_discr f hf hdegree
   have he : ((A.eval z : v.valuationSubring) : C) * ((f.eval z : v.valuationSubring) : C) +
       ((B.eval z : v.valuationSubring) : C) * ((f.derivative.eval z : v.valuationSubring) : C) =
         (-1 : C) ^ (f.natDegree * (f.natDegree - 1) / 2) * (f.discr : C) := by
     simpa using congrArg
       (fun g : v.valuationSubring[X] => ((g.eval z : v.valuationSubring) : C)) h
-  have hv := v.map_add (((A.eval z : v.valuationSubring) : C) * ((f.eval z : v.valuationSubring) : C))
+  have hv := v.map_add (((A.eval z : v.valuationSubring) : C) * ((f.eval z : v.valuationSubring) :
+      C))
     (((B.eval z : v.valuationSubring) : C) * ((f.derivative.eval z : v.valuationSubring) : C))
   rw [he, map_mul, map_pow, Valuation.map_neg, map_one, one_pow, one_mul] at hv
   refine hv.trans (max_le_max ?_ ?_)

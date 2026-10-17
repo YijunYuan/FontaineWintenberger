@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Yijun Yuan. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Yijun Yuan
+-/
 module
 
 public import FontaineWintenberger.Algebra.FiniteNormPairs
@@ -66,7 +71,8 @@ def finiteNormLimitMap : NormLimit K M →*₀ NormLimit K N where
   map_mul' x y := by
     apply NormLimit.ext_cofinal K N (IsGoodFiniteLayer K M) (goodFiniteLayers_cofinal K M N)
     intro D hD
-    simp only [map_mul, normLimitEval_normLimitOfCofinal K N (IsGoodFiniteLayer K M) (E := D) (hE := hD)]
+    simp only [map_mul, normLimitEval_normLimitOfCofinal K N (IsGoodFiniteLayer K M) (E := D) (hE :=
+        hD)]
 
 /-- Every good target coordinate retains precisely the included original
 pullback coordinate of the input family. -/

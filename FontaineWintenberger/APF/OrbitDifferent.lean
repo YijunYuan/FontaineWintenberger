@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Yijun Yuan. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Yijun Yuan
+-/
 module
 
 public import FontaineWintenberger.APF.FiniteNonnormal
@@ -34,7 +39,8 @@ theorem finite_upperOrbitIndex_eq_zeroIndex_mul_apfIndex {u : ℝ} (hu : 0 ≤ u
       (R := spectralIntegerRing K E) (E ≃ₐ[K] E) H hu
 
 local notation "A" => Valuation.valuationSubring (NormedField.valuation (K := K))
-local notation "B" => Valuation.valuationSubring (Valuation.comap (algebraMap M E) (spectralValuation K E))
+local notation "B" => Valuation.valuationSubring (Valuation.comap (algebraMap M E)
+    (spectralValuation K E))
 
 /-- The actual different determines the intrinsic APF profile of every
 prime-degree totally ramified intermediate field; normality is not required. -/

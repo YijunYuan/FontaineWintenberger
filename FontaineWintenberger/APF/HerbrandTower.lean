@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Yijun Yuan. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Yijun Yuan
+-/
 module
 
 public import FontaineWintenberger.APF.FiniteBaseIndex
@@ -26,7 +31,8 @@ theorem IsAPF.hasDerivAt_apfPsi (hL : IsAPF K L) {u : ℝ}
     HasDerivAt (apfPsi K L) (apfHerbrandSlope K L u) u := by
   apply intervalIntegral.integral_hasDerivAt_right
     (IsAPF.intervalIntegrable_apfHerbrandSlope K L hL 0 u) _ hc
-  exact (IsAPF.monotone_apfHerbrandSlope K L hL).measurable.stronglyMeasurable.stronglyMeasurableAtFilter
+  exact (IsAPF.monotone_apfHerbrandSlope K L
+      hL).measurable.stronglyMeasurable.stronglyMeasurableAtFilter
 
 /-- The actual APF primitive has its source derivative outside a countable set. -/
 theorem IsAPF.exists_apfPsi_derivative_countable (hL : IsAPF K L) :

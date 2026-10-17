@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Yijun Yuan. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Yijun Yuan
+-/
 module
 
 public import FontaineWintenberger.FieldOfNorms.FiniteLayerNormEstimates
@@ -336,14 +341,16 @@ theorem truncatedNorm_comp (G : FiniteLayer K L) (hFG : F ≤ G)
       letI : FiniteDimensional K B' := G.property
       letI : FiniteDimensional F.val B' := Module.Finite.right K F.val B'
       (bFG : EReal) ≤ apfRamificationBound F.val B')
-    (heEG : letI : Algebra E.val G.val := (IntermediateField.inclusion (hEF.trans hFG)).toRingHom.toAlgebra
+    (heEG : letI : Algebra E.val G.val := (IntermediateField.inclusion (hEF.trans
+        hFG)).toRingHom.toAlgebra
       letI : IsScalarTower K E.val G.val := IsScalarTower.of_algebraMap_eq' rfl
       letI := spectralValuation_hasExtension_tower K (E := E.val) (L := G.val)
       (IsLocalRing.maximalIdeal (spectralIntegerRing K G.val)).ramificationIdx
         (spectralIntegerRing K E.val) =
           Module.finrank E.val (IntermediateField.extendScalars (hEF.trans hFG)))
     (hdEG : Module.finrank E.val (IntermediateField.extendScalars (hEF.trans hFG)) = p ^ dEG)
-    (hbEG : letI : Algebra E.val G.val := (IntermediateField.inclusion (hEF.trans hFG)).toRingHom.toAlgebra
+    (hbEG : letI : Algebra E.val G.val := (IntermediateField.inclusion (hEF.trans
+        hFG)).toRingHom.toAlgebra
       letI : IsScalarTower K E.val G.val := IsScalarTower.of_algebraMap_eq' rfl
       letI := spectralNorm.nontriviallyNormedField K E.val
       letI := spectralNorm.normedAlgebra K E.val
@@ -380,7 +387,8 @@ theorem truncatedNorm_self
             (IntermediateField.extendScalars (show E.val ≤ E.val from le_rfl)))
     (hdSelf : Module.finrank E.val
       (IntermediateField.extendScalars (show E.val ≤ E.val from le_rfl)) = p ^ d)
-    (hbSelf : letI : Algebra E.val E.val := (IntermediateField.inclusion (show E.val ≤ E.val from le_rfl)).toRingHom.toAlgebra
+    (hbSelf : letI : Algebra E.val E.val := (IntermediateField.inclusion (show E.val ≤ E.val from
+        le_rfl)).toRingHom.toAlgebra
       letI : IsScalarTower K E.val E.val := IsScalarTower.of_algebraMap_eq' rfl
       letI := spectralNorm.nontriviallyNormedField K E.val
       letI := spectralNorm.normedAlgebra K E.val
@@ -407,7 +415,8 @@ end HighBreak
 /-- Every equal-field norm gives a surjective quotient reduction at arbitrary
 precisions, without any numerical hypothesis on the infinite first bound. -/
 theorem exists_surjective_truncatedNorm_self (E : FiniteLayer K L) (r s : ℕ) (hrs : r ≤ s) :
-    ∃ N : (spectralIntegerRing K E.val ⧸ IsLocalRing.maximalIdeal (spectralIntegerRing K E.val) ^ s) →+*
+    ∃ N : (spectralIntegerRing K E.val ⧸ IsLocalRing.maximalIdeal (spectralIntegerRing K E.val) ^ s)
+        →+*
         spectralIntegerRing K E.val ⧸ IsLocalRing.maximalIdeal (spectralIntegerRing K E.val) ^ r,
       Function.Surjective N ∧ ∀ x : spectralIntegerRing K E.val,
         N (Ideal.Quotient.mk _ x) = Ideal.Quotient.mk _ (integerNorm E E le_rfl x) := by
