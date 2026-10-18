@@ -27,7 +27,7 @@ open scoped ENNReal
 
 section AbstractFiniteBaseEmbedding
 
-variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
+variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
 
 variable (M : Type*) [NontriviallyNormedField M] [IsUltrametricDist M]
     [NormedAlgebra K M] [CompleteSpace M] [FiniteDimensional K M]
@@ -42,7 +42,7 @@ norm; both source and ambient integer rings are identified through their
 proved actual unit balls, and both local indices are genuinely transported. -/
 theorem embeddingNumber_restrictScalars_of_normedAlgebra :
     letI := Algebra.isSeparable_tower_bot_of_isSeparable K M Ω
-    letI := normedAlgebra_isCompleteDiscreteValuedField K M
+    letI := normedAlgebra_isPerfectResidueLocalField K M
     letI := Algebra.isSeparable_tower_top_of_isSeparable K M F
     letI := Algebra.isSeparable_tower_top_of_isSeparable K M Ω
     letI : FiniteDimensional M F := Module.Finite.right K M F
@@ -51,7 +51,7 @@ theorem embeddingNumber_restrictScalars_of_normedAlgebra :
       embeddingRamificationNumber K (σ.restrictScalars K) (τ.restrictScalars K) =
         embeddingRamificationNumber M σ τ := by
   let := Algebra.isSeparable_tower_bot_of_isSeparable K M Ω
-  let := normedAlgebra_isCompleteDiscreteValuedField K M
+  let := normedAlgebra_isPerfectResidueLocalField K M
   let := Algebra.isSeparable_tower_top_of_isSeparable K M F
   let := Algebra.isSeparable_tower_top_of_isSeparable K M Ω
   let : FiniteDimensional M F := Module.Finite.right K M F
@@ -130,9 +130,7 @@ end AmbientExtension
 
 section ArbitraryEmbeddingFirstBound
 
-variable (K Ω : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+variable (K Ω : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
     [Field Ω] [Algebra K Ω] [FiniteDimensional K Ω] [IsGalois K Ω]
 variable {F : Type*} [Field F] [Algebra K F] [FiniteDimensional K F]
     [Algebra.IsSeparable K F]
@@ -160,9 +158,7 @@ end ArbitraryEmbeddingFirstBound
 
 section OriginalRelativePairBound
 
-variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
 variable (M : Type*) [NontriviallyNormedField M] [IsUltrametricDist M]
     [NormedAlgebra K M] [CompleteSpace M] [FiniteDimensional K M]
 variable {F Ω : Type*} [Field F] [Field Ω] [Algebra K F] [Algebra K Ω]
@@ -175,7 +171,7 @@ controls the same pair number over the original old base. Every base norm,
 integer ring, separability and perfect-residue prerequisite is produced. -/
 theorem apfRelativeBound_le_embeddingPairNumber_of_normedAlgebra :
     letI := Algebra.isSeparable_tower_bot_of_isSeparable K M Ω
-    letI := normedAlgebra_isCompleteDiscreteValuedField K M
+    letI := normedAlgebra_isPerfectResidueLocalField K M
     letI := Algebra.isSeparable_tower_top_of_isSeparable K M F
     letI := Algebra.isSeparable_tower_top_of_isSeparable K M Ω
     letI : FiniteDimensional M F := Module.Finite.right K M F
@@ -184,15 +180,12 @@ theorem apfRelativeBound_le_embeddingPairNumber_of_normedAlgebra :
       apfRamificationBound M F ≤
         embeddingRamificationNumber K (σ.restrictScalars K) (τ.restrictScalars K) := by
   let := Algebra.isSeparable_tower_bot_of_isSeparable K M Ω
-  let := normedAlgebra_isCompleteDiscreteValuedField K M
+  let := normedAlgebra_isPerfectResidueLocalField K M
   let := Algebra.isSeparable_tower_top_of_isSeparable K M F
   let := Algebra.isSeparable_tower_top_of_isSeparable K M Ω
   let : FiniteDimensional M F := Module.Finite.right K M F
   let : FiniteDimensional M Ω := Module.Finite.right K M Ω
   let : IsGalois M Ω := IsGalois.tower_top_of_isGalois K M Ω
-  let : PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := M)).valuationSubring) :=
-    normedAlgebra_residueField_perfectField K M
   intro σ τ
   rw [embeddingNumber_restrictScalars_of_normedAlgebra K M σ τ]
   exact apfRamificationBound_le_embeddingPairNumber M Ω σ τ
@@ -206,13 +199,13 @@ theorem apfRelativeBound_le_pairNumber_of_normedAlgebra
     (hst : (s.toAlgHom.comp i).comp (IsScalarTower.toAlgHom K M F) =
       (t.toAlgHom.comp i).comp (IsScalarTower.toAlgHom K M F)) :
     letI := Algebra.isSeparable_tower_bot_of_isSeparable K M F
-    letI := normedAlgebra_isCompleteDiscreteValuedField K M
+    letI := normedAlgebra_isPerfectResidueLocalField K M
     letI := Algebra.isSeparable_tower_top_of_isSeparable K M F
     letI : FiniteDimensional M F := Module.Finite.right K M F
     apfRamificationBound M F ≤
       embeddingRamificationNumber K (s.toAlgHom.comp i) (t.toAlgHom.comp i) := by
   let := Algebra.isSeparable_tower_bot_of_isSeparable K M F
-  let := normedAlgebra_isCompleteDiscreteValuedField K M
+  let := normedAlgebra_isPerfectResidueLocalField K M
   let := Algebra.isSeparable_tower_top_of_isSeparable K M F
   let : FiniteDimensional M F := Module.Finite.right K M F
   let j : M →ₐ[K] Ω := (t.toAlgHom.comp i).comp (IsScalarTower.toAlgHom K M F)
@@ -235,7 +228,7 @@ theorem embeddingNumber_eq_restriction_of_lt_originalBound
       Module.finrank E (IntermediateField.extendScalars hED))
     (s : Ω ≃ₐ[K] Ω) (hs : s.toAlgHom.comp E.val ≠ E.val) :
     letI := Algebra.isSeparable_tower_bot_of_isSeparable K M F
-    letI := normedAlgebra_isCompleteDiscreteValuedField K M
+    letI := normedAlgebra_isPerfectResidueLocalField K M
     letI := Algebra.isSeparable_tower_top_of_isSeparable K M F
     letI : FiniteDimensional M F := Module.Finite.right K M F
     embeddingRamificationNumber K (s.toAlgHom.comp E.val) E.val <
@@ -244,7 +237,7 @@ theorem embeddingNumber_eq_restriction_of_lt_originalBound
         embeddingRamificationNumber K (s.toAlgHom.comp E.val) E.val := by
   classical
   let := Algebra.isSeparable_tower_bot_of_isSeparable K M F
-  let := normedAlgebra_isCompleteDiscreteValuedField K M
+  let := normedAlgebra_isPerfectResidueLocalField K M
   let := Algebra.isSeparable_tower_top_of_isSeparable K M F
   let : FiniteDimensional M F := Module.Finite.right K M F
   intro hsmall

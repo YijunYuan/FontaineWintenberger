@@ -25,128 +25,126 @@ noncomputable section
 
 namespace FontaineWintenberger
 
-variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
     (L M : Type*) [Field L] [Field M]
     [Algebra K L] [Algebra K M] [Algebra L M] [IsScalarTower K L M]
     [Algebra.IsSeparable K L] [Algebra.IsSeparable L M]
-    (p : ℕ) [Fact p.Prime]
-    [CharP (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring) p]
-    [IsAPF K L] [Fact (¬ Module.Finite K L)]
+
+local notation "p" => residueChar K
+
+variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 
 /-- The original union functor preserves the actual endomorphism monoid. -/
 def separableNormUnionEndHom :
-    letI := normLimitField K L p
-    letI := separableNormUnionField K L M p
-    letI := separableNormUnionAlgebra K L M p
-    (M →ₐ[L] M) →* (SeparableNormUnion K L M p →ₐ[NormLimit K L]
-      SeparableNormUnion K L M p) := by
-  letI := normLimitField K L p
-  letI := separableNormUnionField K L M p
-  letI := separableNormUnionAlgebra K L M p
-  refine { toFun := separableNormUnionAlgMap K L M p M
+    letI := normLimitField K L
+    letI := separableNormUnionField K L M
+    letI := separableNormUnionAlgebra K L M
+    (M →ₐ[L] M) →* (SeparableNormUnion K L M →ₐ[NormLimit K L]
+      SeparableNormUnion K L M) := by
+  letI := normLimitField K L
+  letI := separableNormUnionField K L M
+  letI := separableNormUnionAlgebra K L M
+  refine { toFun := separableNormUnionAlgMap K L M M
            map_one' := ?_, map_mul' := ?_ }
   · apply AlgHom.ext
     intro z
-    change separableNormUnionMap K L M p M (AlgHom.id L M) z = z
+    change separableNormUnionMap K L M M (AlgHom.id L M) z = z
     rw [separableNormUnionMap_id]
     rfl
   · intro s t
     apply AlgHom.ext
     intro z
-    change separableNormUnionMap K L M p M (s.comp t) z =
-      separableNormUnionMap K L M p M s
-        (separableNormUnionMap K L M p M t z)
+    change separableNormUnionMap K L M M (s.comp t) z =
+      separableNormUnionMap K L M M s
+        (separableNormUnionMap K L M M t z)
     exact congrArg (fun f => f z)
-      (separableNormUnionMap_comp K L M p M t M s).symm
+      (separableNormUnionMap_comp K L M M t M s).symm
 
 /-- Full faithfulness identifies the original endomorphism monoids. -/
 def separableNormUnionEndEquiv :
-    letI := normLimitField K L p
-    letI := separableNormUnionField K L M p
-    letI := separableNormUnionAlgebra K L M p
-    (M →ₐ[L] M) ≃* (SeparableNormUnion K L M p →ₐ[NormLimit K L]
-      SeparableNormUnion K L M p) := by
-  letI := normLimitField K L p
-  letI := separableNormUnionField K L M p
-  letI := separableNormUnionAlgebra K L M p
-  exact MulEquiv.ofBijective (separableNormUnionEndHom K L M p)
-    (separableNormUnionAlgMap_bijective K L M p M)
+    letI := normLimitField K L
+    letI := separableNormUnionField K L M
+    letI := separableNormUnionAlgebra K L M
+    (M →ₐ[L] M) ≃* (SeparableNormUnion K L M →ₐ[NormLimit K L]
+      SeparableNormUnion K L M) := by
+  letI := normLimitField K L
+  letI := separableNormUnionField K L M
+  letI := separableNormUnionAlgebra K L M
+  exact MulEquiv.ofBijective (separableNormUnionEndHom K L M)
+    (separableNormUnionAlgMap_bijective K L M M)
 
 /-- The canonical automorphism-group correspondence on the same original fields. -/
 def separableNormUnionAutEquiv :
-    letI := normLimitField K L p
-    letI := separableNormUnionField K L M p
-    letI := separableNormUnionAlgebra K L M p
-    (M ≃ₐ[L] M) ≃* (SeparableNormUnion K L M p ≃ₐ[NormLimit K L]
-      SeparableNormUnion K L M p) := by
-  letI := normLimitField K L p
-  letI := separableNormUnionField K L M p
-  letI := separableNormUnionAlgebra K L M p
+    letI := normLimitField K L
+    letI := separableNormUnionField K L M
+    letI := separableNormUnionAlgebra K L M
+    (M ≃ₐ[L] M) ≃* (SeparableNormUnion K L M ≃ₐ[NormLimit K L]
+      SeparableNormUnion K L M) := by
+  letI := normLimitField K L
+  letI := separableNormUnionField K L M
+  letI := separableNormUnionAlgebra K L M
   exact (AlgEquiv.algHomUnitsEquiv L M).symm.trans
-    ((Units.mapEquiv (separableNormUnionEndEquiv K L M p)).trans
+    ((Units.mapEquiv (separableNormUnionEndEquiv K L M)).trans
       (AlgEquiv.algHomUnitsEquiv (NormLimit K L)
-        (SeparableNormUnion K L M p)))
+        (SeparableNormUnion K L M)))
 
 /-- The group correspondence has the actual induced algebra map as its forward map. -/
 @[simp]
 theorem separableNormUnionAutEquiv_toAlgHom (σ : M ≃ₐ[L] M) :
-    letI := normLimitField K L p
-    letI := separableNormUnionField K L M p
-    letI := separableNormUnionAlgebra K L M p
-    (separableNormUnionAutEquiv K L M p σ).toAlgHom =
-      separableNormUnionAlgMap K L M p M σ.toAlgHom := rfl
+    letI := normLimitField K L
+    letI := separableNormUnionField K L M
+    letI := separableNormUnionAlgebra K L M
+    (separableNormUnionAutEquiv K L M σ).toAlgHom =
+      separableNormUnionAlgMap K L M M σ.toAlgHom := rfl
 
 /-- Evaluation is the same original union embedding. -/
 @[simp]
 theorem separableNormUnionAutEquiv_apply (σ : M ≃ₐ[L] M)
-    (z : SeparableNormUnion K L M p) :
-    letI := normLimitField K L p
-    letI := separableNormUnionField K L M p
-    letI := separableNormUnionAlgebra K L M p
-    separableNormUnionAutEquiv K L M p σ z =
-      separableNormUnionMap K L M p M σ.toAlgHom z := rfl
+    (z : SeparableNormUnion K L M) :
+    letI := normLimitField K L
+    letI := separableNormUnionField K L M
+    letI := separableNormUnionAlgebra K L M
+    separableNormUnionAutEquiv K L M σ z =
+      separableNormUnionMap K L M M σ.toAlgHom z := rfl
 
 /-- On every actual finite original stage the automorphism is literal image transport. -/
 theorem separableNormUnionAutEquiv_of (σ : M ≃ₐ[L] M)
     (Q : FiniteLayer L M) (x : NormLimit K Q.val) :
-    letI := normLimitField K L p
-    letI := separableNormUnionField K L M p
-    letI := separableNormUnionAlgebra K L M p
-    separableNormUnionAutEquiv K L M p σ
-        (separableNormUnionOf K L M p Q x) =
-      separableNormUnionOf K L M p (FiniteLayer.map σ.toAlgHom Q)
-        (separableNormUnionStageMap K L M p M σ.toAlgHom Q x) :=
-  separableNormUnionMap_of K L M p M σ.toAlgHom Q x
+    letI := normLimitField K L
+    letI := separableNormUnionField K L M
+    letI := separableNormUnionAlgebra K L M
+    separableNormUnionAutEquiv K L M σ
+        (separableNormUnionOf K L M Q x) =
+      separableNormUnionOf K L M (FiniteLayer.map σ.toAlgHom Q)
+        (separableNormUnionStageMap K L M M σ.toAlgHom Q x) :=
+  separableNormUnionMap_of K L M M σ.toAlgHom Q x
 
 /-- Every original algebra automorphism preserves the compatible rational valuation. -/
 theorem separableNormUnionAutEquiv_valuation (σ : M ≃ₐ[L] M)
-    (z : SeparableNormUnion K L M p) :
-    letI := normLimitField K L p
-    letI := separableNormUnionField K L M p
-    letI := separableNormUnionAlgebra K L M p
-    separableNormUnionValuation K L M p
-        (separableNormUnionAutEquiv K L M p σ z) =
-      separableNormUnionValuation K L M p z :=
-  separableNormUnionMap_valuation K L M p M σ.toAlgHom z
+    (z : SeparableNormUnion K L M) :
+    letI := normLimitField K L
+    letI := separableNormUnionField K L M
+    letI := separableNormUnionAlgebra K L M
+    separableNormUnionValuation K L M
+        (separableNormUnionAutEquiv K L M σ z) =
+      separableNormUnionValuation K L M z :=
+  separableNormUnionMap_valuation K L M M σ.toAlgHom z
 
 /-- Every automorphism of the original target union preserves its rational valuation. -/
 theorem separableNormUnion_algEquiv_valuation :
-    letI := normLimitField K L p
-    letI := separableNormUnionField K L M p
-    letI := separableNormUnionAlgebra K L M p
-    ∀ (σ : SeparableNormUnion K L M p ≃ₐ[NormLimit K L]
-        SeparableNormUnion K L M p)
-      (z : SeparableNormUnion K L M p),
-      separableNormUnionValuation K L M p (σ z) =
-        separableNormUnionValuation K L M p z := by
-  let := normLimitField K L p
-  let := separableNormUnionField K L M p
-  let := separableNormUnionAlgebra K L M p
+    letI := normLimitField K L
+    letI := separableNormUnionField K L M
+    letI := separableNormUnionAlgebra K L M
+    ∀ (σ : SeparableNormUnion K L M ≃ₐ[NormLimit K L]
+        SeparableNormUnion K L M)
+      (z : SeparableNormUnion K L M),
+      separableNormUnionValuation K L M (σ z) =
+        separableNormUnionValuation K L M z := by
+  let := normLimitField K L
+  let := separableNormUnionField K L M
+  let := separableNormUnionAlgebra K L M
   intro σ z
-  obtain ⟨τ, rfl⟩ := (separableNormUnionAutEquiv K L M p).surjective σ
-  exact separableNormUnionAutEquiv_valuation K L M p τ z
+  obtain ⟨τ, rfl⟩ := (separableNormUnionAutEquiv K L M).surjective σ
+  exact separableNormUnionAutEquiv_valuation K L M τ z
 
 end FontaineWintenberger

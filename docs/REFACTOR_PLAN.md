@@ -498,13 +498,20 @@ FontaineWintenberger/
 - 可重放脚本 `scripts/f1a_headers.py`（从干净树一次跑完）；零散问题手工修（`RamificationTransfer` 三处重复 `CompleteSpace` 实例导致 `whnf` 超时；`NormContinuity`/`EmbeddingRestrictionBounds` 的多余 `[CompleteSpace M]`；`AbstractFiniteBase` 的 `PerfectField` 安装点拆回两条）。
 - 全量构建零错误零警告。最慢文件耗时与 F0（关闭 `maxSynthPendingDepth` 后）基本持平：NormUnionAbsoluteAction 2751 s、NormUnionGaloisRestrictionFun 1771 s、NormUnionGaloisAction 772–933 s。
 
-### A2（分支 `refactor`，2026-10-19，进行中）
+### A2（分支 `refactor`，2026-10-19）
 - `IsAPFSubextension`、`IsAPF`、`IsStrictlyAPF` 已是 class（`scripts/a2_core.py`）；实例：`isAPF_of_finite`、`IsAPF.intermediateField`、`IsAPFSubextension ↔ IsAPF` 双向、`separableNormUnionStage_isAPF`、`separableNormUnionStage_fact_infinite`。
 - `hInfinite : ¬ Module.Finite K L` → `[Fact (¬ Module.Finite K L)]`（A3）。
 - 机械替换 `scripts/a2_isapf_class.py`（按文件只删在 HEAD 中确实绑定为 APF/无限假设的名字，区分"作为参数"与"作为函数头"），其余手修：`.1/.2` 投影 → `toIsAPF`/`liminf_pos`；`⟨hL, _⟩` → `⟨_⟩`；`have hX := …` → `haveI/have`；`normLimitAut` 的 `L` 改为显式参数（原先只经 `hL` 隐式确定）。
-- APF 层 43 文件全部通过；FieldOfNorms 层正在收尾。
+- 全量构建零错误零警告（提交 561d049）。
 
-### F5 设计细化（待 A2 提交后执行）
+### F1b（分支 `refactor`，2026-10-19/20）
+- 剩余特征统一为 `residueChar K`。凡在 HEAD 中线程传递 `(p : ℕ) [Fact p.Prime] [CharP 𝓀[K] p]` 的文件（56 个）以及因调用它们而需要的 PerfectField-only 文件（`Addition`、`NormEstimates`、`Normalization`、`NonnormalNormContinuity`、`EmbeddingComparison`、`EmbeddingFiberTate`、`EmbeddingFiniteBase`、`EmbeddingRestrictionBounds`、`FiniteUniformizer`，共 9 个）：K 头改为 `[IsPerfectResidueLocalField K]`，删除 `p` 变量块，在 K 头后声明 `local notation "p" => residueChar K`（term 级用法 `p ^ n`、`(p : E)` 保持原文），调用处删去显式 `p` 实参。64 个文件带该记号；其余仅假设 `PerfectField 𝓀[K]` 的 64 个文件保持不变。
+- 真正以通用素数为参数的声明（`lowerRamificationGroup_one_isPGroup`、`wild_fixedField_ramificationIdx_coprime`、`fixedField_wild_norm_baseChange`、`coprime_relIndex_iff_le_of_normal_pGroup`（改名 `q`）等 34 处）保留 `(p : ℕ) [Fact p.Prime]`，调用方继续显式传 `p`。
+- 基域搬运：`letI := normedAlgebra_isCompleteDiscreteValuedField K E` + `normedAlgebra_residueField_perfectField K E` 的安装点在需要 `IsPerfectResidueLocalField E` 的地方改为单条 `normedAlgebra_isPerfectResidueLocalField K E`；`FiniteLayerNormEstimates` 用 `normedAlgebra_residueChar_eq` 把 `residueChar E.val` 改写回 `p`（`simp only` 而非 `rw`，后者在该处 `whnf` 超时）。`TameNorms` 加局部实例 `tameNorm_residueField_charP : CharP 𝓀(spectralIntegerRing K Ω) p`。
+- 坑：（1）`local notation "p"` 在 `variable (hd : … = p ^ d)` 这类 `variable` 命令里会被展开成 `sorry`（无报错，下游声明静默带 `sorryAx`）——`variable` 中必须写 `residueChar K`；（2）记号不能点号调用，`p.Prime` → `Nat.Prime p`；（3）declaration 头部留下的空行触发 "do not place empty lines within commands"。
+- 脚本 `scripts/f1b_residue_char.py`（从干净树一次跑完 62 个文件）+ 约 40 处手工修正。全量构建见 `.lake/f1b-build.log`。
+
+### F5 设计细化（待 F1b 提交后执行）
 1. **`FieldOfNorms K L`**：`def FieldOfNorms := WithZero (normCompatibleUnits K L)`；`instance : CommGroupWithZero := inferInstanceAs …`（无条件）；`instance : Nontrivial`、`Inhabited`。`coord E : FieldOfNorms K L →*₀ E` 替代 `normLimitEval`。
 2. **加法与域**：`normLimitAdd` 的定义只依赖 `[IsAPF K L]`（`p` 仅被线程传递，`Convergence.lean` 中唯一实质使用是 `p ∈ 𝔪^n` 的发散性，来自 `PrimeValuation`）。目标：
    - `instance [IsAPF K L] : AddCommMonoid (FieldOfNorms K L)`、`CommSemiring`（term-mode，`add := FieldOfNorms.add`）。

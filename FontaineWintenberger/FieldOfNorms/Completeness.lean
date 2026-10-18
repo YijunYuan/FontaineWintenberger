@@ -75,76 +75,73 @@ end Valued
 
 namespace FontaineWintenberger
 
-variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
+
+local notation "p" => residueChar K
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
-variable (p : ℕ) [Fact p.Prime]
-    [CharP (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring) p]
 variable [IsAPF K L] [Fact (¬ Module.Finite K L)] (D : FiniteLayer K L)
 
-local notation "𝔅" => deepFiniteTowerQuotient K L p D
-local notation "𝒜" => deepNormInverseLimit K L p D
+local notation "𝔅" => deepFiniteTowerQuotient K L D
+local notation "𝒜" => deepNormInverseLimit K L D
 
 /-- The inherited topology on the original valuation ring has exactly
 the integer closed-ball basis of the existing stable valuation. -/
 theorem normLimitIntegral_nhds_zero_hasBasis :
-    letI := normLimitField K L p
-    letI := normLimitValued K L p
-    (nhds (0 : Valuation.valuationSubring (normLimitFieldValuation K L p))).HasBasis
+    letI := normLimitField K L
+    letI := normLimitValued K L
+    (nhds (0 : Valuation.valuationSubring (normLimitFieldValuation K L))).HasBasis
       (fun _ : ℕ => True)
       (fun n => {α | normLimitValuation K L α.val ≤
         WithZero.exp (-((n + 2 : ℕ) : ℤ))}) := by
-  let := normLimitField K L p
-  let := normLimitValued K L p
+  let := normLimitField K L
+  let := normLimitValued K L
   have h := Valued.nhds_zero_hasBasis_integer_closedBall (NormLimit K L)
-    (normLimitUniformizer K L p)
-    (normLimitValuation_normLimitUniformizer K L p)
+    (normLimitUniformizer K L)
+    (normLimitValuation_normLimitUniformizer K L)
   rw [nhds_subtype]
   exact h.comap Subtype.val
 
 /-- The actual truncation isomorphism pulls back precisely the original
 valuation-ring neighborhoods, with the canonical discrete-product uniformity. -/
 theorem normLimitTruncationHom_comap_nhds_zero :
-    letI := normLimitField K L p
-    letI := normLimitValued K L p
+    letI := normLimitField K L
+    letI := normLimitValued K L
     letI : ∀ n, UniformSpace (𝔅 n) := fun _ => ⊥
     letI : ∀ n, DiscreteUniformity (𝔅 n) := fun _ => inferInstance
-    Filter.comap (normLimitTruncationHom K L p D) (nhds (0 : 𝒜)) =
-      nhds (0 : Valuation.valuationSubring (normLimitFieldValuation K L p)) := by
-  let := normLimitField K L p
-  let := normLimitValued K L p
+    Filter.comap (normLimitTruncationHom K L D) (nhds (0 : 𝒜)) =
+      nhds (0 : Valuation.valuationSubring (normLimitFieldValuation K L)) := by
+  let := normLimitField K L
+  let := normLimitValued K L
   let : ∀ n, UniformSpace (𝔅 n) := fun _ => ⊥
   let : ∀ n, DiscreteUniformity (𝔅 n) := fun _ => inferInstance
-  let q := fun n => deepFiniteTowerTransition K L p D
+  let q := fun n => deepFiniteTowerTransition K L D
     n (n + 1) (Nat.le_succ n)
-  let f := normLimitTruncationHom K L p D
+  let f := normLimitTruncationHom K L D
   have h := (SequentialInverseLimit.nhds_zero_hasBasis_ker_projection (fun n => 𝔅 n) q).comap f
   have heq (n : ℕ) :
       f ⁻¹' (RingHom.ker (SequentialInverseLimit.projection (fun n => 𝔅 n) q n) : Set 𝒜) =
       {α | normLimitValuation K L α.val ≤ WithZero.exp (-((n + 2 : ℕ) : ℤ))} := by
     ext α
-    exact normLimitTruncation_eq_zero_iff K L p D n α
+    exact normLimitTruncation_eq_zero_iff K L D n α
   simp only [heq] at h
-  exact h.eq_of_same_basis (normLimitIntegral_nhds_zero_hasBasis K L p)
+  exact h.eq_of_same_basis (normLimitIntegral_nhds_zero_hasBasis K L)
 
 /-- The exact original truncation map induces the original valuation-ring
 uniformity from the same canonical discrete-product inverse limit. -/
 theorem normLimitTruncationHom_isUniformInducing :
-    letI := normLimitField K L p
-    letI := normLimitValued K L p
+    letI := normLimitField K L
+    letI := normLimitValued K L
     letI : ∀ n, UniformSpace (𝔅 n) := fun _ => ⊥
     letI : ∀ n, DiscreteUniformity (𝔅 n) := fun _ => inferInstance
-    IsUniformInducing (normLimitTruncationHom K L p D) := by
-  let := normLimitField K L p
-  let := normLimitValued K L p
+    IsUniformInducing (normLimitTruncationHom K L D) := by
+  let := normLimitField K L
+  let := normLimitValued K L
   let : ∀ n, UniformSpace (𝔅 n) := fun _ => ⊥
   let : ∀ n, DiscreteUniformity (𝔅 n) := fun _ => inferInstance
-  let O := Valuation.valuationSubring (normLimitFieldValuation K L p)
+  let O := Valuation.valuationSubring (normLimitFieldValuation K L)
   let : IsUniformAddGroup O := IsUniformAddGroup.comap O.subtype.toAddMonoidHom
   let : IsUniformAddGroup 𝒜 := IsUniformAddGroup.comap (𝒜).subtype.toAddMonoidHom
-  let f := normLimitTruncationHom K L p D
+  let f := normLimitTruncationHom K L D
   rw [isUniformInducing_iff, uniformity_eq_comap_nhds_zero O,
     uniformity_eq_comap_nhds_zero 𝒜, Filter.comap_comap]
   have heq : (fun z : 𝒜 × 𝒜 => z.2 - z.1) ∘ Prod.map f f =
@@ -159,46 +156,46 @@ include D in
 /-- The inherited original valuation ring is complete; its uniformity
 is identified with the actual complete truncated inverse limit. -/
 theorem normLimitIntegral_completeSpace :
-    letI := normLimitField K L p
-    letI := normLimitValued K L p
-    CompleteSpace (Valuation.valuationSubring (normLimitFieldValuation K L p)) := by
-  let := normLimitField K L p
-  let := normLimitValued K L p
+    letI := normLimitField K L
+    letI := normLimitValued K L
+    CompleteSpace (Valuation.valuationSubring (normLimitFieldValuation K L)) := by
+  let := normLimitField K L
+  let := normLimitValued K L
   let : ∀ n, UniformSpace (𝔅 n) := fun _ => ⊥
   let : ∀ n, DiscreteUniformity (𝔅 n) := fun _ => inferInstance
   let : CompleteSpace 𝒜 := SequentialInverseLimit.completeSpace (fun n => 𝔅 n)
-    (fun n => deepFiniteTowerTransition K L p D n (n + 1) (Nat.le_succ n))
-  have h := normLimitTruncationHom_isUniformInducing K L p D
-  exact (h.completeSpace_congr (normLimitTruncationEquiv K L p D).surjective).mpr
+    (fun n => deepFiniteTowerTransition K L D n (n + 1) (Nat.le_succ n))
+  have h := normLimitTruncationHom_isUniformInducing K L D
+  exact (h.completeSpace_congr (normLimitTruncationEquiv K L D).surjective).mpr
     inferInstance
 
 /-- The original norm-limit field is complete for precisely the already
 constructed canonical stable-valuation uniformity. -/
 theorem normLimit_completeSpace :
-    letI := normLimitField K L p
-    letI := normLimitValued K L p
+    letI := normLimitField K L
+    letI := normLimitValued K L
     CompleteSpace (NormLimit K L) := by
-  let := normLimitField K L p
-  let := normLimitValued K L p
-  let := normLimitIntegral_completeSpace K L p (FiniteLayer.bottom (K := K) (L := L))
+  let := normLimitField K L
+  let := normLimitValued K L
+  let := normLimitIntegral_completeSpace K L (FiniteLayer.bottom (K := K) (L := L))
   exact Valued.completeSpace_of_completeSpace_valuationSubring (NormLimit K L)
 
 /-- The same original field has a Hausdorff valuation uniformity. -/
 theorem normLimit_t2Space :
-    letI := normLimitField K L p
-    letI := normLimitValued K L p
+    letI := normLimitField K L
+    letI := normLimitValued K L
     T2Space (NormLimit K L) := by
-  let := normLimitField K L p
-  let := normLimitValued K L p
+  let := normLimitField K L
+  let := normLimitValued K L
   infer_instance
 
 /-- Its original valuation ring carries the inherited Hausdorff topology. -/
 theorem normLimitIntegral_t2Space :
-    letI := normLimitField K L p
-    letI := normLimitValued K L p
-    T2Space (Valuation.valuationSubring (normLimitFieldValuation K L p)) := by
-  let := normLimitField K L p
-  let := normLimitValued K L p
+    letI := normLimitField K L
+    letI := normLimitValued K L
+    T2Space (Valuation.valuationSubring (normLimitFieldValuation K L)) := by
+  let := normLimitField K L
+  let := normLimitValued K L
   infer_instance
 
 end FontaineWintenberger

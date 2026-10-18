@@ -75,18 +75,16 @@ private theorem add_sub_mem_pow_of_norm_commutes
 
 namespace FiniteLayer
 
-variable {K L : Type*} [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+variable {K L : Type*} [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
     [Field L] [Algebra K L] [Algebra.IsSeparable K L]
+
+local notation "p" => residueChar K
 
 /-- The actual original finite-layer norm has the intrinsic relative
 Herbrand modulus on every totally ramified prime-power step, including
 the identity step. No norm on the ambient separable extension is chosen. -/
 theorem integerNorm_sub_congruence_of_totallyRamified
-    (E F : FiniteLayer K L) (hEF : E ≤ F) (p : ℕ) [Fact p.Prime]
-    [CharP (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring) p] :
+    (E F : FiniteLayer K L) (hEF : E ≤ F) :
     letI : Algebra E.val F.val := (IntermediateField.inclusion hEF).toRingHom.toAlgebra
     letI : IsScalarTower K E.val F.val := IsScalarTower.of_algebraMap_eq' rfl
     letI := spectralValuation_hasExtension_tower K (E := E.val) (L := F.val)
@@ -95,7 +93,7 @@ theorem integerNorm_sub_congruence_of_totallyRamified
     letI := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
       (isNonarchimedean_spectralNorm (K := K) (L := E.val))
     letI := spectralNorm.completeSpace K E.val
-    letI := normedAlgebra_isCompleteDiscreteValuedField K E.val
+    letI := normedAlgebra_isPerfectResidueLocalField K E.val
     let F' := IntermediateField.extendScalars hEF
     letI : FiniteDimensional K F' := F.property
     letI : FiniteDimensional E.val F' := Module.Finite.right K E.val F'
@@ -115,8 +113,7 @@ theorem integerNorm_sub_congruence_of_totallyRamified
   let := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
     (isNonarchimedean_spectralNorm (K := K) (L := E.val))
   let := spectralNorm.completeSpace K E.val
-  let := normedAlgebra_isCompleteDiscreteValuedField K E.val
-  let := normedAlgebra_residueField_perfectField K E.val
+  let := normedAlgebra_isPerfectResidueLocalField K E.val
   let F' := IntermediateField.extendScalars hEF
   let : FiniteDimensional K F' := F.property
   let : FiniteDimensional E.val F' := Module.Finite.right K E.val F'
@@ -169,9 +166,7 @@ theorem integerNorm_sub_congruence_of_totallyRamified
 /-- The actual original additive norm defect has the precision given by
 the actual first bound of a nontrivial totally ramified prime-power step. -/
 theorem exists_integerNorm_add_congruence_of_totallyRamified
-    (E F : FiniteLayer K L) (hEF : E ≤ F) (p : ℕ) [Fact p.Prime]
-    [CharP (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring) p] :
+    (E F : FiniteLayer K L) (hEF : E ≤ F) :
     letI : Algebra E.val F.val := (IntermediateField.inclusion hEF).toRingHom.toAlgebra
     letI : IsScalarTower K E.val F.val := IsScalarTower.of_algebraMap_eq' rfl
     letI := spectralValuation_hasExtension_tower K (E := E.val) (L := F.val)
@@ -180,7 +175,7 @@ theorem exists_integerNorm_add_congruence_of_totallyRamified
     letI := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
       (isNonarchimedean_spectralNorm (K := K) (L := E.val))
     letI := spectralNorm.completeSpace K E.val
-    letI := normedAlgebra_isCompleteDiscreteValuedField K E.val
+    letI := normedAlgebra_isPerfectResidueLocalField K E.val
     let F' := IntermediateField.extendScalars hEF
     letI : FiniteDimensional K F' := F.property
     letI : FiniteDimensional E.val F' := Module.Finite.right K E.val F'
@@ -201,8 +196,7 @@ theorem exists_integerNorm_add_congruence_of_totallyRamified
   let := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
     (isNonarchimedean_spectralNorm (K := K) (L := E.val))
   let := spectralNorm.completeSpace K E.val
-  let := normedAlgebra_isCompleteDiscreteValuedField K E.val
-  let := normedAlgebra_residueField_perfectField K E.val
+  let := normedAlgebra_isPerfectResidueLocalField K E.val
   let F' := IntermediateField.extendScalars hEF
   let : FiniteDimensional K F' := F.property
   let : FiniteDimensional E.val F' := Module.Finite.right K E.val F'
@@ -218,10 +212,7 @@ theorem exists_integerNorm_add_congruence_of_totallyRamified
       (isNonarchimedean_spectralNorm (K := K) (L := F'))
   have : Algebra.IsSeparable E.val F' :=
     Algebra.isSeparable_tower_top_of_isSeparable K E.val F'
-  have : CharP (IsLocalRing.ResidueField
-      (NormedField.valuation (K := E.val)).valuationSubring) p :=
-    charP_of_injective_algebraMap'
-      (IsLocalRing.ResidueField (NormedField.valuation (K := K)).valuationSubring) p
+  have hp : residueChar E.val = p := normedAlgebra_residueChar_eq K E.val
   let R := spectralIntegerRing K E.val
   let S := spectralIntegerRing K F.val
   let R' := (NormedField.valuation (K := E.val)).valuationSubring
@@ -241,7 +232,8 @@ theorem exists_integerNorm_add_congruence_of_totallyRamified
       Module.finrank E.val F' := (ramificationIdx_of_equiv_commutes f g hcomm).trans he
   obtain ⟨b, hb, hbound, hadd⟩ :=
     FontaineWintenberger.exists_intNorm_add_congruence_of_totallyRamified
-      E.val F' p he' n hd hdegree
+      E.val F' he' n (by rw [hp]; exact hd) hdegree
+  simp only [hp] at hadd
   refine ⟨b, hb, hbound, fun x y => ?_⟩
   have hnorm (z : S) : Algebra.intNorm R' S' (g z) = f (integerNorm E F hEF z) := by
     apply Subtype.ext
@@ -251,8 +243,6 @@ theorem exists_integerNorm_add_congruence_of_totallyRamified
   exact add_sub_mem_pow_of_norm_commutes f g (integerNorm E F hEF)
     (Algebra.intNorm R' S') hnorm _ x y (hadd (g x) (g y))
 
-omit [PerfectField (IsLocalRing.ResidueField
-  (NormedField.valuation (K := K)).valuationSubring)] in
 /-- A degree-one inclusion is an equality of the actual finite layers,
 so its actual norm has exactly zero additive defect. -/
 theorem integerNorm_add_sub_eq_zero_of_finrank_eq_one
@@ -276,9 +266,7 @@ theorem integerNorm_add_sub_eq_zero_of_finrank_eq_one
 original additive norm defect. The identity step has infinite first bound
 and zero defect, so all finite precisions are covered uniformly. -/
 theorem integerNorm_add_congruence_of_le_apfRamificationBound
-    (E F : FiniteLayer K L) (hEF : E ≤ F) (p : ℕ) [Fact p.Prime]
-    [CharP (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring) p] :
+    (E F : FiniteLayer K L) (hEF : E ≤ F) :
     letI : Algebra E.val F.val := (IntermediateField.inclusion hEF).toRingHom.toAlgebra
     letI : IsScalarTower K E.val F.val := IsScalarTower.of_algebraMap_eq' rfl
     letI := spectralValuation_hasExtension_tower K (E := E.val) (L := F.val)
@@ -287,7 +275,7 @@ theorem integerNorm_add_congruence_of_le_apfRamificationBound
     letI := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
       (isNonarchimedean_spectralNorm (K := K) (L := E.val))
     letI := spectralNorm.completeSpace K E.val
-    letI := normedAlgebra_isCompleteDiscreteValuedField K E.val
+    letI := normedAlgebra_isPerfectResidueLocalField K E.val
     let F' := IntermediateField.extendScalars hEF
     letI : FiniteDimensional K F' := F.property
     letI : FiniteDimensional E.val F' := Module.Finite.right K E.val F'
@@ -307,7 +295,7 @@ theorem integerNorm_add_congruence_of_le_apfRamificationBound
   let := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
     (isNonarchimedean_spectralNorm (K := K) (L := E.val))
   let := spectralNorm.completeSpace K E.val
-  let := normedAlgebra_isCompleteDiscreteValuedField K E.val
+  let := normedAlgebra_isPerfectResidueLocalField K E.val
   let F' := IntermediateField.extendScalars hEF
   let : FiniteDimensional K F' := F.property
   let : FiniteDimensional E.val F' := Module.Finite.right K E.val F'
@@ -315,7 +303,7 @@ theorem integerNorm_add_congruence_of_le_apfRamificationBound
   intro he n hd b hb x y
   by_cases hdegree : 1 < Module.finrank E.val F'
   · obtain ⟨c, _, hc, hadd⟩ :=
-      exists_integerNorm_add_congruence_of_totallyRamified E F hEF p he n hd hdegree
+      exists_integerNorm_add_congruence_of_totallyRamified E F hEF he n hd hdegree
     have hbc : b ≤ c := by exact_mod_cast (hb.trans_eq hc)
     apply Ideal.pow_le_pow_right (Nat.ceil_mono
       (mul_le_mul_of_nonneg_left hbc

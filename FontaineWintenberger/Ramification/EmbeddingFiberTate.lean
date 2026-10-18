@@ -133,9 +133,7 @@ end RestrictionFibers
 
 section FiniteTateFiber
 
-variable (K Ω : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+variable (K Ω : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
     [Field Ω] [Algebra K Ω] [FiniteDimensional K Ω] [IsGalois K Ω]
 
 local notation "G" => Ω ≃ₐ[K] Ω
@@ -216,7 +214,7 @@ end FiniteTateFiber
 
 section IndexSquare
 
-variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
+variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
     {E E' F F' : Type*} [Field E] [Field E'] [Field F] [Field F']
     [Algebra K E] [Algebra K E'] [Algebra K F] [Algebra K F']
     [FiniteDimensional K E] [FiniteDimensional K E']
@@ -354,9 +352,7 @@ end ClosureRestriction
 
 section ClosureTateFiber
 
-variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
     (E F : IntermediateField K (SeparableClosure K))
     [FiniteDimensional K E] [FiniteDimensional K F] (hEF : E ≤ F)
 
@@ -369,8 +365,6 @@ local notation "eE" => IntermediateField.restrictAlgEquiv hEΩ
 local notation "eF" => IntermediateField.restrictAlgEquiv hFΩ
 local notation "h₀" => normalClosureRestriction_le K E F hEF
 
-omit [PerfectField (IsLocalRing.ResidueField
-  (NormedField.valuation (K := K)).valuationSubring)] in
 /-- The original ramification index is preserved by the actual normal
 closure presentation, by two genuine source isomorphisms and the index tower. -/
 theorem embeddingRamificationIdx_normalClosureRestriction :

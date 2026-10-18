@@ -24,103 +24,99 @@ noncomputable section
 
 namespace FontaineWintenberger
 
-variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
+
+local notation "p" => residueChar K
 variable (L : IntermediateField K (SeparableClosure K)) [Normal K L]
-variable (p : ℕ) [Fact p.Prime]
-    [CharP (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring) p]
 variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 
 /-- The compatible original finite-stage transports act on the same canonical union. -/
 def separableNormUnionAbsoluteMap
     (σ : SeparableClosure K ≃ₐ[K] SeparableClosure K) :
-    letI := separableNormUnionField K L (SeparableClosure K) p
-    SeparableNormUnion K L (SeparableClosure K) p →+*
-      SeparableNormUnion K L (SeparableClosure K) p := by
+    letI := separableNormUnionField K L (SeparableClosure K)
+    SeparableNormUnion K L (SeparableClosure K) →+*
+      SeparableNormUnion K L (SeparableClosure K) := by
   letI (N : FiniteLayer L (SeparableClosure K)) : Field (NormLimit K N.val) :=
-    separableNormUnionStageField K L (SeparableClosure K) p N
-  letI := separableNormUnionField K L (SeparableClosure K) p
+    separableNormUnionStageField K L (SeparableClosure K) N
+  letI := separableNormUnionField K L (SeparableClosure K)
   letI (N : FiniteLayer L (SeparableClosure K)) : NonAssocSemiring (NormLimit K N.val) :=
-    (separableNormUnionStageField K L (SeparableClosure K) p N).toNonAssocSemiring
+    (separableNormUnionStageField K L (SeparableClosure K) N).toNonAssocSemiring
   letI : NonAssocSemiring
-      (SeparableNormUnion K L (SeparableClosure K) p) :=
-    (separableNormUnionField K L (SeparableClosure K) p).toNonAssocSemiring
+      (SeparableNormUnion K L (SeparableClosure K)) :=
+    (separableNormUnionField K L (SeparableClosure K)).toNonAssocSemiring
   refine DirectLimit.Ring.lift
     (fun N : FiniteLayer L (SeparableClosure K) => NormLimit K N.val)
-    (separableNormUnionTransition K L (SeparableClosure K) p)
-    (SeparableNormUnion K L (SeparableClosure K) p)
+    (separableNormUnionTransition K L (SeparableClosure K))
+    (SeparableNormUnion K L (SeparableClosure K))
     (fun N =>
-      (separableNormUnionOf K L (SeparableClosure K) p
+      (separableNormUnionOf K L (SeparableClosure K)
         (normUnionAbsoluteLayer K (SeparableClosure K) L σ N)).comp
-        (normUnionAbsoluteStageMap K L p σ N).toRingHom) ?_
+        (normUnionAbsoluteStageMap K L σ N).toRingHom) ?_
   intro N P hNP x
   exact (congrArg
-    (separableNormUnionOf K L (SeparableClosure K) p
+    (separableNormUnionOf K L (SeparableClosure K)
       (normUnionAbsoluteLayer K (SeparableClosure K) L σ P))
-    (normUnionAbsoluteStageMap_transition K L p σ N P hNP x)).trans
-      (separableNormUnionOf_transition K L (SeparableClosure K) p
+    (normUnionAbsoluteStageMap_transition K L σ N P hNP x)).trans
+      (separableNormUnionOf_transition K L (SeparableClosure K)
         (normUnionAbsoluteLayer K (SeparableClosure K) L σ N)
         (normUnionAbsoluteLayer K (SeparableClosure K) L σ P)
         (normUnionAbsoluteLayer_mono K (SeparableClosure K) L σ hNP)
-        (normUnionAbsoluteStageMap K L p σ N x))
+        (normUnionAbsoluteStageMap K L σ N x))
 
 /-- On each original family, the union map is its actual ambient finite-image transport. -/
 @[simp]
 theorem separableNormUnionAbsoluteMap_of
     (σ : SeparableClosure K ≃ₐ[K] SeparableClosure K)
     (N : FiniteLayer L (SeparableClosure K)) (x : NormLimit K N.val) :
-    separableNormUnionAbsoluteMap K L p σ
-        (separableNormUnionOf K L (SeparableClosure K) p N x) =
-      separableNormUnionOf K L (SeparableClosure K) p
+    separableNormUnionAbsoluteMap K L σ
+        (separableNormUnionOf K L (SeparableClosure K) N x) =
+      separableNormUnionOf K L (SeparableClosure K)
         (normUnionAbsoluteLayer K (SeparableClosure K) L σ N)
-        (normUnionAbsoluteStageMap K L p σ N x) := rfl
+        (normUnionAbsoluteStageMap K L σ N x) := rfl
 
 /-- The original identity transport fixes each element of the same union. -/
 @[simp]
 theorem separableNormUnionAbsoluteMap_one_apply
-    (z : SeparableNormUnion K L (SeparableClosure K) p) :
-    separableNormUnionAbsoluteMap K L p 1 z = z := by
+    (z : SeparableNormUnion K L (SeparableClosure K)) :
+    separableNormUnionAbsoluteMap K L 1 z = z := by
   obtain ⟨N, x, rfl⟩ :=
-    separableNormUnion_exists_stage K L (SeparableClosure K) p z
+    separableNormUnion_exists_stage K L (SeparableClosure K) z
   rw [separableNormUnionAbsoluteMap_of, normUnionAbsoluteStageMap_apply]
   calc
-    _ = separableNormUnionOf K L (SeparableClosure K) p N
+    _ = separableNormUnionOf K L (SeparableClosure K) N
         (normLimitMap (AlgEquiv.refl : N.val ≃ₐ[K] N.val) x) :=
-      separableNormUnionOf_transport_congr K L p (SeparableClosure K)
+      separableNormUnionOf_transport_congr K L (SeparableClosure K)
         (D := N.val) (normUnionAbsoluteLayer K (SeparableClosure K) L 1 N) N
         (normUnionAbsoluteLayerEquiv K (SeparableClosure K) L 1 N)
         (AlgEquiv.refl : N.val ≃ₐ[K] N.val)
         (normUnionAbsoluteLayer_one K (SeparableClosure K) L N) (fun _ => rfl) x
     _ = _ := by rw [normLimitMap_refl]
 
-
 /-- On an original family the ambient map is the original norm-family transport. -/
 @[simp]
 theorem separableNormUnionAbsoluteMap_of_normLimitMap
     (σ : SeparableClosure K ≃ₐ[K] SeparableClosure K)
     (N : FiniteLayer L (SeparableClosure K)) (x : NormLimit K N.val) :
-    separableNormUnionAbsoluteMap K L p σ
-        (separableNormUnionOf K L (SeparableClosure K) p N x) =
-      separableNormUnionOf K L (SeparableClosure K) p
+    separableNormUnionAbsoluteMap K L σ
+        (separableNormUnionOf K L (SeparableClosure K) N x) =
+      separableNormUnionOf K L (SeparableClosure K)
         (normUnionAbsoluteLayer K (SeparableClosure K) L σ N)
         (normLimitMap (normUnionAbsoluteLayerEquiv K (SeparableClosure K) L σ N) x) :=
-  (separableNormUnionAbsoluteMap_of K L p σ N x).trans
+  (separableNormUnionAbsoluteMap_of K L σ N x).trans
     (congrArg
-      (separableNormUnionOf K L (SeparableClosure K) p
+      (separableNormUnionOf K L (SeparableClosure K)
         (normUnionAbsoluteLayer K (SeparableClosure K) L σ N))
-      (normUnionAbsoluteStageMap_apply K L p σ N x))
+      (normUnionAbsoluteStageMap_apply K L σ N x))
 
 /-- Ambient multiplication is composition on each original finite-stage family. -/
 theorem separableNormUnionAbsoluteMap_mul_of
     (σ τ : SeparableClosure K ≃ₐ[K] SeparableClosure K)
     (N : FiniteLayer L (SeparableClosure K)) (x : NormLimit K N.val) :
-    separableNormUnionAbsoluteMap K L p (σ * τ)
-        (separableNormUnionOf K L (SeparableClosure K) p N x) =
-      separableNormUnionAbsoluteMap K L p σ
-        (separableNormUnionAbsoluteMap K L p τ
-          (separableNormUnionOf K L (SeparableClosure K) p N x)) := by
+    separableNormUnionAbsoluteMap K L (σ * τ)
+        (separableNormUnionOf K L (SeparableClosure K) N x) =
+      separableNormUnionAbsoluteMap K L σ
+        (separableNormUnionAbsoluteMap K L τ
+          (separableNormUnionOf K L (SeparableClosure K) N x)) := by
   let A := normUnionAbsoluteLayer K (SeparableClosure K) L τ N
   let B := normUnionAbsoluteLayer K (SeparableClosure K) L σ A
   let C := normUnionAbsoluteLayer K (SeparableClosure K) L (σ * τ) N
@@ -131,135 +127,135 @@ theorem separableNormUnionAbsoluteMap_mul_of
   let c : N.val ≃ₐ[K] C.val :=
     normUnionAbsoluteLayerEquiv K (SeparableClosure K) L (σ * τ) N
   let j (D : FiniteLayer L (SeparableClosure K)) :
-      NormLimit K D.val → SeparableNormUnion K L (SeparableClosure K) p :=
-    separableNormUnionOf K L (SeparableClosure K) p D
+      NormLimit K D.val → SeparableNormUnion K L (SeparableClosure K) :=
+    separableNormUnionOf K L (SeparableClosure K) D
   calc
     _ = j C (normLimitMap c x) :=
-      separableNormUnionAbsoluteMap_of_normLimitMap K L p (σ * τ) N x
+      separableNormUnionAbsoluteMap_of_normLimitMap K L (σ * τ) N x
     _ = j B (normLimitMap (a.trans b) x) :=
-      separableNormUnionOf_transport_congr K L p (SeparableClosure K)
+      separableNormUnionOf_transport_congr K L (SeparableClosure K)
         (D := N.val) C B c (a.trans b)
         (normUnionAbsoluteLayer_mul K (SeparableClosure K) L σ τ N) (fun _ => rfl) x
     _ = j B (normLimitMap b (normLimitMap a x)) :=
       congrArg (j B) (normLimitMap_trans a b x).symm
-    _ = separableNormUnionAbsoluteMap K L p σ
+    _ = separableNormUnionAbsoluteMap K L σ
         (j A (normLimitMap a x)) :=
-      (separableNormUnionAbsoluteMap_of_normLimitMap K L p σ A
+      (separableNormUnionAbsoluteMap_of_normLimitMap K L σ A
         (normLimitMap a x)).symm
-    _ = _ := congrArg (separableNormUnionAbsoluteMap K L p σ)
-      (separableNormUnionAbsoluteMap_of_normLimitMap K L p τ N x).symm
+    _ = _ := congrArg (separableNormUnionAbsoluteMap K L σ)
+      (separableNormUnionAbsoluteMap_of_normLimitMap K L τ N x).symm
 
 /-- Original ambient multiplication is composition on every union element. -/
 theorem separableNormUnionAbsoluteMap_mul_apply
     (σ τ : SeparableClosure K ≃ₐ[K] SeparableClosure K)
-    (z : SeparableNormUnion K L (SeparableClosure K) p) :
-    separableNormUnionAbsoluteMap K L p (σ * τ) z =
-      separableNormUnionAbsoluteMap K L p σ
-        (separableNormUnionAbsoluteMap K L p τ z) := by
+    (z : SeparableNormUnion K L (SeparableClosure K)) :
+    separableNormUnionAbsoluteMap K L (σ * τ) z =
+      separableNormUnionAbsoluteMap K L σ
+        (separableNormUnionAbsoluteMap K L τ z) := by
   obtain ⟨N, x, hx⟩ :=
-    separableNormUnion_exists_stage K L (SeparableClosure K) p z
-  exact (congrArg (separableNormUnionAbsoluteMap K L p (σ * τ)) hx.symm).trans
-    ((separableNormUnionAbsoluteMap_mul_of K L p σ τ N x).trans
+    separableNormUnion_exists_stage K L (SeparableClosure K) z
+  exact (congrArg (separableNormUnionAbsoluteMap K L (σ * τ)) hx.symm).trans
+    ((separableNormUnionAbsoluteMap_mul_of K L σ τ N x).trans
       (congrArg
-        (fun y => separableNormUnionAbsoluteMap K L p σ
-          (separableNormUnionAbsoluteMap K L p τ y)) hx))
+        (fun y => separableNormUnionAbsoluteMap K L σ
+          (separableNormUnionAbsoluteMap K L τ y)) hx))
 
 /-- The original ambient transports form an automorphism action on the same union. -/
 def separableNormUnionAbsoluteAut :
-    letI unionField : Field (SeparableNormUnion K L (SeparableClosure K) p) :=
-      separableNormUnionField K L (SeparableClosure K) p
-    letI unionRing : NonAssocSemiring (SeparableNormUnion K L (SeparableClosure K) p)
+    letI unionField : Field (SeparableNormUnion K L (SeparableClosure K)) :=
+      separableNormUnionField K L (SeparableClosure K)
+    letI unionRing : NonAssocSemiring (SeparableNormUnion K L (SeparableClosure K))
         :=
       unionField.toSemifield.toCommSemiring.toSemiring.toNonAssocSemiring
-    letI : Mul (SeparableNormUnion K L (SeparableClosure K) p) := unionRing.toMul
-    letI : Add (SeparableNormUnion K L (SeparableClosure K) p) := unionRing.toAdd
-    letI : Group (RingAut (SeparableNormUnion K L (SeparableClosure K) p)) :=
+    letI : Mul (SeparableNormUnion K L (SeparableClosure K)) := unionRing.toMul
+    letI : Add (SeparableNormUnion K L (SeparableClosure K)) := unionRing.toAdd
+    letI : Group (RingAut (SeparableNormUnion K L (SeparableClosure K))) :=
         RingAut.instGroup _
     (SeparableClosure K ≃ₐ[K] SeparableClosure K) →*
-      (SeparableNormUnion K L (SeparableClosure K) p ≃+*
-        SeparableNormUnion K L (SeparableClosure K) p) :=
-  letI unionField : Field (SeparableNormUnion K L (SeparableClosure K) p) :=
-      separableNormUnionField K L (SeparableClosure K) p
-  letI unionRing : NonAssocSemiring (SeparableNormUnion K L (SeparableClosure K) p) :=
+      (SeparableNormUnion K L (SeparableClosure K) ≃+*
+        SeparableNormUnion K L (SeparableClosure K)) :=
+  letI unionField : Field (SeparableNormUnion K L (SeparableClosure K)) :=
+      separableNormUnionField K L (SeparableClosure K)
+  letI unionRing : NonAssocSemiring (SeparableNormUnion K L (SeparableClosure K)) :=
     unionField.toSemifield.toCommSemiring.toSemiring.toNonAssocSemiring
-  letI : Mul (SeparableNormUnion K L (SeparableClosure K) p) := unionRing.toMul
-  letI : Add (SeparableNormUnion K L (SeparableClosure K) p) := unionRing.toAdd
-  letI : Group (RingAut (SeparableNormUnion K L (SeparableClosure K) p)) :=
+  letI : Mul (SeparableNormUnion K L (SeparableClosure K)) := unionRing.toMul
+  letI : Add (SeparableNormUnion K L (SeparableClosure K)) := unionRing.toAdd
+  letI : Group (RingAut (SeparableNormUnion K L (SeparableClosure K))) :=
       RingAut.instGroup _
   let f (σ : SeparableClosure K ≃ₐ[K] SeparableClosure K) :
-      SeparableNormUnion K L (SeparableClosure K) p ≃+*
-        SeparableNormUnion K L (SeparableClosure K) p :=
+      SeparableNormUnion K L (SeparableClosure K) ≃+*
+        SeparableNormUnion K L (SeparableClosure K) :=
     RingEquiv.ofRingHom
-      (separableNormUnionAbsoluteMap K L p σ)
-      (separableNormUnionAbsoluteMap K L p σ⁻¹)
+      (separableNormUnionAbsoluteMap K L σ)
+      (separableNormUnionAbsoluteMap K L σ⁻¹)
       (RingHom.ext (fun z =>
-        (separableNormUnionAbsoluteMap_mul_apply K L p σ σ⁻¹ z).symm.trans
+        (separableNormUnionAbsoluteMap_mul_apply K L σ σ⁻¹ z).symm.trans
           ((congrArg
-            (fun δ => separableNormUnionAbsoluteMap K L p δ z)
+            (fun δ => separableNormUnionAbsoluteMap K L δ z)
             (mul_inv_cancel σ)).trans
-              (separableNormUnionAbsoluteMap_one_apply K L p z))))
+              (separableNormUnionAbsoluteMap_one_apply K L z))))
       (RingHom.ext (fun z =>
-        (separableNormUnionAbsoluteMap_mul_apply K L p σ⁻¹ σ z).symm.trans
+        (separableNormUnionAbsoluteMap_mul_apply K L σ⁻¹ σ z).symm.trans
           ((congrArg
-            (fun δ => separableNormUnionAbsoluteMap K L p δ z)
+            (fun δ => separableNormUnionAbsoluteMap K L δ z)
             (inv_mul_cancel σ)).trans
-              (separableNormUnionAbsoluteMap_one_apply K L p z))))
+              (separableNormUnionAbsoluteMap_one_apply K L z))))
   { toFun := f
     map_one' := RingEquiv.ext
-      (fun z => separableNormUnionAbsoluteMap_one_apply K L p z)
+      (fun z => separableNormUnionAbsoluteMap_one_apply K L z)
     map_mul' := fun σ τ => RingEquiv.ext
-      (fun z => separableNormUnionAbsoluteMap_mul_apply K L p σ τ z) }
+      (fun z => separableNormUnionAbsoluteMap_mul_apply K L σ τ z) }
 
 /-- Bundling as automorphisms retains the literal original union map. -/
 @[simp]
 theorem separableNormUnionAbsoluteAut_apply
     (σ : SeparableClosure K ≃ₐ[K] SeparableClosure K)
-    (z : SeparableNormUnion K L (SeparableClosure K) p) :
-    separableNormUnionAbsoluteAut K L p σ z =
-      separableNormUnionAbsoluteMap K L p σ z := rfl
+    (z : SeparableNormUnion K L (SeparableClosure K)) :
+    separableNormUnionAbsoluteAut K L σ z =
+      separableNormUnionAbsoluteMap K L σ z := rfl
 
 /-- Each original finite-stage family is transported by the original ambient automorphism. -/
 @[simp]
 theorem separableNormUnionAbsoluteAut_of
     (σ : SeparableClosure K ≃ₐ[K] SeparableClosure K)
     (N : FiniteLayer L (SeparableClosure K)) (x : NormLimit K N.val) :
-    separableNormUnionAbsoluteAut K L p σ
-        (separableNormUnionOf K L (SeparableClosure K) p N x) =
-      separableNormUnionOf K L (SeparableClosure K) p
+    separableNormUnionAbsoluteAut K L σ
+        (separableNormUnionOf K L (SeparableClosure K) N x) =
+      separableNormUnionOf K L (SeparableClosure K)
         (normUnionAbsoluteLayer K (SeparableClosure K) L σ N)
         (normLimitMap (normUnionAbsoluteLayerEquiv K (SeparableClosure K) L σ N) x) :=
-  (separableNormUnionAbsoluteAut_apply K L p σ
-    (separableNormUnionOf K L (SeparableClosure K) p N x)).trans
-      (separableNormUnionAbsoluteMap_of_normLimitMap K L p σ N x)
+  (separableNormUnionAbsoluteAut_apply K L σ
+    (separableNormUnionOf K L (SeparableClosure K) N x)).trans
+      (separableNormUnionAbsoluteMap_of_normLimitMap K L σ N x)
 
 /-- The ambient union action extends the original absolute action on the base norm field. -/
 theorem separableNormUnionAbsoluteAut_base
     (σ : SeparableClosure K ≃ₐ[K] SeparableClosure K) (x : NormLimit K L) :
-    separableNormUnionAbsoluteAut K L p σ
-        (separableNormUnionBaseHom K L (SeparableClosure K) p x) =
-      separableNormUnionBaseHom K L (SeparableClosure K) p
-        (normLimitAbsoluteAut K L p σ x) := by
+    separableNormUnionAbsoluteAut K L σ
+        (separableNormUnionBaseHom K L (SeparableClosure K) x) =
+      separableNormUnionBaseHom K L (SeparableClosure K)
+        (normLimitAbsoluteAut K L σ x) := by
   let N : FiniteLayer L (SeparableClosure K) := FiniteLayer.bottom
   let P := normUnionAbsoluteLayer K (SeparableClosure K) L σ N
   let i : NormLimit K L → NormLimit K N.val :=
-    separableNormUnionBaseToStage K L (SeparableClosure K) p N
+    separableNormUnionBaseToStage K L (SeparableClosure K) N
   let j (D : FiniteLayer L (SeparableClosure K)) :
-      NormLimit K D.val → SeparableNormUnion K L (SeparableClosure K) p :=
-    separableNormUnionOf K L (SeparableClosure K) p D
+      NormLimit K D.val → SeparableNormUnion K L (SeparableClosure K) :=
+    separableNormUnionOf K L (SeparableClosure K) D
   have hx : j N (i x) =
-      separableNormUnionBaseHom K L (SeparableClosure K) p x :=
-    separableNormUnionOf_base K L (SeparableClosure K) p N x
+      separableNormUnionBaseHom K L (SeparableClosure K) x :=
+    separableNormUnionOf_base K L (SeparableClosure K) N x
   calc
-    _ = separableNormUnionAbsoluteAut K L p σ (j N (i x)) :=
-      congrArg (separableNormUnionAbsoluteAut K L p σ) hx.symm
-    _ = j P (normUnionAbsoluteStageMap K L p σ N (i x)) :=
-      (separableNormUnionAbsoluteAut_apply K L p σ (j N (i x))).trans
-        (separableNormUnionAbsoluteMap_of K L p σ N (i x))
-    _ = j P (separableNormUnionBaseToStage K L (SeparableClosure K) p P
-        (normLimitAbsoluteAut K L p σ x)) :=
-      congrArg (j P) (normUnionAbsoluteStageMap_base K L p σ N x)
-    _ = _ := separableNormUnionOf_base K L (SeparableClosure K) p P
-      (normLimitAbsoluteAut K L p σ x)
+    _ = separableNormUnionAbsoluteAut K L σ (j N (i x)) :=
+      congrArg (separableNormUnionAbsoluteAut K L σ) hx.symm
+    _ = j P (normUnionAbsoluteStageMap K L σ N (i x)) :=
+      (separableNormUnionAbsoluteAut_apply K L σ (j N (i x))).trans
+        (separableNormUnionAbsoluteMap_of K L σ N (i x))
+    _ = j P (separableNormUnionBaseToStage K L (SeparableClosure K) P
+        (normLimitAbsoluteAut K L σ x)) :=
+      congrArg (j P) (normUnionAbsoluteStageMap_base K L σ N x)
+    _ = _ := separableNormUnionOf_base K L (SeparableClosure K) P
+      (normLimitAbsoluteAut K L σ x)
 
 /-- The original relative functor map agrees with ambient transport on every finite family. -/
 theorem separableNormUnionAbsoluteAut_restrictScalars_of
@@ -271,11 +267,11 @@ theorem separableNormUnionAbsoluteAut_restrictScalars_of
             (separableClosure K (AlgebraicClosure K)).toField))
       SeparableClosure K ≃ₐ[L] SeparableClosure K)
     (N : FiniteLayer L (SeparableClosure K)) (x : NormLimit K N.val) :
-    separableNormUnionAbsoluteAut K L p (τ.restrictScalars K)
-        (separableNormUnionOf K L (SeparableClosure K) p N x) =
-      separableNormUnionMap K L (SeparableClosure K) p
+    separableNormUnionAbsoluteAut K L (τ.restrictScalars K)
+        (separableNormUnionOf K L (SeparableClosure K) N x) =
+      separableNormUnionMap K L (SeparableClosure K)
         (SeparableClosure K) τ.toAlgHom
-        (separableNormUnionOf K L (SeparableClosure K) p N x) := by
+        (separableNormUnionOf K L (SeparableClosure K) N x) := by
   let P := normUnionAbsoluteLayer K (SeparableClosure K) L (τ.restrictScalars K) N
   let Q := FiniteLayer.map τ.toAlgHom N
   let e : N.val ≃ₐ[K] P.val :=
@@ -283,8 +279,8 @@ theorem separableNormUnionAbsoluteAut_restrictScalars_of
   let f : N.val ≃ₐ[K] Q.val :=
     (FiniteLayer.equivMap τ.toAlgHom N).restrictScalars K
   let j (D : FiniteLayer L (SeparableClosure K)) :
-      NormLimit K D.val → SeparableNormUnion K L (SeparableClosure K) p :=
-    separableNormUnionOf K L (SeparableClosure K) p D
+      NormLimit K D.val → SeparableNormUnion K L (SeparableClosure K) :=
+    separableNormUnionOf K L (SeparableClosure K) D
   have hPQ : P = Q := by
     apply Subtype.ext
     apply SetLike.ext
@@ -293,15 +289,15 @@ theorem separableNormUnionAbsoluteAut_restrictScalars_of
     rfl
   calc
     _ = j P (normLimitMap e x) :=
-      separableNormUnionAbsoluteAut_of K L p (τ.restrictScalars K) N x
+      separableNormUnionAbsoluteAut_of K L (τ.restrictScalars K) N x
     _ = j Q (normLimitMap f x) :=
-      separableNormUnionOf_transport_congr K L p (SeparableClosure K)
+      separableNormUnionOf_transport_congr K L (SeparableClosure K)
         (D := N.val) P Q e f hPQ (fun _ => rfl) x
     _ = _ :=
-      ((separableNormUnionMap_of K L (SeparableClosure K) p
+      ((separableNormUnionMap_of K L (SeparableClosure K)
         (SeparableClosure K) τ.toAlgHom N x).trans
         (congrArg (j Q)
-          (separableNormUnionStageMap_apply K L (SeparableClosure K) p
+          (separableNormUnionStageMap_apply K L (SeparableClosure K)
             (SeparableClosure K) τ.toAlgHom N x))).symm
 
 /-- On the original relative absolute Galois subgroup, ambient transport is the functor map. -/
@@ -313,50 +309,50 @@ theorem separableNormUnionAbsoluteAut_restrictScalars
           (@Field.toSemifield (SeparableClosure K)
             (separableClosure K (AlgebraicClosure K)).toField))
       SeparableClosure K ≃ₐ[L] SeparableClosure K)
-    (z : SeparableNormUnion K L (SeparableClosure K) p) :
-    separableNormUnionAbsoluteAut K L p (τ.restrictScalars K) z =
-      separableNormUnionMap K L (SeparableClosure K) p
+    (z : SeparableNormUnion K L (SeparableClosure K)) :
+    separableNormUnionAbsoluteAut K L (τ.restrictScalars K) z =
+      separableNormUnionMap K L (SeparableClosure K)
         (SeparableClosure K) τ.toAlgHom z := by
   obtain ⟨N, x, hx⟩ :=
-    separableNormUnion_exists_stage K L (SeparableClosure K) p z
+    separableNormUnion_exists_stage K L (SeparableClosure K) z
   exact (congrArg
-    (separableNormUnionAbsoluteAut K L p (τ.restrictScalars K)) hx.symm).trans
-      ((separableNormUnionAbsoluteAut_restrictScalars_of K L p τ N x).trans
+    (separableNormUnionAbsoluteAut K L (τ.restrictScalars K)) hx.symm).trans
+      ((separableNormUnionAbsoluteAut_restrictScalars_of K L τ N x).trans
         (congrArg
-          (separableNormUnionMap K L (SeparableClosure K) p
+          (separableNormUnionMap K L (SeparableClosure K)
             (SeparableClosure K) τ.toAlgHom) hx))
 
 /-- The actual absolute Galois action preserves the original rational union valuation. -/
 theorem separableNormUnionAbsoluteAut_valuation
     (σ : SeparableClosure K ≃ₐ[K] SeparableClosure K)
-    (z : SeparableNormUnion K L (SeparableClosure K) p) :
-    separableNormUnionValuation K L (SeparableClosure K) p
-        (separableNormUnionAbsoluteAut K L p σ z) =
-      separableNormUnionValuation K L (SeparableClosure K) p z := by
+    (z : SeparableNormUnion K L (SeparableClosure K)) :
+    separableNormUnionValuation K L (SeparableClosure K)
+        (separableNormUnionAbsoluteAut K L σ z) =
+      separableNormUnionValuation K L (SeparableClosure K) z := by
   obtain ⟨N, x, hx⟩ :=
-    separableNormUnion_exists_stage K L (SeparableClosure K) p z
+    separableNormUnion_exists_stage K L (SeparableClosure K) z
   let P := normUnionAbsoluteLayer K (SeparableClosure K) L σ N
   let e := normUnionAbsoluteLayerEquiv K (SeparableClosure K) L σ N
-  let v := separableNormUnionValuation K L (SeparableClosure K) p
+  let v := separableNormUnionValuation K L (SeparableClosure K)
   have hstage :
-      v (separableNormUnionAbsoluteAut K L p σ
-        (separableNormUnionOf K L (SeparableClosure K) p N x)) =
-      v (separableNormUnionOf K L (SeparableClosure K) p N x) := by
+      v (separableNormUnionAbsoluteAut K L σ
+        (separableNormUnionOf K L (SeparableClosure K) N x)) =
+      v (separableNormUnionOf K L (SeparableClosure K) N x) := by
     calc
-      _ = v (separableNormUnionOf K L (SeparableClosure K) p P
+      _ = v (separableNormUnionOf K L (SeparableClosure K) P
           (normLimitMap e x)) :=
-        congrArg v (separableNormUnionAbsoluteAut_of K L p σ N x)
-      _ = separableNormUnionStageValuation K L (SeparableClosure K) p P
+        congrArg v (separableNormUnionAbsoluteAut_of K L σ N x)
+      _ = separableNormUnionStageValuation K L (SeparableClosure K) P
           (normLimitMap e x) :=
-        separableNormUnionValuation_of K L (SeparableClosure K) p P
+        separableNormUnionValuation_of K L (SeparableClosure K) P
           (normLimitMap e x)
-      _ = separableNormUnionStageValuation K L (SeparableClosure K) p N x :=
-        normUnionStageEquiv_valuation K L (SeparableClosure K) p N P
+      _ = separableNormUnionStageValuation K L (SeparableClosure K) N x :=
+        normUnionStageEquiv_valuation K L (SeparableClosure K) N P
           (AlgEquiv.restrictNormalHom L σ) e
           (fun a => Subtype.ext (AlgEquiv.restrictNormalHom_apply L σ a).symm) x
       _ = _ :=
-        (separableNormUnionValuation_of K L (SeparableClosure K) p N x).symm
-  exact (congrArg (fun y => v (separableNormUnionAbsoluteAut K L p σ y))
+        (separableNormUnionValuation_of K L (SeparableClosure K) N x).symm
+  exact (congrArg (fun y => v (separableNormUnionAbsoluteAut K L σ y))
     hx.symm).trans (hstage.trans (congrArg v hx))
 
 end FontaineWintenberger

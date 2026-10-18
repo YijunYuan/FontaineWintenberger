@@ -87,9 +87,7 @@ private theorem spectralIntegerInclusion_sub_mem_pow_of_normedTower
 
 section ActualCompositum
 
-variable (K Ω : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+variable (K Ω : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
     [NontriviallyNormedField Ω] [NormedAlgebra K Ω] [IsUltrametricDist Ω]
     [FiniteDimensional K Ω] [IsGalois K Ω]
 
@@ -110,8 +108,6 @@ local instance (E : IntermediateField K Ω) : PerfectField (IsLocalRing.ResidueF
     (NormedField.valuation (K := E)).valuationSubring) :=
   normedAlgebra_residueField_perfectField K E
 
-omit [PerfectField (IsLocalRing.ResidueField
-  (NormedField.valuation (K := K)).valuationSubring)] in
 /-- Actual finite-layer integer inclusions multiply integral precision by
 the ramification index of the same extension on its own integer rings. -/
 theorem spectralIntegerInclusion_sub_mem_pow_ramificationIdx
@@ -210,9 +206,7 @@ end ActualCompositum
 
 section OriginalExtension
 
-variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
 
 local notation "R" => Valuation.valuationSubring (NormedField.valuation (K := K))
 
@@ -252,7 +246,6 @@ variable (L : Type*) [Field L] [Algebra K L] [FiniteDimensional K L]
 
 local notation "S" => spectralIntegerRing K L
 
-omit [PerfectField (IsLocalRing.ResidueField R)] in
 private theorem intNorm_sub_congruence_of_algEquiv
     (M : Type*) [Field M] [Algebra K M] [FiniteDimensional K M]
     [Algebra.IsSeparable K M] (e : L ≃ₐ[K] M) (r : ℕ)

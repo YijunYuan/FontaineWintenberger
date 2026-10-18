@@ -40,9 +40,7 @@ end OriginalFieldImages
 
 section OriginalFiniteBase
 
-variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
 variable (M : Type*) [NontriviallyNormedField M] [IsUltrametricDist M]
     [NormedAlgebra K M] [FiniteDimensional K M]
     [Algebra.IsSeparable K M]
@@ -65,9 +63,7 @@ end OriginalFiniteBase
 
 section OriginalAmbientBase
 
-variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
 variable (M : Type*) [NontriviallyNormedField M] [IsUltrametricDist M]
     [NormedAlgebra K M] [FiniteDimensional K M]
     [Algebra.IsSeparable K M]
@@ -174,9 +170,7 @@ end OriginalClosureLift
 
 section OriginalClosureBound
 
-variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
     (E F : IntermediateField K (SeparableClosure K))
     [FiniteDimensional K E] [FiniteDimensional K F] (hEF : E ≤ F)
 

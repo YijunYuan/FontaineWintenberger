@@ -30,25 +30,23 @@ open scoped ENNReal
 
 section OriginalAction
 
-variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
+
+local notation "p" => residueChar K
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
-variable (p : ℕ) [Fact p.Prime] [CharP (IsLocalRing.ResidueField
-  (NormedField.valuation (K := K)).valuationSubring) p]
 
 /-- The original norm-field automorphism restricts to its actual original
 valuation ring, using its proved preservation of the same stable valuation. -/
 def normLimitIntegerAut [IsAPF K L] [Fact (¬ Module.Finite K L)]
     (σ : L ≃ₐ[K] L) :
-    letI := normLimitField K L p
-    (normLimitFieldValuation K L p).valuationSubring ≃+*
-      (normLimitFieldValuation K L p).valuationSubring := by
-  letI := normLimitField K L p
-  let g := normLimitAut K L p σ
+    letI := normLimitField K L
+    (normLimitFieldValuation K L).valuationSubring ≃+*
+      (normLimitFieldValuation K L).valuationSubring := by
+  letI := normLimitField K L
+  let g := normLimitAut K L σ
   have hv (x : NormLimit K L) :
       normLimitValuation K L (g x) = normLimitValuation K L x :=
-    normLimitAut_valuation K p σ x
+    normLimitAut_valuation K σ x
   have hvi (x : NormLimit K L) :
       normLimitValuation K L (g.symm x) = normLimitValuation K L x := by
     have h := hv (g.symm x)
@@ -67,10 +65,10 @@ def normLimitIntegerAut [IsAPF K L] [Fact (¬ Module.Finite K L)]
 @[simp]
 theorem coe_normLimitIntegerAut [IsAPF K L] [Fact (¬ Module.Finite K L)]
     (σ : L ≃ₐ[K] L) :
-    letI := normLimitField K L p
-    ∀ x : (normLimitFieldValuation K L p).valuationSubring,
-      (normLimitIntegerAut K L p σ x : NormLimit K L) =
-        normLimitAut K L p σ x := by
+    letI := normLimitField K L
+    ∀ x : (normLimitFieldValuation K L).valuationSubring,
+      (normLimitIntegerAut K L σ x : NormLimit K L) =
+        normLimitAut K L σ x := by
   intro x
   rfl
 
@@ -78,22 +76,22 @@ theorem coe_normLimitIntegerAut [IsAPF K L] [Fact (¬ Module.Finite K L)]
 with infinity retained in the standard extended reals. -/
 def normLimitRamificationNumber [IsAPF K L] [Fact (¬ Module.Finite K L)]
     (σ : L ≃ₐ[K] L) : EReal := by
-  letI := normLimitField K L p
-  letI := normLimitFieldValuation_isDiscreteValuationRing K L p
-  let O := (normLimitFieldValuation K L p).valuationSubring
+  letI := normLimitField K L
+  letI := normLimitFieldValuation_isDiscreteValuationRing K L
+  let O := (normLimitFieldValuation K L).valuationSubring
   exact ((ramificationOrder (R := O) (O ≃+* O)
-    (normLimitIntegerAut K L p σ) : ℝ≥0∞) : EReal) - 1
+    (normLimitIntegerAut K L σ) : ℝ≥0∞) : EReal) - 1
 
 /-- Restricting the actual original action agrees with the general
 valuation-preserving restriction on the same original valuation ring. -/
 theorem normLimitIntegerAut_eq_valuationIntegerAut [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (σ : L ≃ₐ[K] L) :
-    letI := normLimitField K L p
-    normLimitIntegerAut K L p σ =
-      valuationIntegerAut (normLimitFieldValuation K L p)
-        (normLimitAut K L p σ)
-        (normLimitAut_valuation K p σ) := by
-  let := normLimitField K L p
+    letI := normLimitField K L
+    normLimitIntegerAut K L σ =
+      valuationIntegerAut (normLimitFieldValuation K L)
+        (normLimitAut K L σ)
+        (normLimitAut_valuation K σ) := by
+  let := normLimitField K L
   apply RingEquiv.ext
   intro x
   rfl
@@ -102,15 +100,15 @@ theorem normLimitIntegerAut_eq_valuationIntegerAut [IsAPF K L]
 norm-field number, with the same field, valuation and actual automorphism. -/
 theorem normLimitRamificationNumber_eq_valuedRamificationNumber [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (σ : L ≃ₐ[K] L) :
-    letI := normLimitField K L p
-    letI := normLimitFieldValuation_isDiscreteValuationRing K L p
-    normLimitRamificationNumber K L p σ =
-      valuedRamificationNumber (normLimitFieldValuation K L p)
-        (normLimitAut K L p σ)
-        (normLimitAut_valuation K p σ) := by
-  let := normLimitField K L p
-  let := normLimitFieldValuation_isDiscreteValuationRing K L p
-  change integerRamificationNumber (normLimitIntegerAut K L p σ) = _
+    letI := normLimitField K L
+    letI := normLimitFieldValuation_isDiscreteValuationRing K L
+    normLimitRamificationNumber K L σ =
+      valuedRamificationNumber (normLimitFieldValuation K L)
+        (normLimitAut K L σ)
+        (normLimitAut_valuation K σ) := by
+  let := normLimitField K L
+  let := normLimitFieldValuation_isDiscreteValuationRing K L
+  change integerRamificationNumber (normLimitIntegerAut K L σ) = _
   rw [normLimitIntegerAut_eq_valuationIntegerAut]
   rfl
 
@@ -118,13 +116,13 @@ theorem normLimitRamificationNumber_eq_valuedRamificationNumber [IsAPF K L]
 faithfulness of the original norm-field action. -/
 theorem normLimitIntegerAut_eq_one_iff [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (σ : L ≃ₐ[K] L) :
-    letI := normLimitField K L p
-    normLimitIntegerAut K L p σ = 1 ↔ σ = 1 := by
-  let := normLimitField K L p
-  let O := (normLimitFieldValuation K L p).valuationSubring
+    letI := normLimitField K L
+    normLimitIntegerAut K L σ = 1 ↔ σ = 1 := by
+  let := normLimitField K L
+  let O := (normLimitFieldValuation K L).valuationSubring
   constructor
   · intro hg
-    apply (normLimitAut_injective K L p)
+    apply (normLimitAut_injective K L)
     rw [map_one]
     apply RingEquiv.toRingHom_injective
     apply IsFractionRing.ringHom_ext (A := O)
@@ -135,13 +133,13 @@ theorem normLimitIntegerAut_eq_one_iff [IsAPF K L]
     apply RingEquiv.ext
     intro a
     apply Subtype.ext
-    change normLimitAut K L p 1 (a : NormLimit K L) = a
+    change normLimitAut K L 1 (a : NormLimit K L) = a
     rw [map_one]
     rfl
 
 theorem neg_one_le_normLimitRamificationNumber [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (σ : L ≃ₐ[K] L) :
-    -1 ≤ normLimitRamificationNumber K L p σ := by
+    -1 ≤ normLimitRamificationNumber K L σ := by
   unfold normLimitRamificationNumber
   simpa only [zero_sub] using
     EReal.sub_le_sub (EReal.coe_ennreal_nonneg _)
@@ -150,12 +148,12 @@ theorem neg_one_le_normLimitRamificationNumber [IsAPF K L]
 /-- Infinity occurs precisely at the actual identity original automorphism. -/
 theorem normLimitRamificationNumber_eq_top_iff [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (σ : L ≃ₐ[K] L) :
-    normLimitRamificationNumber K L p σ = ⊤ ↔ σ = 1 := by
-  let := normLimitField K L p
-  let := normLimitFieldValuation_isDiscreteValuationRing K L p
-  let O := (normLimitFieldValuation K L p).valuationSubring
+    normLimitRamificationNumber K L σ = ⊤ ↔ σ = 1 := by
+  let := normLimitField K L
+  let := normLimitFieldValuation_isDiscreteValuationRing K L
+  let O := (normLimitFieldValuation K L).valuationSubring
   change ((ramificationOrder (R := O) (O ≃+* O)
-    (normLimitIntegerAut K L p σ) : ℝ≥0∞) : EReal) - 1 = ⊤ ↔ _
+    (normLimitIntegerAut K L σ) : ℝ≥0∞) : EReal) - 1 = ⊤ ↔ _
   rw [sub_eq_add_neg, ← EReal.coe_one, ← EReal.coe_neg,
     EReal.add_eq_top_iff_eq_top_left (EReal.coe_ne_bot (-1)) (EReal.coe_ne_top (-1)),
     EReal.coe_ennreal_eq_top_iff, ENat.toENNReal_eq_top,
@@ -164,38 +162,38 @@ theorem normLimitRamificationNumber_eq_top_iff [IsAPF K L]
 @[simp]
 theorem normLimitRamificationNumber_one [IsAPF K L]
     [Fact (¬ Module.Finite K L)] :
-    normLimitRamificationNumber K L p 1 = ⊤ :=
-  (normLimitRamificationNumber_eq_top_iff K L p 1).mpr rfl
+    normLimitRamificationNumber K L 1 = ⊤ :=
+  (normLimitRamificationNumber_eq_top_iff K L 1).mpr rfl
 
 /-- Every nonidentity original automorphism has an actual finite real
 ramification number; no stabilizing finite-layer order is assumed. -/
 theorem normLimitRamificationNumber_exists_real [IsAPF K L]
     [Fact (¬ Module.Finite K L)] {σ : L ≃ₐ[K] L} (hσ : σ ≠ 1) :
-    ∃ r : ℝ, normLimitRamificationNumber K L p σ = r := by
-  have ht : normLimitRamificationNumber K L p σ ≠ ⊤ :=
-    fun ht => hσ ((normLimitRamificationNumber_eq_top_iff K L p σ).mp ht)
-  have hb : normLimitRamificationNumber K L p σ ≠ ⊥ :=
+    ∃ r : ℝ, normLimitRamificationNumber K L σ = r := by
+  have ht : normLimitRamificationNumber K L σ ≠ ⊤ :=
+    fun ht => hσ ((normLimitRamificationNumber_eq_top_iff K L σ).mp ht)
+  have hb : normLimitRamificationNumber K L σ ≠ ⊥ :=
     ne_bot_of_le_ne_bot (EReal.coe_ne_bot (-1))
-      (neg_one_le_normLimitRamificationNumber K L p σ)
+      (neg_one_le_normLimitRamificationNumber K L σ)
   exact ⟨_, (EReal.coe_toReal ht hb).symm⟩
 
 /-- The canonical residue automorphism induced by the same original action
 on its actual valuation ring. -/
 def normLimitResidueAut [IsAPF K L] [Fact (¬ Module.Finite K L)]
     (σ : L ≃ₐ[K] L) :
-    letI := normLimitField K L p
-    IsLocalRing.ResidueField (normLimitFieldValuation K L p).valuationSubring ≃+*
-      IsLocalRing.ResidueField (normLimitFieldValuation K L p).valuationSubring := by
-  letI := normLimitField K L p
-  exact IsLocalRing.ResidueField.mapEquiv (normLimitIntegerAut K L p σ)
+    letI := normLimitField K L
+    IsLocalRing.ResidueField (normLimitFieldValuation K L).valuationSubring ≃+*
+      IsLocalRing.ResidueField (normLimitFieldValuation K L).valuationSubring := by
+  letI := normLimitField K L
+  exact IsLocalRing.ResidueField.mapEquiv (normLimitIntegerAut K L σ)
 
 @[simp]
 theorem normLimitResidueAut_residue [IsAPF K L] [Fact (¬ Module.Finite K L)]
     (σ : L ≃ₐ[K] L) :
-    letI := normLimitField K L p
-    ∀ a : (normLimitFieldValuation K L p).valuationSubring,
-      normLimitResidueAut K L p σ (IsLocalRing.residue _ a) =
-        IsLocalRing.residue _ (normLimitIntegerAut K L p σ a) := by
+    letI := normLimitField K L
+    ∀ a : (normLimitFieldValuation K L).valuationSubring,
+      normLimitResidueAut K L σ (IsLocalRing.residue _ a) =
+        IsLocalRing.residue _ (normLimitIntegerAut K L σ a) := by
   intro a
   rfl
 
@@ -203,12 +201,12 @@ theorem normLimitResidueAut_residue [IsAPF K L] [Fact (¬ Module.Finite K L)]
 actual integral elements modulo the actual maximal ideal. -/
 theorem normLimitResidueAut_eq_refl_iff [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (σ : L ≃ₐ[K] L) :
-    letI := normLimitField K L p
-    normLimitResidueAut K L p σ = RingEquiv.refl _ ↔
-      ∀ a : (normLimitFieldValuation K L p).valuationSubring,
-        normLimitIntegerAut K L p σ a - a ∈ IsLocalRing.maximalIdeal _ := by
-  let := normLimitField K L p
-  let O := (normLimitFieldValuation K L p).valuationSubring
+    letI := normLimitField K L
+    normLimitResidueAut K L σ = RingEquiv.refl _ ↔
+      ∀ a : (normLimitFieldValuation K L).valuationSubring,
+        normLimitIntegerAut K L σ a - a ∈ IsLocalRing.maximalIdeal _ := by
+  let := normLimitField K L
+  let O := (normLimitFieldValuation K L).valuationSubring
   constructor
   · intro h a
     have ha := congrArg (fun e => e (IsLocalRing.residue O a)) h
@@ -223,75 +221,75 @@ theorem normLimitResidueAut_eq_refl_iff [IsAPF K L]
 intrinsic ramification number; this includes the identity and infinity. -/
 theorem normLimitRamificationNumber_eq_uniformizer [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (σ : L ≃ₐ[K] L) :
-    letI := normLimitField K L p
-    letI := normLimitFieldValuation_isDiscreteValuationRing K L p
-    ∀ (_hres : normLimitResidueAut K L p σ = RingEquiv.refl _)
-      (π : (normLimitFieldValuation K L p).valuationSubring),
-      Irreducible π → normLimitRamificationNumber K L p σ =
+    letI := normLimitField K L
+    letI := normLimitFieldValuation_isDiscreteValuationRing K L
+    ∀ (_hres : normLimitResidueAut K L σ = RingEquiv.refl _)
+      (π : (normLimitFieldValuation K L).valuationSubring),
+      Irreducible π → normLimitRamificationNumber K L σ =
         (((IsDiscreteValuationRing.addVal _
-          (normLimitIntegerAut K L p σ π - π) : ℝ≥0∞) : EReal) - 1) := by
-  let := normLimitField K L p
-  let := normLimitFieldValuation_isDiscreteValuationRing K L p
-  let := normLimitField_charP K L p
-  let O := (normLimitFieldValuation K L p).valuationSubring
+          (normLimitIntegerAut K L σ π - π) : ℝ≥0∞) : EReal) - 1) := by
+  let := normLimitField K L
+  let := normLimitFieldValuation_isDiscreteValuationRing K L
+  let := normLimitField_charP K L
+  let O := (normLimitFieldValuation K L).valuationSubring
   let : CharP O p :=
     (algebraMap O (NormLimit K L)).charP Subtype.val_injective p
   let : CharP (IsLocalRing.ResidueField O) p :=
-    CharP.of_ringHom_of_ne_zero (IsLocalRing.residue O) p (Fact.out : p.Prime).ne_zero
-  let := normLimitResidue_perfectField K L p
+    CharP.of_ringHom_of_ne_zero (IsLocalRing.residue O) p (Fact.out : Nat.Prime p).ne_zero
+  let := normLimitResidue_perfectField K L
   intro hres π hπ
   exact integerRamificationNumber_eq_uniformizer p
-    (normLimitIntegerAut K L p σ) hres hπ
+    (normLimitIntegerAut K L σ) hres hπ
 
 /-- The general valued-field uniformizer ratio computes the existing
 intrinsic original norm-field number on its same original field. -/
 theorem normLimitRamificationNumber_eq_uniformizer_ratio [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (σ : L ≃ₐ[K] L) :
-    letI := normLimitField K L p
-    letI := normLimitFieldValuation_isDiscreteValuationRing K L p
-    ∀ (_hres : normLimitResidueAut K L p σ = RingEquiv.refl _)
-      (π : (normLimitFieldValuation K L p).valuationSubring),
-      Irreducible π → normLimitRamificationNumber K L p σ =
+    letI := normLimitField K L
+    letI := normLimitFieldValuation_isDiscreteValuationRing K L
+    ∀ (_hres : normLimitResidueAut K L σ = RingEquiv.refl _)
+      (π : (normLimitFieldValuation K L).valuationSubring),
+      Irreducible π → normLimitRamificationNumber K L σ =
         normalizedAdditiveValue
-          (normLimitFieldValuation K L p).valuationSubring
-          (normLimitAut K L p σ (π : NormLimit K L) /
+          (normLimitFieldValuation K L).valuationSubring
+          (normLimitAut K L σ (π : NormLimit K L) /
             (π : NormLimit K L) - 1) := by
-  let := normLimitField K L p
-  let := normLimitFieldValuation_isDiscreteValuationRing K L p
-  let := normLimitField_charP K L p
-  let O := (normLimitFieldValuation K L p).valuationSubring
+  let := normLimitField K L
+  let := normLimitFieldValuation_isDiscreteValuationRing K L
+  let := normLimitField_charP K L
+  let O := (normLimitFieldValuation K L).valuationSubring
   let : CharP O p :=
     (algebraMap O (NormLimit K L)).charP Subtype.val_injective p
   let : CharP (IsLocalRing.ResidueField O) p :=
-    CharP.of_ringHom_of_ne_zero (IsLocalRing.residue O) p (Fact.out : p.Prime).ne_zero
-  let := normLimitResidue_perfectField K L p
+    CharP.of_ringHom_of_ne_zero (IsLocalRing.residue O) p (Fact.out : Nat.Prime p).ne_zero
+  let := normLimitResidue_perfectField K L
   intro hres π hπ
-  change IsLocalRing.ResidueField.mapEquiv (normLimitIntegerAut K L p σ) =
+  change IsLocalRing.ResidueField.mapEquiv (normLimitIntegerAut K L σ) =
     RingEquiv.refl _ at hres
   rw [normLimitIntegerAut_eq_valuationIntegerAut] at hres
   rw [normLimitRamificationNumber_eq_valuedRamificationNumber]
   exact valuedRamificationNumber_eq_uniformizer_ratio
-    (normLimitFieldValuation K L p)
-    (normLimitAut K L p σ) (normLimitAut_valuation K p σ)
+    (normLimitFieldValuation K L)
+    (normLimitAut K L σ) (normLimitAut_valuation K σ)
     p hres hπ
 
 /-- Noninertia is detected on the actual residue field and has signed
 ramification number minus one. -/
 theorem normLimitRamificationNumber_eq_neg_one_of_residue_ne [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (σ : L ≃ₐ[K] L) :
-    letI := normLimitField K L p
-    normLimitResidueAut K L p σ ≠ RingEquiv.refl _ →
-      normLimitRamificationNumber K L p σ = -1 := by
-  let := normLimitField K L p
-  let := normLimitFieldValuation_isDiscreteValuationRing K L p
-  let O := (normLimitFieldValuation K L p).valuationSubring
-  let g := normLimitIntegerAut K L p σ
+    letI := normLimitField K L
+    normLimitResidueAut K L σ ≠ RingEquiv.refl _ →
+      normLimitRamificationNumber K L σ = -1 := by
+  let := normLimitField K L
+  let := normLimitFieldValuation_isDiscreteValuationRing K L
+  let O := (normLimitFieldValuation K L).valuationSubring
+  let g := normLimitIntegerAut K L σ
   intro hres
   have hzero : ramificationOrder (R := O) (O ≃+* O) g = 0 := by
     by_contra hn
     have hraw := Order.one_le_iff_ne_zero.mpr hn
     apply hres
-    apply (normLimitResidueAut_eq_refl_iff K L p σ).mpr
+    apply (normLimitResidueAut_eq_refl_iff K L σ).mpr
     intro a
     have ha := hraw.trans (ramificationOrder_le (R := O) (O ≃+* O) g a)
     simpa only [pow_one] using (mem_maximalIdeal_pow_iff_addVal (g a - a) 1).mpr ha
@@ -303,12 +301,12 @@ theorem normLimitRamificationNumber_eq_neg_one_of_residue_ne [IsAPF K L]
 namely a natural integral displacement order minus one. -/
 theorem normLimitRamificationNumber_eq_nat_sub_one [IsAPF K L]
     [Fact (¬ Module.Finite K L)] {σ : L ≃ₐ[K] L} (hσ : σ ≠ 1) :
-    ∃ n : ℕ, normLimitRamificationNumber K L p σ = (n : EReal) - 1 := by
-  let := normLimitField K L p
-  let := normLimitFieldValuation_isDiscreteValuationRing K L p
-  let O := (normLimitFieldValuation K L p).valuationSubring
-  let g := normLimitIntegerAut K L p σ
-  have hg : g ≠ 1 := fun h => hσ ((normLimitIntegerAut_eq_one_iff K L p σ).mp h)
+    ∃ n : ℕ, normLimitRamificationNumber K L σ = (n : EReal) - 1 := by
+  let := normLimitField K L
+  let := normLimitFieldValuation_isDiscreteValuationRing K L
+  let O := (normLimitFieldValuation K L).valuationSubring
+  let g := normLimitIntegerAut K L σ
+  have hg : g ≠ 1 := fun h => hσ ((normLimitIntegerAut_eq_one_iff K L σ).mp h)
   have hfin : ramificationOrder (R := O) (O ≃+* O) g ≠ ⊤ :=
     (ramificationOrder_eq_top_iff (R := O) (O ≃+* O) g).not.mpr hg
   refine ⟨(ramificationOrder (R := O) (O ≃+* O) g).toNat, ?_⟩
@@ -327,8 +325,6 @@ def algebraicResidueAut (σ : L ≃ₐ[K] L) :
     (σ.restrictScalars (NormedField.valuation (K :=
         K)).valuationSubring).mapIntegralClosure.toRingEquiv
 
-omit [PerfectField (IsLocalRing.ResidueField
-    (NormedField.valuation (K := K)).valuationSubring)] in
 @[simp]
 theorem algebraicResidueAut_residue (σ : L ≃ₐ[K] L)
     (a : integralClosure (NormedField.valuation (K := K)).valuationSubring L) :
@@ -337,8 +333,6 @@ theorem algebraicResidueAut_residue (σ : L ≃ₐ[K] L)
         ((σ.restrictScalars (NormedField.valuation (K := K)).valuationSubring).mapIntegralClosure a)
             := rfl
 
-omit [PerfectField (IsLocalRing.ResidueField
-    (NormedField.valuation (K := K)).valuationSubring)] in
 /-- Ordinary finite residue inclusions commute with the actual intrinsic
 residue inclusion of the original algebraic extension. -/
 theorem integralClosureResidueFromLayer_inclusion (E F : FiniteLayer K L) (hEF : E ≤ F)
@@ -352,8 +346,6 @@ theorem integralClosureResidueFromLayer_inclusion (E F : FiniteLayer K L) (hEF :
   rw [← AlgHom.comp_apply, ← spectralResidueInclusion_comp]
   rfl
 
-omit [PerfectField (IsLocalRing.ResidueField
-    (NormedField.valuation (K := K)).valuationSubring)] in
 /-- An actual finite restriction and the original infinite automorphism
 induce the same maps on the same intrinsic residue field. -/
 theorem algebraicResidueAut_fromLayer (σ : L ≃ₐ[K] L) (E : FiniteLayer K L)
@@ -378,11 +370,11 @@ theorem sourceResidueCoordinateEquiv_pow [IsAPF K L]
     (E : FiniteLayer K L) (hE : apfMaximalTame K L ≤ E)
     (a : IsLocalRing.ResidueField
       (integralClosure (NormedField.valuation (K := K)).valuationSubring L)) :
-    integralClosureResidueFromLayer K L E (sourceResidueCoordinateEquiv K L p E hE a) ^
-      p ^ sourceResidueDegree K L p E hE = a := by
+    integralClosureResidueFromLayer K L E (sourceResidueCoordinateEquiv K L E hE a) ^
+      p ^ sourceResidueDegree K L E hE = a := by
   rw [sourceResidueCoordinateEquiv_apply, residue_sourceResidueIntegralCoordinate,
     integralClosureResidueFromLayer_inclusion]
-  exact sourceResidueRoot_pow K L p E hE a
+  exact sourceResidueRoot_pow K L E hE a
 
 /-- On a genuine stable finite restriction, the prescribed inverse
 Frobenius residue root commutes with the actual original residue action. -/
@@ -391,8 +383,8 @@ theorem sourceResidueCoordinateEquiv_aut [IsAPF K L]
     (s : E.val ≃ₐ[K] E.val) (hs : ∀ a : E.val, (s a : L) = σ (a : L))
     (a : IsLocalRing.ResidueField
       (integralClosure (NormedField.valuation (K := K)).valuationSubring L)) :
-    spectralResidueInclusion K s.toAlgHom (sourceResidueCoordinateEquiv K L p E hE a) =
-      sourceResidueCoordinateEquiv K L p E hE (algebraicResidueAut K L σ a) := by
+    spectralResidueInclusion K s.toAlgHom (sourceResidueCoordinateEquiv K L E hE a) =
+      sourceResidueCoordinateEquiv K L E hE (algebraicResidueAut K L σ a) := by
   let κ := IsLocalRing.ResidueField
     (integralClosure (NormedField.valuation (K := K)).valuationSubring L)
   let : PerfectField κ := IsAPF.perfectField_integralClosureResidue K L
@@ -400,14 +392,14 @@ theorem sourceResidueCoordinateEquiv_aut [IsAPF K L]
     (algebraMap (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring) κ).injective p
   apply (integralClosureResidueFromLayer K L E).injective
-  apply (iterateFrobeniusEquiv κ p (sourceResidueDegree K L p E hE)).injective
+  apply (iterateFrobeniusEquiv κ p (sourceResidueDegree K L E hE)).injective
   change integralClosureResidueFromLayer K L E
       (spectralResidueInclusion K s.toAlgHom
-        (sourceResidueCoordinateEquiv K L p E hE a)) ^
-        p ^ sourceResidueDegree K L p E hE =
+        (sourceResidueCoordinateEquiv K L E hE a)) ^
+        p ^ sourceResidueDegree K L E hE =
       integralClosureResidueFromLayer K L E
-        (sourceResidueCoordinateEquiv K L p E hE (algebraicResidueAut K L σ a)) ^
-          p ^ sourceResidueDegree K L p E hE
+        (sourceResidueCoordinateEquiv K L E hE (algebraicResidueAut K L σ a)) ^
+          p ^ sourceResidueDegree K L E hE
   rw [← algebraicResidueAut_fromLayer K L σ E s hs, ← map_pow,
     sourceResidueCoordinateEquiv_pow, sourceResidueCoordinateEquiv_pow]
 
@@ -418,10 +410,10 @@ theorem sourceResidueIntegralCoordinate_aut [IsAPF K L]
     (s : E.val ≃ₐ[K] E.val) (hs : ∀ a : E.val, (s a : L) = σ (a : L))
     (a : IsLocalRing.ResidueField
       (integralClosure (NormedField.valuation (K := K)).valuationSubring L)) :
-    spectralIntegerInclusion K s.toAlgHom (sourceResidueIntegralCoordinate K L p E hE a) =
-      sourceResidueIntegralCoordinate K L p E hE (algebraicResidueAut K L σ a) := by
+    spectralIntegerInclusion K s.toAlgHom (sourceResidueIntegralCoordinate K L E hE a) =
+      sourceResidueIntegralCoordinate K L E hE (algebraicResidueAut K L σ a) := by
   rw [sourceResidueIntegralCoordinate_eq_spectralTeichmuller,
-    spectralTeichmuller_naturality, sourceResidueCoordinateEquiv_aut K L p σ E hE s hs,
+    spectralTeichmuller_naturality, sourceResidueCoordinateEquiv_aut K L σ E hE s hs,
     ← sourceResidueIntegralCoordinate_eq_spectralTeichmuller]
 
 /-- Original coordinate covariance on the actual cofinal stable fields
@@ -431,8 +423,8 @@ theorem normLimitMap_sourceResidueConstants [IsAPF K L]
     (σ : L ≃ₐ[K] L)
     (a : IsLocalRing.ResidueField
       (integralClosure (NormedField.valuation (K := K)).valuationSubring L)) :
-    normLimitMap σ (sourceResidueConstants K L p a) =
-      sourceResidueConstants K L p (algebraicResidueAut K L σ a) := by
+    normLimitMap σ (sourceResidueConstants K L a) =
+      sourceResidueConstants K L (algebraicResidueAut K L σ a) := by
   apply NormLimit.ext
   intro T
   let D := FiniteLayer.sup T (apfMaximalTame K L)
@@ -446,14 +438,14 @@ theorem normLimitMap_sourceResidueConstants [IsAPF K L]
       (IntermediateField.le_normalClosure D.val)
   have hEinv : FiniteLayer.map σ.symm.toAlgHom E = E :=
     Subtype.ext (IntermediateField.map_normalClosure_eq D.val σ.symm)
-  have hcoord : normLimitEval K L E (normLimitMap σ (sourceResidueConstants K L p a)) =
+  have hcoord : normLimitEval K L E (normLimitMap σ (sourceResidueConstants K L a)) =
       normLimitEval K L E
-        (sourceResidueConstants K L p (algebraicResidueAut K L σ a)) := by
+        (sourceResidueConstants K L (algebraicResidueAut K L σ a)) := by
     apply Subtype.val_injective
     rw [coe_normLimitEval_normLimitMap, hEinv,
-      normLimitEval_sourceResidueConstants K L p E hE,
-      normLimitEval_sourceResidueConstants K L p E hE]
-    have h := sourceResidueIntegralCoordinate_aut K L p σ E hE s (fun _ => rfl) a
+      normLimitEval_sourceResidueConstants K L E hE,
+      normLimitEval_sourceResidueConstants K L E hE]
+    have h := sourceResidueIntegralCoordinate_aut K L σ E hE s (fun _ => rfl) a
     exact congrArg (fun z : spectralIntegerRing K E.val => ((z : E.val) : L)) h
   have h := congrArg (FiniteLayer.norm T E hTE) hcoord
   simpa only [normLimitEval_norm] using h
@@ -462,26 +454,26 @@ theorem normLimitMap_sourceResidueConstants [IsAPF K L]
 norm-field valuation ring. -/
 theorem normLimitIntegerAut_sourceResidueConstantsInteger [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (σ : L ≃ₐ[K] L) :
-    letI := normLimitField K L p
-    ∀ a, normLimitIntegerAut K L p σ
-      (sourceResidueConstantsInteger K L p a) =
-        sourceResidueConstantsInteger K L p (algebraicResidueAut K L σ a) := by
-  let := normLimitField K L p
+    letI := normLimitField K L
+    ∀ a, normLimitIntegerAut K L σ
+      (sourceResidueConstantsInteger K L a) =
+        sourceResidueConstantsInteger K L (algebraicResidueAut K L σ a) := by
+  let := normLimitField K L
   intro a
   apply Subtype.ext
-  change normLimitMap σ (sourceResidueConstants K L p a) =
-    sourceResidueConstants K L p (algebraicResidueAut K L σ a)
-  exact normLimitMap_sourceResidueConstants K L p σ a
+  change normLimitMap σ (sourceResidueConstants K L a) =
+    sourceResidueConstants K L (algebraicResidueAut K L σ a)
+  exact normLimitMap_sourceResidueConstants K L σ a
 
 /-- The actual residue isomorphism induced by the same source constants
 intertwines the two actual original residue actions. -/
 theorem normLimitResidueAut_sourceResidueConstantsResidueEquiv [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (σ : L ≃ₐ[K] L) :
-    letI := normLimitField K L p
-    ∀ a, normLimitResidueAut K L p σ
-      (sourceResidueConstantsResidueEquiv K L p a) =
-        sourceResidueConstantsResidueEquiv K L p (algebraicResidueAut K L σ a) := by
-  let := normLimitField K L p
+    letI := normLimitField K L
+    ∀ a, normLimitResidueAut K L σ
+      (sourceResidueConstantsResidueEquiv K L a) =
+        sourceResidueConstantsResidueEquiv K L (algebraicResidueAut K L σ a) := by
+  let := normLimitField K L
   intro a
   rw [sourceResidueConstantsResidueEquiv_apply, normLimitResidueAut_residue,
     normLimitIntegerAut_sourceResidueConstantsInteger,
@@ -490,27 +482,25 @@ theorem normLimitResidueAut_sourceResidueConstantsResidueEquiv [IsAPF K L]
 /-- Original inertia is exactly inertia on the actual original norm field. -/
 theorem normLimitResidueAut_eq_refl_iff_algebraicResidueAut [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (σ : L ≃ₐ[K] L) :
-    letI := normLimitField K L p
-    normLimitResidueAut K L p σ = RingEquiv.refl _ ↔
+    letI := normLimitField K L
+    normLimitResidueAut K L σ = RingEquiv.refl _ ↔
       algebraicResidueAut K L σ = RingEquiv.refl _ := by
-  let := normLimitField K L p
-  let e := sourceResidueConstantsResidueEquiv K L p
+  let := normLimitField K L
+  let e := sourceResidueConstantsResidueEquiv K L
   constructor
   · intro h
     apply RingEquiv.ext
     intro a
     apply e.injective
-    have hc := normLimitResidueAut_sourceResidueConstantsResidueEquiv K L p σ a
+    have hc := normLimitResidueAut_sourceResidueConstantsResidueEquiv K L σ a
     simpa only [h, RingEquiv.refl_apply] using hc.symm
   · intro h
     apply RingEquiv.ext
     intro b
     obtain ⟨a, rfl⟩ := e.surjective b
-    have hc := normLimitResidueAut_sourceResidueConstantsResidueEquiv K L p σ a
+    have hc := normLimitResidueAut_sourceResidueConstantsResidueEquiv K L σ a
     simpa only [h, RingEquiv.refl_apply] using hc
 
-omit [PerfectField (IsLocalRing.ResidueField
-    (NormedField.valuation (K := K)).valuationSubring)] in
 /-- The actual residue of an original moved finite embedding is the
 original residue action composed with its original residue inclusion. -/
 theorem algebraicResidueAut_fromLayer_embedding (σ : L ≃ₐ[K] L) (E : FiniteLayer K L)
@@ -569,14 +559,12 @@ def finiteLayerAutPairRight (σ : L ≃ₐ[K] L) (E : FiniteLayer K L) :
   (IntermediateField.inclusion (FiniteLayer.le_sup_right E (FiniteLayer.map σ.toAlgHom E))).comp
     (FiniteLayer.equivMap σ.toAlgHom E).toAlgHom
 
-omit [IsCompleteDiscreteValuedField K] [PerfectField (IsLocalRing.ResidueField
-    (NormedField.valuation (K := K)).valuationSubring)] [Algebra.IsSeparable K L] in
+omit [IsPerfectResidueLocalField K] [Algebra.IsSeparable K L] in
 @[simp]
 theorem coe_finiteLayerAutPairLeft (σ : L ≃ₐ[K] L) (E : FiniteLayer K L) (x : E.val) :
     (finiteLayerAutPairLeft K L σ E x : L) = x := rfl
 
-omit [IsCompleteDiscreteValuedField K] [PerfectField (IsLocalRing.ResidueField
-    (NormedField.valuation (K := K)).valuationSubring)] [Algebra.IsSeparable K L] in
+omit [IsPerfectResidueLocalField K] [Algebra.IsSeparable K L] in
 @[simp]
 theorem coe_finiteLayerAutPairRight (σ : L ≃ₐ[K] L) (E : FiniteLayer K L) (x : E.val) :
     (finiteLayerAutPairRight K L σ E x : L) = σ (x : L) := rfl
@@ -586,8 +574,6 @@ in the actual finite image compositum, even when the layer is not stable. -/
 def finiteLayerRamificationNumber (σ : L ≃ₐ[K] L) (E : FiniteLayer K L) : EReal :=
   embeddingRamificationNumber K (finiteLayerAutPairRight K L σ E) (finiteLayerAutPairLeft K L σ E)
 
-omit [PerfectField (IsLocalRing.ResidueField
-  (NormedField.valuation (K := K)).valuationSubring)] in
 /-- The actual intrinsic finite number is infinite precisely when the
 original automorphism fixes every element of that original finite layer. -/
 theorem finiteLayerRamificationNumber_eq_top_iff (σ : L ≃ₐ[K] L) (E : FiniteLayer K L) :
@@ -601,15 +587,11 @@ theorem finiteLayerRamificationNumber_eq_top_iff (σ : L ≃ₐ[K] L) (E : Finit
     ext x
     exact congrArg (fun f : E.val →ₐ[K] L => f x) h
 
-omit [PerfectField (IsLocalRing.ResidueField
-  (NormedField.valuation (K := K)).valuationSubring)] in
 @[simp]
 theorem finiteLayerRamificationNumber_one (E : FiniteLayer K L) :
     finiteLayerRamificationNumber K L 1 E = ⊤ :=
   (finiteLayerRamificationNumber_eq_top_iff K L 1 E).mpr (by ext x; rfl)
 
-omit [PerfectField (IsLocalRing.ResidueField
-    (NormedField.valuation (K := K)).valuationSubring)] in
 /-- Comparing residues in the actual finite pair field is equivalent to
 comparing the same original embeddings in the original algebraic extension. -/
 theorem finiteLayerAutPair_residue_eq_iff (σ : L ≃ₐ[K] L) (E : FiniteLayer K L) :
@@ -655,10 +637,10 @@ actual original norm field. -/
 theorem normLimitRamificationNumber_eq_neg_one_of_algebraicResidue_ne [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (σ : L ≃ₐ[K] L)
     (hres : algebraicResidueAut K L σ ≠ RingEquiv.refl _) :
-    normLimitRamificationNumber K L p σ = -1 := by
-  apply normLimitRamificationNumber_eq_neg_one_of_residue_ne K L p σ
+    normLimitRamificationNumber K L σ = -1 := by
+  apply normLimitRamificationNumber_eq_neg_one_of_residue_ne K L σ
   exact fun h => hres
-    ((normLimitResidueAut_eq_refl_iff_algebraicResidueAut K L p σ).mp h)
+    ((normLimitResidueAut_eq_refl_iff_algebraicResidueAut K L σ).mp h)
 
 /-- Embedding the original extension in its actual separable closure does
 not change the intrinsic number of any original finite restriction. -/
@@ -686,8 +668,6 @@ theorem finiteLayerRamificationNumber_eq_aut (σ : L ≃ₐ[K] L) (E : FiniteLay
   rw [he] at h
   exact h.trans (embeddingRamificationNumber_aut K s)
 
-omit [PerfectField (IsLocalRing.ResidueField
-    (NormedField.valuation (K := K)).valuationSubring)] in
 /-- Triviality on the intrinsic original residue field forces genuine
 residue triviality on each actual stable finite restriction. -/
 theorem spectralResidueInclusion_eq_id_of_algebraicResidueAut_eq_refl
@@ -702,8 +682,6 @@ theorem spectralResidueInclusion_eq_id_of_algebraicResidueAut_eq_refl
   rw [← algebraicResidueAut_fromLayer K L σ E s hs, hres]
   rfl
 
-include p
-
 /-- Every actual uniformizer computes the number of an inertial stable
 finite restriction, including the identity with its infinite number. -/
 theorem finiteLayerRamificationNumber_eq_uniformizer (σ : L ≃ₐ[K] L)
@@ -716,7 +694,7 @@ theorem finiteLayerRamificationNumber_eq_uniformizer (σ : L ≃ₐ[K] L)
         (spectralIntegerInclusion K s.toAlgHom π - π) : ℝ≥0∞) : EReal) - 1) := by
   rw [finiteLayerRamificationNumber_eq_aut K L σ E s hs,
     ← embeddingRamificationNumber_aut K s,
-    embeddingRamificationNumber_eq_uniformizer K p s.toAlgHom (AlgHom.id K E.val)]
+    embeddingRamificationNumber_eq_uniformizer K s.toAlgHom (AlgHom.id K E.val)]
   · rw [embeddingRamificationIdx_aut, Nat.cast_one, div_one]
     rfl
   · rw [spectralResidueInclusion_eq_id_of_algebraicResidueAut_eq_refl K L σ E s hs hres]
@@ -731,7 +709,7 @@ finite layer, whether or not that layer is stable. -/
 theorem finiteLayerRamificationNumber_nonneg (σ : L ≃ₐ[K] L)
     (hres : algebraicResidueAut K L σ = RingEquiv.refl _) (E : FiniteLayer K L) :
     0 ≤ finiteLayerRamificationNumber K L σ E := by
-  apply embeddingRamificationNumber_nonneg K p
+  apply embeddingRamificationNumber_nonneg K
   apply (finiteLayerAutPair_residue_eq_iff K L σ E).mpr
   ext a
   apply (integralClosureSpectralResidueEquiv K (L := L)).symm.injective
@@ -741,7 +719,6 @@ theorem finiteLayerRamificationNumber_nonneg (σ : L ≃ₐ[K] L)
   rw [← algebraicResidueAut_fromLayer_embedding K L σ E a, hres]
   rfl
 
-omit p in
 /-- Every original finite restriction has an actual finite Galois ambient
 presentation, simultaneously for all of its original subfields. The normal
 closure is taken only after embedding the actual image compositum in the
@@ -787,8 +764,6 @@ theorem exists_finiteGalois_embedding_restrictions (σ : L ≃ₐ[K] L)
   rw [hr] at h ⊢
   exact h
 
-omit p [PerfectField (IsLocalRing.ResidueField
-  (NormedField.valuation (K := K)).valuationSubring)] in
 /-- The actual finite image inclusion has exactly the original local index. -/
 theorem finiteLayer_fieldRange_ramificationIdx
     {Ω : Type*} [Field Ω] [Algebra K Ω] [FiniteDimensional K Ω]
@@ -819,9 +794,7 @@ theorem finiteLayer_fieldRange_ramificationIdx
   rw [embeddingRamificationIdx_algEquiv, mul_one] at hb
   exact ha.symm.trans hb
 
-omit [IsCompleteDiscreteValuedField K] p
-  [PerfectField (IsLocalRing.ResidueField
-    (NormedField.valuation (K := K)).valuationSubring)] in
+omit [IsPerfectResidueLocalField K] in
 /-- The relative degree of the actual finite image step is the original degree. -/
 theorem finiteLayer_fieldRange_finrank
     {Ω : Type*} [Field Ω] [Algebra K Ω] [FiniteDimensional K Ω]
@@ -902,7 +875,7 @@ theorem finiteLayerRamificationNumber_eq_of_lt_relativeFirstBound
     rw [hEnum, h, embeddingRamificationNumber_self]
   have htotal : embeddingRamificationIdx K (IntermediateField.inclusion hEF) =
       Module.finrank E.val (IntermediateField.extendScalars hEF) :=
-    (apfMaximalTame_wild_tail K L p E F hE hEF).2.2
+    (apfMaximalTame_wild_tail K L E F hE hEF).2.2
   have htotal' : embeddingRamificationIdx K (IntermediateField.inclusion hmap) =
       Module.finrank iE.fieldRange (IntermediateField.extendScalars hmap) :=
     (finiteLayer_fieldRange_ramificationIdx K L E F hEF i).trans
@@ -922,17 +895,17 @@ by the ordinary difference of its actual coordinates at every sufficiently
 deep original finite field, with no stability assumption on those fields. -/
 theorem normLimitValuation_sub_eventually_coordinate [IsAPF K L]
     [Fact (¬ Module.Finite K L)] :
-    letI := normLimitField K L p
+    letI := normLimitField K L
     ∀ (α β : NormLimit K L) (n : ℤ),
       normLimitValuation K L (α - β) = WithZero.exp (-n) →
       ∃ T : FiniteLayer K L, ∀ E : FiniteLayer K L, T ≤ E →
         (IsDiscreteValuationRing.maximalIdeal (spectralIntegerRing K E.val)).valuation E.val
           (normLimitEval K L E α - normLimitEval K L E β) = WithZero.exp (-n) := by
-  let := normLimitField K L p
+  let := normLimitField K L
   intro α β n hn
   let s : ℕ := n.toNat + 1
   obtain ⟨T₀, hT₀⟩ := IsAPF.exists_normLimitValuation_eq_coordinate K L
-  obtain ⟨T₁, hT₁⟩ := normLimitEval_sub_sub_mem K L p α β s
+  obtain ⟨T₁, hT₁⟩ := normLimitEval_sub_sub_mem K L α β s
   refine ⟨FiniteLayer.sup T₀ T₁, fun E hE => ?_⟩
   have hE₀ := (FiniteLayer.le_sup_left T₀ T₁).trans hE
   have hE₁ := (FiniteLayer.le_sup_right T₀ T₁).trans hE
@@ -965,22 +938,22 @@ theorem exists_finiteLayer_stableRamificationNumber_eq [IsAPF K L]
     ∃ T : FiniteLayer K L, ∀ E : FiniteLayer K L, T ≤ E →
       FiniteLayer.map σ.toAlgHom E = E →
       finiteLayerRamificationNumber K L σ E =
-        normLimitRamificationNumber K L p σ := by
-  let := normLimitField K L p
-  let := normLimitFieldValuation_isDiscreteValuationRing K L p
-  let O := (normLimitFieldValuation K L p).valuationSubring
-  let π := normLimitUniformizerInteger K L p
-  let g := normLimitIntegerAut K L p σ
+        normLimitRamificationNumber K L σ := by
+  let := normLimitField K L
+  let := normLimitFieldValuation_isDiscreteValuationRing K L
+  let O := (normLimitFieldValuation K L).valuationSubring
+  let π := normLimitUniformizerInteger K L
+  let g := normLimitIntegerAut K L σ
   let δ : O := g π - π
-  have hπ : Irreducible π := normLimitUniformizerInteger_irreducible K L p
+  have hπ : Irreducible π := normLimitUniformizerInteger_irreducible K L
   have hresX := (normLimitResidueAut_eq_refl_iff_algebraicResidueAut
-    K L p σ).mpr hres
+    K L σ).mpr hres
   have hformula := normLimitRamificationNumber_eq_uniformizer
-    K L p σ hresX π hπ
-  change normLimitRamificationNumber K L p σ =
+    K L σ hresX π hπ
+  change normLimitRamificationNumber K L σ =
     (((IsDiscreteValuationRing.addVal O δ : ℝ≥0∞) : EReal) - 1) at hformula
-  have hntop : normLimitRamificationNumber K L p σ ≠ ⊤ :=
-    fun h => hσ ((normLimitRamificationNumber_eq_top_iff K L p σ).mp h)
+  have hntop : normLimitRamificationNumber K L σ ≠ ⊤ :=
+    fun h => hσ ((normLimitRamificationNumber_eq_top_iff K L σ).mp h)
   have hfin : IsDiscreteValuationRing.addVal O δ ≠ ⊤ := by
     intro ht
     apply hntop
@@ -989,7 +962,7 @@ theorem exists_finiteLayer_stableRamificationNumber_eq [IsAPF K L]
   let n : ℕ := (IsDiscreteValuationRing.addVal O δ).toNat
   have hn : IsDiscreteValuationRing.addVal O δ = (n : ℕ∞) :=
     (ENat.natCast_toNat hfin).symm
-  have hnum : normLimitRamificationNumber K L p σ = (n : EReal) - 1 := by
+  have hnum : normLimitRamificationNumber K L σ = (n : EReal) - 1 := by
     rw [hformula, hn]
     norm_cast
   have hδval : (IsDiscreteValuationRing.maximalIdeal O).valuation (NormLimit K L)
@@ -999,13 +972,13 @@ theorem exists_finiteLayer_stableRamificationNumber_eq [IsAPF K L]
     rw [IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap,
       IsDiscreteValuationRing.intValuation_maximalIdeal, hn]
     rfl
-  rw [normLimitFieldValuation_eq_normalized K L p] at hδval
+  rw [normLimitFieldValuation_eq_normalized K L] at hδval
   change normLimitValuation K L
-    (normLimitAut K L p σ (normLimitUniformizer K L p) -
-      normLimitUniformizer K L p) = WithZero.exp (-(n : ℤ)) at hδval
-  obtain ⟨T, hT⟩ := normLimitValuation_sub_eventually_coordinate K L p
-    (normLimitAut K L p σ (normLimitUniformizer K L p))
-    (normLimitUniformizer K L p) (n : ℤ) hδval
+    (normLimitAut K L σ (normLimitUniformizer K L) -
+      normLimitUniformizer K L) = WithZero.exp (-(n : ℤ)) at hδval
+  obtain ⟨T, hT⟩ := normLimitValuation_sub_eventually_coordinate K L
+    (normLimitAut K L σ (normLimitUniformizer K L))
+    (normLimitUniformizer K L) (n : ℤ) hδval
   refine ⟨FiniteLayer.sup (apfMaximalTame K L) T, fun E hE hStable => ?_⟩
   have hK₁ := (FiniteLayer.le_sup_left (apfMaximalTame K L) T).trans hE
   have hTE := (FiniteLayer.le_sup_right (apfMaximalTame K L) T).trans hE
@@ -1017,16 +990,16 @@ theorem exists_finiteLayer_stableRamificationNumber_eq [IsAPF K L]
     change FiniteLayer.map σ.symm.toAlgHom (FiniteLayer.map σ.toAlgHom E) = E at h
     rwa [hStable] at h
   have hcoor : normLimitEval K L E
-      (normLimitAut K L p σ (normLimitUniformizer K L p)) =
-        s (normLimitEval K L E (normLimitUniformizer K L p)) := by
+      (normLimitAut K L σ (normLimitUniformizer K L)) =
+        s (normLimitEval K L E (normLimitUniformizer K L)) := by
     apply Subtype.val_injective
     change (normLimitEval K L E
-      (normLimitMap σ (normLimitUniformizer K L p)) : L) = _
+      (normLimitMap σ (normLimitUniformizer K L)) : L) = _
     rw [coe_normLimitEval_normLimitMap, hEinv, hs]
-  let πE := normLimitUniformizerCoordinateInteger K L p E
+  let πE := normLimitUniformizerCoordinateInteger K L E
   let R := spectralIntegerRing K E.val
   let δE : R := spectralIntegerInclusion K s.toAlgHom πE - πE
-  have hπE : Irreducible πE := normLimitUniformizerCoordinateInteger_irreducible K L p
+  have hπE : Irreducible πE := normLimitUniformizerCoordinateInteger_irreducible K L
     E ((apfMaximalUnramified_le_maximalTame K L).trans hK₁)
   have hδEVal : (IsDiscreteValuationRing.maximalIdeal R).valuation E.val
       (δE : E.val) = WithZero.exp (-(n : ℤ)) := by
@@ -1049,7 +1022,7 @@ theorem exists_finiteLayer_stableRamificationNumber_eq [IsAPF K L]
       change WithZero.exp (-(m : ℤ)) = WithZero.exp (-(n : ℤ)) at hδEVal
       have hm : m = n := by exact_mod_cast neg_injective (WithZero.exp_injective hδEVal)
       simp only [hm]
-  rw [finiteLayerRamificationNumber_eq_uniformizer K L p σ E s hs hres hπE, hnum]
+  rw [finiteLayerRamificationNumber_eq_uniformizer K L σ E s hs hres hπE, hnum]
   change (((IsDiscreteValuationRing.addVal R δE : ℝ≥0∞) : EReal) - 1) = _
   rw [hδENat]
   norm_cast
@@ -1061,12 +1034,12 @@ theorem exists_finiteLayer_inertial_ramificationNumber_eq [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (σ : L ≃ₐ[K] L) (hσ : σ ≠ 1)
     (hres : algebraicResidueAut K L σ = RingEquiv.refl _) :
     ∃ (E : FiniteLayer K L) (c : ℝ), FiniteLayer.map σ.toAlgHom E = E ∧
-      0 ≤ c ∧ normLimitRamificationNumber K L p σ = (c : EReal) ∧
+      0 ≤ c ∧ normLimitRamificationNumber K L σ = (c : EReal) ∧
       ∀ F : FiniteLayer K L, E ≤ F → finiteLayerRamificationNumber K L σ F = (c : EReal) := by
-  obtain ⟨T, hT⟩ := exists_finiteLayer_stableRamificationNumber_eq K L p σ hσ hres
-  obtain ⟨n, hn⟩ := normLimitRamificationNumber_eq_nat_sub_one K L p hσ
+  obtain ⟨T, hT⟩ := exists_finiteLayer_stableRamificationNumber_eq K L σ hσ hres
+  obtain ⟨n, hn⟩ := normLimitRamificationNumber_eq_nat_sub_one K L hσ
   let c : ℝ := n - 1
-  have hc : normLimitRamificationNumber K L p σ = (c : EReal) := by
+  have hc : normLimitRamificationNumber K L σ = (c : EReal) := by
     rw [hn]
     dsimp [c]
   obtain ⟨D, hD⟩ := IsAPF.exists_finiteLayer_relativeFirstBound_ge K L (c + 1)
@@ -1084,7 +1057,7 @@ theorem exists_finiteLayer_inertial_ramificationNumber_eq [IsAPF K L]
   have hEnum : finiteLayerRamificationNumber K L σ E = (c : EReal) :=
     (hT E hTE hStable).trans hc
   have hc₀ : 0 ≤ c := by
-    have h := finiteLayerRamificationNumber_nonneg K L p σ hres E
+    have h := finiteLayerRamificationNumber_nonneg K L σ hres E
     rw [hEnum] at h
     exact_mod_cast h
   refine ⟨E, c, hStable, hc₀, hc, fun F hEF => ?_⟩
@@ -1104,7 +1077,7 @@ theorem exists_finiteLayer_inertial_ramificationNumber_eq [IsAPF K L]
     have hlt : (c : EReal) < ((c + 1 : ℝ) : EReal) :=
       EReal.coe_lt_coe_iff.mpr (by linarith)
     exact hlt.trans_le (hD E F hDE hEF)
-  exact (finiteLayerRamificationNumber_eq_of_lt_relativeFirstBound K L p σ E F
+  exact (finiteLayerRamificationNumber_eq_of_lt_relativeFirstBound K L σ E F
     hK₁ hEF hσE hsmall).trans hEnum
 
 /-- Wintenberger's ramification transfer on the original norm field:
@@ -1114,18 +1087,18 @@ theorem exists_finiteLayer_ramificationNumber_eq [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (σ : L ≃ₐ[K] L) :
     ∃ E : FiniteLayer K L, ∀ F : FiniteLayer K L, E ≤ F →
       finiteLayerRamificationNumber K L σ F =
-        normLimitRamificationNumber K L p σ := by
+        normLimitRamificationNumber K L σ := by
   by_cases hσ : σ = 1
   · subst σ
     refine ⟨⟨⊥, inferInstance⟩, fun F _ => ?_⟩
     rw [finiteLayerRamificationNumber_one, normLimitRamificationNumber_one]
   by_cases hres : algebraicResidueAut K L σ = RingEquiv.refl _
   · obtain ⟨E, c, _, _, hc, hE⟩ :=
-      exists_finiteLayer_inertial_ramificationNumber_eq K L p σ hσ hres
+      exists_finiteLayer_inertial_ramificationNumber_eq K L σ hσ hres
     exact ⟨E, fun F hEF => (hE F hEF).trans hc.symm⟩
   · refine ⟨apfMaximalTame K L, fun F hF => ?_⟩
     rw [finiteLayerRamificationNumber_eq_neg_one_of_residue_ne K L σ F hF hres,
-      normLimitRamificationNumber_eq_neg_one_of_algebraicResidue_ne K L p σ hres]
+      normLimitRamificationNumber_eq_neg_one_of_algebraicResidue_ne K L σ hres]
 
 end OriginalAction
 

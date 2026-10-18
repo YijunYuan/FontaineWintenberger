@@ -244,19 +244,16 @@ theorem normSumNet_normLimitMap (e : L ≃ₐ[K] M) (x y : NormLimit K L)
 
 end Multiplicative
 
-
 section ValuedFields
 
 open Filter
 
-variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
+
+local notation "p" => residueChar K
 variable {L M : Type*} [Field L] [Field M] [Algebra K L] [Algebra K M]
     [Algebra.IsSeparable K L] [Algebra.IsSeparable K M]
 
-omit [PerfectField (IsLocalRing.ResidueField
-  (NormedField.valuation (K := K)).valuationSubring)] in
 /-- Original finite field isomorphisms preserve the actual normalized
 DVR valuations, on integral and nonintegral elements alike. -/
 theorem spectral_normalizedValuation_algEquiv [FiniteDimensional K L]
@@ -307,13 +304,11 @@ theorem normLimitValuation_normLimitMap [IsAPF K L] [IsAPF K M]
 
 /-- Continuity of the actual finite restrictions and cofinal reindexing
 take the original source sum-net limits to the original target limits. -/
-theorem normLimitMap_add (p : ℕ) [Fact p.Prime]
-    [CharP (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring) p]
+theorem normLimitMap_add
     [IsAPF K L] [IsAPF K M] (e : L ≃ₐ[K] M) (x y : NormLimit K L) :
-    normLimitMap e (normLimitAdd K L p x y) =
-      normLimitAdd K M p (normLimitMap e x) (normLimitMap e y) := by
-  apply eq_normLimitAdd_of_tendsto K M p (normLimitMap e x) (normLimitMap e y)
+    normLimitMap e (normLimitAdd K L x y) =
+      normLimitAdd K M (normLimitMap e x) (normLimitMap e y) := by
+  apply eq_normLimitAdd_of_tendsto K M (normLimitMap e x) (normLimitMap e y)
   intro E
   let D := FiniteLayer.map e.symm.toAlgHom E
   let := spectralNorm.nontriviallyNormedField K E.val
@@ -325,46 +320,42 @@ theorem normLimitMap_add (p : ℕ) [Fact p.Prime]
       |>.continuous_of_finiteDimensional
   rw [normLimitEval_normLimitMap]
   have ht := hc.continuousAt.tendsto.comp
-    ((tendsto_normSumNet_normLimitAdd K L p x y D).comp
+    ((tendsto_normSumNet_normLimitAdd K L x y D).comp
       (FiniteLayer.tendsto_mapIci e.symm E))
   convert ht using 1
   funext F
   exact normSumNet_normLimitMap e x y E F
-
-variable (p : ℕ) [Fact p.Prime]
-    [CharP (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring) p]
 
 /-- An actual field isomorphism induces a ring isomorphism between the
 same original norm fields with their already constructed field structures. -/
 def normLimitRingEquiv [IsAPF K L] [IsAPF K M]
     [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)]
     (e : L ≃ₐ[K] M) :
-    letI := normLimitField K L p
-    letI := normLimitField K M p
+    letI := normLimitField K L
+    letI := normLimitField K M
     NormLimit K L ≃+* NormLimit K M := by
-  letI := normLimitField K L p
-  letI := normLimitField K M p
+  letI := normLimitField K L
+  letI := normLimitField K M
   exact { normLimitMulEquiv e with
-    map_add' := normLimitMap_add K p e }
+    map_add' := normLimitMap_add K e }
 
 @[simp]
 theorem normLimitRingEquiv_apply [IsAPF K L] [IsAPF K M]
     [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)]
     (e : L ≃ₐ[K] M) (x : NormLimit K L) :
-    letI := normLimitField K L p
-    letI := normLimitField K M p
-    normLimitRingEquiv K p e x = normLimitMap e x := rfl
+    letI := normLimitField K L
+    letI := normLimitField K M
+    normLimitRingEquiv K e x = normLimitMap e x := rfl
 
 variable (L) in
 /-- The actual original automorphism group acts by ring automorphisms
 of the original norm field, with literal coordinate transport. -/
 def normLimitAut [IsAPF K L] [Fact (¬ Module.Finite K L)] :
-    letI := normLimitField K L p
+    letI := normLimitField K L
     (L ≃ₐ[K] L) →* (NormLimit K L ≃+* NormLimit K L) := by
-  letI := normLimitField K L p
+  letI := normLimitField K L
   exact {
-    toFun := normLimitRingEquiv K p
+    toFun := normLimitRingEquiv K
     map_one' := by
       apply RingEquiv.ext
       intro x
@@ -378,23 +369,23 @@ def normLimitAut [IsAPF K L] [Fact (¬ Module.Finite K L)] :
 @[simp]
 theorem normLimitAut_apply [IsAPF K L] [Fact (¬ Module.Finite K L)]
     (e : L ≃ₐ[K] L) (x : NormLimit K L) :
-    letI := normLimitField K L p
-    normLimitAut K L p e x = normLimitMap e x := rfl
+    letI := normLimitField K L
+    normLimitAut K L e x = normLimitMap e x := rfl
 
 /-- The ring isomorphism is uniformly continuous for the existing
 valuation uniformities on the original two fields. -/
 theorem uniformContinuous_normLimitRingEquiv [IsAPF K L] [IsAPF K M]
     [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)]
     (e : L ≃ₐ[K] M) :
-    letI := normLimitField K L p
-    letI := normLimitField K M p
-    letI := normLimitValued K L p
-    letI := normLimitValued K M p
-    UniformContinuous (normLimitRingEquiv K p e) := by
-  let := normLimitField K L p
-  let := normLimitField K M p
-  let := normLimitValued K L p
-  let := normLimitValued K M p
+    letI := normLimitField K L
+    letI := normLimitField K M
+    letI := normLimitValued K L
+    letI := normLimitValued K M
+    UniformContinuous (normLimitRingEquiv K e) := by
+  let := normLimitField K L
+  let := normLimitField K M
+  let := normLimitValued K L
+  let := normLimitValued K M
   apply valuedRingEquiv_uniformContinuous
   intro x
   change normLimitValuation K M (normLimitMap e x) = normLimitValuation K L x
@@ -405,38 +396,38 @@ the existing uniform spaces; no alternate topology is introduced. -/
 def normLimitUniformEquiv [IsAPF K L] [IsAPF K M]
     [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)]
     (e : L ≃ₐ[K] M) :
-    letI := normLimitField K L p
-    letI := normLimitField K M p
-    letI := normLimitValued K L p
-    letI := normLimitValued K M p
+    letI := normLimitField K L
+    letI := normLimitField K M
+    letI := normLimitValued K L
+    letI := normLimitValued K M
     NormLimit K L ≃ᵤ NormLimit K M := by
-  letI := normLimitField K L p
-  letI := normLimitField K M p
-  letI := normLimitValued K L p
-  letI := normLimitValued K M p
+  letI := normLimitField K L
+  letI := normLimitField K M
+  letI := normLimitValued K L
+  letI := normLimitValued K M
   exact {
-    toEquiv := (normLimitRingEquiv K p e).toEquiv
+    toEquiv := (normLimitRingEquiv K e).toEquiv
     uniformContinuous_toFun :=
-      uniformContinuous_normLimitRingEquiv K p e
+      uniformContinuous_normLimitRingEquiv K e
     uniformContinuous_invFun :=
-      uniformContinuous_normLimitRingEquiv K p e.symm }
+      uniformContinuous_normLimitRingEquiv K e.symm }
 
 @[simp]
 theorem normLimitUniformEquiv_apply [IsAPF K L] [IsAPF K M]
     [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)]
     (e : L ≃ₐ[K] M) (x : NormLimit K L) :
-    letI := normLimitField K L p
-    letI := normLimitField K M p
-    letI := normLimitValued K L p
-    letI := normLimitValued K M p
-    normLimitUniformEquiv K p e x = normLimitMap e x := rfl
+    letI := normLimitField K L
+    letI := normLimitField K M
+    letI := normLimitValued K L
+    letI := normLimitValued K M
+    normLimitUniformEquiv K e x = normLimitMap e x := rfl
 
 /-- Every actual original automorphism acts by an automorphism preserving
 the original stable normalized valuation. -/
 theorem normLimitAut_valuation [IsAPF K L] [Fact (¬ Module.Finite K L)]
     (e : L ≃ₐ[K] L) (x : NormLimit K L) :
-    letI := normLimitField K L p
-    normLimitValuation K L (normLimitAut K L p e x) =
+    letI := normLimitField K L
+    normLimitValuation K L (normLimitAut K L e x) =
       normLimitValuation K L x :=
   normLimitValuation_normLimitMap K e x
 

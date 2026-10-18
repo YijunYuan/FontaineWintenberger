@@ -22,25 +22,22 @@ noncomputable section
 
 namespace FontaineWintenberger
 
-variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
+
+local notation "p" => residueChar K
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
-variable (p : ℕ) [Fact p.Prime]
-    [CharP (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring) p]
 
 /-- Associativity of the actual norm-limit addition follows from four
 coordinate approximations and separation at a fixed original finite base. -/
 theorem normLimitAdd_assoc [IsAPF K L] (α β γ : NormLimit K L) :
-    normLimitAdd K L p (normLimitAdd K L p α β) γ =
-      normLimitAdd K L p α (normLimitAdd K L p β γ) := by
-  apply normLimit_ext_of_eventually_sub_mem K L p
+    normLimitAdd K L (normLimitAdd K L α β) γ =
+      normLimitAdd K L α (normLimitAdd K L β γ) := by
+  apply normLimit_ext_of_eventually_sub_mem K L
   intro n
-  obtain ⟨T₁, hT₁⟩ := normLimitAdd_sub_mem K L p (normLimitAdd K L p α β) γ n
-  obtain ⟨T₂, hT₂⟩ := normLimitAdd_sub_mem K L p α β n
-  obtain ⟨T₃, hT₃⟩ := normLimitAdd_sub_mem K L p α (normLimitAdd K L p β γ) n
-  obtain ⟨T₄, hT₄⟩ := normLimitAdd_sub_mem K L p β γ n
+  obtain ⟨T₁, hT₁⟩ := normLimitAdd_sub_mem K L (normLimitAdd K L α β) γ n
+  obtain ⟨T₂, hT₂⟩ := normLimitAdd_sub_mem K L α β n
+  obtain ⟨T₃, hT₃⟩ := normLimitAdd_sub_mem K L α (normLimitAdd K L β γ) n
+  obtain ⟨T₄, hT₄⟩ := normLimitAdd_sub_mem K L β γ n
   refine ⟨FiniteLayer.sup (FiniteLayer.sup T₁ T₂) (FiniteLayer.sup T₃ T₄), fun E hE => ?_⟩
   have hE₁₂ := (FiniteLayer.le_sup_left (FiniteLayer.sup T₁ T₂)
     (FiniteLayer.sup T₃ T₄)).trans hE
@@ -60,11 +57,11 @@ on the same carrier. This named value is used by the subsequent field structure.
 @[instance_reducible]
 def normLimitAddCommMonoid [IsAPF K L] : AddCommMonoid (NormLimit K L) where
   zero := 0
-  add := normLimitAdd K L p
-  add_assoc := normLimitAdd_assoc K L p
-  zero_add := normLimitAdd_zero_left K L p
-  add_zero := normLimitAdd_zero_right K L p
-  add_comm := normLimitAdd_comm K L p
-  nsmul := @nsmulRec (NormLimit K L) inferInstance ⟨normLimitAdd K L p⟩
+  add := normLimitAdd K L
+  add_assoc := normLimitAdd_assoc K L
+  zero_add := normLimitAdd_zero_left K L
+  add_zero := normLimitAdd_zero_right K L
+  add_comm := normLimitAdd_comm K L
+  nsmul := @nsmulRec (NormLimit K L) inferInstance ⟨normLimitAdd K L⟩
 
 end FontaineWintenberger

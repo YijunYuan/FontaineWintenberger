@@ -104,7 +104,9 @@ end LocalRings
 
 section ChosenExtension
 
-variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
+variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
+
+local notation "p" => residueChar K
 
 variable (L : Type*) [Field L] [Algebra K L] [FiniteDimensional K L]
     [Algebra.IsSeparable K L]
@@ -113,11 +115,6 @@ variable {Γ : Type*} [LinearOrderedCommGroupWithZero Γ] (w : Valuation L Γ)
 
 local notation "R" => Valuation.valuationSubring (NormedField.valuation (K := K))
 local notation "S" => Valuation.valuationSubring w
-
-variable (p : ℕ) [Fact p.Prime]
-    [CharP (IsLocalRing.ResidueField (NormedField.valuation (K := K)).valuationSubring) p]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
 
 /-- Finite-precision norm approximation for the actual chosen extension
 integers, with total ramification and p-power degree on the original fields. -/

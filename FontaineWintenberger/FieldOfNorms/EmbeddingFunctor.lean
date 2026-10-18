@@ -37,14 +37,11 @@ theorem not_finite_fieldRange (τ : L →ₐ[K] M) [Fact (¬ Module.Finite K L)]
 
 end Infinity
 
-variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
+
+local notation "p" => residueChar K
 variable {L M : Type*} [Field L] [Field M] [Algebra K L] [Algebra K M]
     [Algebra.IsSeparable K L] [Algebra.IsSeparable K M]
-variable (p : ℕ) [Fact p.Prime]
-    [CharP (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring) p]
 
 /-- The arbitrary original finite-embedding map is a ring homomorphism
 between the already constructed original norm fields. -/
@@ -52,16 +49,16 @@ def finiteNormLimitEmbeddingRingHom (τ : L →ₐ[K] M)
     [Module.Finite τ.fieldRange M] [Algebra.IsSeparable τ.fieldRange M]
     [IsAPF K L] [IsAPF K M]
     [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)] :
-    letI := normLimitField K L p
-    letI := normLimitField K M p
+    letI := normLimitField K L
+    letI := normLimitField K M
     NormLimit K L →+* NormLimit K M := by
-  letI := normLimitField K L p
-  letI := normLimitField K M p
+  letI := normLimitField K L
+  letI := normLimitField K M
   haveI hR : IsAPF K τ.fieldRange := (isAPF_algEquiv K τ.equivFieldRange).mp ‹_›
   haveI : Fact (¬ Module.Finite K τ.fieldRange) := ⟨not_finite_fieldRange τ⟩
-  letI := normLimitField K τ.fieldRange p
-  exact (finiteNormLimitRingHom K τ.fieldRange M p).comp
-    (normLimitRingEquiv K p τ.equivFieldRange).toRingHom
+  letI := normLimitField K τ.fieldRange
+  exact (finiteNormLimitRingHom K τ.fieldRange M).comp
+    (normLimitRingEquiv K τ.equivFieldRange).toRingHom
 
 /-- Its underlying map is literally the previously constructed original
 multiplicative finite-embedding map. -/
@@ -71,12 +68,11 @@ theorem finiteNormLimitEmbeddingRingHom_apply (τ : L →ₐ[K] M)
     [IsAPF K L] [IsAPF K M]
     [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)]
     (x : NormLimit K L) :
-    letI := normLimitField K L p
-    letI := normLimitField K M p
-    finiteNormLimitEmbeddingRingHom K p τ x =
+    letI := normLimitField K L
+    letI := normLimitField K M
+    finiteNormLimitEmbeddingRingHom K τ x =
       finiteNormLimitEmbeddingMap K τ x := rfl
 
-include p in
 /-- Unitality on the actual original norm fields gives injectivity of the
 same original finite-embedding map. -/
 theorem finiteNormLimitEmbeddingMap_injective (τ : L →ₐ[K] M)
@@ -84,9 +80,9 @@ theorem finiteNormLimitEmbeddingMap_injective (τ : L →ₐ[K] M)
     [IsAPF K L] [IsAPF K M]
     [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)] :
     Function.Injective (finiteNormLimitEmbeddingMap K τ) := by
-  let := normLimitField K L p
-  let := normLimitField K M p
-  exact (finiteNormLimitEmbeddingRingHom K p τ).injective
+  let := normLimitField K L
+  let := normLimitField K M
+  exact (finiteNormLimitEmbeddingRingHom K τ).injective
 
 /-- The ring-homomorphism coordinates are precisely the original embedding
 applied to the original preimage coordinates at every good target field. -/
@@ -95,9 +91,9 @@ theorem coe_normLimitEval_finiteNormLimitEmbeddingRingHom (τ : L →ₐ[K] M)
     [IsAPF K L] [IsAPF K M]
     [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)]
     (D : FiniteLayer K M) (hD : IsGoodFiniteLayer K τ.fieldRange D) (x : NormLimit K L) :
-    letI := normLimitField K L p
-    letI := normLimitField K M p
-    (normLimitEval K M D (finiteNormLimitEmbeddingRingHom K p τ x) : M)
+    letI := normLimitField K L
+    letI := normLimitField K M
+    (normLimitEval K M D (finiteNormLimitEmbeddingRingHom K τ x) : M)
         =
       τ (normLimitEval K L (FiniteLayer.map τ.equivFieldRange.symm.toAlgHom
         (finiteLayerPullbackLayer K τ.fieldRange D)) x : L) := by
@@ -139,21 +135,21 @@ theorem uniformContinuous_finiteNormLimitEmbeddingMap (τ : L →ₐ[K] M)
     [Module.Finite τ.fieldRange M] [Algebra.IsSeparable τ.fieldRange M]
     [IsAPF K L] [IsAPF K M]
     [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)] :
-    letI := normLimitField K L p
-    letI := normLimitField K M p
-    letI := normLimitValued K L p
-    letI := normLimitValued K M p
+    letI := normLimitField K L
+    letI := normLimitField K M
+    letI := normLimitValued K L
+    letI := normLimitValued K M
     UniformContinuous (finiteNormLimitEmbeddingMap K τ) := by
-  let := normLimitField K L p
-  let := normLimitField K M p
-  let := normLimitValued K L p
-  let := normLimitValued K M p
+  let := normLimitField K L
+  let := normLimitField K M
+  let := normLimitValued K L
+  let := normLimitValued K M
   have hR : IsAPF K τ.fieldRange := (isAPF_algEquiv K τ.equivFieldRange).mp ‹_›
   have : Fact (¬ Module.Finite K τ.fieldRange) := ⟨not_finite_fieldRange τ⟩
-  let := normLimitField K τ.fieldRange p
-  let := normLimitValued K τ.fieldRange p
-  exact (uniformContinuous_finiteNormLimitMap K τ.fieldRange M p).comp
-    (normLimitUniformEquiv K p
+  let := normLimitField K τ.fieldRange
+  let := normLimitValued K τ.fieldRange
+  exact (uniformContinuous_finiteNormLimitMap K τ.fieldRange M).comp
+    (normLimitUniformEquiv K
         τ.equivFieldRange).uniformContinuous_toFun
 
 /-- Continuity is for the original valuation topologies on the original fields. -/
@@ -161,15 +157,15 @@ theorem continuous_finiteNormLimitEmbeddingMap (τ : L →ₐ[K] M)
     [Module.Finite τ.fieldRange M] [Algebra.IsSeparable τ.fieldRange M]
     [IsAPF K L] [IsAPF K M]
     [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)] :
-    letI := normLimitField K L p
-    letI := normLimitField K M p
-    letI := normLimitValued K L p
-    letI := normLimitValued K M p
+    letI := normLimitField K L
+    letI := normLimitField K M
+    letI := normLimitValued K L
+    letI := normLimitValued K M
     Continuous (finiteNormLimitEmbeddingMap K τ) := by
-  let := normLimitField K L p
-  let := normLimitField K M p
-  let := normLimitValued K L p
-  let := normLimitValued K M p
-  exact (uniformContinuous_finiteNormLimitEmbeddingMap K p τ).continuous
+  let := normLimitField K L
+  let := normLimitField K M
+  let := normLimitValued K L
+  let := normLimitValued K M
+  exact (uniformContinuous_finiteNormLimitEmbeddingMap K τ).continuous
 
 end FontaineWintenberger

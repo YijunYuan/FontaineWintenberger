@@ -50,18 +50,15 @@ section Valued
 
 open IsDiscreteValuationRing IsLocalRing
 
-variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (ResidueField (NormedField.valuation (K := K)).valuationSubring)]
-variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
-variable (p : ℕ) [Fact p.Prime] [CharP (ResidueField
-  (NormedField.valuation (K := K)).valuationSubring) p]
+variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
 
-include p
+local notation "p" => residueChar K
+variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
 /-- Every original coordinate of the genuine norm-family uniformizer is integral. -/
 def normLimitUniformizerCoordinateInteger [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (E : FiniteLayer K L) : spectralIntegerRing K E.val :=
-  ⟨normLimitEval K L E (normLimitUniformizer K L p),
+  ⟨normLimitEval K L E (normLimitUniformizer K L),
     normLimitEval_mem_of_valuation_le_one K L _ (by
       rw [normLimitValuation_normLimitUniformizer]
       change WithZero.exp (-1 : ℤ) ≤ WithZero.exp 0
@@ -71,13 +68,13 @@ def normLimitUniformizerCoordinateInteger [IsAPF K L]
 theorem normLimitUniformizerCoordinateInteger_irreducible [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (E : FiniteLayer K L)
     (hE : apfMaximalUnramified K L ≤ E) :
-    Irreducible (normLimitUniformizerCoordinateInteger K L p E) := by
-  let z := normLimitUniformizerCoordinateInteger K L p E
+    Irreducible (normLimitUniformizerCoordinateInteger K L E) := by
+  let z := normLimitUniformizerCoordinateInteger K L E
   let R := spectralIntegerRing K E.val
   have hv : (IsDiscreteValuationRing.maximalIdeal R).valuation E.val (z : E.val) =
       WithZero.exp (-1 : ℤ) :=
     (normLimitValuation_eq_coordinate_of_maximalUnramified_le K L E hE _).symm.trans
-      (normLimitValuation_normLimitUniformizer K L p)
+      (normLimitValuation_normLimitUniformizer K L)
   have hzval : addVal R z = 1 := by
     change (IsDiscreteValuationRing.maximalIdeal R).valuation E.val
       (algebraMap R E.val z) = WithZero.exp (-1 : ℤ) at hv
@@ -109,20 +106,20 @@ theorem finiteLayer_residue_eq_of_normLimitMap_fixed [IsAPF K L]
     spectralResidueInclusion K s.toAlgHom =
       spectralResidueInclusion K (AlgHom.id K E.val) := by
   ext a
-  obtain ⟨c, hc⟩ := (sourceResidueCoordinateEquiv K L p E hK₁).surjective a
+  obtain ⟨c, hc⟩ := (sourceResidueCoordinateEquiv K L E hK₁).surjective a
   rw [← hc, sourceResidueCoordinateEquiv_apply]
   change IsLocalRing.residue _ (spectralIntegerInclusion K s.toAlgHom
-      (sourceResidueIntegralCoordinate K L p E hK₁ c)) =
-    IsLocalRing.residue _ (sourceResidueIntegralCoordinate K L p E hK₁ c)
+      (sourceResidueIntegralCoordinate K L E hK₁ c)) =
+    IsLocalRing.residue _ (sourceResidueIntegralCoordinate K L E hK₁ c)
   congr 1
   apply Subtype.ext
   apply Subtype.val_injective
-  change (s (sourceResidueIntegralCoordinate K L p E hK₁ c : E.val) : L) =
-    ((sourceResidueIntegralCoordinate K L p E hK₁ c : E.val) : L)
+  change (s (sourceResidueIntegralCoordinate K L E hK₁ c : E.val) : L) =
+    ((sourceResidueIntegralCoordinate K L E hK₁ c : E.val) : L)
   rw [hs]
   have h := normLimitEval_fixed_of_normLimitMap_fixed σ hσ E hE
-    (sourceResidueConstants K L p c)
-  rw [normLimitEval_sourceResidueConstants K L p E hK₁] at h
+    (sourceResidueConstants K L c)
+  rw [normLimitEval_sourceResidueConstants K L E hK₁] at h
   exact h
 
 /-- Fixing the original norm families makes the actual restriction on every
@@ -133,9 +130,9 @@ theorem finiteLayer_aut_eq_of_normLimitMap_fixed [IsAPF K L]
     (E : FiniteLayer K L) (hE : FiniteLayer.map σ.toAlgHom E = E)
     (hK₁ : apfMaximalTame K L ≤ E) (s : E.val ≃ₐ[K] E.val)
     (hs : ∀ a : E.val, (s a : L) = σ (a : L)) : s = AlgEquiv.refl := by
-  have hres := finiteLayer_residue_eq_of_normLimitMap_fixed K L p σ hσ E hE hK₁ s hs
-  let π := normLimitUniformizerCoordinateInteger K L p E
-  have hπ : Irreducible π := normLimitUniformizerCoordinateInteger_irreducible K L p
+  have hres := finiteLayer_residue_eq_of_normLimitMap_fixed K L σ hσ E hE hK₁ s hs
+  let π := normLimitUniformizerCoordinateInteger K L E
+  have hπ : Irreducible π := normLimitUniformizerCoordinateInteger_irreducible K L
     E ((apfMaximalUnramified_le_maximalTame K L).trans hK₁)
   have hfix : spectralIntegerInclusion K s.toAlgHom π =
       spectralIntegerInclusion K (AlgHom.id K E.val) π := by
@@ -144,9 +141,9 @@ theorem finiteLayer_aut_eq_of_normLimitMap_fixed [IsAPF K L]
     change (s (π : E.val) : L) = ((π : E.val) : L)
     rw [hs]
     exact normLimitEval_fixed_of_normLimitMap_fixed σ hσ E hE
-      (normLimitUniformizer K L p)
+      (normLimitUniformizer K L)
   have ht : embeddingIntegralOrder K s.toAlgHom (AlgHom.id K E.val) = ⊤ := by
-    rw [embeddingIntegralOrder_eq_uniformizer K p _ _ hres hπ, hfix, sub_self, addVal_zero]
+    rw [embeddingIntegralOrder_eq_uniformizer K _ _ hres hπ, hfix, sub_self, addVal_zero]
   have he := (embeddingIntegralOrder_eq_top_iff K _ _).mp ht
   apply AlgEquiv.ext
   intro a
@@ -170,7 +167,7 @@ theorem normLimitMap_eq_self_iff [IsAPF K L] [Fact (¬ Module.Finite K L)]
     let s := IntermediateField.normalClosureRestrict D.val σ
     have hs : ∀ b : E.val, (s b : L) = σ (b : L) :=
       fun b => IntermediateField.coe_normalClosureRestrict D.val σ b
-    have hsid := finiteLayer_aut_eq_of_normLimitMap_fixed K L p σ hσ E hE
+    have hsid := finiteLayer_aut_eq_of_normLimitMap_fixed K L σ hσ E hE
       ((FiniteLayer.le_sup_right D₀ _).trans hDE) s hs
     have ha₀ : a ∈ D₀.val := IntermediateField.subset_adjoin K {a} (by simp)
     have ha : a ∈ E.val := hDE (FiniteLayer.le_sup_left D₀ _ ha₀)
@@ -183,15 +180,15 @@ theorem normLimitMap_eq_self_iff [IsAPF K L] [Fact (¬ Module.Finite K L)]
 
 /-- The actual automorphism homomorphism on the original norm field is injective. -/
 theorem normLimitAut_injective [IsAPF K L] [Fact (¬ Module.Finite K L)] :
-    letI := normLimitField K L p
-    Function.Injective (normLimitAut K L p) := by
-  let := normLimitField K L p
+    letI := normLimitField K L
+    Function.Injective (normLimitAut K L) := by
+  let := normLimitField K L
   intro σ τ hστ
-  have hker : normLimitAut K L p (τ⁻¹ * σ) = 1 := by
+  have hker : normLimitAut K L (τ⁻¹ * σ) = 1 := by
     rw [map_mul, map_inv, hστ, inv_mul_cancel]
-  have hs : τ⁻¹ * σ = 1 := (normLimitMap_eq_self_iff K L p _).mp (by
+  have hs : τ⁻¹ * σ = 1 := (normLimitMap_eq_self_iff K L _).mp (by
     intro x
-    change normLimitAut K L p (τ⁻¹ * σ) x = x
+    change normLimitAut K L (τ⁻¹ * σ) x = x
     rw [hker]
     rfl)
   exact (inv_mul_eq_one.mp hs).symm

@@ -23,26 +23,23 @@ noncomputable section
 
 namespace FontaineWintenberger
 
-variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
+
+local notation "p" => residueChar K
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
-variable (p : ℕ) [Fact p.Prime]
-    [CharP (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring) p]
 
 /-- The residue prime vanishes in the actual norm-limit semiring, by
 coordinate approximation and actual ramification divergence. -/
 theorem normLimit_natCast_prime_eq_zero [IsAPF K L]
     [Fact (¬ Module.Finite K L)] :
-    letI := normLimitCommSemiring K L p
+    letI := normLimitCommSemiring K L
     (p : NormLimit K L) = 0 := by
-  let := normLimitCommSemiring K L p
-  apply normLimit_ext_of_eventually_sub_mem K L p
+  let := normLimitCommSemiring K L
+  apply normLimit_ext_of_eventually_sub_mem K L
   intro n
-  obtain ⟨T₁, hT₁⟩ := normLimitEval_nsmul_sub_mem K L p p 1 n
+  obtain ⟨T₁, hT₁⟩ := normLimitEval_nsmul_sub_mem K L p 1 n
   obtain ⟨T₂, hT₂⟩ := IsAPF.exists_finiteLayer_natCast_mem_image_maximalIdeal_pow
-    K L p n
+    K L n
   refine ⟨FiniteLayer.sup T₁ T₂, fun E hE => ?_⟩
   obtain ⟨d₁, hd₁, heq₁⟩ := hT₁ E ((FiniteLayer.le_sup_left T₁ T₂).trans hE)
   obtain ⟨d₂, hd₂, heq₂⟩ := hT₂ E ((FiniteLayer.le_sup_right T₁ T₂).trans hE)
@@ -56,21 +53,21 @@ theorem normLimit_natCast_prime_eq_zero [IsAPF K L]
 /-- The actual (p-1)-fold sum is an additive inverse, including p=2. -/
 theorem normLimit_pred_nsmul_add_eq_zero [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (α : NormLimit K L) :
-    letI := normLimitCommSemiring K L p
+    letI := normLimitCommSemiring K L
     (p - 1) • α + α = 0 := by
-  let := normLimitCommSemiring K L p
-  rw [← AddMonoid.nsmul_succ, Nat.sub_add_cancel (Fact.out : p.Prime).one_le]
-  rw [nsmul_eq_mul, normLimit_natCast_prime_eq_zero K L p, zero_mul]
+  let := normLimitCommSemiring K L
+  rw [← AddMonoid.nsmul_succ, Nat.sub_add_cancel (Fact.out : Nat.Prime p).one_le]
+  rw [nsmul_eq_mul, normLimit_natCast_prime_eq_zero K L, zero_mul]
 
 /-- The original multiplicative norm limit is a field under the actual
 addition. Every additive inverse is its actual (p-1)-fold sum. -/
 @[instance_reducible]
 def normLimitField [IsAPF K L] [Fact (¬ Module.Finite K L)] :
     Field (NormLimit K L) := by
-  letI := normLimitCommSemiring K L p
+  letI := normLimitCommSemiring K L
   letI : Neg (NormLimit K L) := ⟨fun α => (p - 1) • α⟩
   letI : CommRing (NormLimit K L) := CommRing.ofMinimalAxioms
-    add_assoc zero_add (normLimit_pred_nsmul_add_eq_zero K L p)
+    add_assoc zero_add (normLimit_pred_nsmul_add_eq_zero K L)
     mul_assoc mul_comm one_mul left_distrib
   exact {
     (inferInstance : CommRing (NormLimit K L)),
@@ -81,11 +78,11 @@ def normLimitField [IsAPF K L] [Fact (¬ Module.Finite K L)] :
 /-- The actual field has residue characteristic p, with no finiteness
 assumption on the perfect residue field of the original base. -/
 theorem normLimitField_charP [IsAPF K L] [Fact (¬ Module.Finite K L)] :
-    letI := normLimitField K L p
+    letI := normLimitField K L
     CharP (NormLimit K L) p := by
-  let := normLimitField K L p
-  apply (CharP.charP_iff_prime_eq_zero (Fact.out : p.Prime)).mpr
-  have h := normLimit_natCast_prime_eq_zero K L p
+  let := normLimitField K L
+  apply (CharP.charP_iff_prime_eq_zero (Fact.out : Nat.Prime p)).mpr
+  have h := normLimit_natCast_prime_eq_zero K L
   change p • (1 : NormLimit K L) = 0 at h
   simpa only [nsmul_one] using h
 
@@ -93,17 +90,15 @@ theorem normLimitField_charP [IsAPF K L] [Fact (¬ Module.Finite K L)] :
 @[simp]
 theorem normLimitField_add [IsAPF K L] [Fact (¬ Module.Finite K L)]
     (α β : NormLimit K L) :
-    letI := normLimitField K L p
-    α + β = normLimitAdd K L p α β := rfl
+    letI := normLimitField K L
+    α + β = normLimitAdd K L α β := rfl
 
-omit [PerfectField (IsLocalRing.ResidueField
-  (NormedField.valuation (K := K)).valuationSubring)] in
 /-- The entire original commutative group with zero is retained definitionally
 by the field structure, including multiplication, inversion and division. -/
 theorem normLimitField_toCommGroupWithZero [IsAPF K L]
     [Fact (¬ Module.Finite K L)] :
     let original : CommGroupWithZero (NormLimit K L) := inferInstance
-    letI := normLimitField K L p
+    letI := normLimitField K L
     (inferInstance : CommGroupWithZero (NormLimit K L)) = original := rfl
 
 end FontaineWintenberger

@@ -11,3 +11,4 @@ blueprint/build/
 Wintenberger.pdf
 instruction.pdf
 *.pdf
+__pycache__/

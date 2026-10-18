@@ -46,19 +46,16 @@ end ValuationSubring
 
 namespace FontaineWintenberger
 
-variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
+
+local notation "p" => residueChar K
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
-variable (p : ℕ) [Fact p.Prime]
-    [CharP (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring) p]
 
 /-- The actual sum of arbitrary original norm families agrees with coordinate
 addition to every eventual ideal-power precision. -/
 theorem normLimitAdd_sub_mem [IsAPF K L] (α β : NormLimit K L) :
     ∀ n : ℕ, ∃ T : FiniteLayer K L, ∀ E : FiniteLayer K L, T ≤ E →
-      normLimitEval K L E (normLimitAdd K L p α β) -
+      normLimitEval K L E (normLimitAdd K L α β) -
         normLimitEval K L E α - normLimitEval K L E β ∈
         (fun x : spectralIntegerRing K E.val => (x : E.val)) ''
           ((IsLocalRing.maximalIdeal (spectralIntegerRing K E.val) ^ n :
@@ -89,7 +86,7 @@ theorem normLimitAdd_sub_mem [IsAPF K L] (α β : NormLimit K L) :
   obtain ⟨T₀, hT₀⟩ := IsAPF.exists_normLimitValuation_eq_coordinate K L
   intro n
   obtain ⟨T₁, hT₁⟩ := normLimitAdd_sub_mem_of_valuation_le_one
-    K L p (α / δ) (β / δ) ha hb (n + q)
+    K L (α / δ) (β / δ) ha hb (n + q)
   refine ⟨FiniteLayer.sup T₀ T₁, fun E hE => ?_⟩
   have hE₀ := (FiniteLayer.le_sup_left T₀ T₁).trans hE
   have hE₁ := (FiniteLayer.le_sup_right T₀ T₁).trans hE
@@ -98,7 +95,7 @@ theorem normLimitAdd_sub_mem [IsAPF K L] (α β : NormLimit K L) :
     change normLimitCoordinateValuation K L E δ ≤ _
     rw [← hT₀ E hE₀ δ]
     exact hδbound
-  have hvε : v (normLimitEval K L E (normLimitAdd K L p (α / δ) (β / δ)) -
+  have hvε : v (normLimitEval K L E (normLimitAdd K L (α / δ) (β / δ)) -
       normLimitEval K L E (α / δ) - normLimitEval K L E (β / δ)) ≤
         WithZero.exp (-((n + q : ℕ) : ℤ)) :=
     (ValuationSubring.mem_image_maximalIdeal_pow_iff_normalizedValuation
@@ -106,16 +103,16 @@ theorem normLimitAdd_sub_mem [IsAPF K L] (α β : NormLimit K L) :
   apply (ValuationSubring.mem_image_maximalIdeal_pow_iff_normalizedValuation
     (spectralIntegerRing K E.val) _ n).mpr
   have hs := congrArg (normLimitEval K L E)
-    (mul_normLimitAdd K L p δ (α / δ) (β / δ))
+    (mul_normLimitAdd K L δ (α / δ) (β / δ))
   rw [map_mul, hδα, hδβ] at hs
   have hαE : normLimitEval K L E δ * normLimitEval K L E (α / δ) =
       normLimitEval K L E α := by rw [← map_mul, hδα]
   have hβE : normLimitEval K L E δ * normLimitEval K L E (β / δ) =
       normLimitEval K L E β := by rw [← map_mul, hδβ]
-  have heq : normLimitEval K L E (normLimitAdd K L p α β) -
+  have heq : normLimitEval K L E (normLimitAdd K L α β) -
       normLimitEval K L E α - normLimitEval K L E β =
       normLimitEval K L E δ *
-        (normLimitEval K L E (normLimitAdd K L p (α / δ) (β / δ)) -
+        (normLimitEval K L E (normLimitAdd K L (α / δ) (β / δ)) -
           normLimitEval K L E (α / δ) - normLimitEval K L E (β / δ)) := by
     rw [← hs, ← hαE, ← hβE]
     ring

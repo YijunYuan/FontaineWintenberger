@@ -150,11 +150,13 @@ end CommonRootCompositum
 
 section FiniteRamificationBound
 
-variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
+variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
     (E F : Type*) [Field E] [Field F] [Algebra K E] [Algebra K F]
     [FiniteDimensional K E] [FiniteDimensional K F]
     [Algebra.IsSeparable K E] [Algebra.IsSeparable K F]
     [Algebra E F] [IsScalarTower K E F]
+
+local notation "p" => residueChar K
 
 /-- The actual relative index of an original finite-field inclusion is at
 most its actual relative degree, by the local fundamental degree formula. -/
@@ -184,10 +186,12 @@ end FiniteRamificationBound
 
 section AbstractRootDisjointness
 
-variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
+variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
     (L : Type*) [Field L] [Algebra K L]
     {Ω : Type*} [Field Ω] [Algebra K Ω] [IsSepClosure K Ω]
     [Algebra L Ω] [IsScalarTower K L Ω]
+
+local notation "p" => residueChar K
 
 local notation "OK" => Valuation.valuationSubring (NormedField.valuation (K := K))
 
@@ -249,24 +253,21 @@ end AbstractRootDisjointness
 
 section GoodRootStages
 
-variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
     (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
     {Ω : Type*} [Field Ω] [Algebra K Ω] [IsSepClosure K Ω]
     [Algebra L Ω] [IsScalarTower K L Ω]
+
+local notation "p" => residueChar K
 
 attribute [local instance]
   FiniteLayer.instNontriviallyNormedField
   FiniteLayer.instNormedAlgebra
   FiniteLayer.instIsUltrametricDist
   FiniteLayer.instCompleteSpace
-  FiniteLayer.instIsDiscreteValuationRing
-  FiniteLayer.instPerfectFieldResidueField
+  FiniteLayer.instIsPerfectResidueLocalField
   FiniteLayer.instIsSeparable
 
-omit [PerfectField (IsLocalRing.ResidueField
-    (NormedField.valuation (K := K)).valuationSubring)] in
 /-- An actual root at a full-upper stage produces an actual good finite
 coordinate in the original root compositum, with the exact original pullback
 and the genuine degree bound. No goodness or disjointness is assumed. -/
@@ -322,15 +323,12 @@ end GoodRootStages
 
 section IntegralInclusion
 
-variable (K L M : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+variable (K L M : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
     [Field L] [Field M] [Algebra K L] [Algebra K M] [Algebra L M]
     [IsScalarTower K L M] [Algebra.IsSeparable K L] [Algebra.IsSeparable K M]
     [Module.Finite L M]
-variable (p : ℕ) [Fact p.Prime]
-    [CharP (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring) p]
+
+local notation "p" => residueChar K
 variable [IsAPF K L] [IsAPF K M]
     [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)]
 
@@ -339,8 +337,7 @@ attribute [local instance]
   FiniteLayer.instNormedAlgebra
   FiniteLayer.instIsUltrametricDist
   FiniteLayer.instCompleteSpace
-  FiniteLayer.instIsDiscreteValuationRing
-  FiniteLayer.instPerfectFieldResidueField
+  FiniteLayer.instIsPerfectResidueLocalField
   FiniteLayer.instIsSeparable
 
 omit [Module.Finite L M] [IsAPF K L] [IsAPF K M]
@@ -356,8 +353,7 @@ theorem FiniteLayer.hasFullUpper_of_pullback_fixing_le (D : FiniteLayer K M) :
       IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
         (isNonarchimedean_spectralNorm (K := K) (L := C))
     letI := spectralNorm.completeSpace K C
-    letI := normedAlgebra_isCompleteDiscreteValuedField K C
-    letI := normedAlgebra_residueField_perfectField K C
+    letI := normedAlgebra_isPerfectResidueLocalField K C
     letI : Algebra.IsSeparable C D.val := Algebra.isSeparable_tower_top_of_isSeparable K C D.val
     ∀ (i : M →ₐ[C] SeparableClosure C) {b : ℝ}, -1 ≤ b →
       (i.comp (IsScalarTower.toAlgHom C D.val M)).fieldRange.fixingSubgroup ≤
@@ -370,8 +366,7 @@ theorem FiniteLayer.hasFullUpper_of_pullback_fixing_le (D : FiniteLayer K M) :
     IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
       (isNonarchimedean_spectralNorm (K := K) (L := C))
   let := spectralNorm.completeSpace K C
-  let := normedAlgebra_isCompleteDiscreteValuedField K C
-  let := normedAlgebra_residueField_perfectField K C
+  let := normedAlgebra_isPerfectResidueLocalField K C
   let : Algebra.IsSeparable C D.val := Algebra.isSeparable_tower_top_of_isSeparable K C D.val
   dsimp only
   intro i b hb hfix
@@ -401,9 +396,9 @@ theorem FiniteLayer.hasFullUpper_of_pullback_fixing_le (D : FiniteLayer K M) :
   exact (D.hasFullUpper_iff_embedding K M j' (apfPsi C D.val b)).mpr hi
 
 local notation "Oₗ" => Valuation.valuationSubring
-  (normLimitFieldValuation K L p)
+  (normLimitFieldValuation K L)
 local notation "Oₘ" => Valuation.valuationSubring
-  (normLimitFieldValuation K M p)
+  (normLimitFieldValuation K M)
 
 omit [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)] in
 /-- The original finite norm-field map has a proved positive valuation
@@ -449,13 +444,13 @@ theorem normLimitValuation_finiteNormLimitMap_of_fullUpper
 /-- The original finite norm-field inclusion restricts to the original
 valuation rings, by its proved positive integral valuation scaling. -/
 def finiteNormLimitIntegralRingHom :
-    letI := normLimitField K L p
-    letI := normLimitField K M p
+    letI := normLimitField K L
+    letI := normLimitField K M
     Oₗ →+* Oₘ := by
-  let := normLimitField K L p
-  let := normLimitField K M p
+  let := normLimitField K L
+  let := normLimitField K M
   let : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
-  let φ := finiteNormLimitRingHom K L M p
+  let φ := finiteNormLimitRingHom K L M
   refine (φ.comp (Oₗ).subtype).codRestrict (Oₘ).toSubring ?_
   intro a
   obtain ⟨e, _, he⟩ := exists_finiteNormLimitMap_valuation_scaling K L M
@@ -467,13 +462,13 @@ def finiteNormLimitIntegralRingHom :
 @[simp]
 theorem coe_finiteNormLimitIntegralRingHom :
     letI : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
-    letI := normLimitField K L p
-    letI := normLimitField K M p
+    letI := normLimitField K L
+    letI := normLimitField K M
     ∀ a : Oₗ,
-      (finiteNormLimitIntegralRingHom K L M p a : NormLimit K M) =
+      (finiteNormLimitIntegralRingHom K L M a : NormLimit K M) =
         finiteNormLimitMap K L M a.val := by
-  let := normLimitField K L p
-  let := normLimitField K M p
+  let := normLimitField K L
+  let := normLimitField K M
   let : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
   intro a
   rfl
@@ -482,16 +477,16 @@ theorem coe_finiteNormLimitIntegralRingHom :
 original pullback coordinate followed by the original integer inclusion. -/
 theorem normLimitIntegralCoordinateAt_finiteNormLimitIntegralRingHom
     (D : FiniteLayer K M) (hD : IsGoodFiniteLayer K L D) :
-    letI := normLimitField K L p
-    letI := normLimitField K M p
+    letI := normLimitField K L
+    letI := normLimitField K M
     ∀ a : Oₗ,
-      normLimitIntegralCoordinateAt K M p D
-          (finiteNormLimitIntegralRingHom K L M p a) =
+      normLimitIntegralCoordinateAt K M D
+          (finiteNormLimitIntegralRingHom K L M a) =
         spectralIntegerInclusion K (finiteLayerPullbackTo K L D)
-          (normLimitIntegralCoordinateAt K L p
+          (normLimitIntegralCoordinateAt K L
             (finiteLayerPullbackLayer K L D) a) := by
-  let := normLimitField K L p
-  let := normLimitField K M p
+  let := normLimitField K L
+  let := normLimitField K M
   let : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
   intro a
   apply Subtype.ext
@@ -503,25 +498,25 @@ theorem map_normLimitCoordinatePolynomial_finiteNormLimitIntegralRingHom
     (D : FiniteLayer K M) (hD : IsGoodFiniteLayer K L D)
     {b : ℝ} (hb : 0 < b) (h : D.HasFullUpper K M b)
     (r : ℕ) (hrb : r ≤ ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊) :
-    letI := normLimitField K L p
-    letI := normLimitField K M p
+    letI := normLimitField K L
+    letI := normLimitField K M
     ∀ f : Oₗ[X],
-      (f.map (finiteNormLimitIntegralRingHom K L M p)).map
-          (normLimitHighBreakProjection K M p hb h r hrb) =
-        ((normLimitCoordinatePolynomial K L p
+      (f.map (finiteNormLimitIntegralRingHom K L M)).map
+          (normLimitHighBreakProjection K M hb h r hrb) =
+        ((normLimitCoordinatePolynomial K L
           (finiteLayerPullbackLayer K L D) f).map
             (spectralIntegerInclusion K (finiteLayerPullbackTo K L D)).toRingHom).map
               (Ideal.Quotient.mk
                 (IsLocalRing.maximalIdeal (spectralIntegerRing K D.val) ^ r)) := by
-  let := normLimitField K L p
-  let := normLimitField K M p
+  let := normLimitField K L
+  let := normLimitField K M
   intro f
   dsimp only [finiteLayerPullbackLayer]
   ext i
   simp only [coeff_map, normLimitHighBreakProjection_apply]
   rw [coeff_normLimitCoordinatePolynomial,
     normLimitIntegralCoordinateAt_finiteNormLimitIntegralRingHom
-      K L M p D hD]
+      K L M D hD]
   rfl
 
 /-- An actual root in an actual good finite coordinate lifts through the
@@ -531,47 +526,46 @@ theorem exists_normLimit_approximate_root_of_good_coordinate
     (D : FiniteLayer K M) (hD : IsGoodFiniteLayer K L D)
     {b : ℝ} (hb : 0 < b) (h : D.HasFullUpper K M b)
     (r : ℕ) (hrb : r ≤ ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊) :
-    letI := normLimitField K L p
-    letI := normLimitField K M p
+    letI := normLimitField K L
+    letI := normLimitField K M
     ∀ (f : Oₗ[X]) (x : spectralIntegerRing K D.val),
-      ((normLimitCoordinatePolynomial K L p
+      ((normLimitCoordinatePolynomial K L
         (finiteLayerPullbackLayer K L D) f).map
           (spectralIntegerInclusion K (finiteLayerPullbackTo K L D)).toRingHom).eval x = 0 →
       ∃ z : Oₘ,
         normLimitValuation K M
-          (((f.map (finiteNormLimitIntegralRingHom K L M p)).eval z :
+          (((f.map (finiteNormLimitIntegralRingHom K L M)).eval z :
             Oₘ) : NormLimit K M) ≤ WithZero.exp (-(r : ℤ)) := by
-  let := normLimitField K L p
-  let := normLimitField K M p
+  let := normLimitField K L
+  let := normLimitField K M
   intro f x hx
-  let q := normLimitHighBreakProjection K M p hb h r hrb
+  let q := normLimitHighBreakProjection K M hb h r hrb
   let qD := Ideal.Quotient.mk
     (IsLocalRing.maximalIdeal (spectralIntegerRing K D.val) ^ r)
-  obtain ⟨z, hz⟩ := normLimitHighBreakProjection_surjective K M p hb h r hrb (qD x)
-  refine ⟨z, (normLimitHighBreakProjection_eq_zero_iff K M p hb h r hrb _).mp ?_⟩
+  obtain ⟨z, hz⟩ := normLimitHighBreakProjection_surjective K M hb h r hrb (qD x)
+  refine ⟨z, (normLimitHighBreakProjection_eq_zero_iff K M hb h r hrb _).mp ?_⟩
   rw [← Polynomial.eval_map_apply]
   rw [map_normLimitCoordinatePolynomial_finiteNormLimitIntegralRingHom
-    K L M p D hD hb h r hrb f, hz,
+    K L M D hD hb h r hrb f, hz,
     Polynomial.eval_map_apply, hx, map_zero]
 
 end IntegralInclusion
 
 section FullUpperRootStages
 
-variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
     (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
     {Ω : Type*} [Field Ω] [Algebra K Ω] [IsSepClosure K Ω]
     [Algebra L Ω] [IsScalarTower K L Ω]
+
+local notation "p" => residueChar K
 
 attribute [local instance]
   FiniteLayer.instNontriviallyNormedField
   FiniteLayer.instNormedAlgebra
   FiniteLayer.instIsUltrametricDist
   FiniteLayer.instCompleteSpace
-  FiniteLayer.instIsDiscreteValuationRing
-  FiniteLayer.instPerfectFieldResidueField
+  FiniteLayer.instIsPerfectResidueLocalField
   FiniteLayer.instIsSeparable
 
 /-- The actual good root coordinate has the full original relative upper
@@ -608,8 +602,7 @@ theorem exists_good_fullUpper_rootFiniteLayer
     IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
       (isNonarchimedean_spectralNorm (K := K) (L := C))
   let := spectralNorm.completeSpace K C
-  let := normedAlgebra_isCompleteDiscreteValuedField K C
-  let := normedAlgebra_residueField_perfectField K C
+  let := normedAlgebra_isPerfectResidueLocalField K C
   let : Algebra.IsSeparable C D.val := Algebra.isSeparable_tower_top_of_isSeparable K C D.val
   let : Algebra.IsSeparable C Ω := Algebra.isSeparable_tower_top_of_isSeparable K C Ω
   let : IsSepClosed Ω := (isSepClosure_iff.mp (inferInstance : IsSepClosure K Ω)).1
@@ -647,70 +640,67 @@ end FullUpperRootStages
 
 section CoordinatePrecision
 
-variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
     (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
-    (p : ℕ) [Fact p.Prime]
-    [CharP (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring) p]
-    [IsAPF K L] [Fact (¬ Module.Finite K L)]
+
+local notation "p" => residueChar K
+
+variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 
 attribute [local instance]
   FiniteLayer.instNontriviallyNormedField
   FiniteLayer.instNormedAlgebra
   FiniteLayer.instIsUltrametricDist
   FiniteLayer.instCompleteSpace
-  FiniteLayer.instIsDiscreteValuationRing
-  FiniteLayer.instPerfectFieldResidueField
+  FiniteLayer.instIsPerfectResidueLocalField
   FiniteLayer.instIsSeparable
 
 local notation "Oₓ" => Valuation.valuationSubring
-  (normLimitFieldValuation K L p)
+  (normLimitFieldValuation K L)
 
 /-- Actual deep coordinate polynomials simultaneously satisfy every requested
 quotient precision and the factorial discriminant cutoff. The displayed field
 identity bridges their original spectral integers and the same finite field's
 unit ball by the identity on elements. -/
 theorem exists_normLimitCoordinatePolynomial_root_stage (r : ℕ) :
-    letI := normLimitField K L p
+    letI := normLimitField K L
     ∀ f : Oₓ[X], f.Monic → (f.map (algebraMap Oₓ (NormLimit K L))).Separable →
       ∃ (E : FiniteLayer K L) (b : ℝ)
         (g : (NormedField.valuation (K := E.val)).valuationSubring[X]),
         0 < b ∧ E.HasFullUpper K L b ∧ g.Monic ∧ g.natDegree = f.natDegree ∧
         (g.map (algebraMap _ E.val)).Separable ∧
         g.map (algebraMap _ E.val) =
-          (normLimitCoordinatePolynomial K L p E f).map
+          (normLimitCoordinatePolynomial K L E f).map
             (algebraMap _ E.val) ∧
         r ≤ ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊ ∧
         (g.natDegree.factorial : ℝ) *
           (IsDiscreteValuationRing.addVal
             (NormedField.valuation (K := E.val)).valuationSubring g.discr).toNat ≤ b := by
-  let := normLimitField K L p
+  let := normLimitField K L
   intro f hf hsep
-  obtain ⟨r₀, hr₀⟩ := exists_normLimit_discr_precision K L p f hf hsep
+  obtain ⟨r₀, hr₀⟩ := exists_normLimit_discr_precision K L f hf hsep
   obtain ⟨F, _, hF, _, hstable⟩ :=
-    exists_cofinal_normLimitCoordinatePolynomial_discr_stable K L p
+    exists_cofinal_normLimitCoordinatePolynomial_discr_stable K L
   let α : ℝ := ((p - 1 : ℕ) : ℝ) / p
   have hα : 0 < α := by
-    have hp := (Fact.out : p.Prime).two_le
+    have hp := (Fact.out : Nat.Prime p).two_le
     exact div_pos (by exact_mod_cast (by omega : 0 < p - 1))
-      (by exact_mod_cast (Fact.out : p.Prime).pos)
+      (by exact_mod_cast (Fact.out : Nat.Prime p).pos)
   obtain ⟨N, hN⟩ := exists_nat_gt (max ((r : ℝ) / α) ((f.natDegree.factorial : ℝ) * r₀))
   obtain ⟨n, hn, hval, hsepE⟩ :=
     ((Filter.eventually_ge_atTop N).and (hstable f hf hsep)).exists
   let E := F n
-  let fE := normLimitCoordinatePolynomial K L p E f
+  let fE := normLimitCoordinatePolynomial K L E f
   let e : spectralIntegerRing K E.val ≃+*
       (NormedField.valuation (K := E.val)).valuationSubring :=
     RingEquiv.subringCongr (congrArg ValuationSubring.toSubring
       (spectralIntegerRing_eq_normedUnitBall K E.val))
   let g := fE.map e.toRingHom
-  have hfE : fE.Monic := monic_normLimitCoordinatePolynomial K L p E f hf
+  have hfE : fE.Monic := monic_normLimitCoordinatePolynomial K L E f hf
   have hg : g.Monic := hfE.map _
   have hdeg : g.natDegree = f.natDegree := by
     rw [hfE.natDegree_map]
-    exact natDegree_normLimitCoordinatePolynomial K L p E f hf
+    exact natDegree_normLimitCoordinatePolynomial K L E f hf
   have hmap : g.map (algebraMap _ E.val) = fE.map (algebraMap _ E.val) := by
     rw [Polynomial.map_map]
     congr 1
@@ -750,7 +740,7 @@ variable {Ω : Type*} [Field Ω] [Algebra K Ω] [IsSepClosure K Ω]
 adjunction in the chosen common separable closure supplies an integral
 approximate root in its same original norm field. -/
 theorem exists_normLimit_approximate_root_at_precision (r : ℕ) :
-    letI := normLimitField K L p
+    letI := normLimitField K L
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
     ∀ f : Oₓ[X], f.Monic → (f.map (algebraMap Oₓ (NormLimit K L))).Separable →
       0 < f.natDegree →
@@ -758,17 +748,17 @@ theorem exists_normLimit_approximate_root_at_precision (r : ℕ) :
         letI : Algebra.IsSeparable K N.val := Algebra.IsSeparable.trans K L N.val
         have := separableNormUnionStage_isAPF K L Ω N
         have : Fact (¬ Module.Finite K N.val) := ⟨separableNormUnionStage_infinite K L Ω N⟩
-        letI := separableNormUnionStageField K L Ω p N
-        ∃ z : (normLimitFieldValuation K N.val p).valuationSubring,
+        letI := separableNormUnionStageField K L Ω N
+        ∃ z : (normLimitFieldValuation K N.val).valuationSubring,
           normLimitValuation K N.val
-            (((f.map (finiteNormLimitIntegralRingHom K L N.val p)).eval z :
-              (normLimitFieldValuation K N.val p).valuationSubring) : NormLimit K N.val) ≤
+            (((f.map (finiteNormLimitIntegralRingHom K L N.val)).eval z :
+              (normLimitFieldValuation K N.val).valuationSubring) : NormLimit K N.val) ≤
             WithZero.exp (-(r : ℤ)) := by
-  let := normLimitField K L p
+  let := normLimitField K L
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
   intro f hf hsep hdegree
   obtain ⟨E, b, g, hb, hE, hg, hdeg, hsepE, hmap, hr, hcut⟩ :=
-    exists_normLimitCoordinatePolynomial_root_stage K L p r f hf hsep
+    exists_normLimitCoordinatePolynomial_root_stage K L r f hf hsep
   let : IsSepClosed Ω := (isSepClosure_iff.mp (inferInstance : IsSepClosure K Ω)).1
   have hsplit := IsSepClosed.splits_codomain
     (f := algebraMap E.val Ω) (g.map (algebraMap _ E.val)) hsepE
@@ -792,7 +782,7 @@ theorem exists_normLimit_approximate_root_at_precision (r : ℕ) :
   have hindex : finiteLayerPullbackLayer K L D = E := Subtype.ext hC
   cases hindex
   let C := finiteLayerPullbackLayer K L D
-  let fC := normLimitCoordinatePolynomial K L p C f
+  let fC := normLimitCoordinatePolynomial K L C f
   let fD := fC.map (spectralIntegerInclusion K (finiteLayerPullbackTo K L D)).toRingHom
   let xM : M := ⟨x, IntermediateField.mem_adjoin_simple_self L x⟩
   let xD : D.val := ⟨xM, hxD⟩
@@ -815,7 +805,7 @@ theorem exists_normLimit_approximate_root_at_precision (r : ℕ) :
     dsimp only [fD]
     erw [Polynomial.eval₂_map, hcomp]
     exact hxC
-  have hfd : fD.Monic := (monic_normLimitCoordinatePolynomial K L p
+  have hfd : fD.Monic := (monic_normLimitCoordinatePolynomial K L
     (finiteLayerPullbackLayer K L D) f hf).map _
   let a : spectralIntegerRing K D.val :=
     ⟨xD, monic_root_valuation_le_one (spectralValuation K D.val) fD hfd xD hxfield⟩
@@ -827,45 +817,43 @@ theorem exists_normLimit_approximate_root_at_precision (r : ℕ) :
   have := separableNormUnionStage_isAPF K L Ω N
   have : Fact (¬ Module.Finite K N.val) := ⟨separableNormUnionStage_infinite K L Ω N⟩
   refine ⟨N, hdegreeM.trans_eq hdeg, ?_⟩
-  exact exists_normLimit_approximate_root_of_good_coordinate K L N.val p
+  exact exists_normLimit_approximate_root_of_good_coordinate K L N.val
     D hgood hb hfull r hr f a ha
 
 end CoordinatePrecision
 
 section IntegralRamification
 
-variable (K L M : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+variable (K L M : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
     [Field L] [Field M] [Algebra K L] [Algebra K M] [Algebra L M]
     [IsScalarTower K L M] [Algebra.IsSeparable K L] [Algebra.IsSeparable K M]
     [Module.Finite L M]
-    (p : ℕ) [Fact p.Prime]
-    [CharP (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring) p]
-    [IsAPF K L] [IsAPF K M]
+
+local notation "p" => residueChar K
+
+variable [IsAPF K L] [IsAPF K M]
     [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)]
 
-local notation "Oₗ" => Valuation.valuationSubring (normLimitFieldValuation K L p)
-local notation "Oₘ" => Valuation.valuationSubring (normLimitFieldValuation K M p)
+local notation "Oₗ" => Valuation.valuationSubring (normLimitFieldValuation K L)
+local notation "Oₘ" => Valuation.valuationSubring (normLimitFieldValuation K M)
 
 /-- The restriction of the actual original finite field map is local:
 positive valuation scaling reflects units in the original valuation rings. -/
 theorem isLocalHom_finiteNormLimitIntegralRingHom :
-    letI := normLimitField K L p
-    letI := normLimitField K M p
-    IsLocalHom (finiteNormLimitIntegralRingHom K L M p) := by
-  let := normLimitField K L p
-  let := normLimitField K M p
+    letI := normLimitField K L
+    letI := normLimitField K M
+    IsLocalHom (finiteNormLimitIntegralRingHom K L M) := by
+  let := normLimitField K L
+  let := normLimitField K M
   let : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
   obtain ⟨e, he, hv⟩ := exists_finiteNormLimitMap_valuation_scaling K L M
   constructor
   intro a ha
-  have hu := (Valuation.valuationSubring.integers (normLimitFieldValuation K M p
+  have hu := (Valuation.valuationSubring.integers (normLimitFieldValuation K M
 )).isUnit_iff_valuation_eq_one.mp ha
   change normLimitValuation K M (finiteNormLimitMap K L M a.val) = 1 at hu
   rw [hv] at hu
-  apply (Valuation.valuationSubring.integers (normLimitFieldValuation K L p
+  apply (Valuation.valuationSubring.integers (normLimitFieldValuation K L
 )).isUnit_iff_valuation_eq_one.mpr
   change normLimitValuation K L a.val = 1
   apply le_antisymm a.property
@@ -875,20 +863,20 @@ theorem isLocalHom_finiteNormLimitIntegralRingHom :
 /-- The canonical local-length ramification index of the actual original
 valuation-ring map is its original field-valuation scaling exponent. -/
 theorem finiteNormLimitIntegralRingHom_ramificationIdx_scaling :
-    letI := normLimitField K L p
-    letI := normLimitField K M p
-    letI := (finiteNormLimitIntegralRingHom K L M p).toAlgebra
+    letI := normLimitField K L
+    letI := normLimitField K M
+    letI := (finiteNormLimitIntegralRingHom K L M).toAlgebra
     letI : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
     ∀ x : NormLimit K L,
       normLimitValuation K M (finiteNormLimitMap K L M x) =
         normLimitValuation K L x ^ (IsLocalRing.maximalIdeal Oₘ).ramificationIdx Oₗ := by
-  let := normLimitField K L p
-  let := normLimitField K M p
-  let := normLimitFieldValuation_isDiscreteValuationRing K L p
-  let := normLimitFieldValuation_isDiscreteValuationRing K M p
+  let := normLimitField K L
+  let := normLimitField K M
+  let := normLimitFieldValuation_isDiscreteValuationRing K L
+  let := normLimitFieldValuation_isDiscreteValuationRing K M
   let : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
-  let φ := finiteNormLimitRingHom K L M p
-  let ρ := finiteNormLimitIntegralRingHom K L M p
+  let φ := finiteNormLimitRingHom K L M
+  let ρ := finiteNormLimitIntegralRingHom K L M
   let : Algebra Oₗ Oₘ := ρ.toAlgebra
   let : Algebra (NormLimit K L) (NormLimit K M) := φ.toAlgebra
   let : Algebra Oₗ (NormLimit K M) := (φ.comp (Oₗ).subtype).toAlgebra
@@ -896,7 +884,7 @@ theorem finiteNormLimitIntegralRingHom_ramificationIdx_scaling :
     IsScalarTower.of_algebraMap_eq' rfl
   let : IsScalarTower Oₗ Oₘ (NormLimit K M) := IsScalarTower.of_algebraMap_eq' rfl
   let : IsLocalHom (algebraMap Oₗ Oₘ) :=
-    isLocalHom_finiteNormLimitIntegralRingHom K L M p
+    isLocalHom_finiteNormLimitIntegralRingHom K L M
   let : FaithfulSMul Oₗ Oₘ := (faithfulSMul_iff_algebraMap_injective Oₗ Oₘ).mpr (by
     intro a b hab
     apply Subtype.val_injective
@@ -904,26 +892,23 @@ theorem finiteNormLimitIntegralRingHom_ramificationIdx_scaling :
     exact congrArg Subtype.val hab)
   intro x
   have h := normalizedValuation_algebraMap Oₗ Oₘ (NormLimit K L) (NormLimit K M) x
-  rw [normLimitFieldValuation_eq_normalized K L p,
-    normLimitFieldValuation_eq_normalized K M p] at h
+  rw [normLimitFieldValuation_eq_normalized K L,
+    normLimitFieldValuation_eq_normalized K M] at h
   exact h
 
 end IntegralRamification
 
 section StageNormalization
 
-variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
     (L Ω : Type*) [Field L] [Field Ω] [Algebra K L] [Algebra K Ω]
     [Algebra L Ω] [IsScalarTower K L Ω] [Algebra.IsSeparable K L]
     [Algebra.IsSeparable L Ω]
-    (p : ℕ) [Fact p.Prime]
-    [CharP (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring) p]
-    [IsAPF K L] [Fact (¬ Module.Finite K L)]
 
-include p in
+local notation "p" => residueChar K
+
+variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
+
 /-- The canonical original finite-stage exponent is bounded by the actual
 finite extension degree, using its proved unique uniformizer value. -/
 theorem separableNormUnionStageExponent_le_finrank (N : FiniteLayer L Ω) :
@@ -931,55 +916,53 @@ theorem separableNormUnionStageExponent_le_finrank (N : FiniteLayer L Ω) :
   let : Algebra.IsSeparable K N.val := Algebra.IsSeparable.trans K L N.val
   obtain ⟨e, _, he, hv⟩ := exists_finiteNormLimitMap_valuation_scaling_le_finrank
     K L N.val
-  have h := separableNormUnionStageExponent_unique K L Ω p N e hv
+  have h := separableNormUnionStageExponent_unique K L Ω N e hv
   exact h ▸ he
 
 /-- The chosen positive original stage exponent is exactly the canonical
 ramification index of the actual original valuation-ring inclusion. -/
 theorem separableNormUnionStageExponent_eq_ramificationIdx (N : FiniteLayer L Ω) :
-    letI := normLimitField K L p
+    letI := normLimitField K L
     letI : Algebra.IsSeparable K N.val := Algebra.IsSeparable.trans K L N.val
     haveI := separableNormUnionStage_isAPF K L Ω N
     haveI : Fact (¬ Module.Finite K N.val) := ⟨separableNormUnionStage_infinite K L Ω N⟩
-    letI := separableNormUnionStageField K L Ω p N
-    letI := (finiteNormLimitIntegralRingHom K L N.val p).toAlgebra
+    letI := separableNormUnionStageField K L Ω N
+    letI := (finiteNormLimitIntegralRingHom K L N.val).toAlgebra
     separableNormUnionStageExponent K L Ω N =
       (IsLocalRing.maximalIdeal
-        (normLimitFieldValuation K N.val p).valuationSubring).ramificationIdx
-          (normLimitFieldValuation K L p).valuationSubring := by
-  let := normLimitField K L p
+        (normLimitFieldValuation K N.val).valuationSubring).ramificationIdx
+          (normLimitFieldValuation K L).valuationSubring := by
+  let := normLimitField K L
   let : Algebra.IsSeparable K N.val := Algebra.IsSeparable.trans K L N.val
   have := separableNormUnionStage_isAPF K L Ω N
   have : Fact (¬ Module.Finite K N.val) := ⟨separableNormUnionStage_infinite K L Ω N⟩
-  let := separableNormUnionStageField K L Ω p N
-  let := (finiteNormLimitIntegralRingHom K L N.val p).toAlgebra
+  let := separableNormUnionStageField K L Ω N
+  let := (finiteNormLimitIntegralRingHom K L N.val).toAlgebra
   symm
-  apply separableNormUnionStageExponent_unique K L Ω p N
-  exact finiteNormLimitIntegralRingHom_ramificationIdx_scaling K L N.val p
+  apply separableNormUnionStageExponent_unique K L Ω N
+  exact finiteNormLimitIntegralRingHom_ramificationIdx_scaling K L N.val
 
 end StageNormalization
 
 section NormalizedApproximation
 
-variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
     (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
     {Ω : Type*} [Field Ω] [Algebra K Ω] [IsSepClosure K Ω]
     [Algebra L Ω] [IsScalarTower K L Ω]
-    (p : ℕ) [Fact p.Prime]
-    [CharP (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring) p]
-    [IsAPF K L] [Fact (¬ Module.Finite K L)]
+
+local notation "p" => residueChar K
+
+variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 
 local notation "Oₓ" => Valuation.valuationSubring
-  (normLimitFieldValuation K L p)
+  (normLimitFieldValuation K L)
 
 /-- Original approximate roots have both their prescribed integer depth and
 the source-normalized depth divided by the actual degree bound. Every finite
 stage, integral element and positive ramification exponent is genuine. -/
 theorem exists_normLimit_approximate_root_normalized (r : ℕ) :
-    letI := normLimitField K L p
+    letI := normLimitField K L
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
     ∀ f : Oₓ[X], f.Monic → (f.map (algebraMap Oₓ (NormLimit K L))).Separable →
       0 < f.natDegree →
@@ -990,31 +973,31 @@ theorem exists_normLimit_approximate_root_normalized (r : ℕ) :
         letI : Algebra.IsSeparable K N.val := Algebra.IsSeparable.trans K L N.val
         have := separableNormUnionStage_isAPF K L Ω N
         have : Fact (¬ Module.Finite K N.val) := ⟨separableNormUnionStage_infinite K L Ω N⟩
-        letI := separableNormUnionStageField K L Ω p N
-        let φ := finiteNormLimitRingHom K L N.val p
+        letI := separableNormUnionStageField K L Ω N
+        let φ := finiteNormLimitRingHom K L N.val
         ∃ z : NormLimit K N.val,
           normLimitValuation K N.val z ≤ 1 ∧
           normLimitValuation K N.val ((f.map (φ.comp (Oₓ).subtype)).eval z) ≤
             WithZero.exp (-(r : ℤ)) ∧
-          separableNormUnionStageValuation K L Ω p N
+          separableNormUnionStageValuation K L Ω N
               ((f.map (φ.comp (Oₓ).subtype)).eval z) ≤
             WithZero.exp (-(r : ℚ) / (f.natDegree : ℚ)) := by
-  let := normLimitField K L p
+  let := normLimitField K L
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
   intro f hf hsep hdegree
   obtain ⟨N, hdeg, hz⟩ := exists_normLimit_approximate_root_at_precision
-    K L p (Ω := Ω) r f hf hsep hdegree
+    K L (Ω := Ω) r f hf hsep hdegree
   let : Algebra.IsSeparable K N.val := Algebra.IsSeparable.trans K L N.val
   have := separableNormUnionStage_isAPF K L Ω N
   have : Fact (¬ Module.Finite K N.val) := ⟨separableNormUnionStage_infinite K L Ω N⟩
-  let := separableNormUnionStageField K L Ω p N
-  let φ := finiteNormLimitRingHom K L N.val p
-  let ρ := finiteNormLimitIntegralRingHom K L N.val p
+  let := separableNormUnionStageField K L Ω N
+  let φ := finiteNormLimitRingHom K L N.val
+  let ρ := finiteNormLimitIntegralRingHom K L N.val
   obtain ⟨z, hz⟩ := hz
   have he := separableNormUnionStageExponent_pos K L Ω N
-  have hedegree := separableNormUnionStageExponent_le_finrank K L Ω p N
+  have hedegree := separableNormUnionStageExponent_le_finrank K L Ω N
   have hcoeval :
-      (algebraMap (normLimitFieldValuation K N.val p).valuationSubring (NormLimit K N.val))
+      (algebraMap (normLimitFieldValuation K N.val).valuationSubring (NormLimit K N.val))
           ((f.map ρ).eval z) = (f.map (φ.comp (Oₓ).subtype)).eval z.val := by
     rw [← Polynomial.eval₂_at_apply, Polynomial.eval₂_map, Polynomial.eval_map]
     rfl
@@ -1045,7 +1028,7 @@ original residual has integer depth at least `degree * n`, strictly greater
 than the actual ramification index times the prescribed bound. Its valuation
 extending the base normalized valuation has depth at least `n > B`. -/
 theorem exists_normLimit_approximate_root (B : ℝ) :
-    letI := normLimitField K L p
+    letI := normLimitField K L
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
     ∀ f : Oₓ[X], f.Monic → (f.map (algebraMap Oₓ (NormLimit K L))).Separable →
       0 < f.natDegree →
@@ -1058,20 +1041,20 @@ theorem exists_normLimit_approximate_root (B : ℝ) :
         letI : Algebra.IsSeparable K N.val := Algebra.IsSeparable.trans K L N.val
         have := separableNormUnionStage_isAPF K L Ω N
         have : Fact (¬ Module.Finite K N.val) := ⟨separableNormUnionStage_infinite K L Ω N⟩
-        letI := separableNormUnionStageField K L Ω p N
-        let φ := finiteNormLimitRingHom K L N.val p
+        letI := separableNormUnionStageField K L Ω N
+        let φ := finiteNormLimitRingHom K L N.val
         ∃ z : NormLimit K N.val,
           normLimitValuation K N.val z ≤ 1 ∧
           normLimitValuation K N.val ((f.map (φ.comp (Oₓ).subtype)).eval z) ≤
             WithZero.exp (-((f.natDegree * n : ℕ) : ℤ)) ∧
-          separableNormUnionStageValuation K L Ω p N
+          separableNormUnionStageValuation K L Ω N
               ((f.map (φ.comp (Oₓ).subtype)).eval z) ≤ WithZero.exp (-(n : ℚ)) := by
-  let := normLimitField K L p
+  let := normLimitField K L
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
   intro f hf hsep hdegree
   obtain ⟨n, hn⟩ := exists_nat_gt B
   obtain ⟨N, he, hedegree, hdeg, hz⟩ := exists_normLimit_approximate_root_normalized
-    K L p (Ω := Ω) (f.natDegree * n) f hf hsep hdegree
+    K L (Ω := Ω) (f.natDegree * n) f hf hsep hdegree
   have hB : (separableNormUnionStageExponent K L Ω N : ℝ) * B < f.natDegree * n := by
     calc
       _ < (separableNormUnionStageExponent K L Ω N : ℝ) * n :=
@@ -1080,7 +1063,7 @@ theorem exists_normLimit_approximate_root (B : ℝ) :
         mul_le_mul_of_nonneg_right (by exact_mod_cast hedegree.trans hdeg) (Nat.cast_nonneg n)
   refine ⟨N, he, hedegree, hdeg, n, hn, hB, ?_⟩
   let : Algebra.IsSeparable K N.val := Algebra.IsSeparable.trans K L N.val
-  let := separableNormUnionStageField K L Ω p N
+  let := separableNormUnionStageField K L Ω N
   obtain ⟨z, hint, hw, hs⟩ := hz
   refine ⟨z, hint, hw, ?_⟩
   have hk : (f.natDegree : ℚ) ≠ 0 := by exact_mod_cast hdegree.ne'
@@ -1094,7 +1077,7 @@ may be chosen simultaneously for any sequence of prescribed integer depths.
 Both the original depth and the corrected normalized `1 / degree` bound
 hold at every index, with no further existence assumptions. -/
 theorem exists_normLimit_approximate_root_sequence (r : ℕ → ℕ) :
-    letI := normLimitField K L p
+    letI := normLimitField K L
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
     ∀ f : Oₓ[X], f.Monic → (f.map (algebraMap Oₓ (NormLimit K L))).Separable →
       0 < f.natDegree →
@@ -1104,19 +1087,19 @@ theorem exists_normLimit_approximate_root_sequence (r : ℕ → ℕ) :
           letI := separableNormUnionStage_isAPF K L Ω (N n)
           letI : Fact (¬ Module.Finite K (N n).val) :=
             ⟨separableNormUnionStage_infinite K L Ω (N n)⟩
-          letI := separableNormUnionStageField K L Ω p (N n)
-          let φ := finiteNormLimitRingHom K L (N n).val p
+          letI := separableNormUnionStageField K L Ω (N n)
+          let φ := finiteNormLimitRingHom K L (N n).val
           normLimitValuation K (N n).val (z n) ≤ 1 ∧
           normLimitValuation K (N n).val ((f.map (φ.comp (Oₓ).subtype)).eval (z n)) ≤
             WithZero.exp (-(r n : ℤ)) ∧
-          separableNormUnionStageValuation K L Ω p (N n)
+          separableNormUnionStageValuation K L Ω (N n)
               ((f.map (φ.comp (Oₓ).subtype)).eval (z n)) ≤
             WithZero.exp (-(r n : ℚ) / (f.natDegree : ℚ)) := by
-  let := normLimitField K L p
+  let := normLimitField K L
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
   intro f hf hsep hdegree
   choose N _ _ hdeg hz using fun n => exists_normLimit_approximate_root_normalized
-    K L p (Ω := Ω) (r n) f hf hsep hdegree
+    K L (Ω := Ω) (r n) f hf hsep hdegree
   refine ⟨N, hdeg, fun n => Classical.choose (hz n), ?_⟩
   intro n
   exact Classical.choose_spec (hz n)
@@ -1129,9 +1112,9 @@ theorem normLimit_approximation_precision_tendsto (k : ℕ) (hk : 0 < k)
     Filter.Tendsto (fun n => (⌈((p - 1 : ℕ) : ℝ) / p * b n⌉₊ : ℝ) / (k : ℝ))
       Filter.atTop Filter.atTop := by
   have hp : 0 < ((p - 1 : ℕ) : ℝ) / p := by
-    have hp' := (Fact.out : p.Prime).two_le
+    have hp' := (Fact.out : Nat.Prime p).two_le
     exact div_pos (by exact_mod_cast (by omega : 0 < p - 1))
-      (by exact_mod_cast (Fact.out : p.Prime).pos)
+      (by exact_mod_cast (Fact.out : Nat.Prime p).pos)
   have hmul := Filter.Tendsto.const_mul_atTop hp hb
   have hceil := Filter.tendsto_atTop_mono (fun n => Nat.le_ceil
     (((p - 1 : ℕ) : ℝ) / p * b n)) hmul

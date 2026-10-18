@@ -27,10 +27,8 @@ namespace FontaineWintenberger
 
 open scoped ENNReal
 
-variable (K L : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K] [Field L]
+variable (K L : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K] [Field L]
     [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
 
 local notation "B" => spectralIntegerRing K L
 local notation "G" => L ≃ₐ[K] L
@@ -89,8 +87,6 @@ theorem embeddingRamificationNumber_aut_eq_uniformizer_ratio
   simpa only [ENat.toENNReal_one, EReal.coe_ennreal_one] using
     embeddingRamificationNumber_aut_eq_uniformizer K L hs hπ
 
-omit [PerfectField (IsLocalRing.ResidueField
-  (NormedField.valuation (K := K)).valuationSubring)] in
 /-- Outside inertia the original integral displacement infimum is zero. -/
 theorem ramificationOrder_eq_zero_of_not_mem_inertia
     {s : G} (hs : s ∉ I) : ramificationOrder (R := B) G s = 0 := by
@@ -99,8 +95,6 @@ theorem ramificationOrder_eq_zero_of_not_mem_inertia
   exact (mem_lowerRamificationGroup_iff_le_order G 0 s).mpr
     (by simpa using Order.one_le_iff_ne_zero.mpr hn)
 
-omit [PerfectField (IsLocalRing.ResidueField
-  (NormedField.valuation (K := K)).valuationSubring)] in
 /-- Outside inertia the original signed finite number is minus one. -/
 theorem embeddingRamificationNumber_aut_eq_neg_one_of_not_mem_inertia
     {s : G} (hs : s ∉ I) :

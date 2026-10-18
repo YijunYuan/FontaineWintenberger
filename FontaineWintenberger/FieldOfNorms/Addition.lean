@@ -169,9 +169,7 @@ end NormSumLimits
 
 section IntegralFamilies
 
-variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
 /-- The proved stable coordinate valuation makes integral norm families

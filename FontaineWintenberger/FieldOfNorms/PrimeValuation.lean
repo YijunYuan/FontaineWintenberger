@@ -51,15 +51,10 @@ end FiniteDegrees
 
 section APF
 
-variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
-variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
-variable (p : ℕ) [Fact p.Prime]
-    [CharP (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring) p]
+variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
 
-include p
+local notation "p" => residueChar K
+variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
 /-- On an actual APF wild tail, the canonical ramification indices above
 every fixed original finite layer tend to infinity. -/
@@ -73,7 +68,7 @@ theorem IsAPF.exists_finiteLayer_ramificationIdx_unbounded [IsAPF K L]
         letI := spectralValuation_hasExtension_tower K (E := D.val) (L := E.val)
         n ≤ (IsLocalRing.maximalIdeal (spectralIntegerRing K E.val)).ramificationIdx
           (spectralIntegerRing K D.val) := by
-  obtain ⟨W, hW⟩ := IsAPF.exists_finiteLayer_wild_tail K L p
+  obtain ⟨W, hW⟩ := IsAPF.exists_finiteLayer_wild_tail K L
   refine ⟨W, fun D hWD n => ?_⟩
   obtain ⟨T, hDT, hT⟩ := FiniteLayer.exists_tail_finrank_ge K L D n
   refine ⟨T, hDT, fun E hTE => ?_⟩
@@ -92,7 +87,7 @@ theorem IsAPF.exists_finiteLayer_natCast_mem_maximalIdeal_pow [IsAPF K L]
     ∃ T : FiniteLayer K L, ∀ E : FiniteLayer K L, T ≤ E →
       (p : spectralIntegerRing K E.val) ∈
         IsLocalRing.maximalIdeal (spectralIntegerRing K E.val) ^ n := by
-  obtain ⟨W, hW⟩ := IsAPF.exists_finiteLayer_ramificationIdx_unbounded K L p
+  obtain ⟨W, hW⟩ := IsAPF.exists_finiteLayer_ramificationIdx_unbounded K L
   obtain ⟨T, hWT, hT⟩ := hW W le_rfl n
   refine ⟨T, fun E hTE => ?_⟩
   let : Algebra W.val E.val :=
@@ -122,7 +117,7 @@ theorem IsAPF.exists_finiteLayer_natCast_mem_image_maximalIdeal_pow [IsAPF K L]
       (p : E.val) ∈ (fun x : spectralIntegerRing K E.val => (x : E.val)) ''
         ((IsLocalRing.maximalIdeal (spectralIntegerRing K E.val) ^ n :
           Ideal (spectralIntegerRing K E.val)) : Set (spectralIntegerRing K E.val)) := by
-  obtain ⟨T, hT⟩ := IsAPF.exists_finiteLayer_natCast_mem_maximalIdeal_pow K L p n
+  obtain ⟨T, hT⟩ := IsAPF.exists_finiteLayer_natCast_mem_maximalIdeal_pow K L n
   exact ⟨T, fun E hTE => ⟨(p : spectralIntegerRing K E.val), hT E hTE, by simp⟩⟩
 
 end APF

@@ -23,15 +23,10 @@ namespace FontaineWintenberger
 
 open Filter
 
-variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
-variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
-variable (p : ℕ) [Fact p.Prime]
-    [CharP (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring) p]
+variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
 
-include p
+local notation "p" => residueChar K
+variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
 /-- Every requested integral precision is attained by the actual additive
 norm defect on an entire original finite-layer tail. -/
@@ -43,7 +38,7 @@ theorem IsAPF.exists_finiteLayer_integerNorm_add_congruence
           FiniteLayer.integerNorm E F hEF y ∈
             IsLocalRing.maximalIdeal (spectralIntegerRing K E.val) ^ s := by
   let c : ℝ := (p : ℝ) / ((p - 1 : ℕ) : ℝ) * s
-  obtain ⟨T₀, hT₀⟩ := IsAPF.exists_finiteLayer_wild_tail K L p
+  obtain ⟨T₀, hT₀⟩ := IsAPF.exists_finiteLayer_wild_tail K L
   obtain ⟨T₁, hT₁⟩ := IsAPF.exists_finiteLayer_relativeFirstBound_ge K L c
   refine ⟨FiniteLayer.sup T₀ T₁, fun E F hE hEF x y => ?_⟩
   let : Algebra E.val F.val := (IntermediateField.inclusion hEF).toRingHom.toAlgebra
@@ -58,10 +53,10 @@ theorem IsAPF.exists_finiteLayer_integerNorm_add_congruence
   obtain ⟨_, ⟨n, hd⟩, he⟩ := hT₀ E F ((FiniteLayer.le_sup_left T₀ T₁).trans hE) hEF
   have hb := hT₁ E F ((FiniteLayer.le_sup_right T₀ T₁).trans hE) hEF
   have h := FiniteLayer.integerNorm_add_congruence_of_le_apfRamificationBound
-    E F hEF p he n hd c hb x y
-  have hp : (p : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (Fact.out : p.Prime).ne_zero
+    E F hEF he n hd c hb x y
+  have hp : (p : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (Fact.out : Nat.Prime p).ne_zero
   have hp₁ : ((p - 1 : ℕ) : ℝ) ≠ 0 :=
-    Nat.cast_ne_zero.mpr (by have := (Fact.out : p.Prime).two_le; omega)
+    Nat.cast_ne_zero.mpr (by have := (Fact.out : Nat.Prime p).two_le; omega)
   have hc : ((p - 1 : ℕ) : ℝ) / p * c = (s : ℝ) := by
     dsimp only [c]
     field_simp
@@ -78,7 +73,7 @@ theorem IsAPF.exists_finiteLayer_normSumNet_sub_mem [IsAPF K L] (s : ℕ) :
           (fun x : spectralIntegerRing K E.val => (x : E.val)) ''
             ((IsLocalRing.maximalIdeal (spectralIntegerRing K E.val) ^ s :
               Ideal (spectralIntegerRing K E.val)) : Set (spectralIntegerRing K E.val)) := by
-  obtain ⟨T, hT⟩ := IsAPF.exists_finiteLayer_integerNorm_add_congruence K L p s
+  obtain ⟨T, hT⟩ := IsAPF.exists_finiteLayer_integerNorm_add_congruence K L s
   refine ⟨T, fun E hE α β hα hβ F => ?_⟩
   let x : spectralIntegerRing K F.val.val :=
     ⟨normLimitEval K L F.val α, normLimitEval_mem_of_valuation_le_one K L α hα F.val⟩
@@ -107,7 +102,7 @@ theorem IsAPF.exists_finiteLayer_normSumNet_cauchy [IsAPF K L] :
       normLimitValuation K L α ≤ 1 → normLimitValuation K L β ≤ 1 →
       letI := spectralNorm.nontriviallyNormedField K E.val
       Cauchy (map (normSumNet K L E α β) atTop) := by
-  obtain ⟨T, hT⟩ := IsAPF.exists_finiteLayer_wild_tail K L p
+  obtain ⟨T, hT⟩ := IsAPF.exists_finiteLayer_wild_tail K L
   refine ⟨T, fun E hE α β hα hβ => ?_⟩
   let := spectralNorm.nontriviallyNormedField K E.val
   let := spectralNorm.normedAlgebra K E.val
@@ -134,7 +129,7 @@ theorem IsAPF.exists_finiteLayer_normSumNet_cauchy [IsAPF K L] :
   intro N
   let s := ⌈apfPsi E.val L (N : ℝ)⌉₊
   have hs : apfPsi E.val L (N : ℝ) ≤ (s : ℝ) := Nat.le_ceil _
-  obtain ⟨U, hU⟩ := IsAPF.exists_finiteLayer_integerNorm_add_congruence K L p s
+  obtain ⟨U, hU⟩ := IsAPF.exists_finiteLayer_integerNorm_add_congruence K L s
   let A : Set.Ici E := ⟨FiniteLayer.sup E U, FiniteLayer.le_sup_left E U⟩
   have hstep (B C : FiniteLayer K L) (hEB : E ≤ B) (hBC : B ≤ C) (hUB : U ≤ B) :
       normSumNet K L E α β ⟨C, hEB.trans hBC⟩ -
@@ -153,7 +148,7 @@ theorem IsAPF.exists_finiteLayer_normSumNet_cauchy [IsAPF K L] :
       simpa only [x, y, sub_sub] using h
     obtain ⟨_, ⟨n, hd⟩, he⟩ := hT E B hE hEB
     have h := FiniteLayer.integerNorm_sub_congruence_of_totallyRamified
-      E B hEB p he n hd s x y hxy
+      E B hEB he n hd s x y hxy
     have hprecision := FiniteLayer.le_ceil_apfPhi_of_apfPsi_le K L E B hEB N s hs
     have hmem := Ideal.pow_le_pow_right hprecision h
     refine ⟨FiniteLayer.integerNorm E B hEB x - FiniteLayer.integerNorm E B hEB y,
@@ -186,7 +181,7 @@ theorem exists_tendsto_normSumNet_of_valuation_le_one [IsAPF K L]
     ∀ E : FiniteLayer K L, ∃ z : E.val,
       letI := spectralNorm.nontriviallyNormedField K E.val
       Tendsto (normSumNet K L E α β) atTop (nhds z) := by
-  obtain ⟨T, hT⟩ := IsAPF.exists_finiteLayer_normSumNet_cauchy K L p
+  obtain ⟨T, hT⟩ := IsAPF.exists_finiteLayer_normSumNet_cauchy K L
   apply exists_tendsto_normSumNet_of_upper_tail K L T α β
   intro E hE
   let := spectralNorm.nontriviallyNormedField K E.val
@@ -208,13 +203,13 @@ theorem existsUnique_normLimit_integral_add [IsAPF K L]
             ((IsLocalRing.maximalIdeal (spectralIntegerRing K E.val) ^ s :
               Ideal (spectralIntegerRing K E.val)) : Set (spectralIntegerRing K E.val)) := by
   obtain ⟨γ, hγ, huniq⟩ := existsUnique_normLimit_of_normSumNet_tendsto K L α β
-    (exists_tendsto_normSumNet_of_valuation_le_one K L p α β hα hβ)
+    (exists_tendsto_normSumNet_of_valuation_le_one K L α β hα hβ)
   refine ⟨γ, ⟨?_, hγ, ?_⟩, fun δ hδ => huniq δ hδ.2.1⟩
   · rw [normLimitValuation_le_one_iff K L γ]
     intro E
     exact normSumNet_limit_mem_of_valuation_le_one K L α β hα hβ E _ (hγ E)
   · intro s
-    obtain ⟨T, hT⟩ := IsAPF.exists_finiteLayer_normSumNet_sub_mem K L p s
+    obtain ⟨T, hT⟩ := IsAPF.exists_finiteLayer_normSumNet_sub_mem K L s
     refine ⟨T, fun E hE => ?_⟩
     let := spectralNorm.nontriviallyNormedField K E.val
     exact (FiniteLayer.isClosed_image_maximalIdeal_pow E s).mem_of_tendsto

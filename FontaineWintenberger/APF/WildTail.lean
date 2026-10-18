@@ -46,9 +46,9 @@ theorem relIndex_sup_eq_relIndex_of_normal_right (A U : Subgroup G) [U.Normal] :
 /-- Every actual intermediate index in a finite normal p-group product
 is a power of p, without normality of the three intervening subgroups. -/
 theorem relIndex_eq_prime_pow_of_le_sup
-    (p : ℕ) [Fact p.Prime] (A B C U : Subgroup G) [U.Normal]
-    (hU : IsPGroup p U) (hAB : A ≤ B) (hBC : B ≤ C) (hCU : C ≤ A ⊔ U) :
-    ∃ n : ℕ, B.relIndex C = p ^ n := by
+    (q : ℕ) [Fact q.Prime] (A B C U : Subgroup G) [U.Normal]
+    (hU : IsPGroup q U) (hAB : A ≤ B) (hBC : B ≤ C) (hCU : C ≤ A ⊔ U) :
+    ∃ n : ℕ, B.relIndex C = q ^ n := by
   have hd₁ : B.relIndex C ∣ A.relIndex C := by
     rw [← Subgroup.relIndex_mul_relIndex A B C hAB hBC]
     exact ⟨A.relIndex B, by ring⟩
@@ -61,19 +61,16 @@ theorem relIndex_eq_prime_pow_of_le_sup
   have hd := hd₁.trans (hd₂.trans hd₃)
   obtain ⟨m, hm⟩ := IsPGroup.iff_card.mp hU
   rw [hm] at hd
-  obtain ⟨n, _, hn⟩ := (Nat.dvd_prime_pow (Fact.out : p.Prime)).mp hd
+  obtain ⟨n, _, hn⟩ := (Nat.dvd_prime_pow (Fact.out : q.Prime)).mp hd
   exact ⟨n, hn⟩
 
 end FiniteGroups
 
 section SeparableModel
 
-variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
-variable (p : ℕ) [Fact p.Prime]
-    [CharP (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring) p]
+variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
+
+local notation "p" => residueChar K
 
 /-- Above the genuine upper-one stage, every actual finite subextension
 step has p-power degree. The larger field and the infinite extension may
@@ -153,13 +150,11 @@ end SeparableModel
 
 section AbstractExtension
 
-variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
+
+local notation "p" => residueChar K
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
-omit [PerfectField (IsLocalRing.ResidueField
-    (NormedField.valuation (K := K)).valuationSubring)] in
 /-- Surjectivity of the actual residue inclusion makes the actual finite
 step totally ramified, using its original spectral integer-ring map. -/
 theorem FiniteLayer.ramificationIdx_eq_finrank_of_residueInclusion_surjective
@@ -196,10 +191,6 @@ theorem FiniteLayer.ramificationIdx_eq_finrank_of_residueInclusion_surjective
   rw [hf, mul_one] at h
   exact h
 
-variable (p : ℕ) [Fact p.Prime]
-    [CharP (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring) p]
-
 /-- An actual finite layer in the original abstract APF extension gives
 surjective residue maps and p-power degrees on every original finite step
 above it, including nonnormal steps. -/
@@ -224,7 +215,7 @@ theorem IsAPF.exists_finiteLayer_residue_surjective_and_degree_prime_pow
   have hstage : apfFiniteStage K j.fieldRange 1 ≤ E.val.map j := by
     rw [← hT₁]
     exact IntermediateField.map_mono j ((FiniteLayer.le_sup_right T₀ T₁).trans hE)
-  obtain ⟨n, hn⟩ := finrank_eq_prime_pow_of_apfFiniteStage_one_le K p
+  obtain ⟨n, hn⟩ := finrank_eq_prime_pow_of_apfFiniteStage_one_le K
     j.fieldRange (E.val.map j) (F.val.map j) hFL hmap hstage
   refine ⟨n, ?_⟩
   rw [← IntermediateField.relfinrank_eq_finrank_of_le hmap,
@@ -247,7 +238,7 @@ theorem IsAPF.exists_finiteLayer_wild_tail [IsAPF K L] :
         (IsLocalRing.maximalIdeal (spectralIntegerRing K F.val)).ramificationIdx
             (spectralIntegerRing K E.val) =
           Module.finrank E.val (IntermediateField.extendScalars hEF) := by
-  obtain ⟨T, hT⟩ := IsAPF.exists_finiteLayer_residue_surjective_and_degree_prime_pow K L p
+  obtain ⟨T, hT⟩ := IsAPF.exists_finiteLayer_residue_surjective_and_degree_prime_pow K L
   refine ⟨T, fun E F hE hEF ↦ ?_⟩
   obtain ⟨hs, hn⟩ := hT E F hE hEF
   exact ⟨hs, hn, FiniteLayer.ramificationIdx_eq_finrank_of_residueInclusion_surjective K L

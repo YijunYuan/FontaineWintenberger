@@ -38,15 +38,10 @@ theorem normSumNet_mul_left (E : FiniteLayer K L) (δ α β : NormLimit K L)
 
 end ScalarCovariance
 
-variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
-variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
-variable (p : ℕ) [Fact p.Prime]
-    [CharP (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring) p]
+variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
 
-include p
+local notation "p" => residueChar K
+variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
 /-- Every pair of actual norm-compatible families has convergent original
 norm-sum nets; existing nonzero families themselves provide the scaling. -/
@@ -93,7 +88,7 @@ theorem exists_tendsto_normSumNet [IsAPF K L] (α β : NormLimit K L) :
   intro E
   let := spectralNorm.nontriviallyNormedField K E.val
   obtain ⟨z, hz⟩ := exists_tendsto_normSumNet_of_valuation_le_one
-    K L p (α / δ) (β / δ) ha hb E
+    K L (α / δ) (β / δ) ha hb E
   refine ⟨normLimitEval K L E δ * z, ?_⟩
   simpa only [← normSumNet_mul_left, hδα, hδβ] using
     hz.const_mul (normLimitEval K L E δ)
@@ -105,47 +100,47 @@ theorem existsUnique_normLimit_add [IsAPF K L] (α β : NormLimit K L) :
       letI := spectralNorm.nontriviallyNormedField K E.val
       Tendsto (normSumNet K L E α β) atTop (nhds (normLimitEval K L E γ)) :=
   existsUnique_normLimit_of_normSumNet_tendsto K L α β
-    (exists_tendsto_normSumNet K L p α β)
+    (exists_tendsto_normSumNet K L α β)
 
 /-- Addition on the same original multiplicative norm-limit carrier,
 characterized by the actual norm-sum limits at every finite base. -/
 def normLimitAdd [IsAPF K L] (α β : NormLimit K L) : NormLimit K L :=
-  (existsUnique_normLimit_add K L p α β).choose
+  (existsUnique_normLimit_add K L α β).choose
 
 /-- Every original coordinate of the actual sum is its original norm-sum limit. -/
 theorem tendsto_normSumNet_normLimitAdd [IsAPF K L] (α β : NormLimit K L)
     (E : FiniteLayer K L) :
     letI := spectralNorm.nontriviallyNormedField K E.val
     Tendsto (normSumNet K L E α β) atTop
-      (nhds (normLimitEval K L E (normLimitAdd K L p α β))) :=
-  (existsUnique_normLimit_add K L p α β).choose_spec.1 E
+      (nhds (normLimitEval K L E (normLimitAdd K L α β))) :=
+  (existsUnique_normLimit_add K L α β).choose_spec.1 E
 
 /-- The original norm-sum limits uniquely characterize the same sum operation. -/
 theorem eq_normLimitAdd_of_tendsto [IsAPF K L] (α β γ : NormLimit K L)
     (hγ : ∀ E : FiniteLayer K L,
       letI := spectralNorm.nontriviallyNormedField K E.val
       Tendsto (normSumNet K L E α β) atTop (nhds (normLimitEval K L E γ))) :
-    γ = normLimitAdd K L p α β :=
-  (existsUnique_normLimit_add K L p α β).choose_spec.2 γ hγ
+    γ = normLimitAdd K L α β :=
+  (existsUnique_normLimit_add K L α β).choose_spec.2 γ hγ
 
 /-- Commutativity follows from the exact finite-field sums in the defining nets. -/
 theorem normLimitAdd_comm [IsAPF K L] (α β : NormLimit K L) :
-    normLimitAdd K L p α β = normLimitAdd K L p β α := by
+    normLimitAdd K L α β = normLimitAdd K L β α := by
   symm
-  apply eq_normLimitAdd_of_tendsto K L p α β
+  apply eq_normLimitAdd_of_tendsto K L α β
   intro E
   let := spectralNorm.nontriviallyNormedField K E.val
   have heq : normSumNet K L E α β = normSumNet K L E β α := by
     funext F
     simp only [normSumNet, add_comm]
   rw [heq]
-  exact tendsto_normSumNet_normLimitAdd K L p β α E
+  exact tendsto_normSumNet_normLimitAdd K L β α E
 
 /-- The original zero is the left identity for the actual norm-limit addition. -/
 theorem normLimitAdd_zero_left [IsAPF K L] (α : NormLimit K L) :
-    normLimitAdd K L p 0 α = α := by
+    normLimitAdd K L 0 α = α := by
   symm
-  apply eq_normLimitAdd_of_tendsto K L p 0 α α
+  apply eq_normLimitAdd_of_tendsto K L 0 α α
   intro E
   let := spectralNorm.nontriviallyNormedField K E.val
   have heq : normSumNet K L E 0 α = fun _ => normLimitEval K L E α :=
@@ -155,42 +150,42 @@ theorem normLimitAdd_zero_left [IsAPF K L] (α : NormLimit K L) :
 
 /-- The original zero is the right identity for the actual norm-limit addition. -/
 theorem normLimitAdd_zero_right [IsAPF K L] (α : NormLimit K L) :
-    normLimitAdd K L p α 0 = α := by
+    normLimitAdd K L α 0 = α := by
   rw [normLimitAdd_comm, normLimitAdd_zero_left]
 
 /-- Exact norm multiplicativity gives distributivity of the original
 multiplication over the actual norm-limit addition. -/
 theorem mul_normLimitAdd [IsAPF K L] (δ α β : NormLimit K L) :
-    δ * normLimitAdd K L p α β =
-      normLimitAdd K L p (δ * α) (δ * β) := by
-  apply eq_normLimitAdd_of_tendsto K L p (δ * α) (δ * β)
+    δ * normLimitAdd K L α β =
+      normLimitAdd K L (δ * α) (δ * β) := by
+  apply eq_normLimitAdd_of_tendsto K L (δ * α) (δ * β)
   intro E
   let := spectralNorm.nontriviallyNormedField K E.val
   rw [map_mul]
   simpa only [← normSumNet_mul_left] using
-    (tendsto_normSumNet_normLimitAdd K L p α β E).const_mul (normLimitEval K L E δ)
+    (tendsto_normSumNet_normLimitAdd K L α β E).const_mul (normLimitEval K L E δ)
 
 /-- Integral inputs have an integral actual sum, on the same stable valuation. -/
 theorem normLimitValuation_normLimitAdd_le_one [IsAPF K L] (α β : NormLimit K L)
     (hα : normLimitValuation K L α ≤ 1) (hβ : normLimitValuation K L β ≤ 1) :
-    normLimitValuation K L (normLimitAdd K L p α β) ≤ 1 := by
+    normLimitValuation K L (normLimitAdd K L α β) ≤ 1 := by
   rw [normLimitValuation_le_one_iff K L]
   intro E
   exact normSumNet_limit_mem_of_valuation_le_one K L α β hα hβ E _
-    (tendsto_normSumNet_normLimitAdd K L p α β E)
+    (tendsto_normSumNet_normLimitAdd K L α β E)
 
 /-- The actual sum of integral inputs has the proved eventual coordinate
 approximation at every finite precision. -/
 theorem normLimitAdd_sub_mem_of_valuation_le_one [IsAPF K L] (α β : NormLimit K L)
     (hα : normLimitValuation K L α ≤ 1) (hβ : normLimitValuation K L β ≤ 1) :
     ∀ s : ℕ, ∃ T : FiniteLayer K L, ∀ E : FiniteLayer K L, T ≤ E →
-      normLimitEval K L E (normLimitAdd K L p α β) -
+      normLimitEval K L E (normLimitAdd K L α β) -
         normLimitEval K L E α - normLimitEval K L E β ∈
         (fun x : spectralIntegerRing K E.val => (x : E.val)) ''
           ((IsLocalRing.maximalIdeal (spectralIntegerRing K E.val) ^ s :
             Ideal (spectralIntegerRing K E.val)) : Set (spectralIntegerRing K E.val)) := by
-  obtain ⟨γ, hγ, _⟩ := existsUnique_normLimit_integral_add K L p α β hα hβ
-  have heq := eq_normLimitAdd_of_tendsto K L p α β γ hγ.2.1
+  obtain ⟨γ, hγ, _⟩ := existsUnique_normLimit_integral_add K L α β hα hβ
+  have heq := eq_normLimitAdd_of_tendsto K L α β γ hγ.2.1
   simpa only [heq] using hγ.2.2
 
 end FontaineWintenberger

@@ -23,35 +23,32 @@ noncomputable section
 
 namespace FontaineWintenberger
 
-variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
+
+local notation "p" => residueChar K
 variable (L : IntermediateField K (SeparableClosure K))
-variable (p : ℕ) [Fact p.Prime]
-    [CharP (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring) p]
 variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 
 local notation "Ω" => SeparableClosure K
 local notation "X" => NormLimit K L
-local notation "U" => SeparableNormUnion K L Ω p
-local notation "ι" => separableNormUnionBaseHom K L Ω p
-local notation "ρ" => normLimitAut K L p
+local notation "U" => SeparableNormUnion K L Ω
+local notation "ι" => separableNormUnionBaseHom K L Ω
+local notation "ρ" => normLimitAut K L
 
-local notation "S" => normUnionGaloisSubgroup K L p
+local notation "S" => normUnionGaloisSubgroup K L
 
 /-- The original automorphism supplied by the actual subgroup membership theorem. -/
 def normUnionGaloisRestrictionFun (β : S) : L ≃ₐ[K] L :=
-  Classical.choose ((mem_normUnionGaloisSubgroup K L p β.val).mp β.property)
+  Classical.choose ((mem_normUnionGaloisSubgroup K L β.val).mp β.property)
 
 /-- The chosen original automorphism has the actual base square on every element. -/
 theorem normUnionGaloisRestrictionFun_base :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
     ∀ (β : S) (x : X), β.val (ι x) =
-      ι (ρ (normUnionGaloisRestrictionFun K L p β) x) := by
+      ι (ρ (normUnionGaloisRestrictionFun K L β) x) := by
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
   intro β x
   exact Classical.choose_spec
-    ((mem_normUnionGaloisSubgroup K L p β.val).mp β.property) x
+    ((mem_normUnionGaloisSubgroup K L β.val).mp β.property) x
 
 end FontaineWintenberger

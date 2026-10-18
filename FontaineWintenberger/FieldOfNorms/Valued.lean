@@ -21,18 +21,15 @@ noncomputable section
 
 namespace FontaineWintenberger
 
-variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
+
+local notation "p" => residueChar K
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
-variable (p : ℕ) [Fact p.Prime]
-    [CharP (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring) p]
 
 /-- The original stable multiplicative valuation is ultrametric for the
 actual norm-limit addition, before any valuation topology is chosen. -/
 theorem normLimitValuation_add_le_max [IsAPF K L] (α β : NormLimit K L) :
-    normLimitValuation K L (normLimitAdd K L p α β) ≤
+    normLimitValuation K L (normLimitAdd K L α β) ≤
       max (normLimitValuation K L α) (normLimitValuation K L β) := by
   by_cases hα : α = 0
   · simp only [hα, normLimitAdd_zero_left, map_zero, zero_le, max_eq_right, le_refl]
@@ -55,36 +52,36 @@ theorem normLimitValuation_add_le_max [IsAPF K L] (α β : NormLimit K L) :
   obtain ⟨δ, hδ, hmax, ha, hb⟩ := hscale
   have hδα : δ * (α / δ) = α := by simp [div_eq_mul_inv, mul_left_comm, hδ]
   have hδβ : δ * (β / δ) = β := by simp [div_eq_mul_inv, mul_left_comm, hδ]
-  have hsum := normLimitValuation_normLimitAdd_le_one K L p (α / δ) (β / δ) ha hb
-  have heq := mul_normLimitAdd K L p δ (α / δ) (β / δ)
+  have hsum := normLimitValuation_normLimitAdd_le_one K L (α / δ) (β / δ) ha hb
+  have heq := mul_normLimitAdd K L δ (α / δ) (β / δ)
   rw [hδα, hδβ] at heq
-  change w (normLimitAdd K L p α β) ≤ max (w α) (w β)
+  change w (normLimitAdd K L α β) ≤ max (w α) (w β)
   rw [← heq, map_mul, ← hmax]
   simpa only [mul_one] using mul_le_mul' (le_refl (w δ)) hsum
 
 /-- The same stable map, now bundled as a field valuation for the actual
 constructed field. No new map or alternate field carrier is introduced. -/
 def normLimitFieldValuation [IsAPF K L] [Fact (¬ Module.Finite K L)] :
-    letI := normLimitField K L p
+    letI := normLimitField K L
     Valuation (NormLimit K L) (WithZero (Multiplicative ℤ)) := by
-  letI := normLimitField K L p
+  letI := normLimitField K L
   exact {
     normLimitValuation K L with
-    map_add_le_max' := normLimitValuation_add_le_max K L p }
+    map_add_le_max' := normLimitValuation_add_le_max K L }
 
 /-- Bundling the field valuation preserves exactly the existing stable map. -/
 @[simp]
 theorem normLimitFieldValuation_apply [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (α : NormLimit K L) :
-    normLimitFieldValuation K L p α = normLimitValuation K L α := rfl
+    normLimitFieldValuation K L α = normLimitValuation K L α := rfl
 
 /-- The canonical valued-field structure uses exactly the existing stable
 map and its valuation uniformity on the same original field carrier. -/
 @[instance_reducible]
 def normLimitValued [IsAPF K L] [Fact (¬ Module.Finite K L)] :
-    letI := normLimitField K L p
+    letI := normLimitField K L
     Valued (NormLimit K L) (WithZero (Multiplicative ℤ)) := by
-  letI := normLimitField K L p
-  exact Valued.mk' (normLimitFieldValuation K L p)
+  letI := normLimitField K L
+  exact Valued.mk' (normLimitFieldValuation K L)
 
 end FontaineWintenberger

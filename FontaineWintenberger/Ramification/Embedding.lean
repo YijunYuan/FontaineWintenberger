@@ -160,7 +160,9 @@ end PairUniformizer
 
 section Spectral
 
-variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
+variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
+
+local notation "p" => residueChar K
 variable {E N : Type*} [Field E] [Field N] [Algebra K E] [Algebra K N]
     [FiniteDimensional K E] [FiniteDimensional K N]
     [Algebra.IsSeparable K E] [Algebra.IsSeparable K N]
@@ -385,9 +387,6 @@ theorem embeddingRamificationOrder_eq_generator (σ τ : E →ₐ[K] N)
         embeddingRamificationIdx K σ := by
   rw [embeddingRamificationOrder, embeddingIntegralOrder_eq_generator K σ τ hx]
 
-variable [PerfectField (ResidueField
-  (NormedField.valuation (K := K)).valuationSubring)]
-
 /-- Actual integral generation supplies one element computing every embedding pair. -/
 theorem exists_embeddingIntegralOrder_generator :
     ∃ x : OE, Algebra.adjoin OK {x} = ⊤ ∧ ∀ σ τ : E →ₐ[K] N,
@@ -437,11 +436,6 @@ theorem embeddingRamificationOrder_comp (σ τ : E →ₐ[K] N) (u : N →ₐ[K]
     exact_mod_cast (embeddingRamificationIdx_pos K u).ne'
   exact ENNReal.mul_div_mul_left _ _ he (ENNReal.natCast_ne_top _)
 
-variable (p : ℕ) [Fact p.Prime] [CharP (ResidueField
-  (NormedField.valuation (K := K)).valuationSubring) p]
-
-include p
-
 /-- Actual residue agreement makes every genuine source uniformizer compute the pair order. -/
 theorem embeddingIntegralOrder_eq_uniformizer (σ τ : E →ₐ[K] N)
     (hres : spectralResidueInclusion K σ = spectralResidueInclusion K τ)
@@ -465,7 +459,7 @@ theorem embeddingRamificationOrder_eq_uniformizer (σ τ : E →ₐ[K] N)
     embeddingRamificationOrder K σ τ =
       (addVal ON (spectralIntegerInclusion K σ π - spectralIntegerInclusion K τ π) : ℝ≥0∞) /
         embeddingRamificationIdx K σ := by
-  rw [embeddingRamificationOrder, embeddingIntegralOrder_eq_uniformizer K p σ τ hres hπ]
+  rw [embeddingRamificationOrder, embeddingIntegralOrder_eq_uniformizer K σ τ hres hπ]
 
 end Spectral
 
@@ -509,7 +503,9 @@ end PairField
 
 section Closure
 
-variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
+variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
+
+local notation "p" => residueChar K
 variable {E : Type*} [Field E] [Algebra K E] [FiniteDimensional K E]
     [Algebra.IsSeparable K E]
 
@@ -532,9 +528,6 @@ theorem closureEmbeddingOrder_eq_top_iff (σ τ : E →ₐ[K] SeparableClosure K
 theorem closureEmbeddingOrder_lt_top {σ τ : E →ₐ[K] SeparableClosure K} (h : σ ≠ τ) :
     closureEmbeddingOrder K σ τ < ⊤ :=
   lt_top_iff_ne_top.mpr (fun ht => h ((closureEmbeddingOrder_eq_top_iff K σ τ).mp ht))
-
-variable [PerfectField (ResidueField
-  (NormedField.valuation (K := K)).valuationSubring)]
 
 /-- The closure formulation uses the same integral elements and actual finite-ambient
 normalized valuation, with no valuation or norm instance added on the closure. -/
@@ -612,7 +605,9 @@ end Closure
 
 section Signed
 
-variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
+variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
+
+local notation "p" => residueChar K
 variable {E N : Type*} [Field E] [Field N] [Algebra K E] [Algebra K N]
     [FiniteDimensional K E] [FiniteDimensional K N]
     [Algebra.IsSeparable K E] [Algebra.IsSeparable K N]
@@ -712,9 +707,6 @@ theorem embeddingRamificationNumber_comm (σ τ : E →ₐ[K] N) :
   rw [embeddingRamificationNumber, embeddingRamificationNumber,
     embeddingRamificationOrder_comm K σ τ]
 
-variable [PerfectField (ResidueField
-  (NormedField.valuation (K := K)).valuationSubring)]
-
 theorem embeddingRamificationNumber_comp {M : Type*} [Field M] [Algebra K M]
     [FiniteDimensional K M] [Algebra.IsSeparable K M]
     (σ τ : E →ₐ[K] N) (u : N →ₐ[K] M) :
@@ -740,11 +732,6 @@ theorem closureEmbeddingNumber_aut (s : E ≃ₐ[K] E)
       ((ramificationOrder (R := spectralIntegerRing K E) (E ≃ₐ[K] E) s : ℝ≥0∞) : EReal) - 1 := by
   rw [closureEmbeddingNumber_eq, closureEmbeddingOrder_aut]
 
-variable (p : ℕ) [Fact p.Prime] [CharP (ResidueField
-  (NormedField.valuation (K := K)).valuationSubring) p]
-
-include p
-
 theorem embeddingRamificationNumber_nonneg (σ τ : E →ₐ[K] N)
     (hres : spectralResidueInclusion K σ = spectralResidueInclusion K τ) :
     0 ≤ embeddingRamificationNumber K σ τ := by
@@ -753,7 +740,7 @@ theorem embeddingRamificationNumber_nonneg (σ τ : E →ₐ[K] N)
     (spectralIntegerInclusion K σ π) (spectralIntegerInclusion K τ π)
   rw [addVal_spectralIntegerInclusion, addVal_spectralIntegerInclusion,
     addVal_uniformizer hπ, mul_one, mul_one, embeddingRamificationIdx_eq K τ σ,
-    min_self, ← embeddingIntegralOrder_eq_uniformizer K p σ τ hres hπ] at hv
+    min_self, ← embeddingIntegralOrder_eq_uniformizer K σ τ hres hπ] at hv
   have he : (embeddingRamificationIdx K σ : ℝ≥0∞) ≠ 0 := by
     exact_mod_cast (embeddingRamificationIdx_pos K σ).ne'
   have hj : (1 : ℝ≥0∞) ≤ embeddingRamificationOrder K σ τ := by
@@ -772,7 +759,7 @@ theorem embeddingRamificationNumber_eq_uniformizer (σ τ : E →ₐ[K] N)
       (((addVal (spectralIntegerRing K N)
         (spectralIntegerInclusion K σ π - spectralIntegerInclusion K τ π) : ℝ≥0∞) /
           embeddingRamificationIdx K σ : ℝ≥0∞) : EReal) - 1 := by
-  rw [embeddingRamificationNumber, embeddingRamificationOrder_eq_uniformizer K p σ τ hres hπ]
+  rw [embeddingRamificationNumber, embeddingRamificationOrder_eq_uniformizer K σ τ hres hπ]
 
 end Signed
 

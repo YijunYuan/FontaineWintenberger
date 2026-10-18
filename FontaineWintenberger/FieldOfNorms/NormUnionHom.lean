@@ -46,39 +46,39 @@ theorem exists_algHom_factor_of_basis_mem_range
 
 section NormUnion
 
-variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField (NormedField.valuation (K := K)).valuationSubring)]
+variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
     (L M : Type*) [Field L] [Field M]
     [Algebra K L] [Algebra K M] [Algebra L M] [IsScalarTower K L M]
     [Algebra.IsSeparable K L] [Algebra.IsSeparable L M]
-    (p : ℕ) [Fact p.Prime]
-    [CharP (IsLocalRing.ResidueField (NormedField.valuation (K := K)).valuationSubring) p]
-    [IsAPF K L] [Fact (¬ Module.Finite K L)]
+
+local notation "p" => residueChar K
+
+variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 
 /-- A finite algebraic Hom into the actual norm-field union factors through
 one actual finite original stage. -/
 theorem separableNormUnion_exists_algHom_factor :
-    letI := normLimitField K L p
-    letI := separableNormUnionField K L M p
-    letI := separableNormUnionAlgebra K L M p
+    letI := normLimitField K L
+    letI := separableNormUnionField K L M
+    letI := separableNormUnionAlgebra K L M
     ∀ {A : Type*} [Field A] [Algebra (NormLimit K L) A]
       [FiniteDimensional (NormLimit K L) A]
-      (f : A →ₐ[NormLimit K L] SeparableNormUnion K L M p),
+      (f : A →ₐ[NormLimit K L] SeparableNormUnion K L M),
       ∃ N : FiniteLayer L M,
-        letI := separableNormUnionStageField K L M p N
-        letI := separableNormUnionStageAlgebra K L M p N
+        letI := separableNormUnionStageField K L M N
+        letI := separableNormUnionStageAlgebra K L M N
         ∃ g : A →ₐ[NormLimit K L] NormLimit K N.val,
-          (separableNormUnionOfAlgHom K L M p N).comp g = f := by
-  let := normLimitField K L p
-  let := separableNormUnionField K L M p
-  let := separableNormUnionAlgebra K L M p
+          (separableNormUnionOfAlgHom K L M N).comp g = f := by
+  let := normLimitField K L
+  let := separableNormUnionField K L M
+  let := separableNormUnionAlgebra K L M
   intro A _ _ _ f
-  obtain ⟨N, x, hx⟩ := separableNormUnion_exists_finiteStage K L M p
+  obtain ⟨N, x, hx⟩ := separableNormUnion_exists_finiteStage K L M
     (fun i => f (Module.finBasis (NormLimit K L) A i))
-  let := separableNormUnionStageField K L M p N
-  let := separableNormUnionStageAlgebra K L M p N
+  let := separableNormUnionStageField K L M N
+  let := separableNormUnionStageAlgebra K L M N
   refine ⟨N, exists_algHom_factor_of_basis_mem_range f
-    (separableNormUnionOfAlgHom K L M p N) (fun i => ?_)⟩
+    (separableNormUnionOfAlgHom K L M N) (fun i => ?_)⟩
   exact ⟨x i, hx i⟩
 
 variable (M₁ : Type*) [Field M₁] [Algebra K M₁] [Algebra L M₁]
@@ -88,37 +88,37 @@ variable (M₁ : Type*) [Field M₁] [Algebra K M₁] [Algebra L M₁]
 an original field embedding into an actual finite target layer. -/
 theorem separableNormUnion_exists_finite_preimage (Q : FiniteLayer L M₁) :
     letI : Algebra.IsSeparable K Q.val := Algebra.IsSeparable.trans K L Q.val
-    letI := normLimitField K L p
-    letI := separableNormUnionStageField K L M₁ p Q
-    letI := separableNormUnionStageAlgebra K L M₁ p Q
-    letI := separableNormUnionField K L M p
-    letI := separableNormUnionAlgebra K L M p
-    ∀ f : NormLimit K Q.val →ₐ[NormLimit K L] SeparableNormUnion K L M p,
+    letI := normLimitField K L
+    letI := separableNormUnionStageField K L M₁ Q
+    letI := separableNormUnionStageAlgebra K L M₁ Q
+    letI := separableNormUnionField K L M
+    letI := separableNormUnionAlgebra K L M
+    ∀ f : NormLimit K Q.val →ₐ[NormLimit K L] SeparableNormUnion K L M,
       ∃ R : FiniteLayer L M,
         letI : Algebra.IsSeparable K R.val := Algebra.IsSeparable.trans K L R.val
-        letI := separableNormUnionStageField K L M p R
-        letI := separableNormUnionStageAlgebra K L M p R
+        letI := separableNormUnionStageField K L M R
+        letI := separableNormUnionStageAlgebra K L M R
         ∃ φ : Q.val →ₐ[L] R.val,
-          (separableNormUnionOfAlgHom K L M p R).comp
-            (finiteNormLimitAlgHom K L Q.val R.val p
+          (separableNormUnionOfAlgHom K L M R).comp
+            (finiteNormLimitAlgHom K L Q.val R.val
               φ) = f := by
   let : Algebra.IsSeparable K Q.val := Algebra.IsSeparable.trans K L Q.val
-  let := normLimitField K L p
-  let := separableNormUnionStageField K L M₁ p Q
-  let := separableNormUnionStageAlgebra K L M₁ p Q
-  let := separableNormUnionField K L M p
-  let := separableNormUnionAlgebra K L M p
+  let := normLimitField K L
+  let := separableNormUnionStageField K L M₁ Q
+  let := separableNormUnionStageAlgebra K L M₁ Q
+  let := separableNormUnionField K L M
+  let := separableNormUnionAlgebra K L M
   let : FiniteDimensional (NormLimit K L) (NormLimit K Q.val) :=
-    finiteDimensional_finiteNormLimit K L Q.val p
+    finiteDimensional_finiteNormLimit K L Q.val
   intro f
-  obtain ⟨R, g, hg⟩ := separableNormUnion_exists_algHom_factor K L M p f
+  obtain ⟨R, g, hg⟩ := separableNormUnion_exists_algHom_factor K L M f
   let : Algebra.IsSeparable K R.val := Algebra.IsSeparable.trans K L R.val
-  let := separableNormUnionStageField K L M p R
-  let := separableNormUnionStageAlgebra K L M p R
-  let e := finiteNormLimitHomEquiv K L Q.val R.val p
+  let := separableNormUnionStageField K L M R
+  let := separableNormUnionStageAlgebra K L M R
+  let e := finiteNormLimitHomEquiv K L Q.val R.val
   refine ⟨R, e.symm g, ?_⟩
   exact (congrArg (fun j =>
-    (separableNormUnionOfAlgHom K L M p R).comp j)
+    (separableNormUnionOfAlgHom K L M R).comp j)
     (e.apply_symm_apply g)).trans hg
 
 /-- Enlarging the actual target layer leaves the induced map into the same
@@ -129,37 +129,37 @@ theorem separableNormUnionOf_finiteHom_inclusion (Q : FiniteLayer L M₁)
     letI : Algebra.IsSeparable K Q.val := Algebra.IsSeparable.trans K L Q.val
     letI : Algebra.IsSeparable K R.val := Algebra.IsSeparable.trans K L R.val
     letI : Algebra.IsSeparable K P.val := Algebra.IsSeparable.trans K L P.val
-    separableNormUnionOf K L M p P
-        (finiteNormLimitHomEquiv K L Q.val P.val p
+    separableNormUnionOf K L M P
+        (finiteNormLimitHomEquiv K L Q.val P.val
           ((IntermediateField.inclusion hRP).comp φ) x) =
-      separableNormUnionOf K L M p R
-        (finiteNormLimitHomEquiv K L Q.val R.val p φ x) := by
+      separableNormUnionOf K L M R
+        (finiteNormLimitHomEquiv K L Q.val R.val φ x) := by
   let : Algebra.IsSeparable K Q.val := Algebra.IsSeparable.trans K L Q.val
   let (N : FiniteLayer L M) : Algebra.IsSeparable K N.val :=
     Algebra.IsSeparable.trans K L N.val
-  let := normLimitField K L p
-  let := separableNormUnionStageField K L M₁ p Q
-  let := separableNormUnionStageAlgebra K L M₁ p Q
+  let := normLimitField K L
+  let := separableNormUnionStageField K L M₁ Q
+  let := separableNormUnionStageAlgebra K L M₁ Q
   let (N : FiniteLayer L M) : Field (NormLimit K N.val) :=
-    separableNormUnionStageField K L M p N
+    separableNormUnionStageField K L M N
   let (N : FiniteLayer L M) : Algebra (NormLimit K L) (NormLimit K N.val) :=
-    separableNormUnionStageAlgebra K L M p N
-  let y := finiteNormLimitHomEquiv K L Q.val R.val p φ x
+    separableNormUnionStageAlgebra K L M N
+  let y := finiteNormLimitHomEquiv K L Q.val R.val φ x
   have hc := congrArg (fun f => f x)
-    (finiteNormLimitAlgHom_comp K L Q.val R.val P.val p
+    (finiteNormLimitAlgHom_comp K L Q.val R.val P.val
       φ
       (IntermediateField.inclusion hRP))
-  have hi : finiteNormLimitHomEquiv K L R.val P.val p
+  have hi : finiteNormLimitHomEquiv K L R.val P.val
       (IntermediateField.inclusion hRP) y =
-      separableNormUnionTransition K L M p R P hRP y := by
+      separableNormUnionTransition K L M R P hRP y := by
     let : Algebra R.val P.val := (IntermediateField.inclusion hRP).toRingHom.toAlgebra
     let : IsScalarTower L R.val P.val := IsScalarTower.of_algebraMap_eq' rfl
     let : IsScalarTower K R.val P.val := IsScalarTower.of_algebraMap_eq' rfl
-    exact finiteNormLimitAlgHom_algebraMap K L R.val P.val p
+    exact finiteNormLimitAlgHom_algebraMap K L R.val P.val
       y
-  exact (congrArg (separableNormUnionOf K L M p P) hc).trans
-    ((congrArg (separableNormUnionOf K L M p P) hi).trans
-      (separableNormUnionOf_transition K L M p R P hRP y))
+  exact (congrArg (separableNormUnionOf K L M P) hc).trans
+    ((congrArg (separableNormUnionOf K L M P) hi).trans
+      (separableNormUnionOf_transition K L M R P hRP y))
 
 /-- Equality of maps into the actual union reflects equality of the original
 finite-source embeddings, even when their target stages differ. -/
@@ -169,33 +169,33 @@ theorem separableNormUnion_finiteHom_faithful (Q : FiniteLayer L M₁)
     letI : Algebra.IsSeparable K R.val := Algebra.IsSeparable.trans K L R.val
     letI : Algebra.IsSeparable K S.val := Algebra.IsSeparable.trans K L S.val
     (∀ x : NormLimit K Q.val,
-      separableNormUnionOf K L M p R
-          (finiteNormLimitHomEquiv K L Q.val R.val p φ x) =
-        separableNormUnionOf K L M p S
-          (finiteNormLimitHomEquiv K L Q.val S.val p ψ x)) →
+      separableNormUnionOf K L M R
+          (finiteNormLimitHomEquiv K L Q.val R.val φ x) =
+        separableNormUnionOf K L M S
+          (finiteNormLimitHomEquiv K L Q.val S.val ψ x)) →
       ∀ a : Q.val, (φ a : M) = (ψ a : M) := by
   let : Algebra.IsSeparable K Q.val := Algebra.IsSeparable.trans K L Q.val
   let (N : FiniteLayer L M) : Algebra.IsSeparable K N.val :=
     Algebra.IsSeparable.trans K L N.val
-  let := normLimitField K L p
-  let := separableNormUnionStageField K L M₁ p Q
-  let := separableNormUnionStageAlgebra K L M₁ p Q
+  let := normLimitField K L
+  let := separableNormUnionStageField K L M₁ Q
+  let := separableNormUnionStageAlgebra K L M₁ Q
   let (N : FiniteLayer L M) : Field (NormLimit K N.val) :=
-    separableNormUnionStageField K L M p N
+    separableNormUnionStageField K L M N
   let (N : FiniteLayer L M) : Algebra (NormLimit K L) (NormLimit K N.val) :=
-    separableNormUnionStageAlgebra K L M p N
-  let := separableNormUnionField K L M p
+    separableNormUnionStageAlgebra K L M N
+  let := separableNormUnionField K L M
   intro h a
   let P : FiniteLayer L M := FiniteLayer.sup R S
   have he : (IntermediateField.inclusion (show R ≤ P from FiniteLayer.le_sup_left R S)).comp φ =
       (IntermediateField.inclusion (show S ≤ P from FiniteLayer.le_sup_right R S)).comp ψ := by
-    apply (finiteNormLimitHomEquiv K L Q.val P.val p).injective
+    apply (finiteNormLimitHomEquiv K L Q.val P.val).injective
     apply AlgHom.ext
     intro x
-    apply separableNormUnionOf_injective K L M p P
-    exact (separableNormUnionOf_finiteHom_inclusion K L M p M₁
+    apply separableNormUnionOf_injective K L M P
+    exact (separableNormUnionOf_finiteHom_inclusion K L M M₁
       Q R P (FiniteLayer.le_sup_left R S) φ x).trans ((h x).trans
-        (separableNormUnionOf_finiteHom_inclusion K L M p M₁
+        (separableNormUnionOf_finiteHom_inclusion K L M M₁
           Q S P (FiniteLayer.le_sup_right R S) ψ x).symm)
   exact congrArg (fun z : P.val => (z : M)) (AlgHom.congr_fun he a)
 
@@ -207,94 +207,94 @@ theorem separableNormUnion_finiteHom_source_inclusion (Q T : FiniteLayer L M₁)
     letI : Algebra.IsSeparable K Q.val := Algebra.IsSeparable.trans K L Q.val
     letI : Algebra.IsSeparable K T.val := Algebra.IsSeparable.trans K L T.val
     letI : Algebra.IsSeparable K R.val := Algebra.IsSeparable.trans K L R.val
-    finiteNormLimitHomEquiv K L Q.val R.val p
+    finiteNormLimitHomEquiv K L Q.val R.val
         (ψ.comp (IntermediateField.inclusion hQT)) x =
-      finiteNormLimitHomEquiv K L T.val R.val p ψ
-        (separableNormUnionTransition K L M₁ p Q T hQT x) := by
+      finiteNormLimitHomEquiv K L T.val R.val ψ
+        (separableNormUnionTransition K L M₁ Q T hQT x) := by
   let (N : FiniteLayer L M₁) : Algebra.IsSeparable K N.val :=
     Algebra.IsSeparable.trans K L N.val
   let : Algebra.IsSeparable K R.val := Algebra.IsSeparable.trans K L R.val
-  let := normLimitField K L p
+  let := normLimitField K L
   let (N : FiniteLayer L M₁) : Field (NormLimit K N.val) :=
-    separableNormUnionStageField K L M₁ p N
+    separableNormUnionStageField K L M₁ N
   let (N : FiniteLayer L M₁) : Algebra (NormLimit K L) (NormLimit K N.val) :=
-    separableNormUnionStageAlgebra K L M₁ p N
-  let := separableNormUnionStageField K L M p R
-  let := separableNormUnionStageAlgebra K L M p R
+    separableNormUnionStageAlgebra K L M₁ N
+  let := separableNormUnionStageField K L M R
+  let := separableNormUnionStageAlgebra K L M R
   have hc := congrArg (fun f => f x)
-    (finiteNormLimitAlgHom_comp K L Q.val T.val R.val p
+    (finiteNormLimitAlgHom_comp K L Q.val T.val R.val
       (IntermediateField.inclusion hQT) ψ)
-  have hi : finiteNormLimitHomEquiv K L Q.val T.val p
+  have hi : finiteNormLimitHomEquiv K L Q.val T.val
       (IntermediateField.inclusion hQT) x =
-      separableNormUnionTransition K L M₁ p Q T hQT x := by
+      separableNormUnionTransition K L M₁ Q T hQT x := by
     let : Algebra Q.val T.val := (IntermediateField.inclusion hQT).toRingHom.toAlgebra
     let : IsScalarTower L Q.val T.val := IsScalarTower.of_algebraMap_eq' rfl
     let : IsScalarTower K Q.val T.val := IsScalarTower.of_algebraMap_eq' rfl
-    exact finiteNormLimitAlgHom_algebraMap K L Q.val T.val p
+    exact finiteNormLimitAlgHom_algebraMap K L Q.val T.val
       x
   exact hc.trans (congrArg
-    (finiteNormLimitHomEquiv K L T.val R.val p ψ) hi)
+    (finiteNormLimitHomEquiv K L T.val R.val ψ) hi)
 
 /-- A Hom of the actual norm-field unions determines an original algebra
 embedding whose finite restrictions realize all its finite-stage maps. -/
 theorem separableNormUnion_exists_originalHom :
-    letI := normLimitField K L p
-    letI := separableNormUnionField K L M p
-    letI := separableNormUnionField K L M₁ p
-    letI := separableNormUnionAlgebra K L M p
-    letI := separableNormUnionAlgebra K L M₁ p
-    ∀ f : SeparableNormUnion K L M₁ p →ₐ[NormLimit K L]
-        SeparableNormUnion K L M p,
+    letI := normLimitField K L
+    letI := separableNormUnionField K L M
+    letI := separableNormUnionField K L M₁
+    letI := separableNormUnionAlgebra K L M
+    letI := separableNormUnionAlgebra K L M₁
+    ∀ f : SeparableNormUnion K L M₁ →ₐ[NormLimit K L]
+        SeparableNormUnion K L M,
       ∃ t : M₁ →ₐ[L] M, ∀ Q : FiniteLayer L M₁,
         letI : Algebra.IsSeparable K Q.val := Algebra.IsSeparable.trans K L Q.val
-        letI := separableNormUnionStageField K L M₁ p Q
-        letI := separableNormUnionStageAlgebra K L M₁ p Q
+        letI := separableNormUnionStageField K L M₁ Q
+        letI := separableNormUnionStageAlgebra K L M₁ Q
         ∃ R : FiniteLayer L M,
           letI : Algebra.IsSeparable K R.val := Algebra.IsSeparable.trans K L R.val
-          letI := separableNormUnionStageField K L M p R
-          letI := separableNormUnionStageAlgebra K L M p R
+          letI := separableNormUnionStageField K L M R
+          letI := separableNormUnionStageAlgebra K L M R
           ∃ φ : Q.val →ₐ[L] R.val,
             (∀ a : Q.val, (φ a : M) = t a) ∧
-              (separableNormUnionOfAlgHom K L M p R).comp
-                (finiteNormLimitHomEquiv K L Q.val R.val p φ) =
-                f.comp (separableNormUnionOfAlgHom K L M₁ p Q) := by
+              (separableNormUnionOfAlgHom K L M R).comp
+                (finiteNormLimitHomEquiv K L Q.val R.val φ) =
+                f.comp (separableNormUnionOfAlgHom K L M₁ Q) := by
   classical
-  let := normLimitField K L p
-  let := separableNormUnionField K L M p
-  let := separableNormUnionField K L M₁ p
-  let := separableNormUnionAlgebra K L M p
-  let := separableNormUnionAlgebra K L M₁ p
+  let := normLimitField K L
+  let := separableNormUnionField K L M
+  let := separableNormUnionField K L M₁
+  let := separableNormUnionAlgebra K L M
+  let := separableNormUnionAlgebra K L M₁
   let (Q : FiniteLayer L M₁) : Algebra.IsSeparable K Q.val :=
     Algebra.IsSeparable.trans K L Q.val
   let (Q : FiniteLayer L M₁) : Field (NormLimit K Q.val) :=
-    separableNormUnionStageField K L M₁ p Q
+    separableNormUnionStageField K L M₁ Q
   let (Q : FiniteLayer L M₁) : Algebra (NormLimit K L) (NormLimit K Q.val) :=
-    separableNormUnionStageAlgebra K L M₁ p Q
+    separableNormUnionStageAlgebra K L M₁ Q
   let (R : FiniteLayer L M) : Algebra.IsSeparable K R.val :=
     Algebra.IsSeparable.trans K L R.val
   let (R : FiniteLayer L M) : Field (NormLimit K R.val) :=
-    separableNormUnionStageField K L M p R
+    separableNormUnionStageField K L M R
   let (R : FiniteLayer L M) : Algebra (NormLimit K L) (NormLimit K R.val) :=
-    separableNormUnionStageAlgebra K L M p R
+    separableNormUnionStageAlgebra K L M R
   intro f
   choose R φ hφ using fun Q : FiniteLayer L M₁ =>
-    separableNormUnion_exists_finite_preimage K L M p M₁ Q
-      (f.comp (separableNormUnionOfAlgHom K L M₁ p Q))
+    separableNormUnion_exists_finite_preimage K L M M₁ Q
+      (f.comp (separableNormUnionOfAlgHom K L M₁ Q))
   let family (Q : FiniteLayer L M₁) : Q.val →ₐ[L] M := (R Q).val.val.comp (φ Q)
   have hc (Q T : FiniteLayer L M₁) (hQT : Q ≤ T) :
       family Q = (family T).comp (IntermediateField.inclusion hQT) := by
     apply AlgHom.ext
     intro a
-    refine separableNormUnion_finiteHom_faithful K L M p M₁
+    refine separableNormUnion_finiteHom_faithful K L M M₁
       Q (R Q) (R T) (φ Q) ((φ T).comp (IntermediateField.inclusion hQT)) ?_ a
     intro x
     have hQ := AlgHom.congr_fun (hφ Q) x
     have hT := AlgHom.congr_fun (hφ T)
-      (separableNormUnionTransition K L M₁ p Q T hQT x)
+      (separableNormUnionTransition K L M₁ Q T hQT x)
     exact hQ.trans ((congrArg f
-      (separableNormUnionOf_transition K L M₁ p Q T hQT x).symm).trans
-        (hT.symm.trans (congrArg (separableNormUnionOf K L M p (R T))
-          (separableNormUnion_finiteHom_source_inclusion K L M p M₁
+      (separableNormUnionOf_transition K L M₁ Q T hQT x).symm).trans
+        (hT.symm.trans (congrArg (separableNormUnionOf K L M (R T))
+          (separableNormUnion_finiteHom_source_inclusion K L M M₁
             Q T hQT (R T) (φ T) x).symm)))
   let t := FiniteLayer.liftAlgHom family hc
   refine ⟨t, fun Q => ⟨R Q, φ Q, ⟨?_, hφ Q⟩⟩⟩
@@ -308,24 +308,24 @@ theorem separableNormUnionAlgMap_of_factor (t : M₁ →ₐ[L] M)
     (h : ∀ a : Q.val, (φ a : M) = t a) (x : NormLimit K Q.val) :
     letI : Algebra.IsSeparable K Q.val := Algebra.IsSeparable.trans K L Q.val
     letI : Algebra.IsSeparable K R.val := Algebra.IsSeparable.trans K L R.val
-    separableNormUnionAlgMap K L M₁ p M t
-        (separableNormUnionOf K L M₁ p Q x) =
-      separableNormUnionOf K L M p R
-        (finiteNormLimitHomEquiv K L Q.val R.val p φ x) := by
+    separableNormUnionAlgMap K L M₁ M t
+        (separableNormUnionOf K L M₁ Q x) =
+      separableNormUnionOf K L M R
+        (finiteNormLimitHomEquiv K L Q.val R.val φ x) := by
   let : Algebra.IsSeparable K Q.val := Algebra.IsSeparable.trans K L Q.val
   let (N : FiniteLayer L M) : Algebra.IsSeparable K N.val :=
     Algebra.IsSeparable.trans K L N.val
-  let := normLimitField K L p
-  let := separableNormUnionStageField K L M₁ p Q
-  let := separableNormUnionStageAlgebra K L M₁ p Q
+  let := normLimitField K L
+  let := separableNormUnionStageField K L M₁ Q
+  let := separableNormUnionStageAlgebra K L M₁ Q
   let (N : FiniteLayer L M) : Field (NormLimit K N.val) :=
-    separableNormUnionStageField K L M p N
+    separableNormUnionStageField K L M N
   let (N : FiniteLayer L M) : Algebra (NormLimit K L) (NormLimit K N.val) :=
-    separableNormUnionStageAlgebra K L M p N
-  let := separableNormUnionField K L M p
-  let := separableNormUnionField K L M₁ p
-  let := separableNormUnionAlgebra K L M p
-  let := separableNormUnionAlgebra K L M₁ p
+    separableNormUnionStageAlgebra K L M N
+  let := separableNormUnionField K L M
+  let := separableNormUnionField K L M₁
+  let := separableNormUnionAlgebra K L M
+  let := separableNormUnionAlgebra K L M₁
   let J : FiniteLayer L M := FiniteLayer.map t Q
   let e : Q.val ≃ₐ[L] J.val := FiniteLayer.equivMap t Q
   have hJR : J ≤ R := by
@@ -339,125 +339,123 @@ theorem separableNormUnionAlgMap_of_factor (t : M₁ →ₐ[L] M)
     apply AlgHom.ext
     intro a
     exact Subtype.ext (h a).symm
-  have he : finiteNormLimitHomEquiv K L Q.val J.val p e.toAlgHom x =
+  have he : finiteNormLimitHomEquiv K L Q.val J.val e.toAlgHom x =
       normLimitMap (e.restrictScalars K) x := by
     exact finiteNormLimitEmbeddingMap_algEquiv K (e.restrictScalars K) x
   calc
-    _ = separableNormUnionOf K L M p J
+    _ = separableNormUnionOf K L M J
         (normLimitMap (e.restrictScalars K) x) :=
-      (separableNormUnionMap_of K L M₁ p M t Q x).trans
-        (congrArg (separableNormUnionOf K L M p J)
-          (separableNormUnionStageMap_apply K L M₁ p M t Q x))
-    _ = separableNormUnionOf K L M p J
-        (finiteNormLimitHomEquiv K L Q.val J.val p e.toAlgHom x) :=
-      congrArg (separableNormUnionOf K L M p J) he.symm
-    _ = separableNormUnionOf K L M p R
-        (finiteNormLimitHomEquiv K L Q.val R.val p
+      (separableNormUnionMap_of K L M₁ M t Q x).trans
+        (congrArg (separableNormUnionOf K L M J)
+          (separableNormUnionStageMap_apply K L M₁ M t Q x))
+    _ = separableNormUnionOf K L M J
+        (finiteNormLimitHomEquiv K L Q.val J.val e.toAlgHom x) :=
+      congrArg (separableNormUnionOf K L M J) he.symm
+    _ = separableNormUnionOf K L M R
+        (finiteNormLimitHomEquiv K L Q.val R.val
           ((IntermediateField.inclusion hJR).comp e.toAlgHom) x) :=
-      (separableNormUnionOf_finiteHom_inclusion K L M p M₁
+      (separableNormUnionOf_finiteHom_inclusion K L M M₁
         Q J R hJR e.toAlgHom x).symm
-    _ = _ := congrArg (fun j => separableNormUnionOf K L M p R
-      (finiteNormLimitHomEquiv K L Q.val R.val p j x)) hc
+    _ = _ := congrArg (fun j => separableNormUnionOf K L M R
+      (finiteNormLimitHomEquiv K L Q.val R.val j x)) hc
 
 /-- Every algebra Hom of the actual unions is induced by an original embedding. -/
 theorem separableNormUnionAlgMap_surjective :
-    letI := normLimitField K L p
-    letI := separableNormUnionField K L M p
-    letI := separableNormUnionField K L M₁ p
-    letI := separableNormUnionAlgebra K L M p
-    letI := separableNormUnionAlgebra K L M₁ p
-    Function.Surjective (separableNormUnionAlgMap K L M₁ p M) := by
-  let := normLimitField K L p
-  let := separableNormUnionField K L M p
-  let := separableNormUnionField K L M₁ p
-  let := separableNormUnionAlgebra K L M p
-  let := separableNormUnionAlgebra K L M₁ p
+    letI := normLimitField K L
+    letI := separableNormUnionField K L M
+    letI := separableNormUnionField K L M₁
+    letI := separableNormUnionAlgebra K L M
+    letI := separableNormUnionAlgebra K L M₁
+    Function.Surjective (separableNormUnionAlgMap K L M₁ M) := by
+  let := normLimitField K L
+  let := separableNormUnionField K L M
+  let := separableNormUnionField K L M₁
+  let := separableNormUnionAlgebra K L M
+  let := separableNormUnionAlgebra K L M₁
   intro f
-  obtain ⟨t, ht⟩ := separableNormUnion_exists_originalHom K L M p M₁ f
+  obtain ⟨t, ht⟩ := separableNormUnion_exists_originalHom K L M M₁ f
   refine ⟨t, AlgHom.ext (fun z => ?_)⟩
-  obtain ⟨Q, x, rfl⟩ := separableNormUnion_exists_stage K L M₁ p z
+  obtain ⟨Q, x, rfl⟩ := separableNormUnion_exists_stage K L M₁ z
   let : Algebra.IsSeparable K Q.val := Algebra.IsSeparable.trans K L Q.val
-  let := separableNormUnionStageField K L M₁ p Q
-  let := separableNormUnionStageAlgebra K L M₁ p Q
+  let := separableNormUnionStageField K L M₁ Q
+  let := separableNormUnionStageAlgebra K L M₁ Q
   obtain ⟨R, φ, hφ, hf⟩ := ht Q
   let : Algebra.IsSeparable K R.val := Algebra.IsSeparable.trans K L R.val
-  let := separableNormUnionStageField K L M p R
-  let := separableNormUnionStageAlgebra K L M p R
-  exact (separableNormUnionAlgMap_of_factor K L M p M₁
+  let := separableNormUnionStageField K L M R
+  let := separableNormUnionStageAlgebra K L M R
+  exact (separableNormUnionAlgMap_of_factor K L M M₁
     t Q R φ hφ x).trans (AlgHom.congr_fun hf x)
 
 /-- The actual union functor distinguishes every original algebra embedding. -/
 theorem separableNormUnionAlgMap_injective :
-    letI := normLimitField K L p
-    letI := separableNormUnionField K L M p
-    letI := separableNormUnionField K L M₁ p
-    letI := separableNormUnionAlgebra K L M p
-    letI := separableNormUnionAlgebra K L M₁ p
-    Function.Injective (separableNormUnionAlgMap K L M₁ p M) := by
-  let := normLimitField K L p
-  let := separableNormUnionField K L M p
-  let := separableNormUnionField K L M₁ p
-  let := separableNormUnionAlgebra K L M p
-  let := separableNormUnionAlgebra K L M₁ p
+    letI := normLimitField K L
+    letI := separableNormUnionField K L M
+    letI := separableNormUnionField K L M₁
+    letI := separableNormUnionAlgebra K L M
+    letI := separableNormUnionAlgebra K L M₁
+    Function.Injective (separableNormUnionAlgMap K L M₁ M) := by
+  let := normLimitField K L
+  let := separableNormUnionField K L M
+  let := separableNormUnionField K L M₁
+  let := separableNormUnionAlgebra K L M
+  let := separableNormUnionAlgebra K L M₁
   intro t u h
   apply AlgHom.ext
   intro a
   obtain ⟨Q, ha⟩ := FiniteLayer.exists_mem (L := L) a
   let R := FiniteLayer.map t Q
   let S := FiniteLayer.map u Q
-  refine separableNormUnion_finiteHom_faithful K L M p M₁
+  refine separableNormUnion_finiteHom_faithful K L M M₁
     Q R S (FiniteLayer.equivMap t Q).toAlgHom
       (FiniteLayer.equivMap u Q).toAlgHom ?_ ⟨a, ha⟩
   intro x
-  exact (separableNormUnionAlgMap_of_factor K L M p M₁ t Q R
+  exact (separableNormUnionAlgMap_of_factor K L M M₁ t Q R
     (FiniteLayer.equivMap t Q).toAlgHom (fun _ => rfl) x).symm.trans
-      ((AlgHom.congr_fun h (separableNormUnionOf K L M₁ p Q x)).trans
-        (separableNormUnionAlgMap_of_factor K L M p M₁ u Q S
+      ((AlgHom.congr_fun h (separableNormUnionOf K L M₁ Q x)).trans
+        (separableNormUnionAlgMap_of_factor K L M M₁ u Q S
           (FiniteLayer.equivMap u Q).toAlgHom (fun _ => rfl) x))
 
 /-- Full faithfulness for arbitrary original separable algebraic extensions. -/
 theorem separableNormUnionAlgMap_bijective :
-    letI := normLimitField K L p
-    letI := separableNormUnionField K L M p
-    letI := separableNormUnionField K L M₁ p
-    letI := separableNormUnionAlgebra K L M p
-    letI := separableNormUnionAlgebra K L M₁ p
-    Function.Bijective (separableNormUnionAlgMap K L M₁ p M) := by
-  exact ⟨separableNormUnionAlgMap_injective K L M p M₁,
-    separableNormUnionAlgMap_surjective K L M p M₁⟩
+    letI := normLimitField K L
+    letI := separableNormUnionField K L M
+    letI := separableNormUnionField K L M₁
+    letI := separableNormUnionAlgebra K L M
+    letI := separableNormUnionAlgebra K L M₁
+    Function.Bijective (separableNormUnionAlgMap K L M₁ M) := by
+  exact ⟨separableNormUnionAlgMap_injective K L M M₁,
+    separableNormUnionAlgMap_surjective K L M M₁⟩
 
 end NormUnion
 
 section FullFaithful
 
-variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
     (L M N : Type*) [Field L] [Field M] [Field N]
     [Algebra K L] [Algebra K M] [Algebra K N]
     [Algebra L M] [Algebra L N] [IsScalarTower K L M] [IsScalarTower K L N]
     [Algebra.IsSeparable K L] [Algebra.IsSeparable L M] [Algebra.IsSeparable L N]
-    (p : ℕ) [Fact p.Prime]
-    [CharP (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring) p]
-    [IsAPF K L] [Fact (¬ Module.Finite K L)]
+
+local notation "p" => residueChar K
+
+variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 
 /-- The canonical full Hom equivalence is the actual original union functor. -/
 def separableNormUnionHomEquiv :
-    letI := normLimitField K L p
-    letI := separableNormUnionField K L M p
-    letI := separableNormUnionField K L N p
-    letI := separableNormUnionAlgebra K L M p
-    letI := separableNormUnionAlgebra K L N p
-    (M →ₐ[L] N) ≃ (SeparableNormUnion K L M p →ₐ[NormLimit K L]
-      SeparableNormUnion K L N p) := by
-  letI := normLimitField K L p
-  letI := separableNormUnionField K L M p
-  letI := separableNormUnionField K L N p
-  letI := separableNormUnionAlgebra K L M p
-  letI := separableNormUnionAlgebra K L N p
-  exact Equiv.ofBijective (separableNormUnionAlgMap K L M p N)
-    (separableNormUnionAlgMap_bijective K L N p M)
+    letI := normLimitField K L
+    letI := separableNormUnionField K L M
+    letI := separableNormUnionField K L N
+    letI := separableNormUnionAlgebra K L M
+    letI := separableNormUnionAlgebra K L N
+    (M →ₐ[L] N) ≃ (SeparableNormUnion K L M →ₐ[NormLimit K L]
+      SeparableNormUnion K L N) := by
+  letI := normLimitField K L
+  letI := separableNormUnionField K L M
+  letI := separableNormUnionField K L N
+  letI := separableNormUnionAlgebra K L M
+  letI := separableNormUnionAlgebra K L N
+  exact Equiv.ofBijective (separableNormUnionAlgMap K L M N)
+    (separableNormUnionAlgMap_bijective K L N M)
 
 end FullFaithful
 

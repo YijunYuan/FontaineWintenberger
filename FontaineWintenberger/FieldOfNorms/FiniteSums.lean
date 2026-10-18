@@ -21,42 +21,39 @@ noncomputable section
 
 namespace FontaineWintenberger
 
-variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
+
+local notation "p" => residueChar K
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
-variable (p : ℕ) [Fact p.Prime]
-    [CharP (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring) p]
 
 /-- Finite sums of integral original families remain integral for the
 already constructed additive structure. -/
 theorem normLimitValuation_sum_le_one [IsAPF K L] {ι : Type*}
     (s : Finset ι) (a : ι → NormLimit K L)
     (ha : ∀ i ∈ s, normLimitValuation K L (a i) ≤ 1) :
-    letI := normLimitAddCommMonoid K L p
+    letI := normLimitAddCommMonoid K L
     normLimitValuation K L (∑ i ∈ s, a i) ≤ 1 := by
   classical
-  let := normLimitAddCommMonoid K L p
+  let := normLimitAddCommMonoid K L
   induction s using Finset.induction_on with
   | empty => simp
   | @insert i s hi ih =>
     rw [Finset.sum_insert hi]
-    exact normLimitValuation_normLimitAdd_le_one K L p _ _
+    exact normLimitValuation_normLimitAdd_le_one K L _ _
       (ha i (Finset.mem_insert_self i s)) (ih (fun j hj => ha j (Finset.mem_insert_of_mem hj)))
 
 /-- Every finite sum of original families approximates the ordinary sum
 of its coordinates on an actual finite tail at each prescribed precision. -/
 theorem normLimitEval_sum_sub_mem [IsAPF K L] {ι : Type*}
     (s : Finset ι) (a : ι → NormLimit K L) :
-    letI := normLimitAddCommMonoid K L p
+    letI := normLimitAddCommMonoid K L
     ∀ n : ℕ, ∃ T : FiniteLayer K L, ∀ E : FiniteLayer K L, T ≤ E →
       normLimitEval K L E (∑ i ∈ s, a i) - ∑ i ∈ s, normLimitEval K L E (a i) ∈
         (fun x : spectralIntegerRing K E.val => (x : E.val)) ''
           ((IsLocalRing.maximalIdeal (spectralIntegerRing K E.val) ^ n :
             Ideal (spectralIntegerRing K E.val)) : Set (spectralIntegerRing K E.val)) := by
   classical
-  let := normLimitAddCommMonoid K L p
+  let := normLimitAddCommMonoid K L
   induction s using Finset.induction_on with
   | empty =>
     intro n
@@ -65,7 +62,7 @@ theorem normLimitEval_sum_sub_mem [IsAPF K L] {ι : Type*}
     exact ⟨0, Ideal.zero_mem _, rfl⟩
   | @insert i s hi ih =>
     intro n
-    obtain ⟨T₁, hT₁⟩ := normLimitAdd_sub_mem K L p (a i) (∑ j ∈ s, a j) n
+    obtain ⟨T₁, hT₁⟩ := normLimitAdd_sub_mem K L (a i) (∑ j ∈ s, a j) n
     obtain ⟨T₂, hT₂⟩ := ih n
     refine ⟨FiniteLayer.sup T₁ T₂, fun E hE => ?_⟩
     obtain ⟨d₁, hd₁, heq₁⟩ := hT₁ E ((FiniteLayer.le_sup_left T₁ T₂).trans hE)
@@ -77,14 +74,14 @@ theorem normLimitEval_sum_sub_mem [IsAPF K L] {ι : Type*}
 
 /-- Repeated addition approximates ordinary coordinate repeated addition. -/
 theorem normLimitEval_nsmul_sub_mem [IsAPF K L] (m : ℕ) (α : NormLimit K L) :
-    letI := normLimitAddCommMonoid K L p
+    letI := normLimitAddCommMonoid K L
     ∀ n : ℕ, ∃ T : FiniteLayer K L, ∀ E : FiniteLayer K L, T ≤ E →
       normLimitEval K L E (m • α) - m • normLimitEval K L E α ∈
         (fun x : spectralIntegerRing K E.val => (x : E.val)) ''
           ((IsLocalRing.maximalIdeal (spectralIntegerRing K E.val) ^ n :
             Ideal (spectralIntegerRing K E.val)) : Set (spectralIntegerRing K E.val)) := by
-  let := normLimitAddCommMonoid K L p
+  let := normLimitAddCommMonoid K L
   simpa only [Finset.sum_const, Finset.card_range] using
-    normLimitEval_sum_sub_mem K L p (Finset.range m) (fun _ => α)
+    normLimitEval_sum_sub_mem K L (Finset.range m) (fun _ => α)
 
 end FontaineWintenberger

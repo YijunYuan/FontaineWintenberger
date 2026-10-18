@@ -61,25 +61,23 @@ end FixedField
 
 section FiniteGalois
 
-variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
     (L P : Type*) [Field L] [Field P] [Algebra K L] [Algebra K P]
     [Algebra L P] [IsScalarTower K L P]
     [Algebra.IsSeparable K L] [Algebra.IsSeparable K P]
     [FiniteDimensional L P] [IsGalois L P]
-    (p : ℕ) [Fact p.Prime]
-    [CharP (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring) p]
-    [IsAPF K L] [IsAPF K P]
+
+local notation "p" => residueChar K
+
+variable [IsAPF K L] [IsAPF K P]
     [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K P)]
 
 /-- Every actual subfield of an original finite Galois norm field is the
 literal image of the original field fixed by its genuine subgroup. -/
 theorem exists_fixedField_finiteNormLimit_range :
-    letI := normLimitField K L p
-    letI := normLimitField K P p
-    letI := (finiteNormLimitRingHom K L P p).toAlgebra
+    letI := normLimitField K L
+    letI := normLimitField K P
+    letI := (finiteNormLimitRingHom K L P).toAlgebra
     ∀ D : IntermediateField (NormLimit K L) (NormLimit K P),
       ∃ H : Subgroup (P ≃ₐ[L] P),
         letI : IsScalarTower K (IntermediateField.fixedField H) P :=
@@ -89,11 +87,11 @@ theorem exists_fixedField_finiteNormLimit_range :
             ((IntermediateField.fixedField H).restrictScalars K))
         Set.range (finiteNormLimitMap K (IntermediateField.fixedField H) P) =
           (D : Set (NormLimit K P)) := by
-  let := normLimitField K L p
-  let := normLimitField K P p
-  let := (finiteNormLimitRingHom K L P p).toAlgebra
-  let := finiteNormLimitGaloisMulSemiringAction K L P p
-  have := finiteNormLimit_isGaloisGroup K L P p
+  let := normLimitField K L
+  let := normLimitField K P
+  let := (finiteNormLimitRingHom K L P).toAlgebra
+  let := finiteNormLimitGaloisMulSemiringAction K L P
+  have := finiteNormLimit_isGaloisGroup K L P
   intro D
   let H := fixingSubgroup (P ≃ₐ[L] P) (D : Set (NormLimit K P))
   refine ⟨H, ?_⟩
@@ -115,16 +113,14 @@ end FiniteGalois
 
 section NormUnion
 
-variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
     (L Ω : Type*) [Field L] [Field Ω]
     [Algebra K L] [Algebra K Ω] [Algebra L Ω] [IsScalarTower K L Ω]
     [Algebra.IsSeparable K L] [Algebra.IsSeparable L Ω]
-    (p : ℕ) [Fact p.Prime]
-    [CharP (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring) p]
-    [IsAPF K L] [Fact (¬ Module.Finite K L)]
+
+local notation "p" => residueChar K
+
+variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 
 /-- Transporting an actual finite subfield of an actual original stage into
 the ambient extension gives exactly its original canonical union image. -/
@@ -137,9 +133,9 @@ theorem separableNormUnionOf_map_subfield (P : FiniteLayer L Ω)
     letI : Module.Finite Q.val P.val := Module.Finite.right L Q.val P.val
     letI : Algebra.IsSeparable Q.val P.val :=
       Algebra.isSeparable_tower_top_of_isSeparable L Q.val P.val
-    separableNormUnionOf K L Ω p (FiniteLayer.map P.val.val Q)
+    separableNormUnionOf K L Ω (FiniteLayer.map P.val.val Q)
         (normLimitMap ((FiniteLayer.equivMap P.val.val Q).restrictScalars K) α) =
-      separableNormUnionOf K L Ω p P
+      separableNormUnionOf K L Ω P
         (finiteNormLimitMap K Q.val P.val α) := by
   let : Algebra.IsSeparable K P.val := Algebra.IsSeparable.trans K L P.val
   let : IsScalarTower K Q.val P.val := IsScalarTower.of_algebraMap_eq' rfl
@@ -164,53 +160,53 @@ theorem separableNormUnionOf_map_subfield (P : FiniteLayer L Ω)
     Algebra.isSeparable_tower_top_of_isSeparable L R.val P.val
   have hn := finiteNormLimitMap_naturality K (e.restrictScalars K)
     (AlgEquiv.refl : P.val ≃ₐ[K] P.val) (fun _ => rfl) α
-  have hv : separableNormUnionTransition K L Ω p R P hRP
+  have hv : separableNormUnionTransition K L Ω R P hRP
       (normLimitMap (e.restrictScalars K) α) = finiteNormLimitMap K Q.val P.val α := by
     change finiteNormLimitMap K R.val P.val (normLimitMap (e.restrictScalars K) α) = _
     simpa only [normLimitMap_refl] using hn.symm
-  exact (separableNormUnionOf_transition K L Ω p R P hRP _).symm.trans
-    (congrArg (separableNormUnionOf K L Ω p P) hv)
+  exact (separableNormUnionOf_transition K L Ω R P hRP _).symm.trans
+    (congrArg (separableNormUnionOf K L Ω P) hv)
 
 variable [IsSepClosure L Ω]
 
 /-- Every actual finite subfield of the canonical union is the canonical
 image of a genuine finite original intermediate field. -/
 theorem separableNormUnion_exists_finite_subfield_preimage :
-    letI := normLimitField K L p
-    letI := separableNormUnionField K L Ω p
-    letI := separableNormUnionAlgebra K L Ω p
-    letI : Module (NormLimit K L) (SeparableNormUnion K L Ω p) := Algebra.toModule
-    letI : MulAction (NormLimit K L) (SeparableNormUnion K L Ω p) :=
+    letI := normLimitField K L
+    letI := separableNormUnionField K L Ω
+    letI := separableNormUnionAlgebra K L Ω
+    letI : Module (NormLimit K L) (SeparableNormUnion K L Ω) := Algebra.toModule
+    letI : MulAction (NormLimit K L) (SeparableNormUnion K L Ω) :=
       (Algebra.toModule : Module (NormLimit K L)
-        (SeparableNormUnion K L Ω p)).toDistribMulAction.toMulAction
-    ∀ (D : IntermediateField (NormLimit K L) (SeparableNormUnion K L Ω p))
+        (SeparableNormUnion K L Ω)).toDistribMulAction.toMulAction
+    ∀ (D : IntermediateField (NormLimit K L) (SeparableNormUnion K L Ω))
       [FiniteDimensional (NormLimit K L) D],
       ∃ N : FiniteLayer L Ω,
-        letI := separableNormUnionStageField K L Ω p N
-        letI := separableNormUnionStageAlgebra K L Ω p N
-        (separableNormUnionOfAlgHom K L Ω p N).fieldRange = D := by
-  let := normLimitField K L p
-  let := separableNormUnionField K L Ω p
-  let := separableNormUnionAlgebra K L Ω p
-  let : Module (NormLimit K L) (SeparableNormUnion K L Ω p) := Algebra.toModule
-  let : MulAction (NormLimit K L) (SeparableNormUnion K L Ω p) :=
+        letI := separableNormUnionStageField K L Ω N
+        letI := separableNormUnionStageAlgebra K L Ω N
+        (separableNormUnionOfAlgHom K L Ω N).fieldRange = D := by
+  let := normLimitField K L
+  let := separableNormUnionField K L Ω
+  let := separableNormUnionAlgebra K L Ω
+  let : Module (NormLimit K L) (SeparableNormUnion K L Ω) := Algebra.toModule
+  let : MulAction (NormLimit K L) (SeparableNormUnion K L Ω) :=
     (Algebra.toModule : Module (NormLimit K L)
-      (SeparableNormUnion K L Ω p)).toDistribMulAction.toMulAction
+      (SeparableNormUnion K L Ω)).toDistribMulAction.toMulAction
   let (N : FiniteLayer L Ω) : Algebra.IsSeparable K N.val :=
     Algebra.IsSeparable.trans K L N.val
   let (N : FiniteLayer L Ω) : Field (NormLimit K N.val) :=
-    separableNormUnionStageField K L Ω p N
+    separableNormUnionStageField K L Ω N
   let (N : FiniteLayer L Ω) : Algebra (NormLimit K L) (NormLimit K N.val) :=
-    separableNormUnionStageAlgebra K L Ω p N
+    separableNormUnionStageAlgebra K L Ω N
   intro D _
-  obtain ⟨Q, g, hg⟩ := separableNormUnion_exists_algHom_factor K L Ω p D.val
+  obtain ⟨Q, g, hg⟩ := separableNormUnion_exists_algHom_factor K L Ω D.val
   let P : FiniteLayer L Ω := ⟨IntermediateField.normalClosure L Q.val Ω, inferInstance⟩
   have hQP : Q ≤ P := IntermediateField.le_normalClosure Q.val
   let : IsGalois L P.val := ⟨⟩
-  let D' := D.comap (separableNormUnionOfAlgHom K L Ω p P)
+  let D' := D.comap (separableNormUnionOfAlgHom K L Ω P)
   have := separableNormUnionStage_isAPF K L Ω P
   have : Fact (¬ Module.Finite K P.val) := ⟨separableNormUnionStage_infinite K L Ω P⟩
-  obtain ⟨H, hH⟩ := exists_fixedField_finiteNormLimit_range K L P.val p D'
+  obtain ⟨H, hH⟩ := exists_fixedField_finiteNormLimit_range K L P.val D'
   let M : FiniteLayer L P.val := ⟨IntermediateField.fixedField H, inferInstance⟩
   let : IsScalarTower K M.val P.val := IsScalarTower.of_algebraMap_eq' rfl
   let : Algebra.IsAlgebraic K M.val :=
@@ -227,91 +223,91 @@ theorem separableNormUnion_exists_finite_subfield_preimage :
     obtain ⟨α, rfl⟩ := (normLimitMulEquiv e).surjective αN
     have hm : finiteNormLimitMap K M.val P.val α ∈ D' :=
       (Set.ext_iff.mp hH _).mp ⟨α, rfl⟩
-    have hm' : separableNormUnionOf K L Ω p P
+    have hm' : separableNormUnionOf K L Ω P
         (finiteNormLimitMap K M.val P.val α) ∈ D := hm
     exact (congrArg (fun z => z ∈ D)
-      (separableNormUnionOf_map_subfield K L Ω p P M α)).mpr hm'
+      (separableNormUnionOf_map_subfield K L Ω P M α)).mpr hm'
   · intro hz
-    let β := separableNormUnionTransition K L Ω p Q P hQP (g ⟨z, hz⟩)
-    have hj : separableNormUnionOf K L Ω p P β = z :=
-      (separableNormUnionOf_transition K L Ω p Q P hQP _).trans
+    let β := separableNormUnionTransition K L Ω Q P hQP (g ⟨z, hz⟩)
+    have hj : separableNormUnionOf K L Ω P β = z :=
+      (separableNormUnionOf_transition K L Ω Q P hQP _).trans
         (AlgHom.congr_fun hg ⟨z, hz⟩)
     have hβ : β ∈ D' := by
-      change separableNormUnionOf K L Ω p P β ∈ D
+      change separableNormUnionOf K L Ω P β ∈ D
       exact hj.symm ▸ hz
     have hr : β ∈ Set.range (finiteNormLimitMap K M.val P.val) :=
       (Set.ext_iff.mp hH β).mpr hβ
     obtain ⟨α, hα⟩ := hr
     refine ⟨normLimitMap e α, ?_⟩
-    exact (separableNormUnionOf_map_subfield K L Ω p P M α).trans
-      ((congrArg (separableNormUnionOf K L Ω p P) hα).trans hj)
+    exact (separableNormUnionOf_map_subfield K L Ω P M α).trans
+      ((congrArg (separableNormUnionOf K L Ω P) hα).trans hj)
 
 /-- Actual finite original images preserve and reflect inclusion. Reflection
 uses their genuine finite fixers and only the original Galois correspondence. -/
 theorem separableNormUnionFiniteImage_le_iff (Q R : FiniteLayer L Ω) :
-    letI := normLimitField K L p
-    letI := separableNormUnionField K L Ω p
-    letI := separableNormUnionAlgebra K L Ω p
-    separableNormUnionFiniteImage K L Ω p Q ≤
-      separableNormUnionFiniteImage K L Ω p R ↔ Q ≤ R := by
-  let := normLimitField K L p
-  let := separableNormUnionField K L Ω p
-  let := separableNormUnionAlgebra K L Ω p
+    letI := normLimitField K L
+    letI := separableNormUnionField K L Ω
+    letI := separableNormUnionAlgebra K L Ω
+    separableNormUnionFiniteImage K L Ω Q ≤
+      separableNormUnionFiniteImage K L Ω R ↔ Q ≤ R := by
+  let := normLimitField K L
+  let := separableNormUnionField K L Ω
+  let := separableNormUnionAlgebra K L Ω
   constructor
   · intro h
     have hfix : R.val.fixingSubgroup ≤ Q.val.fixingSubgroup := by
       intro σ hσ
-      apply (separableNormUnionAutEquiv_mem_fixingSubgroup_iff K L Ω p Q σ).mp
+      apply (separableNormUnionAutEquiv_mem_fixingSubgroup_iff K L Ω Q σ).mp
       exact IntermediateField.fixingSubgroup_le h
-        ((separableNormUnionAutEquiv_mem_fixingSubgroup_iff K L Ω p R σ).mpr hσ)
+        ((separableNormUnionAutEquiv_mem_fixingSubgroup_iff K L Ω R σ).mpr hσ)
     have hh := IntermediateField.fixedField_le hfix
     change Q.val ≤ R.val
     simpa only [InfiniteGalois.fixedField_fixingSubgroup] using hh
   · intro h z hz
-    obtain ⟨α, rfl⟩ := (mem_separableNormUnionFiniteImage K L Ω p Q z).mp hz
-    exact (mem_separableNormUnionFiniteImage K L Ω p R _).mpr
-      ⟨separableNormUnionTransition K L Ω p Q R h α,
-        separableNormUnionOf_transition K L Ω p Q R h α⟩
+    obtain ⟨α, rfl⟩ := (mem_separableNormUnionFiniteImage K L Ω Q z).mp hz
+    exact (mem_separableNormUnionFiniteImage K L Ω R _).mpr
+      ⟨separableNormUnionTransition K L Ω Q R h α,
+        separableNormUnionOf_transition K L Ω Q R h α⟩
 
 /-- Equal canonical images determine equal actual original finite fields. -/
 theorem separableNormUnionFiniteImage_injective :
-    letI := normLimitField K L p
-    letI := separableNormUnionField K L Ω p
-    letI := separableNormUnionAlgebra K L Ω p
-    Function.Injective (separableNormUnionFiniteImage K L Ω p) := by
-  let := normLimitField K L p
-  let := separableNormUnionField K L Ω p
-  let := separableNormUnionAlgebra K L Ω p
+    letI := normLimitField K L
+    letI := separableNormUnionField K L Ω
+    letI := separableNormUnionAlgebra K L Ω
+    Function.Injective (separableNormUnionFiniteImage K L Ω) := by
+  let := normLimitField K L
+  let := separableNormUnionField K L Ω
+  let := separableNormUnionAlgebra K L Ω
   intro Q R h
   exact le_antisymm
-    ((separableNormUnionFiniteImage_le_iff K L Ω p Q R).mp h.le)
-    ((separableNormUnionFiniteImage_le_iff K L Ω p R Q).mp h.ge)
+    ((separableNormUnionFiniteImage_le_iff K L Ω Q R).mp h.le)
+    ((separableNormUnionFiniteImage_le_iff K L Ω R Q).mp h.ge)
 
 /-- Reconstruction gives a unique actual finite original subfield, and its
 image is the literal canonical original image inside the same union. -/
 theorem separableNormUnion_existsUnique_finite_subfield_preimage :
-    letI := normLimitField K L p
-    letI := separableNormUnionField K L Ω p
-    letI := separableNormUnionAlgebra K L Ω p
-    letI : Module (NormLimit K L) (SeparableNormUnion K L Ω p) := Algebra.toModule
-    letI : MulAction (NormLimit K L) (SeparableNormUnion K L Ω p) :=
+    letI := normLimitField K L
+    letI := separableNormUnionField K L Ω
+    letI := separableNormUnionAlgebra K L Ω
+    letI : Module (NormLimit K L) (SeparableNormUnion K L Ω) := Algebra.toModule
+    letI : MulAction (NormLimit K L) (SeparableNormUnion K L Ω) :=
       (Algebra.toModule : Module (NormLimit K L)
-        (SeparableNormUnion K L Ω p)).toDistribMulAction.toMulAction
-    ∀ (D : IntermediateField (NormLimit K L) (SeparableNormUnion K L Ω p))
+        (SeparableNormUnion K L Ω)).toDistribMulAction.toMulAction
+    ∀ (D : IntermediateField (NormLimit K L) (SeparableNormUnion K L Ω))
       [FiniteDimensional (NormLimit K L) D],
       ∃! N : FiniteLayer L Ω,
-        separableNormUnionFiniteImage K L Ω p N = D := by
-  let := normLimitField K L p
-  let := separableNormUnionField K L Ω p
-  let := separableNormUnionAlgebra K L Ω p
-  let : Module (NormLimit K L) (SeparableNormUnion K L Ω p) := Algebra.toModule
-  let : MulAction (NormLimit K L) (SeparableNormUnion K L Ω p) :=
+        separableNormUnionFiniteImage K L Ω N = D := by
+  let := normLimitField K L
+  let := separableNormUnionField K L Ω
+  let := separableNormUnionAlgebra K L Ω
+  let : Module (NormLimit K L) (SeparableNormUnion K L Ω) := Algebra.toModule
+  let : MulAction (NormLimit K L) (SeparableNormUnion K L Ω) :=
     (Algebra.toModule : Module (NormLimit K L)
-      (SeparableNormUnion K L Ω p)).toDistribMulAction.toMulAction
+      (SeparableNormUnion K L Ω)).toDistribMulAction.toMulAction
   intro D _
-  obtain ⟨N, hN⟩ := separableNormUnion_exists_finite_subfield_preimage K L Ω p D
+  obtain ⟨N, hN⟩ := separableNormUnion_exists_finite_subfield_preimage K L Ω D
   refine ⟨N, hN, fun R hR => ?_⟩
-  exact separableNormUnionFiniteImage_injective K L Ω p (hR.trans hN.symm)
+  exact separableNormUnionFiniteImage_injective K L Ω (hR.trans hN.symm)
 
 end NormUnion
 

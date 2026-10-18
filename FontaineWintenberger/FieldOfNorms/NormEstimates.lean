@@ -25,10 +25,9 @@ namespace FontaineWintenberger
 
 attribute [local instance] FractionRing.liftAlgebra
 
-variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
 
+local notation "p" => residueChar K
 local notation "R" => Valuation.valuationSubring (NormedField.valuation (K := K))
 
 /-- The actual intermediate field may be nonnormal; its own integer-ring
@@ -36,8 +35,6 @@ total ramification supplies the genuine tame norm estimate. -/
 theorem exists_intNorm_add_congruence_of_totallyRamified_intermediateField
     (Ω : Type*) [NontriviallyNormedField Ω] [NormedAlgebra K Ω] [IsUltrametricDist Ω]
     [FiniteDimensional K Ω] [IsGalois K Ω]
-    (p : ℕ) [Fact p.Prime]
-    [CharP (IsLocalRing.ResidueField (spectralIntegerRing K Ω)) p]
     (M : IntermediateField K Ω)
     (he : (IsLocalRing.maximalIdeal (spectralIntegerRing K M)).ramificationIdx R =
       Module.finrank K M)
@@ -61,7 +58,7 @@ theorem exists_intNorm_add_congruence_of_totallyRamified_intermediateField
     rw [extensionValuationSubring_ramificationIdx_eq_spectral K
       (IntermediateField.fixedField H) w]
     exact he
-  exact exists_intNorm_add_congruence_of_totallyRamified_fixedField K Ω p H he' n hd hdegree
+  exact exists_intNorm_add_congruence_of_totallyRamified_fixedField K Ω H he' n hd hdegree
 
 variable (L : Type*) [Field L] [Algebra K L] [FiniteDimensional K L]
     [Algebra.IsSeparable K L]
@@ -71,7 +68,6 @@ local notation "S" => spectralIntegerRing K L
 /-- The original arbitrary totally ramified p-power extension has the
 actual quantitative norm addition estimate. Normality is not required. -/
 theorem exists_intNorm_add_congruence_of_totallyRamified
-    (p : ℕ) [Fact p.Prime] [CharP (IsLocalRing.ResidueField R) p]
     (he : (IsLocalRing.maximalIdeal S).ramificationIdx R = Module.finrank K L)
     (n : ℕ) (hd : Module.finrank K L = p ^ n) (hdegree : 1 < Module.finrank K L) :
     ∃ b : ℝ, 0 ≤ b ∧ apfRamificationBound K L = (b : EReal) ∧
@@ -97,7 +93,7 @@ theorem exists_intNorm_add_congruence_of_totallyRamified
       Module.finrank K M := by
     rw [spectral_ramificationIdx_algEquiv K e, he, hn]
   obtain ⟨b, hb, hbound, hadd⟩ :=
-    exists_intNorm_add_congruence_of_totallyRamified_intermediateField K Ω p M heM n
+    exists_intNorm_add_congruence_of_totallyRamified_intermediateField K Ω M heM n
       (hn.trans hd) (by simpa only [hn] using hdegree)
   refine ⟨b, hb, ?_, ?_⟩
   · rw [apfRamificationBound_algEquiv K L e]
@@ -110,7 +106,6 @@ theorem exists_intNorm_add_congruence_of_totallyRamified
 /-- Both actual norm estimates for every nontrivial finite separable totally
 ramified p-power extension, with arbitrary perfect residue field. -/
 theorem exists_intNorm_estimates_of_totallyRamified
-    (p : ℕ) [Fact p.Prime] [CharP (IsLocalRing.ResidueField R) p]
     (he : (IsLocalRing.maximalIdeal S).ramificationIdx R = Module.finrank K L)
     (n : ℕ) (hd : Module.finrank K L = p ^ n) (hdegree : 1 < Module.finrank K L) :
     ∃ b : ℝ, 0 ≤ b ∧ apfRamificationBound K L = (b : EReal) ∧
@@ -120,9 +115,9 @@ theorem exists_intNorm_estimates_of_totallyRamified
       (∀ a : R, ∃ α : S, Algebra.intNorm R S α - a ∈
         IsLocalRing.maximalIdeal R ^ ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊) := by
   obtain ⟨b, hb, hbound, hadd⟩ :=
-    exists_intNorm_add_congruence_of_totallyRamified K L p he n hd hdegree
+    exists_intNorm_add_congruence_of_totallyRamified K L he n hd hdegree
   refine ⟨b, hb, hbound, hadd, ?_⟩
   exact extensionValuationSubring_exists_intNorm_sub_mem_maximalIdeal_pow
-    K L (spectralValuation K L) p n ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊ he hd hadd
+    K L (spectralValuation K L) n ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊ he hd hadd
 
 end FontaineWintenberger

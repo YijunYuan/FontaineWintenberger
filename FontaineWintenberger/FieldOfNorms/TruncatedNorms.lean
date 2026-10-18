@@ -70,16 +70,14 @@ end TruncatedValuation
 
 namespace FiniteLayer
 
-variable {K L : Type*} [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
+variable {K L : Type*} [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
     [Field L] [Algebra K L] [Algebra.IsSeparable K L]
+
+local notation "p" => residueChar K
 
 section HighBreak
 
-variable [PerfectField (IsLocalRing.ResidueField
-  (NormedField.valuation (K := K)).valuationSubring)]
-variable (E F : FiniteLayer K L) (hEF : E ≤ F) (p : ℕ) [Fact p.Prime]
-    [CharP (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring) p]
+variable (E F : FiniteLayer K L) (hEF : E ≤ F)
 variable (d : ℕ) (b : ℝ)
 variable (he :
     letI : Algebra E.val F.val := (IntermediateField.inclusion hEF).toRingHom.toAlgebra
@@ -88,7 +86,7 @@ variable (he :
     (IsLocalRing.maximalIdeal (spectralIntegerRing K F.val)).ramificationIdx
       (spectralIntegerRing K E.val) =
         Module.finrank E.val (IntermediateField.extendScalars hEF))
-variable (hd : Module.finrank E.val (IntermediateField.extendScalars hEF) = p ^ d)
+variable (hd : Module.finrank E.val (IntermediateField.extendScalars hEF) = residueChar K ^ d)
 variable (hb :
     letI : Algebra E.val F.val := (IntermediateField.inclusion hEF).toRingHom.toAlgebra
     letI : IsScalarTower K E.val F.val := IsScalarTower.of_algebraMap_eq' rfl
@@ -97,7 +95,7 @@ variable (hb :
     letI := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
       (isNonarchimedean_spectralNorm (K := K) (L := E.val))
     letI := spectralNorm.completeSpace K E.val
-    letI := normedAlgebra_isCompleteDiscreteValuedField K E.val
+    letI := normedAlgebra_isPerfectResidueLocalField K E.val
     let F' := IntermediateField.extendScalars hEF
     letI : FiniteDimensional K F' := F.property
     letI : FiniteDimensional E.val F' := Module.Finite.right K E.val F'
@@ -117,12 +115,12 @@ def truncatedNorm (r s : ℕ) (hrs : r ≤ s)
   let := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
     (isNonarchimedean_spectralNorm (K := K) (L := E.val))
   let := spectralNorm.completeSpace K E.val
-  let := normedAlgebra_isCompleteDiscreteValuedField K E.val
+  let := normedAlgebra_isPerfectResidueLocalField K E.val
   have hadd (x y : spectralIntegerRing K F.val) :
       integerNorm E F hEF (x + y) - integerNorm E F hEF x - integerNorm E F hEF y ∈
         IsLocalRing.maximalIdeal (spectralIntegerRing K E.val) ^ r :=
     Ideal.pow_le_pow_right hrb
-      (integerNorm_add_congruence_of_le_apfRamificationBound E F hEF p
+      (integerNorm_add_congruence_of_le_apfRamificationBound E F hEF
         he d hd b hb x y)
   let N : spectralIntegerRing K F.val →+*
       spectralIntegerRing K E.val ⧸ IsLocalRing.maximalIdeal (spectralIntegerRing K E.val) ^ r :=
@@ -149,7 +147,7 @@ def truncatedNorm (r s : ℕ) (hrs : r ≤ s)
 theorem truncatedNorm_mk (r s : ℕ) (hrs : r ≤ s)
     (hrb : r ≤ ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊)
     (x : spectralIntegerRing K F.val) :
-    truncatedNorm E F hEF p d b he hd hb r s hrs hrb (Ideal.Quotient.mk _ x) =
+    truncatedNorm E F hEF d b he hd hb r s hrs hrb (Ideal.Quotient.mk _ x) =
       Ideal.Quotient.mk _ (integerNorm E F hEF x) := rfl
 
 include he hd in
@@ -226,31 +224,29 @@ theorem exists_integerNorm_sub_mem_of_le_apfRamificationBound (r : ℕ)
   let := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
     (isNonarchimedean_spectralNorm (K := K) (L := E.val))
   let := spectralNorm.completeSpace K E.val
-  let := normedAlgebra_isCompleteDiscreteValuedField K E.val
+  let := normedAlgebra_isPerfectResidueLocalField K E.val
   let : Algebra E.val F.val := (IntermediateField.inclusion hEF).toRingHom.toAlgebra
   have : IsScalarTower K E.val F.val := IsScalarTower.of_algebraMap_eq' rfl
   have := spectralValuation_hasExtension_tower K (E := E.val) (L := F.val)
-  exact exists_integerNorm_sub_mem_of_add_congruence E F hEF p d he hd r
+  exact exists_integerNorm_sub_mem_of_add_congruence E F hEF d he hd r
     (fun x y => Ideal.pow_le_pow_right hrb
-      (integerNorm_add_congruence_of_le_apfRamificationBound E F hEF p
+      (integerNorm_add_congruence_of_le_apfRamificationBound E F hEF
         he d hd b hb x y)) a
 
 /-- Actual finite perfect-residue digits supply a preimage of every class
 under the actual truncated norm. -/
 theorem truncatedNorm_surjective (r s : ℕ) (hrs : r ≤ s)
     (hrb : r ≤ ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊) :
-    Function.Surjective (truncatedNorm E F hEF p d b he hd hb r s hrs hrb) := by
+    Function.Surjective (truncatedNorm E F hEF d b he hd hb r s hrs hrb) := by
   intro z
   obtain ⟨a, rfl⟩ := Ideal.Quotient.mk_surjective z
   obtain ⟨x, hx⟩ := exists_integerNorm_sub_mem_of_le_apfRamificationBound
-    E F hEF p d b he hd hb r hrb a
+    E F hEF d b he hd hb r hrb a
   refine ⟨Ideal.Quotient.mk _ x, ?_⟩
   rw [truncatedNorm_mk]
   exact Ideal.Quotient.eq.mpr hx
 
 include he in
-omit [PerfectField (IsLocalRing.ResidueField
-  (NormedField.valuation (K := K)).valuationSubring)] in
 /-- Total ramification makes the original integer norm preserve the exact
 canonical normalized additive valuation, including at zero. -/
 theorem addVal_integerNorm_of_totallyRamified (x : spectralIntegerRing K F.val) :
@@ -301,7 +297,7 @@ theorem truncatedNorm_truncatedAddVal_mk (r s : ℕ) (hrs : r ≤ s)
     (hrb : r ≤ ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊)
     (x : spectralIntegerRing K F.val) :
     truncatedAddVal (spectralIntegerRing K E.val) r
-        (truncatedNorm E F hEF p d b he hd hb r s hrs hrb (Ideal.Quotient.mk _ x)) =
+        (truncatedNorm E F hEF d b he hd hb r s hrs hrb (Ideal.Quotient.mk _ x)) =
       min (IsDiscreteValuationRing.addVal (spectralIntegerRing K F.val) x) (r : ℕ∞) := by
   rw [truncatedNorm_mk, truncatedAddVal_mk,
     addVal_integerNorm_of_totallyRamified E F hEF he]
@@ -312,7 +308,7 @@ theorem truncatedNorm_truncatedAddVal (r s : ℕ) (hrs : r ≤ s)
     (hrb : r ≤ ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊)
     (x : spectralIntegerRing K F.val ⧸ IsLocalRing.maximalIdeal (spectralIntegerRing K F.val) ^ s) :
     truncatedAddVal (spectralIntegerRing K E.val) r
-        (truncatedNorm E F hEF p d b he hd hb r s hrs hrb x) =
+        (truncatedNorm E F hEF d b he hd hb r s hrs hrb x) =
       min (truncatedAddVal (spectralIntegerRing K F.val) s x) (r : ℕ∞) := by
   obtain ⟨x, rfl⟩ := Ideal.Quotient.mk_surjective x
   rw [truncatedNorm_truncatedAddVal_mk, truncatedAddVal_mk, min_assoc]
@@ -357,7 +353,7 @@ theorem truncatedNorm_comp (G : FiniteLayer K L) (hFG : F ≤ G)
       letI := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
         (isNonarchimedean_spectralNorm (K := K) (L := E.val))
       letI := spectralNorm.completeSpace K E.val
-      letI := normedAlgebra_isCompleteDiscreteValuedField K E.val
+      letI := normedAlgebra_isPerfectResidueLocalField K E.val
       let B' := IntermediateField.extendScalars (hEF.trans hFG)
       letI : FiniteDimensional K B' := G.property
       letI : FiniteDimensional E.val B' := Module.Finite.right K E.val B'
@@ -366,9 +362,9 @@ theorem truncatedNorm_comp (G : FiniteLayer K L) (hFG : F ≤ G)
     (hrb : r ≤ ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊)
     (hsbFG : s ≤ ⌈((p - 1 : ℕ) : ℝ) / p * bFG⌉₊)
     (hrbEG : r ≤ ⌈((p - 1 : ℕ) : ℝ) / p * bEG⌉₊) :
-    (truncatedNorm E F hEF p d b he hd hb r s hrs hrb).comp
-        (truncatedNorm F G hFG p dFG bFG heFG hdFG hbFG s t hst hsbFG) =
-      truncatedNorm E G (hEF.trans hFG) p dEG bEG heEG hdEG hbEG r t
+    (truncatedNorm E F hEF d b he hd hb r s hrs hrb).comp
+        (truncatedNorm F G hFG dFG bFG heFG hdFG hbFG s t hst hsbFG) =
+      truncatedNorm E G (hEF.trans hFG) dEG bEG heEG hdEG hbEG r t
         (hrs.trans hst) hrbEG := by
   apply Ideal.Quotient.ringHom_ext
   ext x
@@ -395,20 +391,20 @@ theorem truncatedNorm_self
       letI := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
         (isNonarchimedean_spectralNorm (K := K) (L := E.val))
       letI := spectralNorm.completeSpace K E.val
-      letI := normedAlgebra_isCompleteDiscreteValuedField K E.val
+      letI := normedAlgebra_isPerfectResidueLocalField K E.val
       let B' := IntermediateField.extendScalars (show E.val ≤ E.val from le_rfl)
       letI : FiniteDimensional K B' := E.property
       letI : FiniteDimensional E.val B' := Module.Finite.right K E.val B'
       (b : EReal) ≤ apfRamificationBound E.val B')
     (r s : ℕ) (hrs : r ≤ s)
     (hrb : r ≤ ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊) :
-    truncatedNorm E E le_rfl p d b heSelf hdSelf hbSelf r s hrs hrb =
+    truncatedNorm E E le_rfl d b heSelf hdSelf hbSelf r s hrs hrb =
       Ideal.Quotient.factor (Ideal.pow_le_pow_right hrs) := by
   apply Ideal.Quotient.ringHom_ext
   ext x
   simp only [RingHom.comp_apply, Ideal.Quotient.factor_mk]
   simpa only [integerNorm_self] using
-    truncatedNorm_mk E E le_rfl p d b heSelf hdSelf hbSelf r s hrs hrb x
+    truncatedNorm_mk E E le_rfl d b heSelf hdSelf hbSelf r s hrs hrb x
 
 end HighBreak
 

@@ -190,9 +190,7 @@ end EmbeddingTate
 
 section FiniteGaloisAmbient
 
-variable (K Ω : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+variable (K Ω : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
     [Field Ω] [Algebra K Ω] [FiniteDimensional K Ω] [IsGalois K Ω]
 variable (H : Subgroup (Ω ≃ₐ[K] Ω))
 
@@ -201,8 +199,6 @@ local notation "R₀" => Valuation.valuationSubring (NormedField.valuation (K :=
 local notation "A₀" => spectralIntegerRing K F₀
 local notation "B₀" => spectralIntegerRing K Ω
 
-omit [PerfectField (IsLocalRing.ResidueField
-  (NormedField.valuation (K := K)).valuationSubring)] in
 /-- Galois descent on the actual spectral integer rings of the actual
 fixed field, without any normality hypothesis on the fixing subgroup. -/
 theorem fixedField_spectralInteger_isGaloisGroup :
@@ -281,8 +277,7 @@ theorem fixedField_spectral_card_inertia :
   have := hasSeparableResidueFieldsAt_maximalIdeal A₀ B₀
   exact card_lowerRamificationGroup_zero A₀ B₀ H
 
-omit [IsCompleteDiscreteValuedField K] [PerfectField (IsLocalRing.ResidueField
-  (NormedField.valuation (K := K)).valuationSubring)]
+omit [IsPerfectResidueLocalField K]
   [FiniteDimensional K Ω] [IsGalois K Ω] in
 @[simp]
 theorem mul_subgroup_fixedField_comp (s : Ω ≃ₐ[K] Ω) (h : H) :
@@ -291,8 +286,6 @@ theorem mul_subgroup_fixedField_comp (s : Ω ≃ₐ[K] Ω) (h : H) :
   change s (h.1 (x : Ω)) = s (x : Ω)
   exact congrArg s (x.2 h)
 
-omit [PerfectField (IsLocalRing.ResidueField
-  (NormedField.valuation (K := K)).valuationSubring)] in
 /-- Every nonidentity actual embedding coset has an attained finite maximum;
 the subgroup is arbitrary and no restriction automorphism is postulated. -/
 theorem exists_embedding_coset_order_max (s : Ω ≃ₐ[K] Ω)
@@ -383,16 +376,13 @@ end FiniteGaloisAmbient
 
 section EmbeddingRestriction
 
-variable (K Ω : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+variable (K Ω : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
     [Field Ω] [Algebra K Ω] [FiniteDimensional K Ω] [IsGalois K Ω]
 
 local notation "G₁" => Ω ≃ₐ[K] Ω
 local notation "O₁" => spectralIntegerRing K Ω
 
-omit [IsCompleteDiscreteValuedField K] [PerfectField (IsLocalRing.ResidueField
-  (NormedField.valuation (K := K)).valuationSubring)]
+omit [IsPerfectResidueLocalField K]
   [IsGalois K Ω] in
 /-- Equality of original embeddings is exactly membership in the actual
 right fixing coset, without normality of the intermediate field. -/
@@ -414,8 +404,6 @@ theorem fixedField_comp_eq_iff_inv_mul_mem (H : Subgroup G₁) (r s : G₁) :
     change r⁻¹ (s (x : Ω)) = (x : Ω) at h
     exact (r.symm_apply_eq).mp h
 
-omit [PerfectField (IsLocalRing.ResidueField
-  (NormedField.valuation (K := K)).valuationSubring)] in
 /-- A maximal fixing-coset representative bounds all original automorphisms
 with that same embedding, rather than only a postulated restriction group. -/
 theorem ramificationOrder_le_of_fixedField_comp_eq (H : Subgroup G₁) (r s : G₁)
@@ -484,9 +472,7 @@ end EmbeddingRestriction
 
 section RelativeParameter
 
-variable (K Ω : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+variable (K Ω : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
     [Field Ω] [Algebra K Ω] [FiniteDimensional K Ω] [IsGalois K Ω]
 
 /-- The fixing-subgroup composite is the intrinsic relative APF function
@@ -573,9 +559,7 @@ end RelativeParameter
 
 section FirstEmbeddingBound
 
-variable (K Ω : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+variable (K Ω : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
     [Field Ω] [Algebra K Ω] [FiniteDimensional K Ω] [IsGalois K Ω]
 
 local notation "G₂" => Ω ≃ₐ[K] Ω
@@ -682,9 +666,7 @@ end FiniteCosetAverages
 
 section ActualFiniteAverages
 
-variable (K Ω : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+variable (K Ω : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
     [Field Ω] [Algebra K Ω] [FiniteDimensional K Ω] [IsGalois K Ω]
 
 local notation "G₃" => Ω ≃ₐ[K] Ω
@@ -790,7 +772,7 @@ end ActualFiniteAverages
 
 section StrictPairComparison
 
-variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
+variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
 
 variable {E N : Type*} [Field E] [Field N] [Algebra K E] [Algebra K N]
     [FiniteDimensional K E] [FiniteDimensional K N]
@@ -859,7 +841,7 @@ end LocalIndexTransport
 
 section SourceEquivalence
 
-variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
+variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
 
 variable {E F N : Type*} [Field E] [Field F] [Field N]
     [Algebra K E] [Algebra K F] [Algebra K N]
@@ -918,7 +900,7 @@ end SourceEquivalence
 
 section FiniteBaseInvariance
 
-variable (K Ω : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
+variable (K Ω : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
     [Field Ω] [Algebra K Ω] [FiniteDimensional K Ω] [IsGalois K Ω]
 
 /-- Changing to an actual finite intermediate base preserves the same intrinsic
@@ -931,7 +913,7 @@ theorem embeddingNumber_rebase
     letI := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
       (isNonarchimedean_spectralNorm (K := K) (L := Ω))
     letI : CompleteSpace E := FiniteDimensional.complete K E
-    letI := normedAlgebra_isCompleteDiscreteValuedField K E
+    letI := normedAlgebra_isPerfectResidueLocalField K E
     letI := Algebra.isSeparable_tower_top_of_isSeparable K E Ω
     letI : FiniteDimensional E Ω := Module.Finite.right K E Ω
     let F' := IntermediateField.extendScalars hEF
@@ -945,7 +927,7 @@ theorem embeddingNumber_rebase
   let := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
     (isNonarchimedean_spectralNorm (K := K) (L := Ω))
   let : CompleteSpace E := FiniteDimensional.complete K E
-  let := normedAlgebra_isCompleteDiscreteValuedField K E
+  let := normedAlgebra_isPerfectResidueLocalField K E
   let := Algebra.isSeparable_tower_top_of_isSeparable K E Ω
   let : FiniteDimensional E Ω := Module.Finite.right K E Ω
   let F' := IntermediateField.extendScalars hEF
@@ -1005,9 +987,7 @@ end FiniteBaseInvariance
 
 section RelativeEmbeddingBounds
 
-variable (K Ω : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+variable (K Ω : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
     [Field Ω] [Algebra K Ω] [FiniteDimensional K Ω] [IsGalois K Ω]
 
 /-- The actual relative first bound controls every actual base-fixing
@@ -1019,7 +999,7 @@ theorem apfRelativeBound_le_embeddingNumber
     letI := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
       (isNonarchimedean_spectralNorm (K := K) (L := Ω))
     letI : CompleteSpace E := FiniteDimensional.complete K E
-    letI := normedAlgebra_isCompleteDiscreteValuedField K E
+    letI := normedAlgebra_isPerfectResidueLocalField K E
     letI := Algebra.isSeparable_tower_top_of_isSeparable K E Ω
     letI : FiniteDimensional E Ω := Module.Finite.right K E Ω
     let F' := IntermediateField.extendScalars hEF
@@ -1032,16 +1012,13 @@ theorem apfRelativeBound_le_embeddingNumber
   let := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
     (isNonarchimedean_spectralNorm (K := K) (L := Ω))
   let : CompleteSpace E := FiniteDimensional.complete K E
-  let := normedAlgebra_isCompleteDiscreteValuedField K E
+  let := normedAlgebra_isPerfectResidueLocalField K E
   let := Algebra.isSeparable_tower_top_of_isSeparable K E Ω
   let : FiniteDimensional E Ω := Module.Finite.right K E Ω
   let F' := IntermediateField.extendScalars hEF
   let : FiniteDimensional K F' := inferInstanceAs (FiniteDimensional K F)
   let : FiniteDimensional E F' := Module.Finite.right K E F'
   let : IsGalois E Ω := IsGalois.tower_top_of_isGalois K E Ω
-  let : PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := E)).valuationSubring) :=
-    normedAlgebra_residueField_perfectField K E
   dsimp only
   intro d
   have h := apfRamificationBound_le_embeddingNumber E Ω F' (E.fixingSubgroupEquiv d)
@@ -1085,9 +1062,7 @@ end RelativeEmbeddingBounds
 
 section TotalFiberAverage
 
-variable (K Ω : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+variable (K Ω : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
     [Field Ω] [Algebra K Ω] [FiniteDimensional K Ω] [IsGalois K Ω]
 
 /-- Under ordinary total ramification, the true average over all extensions

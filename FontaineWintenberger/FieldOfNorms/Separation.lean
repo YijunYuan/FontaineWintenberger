@@ -23,15 +23,10 @@ namespace FontaineWintenberger
 
 open Filter
 
-variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
-variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
-variable (p : ℕ) [Fact p.Prime]
-    [CharP (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring) p]
+variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
 
-include p
+local notation "p" => residueChar K
+variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
 /-- Deep ideal-power agreement of integral families gives equality by
 transporting every precision to one fixed original finite base. -/
@@ -44,7 +39,7 @@ theorem normLimit_ext_of_integral_eventually_sub_mem [IsAPF K L]
           ((IsLocalRing.maximalIdeal (spectralIntegerRing K F.val) ^ n :
             Ideal (spectralIntegerRing K F.val)) : Set (spectralIntegerRing K F.val))) :
     α = β := by
-  obtain ⟨T, hT⟩ := IsAPF.exists_finiteLayer_wild_tail K L p
+  obtain ⟨T, hT⟩ := IsAPF.exists_finiteLayer_wild_tail K L
   apply NormLimit.ext K L
   intro D
   let B := FiniteLayer.sup D T
@@ -81,7 +76,7 @@ theorem normLimit_ext_of_integral_eventually_sub_mem [IsAPF K L]
       exact hd
     obtain ⟨_, ⟨n, hn⟩, he⟩ := hT B F hTB hBF
     have hc := FiniteLayer.integerNorm_sub_congruence_of_totallyRamified
-      B F hBF p he n hn s x y hxy
+      B F hBF he n hn s x y hxy
     have hprecision := FiniteLayer.le_ceil_apfPhi_of_apfPsi_le K L B F hBF N s hs
     refine ⟨FiniteLayer.integerNorm B F hBF x - FiniteLayer.integerNorm B F hBF y,
       Ideal.pow_le_pow_right hprecision hc, ?_⟩
@@ -129,7 +124,7 @@ theorem normLimit_ext_of_eventually_sub_mem [IsAPF K L]
   have hi : w δ⁻¹ ≤ 1 := by
     rw [map_inv₀]
     exact inv_le_one_of_one_le₀ hone
-  have heq := normLimit_ext_of_integral_eventually_sub_mem K L p
+  have heq := normLimit_ext_of_integral_eventually_sub_mem K L
     (α / δ) (β / δ) ha hb (fun n => ?_)
   · simpa [div_eq_mul_inv, mul_assoc, hδ] using
       congrArg (fun x : NormLimit K L => x * δ) heq

@@ -116,41 +116,38 @@ end Fields
 
 section StageEquivNaturality
 
-variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
+
+local notation "p" => residueChar K
 variable (L M : Type*) [Field L] [Field M]
     [Algebra K L] [Algebra K M] [Algebra L M] [IsScalarTower K L M]
     [Algebra.IsSeparable K L] [Algebra.IsSeparable L M]
-variable (p : ℕ) [Fact p.Prime]
-    [CharP (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring) p]
 variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 
 /-- A field isomorphism between actual finite indices gives their original norm-field
 isomorphism. -/
 def normUnionStageEquiv (N P : FiniteLayer L M) (e : N.val ≃ₐ[K] P.val) :
-    letI := separableNormUnionStageField K L M p N
-    letI := separableNormUnionStageField K L M p P
+    letI := separableNormUnionStageField K L M N
+    letI := separableNormUnionStageField K L M P
     NormLimit K N.val ≃+* NormLimit K P.val := by
   letI : Algebra.IsSeparable K N.val := Algebra.IsSeparable.trans K L N.val
   letI : Algebra.IsSeparable K P.val := Algebra.IsSeparable.trans K L P.val
-  exact normLimitRingEquiv K (L := N.val) (M := P.val) p
+  exact normLimitRingEquiv K (L := N.val) (M := P.val)
     e
 
 /-- The indexed isomorphism is the original norm-family transport. -/
 @[simp]
 theorem normUnionStageEquiv_apply (N P : FiniteLayer L M) (e : N.val ≃ₐ[K] P.val)
     (x : NormLimit K N.val) :
-    normUnionStageEquiv K L M p N P e x = normLimitMap e x := rfl
+    normUnionStageEquiv K L M N P e x = normLimitMap e x := rfl
 
 /-- An original commuting field square gives the same original finite base maps. -/
 theorem normUnionStageEquiv_base (N P : FiniteLayer L M)
     (a : L ≃ₐ[K] L) (e : N.val ≃ₐ[K] P.val)
     (h : ∀ z : L, e (algebraMap L N.val z) = algebraMap L P.val (a z))
     (x : NormLimit K L) :
-    normLimitMap e (separableNormUnionBaseToStage K L M p N x) =
-      separableNormUnionBaseToStage K L M p P (normLimitMap a x) := by
+    normLimitMap e (separableNormUnionBaseToStage K L M N x) =
+      separableNormUnionBaseToStage K L M P (normLimitMap a x) := by
   let : Algebra.IsSeparable K N.val := Algebra.IsSeparable.trans K L N.val
   let : Algebra.IsSeparable K P.val := Algebra.IsSeparable.trans K L P.val
   simpa only [separableNormUnionBaseToStage, finiteNormLimitRingHom_apply] using
@@ -165,8 +162,8 @@ theorem normUnionStageEquiv_transition (N P A B : FiniteLayer L M)
       (eP (IntermediateField.inclusion hNP z) : M) = (eN z : M))
     (x : NormLimit K N.val) :
     normLimitMap eP
-        (separableNormUnionTransition K L M p N P hNP x) =
-      separableNormUnionTransition K L M p A B hAB
+        (separableNormUnionTransition K L M N P hNP x) =
+      separableNormUnionTransition K L M A B hAB
         (normLimitMap eN x) := by
   let : Algebra.IsSeparable K N.val := Algebra.IsSeparable.trans K L N.val
   let : Algebra.IsSeparable K P.val := Algebra.IsSeparable.trans K L P.val
@@ -193,13 +190,10 @@ end StageEquivNaturality
 
 section NormFields
 
-variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
+
+local notation "p" => residueChar K
 variable (L : IntermediateField K (SeparableClosure K)) [Normal K L]
-variable (p : ℕ) [Fact p.Prime]
-    [CharP (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring) p]
 variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 
 set_option synthInstance.maxHeartbeats 80000 in
@@ -208,12 +202,12 @@ set_option synthInstance.maxHeartbeats 80000 in
 /-- The actual ambient restriction gives the existing isomorphism of original norm fields. -/
 def normUnionAbsoluteStageMap (σ : SeparableClosure K ≃ₐ[K] SeparableClosure K)
     (N : FiniteLayer L (SeparableClosure K)) :
-    letI := separableNormUnionStageField K L (SeparableClosure K) p N
-    letI := separableNormUnionStageField K L (SeparableClosure K) p
+    letI := separableNormUnionStageField K L (SeparableClosure K) N
+    letI := separableNormUnionStageField K L (SeparableClosure K)
       (normUnionAbsoluteLayer K (SeparableClosure K) L σ N)
     NormLimit K N.val ≃+*
       NormLimit K (normUnionAbsoluteLayer K (SeparableClosure K) L σ N).val := by
-  exact normUnionStageEquiv K L (SeparableClosure K) p N
+  exact normUnionStageEquiv K L (SeparableClosure K) N
     (normUnionAbsoluteLayer K (SeparableClosure K) L σ N)
     (normUnionAbsoluteLayerEquiv K (SeparableClosure K) L σ N)
 
@@ -222,21 +216,21 @@ def normUnionAbsoluteStageMap (σ : SeparableClosure K ≃ₐ[K] SeparableClosur
 theorem normUnionAbsoluteStageMap_apply
     (σ : SeparableClosure K ≃ₐ[K] SeparableClosure K)
     (N : FiniteLayer L (SeparableClosure K)) (x : NormLimit K N.val) :
-    normUnionAbsoluteStageMap K L p σ N x =
+    normUnionAbsoluteStageMap K L σ N x =
       normLimitMap (normUnionAbsoluteLayerEquiv K (SeparableClosure K) L σ N) x := rfl
 
 /-- Actual ambient stage transport extends the original absolute base action. -/
 theorem normUnionAbsoluteStageMap_base
     (σ : SeparableClosure K ≃ₐ[K] SeparableClosure K)
     (N : FiniteLayer L (SeparableClosure K)) (x : NormLimit K L) :
-    normUnionAbsoluteStageMap K L p σ N
-        (separableNormUnionBaseToStage K L (SeparableClosure K) p N x) =
-      separableNormUnionBaseToStage K L (SeparableClosure K) p
+    normUnionAbsoluteStageMap K L σ N
+        (separableNormUnionBaseToStage K L (SeparableClosure K) N x) =
+      separableNormUnionBaseToStage K L (SeparableClosure K)
         (normUnionAbsoluteLayer K (SeparableClosure K) L σ N)
-        (normLimitAbsoluteAut K L p σ x) := by
+        (normLimitAbsoluteAut K L σ x) := by
   simpa only [normUnionAbsoluteStageMap_apply, normLimitAbsoluteAut_apply,
     normLimitAut_apply] using
-    normUnionStageEquiv_base K L (SeparableClosure K) p N
+    normUnionStageEquiv_base K L (SeparableClosure K) N
       (normUnionAbsoluteLayer K (SeparableClosure K) L σ N)
       (AlgEquiv.restrictNormalHom L σ)
       (normUnionAbsoluteLayerEquiv K (SeparableClosure K) L σ N)
@@ -246,15 +240,15 @@ theorem normUnionAbsoluteStageMap_base
 theorem normUnionAbsoluteStageMap_transition
     (σ : SeparableClosure K ≃ₐ[K] SeparableClosure K)
     (N P : FiniteLayer L (SeparableClosure K)) (hNP : N ≤ P) (x : NormLimit K N.val) :
-    normUnionAbsoluteStageMap K L p σ P
-        (separableNormUnionTransition K L (SeparableClosure K) p N P hNP x) =
-      separableNormUnionTransition K L (SeparableClosure K) p
+    normUnionAbsoluteStageMap K L σ P
+        (separableNormUnionTransition K L (SeparableClosure K) N P hNP x) =
+      separableNormUnionTransition K L (SeparableClosure K)
         (normUnionAbsoluteLayer K (SeparableClosure K) L σ N)
         (normUnionAbsoluteLayer K (SeparableClosure K) L σ P)
         (normUnionAbsoluteLayer_mono K (SeparableClosure K) L σ hNP)
-        (normUnionAbsoluteStageMap K L p σ N x) := by
+        (normUnionAbsoluteStageMap K L σ N x) := by
   simpa only [normUnionAbsoluteStageMap_apply] using
-    normUnionStageEquiv_transition K L (SeparableClosure K) p N P
+    normUnionStageEquiv_transition K L (SeparableClosure K) N P
       (normUnionAbsoluteLayer K (SeparableClosure K) L σ N)
       (normUnionAbsoluteLayer K (SeparableClosure K) L σ P)
       hNP (normUnionAbsoluteLayer_mono K (SeparableClosure K) L σ hNP)

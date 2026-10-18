@@ -137,7 +137,9 @@ end Adic
 
 section FiniteExtension
 
-variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
+variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
+
+local notation "p" => residueChar K
 
 variable (E : Type*) [Field E] [Algebra K E] [FiniteDimensional K E]
     [Algebra.IsSeparable K E]
@@ -160,17 +162,11 @@ instance spectralIntegerRing_isAdicComplete :
     exact spectralIntegerRing_isDiscreteValuationRing K E
   exact unitBall_isAdicComplete E
 
-variable [PerfectField (IsLocalRing.ResidueField
-  (NormedField.valuation (K := K)).valuationSubring)]
-
 /-- The actual finite spectral residue extension of a perfect base is perfect. -/
 instance spectralResidueField_perfectField :
     PerfectField (IsLocalRing.ResidueField (spectralIntegerRing K E)) :=
   Algebra.IsAlgebraic.perfectField
     (IsLocalRing.ResidueField (NormedField.valuation (K := K)).valuationSubring)
-
-variable (p : ℕ) [Fact p.Prime] [CharP (IsLocalRing.ResidueField
-  (NormedField.valuation (K := K)).valuationSubring) p]
 
 /-- The actual finite residue inclusion preserves the residue characteristic. -/
 instance spectralResidueField_charP :
@@ -187,13 +183,13 @@ def spectralTeichmuller : IsLocalRing.ResidueField (spectralIntegerRing K E) →
 /-- The actual original finite representative has the specified residue. -/
 @[simp]
 theorem residue_spectralTeichmuller (x : IsLocalRing.ResidueField (spectralIntegerRing K E)) :
-    IsLocalRing.residue _ (spectralTeichmuller K E p x) = x :=
+    IsLocalRing.residue _ (spectralTeichmuller K E x) = x :=
   residue_residueTeichmuller (spectralIntegerRing K E) p x
 
 /-- The actual finite representatives are the unique multiplicative section. -/
 theorem spectralTeichmuller_unique
     (s : IsLocalRing.ResidueField (spectralIntegerRing K E) →*₀ spectralIntegerRing K E)
-    (hs : ∀ x, IsLocalRing.residue _ (s x) = x) : s = spectralTeichmuller K E p :=
+    (hs : ∀ x, IsLocalRing.residue _ (s x) = x) : s = spectralTeichmuller K E :=
   residueTeichmuller_unique (spectralIntegerRing K E) p s hs
 
 variable {F : Type*} [Field F] [Algebra K F] [FiniteDimensional K F]
@@ -203,8 +199,8 @@ variable {F : Type*} [Field F] [Algebra K F] [FiniteDimensional K F]
 valued-field inclusions and their actual induced residue inclusions. -/
 theorem spectralTeichmuller_naturality (i : E →ₐ[K] F)
     (x : IsLocalRing.ResidueField (spectralIntegerRing K E)) :
-    spectralIntegerInclusion K i (spectralTeichmuller K E p x) =
-      spectralTeichmuller K F p (spectralResidueInclusion K i x) := by
+    spectralIntegerInclusion K i (spectralTeichmuller K E x) =
+      spectralTeichmuller K F (spectralResidueInclusion K i x) := by
   let : IsLocalHom (spectralIntegerInclusion K i).toRingHom :=
     ⟨(spectralIntegerInclusion_isLocalHom K i).map_nonunit⟩
   exact residueTeichmuller_naturality (spectralIntegerRing K E) p
@@ -213,10 +209,10 @@ theorem spectralTeichmuller_naturality (i : E →ₐ[K] F)
 /-- The same naturality statement holds as an equality in the original field. -/
 theorem coe_spectralTeichmuller_naturality (i : E →ₐ[K] F)
     (x : IsLocalRing.ResidueField (spectralIntegerRing K E)) :
-    i (spectralTeichmuller K E p x : E) =
-      (spectralTeichmuller K F p (spectralResidueInclusion K i x) : F) :=
+    i (spectralTeichmuller K E x : E) =
+      (spectralTeichmuller K F (spectralResidueInclusion K i x) : F) :=
   congrArg (fun z : spectralIntegerRing K F => (z : F))
-    (spectralTeichmuller_naturality K E p i x)
+    (spectralTeichmuller_naturality K E i x)
 
 end FiniteExtension
 

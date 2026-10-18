@@ -57,11 +57,17 @@ theorem mem_maximalIdeal_pow_of_algebraMap_mem_ceil
 
 section FiniteGaloisOverfield
 
-variable (K Ω : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+variable (K Ω : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
     [NontriviallyNormedField Ω] [NormedAlgebra K Ω] [IsUltrametricDist Ω]
     [FiniteDimensional K Ω] [IsGalois K Ω]
+
+local notation "p" => residueChar K
+
+local instance tameNorm_residueField_charP :
+    CharP (IsLocalRing.ResidueField (spectralIntegerRing K Ω)) p :=
+  charP_of_injective_algebraMap
+    (algebraMap (IsLocalRing.ResidueField (NormedField.valuation (K := K)).valuationSubring)
+      (IsLocalRing.ResidueField (spectralIntegerRing K Ω))).injective p
 
 local instance tameNorm_completeSpace (M : IntermediateField K Ω) : CompleteSpace M :=
   FiniteDimensional.complete K M
@@ -74,9 +80,7 @@ local instance tameNorm_perfectField (M : IntermediateField K Ω) : PerfectField
   Algebra.IsAlgebraic.perfectField (IsLocalRing.ResidueField
     (NormedField.valuation (K := K)).valuationSubring)
 
-variable (p : ℕ) [Fact p.Prime]
-    [CharP (IsLocalRing.ResidueField (spectralIntegerRing K Ω)) p]
-    (H : Subgroup (Ω ≃ₐ[K] Ω))
+variable (H : Subgroup (Ω ≃ₐ[K] Ω))
 
 local notation "R" => Valuation.valuationSubring (NormedField.valuation (K := K))
 local notation "F" => IntermediateField.fixedField H
