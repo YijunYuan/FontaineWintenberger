@@ -82,7 +82,6 @@ valuation ring, by the proved equality of its normalized valuation. -/
 theorem normLimitResidueReduction_ker :
     RingHom.ker (normLimitResidueReduction K L D) =
       IsLocalRing.maximalIdeal (normLimitFieldValuation K L).valuationSubring := by
-  let := normLimitFieldValuation_isDiscreteValuationRing K L
   ext α
   change normLimitResidueReduction K L D α = 0 ↔ _
   rw [normLimitResidueReduction_apply, IsLocalRing.residue_eq_zero_iff]
@@ -164,7 +163,7 @@ theorem normLimitResidueEquiv_residue :
 
 /-- The actual original norm-limit residue field is perfect, with no finite
 residue-field hypothesis. -/
-theorem normLimitResidue_perfectField :
+instance normLimitResidue_perfectField :
     PerfectField (IsLocalRing.ResidueField
       (normLimitFieldValuation K L).valuationSubring) := by
   let := IsAPF.perfectField_integralClosureResidue K L

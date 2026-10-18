@@ -437,7 +437,6 @@ theorem ker_normLimitHighBreakProjection
     RingHom.ker (normLimitHighBreakProjection K L hb h r hrb) =
       IsLocalRing.maximalIdeal
         (normLimitFieldValuation K L).valuationSubring ^ r := by
-  let := normLimitFieldValuation_isDiscreteValuationRing K L
   ext α
   rw [RingHom.mem_ker, normLimitHighBreakProjection_eq_zero_iff,
     ValuationSubring.mem_maximalIdeal_pow_iff_normalizedValuation,

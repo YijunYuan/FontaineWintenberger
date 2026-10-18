@@ -73,7 +73,6 @@ theorem coe_normLimitIntegerAut [IsAPF K L] [Fact (¬ Module.Finite K L)]
 with infinity retained in the standard extended reals. -/
 def normLimitRamificationNumber [IsAPF K L] [Fact (¬ Module.Finite K L)]
     (σ : L ≃ₐ[K] L) : EReal := by
-  letI := normLimitFieldValuation_isDiscreteValuationRing K L
   let O := (normLimitFieldValuation K L).valuationSubring
   exact ((ramificationOrder (R := O) (O ≃+* O)
     (normLimitIntegerAut K L σ) : ℝ≥0∞) : EReal) - 1
@@ -94,12 +93,10 @@ theorem normLimitIntegerAut_eq_valuationIntegerAut [IsAPF K L]
 norm-field number, with the same field, valuation and actual automorphism. -/
 theorem normLimitRamificationNumber_eq_valuedRamificationNumber [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (σ : L ≃ₐ[K] L) :
-    letI := normLimitFieldValuation_isDiscreteValuationRing K L
     normLimitRamificationNumber K L σ =
       valuedRamificationNumber (normLimitFieldValuation K L)
         (normLimitAut K L σ)
         (normLimitAut_valuation K σ) := by
-  let := normLimitFieldValuation_isDiscreteValuationRing K L
   change integerRamificationNumber (normLimitIntegerAut K L σ) = _
   rw [normLimitIntegerAut_eq_valuationIntegerAut]
   rfl
@@ -139,7 +136,6 @@ theorem neg_one_le_normLimitRamificationNumber [IsAPF K L]
 theorem normLimitRamificationNumber_eq_top_iff [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (σ : L ≃ₐ[K] L) :
     normLimitRamificationNumber K L σ = ⊤ ↔ σ = 1 := by
-  let := normLimitFieldValuation_isDiscreteValuationRing K L
   let O := (normLimitFieldValuation K L).valuationSubring
   change ((ramificationOrder (R := O) (O ≃+* O)
     (normLimitIntegerAut K L σ) : ℝ≥0∞) : EReal) - 1 = ⊤ ↔ _
@@ -205,19 +201,16 @@ theorem normLimitResidueAut_eq_refl_iff [IsAPF K L]
 intrinsic ramification number; this includes the identity and infinity. -/
 theorem normLimitRamificationNumber_eq_uniformizer [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (σ : L ≃ₐ[K] L) :
-    letI := normLimitFieldValuation_isDiscreteValuationRing K L
     ∀ (_hres : normLimitResidueAut K L σ = RingEquiv.refl _)
       (π : (normLimitFieldValuation K L).valuationSubring),
       Irreducible π → normLimitRamificationNumber K L σ =
         (((IsDiscreteValuationRing.addVal _
           (normLimitIntegerAut K L σ π - π) : ℝ≥0∞) : EReal) - 1) := by
-  let := normLimitFieldValuation_isDiscreteValuationRing K L
   let O := (normLimitFieldValuation K L).valuationSubring
   let : CharP O p :=
     (algebraMap O (NormLimit K L)).charP Subtype.val_injective p
   let : CharP (IsLocalRing.ResidueField O) p :=
     CharP.of_ringHom_of_ne_zero (IsLocalRing.residue O) p (Fact.out : Nat.Prime p).ne_zero
-  let := normLimitResidue_perfectField K L
   intro hres π hπ
   exact integerRamificationNumber_eq_uniformizer p
     (normLimitIntegerAut K L σ) hres hπ
@@ -226,7 +219,6 @@ theorem normLimitRamificationNumber_eq_uniformizer [IsAPF K L]
 intrinsic original norm-field number on its same original field. -/
 theorem normLimitRamificationNumber_eq_uniformizer_ratio [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (σ : L ≃ₐ[K] L) :
-    letI := normLimitFieldValuation_isDiscreteValuationRing K L
     ∀ (_hres : normLimitResidueAut K L σ = RingEquiv.refl _)
       (π : (normLimitFieldValuation K L).valuationSubring),
       Irreducible π → normLimitRamificationNumber K L σ =
@@ -234,13 +226,11 @@ theorem normLimitRamificationNumber_eq_uniformizer_ratio [IsAPF K L]
           (normLimitFieldValuation K L).valuationSubring
           (normLimitAut K L σ (π : NormLimit K L) /
             (π : NormLimit K L) - 1) := by
-  let := normLimitFieldValuation_isDiscreteValuationRing K L
   let O := (normLimitFieldValuation K L).valuationSubring
   let : CharP O p :=
     (algebraMap O (NormLimit K L)).charP Subtype.val_injective p
   let : CharP (IsLocalRing.ResidueField O) p :=
     CharP.of_ringHom_of_ne_zero (IsLocalRing.residue O) p (Fact.out : Nat.Prime p).ne_zero
-  let := normLimitResidue_perfectField K L
   intro hres π hπ
   change IsLocalRing.ResidueField.mapEquiv (normLimitIntegerAut K L σ) =
     RingEquiv.refl _ at hres
@@ -257,7 +247,6 @@ theorem normLimitRamificationNumber_eq_neg_one_of_residue_ne [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (σ : L ≃ₐ[K] L) :
     normLimitResidueAut K L σ ≠ RingEquiv.refl _ →
       normLimitRamificationNumber K L σ = -1 := by
-  let := normLimitFieldValuation_isDiscreteValuationRing K L
   let O := (normLimitFieldValuation K L).valuationSubring
   let g := normLimitIntegerAut K L σ
   intro hres
@@ -278,7 +267,6 @@ namely a natural integral displacement order minus one. -/
 theorem normLimitRamificationNumber_eq_nat_sub_one [IsAPF K L]
     [Fact (¬ Module.Finite K L)] {σ : L ≃ₐ[K] L} (hσ : σ ≠ 1) :
     ∃ n : ℕ, normLimitRamificationNumber K L σ = (n : EReal) - 1 := by
-  let := normLimitFieldValuation_isDiscreteValuationRing K L
   let O := (normLimitFieldValuation K L).valuationSubring
   let g := normLimitIntegerAut K L σ
   have hg : g ≠ 1 := fun h => hσ ((normLimitIntegerAut_eq_one_iff K L σ).mp h)
@@ -906,7 +894,6 @@ theorem exists_finiteLayer_stableRamificationNumber_eq [IsAPF K L]
       FiniteLayer.map σ.toAlgHom E = E →
       finiteLayerRamificationNumber K L σ E =
         normLimitRamificationNumber K L σ := by
-  let := normLimitFieldValuation_isDiscreteValuationRing K L
   let O := (normLimitFieldValuation K L).valuationSubring
   let π := normLimitUniformizerInteger K L
   let g := normLimitIntegerAut K L σ

@@ -82,11 +82,6 @@ instance separableNormUnionStage_isAPF [IsAPF K L] (E : IntermediateField L M)
 
 variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 
-/-- The field structure at each stage is exactly its existing original norm field.
-Alias for the global instance, kept while `letI` installs are being removed. -/
-abbrev separableNormUnionStageField (N : FiniteLayer L M) : Field (NormLimit K N.val) :=
-  inferInstance
-
 /-- The transition homomorphism is the existing original finite-inclusion map. -/
 def separableNormUnionTransition (N P : FiniteLayer L M) (h : N ≤ P) :
     NormLimit K N.val →+* NormLimit K P.val := by
@@ -156,9 +151,6 @@ def SeparableNormUnion :=
 instance SeparableNormUnion.instField : Field (SeparableNormUnion K L M) :=
   inferInstanceAs (Field (DirectLimit (fun N : FiniteLayer L M => NormLimit K N.val)
     (separableNormUnionTransition K L M)))
-
-/-- Alias for the field instance, kept while `letI` installs are being removed. -/
-abbrev separableNormUnionField : Field (SeparableNormUnion K L M) := inferInstance
 
 /-- The canonical structural embedding of an original finite-stage norm field. -/
 def separableNormUnionOf (N : FiniteLayer L M) :

@@ -43,7 +43,6 @@ source constants and precisely the residue isomorphism induced by them.
 It is available for every original normalized uniformizer. -/
 def normLimitPowerSeriesEquiv :
     PowerSeries κL ≃+* (normLimitFieldValuation K L).valuationSubring := by
-  letI := normLimit_completeSpace K L
   letI : UniformSpace κL := ⊥
   letI : DiscreteUniformity κL := inferInstance
   let π : (normLimitFieldValuation K L).valuationSubring :=
@@ -58,7 +57,6 @@ def normLimitPowerSeriesEquiv :
 norm-limit field, for every chosen original normalized uniformizer. -/
 def normLimitLaurentEquiv :
     LaurentSeries κL ≃+* NormLimit K L := by
-  letI := normLimit_completeSpace K L
   letI : UniformSpace κL := ⊥
   letI : DiscreteUniformity κL := inferInstance
   let π : (normLimitFieldValuation K L).valuationSubring :=
@@ -74,7 +72,6 @@ def normLimitLaurentEquiv :
 theorem normLimitPowerSeriesEquiv_C (a : κL) :
     normLimitPowerSeriesEquiv K L u hu (PowerSeries.C a) =
       sourceResidueConstantsIntegerHom K L a := by
-  let := normLimit_completeSpace K L
   let : UniformSpace κL := ⊥
   let : DiscreteUniformity κL := inferInstance
   exact valuedPowerSeriesEquiv_C (NormLimit K L)
@@ -87,7 +84,6 @@ theorem normLimitPowerSeriesEquiv_C (a : κL) :
 @[simp]
 theorem normLimitPowerSeriesEquiv_X :
     (normLimitPowerSeriesEquiv K L u hu PowerSeries.X : NormLimit K L) = u := by
-  let := normLimit_completeSpace K L
   let : UniformSpace κL := ⊥
   let : DiscreteUniformity κL := inferInstance
   exact congrArg (fun z : (normLimitFieldValuation K L).valuationSubring =>
@@ -102,7 +98,6 @@ theorem normLimitLaurentEquiv_powerSeries (A : PowerSeries κL) :
     normLimitLaurentEquiv K L u hu
       (algebraMap (PowerSeries κL) (LaurentSeries κL) A) =
         (normLimitPowerSeriesEquiv K L u hu A : NormLimit K L) := by
-  let := normLimit_completeSpace K L
   let : UniformSpace κL := ⊥
   let : DiscreteUniformity κL := inferInstance
   exact laurentUniformizerEquiv_powerSeries (NormLimit K L) _ _ _ _ _ A
@@ -113,7 +108,6 @@ its original inverse-Frobenius normalization. -/
 theorem normLimitLaurentEquiv_C (a : κL) :
     normLimitLaurentEquiv K L u hu (algebraMap κL (LaurentSeries κL) a) =
       sourceResidueConstantsFieldEmbedding K L a := by
-  let := normLimit_completeSpace K L
   let : UniformSpace κL := ⊥
   let : DiscreteUniformity κL := inferInstance
   exact laurentUniformizerEquiv_C (NormLimit K L) _ _ _ _ _ a
@@ -130,7 +124,6 @@ Laurent series, including negative orders and zero. -/
 theorem normLimitLaurentEquiv_valuation (A : LaurentSeries κL) :
     normLimitValuation K L (normLimitLaurentEquiv K L u hu A) =
       Valued.v A := by
-  let := normLimit_completeSpace K L
   let : UniformSpace κL := ⊥
   let : DiscreteUniformity κL := inferInstance
   let π : (normLimitFieldValuation K L).valuationSubring :=
@@ -141,7 +134,6 @@ theorem normLimitLaurentEquiv_valuation (A : LaurentSeries κL) :
 already constructed stable-valuation uniformity on the original field. -/
 theorem uniformContinuous_normLimitLaurentEquiv :
     UniformContinuous (normLimitLaurentEquiv K L u hu) := by
-  let := normLimit_completeSpace K L
   let : UniformSpace κL := ⊥
   let : DiscreteUniformity κL := inferInstance
   let π : (normLimitFieldValuation K L).valuationSubring :=
@@ -151,7 +143,6 @@ theorem uniformContinuous_normLimitLaurentEquiv :
 /-- The inverse also preserves the original valuation uniformities. -/
 theorem uniformContinuous_normLimitLaurentEquiv_symm :
     UniformContinuous (normLimitLaurentEquiv K L u hu).symm := by
-  let := normLimit_completeSpace K L
   let : UniformSpace κL := ⊥
   let : DiscreteUniformity κL := inferInstance
   let π : (normLimitFieldValuation K L).valuationSubring :=
@@ -176,7 +167,6 @@ theorem normLimitLaurentEquiv_unique :
         sourceResidueConstantsFieldEmbedding K L a) →
       f (algebraMap (PowerSeries κL) (LaurentSeries κL) PowerSeries.X) = u →
       f = (normLimitLaurentEquiv K L u hu).toRingHom := by
-  let := normLimit_completeSpace K L
   let : UniformSpace κL := ⊥
   let : DiscreteUniformity κL := inferInstance
   let π : (normLimitFieldValuation K L).valuationSubring :=
@@ -189,7 +179,6 @@ ring topology and the discrete-coefficient power-series topology. -/
 theorem continuous_normLimitPowerSeriesEquiv :
     letI : UniformSpace κL := ⊥
     Continuous (normLimitPowerSeriesEquiv K L u hu) := by
-  let := normLimit_completeSpace K L
   let : UniformSpace κL := ⊥
   let : DiscreteUniformity κL := inferInstance
   let π : (normLimitFieldValuation K L).valuationSubring :=
@@ -219,7 +208,6 @@ original field of norms for the actual integral evaluation. -/
 theorem normLimitPowerSeriesEquiv_valuation (A : PowerSeries κL) (hA : A ≠ 0) :
     normLimitValuation K L (normLimitPowerSeriesEquiv K L u hu A :
       NormLimit K L) = exp (-(A.order.toNat : ℤ)) := by
-  let := normLimit_completeSpace K L
   let : UniformSpace κL := ⊥
   let : DiscreteUniformity κL := inferInstance
   let π : (normLimitFieldValuation K L).valuationSubring :=

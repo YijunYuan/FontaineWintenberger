@@ -525,7 +525,9 @@ FontaineWintenberger/
 | NormUnionGaloisIsomorphism | 429 s | 24 s |
 | NormUnionAbsoluteStages | 409 s | 49 s |
 
-- **(3/3，进行中)** 删除两处 `synthInstance.maxHeartbeats 80000` 过渡设置，重新打开 `maxSynthPendingDepth = 3`；`NormUnionAbsoluteAction` 仍 557 s，用 profiler 定位；六个文件的 `Ω = SeparableClosure K` 泛化为 `[IsSepClosure K Ω]`。
+- **(3/3，提交 bd247e8、47cfde2)** 删除两处 `synthInstance.maxHeartbeats 80000` 过渡设置，重新打开 `maxSynthPendingDepth = 3`（不再变慢）。profiler 定位到 `NormUnionAbsoluteAction` 剩余的 346 s 全在一条 `:= rfl`：`separableNormUnionAbsoluteMap_of` 把 `DirectLimit.Ring.lift` 沿商展开（358 s 消去 + 205 s `@[simp]` 属性再查一遍）。改为把 `DirectLimit.Ring.lift_of` 的全部参数显式写出后整文件 13 s。删除别名 `separableNormUnionStageField`/`separableNormUnionField`。
+- 现状：230 个模块全部 < 60 s（最慢 `EmbeddingFiberTate` 59 s、`EmbeddingComparison` 57 s、`FiniteTower` 48 s、`TruncatedNorms` 47 s），全库约 2100 s CPU；`ApproximateRoots`（61 s）与 `NormUnionAbsoluteStages`（70 s）在 profiler 中，目标 < 20 s。
+- 未做：六个文件的 `Ω = SeparableClosure K` 泛化为 `[IsSepClosure K Ω]`。慢的根因（abbrev 载体）已消除，这一项不再影响编译时间，归入 C（命名/签名清理）阶段处理。
 
 ### F5 设计细化（原计划，供对照）
 1. **`FieldOfNorms K L`**：`def FieldOfNorms := WithZero (normCompatibleUnits K L)`；`instance : CommGroupWithZero := inferInstanceAs …`（无条件）；`instance : Nontrivial`、`Inhabited`。`coord E : FieldOfNorms K L →*₀ E` 替代 `normLimitEval`。

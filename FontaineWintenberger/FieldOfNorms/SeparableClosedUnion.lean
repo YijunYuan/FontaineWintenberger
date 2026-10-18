@@ -121,9 +121,6 @@ theorem exists_finite_normLimit_exact_root :
     push_cast
     have hmul' : (e : ℤ) * d ≤ (f.natDegree : ℤ) * d := by exact_mod_cast hmul
     nlinarith
-  let := normLimitFieldValuation_isRankOneDiscrete K L
-  let := normLimitFieldValuation_isDiscreteValuationRing K L
-  let := normLimit_completeSpace K L
   obtain ⟨hfinite, hseparable, _⟩ := finiteNormLimit_finite_separable_degree
     K L N.val
   let : Module.Finite (NormLimit K L) (NormLimit K N.val) := hfinite

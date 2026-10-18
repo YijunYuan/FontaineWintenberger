@@ -201,7 +201,8 @@ theorem normUnionAbsoluteStageMap_apply
     (σ : SeparableClosure K ≃ₐ[K] SeparableClosure K)
     (N : FiniteLayer L (SeparableClosure K)) (x : NormLimit K N.val) :
     normUnionAbsoluteStageMap K L σ N x =
-      normLimitMap (normUnionAbsoluteLayerEquiv K (SeparableClosure K) L σ N) x := rfl
+      normLimitMap (normUnionAbsoluteLayerEquiv K (SeparableClosure K) L σ N) x :=
+  normUnionStageEquiv_apply K L (SeparableClosure K) N _ _ x
 
 /-- Actual ambient stage transport extends the original absolute base action. -/
 theorem normUnionAbsoluteStageMap_base

@@ -155,7 +155,7 @@ theorem normLimitIntegral_completeSpace :
 
 /-- The original norm-limit field is complete for precisely the already
 constructed canonical stable-valuation uniformity. -/
-theorem normLimit_completeSpace :
+instance normLimit_completeSpace :
     CompleteSpace (NormLimit K L) := by
   let := normLimitIntegral_completeSpace K L (FiniteLayer.bottom (K := K) (L := L))
   exact Valued.completeSpace_of_completeSpace_valuationSubring (NormLimit K L)

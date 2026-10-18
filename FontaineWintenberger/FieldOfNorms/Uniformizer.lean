@@ -127,7 +127,7 @@ theorem normLimitFieldValuation_valueGroup_eq_top [IsAPF K L]
   exact normLimitValuation_surjective K L a.val
 
 /-- The original normalized field valuation is rank-one discrete by its actual value group. -/
-theorem normLimitFieldValuation_isRankOneDiscrete [IsAPF K L]
+instance normLimitFieldValuation_isRankOneDiscrete [IsAPF K L]
     [Fact (¬ Module.Finite K L)] :
     Valuation.IsRankOneDiscrete (normLimitFieldValuation K L) := by
   let hG : Nontrivial (normLimitFieldValuation K L).valueGroup := by
@@ -137,7 +137,7 @@ theorem normLimitFieldValuation_isRankOneDiscrete [IsAPF K L]
     (normLimitFieldValuation K L) inferInstance hG
 
 /-- The actual valuation subring of the same original field is a discrete valuation ring. -/
-theorem normLimitFieldValuation_isDiscreteValuationRing [IsAPF K L]
+instance normLimitFieldValuation_isDiscreteValuationRing [IsAPF K L]
     [Fact (¬ Module.Finite K L)] :
     IsDiscreteValuationRing (normLimitFieldValuation K L).valuationSubring := by
   let hG : Nontrivial (normLimitFieldValuation K L).valueGroup := by
@@ -145,6 +145,21 @@ theorem normLimitFieldValuation_isDiscreteValuationRing [IsAPF K L]
     infer_instance
   exact @Valuation.valuationSubring_isDiscreteValuationRing _ _ _ _
     (normLimitFieldValuation K L) inferInstance hG
+
+/-- The valuation of the `Valued` instance is the field valuation, definitionally. -/
+@[simp]
+theorem normLimitValued_v [IsAPF K L] [Fact (¬ Module.Finite K L)] :
+    (Valued.v : Valuation (NormLimit K L) (WithZero (Multiplicative ℤ))) =
+      normLimitFieldValuation K L := rfl
+
+instance normLimitValued_isRankOneDiscrete [IsAPF K L] [Fact (¬ Module.Finite K L)] :
+    (Valued.v : Valuation (NormLimit K L) (WithZero (Multiplicative ℤ))).IsRankOneDiscrete :=
+  normLimitFieldValuation_isRankOneDiscrete K L
+
+instance normLimitValued_isDiscreteValuationRing [IsAPF K L] [Fact (¬ Module.Finite K L)] :
+    IsDiscreteValuationRing
+      (Valued.v : Valuation (NormLimit K L) (WithZero (Multiplicative ℤ))).valuationSubring :=
+  normLimitFieldValuation_isDiscreteValuationRing K L
 
 /-- The reconstructed family as an element of its actual original valuation ring. -/
 def normLimitUniformizerInteger [IsAPF K L] [Fact (¬ Module.Finite K L)] :
@@ -163,10 +178,8 @@ theorem normLimitUniformizerInteger_coe [IsAPF K L] [Fact (¬ Module.Finite K L)
 /-- The original family is a uniformizer for the same actual field valuation. -/
 theorem normLimitUniformizer_isUniformizer [IsAPF K L]
     [Fact (¬ Module.Finite K L)] :
-    letI := normLimitFieldValuation_isRankOneDiscrete K L
     (normLimitFieldValuation K L).IsUniformizer
       (normLimitUniformizer K L) := by
-  let := normLimitFieldValuation_isRankOneDiscrete K L
   rw [Valuation.IsUniformizer.iff,
     Valuation.IsRankOneDiscrete.generator_eq_exp_neg_one_of_surjective
       (normLimitFieldValuation_surjective K L)]
@@ -177,7 +190,6 @@ theorem normLimitUniformizer_maximalIdeal [IsAPF K L]
     [Fact (¬ Module.Finite K L)] :
     IsLocalRing.maximalIdeal (normLimitFieldValuation K L).valuationSubring =
       Ideal.span {normLimitUniformizerInteger K L} := by
-  let := normLimitFieldValuation_isRankOneDiscrete K L
   exact Valuation.IsUniformizer.is_generator
     (π := normLimitUniformizerInteger K L)
     (normLimitUniformizer_isUniformizer K L)
@@ -186,7 +198,6 @@ theorem normLimitUniformizer_maximalIdeal [IsAPF K L]
 theorem normLimitUniformizerInteger_irreducible [IsAPF K L]
     [Fact (¬ Module.Finite K L)] :
     Irreducible (normLimitUniformizerInteger K L) := by
-  let := normLimitFieldValuation_isDiscreteValuationRing K L
   exact (IsDiscreteValuationRing.irreducible_iff_uniformizer _).mpr
     (normLimitUniformizer_maximalIdeal K L)
 
@@ -194,13 +205,11 @@ theorem normLimitUniformizerInteger_irreducible [IsAPF K L]
 is exactly the existing stable field valuation on the same original carrier. -/
 theorem normLimitFieldValuation_eq_normalized [IsAPF K L]
     [Fact (¬ Module.Finite K L)] :
-    letI := normLimitFieldValuation_isDiscreteValuationRing K L
     (IsDiscreteValuationRing.maximalIdeal
       (normLimitFieldValuation K L).valuationSubring).valuation (NormLimit K L) =
         normLimitFieldValuation K L := by
   let v := normLimitFieldValuation K L
   let R := v.valuationSubring
-  let : IsDiscreteValuationRing R := normLimitFieldValuation_isDiscreteValuationRing K L
   let π := normLimitUniformizerInteger K L
   have hπ : Irreducible π := normLimitUniformizerInteger_irreducible K L
   let w := (IsDiscreteValuationRing.maximalIdeal R).valuation (NormLimit K L)

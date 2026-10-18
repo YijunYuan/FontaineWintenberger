@@ -834,7 +834,6 @@ theorem finiteNormLimitIntegralRingHom_ramificationIdx_scaling :
     ∀ x : NormLimit K L,
       normLimitValuation K M (finiteNormLimitMap K L M x) =
         normLimitValuation K L x ^ (IsLocalRing.maximalIdeal Oₘ).ramificationIdx Oₗ := by
-  let := normLimitFieldValuation_isDiscreteValuationRing K L
   let := normLimitFieldValuation_isDiscreteValuationRing K M
   let : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
   let φ := finiteNormLimitRingHom K L M
