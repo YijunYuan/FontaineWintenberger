@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.FieldOfNorms.FiniteSeparable
 public import FontaineWintenberger.FieldOfNorms.FiniteFunctorLaws
 public import FontaineWintenberger.FieldOfNorms.FiniteNaturality
@@ -54,8 +55,7 @@ theorem separableNormUnion_ambient_infinite (hInfinite : ¬ Module.Finite K L) :
 
 end Fields
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
 variable (L M : Type*) [Field L] [Field M]

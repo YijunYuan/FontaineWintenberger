@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.FieldOfNorms.Multiplicative
 public import FontaineWintenberger.LocalField.SpectralMaps
 public import FontaineWintenberger.Ramification.NormTower
@@ -25,8 +26,7 @@ namespace FontaineWintenberger.FiniteLayer
 
 attribute [local instance] FractionRing.liftAlgebra
 
-variable {K Ω : Type*} [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable {K Ω : Type*} [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [Field Ω] [Algebra K Ω] [Algebra.IsSeparable K Ω]
 
 local notation "R₀" => Valuation.valuationSubring (NormedField.valuation (K := K))

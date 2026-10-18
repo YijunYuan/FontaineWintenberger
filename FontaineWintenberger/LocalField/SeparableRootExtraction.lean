@@ -238,8 +238,7 @@ theorem discreteValued_exists_root_mem_adjoin_of_discr
   let : IsUltrametricDist K :=
     IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
       (Valued.isNonarchimedean_norm K ΓK)
-  let : IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring :=
-    discreteValued_unitBall_isDiscreteValuationRing K ΓK
+  let : IsCompleteDiscreteValuedField K := discreteValued_isCompleteDiscreteValuedField K ΓK
   let : (NormedField.valuation (K := K)).HasExtension w :=
     discreteValued_norm_hasExtension K ΓK L w
   let : NontriviallyNormedField L := spectralNorm.nontriviallyNormedField K L

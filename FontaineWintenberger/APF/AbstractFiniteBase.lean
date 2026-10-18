@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.APF.StrictBaseChange
 
 /-!
@@ -101,17 +102,15 @@ end CommonClosure
 
 section ValuedCommonClosure
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
-variable (M : Type*) [NontriviallyNormedField M] [IsUltrametricDist M]
-    [NormedAlgebra K M] [CompleteSpace M]
+variable (M : Type*) [NontriviallyNormedField M] [IsCompleteDiscreteValuedField M]
+    [NormedAlgebra K M]
     [FiniteDimensional K M] [Algebra.IsSeparable K M]
     [Algebra M (SeparableClosure K)] [IsScalarTower K M (SeparableClosure K)]
 
-variable [IsDiscreteValuationRing (NormedField.valuation (K := M)).valuationSubring]
-    [PerfectField (IsLocalRing.ResidueField
+variable [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := M)).valuationSubring)]
 
 local notation "S₀" => AlgHom.fieldRange (IsScalarTower.toAlgHom K M (SeparableClosure K))
@@ -120,9 +119,7 @@ local instance : FiniteDimensional K S₀ :=
   Module.Finite.equiv (IsScalarTower.toAlgHom K M (SeparableClosure
       K)).equivFieldRange.toLinearEquiv
 
-omit [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
-    [PerfectField (IsLocalRing.ResidueField
+omit [IsCompleteDiscreteValuedField K] [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)] [Algebra.IsSeparable K M] in
 /-- All new-base upper conditions are tested on actual old-base normal overfields. -/
 theorem mem_upper_iff_cofinal {v : ℝ} (hv : -1 ≤ v)
@@ -188,12 +185,10 @@ noncomputable def closureHom :
       (SeparableClosure K ≃ₐ[K] SeparableClosure K) :=
   (AlgEquiv.restrictScalarsHom K).comp (closureEquiv K M).autCongr.toMonoidHom
 
-omit [IsUltrametricDist K] [IsUltrametricDist M] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
-    [PerfectField (IsLocalRing.ResidueField
+omit [IsCompleteDiscreteValuedField K] [IsCompleteDiscreteValuedField M] [PerfectField
+    (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
-    [CompleteSpace M] [FiniteDimensional K M] [Algebra.IsSeparable K M]
-    [IsDiscreteValuationRing (NormedField.valuation (K := M)).valuationSubring]
+     [FiniteDimensional K M] [Algebra.IsSeparable K M]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := M)).valuationSubring)] in
 /-- The actual closure homomorphism commutes with the chosen closure isomorphism. -/
@@ -203,12 +198,10 @@ theorem closureHom_apply (g : SeparableClosure M ≃ₐ[M] SeparableClosure M)
   change closureEquiv K M (g ((closureEquiv K M).symm (closureEquiv K M x))) = _
   rw [AlgEquiv.symm_apply_apply]
 
-omit [IsUltrametricDist K] [IsUltrametricDist M] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
-    [PerfectField (IsLocalRing.ResidueField
+omit [IsCompleteDiscreteValuedField K] [IsCompleteDiscreteValuedField M] [PerfectField
+    (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
-    [CompleteSpace M] [FiniteDimensional K M] [Algebra.IsSeparable K M]
-    [IsDiscreteValuationRing (NormedField.valuation (K := M)).valuationSubring]
+     [FiniteDimensional K M] [Algebra.IsSeparable K M]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := M)).valuationSubring)] in
 /-- Its range is exactly the subgroup fixing the original embedded finite base. -/
@@ -217,11 +210,9 @@ theorem closureHom_range : (closureHom K M).range = (S₀).fixingSubgroup := by
     MonoidHom.range_eq_top.mpr (closureEquiv K M).autCongr.surjective,
     Subgroup.map_top, range_restrictScalars K M]
 
-omit [IsUltrametricDist K] [IsUltrametricDist M] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
-    [PerfectField (IsLocalRing.ResidueField (NormedField.valuation (K := K)).valuationSubring)]
-    [CompleteSpace M] [Algebra.IsSeparable K M]
-    [IsDiscreteValuationRing (NormedField.valuation (K := M)).valuationSubring]
+omit [IsCompleteDiscreteValuedField K] [IsCompleteDiscreteValuedField M] [PerfectField
+    (IsLocalRing.ResidueField (NormedField.valuation (K := K)).valuationSubring)]
+     [Algebra.IsSeparable K M]
     [PerfectField (IsLocalRing.ResidueField (NormedField.valuation (K := M)).valuationSubring)] in
 /-- The actual finite-base closure homomorphism has finite-index range. -/
 theorem closureHom_range_finiteIndex : (closureHom K M).range.FiniteIndex := by
@@ -245,12 +236,10 @@ variable {N : Type*} [Field N] [Algebra K N] [Algebra M N] [IsScalarTower K M N]
 noncomputable def embedding (i : N →ₐ[M] SeparableClosure M) : N →ₐ[K] SeparableClosure K :=
   ((closureEquiv K M).toAlgHom.comp i).restrictScalars K
 
-omit [IsUltrametricDist K] [IsUltrametricDist M] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
-    [PerfectField (IsLocalRing.ResidueField
+omit [IsCompleteDiscreteValuedField K] [IsCompleteDiscreteValuedField M] [PerfectField
+    (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
-    [CompleteSpace M] [FiniteDimensional K M] [Algebra.IsSeparable K M]
-    [IsDiscreteValuationRing (NormedField.valuation (K := M)).valuationSubring]
+     [FiniteDimensional K M] [Algebra.IsSeparable K M]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := M)).valuationSubring)] in
 /-- The induced old-base image contains the actual image of the finite new base. -/
@@ -261,11 +250,9 @@ theorem image_le_embedding (i : N →ₐ[M] SeparableClosure M) :
   change closureEquiv K M (i (algebraMap M N y)) = algebraMap M (SeparableClosure K) y
   rw [i.commutes, (closureEquiv K M).commutes]
 
-omit [IsUltrametricDist K] [IsUltrametricDist M] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
-    [PerfectField (IsLocalRing.ResidueField (NormedField.valuation (K := K)).valuationSubring)]
-    [CompleteSpace M] [FiniteDimensional K M] [Algebra.IsSeparable K M]
-    [IsDiscreteValuationRing (NormedField.valuation (K := M)).valuationSubring]
+omit [IsCompleteDiscreteValuedField K] [IsCompleteDiscreteValuedField M] [PerfectField
+    (IsLocalRing.ResidueField (NormedField.valuation (K := K)).valuationSubring)]
+     [FiniteDimensional K M] [Algebra.IsSeparable K M]
     [PerfectField (IsLocalRing.ResidueField (NormedField.valuation (K := M)).valuationSubring)] in
 /-- Equivariance identifies the actual two fixing subgroups. -/
 theorem comap_fixing (i : N →ₐ[M] SeparableClosure M) :
@@ -426,9 +413,8 @@ theorem ratio (hN : IsAPF K N) {u : ℝ} (hu : 0 ≤ u) :
   rw [he]
   field_simp [ne_of_gt ha, ne_of_gt hb]
 
-omit [IsUltrametricDist M] [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)] [CompleteSpace M]
-    [IsDiscreteValuationRing (NormedField.valuation (K := M)).valuationSubring]
+omit [IsCompleteDiscreteValuedField M] [PerfectField (IsLocalRing.ResidueField
+      (NormedField.valuation (K := K)).valuationSubring)]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := M)).valuationSubring)] in
 /-- Finite-base slope stabilization holds for the actual abstract base. -/
@@ -477,23 +463,21 @@ section AbstractNormedBase
 
 open scoped ENNReal
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
 variable (M : Type*) [NontriviallyNormedField M] [IsUltrametricDist M]
-    [NormedAlgebra K M] [CompleteSpace M]
-    [FiniteDimensional K M] [Algebra.IsSeparable K M]
+    [NormedAlgebra K M] [FiniteDimensional K M] [Algebra.IsSeparable K M]
 variable (N : Type*) [Field N] [Algebra K N] [Algebra M N]
     [IsScalarTower K M N] [Algebra.IsSeparable K N]
 
 /-- APF is invariant under finite change to any abstract scalar field with its original compatible
 norm. -/
 theorem isAPF_finiteBase_iff_of_normedAlgebra :
-    letI := normedAlgebra_unitBall_isDiscreteValuationRing K M
+    letI := normedAlgebra_isCompleteDiscreteValuedField K M
     letI := Algebra.isSeparable_tower_top_of_isSeparable K M N
     IsAPF K N ↔ IsAPF M N := by
-  let := normedAlgebra_unitBall_isDiscreteValuationRing K M
+  let := normedAlgebra_isCompleteDiscreteValuedField K M
   let := normedAlgebra_residueField_perfectField K M
   let := Algebra.isSeparable_tower_top_of_isSeparable K M N
   obtain ⟨i⟩ := nonempty_separableClosure_embeddings K M
@@ -503,10 +487,10 @@ theorem isAPF_finiteBase_iff_of_normedAlgebra :
 
 /-- Actual intrinsic inertia indices factor over any abstract finite compatible normed base. -/
 theorem apfIndex_eq_mul_finiteBase_of_normedAlgebra {u : ℝ} (hu : 0 ≤ u) :
-    letI := normedAlgebra_unitBall_isDiscreteValuationRing K M
+    letI := normedAlgebra_isCompleteDiscreteValuedField K M
     letI := Algebra.isSeparable_tower_top_of_isSeparable K M N
     apfIndex K N u = apfIndex K M u * apfIndex M N (apfPsi K M u) := by
-  let := normedAlgebra_unitBall_isDiscreteValuationRing K M
+  let := normedAlgebra_isCompleteDiscreteValuedField K M
   let := normedAlgebra_residueField_perfectField K M
   let := Algebra.isSeparable_tower_top_of_isSeparable K M N
   obtain ⟨i⟩ := nonempty_separableClosure_embeddings K M
@@ -516,10 +500,10 @@ theorem apfIndex_eq_mul_finiteBase_of_normedAlgebra {u : ℝ} (hu : 0 ≤ u) :
 
 /-- The intrinsic Herbrand integral composes over any abstract finite compatible normed base. -/
 theorem IsAPF.apfPsi_finiteBase_comp_of_normedAlgebra (hN : IsAPF K N) (u : ℝ) :
-    letI := normedAlgebra_unitBall_isDiscreteValuationRing K M
+    letI := normedAlgebra_isCompleteDiscreteValuedField K M
     letI := Algebra.isSeparable_tower_top_of_isSeparable K M N
     apfPsi M N (apfPsi K M u) = apfPsi K N u := by
-  let := normedAlgebra_unitBall_isDiscreteValuationRing K M
+  let := normedAlgebra_isCompleteDiscreteValuedField K M
   let := normedAlgebra_residueField_perfectField K M
   let := Algebra.isSeparable_tower_top_of_isSeparable K M N
   obtain ⟨i⟩ := nonempty_separableClosure_embeddings K M
@@ -530,11 +514,11 @@ theorem IsAPF.apfPsi_finiteBase_comp_of_normedAlgebra (hN : IsAPF K N) (u : ℝ)
 /-- The actual strictness ratio is preserved with the genuine finite-base inertia factor. -/
 theorem IsAPF.apfStrictnessRatio_finiteBase_of_normedAlgebra
     (hN : IsAPF K N) {u : ℝ} (hu : 0 ≤ u) :
-    letI := normedAlgebra_unitBall_isDiscreteValuationRing K M
+    letI := normedAlgebra_isCompleteDiscreteValuedField K M
     letI := Algebra.isSeparable_tower_top_of_isSeparable K M N
     apfStrictnessRatio M N (apfPsi K M u) =
       (apfIndex K M u : ℝ≥0∞) * apfStrictnessRatio K N u := by
-  let := normedAlgebra_unitBall_isDiscreteValuationRing K M
+  let := normedAlgebra_isCompleteDiscreteValuedField K M
   let := normedAlgebra_residueField_perfectField K M
   let := Algebra.isSeparable_tower_top_of_isSeparable K M N
   obtain ⟨i⟩ := nonempty_separableClosure_embeddings K M
@@ -544,10 +528,10 @@ theorem IsAPF.apfStrictnessRatio_finiteBase_of_normedAlgebra
 
 /-- Strict APF is invariant under any abstract finite change of base with its original norm. -/
 theorem isStrictlyAPF_finiteBase_iff_of_normedAlgebra :
-    letI := normedAlgebra_unitBall_isDiscreteValuationRing K M
+    letI := normedAlgebra_isCompleteDiscreteValuedField K M
     letI := Algebra.isSeparable_tower_top_of_isSeparable K M N
     IsStrictlyAPF K N ↔ IsStrictlyAPF M N := by
-  let := normedAlgebra_unitBall_isDiscreteValuationRing K M
+  let := normedAlgebra_isCompleteDiscreteValuedField K M
   let := normedAlgebra_residueField_perfectField K M
   let := Algebra.isSeparable_tower_top_of_isSeparable K M N
   obtain ⟨i⟩ := nonempty_separableClosure_embeddings K M

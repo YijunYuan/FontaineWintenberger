@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Algebra.PolynomialRootDiscriminant
 public import FontaineWintenberger.Ramification.AbsoluteGalois
 public import FontaineWintenberger.Ramification.NormValuation
@@ -81,8 +82,8 @@ end HerbrandBound
 
 section ValuedRoots
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
+
 variable (P : Type*) [Field P] [Algebra K P] [FiniteDimensional K P]
     [Algebra.IsSeparable K P]
 
@@ -95,7 +96,6 @@ theorem spectral_ramificationIdx_le_finrank :
   rw [← local_ramificationIdx_mul_residueDegree_eq_finrank OK OP K P]
   exact Nat.le_mul_of_pos_right _ Module.finrank_pos
 
-omit [CompleteSpace K] in
 /-- A separable monic integral polynomial has finite original DVR
 discriminant value. -/
 theorem addVal_discr_ne_top (f : OK[X]) (hf : f.Monic)
@@ -172,8 +172,8 @@ end ValuedRoots
 
 section SplittingCutoff
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
+
 variable (P : Type*) [Field P] [Algebra K P]
 
 local notation "OK" => Valuation.valuationSubring (NormedField.valuation (K := K))
@@ -223,8 +223,8 @@ end SplittingCutoff
 
 section AbsoluteRoots
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
+
 
 local notation "OK" => Valuation.valuationSubring (NormedField.valuation (K := K))
 

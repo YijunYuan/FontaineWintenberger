@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.FiniteRestriction
 
 /-!
@@ -18,9 +19,8 @@ upper groups under ordinary restriction, with the existing Krull topology.
 
 namespace FontaineWintenberger
 
-variable (K Ω : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
+variable (K Ω : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [Field Ω] [Algebra K Ω]
-variable [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
 
 /-- Infinite upper numbering in the actual Galois group, using ordinary finite restrictions. -/
 noncomputable def upperRamificationGroupInfinite (u : ℝ) : Subgroup (Ω ≃ₐ[K] Ω) :=

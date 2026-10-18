@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.HilbertDifferent
 public import FontaineWintenberger.Ramification.HerbrandSubgroup
 public import FontaineWintenberger.Ramification.HerbrandAffine
@@ -659,8 +660,8 @@ section Spectral
 
 attribute [local instance] FractionRing.liftAlgebra FractionRing.isScalarTower_liftAlgebra
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
+
 variable (L : Type*) [Field L] [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
 variable (M : IntermediateField K L)
 

@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.FieldOfNorms.AbsoluteBaseAction
 public import FontaineWintenberger.FieldOfNorms.SeparableNormUnion
 
@@ -115,8 +116,7 @@ end Fields
 
 section StageEquivNaturality
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
 variable (L M : Type*) [Field L] [Field M]
@@ -196,8 +196,7 @@ end StageEquivNaturality
 
 section NormFields
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
 variable (L : IntermediateField K (SeparableClosure K)) [Normal K L]

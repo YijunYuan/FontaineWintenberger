@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.FieldOfNorms.WildNorms
 public import FontaineWintenberger.APF.WildFirstBound
 public import FontaineWintenberger.Ramification.NormApproximation
@@ -56,8 +57,7 @@ theorem mem_maximalIdeal_pow_of_algebraMap_mem_ceil
 
 section FiniteGaloisOverfield
 
-variable (K Ω : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K Ω : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
     [NontriviallyNormedField Ω] [NormedAlgebra K Ω] [IsUltrametricDist Ω]
@@ -66,8 +66,8 @@ variable (K Ω : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [Compl
 local instance tameNorm_completeSpace (M : IntermediateField K Ω) : CompleteSpace M :=
   FiniteDimensional.complete K M
 local instance tameNorm_discreteValuationRing (M : IntermediateField K Ω) :
-    IsDiscreteValuationRing (NormedField.valuation (K := M)).valuationSubring :=
-  normedAlgebra_unitBall_isDiscreteValuationRing K M
+    IsCompleteDiscreteValuedField M :=
+  normedAlgebra_isCompleteDiscreteValuedField K M
 local instance tameNorm_perfectField (M : IntermediateField K Ω) : PerfectField
     (IsLocalRing.ResidueField
     (NormedField.valuation (K := M)).valuationSubring) :=

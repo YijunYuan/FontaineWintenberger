@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.APF.HerbrandTower
 public import FontaineWintenberger.APF.FiniteSlope
 public import FontaineWintenberger.APF.Strict
@@ -24,8 +25,8 @@ open scoped ENNReal
 
 section Cofinal
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
+
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
 /-- The actual Herbrand order isomorphism preserves the source lower limit at infinity. -/
@@ -40,8 +41,7 @@ end Cofinal
 
 section FiniteBase
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
 variable (M : IntermediateField K (SeparableClosure K)) [FiniteDimensional K M]
@@ -53,8 +53,8 @@ local instance : IsUltrametricDist M :=
   IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
     (isNonarchimedean_spectralNorm (K := K) (L := M))
 local instance : CompleteSpace M := spectralNorm.completeSpace K M
-local instance : IsDiscreteValuationRing (NormedField.valuation (K := M)).valuationSubring :=
-  normedAlgebra_unitBall_isDiscreteValuationRing K M
+local instance : IsCompleteDiscreteValuedField M :=
+  normedAlgebra_isCompleteDiscreteValuedField K M
 noncomputable local instance : Algebra M (SeparableClosure M) :=
   (separableClosure M (AlgebraicClosure M)).algebra'
 

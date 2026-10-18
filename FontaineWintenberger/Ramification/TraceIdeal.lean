@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.HilbertDifferent
 
 /-!
@@ -249,8 +250,8 @@ end DVR
 
 section ChosenExtension
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
+
 variable (L : Type*) [Field L] [Algebra K L] [FiniteDimensional K L]
     [Algebra.IsSeparable K L]
 variable {Γ : Type*} [LinearOrderedCommGroupWithZero Γ] (w : Valuation L Γ)

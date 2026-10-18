@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.APF.FiniteGaloisOverfield
 public import FontaineWintenberger.Ramification.FirstBreak
 public import FontaineWintenberger.Ramification.Nonnormal
@@ -20,8 +21,7 @@ nonnegative first break. The intrinsic extended supremum equals that break.
 
 namespace FontaineWintenberger
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
 variable (L : Type*) [Field L] [Algebra K L] [FiniteDimensional K L] [IsGalois K L]

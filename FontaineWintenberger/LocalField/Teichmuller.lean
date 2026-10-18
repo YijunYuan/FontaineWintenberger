@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.LocalField.Henselian
 public import FontaineWintenberger.LocalField.SpectralMaps
 public import Mathlib.RingTheory.Teichmuller
@@ -136,8 +137,8 @@ end Adic
 
 section FiniteExtension
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
+
 variable (E : Type*) [Field E] [Algebra K E] [FiniteDimensional K E]
     [Algebra.IsSeparable K E]
 

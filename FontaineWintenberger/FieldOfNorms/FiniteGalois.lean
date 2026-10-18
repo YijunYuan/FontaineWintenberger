@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Algebra.GaloisGoodFields
 public import FontaineWintenberger.FieldOfNorms.FiniteEmbedding
 public import FontaineWintenberger.FieldOfNorms.FaithfulAction
@@ -245,8 +246,7 @@ end OriginalFamilies
 
 section ValuedFields
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
 variable (M N : Type*) [Field M] [Field N] [Algebra K M] [Algebra K N]

@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.APF.IndexTower
 public import FontaineWintenberger.APF.Strict
 
@@ -18,8 +19,8 @@ namespace FontaineWintenberger
 
 open MeasureTheory Filter
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
+
 variable (M N : IntermediateField K (SeparableClosure K))
 
 /-- The monotone actual tower factor bounds the whole integral up to the endpoint. -/

@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.TameField
 public import FontaineWintenberger.Ramification.HerbrandSubgroup
 public import FontaineWintenberger.Ramification.Tower
@@ -94,9 +95,8 @@ private theorem norm_compositum_of_linearDisjoint
 
 section Fields
 
-variable (K L : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
+variable (K L : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [Field L] [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
 

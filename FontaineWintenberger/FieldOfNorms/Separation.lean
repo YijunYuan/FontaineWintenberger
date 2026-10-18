@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.FieldOfNorms.Convergence
 
 /-!
@@ -22,8 +23,7 @@ namespace FontaineWintenberger
 
 open Filter
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
@@ -55,7 +55,7 @@ theorem normLimit_ext_of_integral_eventually_sub_mem (hL : IsAPF K L)
   let := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
     (isNonarchimedean_spectralNorm (K := K) (L := B.val))
   let := spectralNorm.completeSpace K B.val
-  let := normedAlgebra_unitBall_isDiscreteValuationRing K B.val
+  let := normedAlgebra_isCompleteDiscreteValuedField K B.val
   let := Algebra.isSeparable_tower_top_of_isSeparable K B.val L
   have hmem (N : ℕ) :
       normLimitEval K L B α - normLimitEval K L B β ∈

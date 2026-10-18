@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.FieldOfNorms.Convergence
 
 /-!
@@ -37,8 +38,7 @@ theorem normSumNet_mul_left (E : FiniteLayer K L) (δ α β : NormLimit K L)
 
 end ScalarCovariance
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]

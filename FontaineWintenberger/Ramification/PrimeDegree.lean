@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.TraceIdeal
 public import FontaineWintenberger.Ramification.Upper
 public import FontaineWintenberger.APF.FiniteBound
@@ -168,8 +169,7 @@ theorem sum_ramificationOrder_of_common_order [Fintype G] [DecidableEq G] {m : â
 
 section Spectral
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-variable [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
 variable (L : Type*) [Field L] [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
 variable [PerfectField (IsLocalRing.ResidueField
   (NormedField.valuation (K := K)).valuationSubring)]

@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.FieldOfNorms.FiniteEmbeddingGalois
 public import FontaineWintenberger.Algebra.SeparableEmbeddings
 
@@ -58,9 +59,7 @@ theorem isSeparable_relativeEmbedding_fieldRange [Algebra.IsSeparable K N]
 
 end RelativeEmbeddings
 
-variable (K L M N : Type*) [NontriviallyNormedField K] [IsUltrametricDist K]
-    [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K L M N : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
     [Field L] [Field M] [Field N] [Algebra K L] [Algebra K M] [Algebra K N]

@@ -489,3 +489,11 @@ FontaineWintenberger/
 | SeparableAlgebraicEssentialImage | 12 | 66 |
 
   原因是 `maxSynthPendingDepth = 3` 使 `abbrev` 载体上的失败实例搜索更贵。这不改变 F5 的方案，只是把它的优先级提到 F3/F4 之前再评估（见下一条）。日志存于 `.lake/f0-build.log`。
+
+### F1a（分支 `refactor`，2026-10-19）
+- 新文件 `LocalField/Basic.lean`：`IsCompleteDiscreteValuedField`、`IsPerfectResidueLocalField`、`residueChar`、`residueChar_eq`、`IsPerfectResidueLocalField.of_charP`。
+- 164 个文件的 `variable`/`omit` 头：`[IsUltrametricDist K] [CompleteSpace K] [IsDiscreteValuationRing 𝒪…]` → `[IsCompleteDiscreteValuedField K]`（按 section 判断，只有完整三元组所在的 section 才打包；跨 section 时在外层三元组处打包）。
+- 新的打包搬运定理：`normedAlgebra_isCompleteDiscreteValuedField K L`（`NormedTower.lean`）、`normedAlgebra_isPerfectResidueLocalField`/`normedAlgebra_residueChar_eq`（`ResidueField.lean`）、`discreteValued_isCompleteDiscreteValuedField`（`CompatibleNorm.lean`）；约 110 处 `letI := normedAlgebra_unitBall_isDiscreteValuationRing …` 安装点改用前者。
+- **范围调整**：`PerfectField 𝓀[K]` 在 F1a 保持为独立 binder。`IsPerfectResidueLocalField` 额外断言剩余特征为素数，仅有 `PerfectField` 假设的调用方构造不出它；并入将与 `p → residueChar K` 一起在 F1b 完成（届时 `[Fact p.Prime] [CharP 𝓀 p]` 正好提供素特征）。
+- 可重放脚本 `scripts/f1a_headers.py`（从干净树一次跑完）；零散问题手工修（`RamificationTransfer` 三处重复 `CompleteSpace` 实例导致 `whnf` 超时；`NormContinuity`/`EmbeddingRestrictionBounds` 的多余 `[CompleteSpace M]`；`AbstractFiniteBase` 的 `PerfectField` 安装点拆回两条）。
+- 全量构建零错误零警告。最慢文件耗时与 F0（关闭 `maxSynthPendingDepth` 后）基本持平：NormUnionAbsoluteAction 2751 s、NormUnionGaloisRestrictionFun 1771 s、NormUnionGaloisAction 772–933 s。

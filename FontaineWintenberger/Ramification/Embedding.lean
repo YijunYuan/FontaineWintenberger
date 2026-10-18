@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.Generator
 public import FontaineWintenberger.Ramification.Tower
 public import FontaineWintenberger.Ramification.ResidueDigits
@@ -159,8 +160,7 @@ end PairUniformizer
 
 section Spectral
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-variable [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
 variable {E N : Type*} [Field E] [Field N] [Algebra K E] [Algebra K N]
     [FiniteDimensional K E] [FiniteDimensional K N]
     [Algebra.IsSeparable K E] [Algebra.IsSeparable K N]
@@ -509,8 +509,7 @@ end PairField
 
 section Closure
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-variable [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
 variable {E : Type*} [Field E] [Algebra K E] [FiniteDimensional K E]
     [Algebra.IsSeparable K E]
 
@@ -613,8 +612,7 @@ end Closure
 
 section Signed
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-variable [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
 variable {E N : Type*} [Field E] [Field N] [Algebra K E] [Algebra K N]
     [FiniteDimensional K E] [FiniteDimensional K N]
     [Algebra.IsSeparable K E] [Algebra.IsSeparable K N]

@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.APF.Residue
 
 /-!
@@ -24,7 +25,7 @@ noncomputable section
 
 namespace FontaineWintenberger
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
 
 local notation "R₀" => Valuation.valuationSubring (NormedField.valuation (K := K))
 
@@ -84,12 +85,12 @@ def integralClosureInclusion (i : E →ₐ[K] L) :
     integralClosure R₀ E →ₐ[R₀] integralClosure R₀ L :=
   (i.restrictScalars R₀).mapIntegralClosure
 
-omit [CompleteSpace K] [Algebra.IsAlgebraic K E] [Algebra.IsAlgebraic K L] in
+omit [Algebra.IsAlgebraic K E] [Algebra.IsAlgebraic K L] in
 @[simp]
 theorem coe_integralClosureInclusion (i : E →ₐ[K] L) (x : integralClosure R₀ E) :
     (integralClosureInclusion K i x : L) = i (x : E) := rfl
 
-omit [CompleteSpace K] [Algebra.IsAlgebraic K E] [Algebra.IsAlgebraic K L] in
+omit [Algebra.IsAlgebraic K E] [Algebra.IsAlgebraic K L] in
 /-- Pulling back the canonical integral closure gives exactly the original
 source integral closure, without normality or finiteness assumptions. -/
 theorem mem_integralClosure_inclusion_iff (i : E →ₐ[K] L) (x : E) :
@@ -207,8 +208,7 @@ end FiniteRepresentatives
 
 section ResidueStabilization
 
-variable [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
-    [PerfectField (IsLocalRing.ResidueField
+variable [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
@@ -252,8 +252,7 @@ def integralClosureResidueFromLayer (E : FiniteLayer K L) :
   (integralClosureSpectralResidueEquiv K (L := L)).symm.toAlgHom.comp
     (spectralResidueInclusion K E.val.val)
 
-omit [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
-  [PerfectField (IsLocalRing.ResidueField
+omit [PerfectField (IsLocalRing.ResidueField
     (NormedField.valuation (K := K)).valuationSubring)] in
 @[simp]
 theorem integralClosureResidueFromLayer_residue (E : FiniteLayer K L)

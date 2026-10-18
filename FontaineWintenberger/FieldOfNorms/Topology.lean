@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.FieldOfNorms.Integral
 public import FontaineWintenberger.LocalField.NormedTower
 public import Mathlib.Topology.Instances.Matrix
@@ -153,8 +154,7 @@ end IdealPowers
 
 section SpectralIdealPowers
 
-variable {K L : Type*} [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable {K L : Type*} [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
 /-- Actual spectral ideal powers have closed image for the canonical norm

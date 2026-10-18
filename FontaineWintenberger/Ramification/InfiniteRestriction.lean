@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.Absolute
 
 /-!
@@ -60,9 +61,8 @@ theorem restrictNormal_finiteGaloisLift (L : IntermediateField K Ω) [Normal K L
 
 end Lift
 
-variable (K Ω : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
+variable (K Ω : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [Field Ω] [Algebra K Ω]
-variable [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
 variable (L : IntermediateField K Ω) [IsGalois K L]
 
 theorem restrictNormal_mem_upperRamificationGroupInfinite (u : ℝ) (hu : -1 ≤ u)

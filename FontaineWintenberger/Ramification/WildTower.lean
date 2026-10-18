@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.Subgroup
 public import FontaineWintenberger.Ramification.TameField
 public import FontaineWintenberger.LocalField.TotalRamification
@@ -22,10 +23,9 @@ gives its actual total-ramification degree.
 
 namespace FontaineWintenberger
 
-variable (K L : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
+variable (K L : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [NontriviallyNormedField L] [NormedAlgebra K L] [IsUltrametricDist L]
     [FiniteDimensional K L] [IsGalois K L]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
 
@@ -35,8 +35,8 @@ local notation "P" => lowerRamificationGroup (L ≃ₐ[K] L)
 variable (M : IntermediateField K L)
 
 local instance : CompleteSpace M := FiniteDimensional.complete K M
-local instance : IsDiscreteValuationRing (NormedField.valuation (K := M)).valuationSubring :=
-  normedAlgebra_unitBall_isDiscreteValuationRing K M
+local instance : IsCompleteDiscreteValuedField M :=
+  normedAlgebra_isCompleteDiscreteValuedField K M
 local instance : PerfectField (IsLocalRing.ResidueField
     (NormedField.valuation (K := M)).valuationSubring) :=
   Algebra.IsAlgebraic.perfectField (IsLocalRing.ResidueField

@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.APF.CountableStages
 public import FontaineWintenberger.APF.DeepTail
 public import FontaineWintenberger.FieldOfNorms.PrimeValuation
@@ -26,8 +27,8 @@ noncomputable section
 
 namespace FontaineWintenberger
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
+
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
 /-- Actual finite composita enlarge any prescribed sequence of finite layers
@@ -98,7 +99,7 @@ theorem IsAPF.exists_deep_finiteTower (hL : IsAPF K L)
         letI := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
           (isNonarchimedean_spectralNorm (K := K) (L := (E n).val))
         letI := spectralNorm.completeSpace K (E n).val
-        letI := normedAlgebra_unitBall_isDiscreteValuationRing K (E n).val
+        letI := normedAlgebra_isCompleteDiscreteValuedField K (E n).val
         (deepFiniteTowerBound p n : EReal) ≤
           apfRamificationBound (E n).val (IntermediateField.extendScalars hEF)) := by
   obtain ⟨W, hW⟩ := IsAPF.exists_finiteLayer_wild_tail K L p hL
@@ -180,7 +181,7 @@ theorem deepFiniteTower_relativeFirstBound_ge (n : ℕ) (F : FiniteLayer K L) (h
     letI := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
       (isNonarchimedean_spectralNorm (K := K) (L := (𝔈 n).val))
     letI := spectralNorm.completeSpace K (𝔈 n).val
-    letI := normedAlgebra_unitBall_isDiscreteValuationRing K (𝔈 n).val
+    letI := normedAlgebra_isCompleteDiscreteValuedField K (𝔈 n).val
     (deepFiniteTowerBound p n : EReal) ≤
       apfRamificationBound (𝔈 n).val (IntermediateField.extendScalars hEF) :=
   (IsAPF.exists_deep_finiteTower K L p hL hInfinite D).choose_spec.2.2.2.2.2.2 n F hEF

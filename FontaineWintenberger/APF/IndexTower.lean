@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.APF.IndexTransport
 public import FontaineWintenberger.GroupTheory.NormalIndex
 
@@ -16,8 +17,8 @@ public import FontaineWintenberger.GroupTheory.NormalIndex
 
 namespace FontaineWintenberger
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
+
 variable (M N : IntermediateField K (SeparableClosure K))
 
 /-- The actual relative index between the two inertia-product subgroups. -/

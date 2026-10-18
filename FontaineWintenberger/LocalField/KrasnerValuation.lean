@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.LocalField.Krasner
 public import FontaineWintenberger.LocalField.CompatibleNorm
 
@@ -27,8 +28,7 @@ open IntermediateField
 
 section AlgebraicExtension
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     (Ω : Type*) [Field Ω] [Algebra K Ω] [Algebra.IsSeparable K Ω]
     {Γ : Type*} [LinearOrderedCommGroupWithZero Γ] (w : Valuation Ω Γ)
     [(NormedField.valuation (K := K)).HasExtension w]
@@ -87,8 +87,7 @@ theorem discreteValued_krasner_mem_adjoin_and_unique {a b : Ω}
   let : IsUltrametricDist K :=
     IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
       (Valued.isNonarchimedean_norm K ΓK)
-  let : IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring :=
-    discreteValued_unitBall_isDiscreteValuationRing K ΓK
+  let : IsCompleteDiscreteValuedField K := discreteValued_isCompleteDiscreteValuedField K ΓK
   let : (NormedField.valuation (K := K)).HasExtension w :=
     discreteValued_norm_hasExtension K ΓK Ω w
   let : NontriviallyNormedField Ω := spectralNorm.nontriviallyNormedField K Ω

@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.FixedField
 public import FontaineWintenberger.Ramification.HerbrandAffine
 
@@ -59,10 +60,9 @@ end GroupAction
 
 section FixedField
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
 variable (L : Type*) [Field L] [Algebra K L] [IsGalois K L] [FiniteDimensional K L]
 variable (H : Subgroup (L ≃ₐ[K] L)) [H.Normal]
-variable [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
 
 local notation "G₀" => L ≃ₐ[K] L
 local notation "F₀" => IntermediateField.fixedField H

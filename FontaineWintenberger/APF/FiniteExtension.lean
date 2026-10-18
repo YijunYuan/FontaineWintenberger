@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.APF.StrictDescent
 public import FontaineWintenberger.APF.BaseClosure
 public import FontaineWintenberger.FieldTheory.RelativeIndex
@@ -54,8 +55,8 @@ end Embeddings
 
 section Valued
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
+
 variable (M N : IntermediateField K (SeparableClosure K))
 
 /-- APF is unchanged by an actual finite extension above an arbitrary intermediate field. -/
@@ -170,8 +171,8 @@ end Valued
 
 section Abstract
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
+
 variable (L P : Type*) [Field L] [Field P] [Algebra K L] [Algebra K P]
     [Algebra.IsSeparable K L] [Algebra.IsSeparable K P]
     [Algebra P L] [IsScalarTower K P L] [FiniteDimensional P L]

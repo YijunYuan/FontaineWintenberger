@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.APF.Basic
 
 /-!
@@ -22,8 +23,7 @@ namespace FontaineWintenberger
 
 open scoped Pointwise
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-variable [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
 
 /-- Conjugation carries the actual APF subgroup onto that of the conjugate field. -/
 theorem apfSubgroup_map (L : IntermediateField K (SeparableClosure K))
@@ -46,15 +46,12 @@ theorem isAPFSubextension_map_iff (L : IntermediateField K (SeparableClosure K))
 
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
-omit [CompleteSpace K] [IsUltrametricDist K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring] in
+omit [IsCompleteDiscreteValuedField K] in
 /-- Every abstract separable extension has an actual separable-closure embedding. -/
 theorem nonempty_separableClosure_embeddings : Nonempty (L →ₐ[K] SeparableClosure K) :=
   ⟨IsSepClosed.lift⟩
 
-omit [CompleteSpace K] [IsUltrametricDist K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
-    [Algebra.IsSeparable K L] in
+omit [IsCompleteDiscreteValuedField K] [Algebra.IsSeparable K L] in
 /-- Two separable-closure embeddings are conjugate by an actual automorphism. -/
 theorem exists_aut_comp_separableClosure_embeddings
     (i j : L →ₐ[K] SeparableClosure K) :

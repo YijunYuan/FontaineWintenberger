@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.Degree
 public import FontaineWintenberger.Ramification.Generator
 public import Mathlib.NumberTheory.RamificationInertia.Galois
@@ -130,8 +131,7 @@ end ResidueReduction
 
 section Spectral
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-variable [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
 variable (L : Type*) [Field L] [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
 
 local notation "R" => Valuation.valuationSubring (NormedField.valuation (K := K))

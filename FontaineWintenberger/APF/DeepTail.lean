@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.APF.AbstractFiniteBase
 public import FontaineWintenberger.APF.FiniteStages
 public import FontaineWintenberger.APF.Bound
@@ -24,13 +25,11 @@ noncomputable section
 
 namespace FontaineWintenberger.AbstractFiniteBase
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
-variable (M : Type*) [NontriviallyNormedField M] [IsUltrametricDist M] [CompleteSpace M]
+variable (M : Type*) [NontriviallyNormedField M] [IsCompleteDiscreteValuedField M]
     [NormedAlgebra K M] [FiniteDimensional K M] [Algebra.IsSeparable K M]
-    [IsDiscreteValuationRing (NormedField.valuation (K := M)).valuationSubring]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := M)).valuationSubring)]
     [Algebra M (SeparableClosure K)] [IsScalarTower K M (SeparableClosure K)]
@@ -58,8 +57,7 @@ end FontaineWintenberger.AbstractFiniteBase
 
 namespace FontaineWintenberger
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
@@ -74,7 +72,7 @@ theorem apfPsi_le_relativeFirstBound_of_apfFiniteStage_le
     letI := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
       (isNonarchimedean_spectralNorm (K := K) (L := E.val))
     letI := spectralNorm.completeSpace K E.val
-    letI := normedAlgebra_unitBall_isDiscreteValuationRing K E.val
+    letI := normedAlgebra_isCompleteDiscreteValuedField K E.val
     (apfPsi K E.val u : EReal) ≤
       apfRamificationBound E.val (IntermediateField.extendScalars hEF) := by
   let := spectralNorm.nontriviallyNormedField K E.val
@@ -82,7 +80,7 @@ theorem apfPsi_le_relativeFirstBound_of_apfFiniteStage_le
   let := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
     (isNonarchimedean_spectralNorm (K := K) (L := E.val))
   let := spectralNorm.completeSpace K E.val
-  let := normedAlgebra_unitBall_isDiscreteValuationRing K E.val
+  let := normedAlgebra_isCompleteDiscreteValuedField K E.val
   let := normedAlgebra_residueField_perfectField K E.val
   let : Algebra E.val F.val := (IntermediateField.inclusion hEF).toRingHom.toAlgebra
   have : IsScalarTower K E.val F.val := IsScalarTower.of_algebraMap_eq' rfl
@@ -126,7 +124,7 @@ theorem IsAPF.exists_finiteLayer_relativeFirstBound_ge (hL : IsAPF K L) (c : ℝ
       letI := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
         (isNonarchimedean_spectralNorm (K := K) (L := E.val))
       letI := spectralNorm.completeSpace K E.val
-      letI := normedAlgebra_unitBall_isDiscreteValuationRing K E.val
+      letI := normedAlgebra_isCompleteDiscreteValuedField K E.val
       (c : EReal) ≤ apfRamificationBound E.val (IntermediateField.extendScalars hEF) := by
   let j : L →ₐ[K] SeparableClosure K := IsSepClosed.lift
   let u := max c 0
@@ -139,7 +137,7 @@ theorem IsAPF.exists_finiteLayer_relativeFirstBound_ge (hL : IsAPF K L) (c : ℝ
   let := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
     (isNonarchimedean_spectralNorm (K := K) (L := E.val))
   let := spectralNorm.completeSpace K E.val
-  let := normedAlgebra_unitBall_isDiscreteValuationRing K E.val
+  let := normedAlgebra_isCompleteDiscreteValuedField K E.val
   have hstage : apfFiniteStage K j.fieldRange u ≤ E.val.map j := by
     rw [← hT]
     exact IntermediateField.map_mono j hTE

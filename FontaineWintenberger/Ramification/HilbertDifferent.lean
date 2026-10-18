@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.DifferentOrder
 public import FontaineWintenberger.Ramification.Inertia
 
@@ -97,8 +98,7 @@ theorem exists_sum_ramificationOrder_eq_sum_lower_card [FaithfulSMul G B] :
 
 section Spectral
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-variable [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
 variable (L : Type*) [Field L] [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
 variable [PerfectField (ResidueField
   (Valuation.valuationSubring (NormedField.valuation (K := K))))]

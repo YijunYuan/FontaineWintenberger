@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.APF.FirstBound
 public import FontaineWintenberger.APF.FiniteOverfieldBaseChange
 public import FontaineWintenberger.Ramification.WildTower
@@ -52,10 +53,9 @@ private theorem sup_eq_top_iff_subgroupOf_sup_eq_top
       exact hle hg'
     exact top_unique (hHP ▸ sup_le le_sup_left hP)
 
-variable (K L : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
+variable (K L : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [NontriviallyNormedField L] [NormedAlgebra K L] [IsUltrametricDist L]
     [FiniteDimensional K L] [IsGalois K L]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
 
@@ -70,9 +70,8 @@ local notation "e" => Ideal.ramificationIdx
   (Valuation.valuationSubring (NormedField.valuation (K := K)))
 
 local instance wildFirstBound_completeSpace : CompleteSpace A := FiniteDimensional.complete K A
-local instance wildFirstBound_discreteValuationRing : IsDiscreteValuationRing
-    (NormedField.valuation (K := A)).valuationSubring :=
-  normedAlgebra_unitBall_isDiscreteValuationRing K A
+local instance wildFirstBound_discreteValuationRing : IsCompleteDiscreteValuedField A :=
+  normedAlgebra_isCompleteDiscreteValuedField K A
 local instance wildFirstBound_perfectField : PerfectField (IsLocalRing.ResidueField
     (NormedField.valuation (K := A)).valuationSubring) :=
   Algebra.IsAlgebraic.perfectField (IsLocalRing.ResidueField
@@ -88,7 +87,6 @@ local instance wildFirstBound_spectralDVR : IsDiscreteValuationRing
   infer_instance
 
 omit [IsUltrametricDist L] [FiniteDimensional K L]
-  [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
   [PerfectField (IsLocalRing.ResidueField
     (NormedField.valuation (K := K)).valuationSubring)] in
 private theorem wild_compositum_fixing_map (J : Subgroup G) :
@@ -102,7 +100,6 @@ private theorem wild_compositum_fixing_map (J : Subgroup G) :
   rfl
 
 omit [IsUltrametricDist L]
-  [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
   [PerfectField (IsLocalRing.ResidueField
     (NormedField.valuation (K := K)).valuationSubring)] in
 private theorem wild_compositum_fixing_proper (J : Subgroup G) (hH : J ≠ ⊤) (hHP : J ⊔ P = ⊤) :

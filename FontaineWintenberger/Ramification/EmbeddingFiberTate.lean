@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.EmbeddingComparison
 public import FontaineWintenberger.Algebra.SeparableEmbeddings
 
@@ -132,8 +133,7 @@ end RestrictionFibers
 
 section FiniteTateFiber
 
-variable (K Ω : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K Ω : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
     [Field Ω] [Algebra K Ω] [FiniteDimensional K Ω] [IsGalois K Ω]
@@ -216,8 +216,7 @@ end FiniteTateFiber
 
 section IndexSquare
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     {E E' F F' : Type*} [Field E] [Field E'] [Field F] [Field F']
     [Algebra K E] [Algebra K E'] [Algebra K F] [Algebra K F']
     [FiniteDimensional K E] [FiniteDimensional K E']
@@ -355,8 +354,7 @@ end ClosureRestriction
 
 section ClosureTateFiber
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
     (E F : IntermediateField K (SeparableClosure K))

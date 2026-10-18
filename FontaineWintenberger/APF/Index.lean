@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.APF.Basic
 
 /-!
@@ -19,8 +20,7 @@ positive; the resulting natural-number function is nondecreasing.
 
 namespace FontaineWintenberger
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-variable [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
 
 /-- The actual subgroup in the APF inertia-relative index. -/
 noncomputable def apfInertiaSubgroup (L : IntermediateField K (SeparableClosure K)) (u : ℝ) :

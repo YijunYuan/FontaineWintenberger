@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.APF.Strict
 
 /-!
@@ -23,8 +24,7 @@ namespace FontaineWintenberger
 open MeasureTheory Filter
 open scoped ENNReal
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-variable [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
 /-- A nonnegative interval of the actual Herbrand integral controls its

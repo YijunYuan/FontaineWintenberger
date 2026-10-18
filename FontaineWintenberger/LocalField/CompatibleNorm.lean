@@ -61,6 +61,13 @@ theorem discreteValued_unitBall_isDiscreteValuationRing
   rw [discreteValued_valuationSubring K Γ]
   infer_instance
 
+/-- The bundled hypothesis for the norm attached to a complete discrete valuation. -/
+theorem discreteValued_isCompleteDiscreteValuedField [h : CompleteSpace K]
+    [IsDiscreteValuationRing val.v.valuationSubring] : IsCompleteDiscreteValuedField K :=
+  have : @CompleteSpace K (discreteValuedNormedField K Γ).toUniformSpace := h
+  have := discreteValued_unitBall_isDiscreteValuationRing K Γ
+  {}
+
 /-- Henselianity for the original source valuation ring. -/
 theorem discreteValued_henselianLocalRing [CompleteSpace K]
     [IsDiscreteValuationRing val.v.valuationSubring] :
@@ -103,7 +110,7 @@ theorem discreteValued_extension_isDiscreteValuationRing [CompleteSpace K]
     [IsDiscreteValuationRing val.v.valuationSubring] [FiniteDimensional K L]
     [Algebra.IsSeparable K L] : IsDiscreteValuationRing w.valuationSubring := by
   have := discreteValued_norm_hasExtension K Γ L w
-  have := discreteValued_unitBall_isDiscreteValuationRing K Γ
+  have := discreteValued_isCompleteDiscreteValuedField K Γ
   exact extensionValuationSubring_isDiscreteValuationRing K L w
 
 include K Γ in
@@ -111,7 +118,7 @@ theorem discreteValued_extension_henselianLocalRing [CompleteSpace K]
     [IsDiscreteValuationRing val.v.valuationSubring] [FiniteDimensional K L]
     [Algebra.IsSeparable K L] : HenselianLocalRing w.valuationSubring := by
   have := discreteValued_norm_hasExtension K Γ L w
-  have := discreteValued_unitBall_isDiscreteValuationRing K Γ
+  have := discreteValued_isCompleteDiscreteValuedField K Γ
   exact extensionValuationSubring_henselianLocalRing K L w
 
 /-- Integral generation over the original source ring for any compatible chosen extension. -/
@@ -121,7 +128,7 @@ theorem discreteValued_extension_exists_generator [CompleteSpace K]
     [FiniteDimensional K L] [Algebra.IsSeparable K L] :
     ∃ x : w.valuationSubring, Algebra.adjoin val.v.valuationSubring {x} = ⊤ := by
   have := discreteValued_norm_hasExtension K Γ L w
-  have := discreteValued_unitBall_isDiscreteValuationRing K Γ
+  have := discreteValued_isCompleteDiscreteValuedField K Γ
   have : PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring) := by
     rw [discreteValued_valuationSubring K Γ]

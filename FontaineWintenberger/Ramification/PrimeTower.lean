@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.FieldTheory.RelativeIndex
 public import FontaineWintenberger.GroupTheory.PrimeChain
 public import FontaineWintenberger.LocalField.FullGalois
@@ -100,9 +101,9 @@ end Fields
 
 section Valued
 
-variable (K L : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
+variable (K L : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [Field L] [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+
 
 local notation "W" => lowerRamificationGroup (L ≃ₐ[K] L)
   (IsLocalRing.maximalIdeal (spectralIntegerRing K L)) 1

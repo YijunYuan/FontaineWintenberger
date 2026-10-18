@@ -20,10 +20,8 @@ the full intrinsic profile of a totally ramified prime-degree subextension.
 
 namespace FontaineWintenberger
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-variable [IsDiscreteValuationRing (Valuation.valuationSubring (NormedField.valuation (K := K)))]
-variable [PerfectField (IsLocalRing.ResidueField
-    (Valuation.valuationSubring (NormedField.valuation (K := K))))]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
+variable [PerfectField (IsLocalRing.ResidueField (NormedField.valuation (K := K)).valuationSubring)]
 variable (E : FiniteGaloisIntermediateField K (SeparableClosure K))
 variable (M : IntermediateField K E)
 

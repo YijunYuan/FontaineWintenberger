@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.HerbrandQuotient
 
 /-!
@@ -73,9 +74,8 @@ end GroupAction
 
 section FixedField
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     (L : Type*) [Field L] [Algebra K L] [IsGalois K L] [FiniteDimensional K L]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
     (r : ℤ)

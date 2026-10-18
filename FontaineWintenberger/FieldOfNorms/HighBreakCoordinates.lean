@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.FieldOfNorms.Residue
 public import FontaineWintenberger.APF.DeepTail
 
@@ -22,8 +23,7 @@ noncomputable section
 
 namespace FontaineWintenberger
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
@@ -39,8 +39,8 @@ local instance FiniteLayer.instIsUltrametricDist (E : FiniteLayer K L) : IsUltra
 local instance FiniteLayer.instCompleteSpace (E : FiniteLayer K L) : CompleteSpace E.val :=
   spectralNorm.completeSpace K E.val
 local instance FiniteLayer.instIsDiscreteValuationRing (E : FiniteLayer K L) :
-    IsDiscreteValuationRing (NormedField.valuation (K := E.val)).valuationSubring :=
-  normedAlgebra_unitBall_isDiscreteValuationRing K E.val
+    IsCompleteDiscreteValuedField E.val :=
+  normedAlgebra_isCompleteDiscreteValuedField K E.val
 local instance FiniteLayer.instPerfectFieldResidueField (E : FiniteLayer K L) : PerfectField
     (IsLocalRing.ResidueField
     (NormedField.valuation (K := E.val)).valuationSubring) :=

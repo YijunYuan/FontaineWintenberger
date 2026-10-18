@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.FieldOfNorms.FiniteGalois
 public import FontaineWintenberger.FieldOfNorms.EmbeddingFunctor
 public import FontaineWintenberger.APF.FiniteExtension
@@ -26,9 +27,7 @@ namespace FontaineWintenberger
 
 section ScalarTower
 
-variable (K M N P : Type*) [NontriviallyNormedField K] [IsUltrametricDist K]
-    [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K M N P : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
     [Field M] [Field N] [Field P] [Algebra K M] [Algebra K N] [Algebra K P]
@@ -73,9 +72,7 @@ end ScalarTower
 
 section FiniteSeparable
 
-variable (K M N : Type*) [NontriviallyNormedField K] [IsUltrametricDist K]
-    [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K M N : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
     [Field M] [Field N] [Algebra K M] [Algebra K N]
@@ -177,8 +174,7 @@ end FiniteSeparable
 
 section ArbitraryEmbeddings
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
 variable {L M : Type*} [Field L] [Field M] [Algebra K L] [Algebra K M]

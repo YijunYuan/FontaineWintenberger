@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.FieldOfNorms.SeparableNormUnion
 public import Mathlib.Algebra.Field.ULift
 
@@ -26,8 +27,7 @@ namespace FontaineWintenberger
 
 universe u v w w' w'' z
 
-variable (K : Type u) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type u) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
 variable (L : Type v) (M : Type w) (N : Type w') [Field L] [Field M] [Field N]

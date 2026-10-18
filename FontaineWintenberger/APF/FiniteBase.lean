@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.APF.AbsoluteBaseChange
 public import FontaineWintenberger.GroupTheory.FiniteIndex
 
@@ -82,8 +83,7 @@ end Embeddings
 
 section Valued
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
 variable (M : IntermediateField K (SeparableClosure K)) [FiniteDimensional K M]
@@ -95,8 +95,8 @@ local instance : IsUltrametricDist M :=
   IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
     (isNonarchimedean_spectralNorm (K := K) (L := M))
 local instance : CompleteSpace M := spectralNorm.completeSpace K M
-local instance : IsDiscreteValuationRing (NormedField.valuation (K := M)).valuationSubring :=
-  normedAlgebra_unitBall_isDiscreteValuationRing K M
+local instance : IsCompleteDiscreteValuedField M :=
+  normedAlgebra_isCompleteDiscreteValuedField K M
 noncomputable local instance : Algebra M (SeparableClosure M) :=
   (separableClosure M (AlgebraicClosure M)).algebra'
 
@@ -104,9 +104,7 @@ local notation "ρ" =>
   MonoidHom.comp (Subgroup.subtype (IntermediateField.fixingSubgroup M))
     (MulEquiv.toMonoidHom (absoluteGaloisBaseChangeEquiv K M))
 
-omit [CompleteSpace K] [IsUltrametricDist K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
-    [PerfectField (IsLocalRing.ResidueField
+omit [IsCompleteDiscreteValuedField K] [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)] in
 /-- The actual absolute fixing subgroup has finite index for a finite new base. -/
 theorem absoluteGaloisBaseChange_range_finiteIndex : (ρ).range.FiniteIndex := by

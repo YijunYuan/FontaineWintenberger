@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.APF.Herbrand
 public import FontaineWintenberger.APF.Bound
 public import Mathlib.Order.LiminfLimsup
@@ -24,8 +25,7 @@ namespace FontaineWintenberger
 open MeasureTheory Filter
 open scoped ENNReal
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-variable [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
 theorem apfSubgroup_eq_top_of_bound_eq_top (h : apfRamificationBound K L = ⊤)

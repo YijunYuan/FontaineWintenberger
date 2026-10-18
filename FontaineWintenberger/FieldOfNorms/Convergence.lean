@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.FieldOfNorms.Addition
 
 /-!
@@ -22,8 +23,7 @@ namespace FontaineWintenberger
 
 open Filter
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
@@ -54,7 +54,7 @@ theorem IsAPF.exists_finiteLayer_integerNorm_add_congruence
   let := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
     (isNonarchimedean_spectralNorm (K := K) (L := E.val))
   let := spectralNorm.completeSpace K E.val
-  let := normedAlgebra_unitBall_isDiscreteValuationRing K E.val
+  let := normedAlgebra_isCompleteDiscreteValuedField K E.val
   obtain ⟨_, ⟨n, hd⟩, he⟩ := hT₀ E F ((FiniteLayer.le_sup_left T₀ T₁).trans hE) hEF
   have hb := hT₁ E F ((FiniteLayer.le_sup_right T₀ T₁).trans hE) hEF
   have h := FiniteLayer.integerNorm_add_congruence_of_le_apfRamificationBound
@@ -114,7 +114,7 @@ theorem IsAPF.exists_finiteLayer_normSumNet_cauchy (hL : IsAPF K L) :
   let := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
     (isNonarchimedean_spectralNorm (K := K) (L := E.val))
   let := spectralNorm.completeSpace K E.val
-  let := normedAlgebra_unitBall_isDiscreteValuationRing K E.val
+  let := normedAlgebra_isCompleteDiscreteValuedField K E.val
   let := Algebra.isSeparable_tower_top_of_isSeparable K E.val L
   let a (F : FiniteLayer K L) : spectralIntegerRing K F.val :=
     ⟨normLimitEval K L F α, normLimitEval_mem_of_valuation_le_one K L hL α hα F⟩

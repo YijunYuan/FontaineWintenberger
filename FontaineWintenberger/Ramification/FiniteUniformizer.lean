@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.InertiaFixedField
 public import FontaineWintenberger.Ramification.Generator
 public import FontaineWintenberger.Ramification.ValuedAutomorphism
@@ -26,9 +27,8 @@ namespace FontaineWintenberger
 
 open scoped ENNReal
 
-variable (K L : Type*) [NontriviallyNormedField K] [IsUltrametricDist K]
-    [CompleteSpace K] [Field L] [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K L : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K] [Field L]
+    [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
 

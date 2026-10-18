@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.EmbeddingFiniteBase
 public import FontaineWintenberger.Ramification.EmbeddingFiberTate
 
@@ -39,12 +40,11 @@ end OriginalFieldImages
 
 section OriginalFiniteBase
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
 variable (M : Type*) [NontriviallyNormedField M] [IsUltrametricDist M]
-    [NormedAlgebra K M] [CompleteSpace M] [FiniteDimensional K M]
+    [NormedAlgebra K M] [FiniteDimensional K M]
     [Algebra.IsSeparable K M]
 variable (F : Type*) [Field F] [Algebra K F] [Algebra M F] [IsScalarTower K M F]
     [FiniteDimensional K F] [Algebra.IsSeparable K F]
@@ -52,10 +52,10 @@ variable (F : Type*) [Field F] [Algebra K F] [Algebra M F] [IsScalarTower K M F]
 /-- The intrinsic relative function over the actual original finite
 normed base is the absolute function composed with its actual inverse. -/
 theorem apfPsi_eq_absolute_comp_apfPhi_of_normedAlgebra (u : ℝ) :
-    letI := normedAlgebra_unitBall_isDiscreteValuationRing K M
+    letI := normedAlgebra_isCompleteDiscreteValuedField K M
     letI := Algebra.isSeparable_tower_top_of_isSeparable K M F
     apfPsi M F u = apfPsi K F (apfPhi K M (isAPF_of_finite K M) u) := by
-  let := normedAlgebra_unitBall_isDiscreteValuationRing K M
+  let := normedAlgebra_isCompleteDiscreteValuedField K M
   let := Algebra.isSeparable_tower_top_of_isSeparable K M F
   have h := IsAPF.apfPsi_finiteBase_comp_of_normedAlgebra K M F
     (isAPF_of_finite K F) (apfPhi K M (isAPF_of_finite K M) u)
@@ -65,12 +65,11 @@ end OriginalFiniteBase
 
 section OriginalAmbientBase
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
 variable (M : Type*) [NontriviallyNormedField M] [IsUltrametricDist M]
-    [NormedAlgebra K M] [CompleteSpace M] [FiniteDimensional K M]
+    [NormedAlgebra K M] [FiniteDimensional K M]
     [Algebra.IsSeparable K M]
 variable (F Ω : Type*) [Field F] [Field Ω] [Algebra K F] [Algebra K Ω]
     [Algebra M F] [Algebra M Ω] [IsScalarTower K M F] [IsScalarTower K M Ω]
@@ -83,7 +82,7 @@ local notation "jM" => IsScalarTower.toAlgHom K M Ω
 relative function, without changing the norm on the abstract smaller field. -/
 theorem apfPsi_originalBase_eq_fixing_herbrand (i : F →ₐ[M] Ω)
     {u : ℝ} (hu : -1 ≤ u) :
-    letI := normedAlgebra_unitBall_isDiscreteValuationRing K M
+    letI := normedAlgebra_isCompleteDiscreteValuedField K M
     letI := Algebra.isSeparable_tower_top_of_isSeparable K M F
     letI : FiniteDimensional K (jM).fieldRange :=
       Module.Finite.equiv (jM).equivFieldRange.toLinearEquiv
@@ -94,7 +93,7 @@ theorem apfPsi_originalBase_eq_fixing_herbrand (i : F →ₐ[M] Ω)
           K).fieldRange.fixingSubgroup
         (inverseHerbrandFunction (R := spectralIntegerRing K Ω) (jM).fieldRange.fixingSubgroup u) :=
             by
-  let := normedAlgebra_unitBall_isDiscreteValuationRing K M
+  let := normedAlgebra_isCompleteDiscreteValuedField K M
   let := Algebra.isSeparable_tower_top_of_isSeparable K M F
   let : FiniteDimensional K (jM).fieldRange :=
     Module.Finite.equiv (jM).equivFieldRange.toLinearEquiv
@@ -115,12 +114,12 @@ gives the restriction inequality for arbitrary moved upper images. -/
 theorem embeddingNumber_restriction_le_apfPsi_of_normedAlgebra
     (i : F →ₐ[M] Ω) (s : Ω ≃ₐ[K] Ω)
     (hs : s.toAlgHom.comp jM ≠ jM) :
-    letI := normedAlgebra_unitBall_isDiscreteValuationRing K M
+    letI := normedAlgebra_isCompleteDiscreteValuedField K M
     letI := Algebra.isSeparable_tower_top_of_isSeparable K M F
     embeddingRamificationNumber K (s.toAlgHom.comp (i.restrictScalars K))
         (i.restrictScalars K) ≤
       (apfPsi M F (embeddingRamificationNumber K (s.toAlgHom.comp jM) jM).toReal : EReal) := by
-  let := normedAlgebra_unitBall_isDiscreteValuationRing K M
+  let := normedAlgebra_isCompleteDiscreteValuedField K M
   let := Algebra.isSeparable_tower_top_of_isSeparable K M F
   let E₀ := (jM).fieldRange
   let F₀ := (i.restrictScalars K).fieldRange
@@ -176,8 +175,7 @@ end OriginalClosureLift
 
 section OriginalClosureBound
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
     (E F : IntermediateField K (SeparableClosure K))
@@ -193,7 +191,7 @@ theorem closureEmbeddingNumber_restriction_le_apfPsi
     letI := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
       (isNonarchimedean_spectralNorm (K := K) (L := E))
     letI : CompleteSpace E := FiniteDimensional.complete K E
-    letI := normedAlgebra_unitBall_isDiscreteValuationRing K E
+    letI := normedAlgebra_isCompleteDiscreteValuedField K E
     let F' := IntermediateField.extendScalars hEF
     letI : FiniteDimensional K F' := inferInstanceAs (FiniteDimensional K F)
     letI : Algebra.IsSeparable K F' := inferInstanceAs (Algebra.IsSeparable K F)
@@ -206,7 +204,7 @@ theorem closureEmbeddingNumber_restriction_le_apfPsi
   let := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
     (isNonarchimedean_spectralNorm (K := K) (L := E))
   let : CompleteSpace E := FiniteDimensional.complete K E
-  let := normedAlgebra_unitBall_isDiscreteValuationRing K E
+  let := normedAlgebra_isCompleteDiscreteValuedField K E
   let F' := IntermediateField.extendScalars hEF
   let : FiniteDimensional K F' := inferInstanceAs (FiniteDimensional K F)
   let : Algebra.IsSeparable K F' := inferInstanceAs (Algebra.IsSeparable K F)

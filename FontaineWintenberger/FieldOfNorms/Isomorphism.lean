@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.FieldOfNorms.Valued
 public import FontaineWintenberger.Ramification.FieldEquiv
 public import FontaineWintenberger.LocalField.UniformContinuity
@@ -248,8 +249,7 @@ section ValuedFields
 
 open Filter
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
 variable {L M : Type*} [Field L] [Field M] [Algebra K L] [Algebra K M]

@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.APF.Abstract
 public import FontaineWintenberger.APF.Index
 
@@ -22,8 +23,7 @@ namespace FontaineWintenberger
 
 open scoped Pointwise
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-variable [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
 
 theorem apfInertiaSubgroup_map (L : IntermediateField K (SeparableClosure K))
     (σ : SeparableClosure K ≃ₐ[K] SeparableClosure K) (u : ℝ) :

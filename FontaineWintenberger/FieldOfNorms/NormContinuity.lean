@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.FieldOfNorms.WildNorms
 public import FontaineWintenberger.Ramification.NormContinuity
 public import FontaineWintenberger.APF.AbstractFiniteBase
@@ -35,12 +36,11 @@ private theorem norm_sub_mem_pow_of_commutes
 
 section HerbrandTowers
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
 variable (M : Type*) [NontriviallyNormedField M] [IsUltrametricDist M]
-    [NormedAlgebra K M] [CompleteSpace M]
+    [NormedAlgebra K M]
     [FiniteDimensional K M] [Algebra.IsSeparable K M]
 variable (N : Type*) [Field N] [Algebra K N] [Algebra M N]
     [IsScalarTower K M N] [FiniteDimensional K N] [Algebra.IsSeparable K N]
@@ -48,14 +48,14 @@ variable (N : Type*) [Field N] [Algebra K N] [Algebra M N]
 /-- The actual Herbrand moduli compose on the original finite normed bases,
 in the reverse order to their actual inverse Herbrand functions. -/
 theorem apfPhi_finiteBase_comp_of_normedAlgebra (r : ℝ) :
-    letI := normedAlgebra_unitBall_isDiscreteValuationRing K M
+    letI := normedAlgebra_isCompleteDiscreteValuedField K M
     letI := normedAlgebra_residueField_perfectField K M
     letI := Algebra.isSeparable_tower_top_of_isSeparable K M N
     letI : FiniteDimensional M N := Module.Finite.right K M N
     apfPhi K M (isAPF_of_finite K M)
         (apfPhi M N (isAPF_of_finite M N) r) =
       apfPhi K N (isAPF_of_finite K N) r := by
-  let := normedAlgebra_unitBall_isDiscreteValuationRing K M
+  let := normedAlgebra_isCompleteDiscreteValuedField K M
   let := normedAlgebra_residueField_perfectField K M
   let := Algebra.isSeparable_tower_top_of_isSeparable K M N
   let : FiniteDimensional M N := Module.Finite.right K M N
@@ -72,8 +72,7 @@ end HerbrandTowers
 
 namespace FiniteLayer
 
-variable {K Ω : Type*} [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable {K Ω : Type*} [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
     [NontriviallyNormedField Ω] [NormedAlgebra K Ω] [IsUltrametricDist Ω]
@@ -81,8 +80,8 @@ variable {K Ω : Type*} [NontriviallyNormedField K] [IsUltrametricDist K] [Compl
 
 local instance (E : FiniteLayer K Ω) : CompleteSpace E.val := FiniteDimensional.complete K E.val
 local instance (E : FiniteLayer K Ω) :
-    IsDiscreteValuationRing (NormedField.valuation (K := E.val)).valuationSubring :=
-  normedAlgebra_unitBall_isDiscreteValuationRing K E.val
+    IsCompleteDiscreteValuedField E.val :=
+  normedAlgebra_isCompleteDiscreteValuedField K E.val
 local instance (E : FiniteLayer K Ω) : PerfectField (IsLocalRing.ResidueField
     (NormedField.valuation (K := E.val)).valuationSubring) :=
   normedAlgebra_residueField_perfectField K E.val

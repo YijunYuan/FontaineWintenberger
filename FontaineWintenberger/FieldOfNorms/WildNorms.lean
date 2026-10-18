@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.FieldOfNorms.PrimeNorms
 public import FontaineWintenberger.Ramification.PrimeTower
 public import FontaineWintenberger.Ramification.WildTower
@@ -24,8 +25,7 @@ noncomputable section
 
 namespace FontaineWintenberger.FiniteLayer
 
-variable {K Ω : Type*} [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable {K Ω : Type*} [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
     [NontriviallyNormedField Ω] [NormedAlgebra K Ω] [IsUltrametricDist Ω]
@@ -34,8 +34,8 @@ variable {K Ω : Type*} [NontriviallyNormedField K] [IsUltrametricDist K] [Compl
 local instance wildNorm_completeSpace (E : FiniteLayer K Ω) : CompleteSpace E.val :=
   FiniteDimensional.complete K E.val
 local instance wildNorm_discreteValuationRing (E : FiniteLayer K Ω) :
-    IsDiscreteValuationRing (NormedField.valuation (K := E.val)).valuationSubring :=
-  normedAlgebra_unitBall_isDiscreteValuationRing K E.val
+    IsCompleteDiscreteValuedField E.val :=
+  normedAlgebra_isCompleteDiscreteValuedField K E.val
 local instance wildNorm_perfectField (E : FiniteLayer K Ω) : PerfectField (IsLocalRing.ResidueField
     (NormedField.valuation (K := E.val)).valuationSubring) :=
   Algebra.IsAlgebraic.perfectField (IsLocalRing.ResidueField

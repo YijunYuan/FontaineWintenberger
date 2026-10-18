@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.Index
 public import FontaineWintenberger.LocalField.CompatibleNorm
 public import Mathlib.RingTheory.RamificationInertia.Basic
@@ -113,8 +114,7 @@ end LocalRings
 
 section ChosenExtension
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-variable [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
 variable (L : Type*) [Field L] [Algebra K L] [FiniteDimensional K L]
 variable [Algebra.IsSeparable K L]
 variable {Γ : Type*} [LinearOrderedCommGroupWithZero Γ] (w : Valuation L Γ)
@@ -165,7 +165,7 @@ local notation "S" => Valuation.valuationSubring w
 /-- Finiteness over the original source valuation ring, with its canonical inclusion. -/
 theorem discreteValued_extension_moduleFinite : Module.Finite R S := by
   have := discreteValued_norm_hasExtension K ΓK L w
-  have := discreteValued_unitBall_isDiscreteValuationRing K ΓK
+  have := discreteValued_isCompleteDiscreteValuedField K ΓK
   let e := RingEquiv.subringCongr
     (congrArg ValuationSubring.toSubring (discreteValued_valuationSubring K ΓK))
   apply Module.Finite.of_equiv_equiv

@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.FieldOfNorms.FiniteFunctor
 public import FontaineWintenberger.FieldOfNorms.Isomorphism
 public import FontaineWintenberger.FieldOfNorms.Completeness
@@ -69,8 +70,8 @@ end FiniteLayers
 
 section NormalizedValuation
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
+
 variable {E F : Type*} [Field E] [Field F] [Algebra K E] [Algebra K F]
     [FiniteDimensional K E] [FiniteDimensional K F]
     [Algebra.IsSeparable K E] [Algebra.IsSeparable K F]
@@ -103,8 +104,7 @@ section ValuedFields
 
 open Filter
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
 variable (M N : Type*) [Field M] [Field N] [Algebra K M] [Algebra K N]

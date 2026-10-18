@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.FieldOfNorms.NonnormalNormContinuity
 
 /-!
@@ -74,8 +75,7 @@ private theorem add_sub_mem_pow_of_norm_commutes
 
 namespace FiniteLayer
 
-variable {K L : Type*} [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable {K L : Type*} [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
     [Field L] [Algebra K L] [Algebra.IsSeparable K L]
@@ -95,7 +95,7 @@ theorem integerNorm_sub_congruence_of_totallyRamified
     letI := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
       (isNonarchimedean_spectralNorm (K := K) (L := E.val))
     letI := spectralNorm.completeSpace K E.val
-    letI := normedAlgebra_unitBall_isDiscreteValuationRing K E.val
+    letI := normedAlgebra_isCompleteDiscreteValuedField K E.val
     let F' := IntermediateField.extendScalars hEF
     letI : FiniteDimensional K F' := F.property
     letI : FiniteDimensional E.val F' := Module.Finite.right K E.val F'
@@ -115,7 +115,7 @@ theorem integerNorm_sub_congruence_of_totallyRamified
   let := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
     (isNonarchimedean_spectralNorm (K := K) (L := E.val))
   let := spectralNorm.completeSpace K E.val
-  let := normedAlgebra_unitBall_isDiscreteValuationRing K E.val
+  let := normedAlgebra_isCompleteDiscreteValuedField K E.val
   let := normedAlgebra_residueField_perfectField K E.val
   let F' := IntermediateField.extendScalars hEF
   let : FiniteDimensional K F' := F.property
@@ -180,7 +180,7 @@ theorem exists_integerNorm_add_congruence_of_totallyRamified
     letI := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
       (isNonarchimedean_spectralNorm (K := K) (L := E.val))
     letI := spectralNorm.completeSpace K E.val
-    letI := normedAlgebra_unitBall_isDiscreteValuationRing K E.val
+    letI := normedAlgebra_isCompleteDiscreteValuedField K E.val
     let F' := IntermediateField.extendScalars hEF
     letI : FiniteDimensional K F' := F.property
     letI : FiniteDimensional E.val F' := Module.Finite.right K E.val F'
@@ -201,7 +201,7 @@ theorem exists_integerNorm_add_congruence_of_totallyRamified
   let := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
     (isNonarchimedean_spectralNorm (K := K) (L := E.val))
   let := spectralNorm.completeSpace K E.val
-  let := normedAlgebra_unitBall_isDiscreteValuationRing K E.val
+  let := normedAlgebra_isCompleteDiscreteValuedField K E.val
   let := normedAlgebra_residueField_perfectField K E.val
   let F' := IntermediateField.extendScalars hEF
   let : FiniteDimensional K F' := F.property
@@ -287,7 +287,7 @@ theorem integerNorm_add_congruence_of_le_apfRamificationBound
     letI := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
       (isNonarchimedean_spectralNorm (K := K) (L := E.val))
     letI := spectralNorm.completeSpace K E.val
-    letI := normedAlgebra_unitBall_isDiscreteValuationRing K E.val
+    letI := normedAlgebra_isCompleteDiscreteValuedField K E.val
     let F' := IntermediateField.extendScalars hEF
     letI : FiniteDimensional K F' := F.property
     letI : FiniteDimensional E.val F' := Module.Finite.right K E.val F'
@@ -307,7 +307,7 @@ theorem integerNorm_add_congruence_of_le_apfRamificationBound
   let := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
     (isNonarchimedean_spectralNorm (K := K) (L := E.val))
   let := spectralNorm.completeSpace K E.val
-  let := normedAlgebra_unitBall_isDiscreteValuationRing K E.val
+  let := normedAlgebra_isCompleteDiscreteValuedField K E.val
   let F' := IntermediateField.extendScalars hEF
   let : FiniteDimensional K F' := F.property
   let : FiniteDimensional E.val F' := Module.Finite.right K E.val F'

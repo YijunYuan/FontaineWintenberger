@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.Tame
 public import FontaineWintenberger.Ramification.Wild
 public import FontaineWintenberger.Ramification.FiniteRestriction
@@ -68,9 +69,8 @@ end Groups
 
 section Fields
 
-variable (K L : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
+variable (K L : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [Field L] [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
 

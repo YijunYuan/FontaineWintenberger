@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.Absolute
 
 /-!
@@ -66,8 +67,7 @@ theorem restrictNormal_finiteGaloisMap (f : L ≃ₐ[K] M)
 
 end Fields
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-variable [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
 variable {L M : Type*} [Field L] [Field M] [Algebra K L] [Algebra K M]
 
 theorem mem_upperRamificationGroupInfinite_of_autCongr (f : L ≃ₐ[K] M) {u : ℝ}

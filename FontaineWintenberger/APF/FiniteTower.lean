@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.APF.FiniteBaseChange
 
 /-!
@@ -18,7 +19,7 @@ surjective scalar-change equivalence. The own-ring actions are preserved.
 
 namespace FontaineWintenberger
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
 variable (E : FiniteGaloisIntermediateField K (SeparableClosure K))
 
 noncomputable local instance : NontriviallyNormedField E :=
@@ -76,7 +77,6 @@ theorem finiteTower_spectralIntegerRingEquiv_smul (g : E ≃ₐ[M] E)
   apply Subtype.ext
   rfl
 
-variable [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
 
 local instance : IsDiscreteValuationRing (spectralIntegerRing M E) := by
   rw [spectralIntegerRing_eq_normedUnitBall M E,
@@ -97,8 +97,8 @@ theorem finiteTower_upper_map_autEquivImage {v : ℝ} (hv : -1 ≤ v) :
     (finiteTower_spectralIntegerRingEquiv K E M) (finiteTower_autEquivImage K E M)
     (finiteTower_spectralIntegerRingEquiv_smul K E M) hv
 
-omit [CompleteSpace K] [IsUltrametricDist K] [IsUltrametricDist M] [CompleteSpace M]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring] in
+omit [IsCompleteDiscreteValuedField K] [IsUltrametricDist M] [CompleteSpace M]
+     in
 /-- The canonical image-base automorphism equivalence restricts to the original field map. -/
 theorem finiteTower_fixingSubtype_comp :
     (S₀).fixingSubgroup.subtype.comp
@@ -108,8 +108,8 @@ theorem finiteTower_fixingSubtype_comp :
   ext g x
   rfl
 
-omit [CompleteSpace K] [IsUltrametricDist K] [IsUltrametricDist M] [CompleteSpace M]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring] in
+omit [IsCompleteDiscreteValuedField K] [IsUltrametricDist M] [CompleteSpace M]
+     in
 /-- The restriction-of-scalars image is the actual subgroup fixing the embedded scalar field. -/
 theorem finiteTower_range_restrictScalarsHom :
     (AlgEquiv.restrictScalarsHom K (S := M) (A := E)).range = (S₀).fixingSubgroup := by

@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.LocalField.SpectralIntegers
 public import Mathlib.RingTheory.DedekindDomain.IntegralClosure
 public import Mathlib.RingTheory.DiscreteValuationRing.TFAE
@@ -21,14 +22,13 @@ without any finiteness hypothesis on the residue field.
 
 namespace FontaineWintenberger
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
 variable (L : Type*) [Field L] [Algebra K L] [FiniteDimensional K L]
 variable [Algebra.IsSeparable K L]
 
 local notation "OK" => Valuation.valuationSubring (NormedField.valuation (K := K))
 local notation "OL" => spectralIntegerRing K L
 
-variable [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
 
 instance spectralIntegerRing_moduleFinite : Module.Finite OK OL :=
   IsIntegralClosure.finite (A := OK) (K := K) (L := L) (C := OL)

@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.APF.FiniteOverfieldBaseChange
 public import FontaineWintenberger.APF.FiniteBaseBounds
 public import FontaineWintenberger.APF.StrictDescent
@@ -31,18 +32,17 @@ private theorem finiteOverfield_fixing_map
   ext g
   rfl
 
-variable (K L : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
+variable (K L : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [NontriviallyNormedField L] [NormedAlgebra K L] [IsUltrametricDist L]
     [FiniteDimensional K L] [IsGalois K L]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
 
 local instance finiteOverfieldBounds_completeSpace (M : IntermediateField K L) :
     CompleteSpace M := FiniteDimensional.complete K M
 local instance finiteOverfieldBounds_discreteValuationRing (M : IntermediateField K L) :
-    IsDiscreteValuationRing (NormedField.valuation (K := M)).valuationSubring :=
-  normedAlgebra_unitBall_isDiscreteValuationRing K M
+    IsCompleteDiscreteValuedField M :=
+  normedAlgebra_isCompleteDiscreteValuedField K M
 local instance finiteOverfieldBounds_perfectField (M : IntermediateField K L) :
     PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := M)).valuationSubring) :=

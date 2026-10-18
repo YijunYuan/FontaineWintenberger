@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.APF.FiniteExtension
 public import FontaineWintenberger.APF.AbstractFiniteBase
 public import FontaineWintenberger.FieldOfNorms.Multiplicative
@@ -22,8 +23,8 @@ noncomputable section
 
 namespace FontaineWintenberger
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
+
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
 variable {M : Type*} [Field M] [Algebra K M] [Algebra.IsSeparable K M]
@@ -79,7 +80,7 @@ theorem FiniteLayer.le_ceil_apfPhi_of_apfPsi_le (hL : IsAPF K L)
     letI := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
       (isNonarchimedean_spectralNorm (K := K) (L := E.val))
     letI := spectralNorm.completeSpace K E.val
-    letI := normedAlgebra_unitBall_isDiscreteValuationRing K E.val
+    letI := normedAlgebra_isCompleteDiscreteValuedField K E.val
     letI := Algebra.isSeparable_tower_top_of_isSeparable K E.val L
     let F' := IntermediateField.extendScalars hEF
     letI : FiniteDimensional K F' := F.property
@@ -91,7 +92,7 @@ theorem FiniteLayer.le_ceil_apfPhi_of_apfPsi_le (hL : IsAPF K L)
   let := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
     (isNonarchimedean_spectralNorm (K := K) (L := E.val))
   let := spectralNorm.completeSpace K E.val
-  let := normedAlgebra_unitBall_isDiscreteValuationRing K E.val
+  let := normedAlgebra_isCompleteDiscreteValuedField K E.val
   let := Algebra.isSeparable_tower_top_of_isSeparable K E.val L
   let F' := IntermediateField.extendScalars hEF
   have : FiniteDimensional K F' := F.property

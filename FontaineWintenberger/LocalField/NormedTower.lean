@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.LocalField.Uniqueness
 public import Mathlib.Analysis.Normed.Algebra.Basic
 public import Mathlib.Analysis.Normed.Module.FiniteDimension
@@ -52,8 +53,7 @@ end IntermediateField
 
 namespace FontaineWintenberger
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-variable [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
 variable (L : Type*) [NormedField L] [IsUltrametricDist L] [NormedAlgebra K L]
     [FiniteDimensional K L] [Algebra.IsSeparable K L]
 
@@ -75,5 +75,14 @@ theorem normedAlgebra_unitBall_exists_generator [PerfectField (IsLocalRing.Resid
     ∃ x : (NormedField.valuation (K := L)).valuationSubring,
       Algebra.adjoin (NormedField.valuation (K := K)).valuationSubring {x} = ⊤ :=
   extensionValuationSubring_exists_generator K L (NormedField.valuation (K := L))
+
+/-- A finite separable normed extension of a complete discretely valued field is again one. -/
+theorem normedAlgebra_isCompleteDiscreteValuedField (K L : Type*) [NontriviallyNormedField K]
+    [IsCompleteDiscreteValuedField K] [NontriviallyNormedField L] [IsUltrametricDist L]
+    [NormedAlgebra K L] [FiniteDimensional K L] [Algebra.IsSeparable K L] :
+    IsCompleteDiscreteValuedField L :=
+  have : CompleteSpace L := FiniteDimensional.complete K L
+  have := normedAlgebra_unitBall_isDiscreteValuationRing K L
+  {}
 
 end FontaineWintenberger

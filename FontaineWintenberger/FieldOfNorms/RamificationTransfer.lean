@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.EmbeddingFiniteBase
 public import FontaineWintenberger.Ramification.ValuedAutomorphism
 public import FontaineWintenberger.FieldOfNorms.FaithfulAction
@@ -29,8 +30,7 @@ open scoped ENNReal
 
 section OriginalAction
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
@@ -327,8 +327,7 @@ def algebraicResidueAut (σ : L ≃ₐ[K] L) :
     (σ.restrictScalars (NormedField.valuation (K :=
         K)).valuationSubring).mapIntegralClosure.toRingEquiv
 
-omit [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
-  [PerfectField (IsLocalRing.ResidueField
+omit [PerfectField (IsLocalRing.ResidueField
     (NormedField.valuation (K := K)).valuationSubring)] in
 @[simp]
 theorem algebraicResidueAut_residue (σ : L ≃ₐ[K] L)
@@ -338,8 +337,7 @@ theorem algebraicResidueAut_residue (σ : L ≃ₐ[K] L)
         ((σ.restrictScalars (NormedField.valuation (K := K)).valuationSubring).mapIntegralClosure a)
             := rfl
 
-omit [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
-  [PerfectField (IsLocalRing.ResidueField
+omit [PerfectField (IsLocalRing.ResidueField
     (NormedField.valuation (K := K)).valuationSubring)] in
 /-- Ordinary finite residue inclusions commute with the actual intrinsic
 residue inclusion of the original algebraic extension. -/
@@ -354,8 +352,7 @@ theorem integralClosureResidueFromLayer_inclusion (E F : FiniteLayer K L) (hEF :
   rw [← AlgHom.comp_apply, ← spectralResidueInclusion_comp]
   rfl
 
-omit [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
-  [PerfectField (IsLocalRing.ResidueField
+omit [PerfectField (IsLocalRing.ResidueField
     (NormedField.valuation (K := K)).valuationSubring)] in
 /-- An actual finite restriction and the original infinite automorphism
 induce the same maps on the same intrinsic residue field. -/
@@ -512,8 +509,7 @@ theorem normLimitResidueAut_eq_refl_iff_algebraicResidueAut (hL : IsAPF K L)
     have hc := normLimitResidueAut_sourceResidueConstantsResidueEquiv K L p hL hInfinite σ a
     simpa only [h, RingEquiv.refl_apply] using hc
 
-omit [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
-  [PerfectField (IsLocalRing.ResidueField
+omit [PerfectField (IsLocalRing.ResidueField
     (NormedField.valuation (K := K)).valuationSubring)] in
 /-- The actual residue of an original moved finite embedding is the
 original residue action composed with its original residue inclusion. -/
@@ -573,17 +569,13 @@ def finiteLayerAutPairRight (σ : L ≃ₐ[K] L) (E : FiniteLayer K L) :
   (IntermediateField.inclusion (FiniteLayer.le_sup_right E (FiniteLayer.map σ.toAlgHom E))).comp
     (FiniteLayer.equivMap σ.toAlgHom E).toAlgHom
 
-omit [CompleteSpace K] [IsUltrametricDist K]
-  [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
-  [PerfectField (IsLocalRing.ResidueField
+omit [IsCompleteDiscreteValuedField K] [PerfectField (IsLocalRing.ResidueField
     (NormedField.valuation (K := K)).valuationSubring)] [Algebra.IsSeparable K L] in
 @[simp]
 theorem coe_finiteLayerAutPairLeft (σ : L ≃ₐ[K] L) (E : FiniteLayer K L) (x : E.val) :
     (finiteLayerAutPairLeft K L σ E x : L) = x := rfl
 
-omit [CompleteSpace K] [IsUltrametricDist K]
-  [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
-  [PerfectField (IsLocalRing.ResidueField
+omit [IsCompleteDiscreteValuedField K] [PerfectField (IsLocalRing.ResidueField
     (NormedField.valuation (K := K)).valuationSubring)] [Algebra.IsSeparable K L] in
 @[simp]
 theorem coe_finiteLayerAutPairRight (σ : L ≃ₐ[K] L) (E : FiniteLayer K L) (x : E.val) :
@@ -616,8 +608,7 @@ theorem finiteLayerRamificationNumber_one (E : FiniteLayer K L) :
     finiteLayerRamificationNumber K L 1 E = ⊤ :=
   (finiteLayerRamificationNumber_eq_top_iff K L 1 E).mpr (by ext x; rfl)
 
-omit [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
-  [PerfectField (IsLocalRing.ResidueField
+omit [PerfectField (IsLocalRing.ResidueField
     (NormedField.valuation (K := K)).valuationSubring)] in
 /-- Comparing residues in the actual finite pair field is equivalent to
 comparing the same original embeddings in the original algebraic extension. -/
@@ -695,8 +686,7 @@ theorem finiteLayerRamificationNumber_eq_aut (σ : L ≃ₐ[K] L) (E : FiniteLay
   rw [he] at h
   exact h.trans (embeddingRamificationNumber_aut K s)
 
-omit [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
-  [PerfectField (IsLocalRing.ResidueField
+omit [PerfectField (IsLocalRing.ResidueField
     (NormedField.valuation (K := K)).valuationSubring)] in
 /-- Triviality on the intrinsic original residue field forces genuine
 residue triviality on each actual stable finite restriction. -/
@@ -829,8 +819,7 @@ theorem finiteLayer_fieldRange_ramificationIdx
   rw [embeddingRamificationIdx_algEquiv, mul_one] at hb
   exact ha.symm.trans hb
 
-omit p [CompleteSpace K] [IsUltrametricDist K]
-  [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+omit [IsCompleteDiscreteValuedField K] p
   [PerfectField (IsLocalRing.ResidueField
     (NormedField.valuation (K := K)).valuationSubring)] in
 /-- The relative degree of the actual finite image step is the original degree. -/
@@ -879,8 +868,7 @@ theorem finiteLayerRamificationNumber_eq_of_lt_relativeFirstBound
     letI := spectralNorm.normedAlgebra K E.val
     letI := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
       (isNonarchimedean_spectralNorm (K := K) (L := E.val))
-    letI := spectralNorm.completeSpace K E.val
-    letI := normedAlgebra_unitBall_isDiscreteValuationRing K E.val
+    letI := normedAlgebra_isCompleteDiscreteValuedField K E.val
     finiteLayerRamificationNumber K L σ E <
       apfRamificationBound E.val (IntermediateField.extendScalars hEF) →
       finiteLayerRamificationNumber K L σ F = finiteLayerRamificationNumber K L σ E := by
@@ -888,8 +876,7 @@ theorem finiteLayerRamificationNumber_eq_of_lt_relativeFirstBound
   let := spectralNorm.normedAlgebra K E.val
   let := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
     (isNonarchimedean_spectralNorm (K := K) (L := E.val))
-  let := spectralNorm.completeSpace K E.val
-  let := normedAlgebra_unitBall_isDiscreteValuationRing K E.val
+  let := normedAlgebra_isCompleteDiscreteValuedField K E.val
   let : Algebra E.val F.val := (IntermediateField.inclusion hEF).toRingHom.toAlgebra
   let : IsScalarTower K E.val F.val := IsScalarTower.of_algebraMap_eq' rfl
   let : Algebra.IsSeparable E.val F.val :=
@@ -1105,8 +1092,7 @@ theorem exists_finiteLayer_inertial_ramificationNumber_eq (hL : IsAPF K L)
   let := spectralNorm.normedAlgebra K E.val
   let := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
     (isNonarchimedean_spectralNorm (K := K) (L := E.val))
-  let := spectralNorm.completeSpace K E.val
-  let := normedAlgebra_unitBall_isDiscreteValuationRing K E.val
+  let := normedAlgebra_isCompleteDiscreteValuedField K E.val
   have hσE : σ.toAlgHom.comp E.val.val ≠ E.val.val := by
     intro hfix
     have ht := (finiteLayerRamificationNumber_eq_top_iff K L σ E).mpr hfix

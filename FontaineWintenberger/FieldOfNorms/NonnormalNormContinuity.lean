@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.FieldOfNorms.NormEstimates
 public import FontaineWintenberger.FieldOfNorms.WildNormContinuity
 public import FontaineWintenberger.APF.WildCompositumHerbrand
@@ -86,8 +87,7 @@ private theorem spectralIntegerInclusion_sub_mem_pow_of_normedTower
 
 section ActualCompositum
 
-variable (K Ω : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K Ω : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
     [NontriviallyNormedField Ω] [NormedAlgebra K Ω] [IsUltrametricDist Ω]
@@ -104,8 +104,8 @@ local notation "e" => Ideal.ramificationIdx
 local instance (E : IntermediateField K Ω) : CompleteSpace E :=
   FiniteDimensional.complete K E
 local instance (E : IntermediateField K Ω) :
-    IsDiscreteValuationRing (NormedField.valuation (K := E)).valuationSubring :=
-  normedAlgebra_unitBall_isDiscreteValuationRing K E
+    IsCompleteDiscreteValuedField E :=
+  normedAlgebra_isCompleteDiscreteValuedField K E
 local instance (E : IntermediateField K Ω) : PerfectField (IsLocalRing.ResidueField
     (NormedField.valuation (K := E)).valuationSubring) :=
   normedAlgebra_residueField_perfectField K E
@@ -210,8 +210,7 @@ end ActualCompositum
 
 section OriginalExtension
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
 

@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.RingTransport
 
 /-!
@@ -18,7 +19,7 @@ isomorphism, and is equivariant for conjugation of actual automorphisms.
 
 namespace FontaineWintenberger
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
 variable {L M : Type*} [Field L] [Field M] [Algebra K L] [Algebra K M]
     [Algebra.IsAlgebraic K L] [Algebra.IsAlgebraic K M]
 
@@ -51,8 +52,7 @@ theorem spectralIntegerRingEquiv_smul (f : L ≃ₐ[K] M) (s : L ≃ₐ[K] L) (x
   simp only [coe_spectralIntegerRingEquiv, coe_spectralIntegerRing_galois_smul,
     AlgEquiv.autCongr_apply, AlgEquiv.trans_apply, AlgEquiv.symm_apply_apply]
 
-variable [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
-    [FiniteDimensional K L] [FiniteDimensional K M]
+variable [FiniteDimensional K L] [FiniteDimensional K M]
     [Algebra.IsSeparable K L] [Algebra.IsSeparable K M]
 
 theorem spectralIntegerRingEquiv_addVal (f : L ≃ₐ[K] M) (x : OL) :

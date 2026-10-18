@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.PolynomialSplitting
 public import FontaineWintenberger.Algebra.FiniteDescentTower
 public import FontaineWintenberger.APF.AbstractFiniteBase
@@ -29,8 +30,8 @@ namespace FontaineWintenberger
 
 open Polynomial
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
+
 
 local notation "OK" => Valuation.valuationSubring (NormedField.valuation (K := K))
 
@@ -137,8 +138,6 @@ theorem finrank_root_adjunction_eq_of_fullUpper
     IntermediateField.adjoin.finrank (Algebra.IsIntegral.isIntegral (R := K) x)]
   exact minpoly_natDegree_eq_of_fullUpper K L f hf hsep hb htop x hx
 
-omit [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring] in
 /-- The actual original root field has degree at most the original polynomial. -/
 theorem finrank_root_adjunction_le_polynomial_degree
     {Ω : Type*} [Field Ω] [Algebra K Ω]
@@ -295,8 +294,8 @@ local instance rootField_ultrametric : IsUltrametricDist D :=
     (isNonarchimedean_spectralNorm (K := K) (L := D))
 local instance rootField_complete : CompleteSpace D := spectralNorm.completeSpace K D
 local instance rootField_discrete :
-    IsDiscreteValuationRing (NormedField.valuation (K := D)).valuationSubring :=
-  normedAlgebra_unitBall_isDiscreteValuationRing K D
+    IsCompleteDiscreteValuedField D :=
+  normedAlgebra_isCompleteDiscreteValuedField K D
 local instance rootField_separableClosureAlgebra : Algebra D (SeparableClosure D) :=
   (separableClosure D (AlgebraicClosure D)).algebra'
 
@@ -348,10 +347,9 @@ omit [PerfectField (IsLocalRing.ResidueField
 theorem isAPF_rootAdjunction (hL : IsAPF K L) : IsAPF K M :=
   (isAPF_finite_extension_iff K M L).mpr hL
 
-omit [PerfectField (IsLocalRing.ResidueField
+omit [IsCompleteDiscreteValuedField K] [PerfectField (IsLocalRing.ResidueField
     (NormedField.valuation (K := K)).valuationSubring)]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
-    [CompleteSpace K] [IsUltrametricDist K] in
+      in
 /-- The original infinite field embeds in its actual simple compositum,
 so that compositum still has infinite degree over the original base. -/
 theorem rootAdjunction_not_finite (hL : ¬ Module.Finite K L) : ¬ Module.Finite K M := by
@@ -480,8 +478,7 @@ theorem linearDisjoint_root_of_fullUpper_commonClosure
     IntermediateField.map_comap_eq_self_of_surjective (f := e.toAlgHom) e.surjective] at hld
   exact hld
 
-omit [CompleteSpace K] [IsUltrametricDist K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring] in
+omit [IsCompleteDiscreteValuedField K] in
 /-- The original primitive root makes the canonical multiplication map onto
 the original simple compositum, in any common ambient field. -/
 theorem rootAdjunctionTensorMap_surjective_commonClosure
@@ -633,10 +630,9 @@ omit [PerfectField (IsLocalRing.ResidueField
 theorem isAPF_rootAdjunction_commonClosure (hL : IsAPF K L) : IsAPF K M :=
   (isAPF_finite_extension_iff K M L).mpr hL
 
-omit [PerfectField (IsLocalRing.ResidueField
+omit [IsCompleteDiscreteValuedField K] [PerfectField (IsLocalRing.ResidueField
     (NormedField.valuation (K := K)).valuationSubring)]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
-    [CompleteSpace K] [IsUltrametricDist K] [IsSepClosure K Ω] in
+      [IsSepClosure K Ω] in
 /-- Infinite degree is retained by the same original root compositum in the
 chosen common closure. -/
 theorem rootAdjunction_not_finite_commonClosure (hL : ¬ Module.Finite K L) :

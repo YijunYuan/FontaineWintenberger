@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.Upper
 
 /-!
@@ -83,7 +84,7 @@ end ActionEquiv
 
 section IntermediateField
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
 variable (L : Type*) [Field L] [Algebra K L] [IsGalois K L] [FiniteDimensional K L]
 variable (F : IntermediateField K L) [IsGalois K F]
 
@@ -107,8 +108,7 @@ noncomputable def intermediateDecompositionRestriction : (L ≃ₐ[K] L) →* D�
   (AlgEquiv.restrictNormalHom F).codRestrict _
     (restrictNormal_mem_intermediate_decomposition K L F)
 
-variable [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
-    [PerfectField (IsLocalRing.ResidueField
+variable [PerfectField (IsLocalRing.ResidueField
   (NormedField.valuation (K := K)).valuationSubring)]
 
 /-- The actual quotient theorem on an arbitrary Galois intermediate field's pullback ring. -/

@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.FieldOfNorms.NormUnionHom
 public import FontaineWintenberger.FieldOfNorms.NormUnionKrull
 public import Mathlib.FieldTheory.IsSepClosed
@@ -60,9 +61,7 @@ end FixedField
 
 section FiniteGalois
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K]
-    [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
     (L P : Type*) [Field L] [Field P] [Algebra K L] [Algebra K P]
@@ -116,9 +115,7 @@ end FiniteGalois
 
 section NormUnion
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K]
-    [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
     (L Ω : Type*) [Field L] [Field Ω]

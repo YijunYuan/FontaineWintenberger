@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.LocalField.FixedField
 public import FontaineWintenberger.Ramification.Coset
 
@@ -22,7 +23,7 @@ namespace FontaineWintenberger
 
 open scoped Pointwise ENNReal
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
 variable (L : Type*) [Field L] [Algebra K L] [IsGalois K L]
 variable (H : Subgroup (L ≃ₐ[K] L)) [H.Normal]
 
@@ -153,8 +154,7 @@ theorem fixedFieldDecomposition_order
         (MulSemiringAction.toAlgAut D₀ R₀ A₀ g) =
       (A₀).ramificationOrder K g := rfl
 
-variable [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
-    [PerfectField (IsLocalRing.ResidueField
+variable [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
 
 /-- The scaled coset identity on the actual field restriction and intrinsic integer orders. -/

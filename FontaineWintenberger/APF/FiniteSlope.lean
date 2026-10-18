@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.APF.Herbrand
 public import Mathlib.Order.SuccPred.Archimedean
 
@@ -18,8 +19,8 @@ namespace FontaineWintenberger
 
 open MeasureTheory Filter
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
+
 variable (M : IntermediateField K (SeparableClosure K)) [FiniteDimensional K M]
 
 /-- Actual inertia has positive finite index relative to the finite-base fixing subgroup. -/

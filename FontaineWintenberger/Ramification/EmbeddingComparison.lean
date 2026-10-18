@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.Embedding
 public import FontaineWintenberger.Ramification.CosetMax
 public import FontaineWintenberger.APF.FiniteGaloisOverfield
@@ -189,8 +190,7 @@ end EmbeddingTate
 
 section FiniteGaloisAmbient
 
-variable (K Ω : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K Ω : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
     [Field Ω] [Algebra K Ω] [FiniteDimensional K Ω] [IsGalois K Ω]
@@ -281,10 +281,8 @@ theorem fixedField_spectral_card_inertia :
   have := hasSeparableResidueFieldsAt_maximalIdeal A₀ B₀
   exact card_lowerRamificationGroup_zero A₀ B₀ H
 
-omit [PerfectField (IsLocalRing.ResidueField
+omit [IsCompleteDiscreteValuedField K] [PerfectField (IsLocalRing.ResidueField
   (NormedField.valuation (K := K)).valuationSubring)]
-  [CompleteSpace K] [IsUltrametricDist K]
-  [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
   [FiniteDimensional K Ω] [IsGalois K Ω] in
 @[simp]
 theorem mul_subgroup_fixedField_comp (s : Ω ≃ₐ[K] Ω) (h : H) :
@@ -385,8 +383,7 @@ end FiniteGaloisAmbient
 
 section EmbeddingRestriction
 
-variable (K Ω : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K Ω : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
     [Field Ω] [Algebra K Ω] [FiniteDimensional K Ω] [IsGalois K Ω]
@@ -394,10 +391,8 @@ variable (K Ω : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [Compl
 local notation "G₁" => Ω ≃ₐ[K] Ω
 local notation "O₁" => spectralIntegerRing K Ω
 
-omit [PerfectField (IsLocalRing.ResidueField
+omit [IsCompleteDiscreteValuedField K] [PerfectField (IsLocalRing.ResidueField
   (NormedField.valuation (K := K)).valuationSubring)]
-  [CompleteSpace K] [IsUltrametricDist K]
-  [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
   [IsGalois K Ω] in
 /-- Equality of original embeddings is exactly membership in the actual
 right fixing coset, without normality of the intermediate field. -/
@@ -489,8 +484,7 @@ end EmbeddingRestriction
 
 section RelativeParameter
 
-variable (K Ω : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K Ω : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
     [Field Ω] [Algebra K Ω] [FiniteDimensional K Ω] [IsGalois K Ω]
@@ -504,7 +498,7 @@ theorem apfPsi_extendScalars_eq_fixing_herbrand
     letI := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
       (isNonarchimedean_spectralNorm (K := K) (L := Ω))
     letI : CompleteSpace E := FiniteDimensional.complete K E
-    letI := normedAlgebra_unitBall_isDiscreteValuationRing K E
+    letI := normedAlgebra_isCompleteDiscreteValuedField K E
     letI := Algebra.isSeparable_tower_top_of_isSeparable K E Ω
     let F' := IntermediateField.extendScalars hEF
     letI : FiniteDimensional K F' := inferInstanceAs (FiniteDimensional K F)
@@ -517,7 +511,7 @@ theorem apfPsi_extendScalars_eq_fixing_herbrand
   let := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
     (isNonarchimedean_spectralNorm (K := K) (L := Ω))
   let : CompleteSpace E := FiniteDimensional.complete K E
-  let := normedAlgebra_unitBall_isDiscreteValuationRing K E
+  let := normedAlgebra_isCompleteDiscreteValuedField K E
   let := Algebra.isSeparable_tower_top_of_isSeparable K E Ω
   let F' := IntermediateField.extendScalars hEF
   let : FiniteDimensional K F' := inferInstanceAs (FiniteDimensional K F)
@@ -545,7 +539,7 @@ theorem embeddingNumber_restriction_le_apfPsi
     letI := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
       (isNonarchimedean_spectralNorm (K := K) (L := Ω))
     letI : CompleteSpace E := FiniteDimensional.complete K E
-    letI := normedAlgebra_unitBall_isDiscreteValuationRing K E
+    letI := normedAlgebra_isCompleteDiscreteValuedField K E
     letI := Algebra.isSeparable_tower_top_of_isSeparable K E Ω
     let F' := IntermediateField.extendScalars hEF
     letI : FiniteDimensional K F' := inferInstanceAs (FiniteDimensional K F)
@@ -558,7 +552,7 @@ theorem embeddingNumber_restriction_le_apfPsi
   let := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
     (isNonarchimedean_spectralNorm (K := K) (L := Ω))
   let : CompleteSpace E := FiniteDimensional.complete K E
-  let := normedAlgebra_unitBall_isDiscreteValuationRing K E
+  let := normedAlgebra_isCompleteDiscreteValuedField K E
   let := Algebra.isSeparable_tower_top_of_isSeparable K E Ω
   let F' := IntermediateField.extendScalars hEF
   let : FiniteDimensional K F' := inferInstanceAs (FiniteDimensional K F)
@@ -579,8 +573,7 @@ end RelativeParameter
 
 section FirstEmbeddingBound
 
-variable (K Ω : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K Ω : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
     [Field Ω] [Algebra K Ω] [FiniteDimensional K Ω] [IsGalois K Ω]
@@ -689,8 +682,7 @@ end FiniteCosetAverages
 
 section ActualFiniteAverages
 
-variable (K Ω : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K Ω : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
     [Field Ω] [Algebra K Ω] [FiniteDimensional K Ω] [IsGalois K Ω]
@@ -798,8 +790,8 @@ end ActualFiniteAverages
 
 section StrictPairComparison
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
+
 variable {E N : Type*} [Field E] [Field N] [Algebra K E] [Algebra K N]
     [FiniteDimensional K E] [FiniteDimensional K N]
     [Algebra.IsSeparable K E] [Algebra.IsSeparable K N]
@@ -867,8 +859,8 @@ end LocalIndexTransport
 
 section SourceEquivalence
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
+
 variable {E F N : Type*} [Field E] [Field F] [Field N]
     [Algebra K E] [Algebra K F] [Algebra K N]
     [FiniteDimensional K E] [FiniteDimensional K F] [FiniteDimensional K N]
@@ -926,8 +918,7 @@ end SourceEquivalence
 
 section FiniteBaseInvariance
 
-variable (K Ω : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K Ω : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [Field Ω] [Algebra K Ω] [FiniteDimensional K Ω] [IsGalois K Ω]
 
 /-- Changing to an actual finite intermediate base preserves the same intrinsic
@@ -940,7 +931,7 @@ theorem embeddingNumber_rebase
     letI := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
       (isNonarchimedean_spectralNorm (K := K) (L := Ω))
     letI : CompleteSpace E := FiniteDimensional.complete K E
-    letI := normedAlgebra_unitBall_isDiscreteValuationRing K E
+    letI := normedAlgebra_isCompleteDiscreteValuedField K E
     letI := Algebra.isSeparable_tower_top_of_isSeparable K E Ω
     letI : FiniteDimensional E Ω := Module.Finite.right K E Ω
     let F' := IntermediateField.extendScalars hEF
@@ -954,7 +945,7 @@ theorem embeddingNumber_rebase
   let := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
     (isNonarchimedean_spectralNorm (K := K) (L := Ω))
   let : CompleteSpace E := FiniteDimensional.complete K E
-  let := normedAlgebra_unitBall_isDiscreteValuationRing K E
+  let := normedAlgebra_isCompleteDiscreteValuedField K E
   let := Algebra.isSeparable_tower_top_of_isSeparable K E Ω
   let : FiniteDimensional E Ω := Module.Finite.right K E Ω
   let F' := IntermediateField.extendScalars hEF
@@ -1014,8 +1005,7 @@ end FiniteBaseInvariance
 
 section RelativeEmbeddingBounds
 
-variable (K Ω : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K Ω : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
     [Field Ω] [Algebra K Ω] [FiniteDimensional K Ω] [IsGalois K Ω]
@@ -1029,7 +1019,7 @@ theorem apfRelativeBound_le_embeddingNumber
     letI := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
       (isNonarchimedean_spectralNorm (K := K) (L := Ω))
     letI : CompleteSpace E := FiniteDimensional.complete K E
-    letI := normedAlgebra_unitBall_isDiscreteValuationRing K E
+    letI := normedAlgebra_isCompleteDiscreteValuedField K E
     letI := Algebra.isSeparable_tower_top_of_isSeparable K E Ω
     letI : FiniteDimensional E Ω := Module.Finite.right K E Ω
     let F' := IntermediateField.extendScalars hEF
@@ -1042,7 +1032,7 @@ theorem apfRelativeBound_le_embeddingNumber
   let := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
     (isNonarchimedean_spectralNorm (K := K) (L := Ω))
   let : CompleteSpace E := FiniteDimensional.complete K E
-  let := normedAlgebra_unitBall_isDiscreteValuationRing K E
+  let := normedAlgebra_isCompleteDiscreteValuedField K E
   let := Algebra.isSeparable_tower_top_of_isSeparable K E Ω
   let : FiniteDimensional E Ω := Module.Finite.right K E Ω
   let F' := IntermediateField.extendScalars hEF
@@ -1068,7 +1058,7 @@ theorem apfRelativeBound_le_pairNumber
     letI := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
       (isNonarchimedean_spectralNorm (K := K) (L := Ω))
     letI : CompleteSpace E := FiniteDimensional.complete K E
-    letI := normedAlgebra_unitBall_isDiscreteValuationRing K E
+    letI := normedAlgebra_isCompleteDiscreteValuedField K E
     letI := Algebra.isSeparable_tower_top_of_isSeparable K E Ω
     letI : FiniteDimensional E Ω := Module.Finite.right K E Ω
     let F' := IntermediateField.extendScalars hEF
@@ -1095,8 +1085,7 @@ end RelativeEmbeddingBounds
 
 section TotalFiberAverage
 
-variable (K Ω : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K Ω : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
     [Field Ω] [Algebra K Ω] [FiniteDimensional K Ω] [IsGalois K Ω]
@@ -1173,7 +1162,7 @@ theorem embeddingNumber_eq_restriction_of_lt_relativeBound
     letI := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
       (isNonarchimedean_spectralNorm (K := K) (L := Ω))
     letI : CompleteSpace E := FiniteDimensional.complete K E
-    letI := normedAlgebra_unitBall_isDiscreteValuationRing K E
+    letI := normedAlgebra_isCompleteDiscreteValuedField K E
     letI := Algebra.isSeparable_tower_top_of_isSeparable K E Ω
     letI : FiniteDimensional E Ω := Module.Finite.right K E Ω
     let F' := IntermediateField.extendScalars hEF
@@ -1189,7 +1178,7 @@ theorem embeddingNumber_eq_restriction_of_lt_relativeBound
   let := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
     (isNonarchimedean_spectralNorm (K := K) (L := Ω))
   let : CompleteSpace E := FiniteDimensional.complete K E
-  let := normedAlgebra_unitBall_isDiscreteValuationRing K E
+  let := normedAlgebra_isCompleteDiscreteValuedField K E
   let := Algebra.isSeparable_tower_top_of_isSeparable K E Ω
   let : FiniteDimensional E Ω := Module.Finite.right K E Ω
   let F' := IntermediateField.extendScalars hEF

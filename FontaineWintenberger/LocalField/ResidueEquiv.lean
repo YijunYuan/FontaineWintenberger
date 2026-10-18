@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.FieldEquiv
 
 /-!
@@ -20,15 +21,14 @@ noncomputable section
 
 namespace FontaineWintenberger
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
+
 variable (L : Type*) [Field L] [Algebra K L] [FiniteDimensional K L]
     [Algebra.IsSeparable K L]
 
 local notation "R" => Valuation.valuationSubring (NormedField.valuation (K := K))
 
-omit [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
-  [FiniteDimensional K L] in
+omit [FiniteDimensional K L] in
 /-- An original field isomorphism preserves the actual canonical residue degree. -/
 theorem spectral_residueDegree_algEquiv {M : Type*} [Field M] [Algebra K M]
     [Algebra.IsSeparable K M] (e : L ≃ₐ[K] M) :

@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.PrimeDegree
 public import Mathlib.GroupTheory.GroupAction.Quotient
 public import Mathlib.GroupTheory.GroupAction.SubMulAction
@@ -191,8 +192,7 @@ theorem exists_prod_add_sub_eq_sum_smul_mem (G B : Type*)
 
 section Spectral
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-variable [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
 variable (L : Type*) [Field L] [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
 
 local notation "OK" => Valuation.valuationSubring (NormedField.valuation (K := K))

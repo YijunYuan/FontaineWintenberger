@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.CosetMax
 
 /-!
@@ -37,11 +38,10 @@ theorem mem_lowerRamificationGroupReal_iff_le_toNat {g : G}
 
 end GroupAction
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
 variable (L : Type*) [Field L] [Algebra K L] [IsGalois K L] [FiniteDimensional K L]
 variable (H : Subgroup (L ≃ₐ[K] L)) [H.Normal]
-variable [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
-    [PerfectField (IsLocalRing.ResidueField
+variable [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
 
 local notation "G₀" => L ≃ₐ[K] L

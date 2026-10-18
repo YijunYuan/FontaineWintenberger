@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.LocalField.Henselian
 public import Mathlib.Algebra.Polynomial.Lifts
 public import Mathlib.FieldTheory.Perfect
@@ -160,8 +161,7 @@ theorem adjoin_uniformizer_eq_top [Module.Finite R S] [FaithfulSMul R S]
 
 section Spectral
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-variable [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
 variable [PerfectField (ResidueField (NormedField.valuation (K := K)).valuationSubring)]
 variable (L : Type*) [Field L] [Algebra K L] [FiniteDimensional K L]
 variable [Algebra.IsSeparable K L]

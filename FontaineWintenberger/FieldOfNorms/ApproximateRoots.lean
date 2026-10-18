@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.FieldOfNorms.DiscriminantStability
 public import FontaineWintenberger.FieldOfNorms.SeparableBaseChange
 public import FontaineWintenberger.FieldOfNorms.FiniteSeparable
@@ -149,9 +150,7 @@ end CommonRootCompositum
 
 section FiniteRamificationBound
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K]
-    [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     (E F : Type*) [Field E] [Field F] [Algebra K E] [Algebra K F]
     [FiniteDimensional K E] [FiniteDimensional K F]
     [Algebra.IsSeparable K E] [Algebra.IsSeparable K F]
@@ -185,9 +184,7 @@ end FiniteRamificationBound
 
 section AbstractRootDisjointness
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K]
-    [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     (L : Type*) [Field L] [Algebra K L]
     {Ω : Type*} [Field Ω] [Algebra K Ω] [IsSepClosure K Ω]
     [Algebra L Ω] [IsScalarTower K L Ω]
@@ -252,9 +249,7 @@ end AbstractRootDisjointness
 
 section GoodRootStages
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K]
-    [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
     (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
@@ -327,9 +322,7 @@ end GoodRootStages
 
 section IntegralInclusion
 
-variable (K L M : Type*) [NontriviallyNormedField K] [IsUltrametricDist K]
-    [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K L M : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
     [Field L] [Field M] [Algebra K L] [Algebra K M] [Algebra L M]
@@ -362,7 +355,7 @@ theorem FiniteLayer.hasFullUpper_of_pullback_fixing_le (D : FiniteLayer K M) :
       IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
         (isNonarchimedean_spectralNorm (K := K) (L := C))
     letI := spectralNorm.completeSpace K C
-    letI := normedAlgebra_unitBall_isDiscreteValuationRing K C
+    letI := normedAlgebra_isCompleteDiscreteValuedField K C
     letI := normedAlgebra_residueField_perfectField K C
     letI : Algebra.IsSeparable C D.val := Algebra.isSeparable_tower_top_of_isSeparable K C D.val
     ∀ (i : M →ₐ[C] SeparableClosure C) {b : ℝ}, -1 ≤ b →
@@ -376,7 +369,7 @@ theorem FiniteLayer.hasFullUpper_of_pullback_fixing_le (D : FiniteLayer K M) :
     IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
       (isNonarchimedean_spectralNorm (K := K) (L := C))
   let := spectralNorm.completeSpace K C
-  let := normedAlgebra_unitBall_isDiscreteValuationRing K C
+  let := normedAlgebra_isCompleteDiscreteValuedField K C
   let := normedAlgebra_residueField_perfectField K C
   let : Algebra.IsSeparable C D.val := Algebra.isSeparable_tower_top_of_isSeparable K C D.val
   dsimp only
@@ -562,9 +555,7 @@ end IntegralInclusion
 
 section FullUpperRootStages
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K]
-    [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
     (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
@@ -614,7 +605,7 @@ theorem exists_good_fullUpper_rootFiniteLayer
     IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
       (isNonarchimedean_spectralNorm (K := K) (L := C))
   let := spectralNorm.completeSpace K C
-  let := normedAlgebra_unitBall_isDiscreteValuationRing K C
+  let := normedAlgebra_isCompleteDiscreteValuedField K C
   let := normedAlgebra_residueField_perfectField K C
   let : Algebra.IsSeparable C D.val := Algebra.isSeparable_tower_top_of_isSeparable K C D.val
   let : Algebra.IsSeparable C Ω := Algebra.isSeparable_tower_top_of_isSeparable K C Ω
@@ -652,9 +643,7 @@ end FullUpperRootStages
 
 section CoordinatePrecision
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K]
-    [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
     (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
@@ -841,9 +830,7 @@ end CoordinatePrecision
 
 section IntegralRamification
 
-variable (K L M : Type*) [NontriviallyNormedField K] [IsUltrametricDist K]
-    [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K L M : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
     [Field L] [Field M] [Algebra K L] [Algebra K M] [Algebra L M]
@@ -921,9 +908,7 @@ end IntegralRamification
 
 section StageNormalization
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K]
-    [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
     (L Ω : Type*) [Field L] [Field Ω] [Algebra K L] [Algebra K Ω]
@@ -973,9 +958,7 @@ end StageNormalization
 
 section NormalizedApproximation
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K]
-    [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
     (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]

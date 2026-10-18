@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.APF.Herbrand
 public import FontaineWintenberger.Ramification.HerbrandInverse
 
@@ -20,8 +21,7 @@ therefore recover the proved finite Herbrand functions on their own rings.
 
 namespace FontaineWintenberger
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-variable [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
 variable [PerfectField (IsLocalRing.ResidueField
     (NormedField.valuation (K := K)).valuationSubring)]
 

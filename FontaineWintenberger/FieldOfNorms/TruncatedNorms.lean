@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.FieldOfNorms.FiniteLayerNormEstimates
 public import FontaineWintenberger.Ramification.NormApproximation
 
@@ -69,8 +70,7 @@ end TruncatedValuation
 
 namespace FiniteLayer
 
-variable {K L : Type*} [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable {K L : Type*} [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
 section HighBreak
@@ -97,7 +97,7 @@ variable (hb :
     letI := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
       (isNonarchimedean_spectralNorm (K := K) (L := E.val))
     letI := spectralNorm.completeSpace K E.val
-    letI := normedAlgebra_unitBall_isDiscreteValuationRing K E.val
+    letI := normedAlgebra_isCompleteDiscreteValuedField K E.val
     let F' := IntermediateField.extendScalars hEF
     letI : FiniteDimensional K F' := F.property
     letI : FiniteDimensional E.val F' := Module.Finite.right K E.val F'
@@ -117,7 +117,7 @@ def truncatedNorm (r s : ℕ) (hrs : r ≤ s)
   let := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
     (isNonarchimedean_spectralNorm (K := K) (L := E.val))
   let := spectralNorm.completeSpace K E.val
-  let := normedAlgebra_unitBall_isDiscreteValuationRing K E.val
+  let := normedAlgebra_isCompleteDiscreteValuedField K E.val
   have hadd (x y : spectralIntegerRing K F.val) :
       integerNorm E F hEF (x + y) - integerNorm E F hEF x - integerNorm E F hEF y ∈
         IsLocalRing.maximalIdeal (spectralIntegerRing K E.val) ^ r :=
@@ -226,7 +226,7 @@ theorem exists_integerNorm_sub_mem_of_le_apfRamificationBound (r : ℕ)
   let := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
     (isNonarchimedean_spectralNorm (K := K) (L := E.val))
   let := spectralNorm.completeSpace K E.val
-  let := normedAlgebra_unitBall_isDiscreteValuationRing K E.val
+  let := normedAlgebra_isCompleteDiscreteValuedField K E.val
   let : Algebra E.val F.val := (IntermediateField.inclusion hEF).toRingHom.toAlgebra
   have : IsScalarTower K E.val F.val := IsScalarTower.of_algebraMap_eq' rfl
   have := spectralValuation_hasExtension_tower K (E := E.val) (L := F.val)
@@ -336,7 +336,7 @@ theorem truncatedNorm_comp (G : FiniteLayer K L) (hFG : F ≤ G)
       letI := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
         (isNonarchimedean_spectralNorm (K := K) (L := F.val))
       letI := spectralNorm.completeSpace K F.val
-      letI := normedAlgebra_unitBall_isDiscreteValuationRing K F.val
+      letI := normedAlgebra_isCompleteDiscreteValuedField K F.val
       let B' := IntermediateField.extendScalars hFG
       letI : FiniteDimensional K B' := G.property
       letI : FiniteDimensional F.val B' := Module.Finite.right K F.val B'
@@ -357,7 +357,7 @@ theorem truncatedNorm_comp (G : FiniteLayer K L) (hFG : F ≤ G)
       letI := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
         (isNonarchimedean_spectralNorm (K := K) (L := E.val))
       letI := spectralNorm.completeSpace K E.val
-      letI := normedAlgebra_unitBall_isDiscreteValuationRing K E.val
+      letI := normedAlgebra_isCompleteDiscreteValuedField K E.val
       let B' := IntermediateField.extendScalars (hEF.trans hFG)
       letI : FiniteDimensional K B' := G.property
       letI : FiniteDimensional E.val B' := Module.Finite.right K E.val B'
@@ -395,7 +395,7 @@ theorem truncatedNorm_self
       letI := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
         (isNonarchimedean_spectralNorm (K := K) (L := E.val))
       letI := spectralNorm.completeSpace K E.val
-      letI := normedAlgebra_unitBall_isDiscreteValuationRing K E.val
+      letI := normedAlgebra_isCompleteDiscreteValuedField K E.val
       let B' := IntermediateField.extendScalars (show E.val ≤ E.val from le_rfl)
       letI : FiniteDimensional K B' := E.property
       letI : FiniteDimensional E.val B' := Module.Finite.right K E.val B'

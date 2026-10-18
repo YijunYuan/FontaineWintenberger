@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Algebra.StableFiniteLayers
 public import FontaineWintenberger.FieldOfNorms.Isomorphism
 public import FontaineWintenberger.FieldOfNorms.Constants
@@ -49,8 +50,7 @@ section Valued
 
 open IsDiscreteValuationRing IsLocalRing
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (ResidueField (NormedField.valuation (K := K)).valuationSubring)]
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 variable (p : ℕ) [Fact p.Prime] [CharP (ResidueField

@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.FieldOfNorms.FiniteFullFaithful
 public import FontaineWintenberger.FieldOfNorms.FiniteLayerGlue
 public import FontaineWintenberger.FieldOfNorms.SeparableNormUnion
@@ -45,8 +46,7 @@ theorem exists_algHom_factor_of_basis_mem_range
 
 section NormUnion
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K]
-    [CompleteSpace K] [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField (NormedField.valuation (K := K)).valuationSubring)]
     (L M : Type*) [Field L] [Field M]
     [Algebra K L] [Algebra K M] [Algebra L M] [IsScalarTower K L M]
@@ -452,8 +452,7 @@ end NormUnion
 
 section FullFaithful
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K]
-    [CompleteSpace K] [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
     (L M N : Type*) [Field L] [Field M] [Field N]

@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.APF.IndexTransport
 public import FontaineWintenberger.Ramification.InfiniteEquiv
 
@@ -20,8 +21,7 @@ index with those inside the abstract extension's own Galois group.
 
 namespace FontaineWintenberger
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-variable [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
 
 theorem isOpen_upperRamificationGroupInfinite_iff_finiteIndex
     (L : Type*) [Field L] [Algebra K L] [IsGalois K L] (u : ℝ) :

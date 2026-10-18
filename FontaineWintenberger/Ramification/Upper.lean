@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.HerbrandTransitivity
 
 /-!
@@ -68,11 +69,10 @@ theorem upperRamificationGroup_eventually_eq_bot [FaithfulSMul G R] :
 
 end GroupAction
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
 variable (L : Type*) [Field L] [Algebra K L] [IsGalois K L] [FiniteDimensional K L]
 variable (H : Subgroup (L ≃ₐ[K] L)) [H.Normal]
-variable [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
-    [PerfectField (IsLocalRing.ResidueField
+variable [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
 
 local notation "G₀" => L ≃ₐ[K] L

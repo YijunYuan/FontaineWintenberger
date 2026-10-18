@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.FieldEquiv
 public import Mathlib.FieldTheory.Galois.Profinite
 
@@ -21,12 +22,11 @@ namespace FontaineWintenberger
 
 section Tower
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
 variable (F L : Type*) [Field F] [Field L] [Algebra K F] [Algebra K L]
     [Algebra F L] [IsScalarTower K F L] [IsGalois K F] [IsGalois K L]
     [FiniteDimensional K F] [FiniteDimensional K L]
-variable [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
-    [PerfectField (IsLocalRing.ResidueField
+variable [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
 
 /-- Ordinary restriction preserves actual upper groups in every finite Galois field tower. -/
@@ -59,10 +59,9 @@ section FiniteLayers
 
 open CategoryTheory Opposite
 
-variable (K Ω : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
+variable (K Ω : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [Field Ω] [Algebra K Ω]
-variable [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
-    [PerfectField (IsLocalRing.ResidueField
+variable [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
 
 /-- Mathlib's actual finite Galois transition maps preserve the actual upper groups. -/

@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.APF.Abstract
 public import FontaineWintenberger.APF.CofinalBase
 public import FontaineWintenberger.FieldOfNorms.Multiplicative
@@ -23,8 +24,8 @@ noncomputable section
 
 namespace FontaineWintenberger
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
+
 
 /-- Absolute upper groups eventually fix every actual finite subfield. -/
 theorem exists_absoluteUpper_le_fixingSubgroup_of_finite

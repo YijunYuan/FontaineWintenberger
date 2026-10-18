@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.HerbrandQuotient
 public import Mathlib.Analysis.Calculus.Deriv.Comp
 
@@ -19,11 +20,10 @@ cardinality identities. These supply the slopes in Herbrand transitivity.
 
 namespace FontaineWintenberger
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
 variable (L : Type*) [Field L] [Algebra K L] [IsGalois K L] [FiniteDimensional K L]
 variable (H : Subgroup (L ≃ₐ[K] L)) [H.Normal]
-variable [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
-    [PerfectField (IsLocalRing.ResidueField
+variable [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
 
 local notation "G₀" => L ≃ₐ[K] L

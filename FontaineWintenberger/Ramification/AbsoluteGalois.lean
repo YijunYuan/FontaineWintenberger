@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.InfiniteRestriction
 public import FontaineWintenberger.Ramification.UpperLimit
 public import Mathlib.FieldTheory.IsSepClosed
@@ -20,8 +21,7 @@ infinite restriction are the existing ordinary algebra-automorphism maps.
 
 namespace FontaineWintenberger
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-variable [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
 
 /-- Absolute upper numbering inside the actual automorphism group of the separable closure. -/
 noncomputable abbrev absoluteUpperRamificationGroup (u : ℝ) :

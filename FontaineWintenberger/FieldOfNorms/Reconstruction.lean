@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.FieldOfNorms.DeepTruncatedTower
 public import FontaineWintenberger.FieldOfNorms.TruncatedInverseLimit
 public import FontaineWintenberger.FieldOfNorms.Convergence
@@ -25,8 +26,7 @@ namespace FontaineWintenberger
 
 open Filter
 
-variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
@@ -122,7 +122,7 @@ theorem deepNormSequence_cauchy (a : 𝒜)
   let := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
     (isNonarchimedean_spectralNorm (K := K) (L := (𝔈 j).val))
   let := spectralNorm.completeSpace K (𝔈 j).val
-  let := normedAlgebra_unitBall_isDiscreteValuationRing K (𝔈 j).val
+  let := normedAlgebra_isCompleteDiscreteValuedField K (𝔈 j).val
   let := Algebra.isSeparable_tower_top_of_isSeparable K (𝔈 j).val L
   apply cauchy_map_of_eventually_sub_mem_maximalIdeal_pow (𝔈 j).val
   intro N
@@ -366,7 +366,7 @@ theorem deepNormSequence_sub_tendsto_zero (a : 𝒜)
   let := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
     (isNonarchimedean_spectralNorm (K := K) (L := (𝔈 j).val))
   let := spectralNorm.completeSpace K (𝔈 j).val
-  let := normedAlgebra_unitBall_isDiscreteValuationRing K (𝔈 j).val
+  let := normedAlgebra_isCompleteDiscreteValuedField K (𝔈 j).val
   let := Algebra.isSeparable_tower_top_of_isSeparable K (𝔈 j).val L
   apply (FiniteLayer.nhds_zero_hasBasis_maximalIdeal_pow (𝔈 j)).tendsto_right_iff.mpr
   intro N _

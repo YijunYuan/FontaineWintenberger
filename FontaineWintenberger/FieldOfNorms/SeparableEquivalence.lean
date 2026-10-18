@@ -5,6 +5,7 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.FieldOfNorms.SeparableFunctor
 public import FontaineWintenberger.FieldOfNorms.SeparableAlgebraicEssentialImage
 public import FontaineWintenberger.FieldOfNorms.NormUnionCongr
@@ -30,8 +31,7 @@ open CategoryTheory
 
 namespace FontaineWintenberger
 
-variable (K : Type u) [NontriviallyNormedField K] [IsUltrametricDist K]
-    [CompleteSpace K] [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+variable (K : Type u) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
     (L : Type v) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
