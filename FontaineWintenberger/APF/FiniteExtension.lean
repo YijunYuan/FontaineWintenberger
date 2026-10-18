@@ -98,23 +98,22 @@ theorem apfTowerIndexFactor_le_inertiaFixingRelIndex (hMN : M ≤ N)
     (Nat.ne_of_gt (inertiaFixingRelIndex_pos K M N hMN))
 
 /-- Nested APF indices give monotonicity of the actual Herbrand integral. -/
-theorem apfPsi_mono_extension (hN : IsAPF K N) (hMN : M ≤ N)
+theorem apfPsi_mono_extension [IsAPF K N] (hMN : M ≤ N)
     {u : ℝ} (hu : 0 ≤ u) : apfPsi K M u ≤ apfPsi K N u := by
-  have hM := IsAPF.of_algHom K hN (IntermediateField.inclusion hMN)
-  have hN' := (isAPF_iff_subextension K N).mp hN
+  have := IsAPF.of_algHom K (IntermediateField.inclusion hMN)
   apply intervalIntegral.integral_mono_on hu
-    (IsAPF.intervalIntegrable_apfHerbrandSlope K M hM 0 u)
-    (IsAPF.intervalIntegrable_apfHerbrandSlope K N hN 0 u)
+    (IsAPF.intervalIntegrable_apfHerbrandSlope K M 0 u)
+    (IsAPF.intervalIntegrable_apfHerbrandSlope K N 0 u)
   intro v hv
   simp only [apfHerbrandSlope, max_eq_left hv.1]
   apply Nat.cast_le.mpr
   rw [apfIndex_eq_mul_towerIndexFactor K M N hMN hv.1]
   exact Nat.le_mul_of_pos_right _
-    (IsAPFSubextension.towerIndexFactor_pos K M N hN' hv.1)
+    (IsAPFSubextension.towerIndexFactor_pos K M N hv.1)
 
 /-- The finite inertia fixing index bounds the reverse strictness-ratio comparison. -/
 theorem apfStrictnessRatio_le_finiteExtension_mul (hMN : M ≤ N)
-    [FiniteDimensional M (IntermediateField.extendScalars hMN)] (hN : IsAPF K N)
+    [FiniteDimensional M (IntermediateField.extendScalars hMN)] [IsAPF K N]
     {u : ℝ} (hu : 0 ≤ u) :
     apfStrictnessRatio K M u ≤
       ((N.fixingSubgroup ⊓ absoluteUpperRamificationGroup K 0).relIndex
@@ -122,12 +121,12 @@ theorem apfStrictnessRatio_le_finiteExtension_mul (hMN : M ≤ N)
       apfStrictnessRatio K N u := by
   let C := (N.fixingSubgroup ⊓ absoluteUpperRamificationGroup K 0).relIndex
     (M.fixingSubgroup ⊓ absoluteUpperRamificationGroup K 0)
-  have hM := IsAPF.of_algHom K hN (IntermediateField.inclusion hMN)
+  have := IsAPF.of_algHom K (IntermediateField.inclusion hMN)
   have hapos : (0 : ℝ) < (apfIndex K M u : ℝ) :=
-    Nat.cast_pos.mpr (IsAPF.apfIndex_pos K M hM hu)
+    Nat.cast_pos.mpr (IsAPF.apfIndex_pos K M hu)
   have hbpos : (0 : ℝ) < (apfIndex K N u : ℝ) :=
-    Nat.cast_pos.mpr (IsAPF.apfIndex_pos K N hN hu)
-  have hpsi := apfPsi_mono_extension K M N hN hMN hu
+    Nat.cast_pos.mpr (IsAPF.apfIndex_pos K N hu)
+  have hpsi := apfPsi_mono_extension K M N hMN hu
   have hfac : (apfIndex K N u : ℝ) ≤ (C : ℝ) * (apfIndex K M u : ℝ) := by
     rw [apfIndex_eq_mul_towerIndexFactor K M N hMN hu, Nat.cast_mul, mul_comm]
     exact mul_le_mul_of_nonneg_right
@@ -141,7 +140,7 @@ theorem apfStrictnessRatio_le_finiteExtension_mul (hMN : M ≤ N)
     _ ≤ apfPsi K N u * (apfIndex K N u : ℝ) :=
       mul_le_mul_of_nonneg_right hpsi hbpos.le
     _ ≤ apfPsi K N u * ((C : ℝ) * (apfIndex K M u : ℝ)) :=
-      mul_le_mul_of_nonneg_left hfac (hu.trans (IsAPF.le_apfPsi K N hN u))
+      mul_le_mul_of_nonneg_left hfac (hu.trans (IsAPF.le_apfPsi K N u))
     _ = _ := by ring
 
 /-- Strict APF is unchanged by an actual finite extension, including nonnormal ones. -/
@@ -153,19 +152,19 @@ theorem isStrictlyAPF_finiteExtension_iff (hMN : M ≤ N)
   · intro hM
     have hN : IsAPF K N := (isAPF_iff_subextension K N).mpr
       ((isAPFSubextension_finiteExtension_iff K M N hMN).mpr
-        ((isAPF_iff_subextension K M).mp hM.1))
-    refine ⟨hN, ?_⟩
+        ((isAPF_iff_subextension K M).mp hM.toIsAPF))
+    refine ⟨?_⟩
     let C := (N.fixingSubgroup ⊓ absoluteUpperRamificationGroup K 0).relIndex
       (M.fixingSubgroup ⊓ absoluteUpperRamificationGroup K 0)
     have hlim : liminf (apfStrictnessRatio K M) atTop ≤
         liminf (fun u => (C : ℝ≥0∞) * apfStrictnessRatio K N u) atTop :=
       liminf_le_liminf (eventually_atTop.mpr ⟨0, fun u hu =>
-        apfStrictnessRatio_le_finiteExtension_mul K M N hMN hN hu⟩)
+        apfStrictnessRatio_le_finiteExtension_mul K M N hMN hu⟩)
     rw [ENNReal.liminf_const_mul_of_ne_top (by simp : (C : ℝ≥0∞) ≠ ⊤)] at hlim
     by_contra! hzero
     have hz : liminf (apfStrictnessRatio K N) atTop = 0 := le_antisymm hzero bot_le
     rw [hz, mul_zero] at hlim
-    exact (not_le_of_gt hM.2) hlim
+    exact (not_le_of_gt hM.liminf_pos) hlim
 
 end Valued
 

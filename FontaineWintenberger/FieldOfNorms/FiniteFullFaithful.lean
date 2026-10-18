@@ -80,33 +80,33 @@ variable (p : ℕ) [Fact p.Prime]
 /-- Composition on relative finite Hom sets is the original norm-family
 composition theorem with its actual image-field scalar structures. -/
 theorem finiteNormLimitAlgHom_comp
-    (hL : IsAPF K L) (hM : IsAPF K M) (hN : IsAPF K N) (hP : IsAPF K P)
-    (hInfiniteL : ¬ Module.Finite K L) (hInfiniteM : ¬ Module.Finite K M)
-    (hInfiniteN : ¬ Module.Finite K N) (hInfiniteP : ¬ Module.Finite K P)
+    [IsAPF K L] [IsAPF K M] [IsAPF K N] [IsAPF K P]
+    [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)]
+    [Fact (¬ Module.Finite K N)] [Fact (¬ Module.Finite K P)]
     (φ : M →ₐ[L] N) (ψ : N →ₐ[L] P) :
-    letI := normLimitField K L p hL hInfiniteL
-    letI := normLimitField K M p hM hInfiniteM
-    letI := normLimitField K N p hN hInfiniteN
-    letI := normLimitField K P p hP hInfiniteP
+    letI := normLimitField K L p
+    letI := normLimitField K M p
+    letI := normLimitField K N p
+    letI := normLimitField K P p
     letI : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
     letI : Algebra.IsSeparable L N := Algebra.isSeparable_tower_top_of_isSeparable K L N
     letI : Algebra.IsSeparable L P := Algebra.isSeparable_tower_top_of_isSeparable K L P
-    letI := (finiteNormLimitRingHom K L M p hL hM hInfiniteL hInfiniteM).toAlgebra
-    letI := (finiteNormLimitRingHom K L N p hL hN hInfiniteL hInfiniteN).toAlgebra
-    letI := (finiteNormLimitRingHom K L P p hL hP hInfiniteL hInfiniteP).toAlgebra
-    finiteNormLimitAlgHom K L M P p hL hM hP hInfiniteL hInfiniteM hInfiniteP (ψ.comp φ) =
-      (finiteNormLimitAlgHom K L N P p hL hN hP hInfiniteL hInfiniteN hInfiniteP ψ).comp
-        (finiteNormLimitAlgHom K L M N p hL hM hN hInfiniteL hInfiniteM hInfiniteN φ) := by
-  let := normLimitField K L p hL hInfiniteL
-  let := normLimitField K M p hM hInfiniteM
-  let := normLimitField K N p hN hInfiniteN
-  let := normLimitField K P p hP hInfiniteP
+    letI := (finiteNormLimitRingHom K L M p).toAlgebra
+    letI := (finiteNormLimitRingHom K L N p).toAlgebra
+    letI := (finiteNormLimitRingHom K L P p).toAlgebra
+    finiteNormLimitAlgHom K L M P p (ψ.comp φ) =
+      (finiteNormLimitAlgHom K L N P p ψ).comp
+        (finiteNormLimitAlgHom K L M N p φ) := by
+  let := normLimitField K L p
+  let := normLimitField K M p
+  let := normLimitField K N p
+  let := normLimitField K P p
   let : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
   let : Algebra.IsSeparable L N := Algebra.isSeparable_tower_top_of_isSeparable K L N
   let : Algebra.IsSeparable L P := Algebra.isSeparable_tower_top_of_isSeparable K L P
-  let := (finiteNormLimitRingHom K L M p hL hM hInfiniteL hInfiniteM).toAlgebra
-  let := (finiteNormLimitRingHom K L N p hL hN hInfiniteL hInfiniteN).toAlgebra
-  let := (finiteNormLimitRingHom K L P p hL hP hInfiniteL hInfiniteP).toAlgebra
+  let := (finiteNormLimitRingHom K L M p).toAlgebra
+  let := (finiteNormLimitRingHom K L N p).toAlgebra
+  let := (finiteNormLimitRingHom K L P p).toAlgebra
   let τ := φ.restrictScalars K
   let σ := ψ.restrictScalars K
   let ξ := (ψ.comp φ).restrictScalars K
@@ -130,27 +130,27 @@ theorem finiteNormLimitAlgHom_comp
 finite-inclusion norm-family map. -/
 theorem finiteNormLimitAlgHom_algebraMap
     [Algebra M N] [IsScalarTower K M N] [IsScalarTower L M N]
-    (hL : IsAPF K L) (hM : IsAPF K M) (hN : IsAPF K N)
-    (hInfiniteL : ¬ Module.Finite K L) (hInfiniteM : ¬ Module.Finite K M)
-    (hInfiniteN : ¬ Module.Finite K N) (x : NormLimit K M) :
-    letI := normLimitField K L p hL hInfiniteL
-    letI := normLimitField K M p hM hInfiniteM
-    letI := normLimitField K N p hN hInfiniteN
+    [IsAPF K L] [IsAPF K M] [IsAPF K N]
+    [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)]
+    [Fact (¬ Module.Finite K N)] (x : NormLimit K M) :
+    letI := normLimitField K L p
+    letI := normLimitField K M p
+    letI := normLimitField K N p
     letI : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
     letI : Algebra.IsSeparable L N := Algebra.isSeparable_tower_top_of_isSeparable K L N
-    letI := (finiteNormLimitRingHom K L M p hL hM hInfiniteL hInfiniteM).toAlgebra
-    letI := (finiteNormLimitRingHom K L N p hL hN hInfiniteL hInfiniteN).toAlgebra
+    letI := (finiteNormLimitRingHom K L M p).toAlgebra
+    letI := (finiteNormLimitRingHom K L N p).toAlgebra
     letI : Module.Finite M N := Module.Finite.right L M N
     letI : Algebra.IsSeparable M N := Algebra.isSeparable_tower_top_of_isSeparable K M N
-    finiteNormLimitAlgHom K L M N p hL hM hN hInfiniteL hInfiniteM hInfiniteN
+    finiteNormLimitAlgHom K L M N p
       (IsScalarTower.toAlgHom L M N) x = finiteNormLimitMap K M N x := by
-  let := normLimitField K L p hL hInfiniteL
-  let := normLimitField K M p hM hInfiniteM
-  let := normLimitField K N p hN hInfiniteN
+  let := normLimitField K L p
+  let := normLimitField K M p
+  let := normLimitField K N p
   let : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
   let : Algebra.IsSeparable L N := Algebra.isSeparable_tower_top_of_isSeparable K L N
-  let := (finiteNormLimitRingHom K L M p hL hM hInfiniteL hInfiniteM).toAlgebra
-  let := (finiteNormLimitRingHom K L N p hL hN hInfiniteL hInfiniteN).toAlgebra
+  let := (finiteNormLimitRingHom K L M p).toAlgebra
+  let := (finiteNormLimitRingHom K L N p).toAlgebra
   let : Module.Finite M N := Module.Finite.right L M N
   let : Algebra.IsSeparable M N := Algebra.isSeparable_tower_top_of_isSeparable K M N
   let := moduleFinite_algebraMap_fieldRange K M N
@@ -163,39 +163,39 @@ of one genuine finite Galois overfield. -/
 theorem finiteNormLimitAlgHom_injective_in_galoisOverfield
     [Algebra M P] [Algebra N P] [IsScalarTower K M P] [IsScalarTower K N P]
     [IsScalarTower L M P] [IsScalarTower L N P] [IsGalois L P]
-    (hL : IsAPF K L) (hM : IsAPF K M) (hN : IsAPF K N) (hP : IsAPF K P)
-    (hInfiniteL : ¬ Module.Finite K L) (hInfiniteM : ¬ Module.Finite K M)
-    (hInfiniteN : ¬ Module.Finite K N) (hInfiniteP : ¬ Module.Finite K P) :
-    letI := normLimitField K L p hL hInfiniteL
-    letI := normLimitField K M p hM hInfiniteM
-    letI := normLimitField K N p hN hInfiniteN
+    [IsAPF K L] [IsAPF K M] [IsAPF K N] [IsAPF K P]
+    [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)]
+    [Fact (¬ Module.Finite K N)] [Fact (¬ Module.Finite K P)] :
+    letI := normLimitField K L p
+    letI := normLimitField K M p
+    letI := normLimitField K N p
     letI : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
     letI : Algebra.IsSeparable L N := Algebra.isSeparable_tower_top_of_isSeparable K L N
-    letI := (finiteNormLimitRingHom K L M p hL hM hInfiniteL hInfiniteM).toAlgebra
-    letI := (finiteNormLimitRingHom K L N p hL hN hInfiniteL hInfiniteN).toAlgebra
+    letI := (finiteNormLimitRingHom K L M p).toAlgebra
+    letI := (finiteNormLimitRingHom K L N p).toAlgebra
     Function.Injective
-      (finiteNormLimitAlgHom K L M N p hL hM hN hInfiniteL hInfiniteM hInfiniteN) := by
-  let := normLimitField K L p hL hInfiniteL
-  let := normLimitField K M p hM hInfiniteM
-  let := normLimitField K N p hN hInfiniteN
-  let := normLimitField K P p hP hInfiniteP
+      (finiteNormLimitAlgHom K L M N p) := by
+  let := normLimitField K L p
+  let := normLimitField K M p
+  let := normLimitField K N p
+  let := normLimitField K P p
   let : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
   let : Algebra.IsSeparable L N := Algebra.isSeparable_tower_top_of_isSeparable K L N
   let : Algebra.IsSeparable L P := Algebra.isSeparable_tower_top_of_isSeparable K L P
-  let := (finiteNormLimitRingHom K L M p hL hM hInfiniteL hInfiniteM).toAlgebra
-  let := (finiteNormLimitRingHom K L N p hL hN hInfiniteL hInfiniteN).toAlgebra
-  let := (finiteNormLimitRingHom K L P p hL hP hInfiniteL hInfiniteP).toAlgebra
+  let := (finiteNormLimitRingHom K L M p).toAlgebra
+  let := (finiteNormLimitRingHom K L N p).toAlgebra
+  let := (finiteNormLimitRingHom K L P p).toAlgebra
   intro φ ψ hφψ
   let ι := IsScalarTower.toAlgHom L N P
   have hcomp :
-      finiteNormLimitAlgHom K L M P p hL hM hP hInfiniteL hInfiniteM hInfiniteP (ι.comp φ) =
-        finiteNormLimitAlgHom K L M P p hL hM hP hInfiniteL hInfiniteM hInfiniteP (ι.comp ψ) := by
-    rw [finiteNormLimitAlgHom_comp K L M N P p hL hM hN hP
-      hInfiniteL hInfiniteM hInfiniteN hInfiniteP φ ι,
-      finiteNormLimitAlgHom_comp K L M N P p hL hM hN hP
-        hInfiniteL hInfiniteM hInfiniteN hInfiniteP ψ ι, hφψ]
-  have h := finiteNormLimitAlgHom_injective_of_isGalois K L M P p hL hM hP
-    hInfiniteL hInfiniteM hInfiniteP hcomp
+      finiteNormLimitAlgHom K L M P p (ι.comp φ) =
+        finiteNormLimitAlgHom K L M P p (ι.comp ψ) := by
+    rw [finiteNormLimitAlgHom_comp K L M N P p
+      φ ι,
+      finiteNormLimitAlgHom_comp K L M N P p
+        ψ ι, hφψ]
+  have h := finiteNormLimitAlgHom_injective_of_isGalois K L M P p
+    hcomp
   apply AlgHom.ext
   intro m
   exact (algebraMap N P).injective (AlgHom.congr_fun h m)
@@ -205,92 +205,92 @@ subextensions of the same genuine finite Galois overfield. -/
 theorem finiteNormLimitAlgHom_surjective_in_galoisOverfield
     [Algebra M P] [Algebra N P] [IsScalarTower K M P] [IsScalarTower K N P]
     [IsScalarTower L M P] [IsScalarTower L N P] [IsGalois L P]
-    (hL : IsAPF K L) (hM : IsAPF K M) (hN : IsAPF K N) (hP : IsAPF K P)
-    (hInfiniteL : ¬ Module.Finite K L) (hInfiniteM : ¬ Module.Finite K M)
-    (hInfiniteN : ¬ Module.Finite K N) (hInfiniteP : ¬ Module.Finite K P) :
-    letI := normLimitField K L p hL hInfiniteL
-    letI := normLimitField K M p hM hInfiniteM
-    letI := normLimitField K N p hN hInfiniteN
+    [IsAPF K L] [IsAPF K M] [IsAPF K N] [IsAPF K P]
+    [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)]
+    [Fact (¬ Module.Finite K N)] [Fact (¬ Module.Finite K P)] :
+    letI := normLimitField K L p
+    letI := normLimitField K M p
+    letI := normLimitField K N p
     letI : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
     letI : Algebra.IsSeparable L N := Algebra.isSeparable_tower_top_of_isSeparable K L N
-    letI := (finiteNormLimitRingHom K L M p hL hM hInfiniteL hInfiniteM).toAlgebra
-    letI := (finiteNormLimitRingHom K L N p hL hN hInfiniteL hInfiniteN).toAlgebra
+    letI := (finiteNormLimitRingHom K L M p).toAlgebra
+    letI := (finiteNormLimitRingHom K L N p).toAlgebra
     Function.Surjective
-      (finiteNormLimitAlgHom K L M N p hL hM hN hInfiniteL hInfiniteM hInfiniteN) := by
-  let := normLimitField K L p hL hInfiniteL
-  let := normLimitField K M p hM hInfiniteM
-  let := normLimitField K N p hN hInfiniteN
-  let := normLimitField K P p hP hInfiniteP
+      (finiteNormLimitAlgHom K L M N p) := by
+  let := normLimitField K L p
+  let := normLimitField K M p
+  let := normLimitField K N p
+  let := normLimitField K P p
   let : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
   let : Algebra.IsSeparable L N := Algebra.isSeparable_tower_top_of_isSeparable K L N
   let : Algebra.IsSeparable L P := Algebra.isSeparable_tower_top_of_isSeparable K L P
-  let := (finiteNormLimitRingHom K L M p hL hM hInfiniteL hInfiniteM).toAlgebra
-  let := (finiteNormLimitRingHom K L N p hL hN hInfiniteL hInfiniteN).toAlgebra
-  let := (finiteNormLimitRingHom K L P p hL hP hInfiniteL hInfiniteP).toAlgebra
+  let := (finiteNormLimitRingHom K L M p).toAlgebra
+  let := (finiteNormLimitRingHom K L N p).toAlgebra
+  let := (finiteNormLimitRingHom K L P p).toAlgebra
   let : Module.Finite N P := Module.Finite.right L N P
   let : IsGalois N P := IsGalois.tower_top_of_isGalois L N P
   intro f
   let ι := IsScalarTower.toAlgHom L N P
-  let ιX := finiteNormLimitAlgHom K L N P p hL hN hP
-    hInfiniteL hInfiniteN hInfiniteP ι
+  let ιX := finiteNormLimitAlgHom K L N P p
+    ι
   obtain ⟨φ, hφ⟩ := finiteNormLimitAlgHom_surjective_of_isGalois K L M P p
-    hL hM hP hInfiniteL hInfiniteM hInfiniteP (ιX.comp f)
+    (ιX.comp f)
   have hfixed (σ : P ≃ₐ[N] P) (m : M) : σ (φ m) = φ m := by
     let τ := σ.restrictScalars L
     have hnorm :
-        finiteNormLimitAlgHom K L M P p hL hM hP hInfiniteL hInfiniteM hInfiniteP
+        finiteNormLimitAlgHom K L M P p
           (τ.toAlgHom.comp φ) =
-        finiteNormLimitAlgHom K L M P p hL hM hP hInfiniteL hInfiniteM hInfiniteP φ := by
+        finiteNormLimitAlgHom K L M P p φ := by
       apply AlgHom.ext
       intro x
-      rw [finiteNormLimitAlgHom_postcomp_aut K L M P p hL hM hP
-        hInfiniteL hInfiniteM hInfiniteP φ τ x]
+      rw [finiteNormLimitAlgHom_postcomp_aut K L M P p
+        φ τ x]
       calc
         _ = normLimitMap (σ.restrictScalars K) (ιX (f x)) :=
           congrArg (normLimitMap (σ.restrictScalars K)) (AlgHom.congr_fun hφ x)
         _ = normLimitMap (σ.restrictScalars K) (finiteNormLimitMap K N P (f x)) :=
           congrArg (normLimitMap (σ.restrictScalars K))
-            (finiteNormLimitAlgHom_algebraMap K L N P p hL hN hP
-              hInfiniteL hInfiniteN hInfiniteP (f x))
+            (finiteNormLimitAlgHom_algebraMap K L N P p
+              (f x))
         _ = finiteNormLimitMap K N P (f x) :=
           normLimitMap_finiteNormLimitMap_relative K N P σ (f x)
-        _ = ιX (f x) := (finiteNormLimitAlgHom_algebraMap K L N P p hL hN hP
-          hInfiniteL hInfiniteN hInfiniteP (f x)).symm
+        _ = ιX (f x) := (finiteNormLimitAlgHom_algebraMap K L N P p
+          (f x)).symm
         _ = _ := (AlgHom.congr_fun hφ x).symm
-    have h := finiteNormLimitAlgHom_injective_of_isGalois K L M P p hL hM hP
-      hInfiniteL hInfiniteM hInfiniteP hnorm
+    have h := finiteNormLimitAlgHom_injective_of_isGalois K L M P p
+      hnorm
     exact AlgHom.congr_fun h m
   obtain ⟨ψ, hψ⟩ := exists_algHom_factor_of_fixed φ hfixed
   refine ⟨ψ, AlgHom.ext (fun x => ?_)⟩
   apply ιX.injective
-  have hc := AlgHom.congr_fun (finiteNormLimitAlgHom_comp K L M N P p hL hM hN hP
-    hInfiniteL hInfiniteM hInfiniteN hInfiniteP ψ ι) x
+  have hc := AlgHom.congr_fun (finiteNormLimitAlgHom_comp K L M N P p
+    ψ ι) x
   exact hc.symm.trans ((congrArg (fun g =>
-    finiteNormLimitAlgHom K L M P p hL hM hP hInfiniteL hInfiniteM hInfiniteP g x)
+    finiteNormLimitAlgHom K L M P p g x)
       hψ).trans (AlgHom.congr_fun hφ x))
 
 /-- Full faithfulness of the actual finite Hom map for arbitrary finite
 separable original extensions, with no normality assumption on either field. -/
 theorem finiteNormLimitAlgHom_bijective
-    (hL : IsAPF K L) (hM : IsAPF K M) (hN : IsAPF K N)
-    (hInfiniteL : ¬ Module.Finite K L) (hInfiniteM : ¬ Module.Finite K M)
-    (hInfiniteN : ¬ Module.Finite K N) :
-    letI := normLimitField K L p hL hInfiniteL
-    letI := normLimitField K M p hM hInfiniteM
-    letI := normLimitField K N p hN hInfiniteN
+    [IsAPF K L] [IsAPF K M] [IsAPF K N]
+    [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)]
+    [Fact (¬ Module.Finite K N)] :
+    letI := normLimitField K L p
+    letI := normLimitField K M p
+    letI := normLimitField K N p
     letI : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
     letI : Algebra.IsSeparable L N := Algebra.isSeparable_tower_top_of_isSeparable K L N
-    letI := (finiteNormLimitRingHom K L M p hL hM hInfiniteL hInfiniteM).toAlgebra
-    letI := (finiteNormLimitRingHom K L N p hL hN hInfiniteL hInfiniteN).toAlgebra
+    letI := (finiteNormLimitRingHom K L M p).toAlgebra
+    letI := (finiteNormLimitRingHom K L N p).toAlgebra
     Function.Bijective
-      (finiteNormLimitAlgHom K L M N p hL hM hN hInfiniteL hInfiniteM hInfiniteN) := by
-  let := normLimitField K L p hL hInfiniteL
-  let := normLimitField K M p hM hInfiniteM
-  let := normLimitField K N p hN hInfiniteN
+      (finiteNormLimitAlgHom K L M N p) := by
+  let := normLimitField K L p
+  let := normLimitField K M p
+  let := normLimitField K N p
   let : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
   let : Algebra.IsSeparable L N := Algebra.isSeparable_tower_top_of_isSeparable K L N
-  let := (finiteNormLimitRingHom K L M p hL hM hInfiniteL hInfiniteM).toAlgebra
-  let := (finiteNormLimitRingHom K L N p hL hN hInfiniteL hInfiniteN).toAlgebra
+  let := (finiteNormLimitRingHom K L M p).toAlgebra
+  let := (finiteNormLimitRingHom K L N p).toAlgebra
   obtain ⟨P, ⟨ιM⟩, ⟨ιN⟩⟩ := exists_common_finiteGalois_embeddings L M N
   let : Algebra K P := ((algebraMap L P).comp (algebraMap K L)).toAlgebra
   let : Module K P := Algebra.toModule
@@ -304,61 +304,66 @@ theorem finiteNormLimitAlgHom_bijective
   let : IsScalarTower K N P := IsScalarTower.of_algebraMap_eq
     (fun k => ((ιN.restrictScalars K).commutes k).symm)
   let : Algebra.IsSeparable K P := Algebra.IsSeparable.trans K L P
-  have hP : IsAPF K P := (isAPF_finite_extension_iff K P L).mpr hL
+  have hP : IsAPF K P := (isAPF_finite_extension_iff K P L).mpr ‹_›
   have hInfiniteP : ¬ Module.Finite K P := by
     intro h
     let : Module.Finite K P := h
-    exact hInfiniteL (FiniteDimensional.of_injective
+    exact (Fact.out : ¬ Module.Finite K L) (FiniteDimensional.of_injective
       (IsScalarTower.toAlgHom K L P).toLinearMap (algebraMap L P).injective)
-  exact ⟨finiteNormLimitAlgHom_injective_in_galoisOverfield K L M N P p hL hM hN hP
-      hInfiniteL hInfiniteM hInfiniteN hInfiniteP,
-    finiteNormLimitAlgHom_surjective_in_galoisOverfield K L M N P p hL hM hN hP
-      hInfiniteL hInfiniteM hInfiniteN hInfiniteP⟩
+  have : Fact (¬ Module.Finite K P) := ⟨hInfiniteP⟩
+  exact ⟨finiteNormLimitAlgHom_injective_in_galoisOverfield K L M N P p
+,
+    finiteNormLimitAlgHom_surjective_in_galoisOverfield K L M N P p
+⟩
 
 /-- The canonical full finite Hom equivalence needs only the original
 infinite APF base; all finite-extension APF and infinitude facts are produced. -/
-def finiteNormLimitHomEquiv (hL : IsAPF K L) (hInfiniteL : ¬ Module.Finite K L) :
-    let hM : IsAPF K M := (isAPF_finite_extension_iff K M L).mpr hL
-    let hN : IsAPF K N := (isAPF_finite_extension_iff K N L).mpr hL
-    let hInfiniteM : ¬ Module.Finite K M := by
+def finiteNormLimitHomEquiv [IsAPF K L] [Fact (¬ Module.Finite K L)] :
+    let hM : IsAPF K M := (isAPF_finite_extension_iff K M L).mpr ‹_›
+    let hN : IsAPF K N := (isAPF_finite_extension_iff K N L).mpr ‹_›
+    have hInfiniteM : ¬ Module.Finite K M := by
       intro h
       let : Module.Finite K M := h
-      exact hInfiniteL (FiniteDimensional.of_injective
+      exact (Fact.out : ¬ Module.Finite K L) (FiniteDimensional.of_injective
         (IsScalarTower.toAlgHom K L M).toLinearMap (algebraMap L M).injective)
-    let hInfiniteN : ¬ Module.Finite K N := by
+    haveI : Fact (¬ Module.Finite K M) := ⟨hInfiniteM⟩
+    have hInfiniteN : ¬ Module.Finite K N := by
       intro h
       let : Module.Finite K N := h
-      exact hInfiniteL (FiniteDimensional.of_injective
+      exact (Fact.out : ¬ Module.Finite K L) (FiniteDimensional.of_injective
         (IsScalarTower.toAlgHom K L N).toLinearMap (algebraMap L N).injective)
-    letI := normLimitField K L p hL hInfiniteL
-    letI := normLimitField K M p hM hInfiniteM
-    letI := normLimitField K N p hN hInfiniteN
+    haveI : Fact (¬ Module.Finite K N) := ⟨hInfiniteN⟩
+    letI := normLimitField K L p
+    letI := normLimitField K M p
+    letI := normLimitField K N p
     letI : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
     letI : Algebra.IsSeparable L N := Algebra.isSeparable_tower_top_of_isSeparable K L N
-    letI := (finiteNormLimitRingHom K L M p hL hM hInfiniteL hInfiniteM).toAlgebra
-    letI := (finiteNormLimitRingHom K L N p hL hN hInfiniteL hInfiniteN).toAlgebra
+    letI := (finiteNormLimitRingHom K L M p).toAlgebra
+    letI := (finiteNormLimitRingHom K L N p).toAlgebra
     (M →ₐ[L] N) ≃ (NormLimit K M →ₐ[NormLimit K L] NormLimit K N) := by
-  have hM : IsAPF K M := (isAPF_finite_extension_iff K M L).mpr hL
-  have hN : IsAPF K N := (isAPF_finite_extension_iff K N L).mpr hL
+  haveI hM : IsAPF K M := (isAPF_finite_extension_iff K M L).mpr ‹_›
+  haveI hN : IsAPF K N := (isAPF_finite_extension_iff K N L).mpr ‹_›
   have hInfiniteM : ¬ Module.Finite K M := by
     intro h
     let : Module.Finite K M := h
-    exact hInfiniteL (FiniteDimensional.of_injective
+    exact (Fact.out : ¬ Module.Finite K L) (FiniteDimensional.of_injective
       (IsScalarTower.toAlgHom K L M).toLinearMap (algebraMap L M).injective)
+  haveI : Fact (¬ Module.Finite K M) := ⟨hInfiniteM⟩
   have hInfiniteN : ¬ Module.Finite K N := by
     intro h
     let : Module.Finite K N := h
-    exact hInfiniteL (FiniteDimensional.of_injective
+    exact (Fact.out : ¬ Module.Finite K L) (FiniteDimensional.of_injective
       (IsScalarTower.toAlgHom K L N).toLinearMap (algebraMap L N).injective)
-  let := normLimitField K L p hL hInfiniteL
-  let := normLimitField K M p hM hInfiniteM
-  let := normLimitField K N p hN hInfiniteN
+  haveI : Fact (¬ Module.Finite K N) := ⟨hInfiniteN⟩
+  let := normLimitField K L p
+  let := normLimitField K M p
+  let := normLimitField K N p
   let : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
   let : Algebra.IsSeparable L N := Algebra.isSeparable_tower_top_of_isSeparable K L N
-  let := (finiteNormLimitRingHom K L M p hL hM hInfiniteL hInfiniteM).toAlgebra
-  let := (finiteNormLimitRingHom K L N p hL hN hInfiniteL hInfiniteN).toAlgebra
+  let := (finiteNormLimitRingHom K L M p).toAlgebra
+  let := (finiteNormLimitRingHom K L N p).toAlgebra
   exact Equiv.ofBijective
-    (finiteNormLimitAlgHom K L M N p hL hM hN hInfiniteL hInfiniteM hInfiniteN)
-    (finiteNormLimitAlgHom_bijective K L M N p hL hM hN hInfiniteL hInfiniteM hInfiniteN)
+    (finiteNormLimitAlgHom K L M N p)
+    (finiteNormLimitAlgHom_bijective K L M N p)
 
 end FontaineWintenberger

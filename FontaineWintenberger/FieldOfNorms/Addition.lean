@@ -176,11 +176,11 @@ variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
 /-- The proved stable coordinate valuation makes integral norm families
 integral on one actual finite tail, simultaneously for every family. -/
-theorem IsAPF.exists_finiteLayer_normLimitEval_mem_of_le_one (hL : IsAPF K L) :
+theorem IsAPF.exists_finiteLayer_normLimitEval_mem_of_le_one [IsAPF K L] :
     ∃ T : FiniteLayer K L, ∀ E : FiniteLayer K L, T ≤ E → ∀ x : NormLimit K L,
-      normLimitValuation K L hL x ≤ 1 →
+      normLimitValuation K L x ≤ 1 →
         normLimitEval K L E x ∈ spectralIntegerRing K E.val := by
-  obtain ⟨T, hT⟩ := IsAPF.exists_normLimitValuation_eq_coordinate K L hL
+  obtain ⟨T, hT⟩ := IsAPF.exists_normLimitValuation_eq_coordinate K L
   refine ⟨T, fun E hE x hx => ?_⟩
   rw [hT E hE x] at hx
   change normLimitEval K L E x ∈
@@ -191,10 +191,10 @@ theorem IsAPF.exists_finiteLayer_normLimitEval_mem_of_le_one (hL : IsAPF K L) :
 
 /-- Every original coordinate is integral if the same stable norm-limit
 valuation is integral: actual integral norms descend from a common tail. -/
-theorem normLimitEval_mem_of_valuation_le_one (hL : IsAPF K L) (x : NormLimit K L)
-    (hx : normLimitValuation K L hL x ≤ 1) (E : FiniteLayer K L) :
+theorem normLimitEval_mem_of_valuation_le_one [IsAPF K L] (x : NormLimit K L)
+    (hx : normLimitValuation K L x ≤ 1) (E : FiniteLayer K L) :
     normLimitEval K L E x ∈ spectralIntegerRing K E.val := by
-  obtain ⟨T, hT⟩ := IsAPF.exists_finiteLayer_normLimitEval_mem_of_le_one K L hL
+  obtain ⟨T, hT⟩ := IsAPF.exists_finiteLayer_normLimitEval_mem_of_le_one K L
   let F := FiniteLayer.sup E T
   have hEF : E ≤ F := FiniteLayer.le_sup_left E T
   let xF : spectralIntegerRing K F.val :=
@@ -208,13 +208,13 @@ theorem normLimitEval_mem_of_valuation_le_one (hL : IsAPF K L) (x : NormLimit K 
 
 /-- The integral part of the stable valuation is exactly the families
 with integral coordinates in every original finite field. -/
-theorem normLimitValuation_le_one_iff (hL : IsAPF K L) (x : NormLimit K L) :
-    normLimitValuation K L hL x ≤ 1 ↔
+theorem normLimitValuation_le_one_iff [IsAPF K L] (x : NormLimit K L) :
+    normLimitValuation K L x ≤ 1 ↔
       ∀ E : FiniteLayer K L, normLimitEval K L E x ∈ spectralIntegerRing K E.val := by
   constructor
-  · exact fun hx E => normLimitEval_mem_of_valuation_le_one K L hL x hx E
+  · exact fun hx E => normLimitEval_mem_of_valuation_le_one K L x hx E
   · intro hx
-    let T := (IsAPF.exists_normLimitCoordinateValuation_stable K L hL).choose
+    let T := (IsAPF.exists_normLimitCoordinateValuation_stable K L).choose
     change normLimitEval K L T x ∈
       ((IsDiscreteValuationRing.maximalIdeal (spectralIntegerRing K T.val)).valuation
         T.val).valuationSubring
@@ -223,22 +223,22 @@ theorem normLimitValuation_le_one_iff (hL : IsAPF K L) (x : NormLimit K L) :
 
 /-- Every term of an integral-family norm-sum net is an integer of the
 original fixed finite field. -/
-theorem normSumNet_mem_of_valuation_le_one (hL : IsAPF K L) (α β : NormLimit K L)
-    (hα : normLimitValuation K L hL α ≤ 1) (hβ : normLimitValuation K L hL β ≤ 1)
+theorem normSumNet_mem_of_valuation_le_one [IsAPF K L] (α β : NormLimit K L)
+    (hα : normLimitValuation K L α ≤ 1) (hβ : normLimitValuation K L β ≤ 1)
     (E : FiniteLayer K L) (F : Set.Ici E) :
     normSumNet K L E α β F ∈ spectralIntegerRing K E.val := by
   let x : spectralIntegerRing K F.val.val :=
-    ⟨normLimitEval K L F.val α, normLimitEval_mem_of_valuation_le_one K L hL α hα F.val⟩
+    ⟨normLimitEval K L F.val α, normLimitEval_mem_of_valuation_le_one K L α hα F.val⟩
   let y : spectralIntegerRing K F.val.val :=
-    ⟨normLimitEval K L F.val β, normLimitEval_mem_of_valuation_le_one K L hL β hβ F.val⟩
+    ⟨normLimitEval K L F.val β, normLimitEval_mem_of_valuation_le_one K L β hβ F.val⟩
   have h := (FiniteLayer.integerNorm E F.val F.property (x + y)).property
   rw [FiniteLayer.coe_integerNorm E F.val F.property (x + y)] at h
   exact h
 
 /-- A convergent integral-family norm-sum net has an integral limit, in
 the same original finite field and its actual closed integer ring. -/
-theorem normSumNet_limit_mem_of_valuation_le_one (hL : IsAPF K L) (α β : NormLimit K L)
-    (hα : normLimitValuation K L hL α ≤ 1) (hβ : normLimitValuation K L hL β ≤ 1)
+theorem normSumNet_limit_mem_of_valuation_le_one [IsAPF K L] (α β : NormLimit K L)
+    (hα : normLimitValuation K L α ≤ 1) (hβ : normLimitValuation K L β ≤ 1)
     (E : FiniteLayer K L) (z : E.val) :
     letI := spectralNorm.nontriviallyNormedField K E.val
     Tendsto (normSumNet K L E α β) atTop (nhds z) →
@@ -247,7 +247,7 @@ theorem normSumNet_limit_mem_of_valuation_le_one (hL : IsAPF K L) (α β : NormL
   intro hz
   have hz' := (FiniteLayer.isClosed_image_maximalIdeal_pow E 0).mem_of_tendsto hz
     (Eventually.of_forall fun F => ⟨⟨normSumNet K L E α β F,
-      normSumNet_mem_of_valuation_le_one K L hL α β hα hβ E F⟩, by simp, rfl⟩)
+      normSumNet_mem_of_valuation_le_one K L α β hα hβ E F⟩, by simp, rfl⟩)
   obtain ⟨w, _, hw⟩ := hz'
   exact hw ▸ w.property
 

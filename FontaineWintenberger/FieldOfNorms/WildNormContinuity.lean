@@ -62,14 +62,14 @@ private def finitePhi (E F : FiniteLayer K Ω) (hEF : E ≤ F) (r : ℝ) : ℝ :
   have : IsScalarTower K E.val F.val := IsScalarTower.of_algebraMap_eq' rfl
   have : FiniteDimensional E.val F.val := Module.Finite.right K E.val F.val
   have := Algebra.isSeparable_tower_top_of_isSeparable K E.val F.val
-  exact apfPhi E.val F.val (isAPF_of_finite E.val F.val) r
+  exact apfPhi E.val F.val r
 
 omit [PerfectField (IsLocalRing.ResidueField
     (NormedField.valuation (K := K)).valuationSubring)] in
 private theorem finitePhi_self (E : FiniteLayer K Ω) (r : ℝ) :
     finitePhi E E le_rfl r = r := by
-  change apfPhi E.val E.val (isAPF_of_finite E.val E.val) r = r
-  exact apfPhi_eq_self_of_bound_eq_top E.val E.val (apfRamificationBound_self E.val) _ r
+  change apfPhi E.val E.val r = r
+  exact apfPhi_eq_self_of_bound_eq_top E.val E.val (apfRamificationBound_self E.val) r
 
 omit [PerfectField (IsLocalRing.ResidueField
     (NormedField.valuation (K := K)).valuationSubring)] in
@@ -77,7 +77,7 @@ private theorem finitePhi_eq_extendScalars (E F : FiniteLayer K Ω) (hEF : E ≤
     let F' := IntermediateField.extendScalars hEF
     letI : FiniteDimensional K F' := F.property
     letI : FiniteDimensional E.val F' := Module.Finite.right K E.val F'
-    finitePhi E F hEF r = apfPhi E.val F' (isAPF_of_finite E.val F') r := by
+    finitePhi E F hEF r = apfPhi E.val F' r := by
   let : Algebra E.val F.val := (IntermediateField.inclusion hEF).toRingHom.toAlgebra
   have : IsScalarTower K E.val F.val := IsScalarTower.of_algebraMap_eq' rfl
   have : FiniteDimensional E.val F.val := Module.Finite.right K E.val F.val
@@ -87,8 +87,7 @@ private theorem finitePhi_eq_extendScalars (E F : FiniteLayer K Ω) (hEF : E ≤
   have : FiniteDimensional E.val F' := Module.Finite.right K E.val F'
   let e : F.val ≃ₐ[E.val] F' :=
     { RingEquiv.refl F.val with commutes' := fun _ => rfl }
-  exact apfPhi_algEquiv E.val F.val e (isAPF_of_finite E.val F.val)
-    (isAPF_of_finite E.val F') r
+  exact apfPhi_algEquiv E.val F.val e r
 
 omit [PerfectField (IsLocalRing.ResidueField
     (NormedField.valuation (K := K)).valuationSubring)] in
@@ -98,7 +97,7 @@ private theorem finitePhi_mono (E F : FiniteLayer K Ω) (hEF : E ≤ F) :
   have : IsScalarTower K E.val F.val := IsScalarTower.of_algebraMap_eq' rfl
   have : FiniteDimensional E.val F.val := Module.Finite.right K E.val F.val
   have := Algebra.isSeparable_tower_top_of_isSeparable K E.val F.val
-  exact (strictMono_apfPhi E.val F.val (isAPF_of_finite E.val F.val)).monotone
+  exact (strictMono_apfPhi E.val F.val).monotone
 
 private theorem finitePhi_comp (E F G : FiniteLayer K Ω)
     (hEF : E ≤ F) (hFG : F ≤ G) (r : ℝ) :
@@ -124,7 +123,7 @@ theorem integerNorm_sub_congruence_of_wild_field (p : ℕ) [Fact p.Prime]
       x - y ∈ IsLocalRing.maximalIdeal (spectralIntegerRing K F.val) ^ r →
         integerNorm E F hEF x - integerNorm E F hEF y ∈
           IsLocalRing.maximalIdeal (spectralIntegerRing K E.val) ^
-            ⌈apfPhi E.val F' (isAPF_of_finite E.val F') (r : ℝ)⌉₊ := by
+            ⌈apfPhi E.val F' (r : ℝ)⌉₊ := by
   dsimp only
   intro r x y hxy
   have hfix : E.val.fixingSubgroup ≤ P := by

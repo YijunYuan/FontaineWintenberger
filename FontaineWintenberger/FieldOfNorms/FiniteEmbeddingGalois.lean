@@ -35,49 +35,49 @@ variable (p : ℕ) [Fact p.Prime]
 exactly the original arbitrary-embedding norm-field homomorphism. -/
 theorem isGalois_finiteNormLimitEmbedding (τ : L →ₐ[K] M)
     [Module.Finite τ.fieldRange M] [IsGalois τ.fieldRange M]
-    (hL : IsAPF K L) (hM : IsAPF K M)
-    (hInfiniteL : ¬ Module.Finite K L) (hInfiniteM : ¬ Module.Finite K M) :
-    letI := normLimitField K L p hL hInfiniteL
-    letI := normLimitField K M p hM hInfiniteM
-    letI := (finiteNormLimitEmbeddingRingHom K p τ hL hM hInfiniteL hInfiniteM).toAlgebra
+    [IsAPF K L] [IsAPF K M]
+    [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)] :
+    letI := normLimitField K L p
+    letI := normLimitField K M p
+    letI := (finiteNormLimitEmbeddingRingHom K p τ).toAlgebra
     IsGalois (NormLimit K L) (NormLimit K M) := by
-  have hR : IsAPF K τ.fieldRange := (isAPF_algEquiv K τ.equivFieldRange).mp hL
-  have hInfiniteR := not_finite_fieldRange τ hInfiniteL
-  let := normLimitField K L p hL hInfiniteL
-  let := normLimitField K M p hM hInfiniteM
-  let := normLimitField K τ.fieldRange p hR hInfiniteR
-  let := (finiteNormLimitEmbeddingRingHom K p τ hL hM hInfiniteL hInfiniteM).toAlgebra
-  let := (finiteNormLimitRingHom K τ.fieldRange M p hR hM hInfiniteR hInfiniteM).toAlgebra
-  let e := normLimitRingEquiv K p hL hR hInfiniteL hInfiniteR τ.equivFieldRange
+  have hR : IsAPF K τ.fieldRange := (isAPF_algEquiv K τ.equivFieldRange).mp ‹_›
+  have : Fact (¬ Module.Finite K τ.fieldRange) := ⟨not_finite_fieldRange τ⟩
+  let := normLimitField K L p
+  let := normLimitField K M p
+  let := normLimitField K τ.fieldRange p
+  let := (finiteNormLimitEmbeddingRingHom K p τ).toAlgebra
+  let := (finiteNormLimitRingHom K τ.fieldRange M p).toAlgebra
+  let e := normLimitRingEquiv K p τ.equivFieldRange
   let : IsGalois (NormLimit K τ.fieldRange) (NormLimit K M) :=
-    isGalois_finiteNormLimit K τ.fieldRange M p hR hM hInfiniteR hInfiniteM
+    isGalois_finiteNormLimit K τ.fieldRange M p
   apply IsGalois.of_equiv_equiv (f := e.symm) (g := RingEquiv.refl _)
   apply RingHom.ext
   intro x
-  change finiteNormLimitRingHom K τ.fieldRange M p hR hM hInfiniteR hInfiniteM
-    (e (e.symm x)) = finiteNormLimitRingHom K τ.fieldRange M p hR hM
-      hInfiniteR hInfiniteM x
+  change finiteNormLimitRingHom K τ.fieldRange M p
+    (e (e.symm x)) = finiteNormLimitRingHom K τ.fieldRange M p
+      x
   rw [e.apply_symm_apply]
 
 /-- The actual original relative action identifies the Galois groups for
 an arbitrary finite embedding, by its original source-to-range isomorphism. -/
 def finiteNormLimitEmbeddingGaloisEquiv (τ : L →ₐ[K] M)
     [Module.Finite τ.fieldRange M] [IsGalois τ.fieldRange M]
-    (hL : IsAPF K L) (hM : IsAPF K M)
-    (hInfiniteL : ¬ Module.Finite K L) (hInfiniteM : ¬ Module.Finite K M) :
-    letI := normLimitField K L p hL hInfiniteL
-    letI := normLimitField K M p hM hInfiniteM
-    letI := (finiteNormLimitEmbeddingRingHom K p τ hL hM hInfiniteL hInfiniteM).toAlgebra
+    [IsAPF K L] [IsAPF K M]
+    [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)] :
+    letI := normLimitField K L p
+    letI := normLimitField K M p
+    letI := (finiteNormLimitEmbeddingRingHom K p τ).toAlgebra
     (M ≃ₐ[τ.fieldRange] M) ≃*
       (NormLimit K M ≃ₐ[NormLimit K L] NormLimit K M) := by
-  have hR : IsAPF K τ.fieldRange := (isAPF_algEquiv K τ.equivFieldRange).mp hL
-  have hInfiniteR := not_finite_fieldRange τ hInfiniteL
-  let := normLimitField K L p hL hInfiniteL
-  let := normLimitField K M p hM hInfiniteM
-  let := normLimitField K τ.fieldRange p hR hInfiniteR
-  let := (finiteNormLimitEmbeddingRingHom K p τ hL hM hInfiniteL hInfiniteM).toAlgebra
-  let := (finiteNormLimitRingHom K τ.fieldRange M p hR hM hInfiniteR hInfiniteM).toAlgebra
-  let e := normLimitRingEquiv K p hL hR hInfiniteL hInfiniteR τ.equivFieldRange
+  haveI hR : IsAPF K τ.fieldRange := (isAPF_algEquiv K τ.equivFieldRange).mp ‹_›
+  haveI : Fact (¬ Module.Finite K τ.fieldRange) := ⟨not_finite_fieldRange τ⟩
+  let := normLimitField K L p
+  let := normLimitField K M p
+  let := normLimitField K τ.fieldRange p
+  let := (finiteNormLimitEmbeddingRingHom K p τ).toAlgebra
+  let := (finiteNormLimitRingHom K τ.fieldRange M p).toAlgebra
+  let e := normLimitRingEquiv K p τ.equivFieldRange
   let θ : (NormLimit K M ≃ₐ[NormLimit K τ.fieldRange] NormLimit K M) ≃*
       (NormLimit K M ≃ₐ[NormLimit K L] NormLimit K M) :=
     { toFun := fun (σ : NormLimit K M ≃ₐ[NormLimit K τ.fieldRange] NormLimit K M) =>
@@ -97,18 +97,18 @@ def finiteNormLimitEmbeddingGaloisEquiv (τ : L →ₐ[K] M)
       left_inv := fun σ => by apply AlgEquiv.ext; intro x; rfl
       right_inv := fun σ => by apply AlgEquiv.ext; intro x; rfl
       map_mul' := fun σ ρ => by apply AlgEquiv.ext; intro x; rfl }
-  exact (finiteNormLimitGaloisEquiv K τ.fieldRange M p hR hM hInfiniteR hInfiniteM).trans θ
+  exact (finiteNormLimitGaloisEquiv K τ.fieldRange M p).trans θ
 
 @[simp]
 theorem finiteNormLimitEmbeddingGaloisEquiv_apply (τ : L →ₐ[K] M)
     [Module.Finite τ.fieldRange M] [IsGalois τ.fieldRange M]
-    (hL : IsAPF K L) (hM : IsAPF K M)
-    (hInfiniteL : ¬ Module.Finite K L) (hInfiniteM : ¬ Module.Finite K M)
+    [IsAPF K L] [IsAPF K M]
+    [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)]
     (σ : M ≃ₐ[τ.fieldRange] M) (x : NormLimit K M) :
-    letI := normLimitField K L p hL hInfiniteL
-    letI := normLimitField K M p hM hInfiniteM
-    letI := (finiteNormLimitEmbeddingRingHom K p τ hL hM hInfiniteL hInfiniteM).toAlgebra
-    finiteNormLimitEmbeddingGaloisEquiv K p τ hL hM hInfiniteL hInfiniteM σ x =
+    letI := normLimitField K L p
+    letI := normLimitField K M p
+    letI := (finiteNormLimitEmbeddingRingHom K p τ).toAlgebra
+    finiteNormLimitEmbeddingGaloisEquiv K p τ σ x =
       normLimitMap (σ.restrictScalars K) x := rfl
 
 end FontaineWintenberger

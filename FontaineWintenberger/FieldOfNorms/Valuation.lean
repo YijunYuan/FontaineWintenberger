@@ -80,11 +80,11 @@ variable [PerfectField (IsLocalRing.ResidueField
   (NormedField.valuation (K := K)).valuationSubring)]
 
 /-- The normalized coordinate valuations agree on an actual APF finite tail. -/
-theorem IsAPF.exists_normLimitCoordinateValuation_stable (hL : IsAPF K L) :
+theorem IsAPF.exists_normLimitCoordinateValuation_stable [IsAPF K L] :
     ∃ E₀ : FiniteLayer K L, ∀ E F : FiniteLayer K L, E₀ ≤ E → E₀ ≤ F →
       ∀ x : NormLimit K L,
         normLimitCoordinateValuation K L E x = normLimitCoordinateValuation K L F x := by
-  obtain ⟨E₀, hE₀⟩ := IsAPF.exists_finiteLayer_residueInclusion_surjective K L hL
+  obtain ⟨E₀, hE₀⟩ := IsAPF.exists_finiteLayer_residueInclusion_surjective K L
   refine ⟨E₀, fun E F hE hF x => ?_⟩
   let G := FiniteLayer.sup E F
   have hEG : E ≤ G := FiniteLayer.le_sup_left E F
@@ -98,22 +98,22 @@ theorem IsAPF.exists_normLimitCoordinateValuation_stable (hL : IsAPF K L) :
 
 /-- The stable normalized multiplicative valuation on the original single
 norm-limit carrier. APF supplies and proves the actual finite stable tail. -/
-def normLimitValuation (hL : IsAPF K L) : NormLimit K L →*₀ WithZero (Multiplicative ℤ) :=
+def normLimitValuation [IsAPF K L] : NormLimit K L →*₀ WithZero (Multiplicative ℤ) :=
   normLimitCoordinateValuation K L
-    (IsAPF.exists_normLimitCoordinateValuation_stable K L hL).choose
+    (IsAPF.exists_normLimitCoordinateValuation_stable K L).choose
 
 /-- The same normalized valuation is computed by every sufficiently large
 original finite coordinate. -/
-theorem IsAPF.exists_normLimitValuation_eq_coordinate (hL : IsAPF K L) :
+theorem IsAPF.exists_normLimitValuation_eq_coordinate [IsAPF K L] :
     ∃ E₀ : FiniteLayer K L, ∀ E : FiniteLayer K L, E₀ ≤ E → ∀ x : NormLimit K L,
-      normLimitValuation K L hL x = normLimitCoordinateValuation K L E x := by
-  let hex := IsAPF.exists_normLimitCoordinateValuation_stable K L hL
+      normLimitValuation K L x = normLimitCoordinateValuation K L E x := by
+  let hex := IsAPF.exists_normLimitCoordinateValuation_stable K L
   exact ⟨hex.choose, fun E hE x => hex.choose_spec hex.choose E le_rfl hE x⟩
 
 /-- The stable normalized valuation detects zero on the original norm limit. -/
 @[simp]
-theorem normLimitValuation_eq_zero_iff (hL : IsAPF K L) (x : NormLimit K L) :
-    normLimitValuation K L hL x = 0 ↔ x = 0 := by
+theorem normLimitValuation_eq_zero_iff [IsAPF K L] (x : NormLimit K L) :
+    normLimitValuation K L x = 0 ↔ x = 0 := by
   simp [normLimitValuation, normLimitCoordinateValuation]
 
 end FontaineWintenberger

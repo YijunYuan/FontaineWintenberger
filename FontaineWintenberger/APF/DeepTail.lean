@@ -51,7 +51,7 @@ theorem apfPsi_le_apfRamificationBound_of_range_le
     exact h ⟨g, rfl⟩
   rw [comap_apf K M i hu'] at htop
   exact le_apfRamificationBound M N i
-    (IsAPF.apfPsi_mem_Ici K M (isAPF_of_finite K M) hu') htop
+    (IsAPF.apfPsi_mem_Ici K M hu') htop
 
 end FontaineWintenberger.AbstractFiniteBase
 
@@ -117,7 +117,7 @@ theorem apfPsi_le_relativeFirstBound_of_apfFiniteStage_le
 /-- The actual relative first bounds become arbitrarily large on a genuine
 finite-layer tail of the original abstract separable APF extension. Trivial
 steps retain their extended bound `∞`. -/
-theorem IsAPF.exists_finiteLayer_relativeFirstBound_ge (hL : IsAPF K L) (c : ℝ) :
+theorem IsAPF.exists_finiteLayer_relativeFirstBound_ge [IsAPF K L] (c : ℝ) :
     ∃ T : FiniteLayer K L, ∀ E F : FiniteLayer K L, T ≤ E → ∀ hEF : E ≤ F,
       letI := spectralNorm.nontriviallyNormedField K E.val
       letI := spectralNorm.normedAlgebra K E.val
@@ -129,7 +129,7 @@ theorem IsAPF.exists_finiteLayer_relativeFirstBound_ge (hL : IsAPF K L) (c : ℝ
   let j : L →ₐ[K] SeparableClosure K := IsSepClosed.lift
   let u := max c 0
   have hu : 0 ≤ u := le_max_right _ _
-  obtain ⟨T, hT⟩ := exists_finiteLayer_map_eq_apfFiniteStage K L hL j
+  obtain ⟨T, hT⟩ := exists_finiteLayer_map_eq_apfFiniteStage K L j
     (by linarith : -1 ≤ u)
   refine ⟨T, fun E F hTE hEF ↦ ?_⟩
   let := spectralNorm.nontriviallyNormedField K E.val
@@ -143,7 +143,7 @@ theorem IsAPF.exists_finiteLayer_relativeFirstBound_ge (hL : IsAPF K L) (c : ℝ
     exact IntermediateField.map_mono j hTE
   have hb := apfPsi_le_relativeFirstBound_of_apfFiniteStage_le K L E F hEF j hu hstage
   have hpsi : c ≤ apfPsi K E.val u :=
-    (le_max_left c 0).trans (IsAPF.le_apfPsi K E.val (isAPF_of_finite K E.val) u)
+    (le_max_left c 0).trans (IsAPF.le_apfPsi K E.val u)
   exact (EReal.coe_le_coe_iff.mpr hpsi).trans hb
 
 end FontaineWintenberger

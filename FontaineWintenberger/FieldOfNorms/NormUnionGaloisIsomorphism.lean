@@ -32,68 +32,68 @@ variable (L : IntermediateField K (SeparableClosure K)) [Normal K L]
 variable (p : ℕ) [Fact p.Prime]
     [CharP (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring) p]
-variable (hL : IsAPF K L) (hInfinite : ¬ Module.Finite K L)
+variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 
 local notation "Ω" => SeparableClosure K
 local notation "X" => NormLimit K L
-local notation "U" => SeparableNormUnion K L Ω p hL hInfinite
-local notation "ι" => separableNormUnionBaseHom K L Ω p hL hInfinite
-local notation "ρ" => normLimitAut K p hL hInfinite
-local notation "S" => normUnionGaloisSubgroup K L p hL hInfinite
-local notation "A" => separableNormUnionAbsoluteAut K L p hL hInfinite
-local notation "r" => normUnionGaloisRestriction K L p hL hInfinite
-local notation "κ" => normUnionGaloisKernelEquiv K L p hL hInfinite
+local notation "U" => SeparableNormUnion K L Ω p
+local notation "ι" => separableNormUnionBaseHom K L Ω p
+local notation "ρ" => normLimitAut K L p
+local notation "S" => normUnionGaloisSubgroup K L p
+local notation "A" => separableNormUnionAbsoluteAut K L p
+local notation "r" => normUnionGaloisRestriction K L p
+local notation "κ" => normUnionGaloisKernelEquiv K L p
 
 /-- The actual ambient action takes values in the original semilinear subgroup. -/
 def normUnionAmbientGaloisHom :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
     letI (N : FiniteLayer L Ω) : Field (NormLimit K N.val) :=
-      separableNormUnionStageField K L Ω p hL hInfinite N
+      separableNormUnionStageField K L Ω p N
     letI (N : FiniteLayer L Ω) : NonAssocSemiring (NormLimit K N.val) :=
-      (separableNormUnionStageField K L Ω p hL hInfinite N).toNonAssocSemiring
-    letI := normLimitField K L p hL hInfinite
-    letI := separableNormUnionField K L Ω p hL hInfinite
+      (separableNormUnionStageField K L Ω p N).toNonAssocSemiring
+    letI := normLimitField K L p
+    letI := separableNormUnionField K L Ω p
     letI : NonAssocSemiring U :=
-      (separableNormUnionField K L Ω p hL hInfinite).toNonAssocSemiring
-    letI : Mul U := (separableNormUnionField K L Ω p hL hInfinite).toMul
-    letI : Add U := (separableNormUnionField K L Ω p hL hInfinite).toAdd
+      (separableNormUnionField K L Ω p).toNonAssocSemiring
+    letI : Mul U := (separableNormUnionField K L Ω p).toMul
+    letI : Add U := (separableNormUnionField K L Ω p).toAdd
     letI : Group (RingAut U) := RingAut.instGroup U
     (Ω ≃ₐ[K] Ω) →* S := by
   letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
   letI (N : FiniteLayer L Ω) : Field (NormLimit K N.val) :=
-    separableNormUnionStageField K L Ω p hL hInfinite N
+    separableNormUnionStageField K L Ω p N
   letI (N : FiniteLayer L Ω) : NonAssocSemiring (NormLimit K N.val) :=
-    (separableNormUnionStageField K L Ω p hL hInfinite N).toNonAssocSemiring
-  letI := normLimitField K L p hL hInfinite
-  letI := separableNormUnionField K L Ω p hL hInfinite
+    (separableNormUnionStageField K L Ω p N).toNonAssocSemiring
+  letI := normLimitField K L p
+  letI := separableNormUnionField K L Ω p
   letI : NonAssocSemiring U :=
-    (separableNormUnionField K L Ω p hL hInfinite).toNonAssocSemiring
-  letI : Mul U := (separableNormUnionField K L Ω p hL hInfinite).toMul
-  letI : Add U := (separableNormUnionField K L Ω p hL hInfinite).toAdd
+    (separableNormUnionField K L Ω p).toNonAssocSemiring
+  letI : Mul U := (separableNormUnionField K L Ω p).toMul
+  letI : Add U := (separableNormUnionField K L Ω p).toAdd
   letI : Group (RingAut U) := RingAut.instGroup U
   refine (A).codRestrict S ?_
   intro σ
-  apply (mem_normUnionGaloisSubgroup K L p hL hInfinite (A σ)).mpr
+  apply (mem_normUnionGaloisSubgroup K L p (A σ)).mpr
   refine ⟨AlgEquiv.restrictNormalHom L σ, ?_⟩
   intro x
   simpa only [normLimitAbsoluteAut_apply] using
-    (separableNormUnionAbsoluteAut_base K L p hL hInfinite σ x)
+    (separableNormUnionAbsoluteAut_base K L p σ x)
 
-local notation "Φ" => normUnionAmbientGaloisHom K L p hL hInfinite
+local notation "Φ" => normUnionAmbientGaloisHom K L p
 
 /-- The subgroup-valued homomorphism retains the original action on every union element. -/
 theorem normUnionAmbientGaloisHom_apply :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
     letI (N : FiniteLayer L Ω) : Field (NormLimit K N.val) :=
-      separableNormUnionStageField K L Ω p hL hInfinite N
+      separableNormUnionStageField K L Ω p N
     letI (N : FiniteLayer L Ω) : NonAssocSemiring (NormLimit K N.val) :=
-      (separableNormUnionStageField K L Ω p hL hInfinite N).toNonAssocSemiring
-    letI := normLimitField K L p hL hInfinite
-    letI := separableNormUnionField K L Ω p hL hInfinite
+      (separableNormUnionStageField K L Ω p N).toNonAssocSemiring
+    letI := normLimitField K L p
+    letI := separableNormUnionField K L Ω p
     letI : NonAssocSemiring U :=
-      (separableNormUnionField K L Ω p hL hInfinite).toNonAssocSemiring
-    letI : Mul U := (separableNormUnionField K L Ω p hL hInfinite).toMul
-    letI : Add U := (separableNormUnionField K L Ω p hL hInfinite).toAdd
+      (separableNormUnionField K L Ω p).toNonAssocSemiring
+    letI : Mul U := (separableNormUnionField K L Ω p).toMul
+    letI : Add U := (separableNormUnionField K L Ω p).toAdd
     letI : Group (RingAut U) := RingAut.instGroup U
     ∀ (σ : Ω ≃ₐ[K] Ω) (z : U), (Φ σ).val z = A σ z := by
   intro σ z
@@ -103,48 +103,48 @@ theorem normUnionAmbientGaloisHom_apply :
 theorem normUnionAmbientGaloisHom_restriction :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
     letI (N : FiniteLayer L Ω) : Field (NormLimit K N.val) :=
-      separableNormUnionStageField K L Ω p hL hInfinite N
+      separableNormUnionStageField K L Ω p N
     letI (N : FiniteLayer L Ω) : NonAssocSemiring (NormLimit K N.val) :=
-      (separableNormUnionStageField K L Ω p hL hInfinite N).toNonAssocSemiring
-    letI := normLimitField K L p hL hInfinite
-    letI := separableNormUnionField K L Ω p hL hInfinite
+      (separableNormUnionStageField K L Ω p N).toNonAssocSemiring
+    letI := normLimitField K L p
+    letI := separableNormUnionField K L Ω p
     letI : NonAssocSemiring U :=
-      (separableNormUnionField K L Ω p hL hInfinite).toNonAssocSemiring
-    letI : Mul U := (separableNormUnionField K L Ω p hL hInfinite).toMul
-    letI : Add U := (separableNormUnionField K L Ω p hL hInfinite).toAdd
+      (separableNormUnionField K L Ω p).toNonAssocSemiring
+    letI : Mul U := (separableNormUnionField K L Ω p).toMul
+    letI : Add U := (separableNormUnionField K L Ω p).toAdd
     letI : Group (RingAut U) := RingAut.instGroup U
     ∀ σ : Ω ≃ₐ[K] Ω, r (Φ σ) = AlgEquiv.restrictNormalHom L σ := by
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
   let (N : FiniteLayer L Ω) : Field (NormLimit K N.val) :=
-    separableNormUnionStageField K L Ω p hL hInfinite N
+    separableNormUnionStageField K L Ω p N
   let (N : FiniteLayer L Ω) : NonAssocSemiring (NormLimit K N.val) :=
-    (separableNormUnionStageField K L Ω p hL hInfinite N).toNonAssocSemiring
-  let := normLimitField K L p hL hInfinite
-  let := separableNormUnionField K L Ω p hL hInfinite
+    (separableNormUnionStageField K L Ω p N).toNonAssocSemiring
+  let := normLimitField K L p
+  let := separableNormUnionField K L Ω p
   let : NonAssocSemiring U :=
-    (separableNormUnionField K L Ω p hL hInfinite).toNonAssocSemiring
-  let : Mul U := (separableNormUnionField K L Ω p hL hInfinite).toMul
-  let : Add U := (separableNormUnionField K L Ω p hL hInfinite).toAdd
+    (separableNormUnionField K L Ω p).toNonAssocSemiring
+  let : Mul U := (separableNormUnionField K L Ω p).toMul
+  let : Add U := (separableNormUnionField K L Ω p).toAdd
   let : Group (RingAut U) := RingAut.instGroup U
   intro σ
-  apply (normUnionGaloisRestriction_eq_iff K L p hL hInfinite _ _).mpr
+  apply (normUnionGaloisRestriction_eq_iff K L p _ _).mpr
   intro x
-  change A σ (ι x) = ι (normLimitAbsoluteAut K L p hL hInfinite σ x)
-  exact separableNormUnionAbsoluteAut_base K L p hL hInfinite σ x
+  change A σ (ι x) = ι (normLimitAbsoluteAut K L p σ x)
+  exact separableNormUnionAbsoluteAut_base K L p σ x
 
 /-- On the original relative Galois subgroup it is exactly the proved kernel correspondence. -/
 theorem normUnionAmbientGaloisHom_relative :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
     letI (N : FiniteLayer L Ω) : Field (NormLimit K N.val) :=
-      separableNormUnionStageField K L Ω p hL hInfinite N
+      separableNormUnionStageField K L Ω p N
     letI (N : FiniteLayer L Ω) : NonAssocSemiring (NormLimit K N.val) :=
-      (separableNormUnionStageField K L Ω p hL hInfinite N).toNonAssocSemiring
-    letI := normLimitField K L p hL hInfinite
-    letI := separableNormUnionField K L Ω p hL hInfinite
+      (separableNormUnionStageField K L Ω p N).toNonAssocSemiring
+    letI := normLimitField K L p
+    letI := separableNormUnionField K L Ω p
     letI : NonAssocSemiring U :=
-      (separableNormUnionField K L Ω p hL hInfinite).toNonAssocSemiring
-    letI : Mul U := (separableNormUnionField K L Ω p hL hInfinite).toMul
-    letI : Add U := (separableNormUnionField K L Ω p hL hInfinite).toAdd
+      (separableNormUnionField K L Ω p).toNonAssocSemiring
+    letI : Mul U := (separableNormUnionField K L Ω p).toMul
+    letI : Add U := (separableNormUnionField K L Ω p).toAdd
     letI : Group (RingAut U) := RingAut.instGroup U
     ∀ (τ :
       letI : Semiring Ω :=
@@ -155,55 +155,55 @@ theorem normUnionAmbientGaloisHom_relative :
       Φ (τ.restrictScalars K) = (κ τ).val := by
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
   let (N : FiniteLayer L Ω) : Field (NormLimit K N.val) :=
-    separableNormUnionStageField K L Ω p hL hInfinite N
+    separableNormUnionStageField K L Ω p N
   let (N : FiniteLayer L Ω) : NonAssocSemiring (NormLimit K N.val) :=
-    (separableNormUnionStageField K L Ω p hL hInfinite N).toNonAssocSemiring
-  let := normLimitField K L p hL hInfinite
-  let := separableNormUnionField K L Ω p hL hInfinite
+    (separableNormUnionStageField K L Ω p N).toNonAssocSemiring
+  let := normLimitField K L p
+  let := separableNormUnionField K L Ω p
   let : NonAssocSemiring U :=
-    (separableNormUnionField K L Ω p hL hInfinite).toNonAssocSemiring
-  let : Mul U := (separableNormUnionField K L Ω p hL hInfinite).toMul
-  let : Add U := (separableNormUnionField K L Ω p hL hInfinite).toAdd
+    (separableNormUnionField K L Ω p).toNonAssocSemiring
+  let : Mul U := (separableNormUnionField K L Ω p).toMul
+  let : Add U := (separableNormUnionField K L Ω p).toAdd
   let : Group (RingAut U) := RingAut.instGroup U
   intro τ
   apply Subtype.ext
   apply RingEquiv.ext
   intro z
   change A (τ.restrictScalars K) z = (κ τ).val.val z
-  exact (separableNormUnionAbsoluteAut_restrictScalars K L p hL hInfinite τ z).trans
-    (normUnionGaloisKernelEquiv_apply K L p hL hInfinite τ z).symm
+  exact (separableNormUnionAbsoluteAut_restrictScalars K L p τ z).trans
+    (normUnionGaloisKernelEquiv_apply K L p τ z).symm
 
 /-- The actual ambient action is faithful on the same union. -/
 theorem normUnionAmbientGaloisHom_injective :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
     letI (N : FiniteLayer L Ω) : Field (NormLimit K N.val) :=
-      separableNormUnionStageField K L Ω p hL hInfinite N
+      separableNormUnionStageField K L Ω p N
     letI (N : FiniteLayer L Ω) : NonAssocSemiring (NormLimit K N.val) :=
-      (separableNormUnionStageField K L Ω p hL hInfinite N).toNonAssocSemiring
-    letI := normLimitField K L p hL hInfinite
-    letI := separableNormUnionField K L Ω p hL hInfinite
+      (separableNormUnionStageField K L Ω p N).toNonAssocSemiring
+    letI := normLimitField K L p
+    letI := separableNormUnionField K L Ω p
     letI : NonAssocSemiring U :=
-      (separableNormUnionField K L Ω p hL hInfinite).toNonAssocSemiring
-    letI : Mul U := (separableNormUnionField K L Ω p hL hInfinite).toMul
-    letI : Add U := (separableNormUnionField K L Ω p hL hInfinite).toAdd
+      (separableNormUnionField K L Ω p).toNonAssocSemiring
+    letI : Mul U := (separableNormUnionField K L Ω p).toMul
+    letI : Add U := (separableNormUnionField K L Ω p).toAdd
     letI : Group (RingAut U) := RingAut.instGroup U
     Function.Injective (Φ) := by
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
   let (N : FiniteLayer L Ω) : Field (NormLimit K N.val) :=
-    separableNormUnionStageField K L Ω p hL hInfinite N
+    separableNormUnionStageField K L Ω p N
   let (N : FiniteLayer L Ω) : NonAssocSemiring (NormLimit K N.val) :=
-    (separableNormUnionStageField K L Ω p hL hInfinite N).toNonAssocSemiring
-  let := normLimitField K L p hL hInfinite
-  let := separableNormUnionField K L Ω p hL hInfinite
+    (separableNormUnionStageField K L Ω p N).toNonAssocSemiring
+  let := normLimitField K L p
+  let := separableNormUnionField K L Ω p
   let : NonAssocSemiring U :=
-    (separableNormUnionField K L Ω p hL hInfinite).toNonAssocSemiring
-  let : Mul U := (separableNormUnionField K L Ω p hL hInfinite).toMul
-  let : Add U := (separableNormUnionField K L Ω p hL hInfinite).toAdd
+    (separableNormUnionField K L Ω p).toNonAssocSemiring
+  let : Mul U := (separableNormUnionField K L Ω p).toMul
+  let : Add U := (separableNormUnionField K L Ω p).toAdd
   let : Group (RingAut U) := RingAut.instGroup U
   apply (injective_iff_map_eq_one (Φ)).mpr
   intro σ hσ
   have hr : AlgEquiv.restrictNormalHom L σ = 1 := by
-    rw [← normUnionAmbientGaloisHom_restriction K L p hL hInfinite σ, hσ, map_one]
+    rw [← normUnionAmbientGaloisHom_restriction K L p σ, hσ, map_one]
   have hfix : σ ∈ L.fixingSubgroup := by
     rw [← L.restrictNormalHom_ker]
     exact hr
@@ -213,7 +213,7 @@ theorem normUnionAmbientGaloisHom_injective :
     intro z
     rfl
   have hk : (κ τ).val = 1 :=
-    (normUnionAmbientGaloisHom_relative K L p hL hInfinite τ).symm.trans
+    (normUnionAmbientGaloisHom_relative K L p τ).symm.trans
       ((congrArg (Φ) ht).trans hσ)
   have hk_mem : κ τ = 1 := Subtype.ext hk
   have hτ : τ = 1 := (κ).injective (hk_mem.trans (κ).map_one.symm)
@@ -224,18 +224,18 @@ theorem normUnionAmbientGaloisHom_injective :
 
 /-- Every automorphism with original base restriction is an actual ambient Galois action. -/
 theorem normUnionAmbientGaloisHom_surjective :
-    Function.Surjective (normUnionAmbientGaloisHom K L p hL hInfinite) := by
+    Function.Surjective (normUnionAmbientGaloisHom K L p) := by
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
   let (N : FiniteLayer L Ω) : Field (NormLimit K N.val) :=
-    separableNormUnionStageField K L Ω p hL hInfinite N
+    separableNormUnionStageField K L Ω p N
   let (N : FiniteLayer L Ω) : NonAssocSemiring (NormLimit K N.val) :=
-    (separableNormUnionStageField K L Ω p hL hInfinite N).toNonAssocSemiring
-  let := normLimitField K L p hL hInfinite
-  let := separableNormUnionField K L Ω p hL hInfinite
+    (separableNormUnionStageField K L Ω p N).toNonAssocSemiring
+  let := normLimitField K L p
+  let := separableNormUnionField K L Ω p
   let : NonAssocSemiring U :=
-    (separableNormUnionField K L Ω p hL hInfinite).toNonAssocSemiring
-  let : Mul U := (separableNormUnionField K L Ω p hL hInfinite).toMul
-  let : Add U := (separableNormUnionField K L Ω p hL hInfinite).toAdd
+    (separableNormUnionField K L Ω p).toNonAssocSemiring
+  let : Mul U := (separableNormUnionField K L Ω p).toMul
+  let : Add U := (separableNormUnionField K L Ω p).toAdd
   let : Group (RingAut U) := RingAut.instGroup U
   intro β
   obtain ⟨σ, hσ⟩ := AlgEquiv.restrictNormalHom_surjective
@@ -244,11 +244,11 @@ theorem normUnionAmbientGaloisHom_surjective :
   have hδ : δ ∈ (r).ker := by
     change r δ = 1
     simp only [δ, map_mul, map_inv,
-      normUnionAmbientGaloisHom_restriction K L p hL hInfinite, hσ, mul_inv_cancel]
+      normUnionAmbientGaloisHom_restriction K L p, hσ, mul_inv_cancel]
   let d : (r).ker := ⟨δ, hδ⟩
   obtain ⟨τ, hτ⟩ := (κ).surjective d
   have hrel : Φ (τ.restrictScalars K) = δ :=
-    (normUnionAmbientGaloisHom_relative K L p hL hInfinite τ).trans
+    (normUnionAmbientGaloisHom_relative K L p τ).trans
       (congrArg Subtype.val hτ)
   refine ⟨τ.restrictScalars K * σ, ?_⟩
   exact ((Φ).map_mul (τ.restrictScalars K) σ).trans
@@ -258,60 +258,60 @@ theorem normUnionAmbientGaloisHom_surjective :
 def normUnionAmbientGaloisEquiv :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
     letI (N : FiniteLayer L Ω) : Field (NormLimit K N.val) :=
-      separableNormUnionStageField K L Ω p hL hInfinite N
+      separableNormUnionStageField K L Ω p N
     letI (N : FiniteLayer L Ω) : NonAssocSemiring (NormLimit K N.val) :=
-      (separableNormUnionStageField K L Ω p hL hInfinite N).toNonAssocSemiring
-    letI := normLimitField K L p hL hInfinite
-    letI := separableNormUnionField K L Ω p hL hInfinite
+      (separableNormUnionStageField K L Ω p N).toNonAssocSemiring
+    letI := normLimitField K L p
+    letI := separableNormUnionField K L Ω p
     letI : NonAssocSemiring U :=
-      (separableNormUnionField K L Ω p hL hInfinite).toNonAssocSemiring
-    letI : Mul U := (separableNormUnionField K L Ω p hL hInfinite).toMul
-    letI : Add U := (separableNormUnionField K L Ω p hL hInfinite).toAdd
+      (separableNormUnionField K L Ω p).toNonAssocSemiring
+    letI : Mul U := (separableNormUnionField K L Ω p).toMul
+    letI : Add U := (separableNormUnionField K L Ω p).toAdd
     letI : Group (RingAut U) := RingAut.instGroup U
     (Ω ≃ₐ[K] Ω) ≃* S := by
   letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
   letI (N : FiniteLayer L Ω) : Field (NormLimit K N.val) :=
-    separableNormUnionStageField K L Ω p hL hInfinite N
+    separableNormUnionStageField K L Ω p N
   letI (N : FiniteLayer L Ω) : NonAssocSemiring (NormLimit K N.val) :=
-    (separableNormUnionStageField K L Ω p hL hInfinite N).toNonAssocSemiring
-  letI := normLimitField K L p hL hInfinite
-  letI := separableNormUnionField K L Ω p hL hInfinite
+    (separableNormUnionStageField K L Ω p N).toNonAssocSemiring
+  letI := normLimitField K L p
+  letI := separableNormUnionField K L Ω p
   letI : NonAssocSemiring U :=
-    (separableNormUnionField K L Ω p hL hInfinite).toNonAssocSemiring
-  letI : Mul U := (separableNormUnionField K L Ω p hL hInfinite).toMul
-  letI : Add U := (separableNormUnionField K L Ω p hL hInfinite).toAdd
+    (separableNormUnionField K L Ω p).toNonAssocSemiring
+  letI : Mul U := (separableNormUnionField K L Ω p).toMul
+  letI : Add U := (separableNormUnionField K L Ω p).toAdd
   letI : Group (RingAut U) := RingAut.instGroup U
   exact MulEquiv.ofBijective (Φ)
-    ⟨normUnionAmbientGaloisHom_injective K L p hL hInfinite,
-      normUnionAmbientGaloisHom_surjective K L p hL hInfinite⟩
+    ⟨normUnionAmbientGaloisHom_injective K L p,
+      normUnionAmbientGaloisHom_surjective K L p⟩
 
 /-- The final group isomorphism is the literal original same-union action. -/
 theorem normUnionAmbientGaloisEquiv_apply :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
     letI (N : FiniteLayer L Ω) : Field (NormLimit K N.val) :=
-      separableNormUnionStageField K L Ω p hL hInfinite N
+      separableNormUnionStageField K L Ω p N
     letI (N : FiniteLayer L Ω) : NonAssocSemiring (NormLimit K N.val) :=
-      (separableNormUnionStageField K L Ω p hL hInfinite N).toNonAssocSemiring
-    letI := normLimitField K L p hL hInfinite
-    letI := separableNormUnionField K L Ω p hL hInfinite
+      (separableNormUnionStageField K L Ω p N).toNonAssocSemiring
+    letI := normLimitField K L p
+    letI := separableNormUnionField K L Ω p
     letI : NonAssocSemiring U :=
-      (separableNormUnionField K L Ω p hL hInfinite).toNonAssocSemiring
-    letI : Mul U := (separableNormUnionField K L Ω p hL hInfinite).toMul
-    letI : Add U := (separableNormUnionField K L Ω p hL hInfinite).toAdd
+      (separableNormUnionField K L Ω p).toNonAssocSemiring
+    letI : Mul U := (separableNormUnionField K L Ω p).toMul
+    letI : Add U := (separableNormUnionField K L Ω p).toAdd
     letI : Group (RingAut U) := RingAut.instGroup U
     ∀ (σ : Ω ≃ₐ[K] Ω) (z : U),
-      (normUnionAmbientGaloisEquiv K L p hL hInfinite σ).val z = A σ z := by
+      (normUnionAmbientGaloisEquiv K L p σ).val z = A σ z := by
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
   let (N : FiniteLayer L Ω) : Field (NormLimit K N.val) :=
-    separableNormUnionStageField K L Ω p hL hInfinite N
+    separableNormUnionStageField K L Ω p N
   let (N : FiniteLayer L Ω) : NonAssocSemiring (NormLimit K N.val) :=
-    (separableNormUnionStageField K L Ω p hL hInfinite N).toNonAssocSemiring
-  let := normLimitField K L p hL hInfinite
-  let := separableNormUnionField K L Ω p hL hInfinite
+    (separableNormUnionStageField K L Ω p N).toNonAssocSemiring
+  let := normLimitField K L p
+  let := separableNormUnionField K L Ω p
   let : NonAssocSemiring U :=
-    (separableNormUnionField K L Ω p hL hInfinite).toNonAssocSemiring
-  let : Mul U := (separableNormUnionField K L Ω p hL hInfinite).toMul
-  let : Add U := (separableNormUnionField K L Ω p hL hInfinite).toAdd
+    (separableNormUnionField K L Ω p).toNonAssocSemiring
+  let : Mul U := (separableNormUnionField K L Ω p).toMul
+  let : Add U := (separableNormUnionField K L Ω p).toAdd
   let : Group (RingAut U) := RingAut.instGroup U
   intro σ z
   rfl

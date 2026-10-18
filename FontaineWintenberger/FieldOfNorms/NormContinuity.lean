@@ -52,21 +52,21 @@ theorem apfPhi_finiteBase_comp_of_normedAlgebra (r : ℝ) :
     letI := normedAlgebra_residueField_perfectField K M
     letI := Algebra.isSeparable_tower_top_of_isSeparable K M N
     letI : FiniteDimensional M N := Module.Finite.right K M N
-    apfPhi K M (isAPF_of_finite K M)
-        (apfPhi M N (isAPF_of_finite M N) r) =
-      apfPhi K N (isAPF_of_finite K N) r := by
+    apfPhi K M
+        (apfPhi M N r) =
+      apfPhi K N r := by
   let := normedAlgebra_isCompleteDiscreteValuedField K M
   let := normedAlgebra_residueField_perfectField K M
   let := Algebra.isSeparable_tower_top_of_isSeparable K M N
   let : FiniteDimensional M N := Module.Finite.right K M N
-  apply (IsAPF.strictMono_apfPsi K N (isAPF_of_finite K N)).injective
+  apply (IsAPF.strictMono_apfPsi K N).injective
   calc
     _ = apfPsi M N (apfPsi K M
-        (apfPhi K M (isAPF_of_finite K M)
-          (apfPhi M N (isAPF_of_finite M N) r))) :=
-      (IsAPF.apfPsi_finiteBase_comp_of_normedAlgebra K M N (isAPF_of_finite K N) _).symm
+        (apfPhi K M
+          (apfPhi M N r))) :=
+      (IsAPF.apfPsi_finiteBase_comp_of_normedAlgebra K M N _).symm
     _ = r := by rw [apfPsi_apfPhi, apfPsi_apfPhi]
-    _ = _ := (apfPsi_apfPhi K N (isAPF_of_finite K N) r).symm
+    _ = _ := (apfPsi_apfPhi K N r).symm
 
 end HerbrandTowers
 
@@ -93,6 +93,7 @@ theorem integerNorm_prime_sub_congruence
     let F' := IntermediateField.extendScalars hEF
     letI : FiniteDimensional K F' := F.property
     letI : FiniteDimensional E.val F' := Module.Finite.right K E.val F'
+    haveI : IsAPF E.val F' := isAPF_of_finite E.val F'
     ∀ (_ : IsGalois E.val F') (_ : Module.finrank E.val F' = p)
       (_ : (IsLocalRing.maximalIdeal (spectralIntegerRing E.val F')).ramificationIdx
         (NormedField.valuation (K := E.val)).valuationSubring = Module.finrank E.val F')
@@ -100,7 +101,7 @@ theorem integerNorm_prime_sub_congruence
       x - y ∈ IsLocalRing.maximalIdeal (spectralIntegerRing K F.val) ^ r →
         integerNorm E F hEF x - integerNorm E F hEF y ∈
           IsLocalRing.maximalIdeal (spectralIntegerRing K E.val) ^
-            ⌈apfPhi E.val F' (isAPF_of_finite E.val F') (r : ℝ)⌉₊ := by
+            ⌈apfPhi E.val F' (r : ℝ)⌉₊ := by
   dsimp only
   intro hgal hd he r x y hxy
   let F' := IntermediateField.extendScalars hEF
@@ -117,7 +118,7 @@ theorem integerNorm_prime_sub_congruence
     rw [← map_sub, mem_maximalIdeal_pow_iff_addVal, addVal_ringEquiv]
     exact (mem_maximalIdeal_pow_iff_addVal _ _).mp hxy
   have hp : (Module.finrank E.val F').Prime := hd.symm ▸ (Fact.out : p.Prime)
-  let s : ℕ := ⌈apfPhi E.val F' (isAPF_of_finite E.val F') (r : ℝ)⌉₊
+  let s : ℕ := ⌈apfPhi E.val F' (r : ℝ)⌉₊
   have hc : Algebra.intNorm (NormedField.valuation (K := E.val)).valuationSubring T (e x) -
       Algebra.intNorm (NormedField.valuation (K := E.val)).valuationSubring T (e y) ∈
       IsLocalRing.maximalIdeal (NormedField.valuation (K := E.val)).valuationSubring ^ s :=
@@ -156,9 +157,9 @@ theorem apfPhi_tower (E F G : FiniteLayer K Ω) (hEF : E ≤ F) (hFG : F ≤ G) 
     letI := Algebra.isSeparable_tower_top_of_isSeparable K E.val F.val
     letI := Algebra.isSeparable_tower_top_of_isSeparable K E.val G.val
     letI := Algebra.isSeparable_tower_top_of_isSeparable K F.val G.val
-    apfPhi E.val F.val (isAPF_of_finite E.val F.val)
-        (apfPhi F.val G.val (isAPF_of_finite F.val G.val) r) =
-      apfPhi E.val G.val (isAPF_of_finite E.val G.val) r := by
+    apfPhi E.val F.val
+        (apfPhi F.val G.val r) =
+      apfPhi E.val G.val r := by
   let : Algebra E.val F.val := (IntermediateField.inclusion hEF).toRingHom.toAlgebra
   let : Algebra F.val G.val := (IntermediateField.inclusion hFG).toRingHom.toAlgebra
   let : Algebra E.val G.val := (IntermediateField.inclusion (hEF.trans hFG)).toRingHom.toAlgebra

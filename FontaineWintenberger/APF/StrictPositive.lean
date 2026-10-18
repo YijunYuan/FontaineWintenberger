@@ -26,25 +26,25 @@ open scoped ENNReal
 variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
-theorem isStrictlyAPF_of_constant_pos_of_bound_eq_coe (hL : IsAPF K L)
+theorem isStrictlyAPF_of_constant_pos_of_bound_eq_coe [IsAPF K L]
     {b : ℝ} (hb : apfRamificationBound K L = (b : EReal))
     (hc : 0 < apfStrictnessConstant K L) : IsStrictlyAPF K L := by
-  refine ⟨hL, hc.trans_le ?_⟩
+  refine ⟨hc.trans_le ?_⟩
   refine le_liminf_of_le (h := ?_)
   apply eventually_atTop.mpr
   refine ⟨b, fun u hu ↦ apfStrictnessConstant_le K L ?_⟩
   rw [hb]
   exact EReal.coe_le_coe_iff.mpr hu
 
-theorem IsStrictlyAPF.constant_pos_of_bound_eq_coe (hL : IsStrictlyAPF K L)
+theorem IsStrictlyAPF.constant_pos_of_bound_eq_coe [IsStrictlyAPF K L]
     {b : ℝ} (hb : apfRamificationBound K L = (b : EReal)) (hbpos : 0 < b) :
     0 < apfStrictnessConstant K L := by
-  obtain ⟨ε, hεpos, hεlim⟩ := exists_between hL.2
+  obtain ⟨ε, hεpos, hεlim⟩ := exists_between (IsStrictlyAPF.liminf_pos (K := K) (L := L))
   obtain ⟨T₀, hT₀⟩ := eventually_atTop.mp (eventually_lt_of_lt_liminf hεlim)
   let T := max T₀ b
   have hTnonneg : 0 ≤ T := hbpos.le.trans (le_max_right T₀ b)
   have hapos : (0 : ℝ) < (apfIndex K L T : ℝ) :=
-    Nat.cast_pos.mpr (IsAPF.apfIndex_pos K L hL.1 hTnonneg)
+    Nat.cast_pos.mpr (IsAPF.apfIndex_pos K L hTnonneg)
   have hpositive : 0 < min ε (ENNReal.ofReal (b / (apfIndex K L T : ℝ))) :=
     lt_min hεpos (ENNReal.ofReal_pos.mpr (div_pos hbpos hapos))
   apply hpositive.trans_le
@@ -56,25 +56,26 @@ theorem IsStrictlyAPF.constant_pos_of_bound_eq_coe (hL : IsStrictlyAPF K L)
   have hunonneg : 0 ≤ u := hbpos.le.trans hbu
   by_cases huT : u ≤ T
   · have hau : (0 : ℝ) < (apfIndex K L u : ℝ) :=
-      Nat.cast_pos.mpr (IsAPF.apfIndex_pos K L hL.1 hunonneg)
+      Nat.cast_pos.mpr (IsAPF.apfIndex_pos K L hunonneg)
     have ha_le : (apfIndex K L u : ℝ) ≤ (apfIndex K L T : ℝ) :=
-      Nat.cast_le.mpr (IsAPF.apfIndex_monotoneOn K L hL.1 hunonneg hTnonneg huT)
+      Nat.cast_le.mpr (IsAPF.apfIndex_monotoneOn K L hunonneg hTnonneg huT)
     have hbound : b / (apfIndex K L T : ℝ) ≤ apfPsi K L u / (apfIndex K L u : ℝ) :=
       (div_le_div_of_nonneg_left hbpos.le hau ha_le).trans
-        ((div_le_div_iff_of_pos_right hau).mpr (hbu.trans (IsAPF.le_apfPsi K L hL.1 u)))
+        ((div_le_div_iff_of_pos_right hau).mpr (hbu.trans (IsAPF.le_apfPsi K L u)))
     exact (min_le_right _ _).trans (ENNReal.ofReal_le_ofReal hbound)
   · exact (min_le_left _ _).trans (hT₀ u ((le_max_left T₀ b).trans (le_of_not_ge huT))).le
 
 /-- The source positivity criterion, including the infinite first-bound endpoint. -/
-theorem isStrictlyAPF_iff_constant_pos (hL : IsAPF K L)
+theorem isStrictlyAPF_iff_constant_pos [IsAPF K L]
     (hi : (0 : EReal) < apfRamificationBound K L) :
     IsStrictlyAPF K L ↔ 0 < apfStrictnessConstant K L := by
   generalize hb : apfRamificationBound K L = b at hi
   cases b using EReal.rec with
   | bot => simp at hi
   | coe b =>
-    exact ⟨fun h ↦ IsStrictlyAPF.constant_pos_of_bound_eq_coe K L h hb (EReal.coe_pos.mp hi),
-      fun hc ↦ isStrictlyAPF_of_constant_pos_of_bound_eq_coe K L hL hb hc⟩
+    exact ⟨fun h ↦ haveI := h;
+        IsStrictlyAPF.constant_pos_of_bound_eq_coe K L hb (EReal.coe_pos.mp hi),
+      fun hc ↦ isStrictlyAPF_of_constant_pos_of_bound_eq_coe K L hb hc⟩
   | top =>
     exact iff_of_true (isStrictlyAPF_of_bound_eq_top K L hb)
       (by rw [apfStrictnessConstant_of_bound_eq_top K L hb]; simp)

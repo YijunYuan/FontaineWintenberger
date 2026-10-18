@@ -33,28 +33,28 @@ variable (L : IntermediateField K (SeparableClosure K))
 variable (p : ℕ) [Fact p.Prime]
     [CharP (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring) p]
-variable (hL : IsAPF K L) (hInfinite : ¬ Module.Finite K L)
+variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 
 local notation "Ω" => SeparableClosure K
 local notation "X" => NormLimit K L
-local notation "U" => SeparableNormUnion K L Ω p hL hInfinite
-local notation "ι" => separableNormUnionBaseHom K L Ω p hL hInfinite
-local notation "ρ" => normLimitAut K p hL hInfinite
+local notation "U" => SeparableNormUnion K L Ω p
+local notation "ι" => separableNormUnionBaseHom K L Ω p
+local notation "ρ" => normLimitAut K L p
 
 /-- The literal source target, inside ring automorphisms of the same union. -/
 def normUnionGaloisSubgroup :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
-    letI := normLimitField K L p hL hInfinite
-    letI := separableNormUnionField K L Ω p hL hInfinite
-    letI : Mul U := (separableNormUnionField K L Ω p hL hInfinite).toMul
-    letI : Add U := (separableNormUnionField K L Ω p hL hInfinite).toAdd
+    letI := normLimitField K L p
+    letI := separableNormUnionField K L Ω p
+    letI : Mul U := (separableNormUnionField K L Ω p).toMul
+    letI : Add U := (separableNormUnionField K L Ω p).toAdd
     letI : Group (RingAut U) := RingAut.instGroup U
     Subgroup (RingAut U) := by
   letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
-  letI := normLimitField K L p hL hInfinite
-  letI := separableNormUnionField K L Ω p hL hInfinite
-  letI : Mul U := (separableNormUnionField K L Ω p hL hInfinite).toMul
-  letI : Add U := (separableNormUnionField K L Ω p hL hInfinite).toAdd
+  letI := normLimitField K L p
+  letI := separableNormUnionField K L Ω p
+  letI : Mul U := (separableNormUnionField K L Ω p).toMul
+  letI : Add U := (separableNormUnionField K L Ω p).toAdd
   letI : Group (RingAut U) := RingAut.instGroup U
   exact
     { carrier := {β | ∃ σ : L ≃ₐ[K] L, ∀ x : X, β (ι x) = ι (ρ σ x)}
@@ -84,18 +84,18 @@ def normUnionGaloisSubgroup :
 /-- Membership means an actual commuting square with an original automorphism. -/
 theorem mem_normUnionGaloisSubgroup :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
-    letI := normLimitField K L p hL hInfinite
-    letI := separableNormUnionField K L Ω p hL hInfinite
-    letI : Mul U := (separableNormUnionField K L Ω p hL hInfinite).toMul
-    letI : Add U := (separableNormUnionField K L Ω p hL hInfinite).toAdd
+    letI := normLimitField K L p
+    letI := separableNormUnionField K L Ω p
+    letI : Mul U := (separableNormUnionField K L Ω p).toMul
+    letI : Add U := (separableNormUnionField K L Ω p).toAdd
     letI : Group (RingAut U) := RingAut.instGroup U
-    ∀ β : RingAut U, β ∈ normUnionGaloisSubgroup K L p hL hInfinite ↔
+    ∀ β : RingAut U, β ∈ normUnionGaloisSubgroup K L p ↔
       ∃ σ : L ≃ₐ[K] L, ∀ x : X, β (ι x) = ι (ρ σ x) := by
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
-  let := normLimitField K L p hL hInfinite
-  let := separableNormUnionField K L Ω p hL hInfinite
-  let : Mul U := (separableNormUnionField K L Ω p hL hInfinite).toMul
-  let : Add U := (separableNormUnionField K L Ω p hL hInfinite).toAdd
+  let := normLimitField K L p
+  let := separableNormUnionField K L Ω p
+  let : Mul U := (separableNormUnionField K L Ω p).toMul
+  let : Add U := (separableNormUnionField K L Ω p).toAdd
   let : Group (RingAut U) := RingAut.instGroup U
   intro β
   rfl
@@ -103,25 +103,25 @@ theorem mem_normUnionGaloisSubgroup :
 /-- The base square determines its original automorphism uniquely. -/
 theorem normUnionGaloisSubgroup_base_unique :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
-    letI := normLimitField K L p hL hInfinite
-    letI := separableNormUnionField K L Ω p hL hInfinite
-    letI : Mul U := (separableNormUnionField K L Ω p hL hInfinite).toMul
-    letI : Add U := (separableNormUnionField K L Ω p hL hInfinite).toAdd
+    letI := normLimitField K L p
+    letI := separableNormUnionField K L Ω p
+    letI : Mul U := (separableNormUnionField K L Ω p).toMul
+    letI : Add U := (separableNormUnionField K L Ω p).toAdd
     letI : Group (RingAut U) := RingAut.instGroup U
     ∀ (β : RingAut U) (σ τ : L ≃ₐ[K] L),
       (∀ x : X, β (ι x) = ι (ρ σ x)) →
       (∀ x : X, β (ι x) = ι (ρ τ x)) → σ = τ := by
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
-  let := normLimitField K L p hL hInfinite
-  let := separableNormUnionField K L Ω p hL hInfinite
-  let : Mul U := (separableNormUnionField K L Ω p hL hInfinite).toMul
-  let : Add U := (separableNormUnionField K L Ω p hL hInfinite).toAdd
+  let := normLimitField K L p
+  let := separableNormUnionField K L Ω p
+  let : Mul U := (separableNormUnionField K L Ω p).toMul
+  let : Add U := (separableNormUnionField K L Ω p).toAdd
   let : Group (RingAut U) := RingAut.instGroup U
   intro β σ τ hσ hτ
-  apply normLimitAut_injective K L p hL hInfinite
+  apply normLimitAut_injective K L p
   apply RingEquiv.ext
   intro x
-  let : Nontrivial U := (separableNormUnionField K L Ω p hL hInfinite).toNontrivial
+  let : Nontrivial U := (separableNormUnionField K L Ω p).toNontrivial
   apply (ι).injective
   exact (hσ x).symm.trans (hτ x)
 
@@ -129,19 +129,19 @@ theorem normUnionGaloisSubgroup_base_unique :
 and membership of its transported restriction in the actual action image. -/
 theorem mem_normUnionGaloisSubgroup_iff_stable_image :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
-    letI := normLimitField K L p hL hInfinite
-    letI := separableNormUnionField K L Ω p hL hInfinite
-    letI : Mul U := (separableNormUnionField K L Ω p hL hInfinite).toMul
-    letI : Add U := (separableNormUnionField K L Ω p hL hInfinite).toAdd
+    letI := normLimitField K L p
+    letI := separableNormUnionField K L Ω p
+    letI : Mul U := (separableNormUnionField K L Ω p).toMul
+    letI : Add U := (separableNormUnionField K L Ω p).toAdd
     letI : Group (RingAut U) := RingAut.instGroup U
-    ∀ β : RingAut U, β ∈ normUnionGaloisSubgroup K L p hL hInfinite ↔
+    ∀ β : RingAut U, β ∈ normUnionGaloisSubgroup K L p ↔
       β '' Set.range ι = Set.range ι ∧
         ∃ a ∈ (ρ).range, ∀ x : X, β (ι x) = ι (a x) := by
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
-  let := normLimitField K L p hL hInfinite
-  let := separableNormUnionField K L Ω p hL hInfinite
-  let : Mul U := (separableNormUnionField K L Ω p hL hInfinite).toMul
-  let : Add U := (separableNormUnionField K L Ω p hL hInfinite).toAdd
+  let := normLimitField K L p
+  let := separableNormUnionField K L Ω p
+  let : Mul U := (separableNormUnionField K L Ω p).toMul
+  let : Add U := (separableNormUnionField K L Ω p).toAdd
   let : Group (RingAut U) := RingAut.instGroup U
   intro β
   rw [mem_normUnionGaloisSubgroup]

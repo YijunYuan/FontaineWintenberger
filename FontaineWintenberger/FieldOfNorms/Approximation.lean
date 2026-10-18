@@ -56,15 +56,15 @@ variable (p : ℕ) [Fact p.Prime]
 
 /-- The actual sum of arbitrary original norm families agrees with coordinate
 addition to every eventual ideal-power precision. -/
-theorem normLimitAdd_sub_mem (hL : IsAPF K L) (α β : NormLimit K L) :
+theorem normLimitAdd_sub_mem [IsAPF K L] (α β : NormLimit K L) :
     ∀ n : ℕ, ∃ T : FiniteLayer K L, ∀ E : FiniteLayer K L, T ≤ E →
-      normLimitEval K L E (normLimitAdd K L p hL α β) -
+      normLimitEval K L E (normLimitAdd K L p α β) -
         normLimitEval K L E α - normLimitEval K L E β ∈
         (fun x : spectralIntegerRing K E.val => (x : E.val)) ''
           ((IsLocalRing.maximalIdeal (spectralIntegerRing K E.val) ^ n :
             Ideal (spectralIntegerRing K E.val)) : Set (spectralIntegerRing K E.val)) := by
   classical
-  let w := normLimitValuation K L hL
+  let w := normLimitValuation K L
   let S : Finset (NormLimit K L) := {1, α, β}
   obtain ⟨δ, _, hmax⟩ := Finset.exists_max_image S w ⟨1, by simp [S]⟩
   have hone : 1 ≤ w δ := by simpa only [map_one] using hmax 1 (by simp [S])
@@ -86,10 +86,10 @@ theorem normLimitAdd_sub_mem (hL : IsAPF K L) (α β : NormLimit K L) :
   let q := (WithZero.log (w δ)).toNat
   have hδbound : w δ ≤ WithZero.exp (q : ℤ) :=
     WithZero.le_exp_log.trans (WithZero.exp_le_exp.mpr (Int.self_le_toNat _))
-  obtain ⟨T₀, hT₀⟩ := IsAPF.exists_normLimitValuation_eq_coordinate K L hL
+  obtain ⟨T₀, hT₀⟩ := IsAPF.exists_normLimitValuation_eq_coordinate K L
   intro n
   obtain ⟨T₁, hT₁⟩ := normLimitAdd_sub_mem_of_valuation_le_one
-    K L p hL (α / δ) (β / δ) ha hb (n + q)
+    K L p (α / δ) (β / δ) ha hb (n + q)
   refine ⟨FiniteLayer.sup T₀ T₁, fun E hE => ?_⟩
   have hE₀ := (FiniteLayer.le_sup_left T₀ T₁).trans hE
   have hE₁ := (FiniteLayer.le_sup_right T₀ T₁).trans hE
@@ -98,7 +98,7 @@ theorem normLimitAdd_sub_mem (hL : IsAPF K L) (α β : NormLimit K L) :
     change normLimitCoordinateValuation K L E δ ≤ _
     rw [← hT₀ E hE₀ δ]
     exact hδbound
-  have hvε : v (normLimitEval K L E (normLimitAdd K L p hL (α / δ) (β / δ)) -
+  have hvε : v (normLimitEval K L E (normLimitAdd K L p (α / δ) (β / δ)) -
       normLimitEval K L E (α / δ) - normLimitEval K L E (β / δ)) ≤
         WithZero.exp (-((n + q : ℕ) : ℤ)) :=
     (ValuationSubring.mem_image_maximalIdeal_pow_iff_normalizedValuation
@@ -106,16 +106,16 @@ theorem normLimitAdd_sub_mem (hL : IsAPF K L) (α β : NormLimit K L) :
   apply (ValuationSubring.mem_image_maximalIdeal_pow_iff_normalizedValuation
     (spectralIntegerRing K E.val) _ n).mpr
   have hs := congrArg (normLimitEval K L E)
-    (mul_normLimitAdd K L p hL δ (α / δ) (β / δ))
+    (mul_normLimitAdd K L p δ (α / δ) (β / δ))
   rw [map_mul, hδα, hδβ] at hs
   have hαE : normLimitEval K L E δ * normLimitEval K L E (α / δ) =
       normLimitEval K L E α := by rw [← map_mul, hδα]
   have hβE : normLimitEval K L E δ * normLimitEval K L E (β / δ) =
       normLimitEval K L E β := by rw [← map_mul, hδβ]
-  have heq : normLimitEval K L E (normLimitAdd K L p hL α β) -
+  have heq : normLimitEval K L E (normLimitAdd K L p α β) -
       normLimitEval K L E α - normLimitEval K L E β =
       normLimitEval K L E δ *
-        (normLimitEval K L E (normLimitAdd K L p hL (α / δ) (β / δ)) -
+        (normLimitEval K L E (normLimitAdd K L p (α / δ) (β / δ)) -
           normLimitEval K L E (α / δ) - normLimitEval K L E (β / δ)) := by
     rw [← hs, ← hαE, ← hβE]
     ring

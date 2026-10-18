@@ -497,3 +497,19 @@ FontaineWintenberger/
 - **范围调整**：`PerfectField 𝓀[K]` 在 F1a 保持为独立 binder。`IsPerfectResidueLocalField` 额外断言剩余特征为素数，仅有 `PerfectField` 假设的调用方构造不出它；并入将与 `p → residueChar K` 一起在 F1b 完成（届时 `[Fact p.Prime] [CharP 𝓀 p]` 正好提供素特征）。
 - 可重放脚本 `scripts/f1a_headers.py`（从干净树一次跑完）；零散问题手工修（`RamificationTransfer` 三处重复 `CompleteSpace` 实例导致 `whnf` 超时；`NormContinuity`/`EmbeddingRestrictionBounds` 的多余 `[CompleteSpace M]`；`AbstractFiniteBase` 的 `PerfectField` 安装点拆回两条）。
 - 全量构建零错误零警告。最慢文件耗时与 F0（关闭 `maxSynthPendingDepth` 后）基本持平：NormUnionAbsoluteAction 2751 s、NormUnionGaloisRestrictionFun 1771 s、NormUnionGaloisAction 772–933 s。
+
+### A2（分支 `refactor`，2026-10-19，进行中）
+- `IsAPFSubextension`、`IsAPF`、`IsStrictlyAPF` 已是 class（`scripts/a2_core.py`）；实例：`isAPF_of_finite`、`IsAPF.intermediateField`、`IsAPFSubextension ↔ IsAPF` 双向、`separableNormUnionStage_isAPF`、`separableNormUnionStage_fact_infinite`。
+- `hInfinite : ¬ Module.Finite K L` → `[Fact (¬ Module.Finite K L)]`（A3）。
+- 机械替换 `scripts/a2_isapf_class.py`（按文件只删在 HEAD 中确实绑定为 APF/无限假设的名字，区分"作为参数"与"作为函数头"），其余手修：`.1/.2` 投影 → `toIsAPF`/`liminf_pos`；`⟨hL, _⟩` → `⟨_⟩`；`have hX := …` → `haveI/have`；`normLimitAut` 的 `L` 改为显式参数（原先只经 `hL` 隐式确定）。
+- APF 层 43 文件全部通过；FieldOfNorms 层正在收尾。
+
+### F5 设计细化（待 A2 提交后执行）
+1. **`FieldOfNorms K L`**：`def FieldOfNorms := WithZero (normCompatibleUnits K L)`；`instance : CommGroupWithZero := inferInstanceAs …`（无条件）；`instance : Nontrivial`、`Inhabited`。`coord E : FieldOfNorms K L →*₀ E` 替代 `normLimitEval`。
+2. **加法与域**：`normLimitAdd` 的定义只依赖 `[IsAPF K L]`（`p` 仅被线程传递，`Convergence.lean` 中唯一实质使用是 `p ∈ 𝔪^n` 的发散性，来自 `PrimeValuation`）。目标：
+   - `instance [IsAPF K L] : AddCommMonoid (FieldOfNorms K L)`、`CommSemiring`（term-mode，`add := FieldOfNorms.add`）。
+   - `instance [IsAPF K L] [Fact (¬ Module.Finite K L)] : Field (FieldOfNorms K L)`：`neg α := (residueChar K - 1) • α`，`{ (inferInstance : CommSemiring _), (inferInstance : CommGroupWithZero _) with … }`，使 `Field.toCommGroupWithZero` 对原实例 `rfl`。需要 `IsPerfectResidueLocalField K`（提供 `residueChar`、素性与 `CharP 𝓀 p`），因此 FieldOfNorms 层的 K 头在 F5 一并改成 `[IsPerfectResidueLocalField K]`，`p` → `residueChar K`（即原 F1b 的剩余部分，并入 F5）。
+   - `instance : CharP (FieldOfNorms K L) (residueChar K)`、`Valued _ ℤᵐ⁰`、`IsRankOneDiscrete`、`IsDiscreteValuationRing 𝒪[X]`、`CompleteSpace`、`PerfectField 𝓀[X]`（现为定理 → instance）。
+3. **`RelFieldOfNorms K L M`**（现 `SeparableNormUnion`，91 处类型出现）：`def … := DirectLimit (fun N : FiniteLayer L M => FieldOfNorms K N) (transition …)`；stage 的 `Field` 由 1–2 的全局实例给出，所以 Mathlib 的 `DirectLimit` 域实例直接成立（`[∀ i, Field (G i)] [∀ i j h, RingHomClass (T h) …]`）；`instance : Algebra (FieldOfNorms K L) (RelFieldOfNorms K L M)`。删除 683 处 `letI := normLimitField`、182 处 `separableNormUnionField`、118 处 `separableNormUnionAlgebra`、68 处 `normLimitValued` 以及全部 `letI : Mul U/Add U/NonAssocSemiring U/Group (RingAut U)` 投影 pin。
+4. 六个最慢文件改用泛型 `[IsSepClosure K Ω]`，只在末尾特化到 `SeparableClosure K`。
+5. 顺序：先在 `Multiplicative/Addition/…/Field/Valued` 建新实例并保留旧名为 `abbrev`/`theorem` 别名 → 构建通过 → 全库删 `letI` → 再重命名 `NormLimit → FieldOfNorms`。

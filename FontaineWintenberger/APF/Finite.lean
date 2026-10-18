@@ -75,9 +75,9 @@ theorem apfPsi_eq_inverseHerbrandFunction {u : ℝ} (hu : -1 ≤ u) :
     exact congrArg (fun n : ℕ ↦ (n : ℝ)) (apfIndex_eq_upperRelIndex K L hv.1)
 
 /-- The actual inverse of the APF integral is the finite Herbrand function. -/
-theorem apfPhi_eq_herbrandFunction (hL : IsAPF K L) {u : ℝ} (hu : -1 ≤ u) :
-    apfPhi K L hL u = herbrandFunction (R := spectralIntegerRing K L) (L ≃ₐ[K] L) u := by
-  apply (IsAPF.strictMono_apfPsi K L hL).injective
+theorem apfPhi_eq_herbrandFunction [IsAPF K L] {u : ℝ} (hu : -1 ≤ u) :
+    apfPhi K L u = herbrandFunction (R := spectralIntegerRing K L) (L ≃ₐ[K] L) u := by
+  apply (IsAPF.strictMono_apfPsi K L).injective
   rw [apfPsi_apfPhi, apfPsi_eq_inverseHerbrandFunction K L (herbrandFunction_mem_Ici _ hu),
     inverseHerbrandFunction_herbrandFunction _ hu]
 

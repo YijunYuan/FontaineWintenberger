@@ -110,7 +110,7 @@ theorem spectralIntegerRing_prime_norm_sub_congruence
     (he : (IsLocalRing.maximalIdeal S).ramificationIdx R = Module.finrank K L)
     (r : ℕ) (x y : S) (hxy : x - y ∈ IsLocalRing.maximalIdeal S ^ r) :
     Algebra.intNorm R S x - Algebra.intNorm R S y ∈
-      IsLocalRing.maximalIdeal R ^ ⌈apfPhi K L (isAPF_of_finite K L) (r : ℝ)⌉₊ := by
+      IsLocalRing.maximalIdeal R ^ ⌈apfPhi K L (r : ℝ)⌉₊ := by
   obtain ⟨t, _hbound, hd, hprecision⟩ :=
     exists_spectralIntegerRing_prime_norm_sub_precision K L hp he
   obtain ⟨b, _hb, _hidx, _hpsi, hphi, hdiff⟩ := apf_prime_degree_different_profile K L hp he

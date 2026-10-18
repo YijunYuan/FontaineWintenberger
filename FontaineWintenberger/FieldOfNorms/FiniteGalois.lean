@@ -257,72 +257,72 @@ variable (p : ℕ) [Fact p.Prime]
 
 /-- The relative action is the actual original norm-field action after
 the original restriction of scalars. -/
-def finiteNormLimitGaloisAction (hN : IsAPF K N) (hInfiniteN : ¬ Module.Finite K N) :
-    letI := normLimitField K N p hN hInfiniteN
+def finiteNormLimitGaloisAction [IsAPF K N] [Fact (¬ Module.Finite K N)] :
+    letI := normLimitField K N p
     (N ≃ₐ[M] N) →* (NormLimit K N ≃+* NormLimit K N) := by
-  let := normLimitField K N p hN hInfiniteN
-  exact (normLimitAut K p hN hInfiniteN).comp (AlgEquiv.restrictScalarsHom K)
+  let := normLimitField K N p
+  exact (normLimitAut K N p).comp (AlgEquiv.restrictScalarsHom K)
 
 @[simp]
-theorem finiteNormLimitGaloisAction_apply (hN : IsAPF K N)
-    (hInfiniteN : ¬ Module.Finite K N) (σ : N ≃ₐ[M] N) (β : NormLimit K N) :
-    letI := normLimitField K N p hN hInfiniteN
-    finiteNormLimitGaloisAction K M N p hN hInfiniteN σ β =
+theorem finiteNormLimitGaloisAction_apply [IsAPF K N]
+    [Fact (¬ Module.Finite K N)] (σ : N ≃ₐ[M] N) (β : NormLimit K N) :
+    letI := normLimitField K N p
+    finiteNormLimitGaloisAction K M N p σ β =
       normLimitMap (σ.restrictScalars K) β := rfl
 
 /-- Faithfulness is produced by the proved original action and the actual
 injective restriction of scalars; it is not an additional hypothesis. -/
-theorem finiteNormLimitGaloisAction_injective (hN : IsAPF K N)
-    (hInfiniteN : ¬ Module.Finite K N) :
-    letI := normLimitField K N p hN hInfiniteN
-    Function.Injective (finiteNormLimitGaloisAction K M N p hN hInfiniteN) := by
-  let := normLimitField K N p hN hInfiniteN
-  exact (normLimitAut_injective K N p hN hInfiniteN).comp
+theorem finiteNormLimitGaloisAction_injective [IsAPF K N]
+    [Fact (¬ Module.Finite K N)] :
+    letI := normLimitField K N p
+    Function.Injective (finiteNormLimitGaloisAction K M N p) := by
+  let := normLimitField K N p
+  exact (normLimitAut_injective K N p).comp
     (AlgEquiv.restrictScalars_injective K)
 
 /-- The canonical action on the same original target field. -/
 @[instance_reducible]
-def finiteNormLimitGaloisMulSemiringAction (hN : IsAPF K N)
-    (hInfiniteN : ¬ Module.Finite K N) :
-    letI := normLimitField K N p hN hInfiniteN
+def finiteNormLimitGaloisMulSemiringAction [IsAPF K N]
+    [Fact (¬ Module.Finite K N)] :
+    letI := normLimitField K N p
     MulSemiringAction (N ≃ₐ[M] N) (NormLimit K N) := by
-  let := normLimitField K N p hN hInfiniteN
+  let := normLimitField K N p
   exact MulSemiringAction.compHom (NormLimit K N)
-    (finiteNormLimitGaloisAction K M N p hN hInfiniteN)
+    (finiteNormLimitGaloisAction K M N p)
 
 variable [Algebra.IsSeparable K M] [Module.Finite M N] [IsGalois M N]
 
 /-- The actual fixed field of the actual relative action is the literal
 image of the checked original field homomorphism. -/
-theorem fixedPoints_finiteNormLimitGaloisAction (hM : IsAPF K M) (hN : IsAPF K N)
-    (hInfiniteM : ¬ Module.Finite K M) (hInfiniteN : ¬ Module.Finite K N) :
-    letI := normLimitField K M p hM hInfiniteM
-    letI := normLimitField K N p hN hInfiniteN
-    letI := finiteNormLimitGaloisMulSemiringAction K M N p hN hInfiniteN
+theorem fixedPoints_finiteNormLimitGaloisAction [IsAPF K M] [IsAPF K N]
+    [Fact (¬ Module.Finite K M)] [Fact (¬ Module.Finite K N)] :
+    letI := normLimitField K M p
+    letI := normLimitField K N p
+    letI := finiteNormLimitGaloisMulSemiringAction K M N p
     (FixedPoints.subfield (N ≃ₐ[M] N) (NormLimit K N) : Set (NormLimit K N)) =
-      Set.range (finiteNormLimitRingHom K M N p hM hN hInfiniteM hInfiniteN) := by
-  let := normLimitField K M p hM hInfiniteM
-  let := normLimitField K N p hN hInfiniteN
-  let := finiteNormLimitGaloisMulSemiringAction K M N p hN hInfiniteN
+      Set.range (finiteNormLimitRingHom K M N p) := by
+  let := normLimitField K M p
+  let := normLimitField K N p
+  let := finiteNormLimitGaloisMulSemiringAction K M N p
   exact Set.ext (fun β => (mem_range_finiteNormLimitMap_iff_fixed K M N β).symm)
 
 /-- The official finite Galois-group structure is proved from genuine
 faithfulness, the original scalar action and the proved fixed-family descent. -/
-theorem finiteNormLimit_isGaloisGroup (hM : IsAPF K M) (hN : IsAPF K N)
-    (hInfiniteM : ¬ Module.Finite K M) (hInfiniteN : ¬ Module.Finite K N) :
-    letI := normLimitField K M p hM hInfiniteM
-    letI := normLimitField K N p hN hInfiniteN
-    letI := (finiteNormLimitRingHom K M N p hM hN hInfiniteM hInfiniteN).toAlgebra
-    letI := finiteNormLimitGaloisMulSemiringAction K M N p hN hInfiniteN
+theorem finiteNormLimit_isGaloisGroup [IsAPF K M] [IsAPF K N]
+    [Fact (¬ Module.Finite K M)] [Fact (¬ Module.Finite K N)] :
+    letI := normLimitField K M p
+    letI := normLimitField K N p
+    letI := (finiteNormLimitRingHom K M N p).toAlgebra
+    letI := finiteNormLimitGaloisMulSemiringAction K M N p
     IsGaloisGroup (N ≃ₐ[M] N) (NormLimit K M) (NormLimit K N) := by
-  let := normLimitField K M p hM hInfiniteM
-  let := normLimitField K N p hN hInfiniteN
-  let := (finiteNormLimitRingHom K M N p hM hN hInfiniteM hInfiniteN).toAlgebra
-  let := finiteNormLimitGaloisMulSemiringAction K M N p hN hInfiniteN
+  let := normLimitField K M p
+  let := normLimitField K N p
+  let := (finiteNormLimitRingHom K M N p).toAlgebra
+  let := finiteNormLimitGaloisMulSemiringAction K M N p
   constructor
   · constructor
     intro σ τ h
-    apply finiteNormLimitGaloisAction_injective K M N p hN hInfiniteN
+    apply finiteNormLimitGaloisAction_injective K M N p
     exact RingEquiv.ext h
   · constructor
     intro σ α β
@@ -335,70 +335,70 @@ theorem finiteNormLimit_isGaloisGroup (hM : IsAPF K M) (hN : IsAPF K N)
 
 /-- Finite Artin theory proves finiteness over the actual embedded source,
 without assuming finiteness of the norm-field extension. -/
-theorem finiteDimensional_finiteNormLimit_of_isGalois (hM : IsAPF K M) (hN : IsAPF K N)
-    (hInfiniteM : ¬ Module.Finite K M) (hInfiniteN : ¬ Module.Finite K N) :
-    letI := normLimitField K M p hM hInfiniteM
-    letI := normLimitField K N p hN hInfiniteN
-    letI := (finiteNormLimitRingHom K M N p hM hN hInfiniteM hInfiniteN).toAlgebra
+theorem finiteDimensional_finiteNormLimit_of_isGalois [IsAPF K M] [IsAPF K N]
+    [Fact (¬ Module.Finite K M)] [Fact (¬ Module.Finite K N)] :
+    letI := normLimitField K M p
+    letI := normLimitField K N p
+    letI := (finiteNormLimitRingHom K M N p).toAlgebra
     FiniteDimensional (NormLimit K M) (NormLimit K N) := by
-  let := normLimitField K M p hM hInfiniteM
-  let := normLimitField K N p hN hInfiniteN
-  let := (finiteNormLimitRingHom K M N p hM hN hInfiniteM hInfiniteN).toAlgebra
-  let := finiteNormLimitGaloisMulSemiringAction K M N p hN hInfiniteN
-  let := finiteNormLimit_isGaloisGroup K M N p hM hN hInfiniteM hInfiniteN
+  let := normLimitField K M p
+  let := normLimitField K N p
+  let := (finiteNormLimitRingHom K M N p).toAlgebra
+  let := finiteNormLimitGaloisMulSemiringAction K M N p
+  let := finiteNormLimit_isGaloisGroup K M N p
   exact IsGaloisGroup.finiteDimensional (N ≃ₐ[M] N) (NormLimit K M) (NormLimit K N)
 
 /-- The original target norm field is Galois over the actual embedded source. -/
-theorem isGalois_finiteNormLimit (hM : IsAPF K M) (hN : IsAPF K N)
-    (hInfiniteM : ¬ Module.Finite K M) (hInfiniteN : ¬ Module.Finite K N) :
-    letI := normLimitField K M p hM hInfiniteM
-    letI := normLimitField K N p hN hInfiniteN
-    letI := (finiteNormLimitRingHom K M N p hM hN hInfiniteM hInfiniteN).toAlgebra
+theorem isGalois_finiteNormLimit [IsAPF K M] [IsAPF K N]
+    [Fact (¬ Module.Finite K M)] [Fact (¬ Module.Finite K N)] :
+    letI := normLimitField K M p
+    letI := normLimitField K N p
+    letI := (finiteNormLimitRingHom K M N p).toAlgebra
     IsGalois (NormLimit K M) (NormLimit K N) := by
-  let := normLimitField K M p hM hInfiniteM
-  let := normLimitField K N p hN hInfiniteN
-  let := (finiteNormLimitRingHom K M N p hM hN hInfiniteM hInfiniteN).toAlgebra
-  let := finiteNormLimitGaloisMulSemiringAction K M N p hN hInfiniteN
-  let := finiteNormLimit_isGaloisGroup K M N p hM hN hInfiniteM hInfiniteN
+  let := normLimitField K M p
+  let := normLimitField K N p
+  let := (finiteNormLimitRingHom K M N p).toAlgebra
+  let := finiteNormLimitGaloisMulSemiringAction K M N p
+  let := finiteNormLimit_isGaloisGroup K M N p
   exact IsGaloisGroup.isGalois (N ≃ₐ[M] N) (NormLimit K M) (NormLimit K N)
 
 /-- The actual finite Galois norm-field extension retains the full original degree. -/
-theorem finrank_finiteNormLimit_of_isGalois (hM : IsAPF K M) (hN : IsAPF K N)
-    (hInfiniteM : ¬ Module.Finite K M) (hInfiniteN : ¬ Module.Finite K N) :
-    letI := normLimitField K M p hM hInfiniteM
-    letI := normLimitField K N p hN hInfiniteN
-    letI := (finiteNormLimitRingHom K M N p hM hN hInfiniteM hInfiniteN).toAlgebra
+theorem finrank_finiteNormLimit_of_isGalois [IsAPF K M] [IsAPF K N]
+    [Fact (¬ Module.Finite K M)] [Fact (¬ Module.Finite K N)] :
+    letI := normLimitField K M p
+    letI := normLimitField K N p
+    letI := (finiteNormLimitRingHom K M N p).toAlgebra
     Module.finrank (NormLimit K M) (NormLimit K N) = Module.finrank M N := by
-  let := normLimitField K M p hM hInfiniteM
-  let := normLimitField K N p hN hInfiniteN
-  let := (finiteNormLimitRingHom K M N p hM hN hInfiniteM hInfiniteN).toAlgebra
-  let := finiteNormLimitGaloisMulSemiringAction K M N p hN hInfiniteN
-  let := finiteNormLimit_isGaloisGroup K M N p hM hN hInfiniteM hInfiniteN
+  let := normLimitField K M p
+  let := normLimitField K N p
+  let := (finiteNormLimitRingHom K M N p).toAlgebra
+  let := finiteNormLimitGaloisMulSemiringAction K M N p
+  let := finiteNormLimit_isGaloisGroup K M N p
   exact (IsGaloisGroup.card_eq_finrank (N ≃ₐ[M] N) (NormLimit K M) (NormLimit K N)).symm.trans
     (IsGalois.card_aut_eq_finrank M N)
 
 /-- The actual original relative action identifies the actual two Galois groups. -/
-def finiteNormLimitGaloisEquiv (hM : IsAPF K M) (hN : IsAPF K N)
-    (hInfiniteM : ¬ Module.Finite K M) (hInfiniteN : ¬ Module.Finite K N) :
-    letI := normLimitField K M p hM hInfiniteM
-    letI := normLimitField K N p hN hInfiniteN
-    letI := (finiteNormLimitRingHom K M N p hM hN hInfiniteM hInfiniteN).toAlgebra
+def finiteNormLimitGaloisEquiv [IsAPF K M] [IsAPF K N]
+    [Fact (¬ Module.Finite K M)] [Fact (¬ Module.Finite K N)] :
+    letI := normLimitField K M p
+    letI := normLimitField K N p
+    letI := (finiteNormLimitRingHom K M N p).toAlgebra
     (N ≃ₐ[M] N) ≃* (NormLimit K N ≃ₐ[NormLimit K M] NormLimit K N) := by
-  let := normLimitField K M p hM hInfiniteM
-  let := normLimitField K N p hN hInfiniteN
-  let := (finiteNormLimitRingHom K M N p hM hN hInfiniteM hInfiniteN).toAlgebra
-  let := finiteNormLimitGaloisMulSemiringAction K M N p hN hInfiniteN
-  let := finiteNormLimit_isGaloisGroup K M N p hM hN hInfiniteM hInfiniteN
+  let := normLimitField K M p
+  let := normLimitField K N p
+  let := (finiteNormLimitRingHom K M N p).toAlgebra
+  let := finiteNormLimitGaloisMulSemiringAction K M N p
+  let := finiteNormLimit_isGaloisGroup K M N p
   exact IsGaloisGroup.mulEquivAlgEquiv (N ≃ₐ[M] N) (NormLimit K M) (NormLimit K N)
 
 @[simp]
-theorem finiteNormLimitGaloisEquiv_apply (hM : IsAPF K M) (hN : IsAPF K N)
-    (hInfiniteM : ¬ Module.Finite K M) (hInfiniteN : ¬ Module.Finite K N)
+theorem finiteNormLimitGaloisEquiv_apply [IsAPF K M] [IsAPF K N]
+    [Fact (¬ Module.Finite K M)] [Fact (¬ Module.Finite K N)]
     (σ : N ≃ₐ[M] N) (β : NormLimit K N) :
-    letI := normLimitField K M p hM hInfiniteM
-    letI := normLimitField K N p hN hInfiniteN
-    letI := (finiteNormLimitRingHom K M N p hM hN hInfiniteM hInfiniteN).toAlgebra
-    finiteNormLimitGaloisEquiv K M N p hM hN hInfiniteM hInfiniteN σ β =
+    letI := normLimitField K M p
+    letI := normLimitField K N p
+    letI := (finiteNormLimitRingHom K M N p).toAlgebra
+    finiteNormLimitGaloisEquiv K M N p σ β =
       normLimitMap (σ.restrictScalars K) β := rfl
 
 end ValuedFields

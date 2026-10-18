@@ -44,26 +44,26 @@ variable (p : ℕ) [Fact p.Prime]
 /-- The three original finite-inclusion field homomorphisms form a genuine
 scalar tower, by composition on the original norm-compatible families. -/
 theorem finiteNormLimitRingHom_isScalarTower
-    (hM : IsAPF K M) (hN : IsAPF K N) (hP : IsAPF K P)
-    (hInfiniteM : ¬ Module.Finite K M) (hInfiniteN : ¬ Module.Finite K N)
-    (hInfiniteP : ¬ Module.Finite K P) :
-    letI := normLimitField K M p hM hInfiniteM
-    letI := normLimitField K N p hN hInfiniteN
-    letI := normLimitField K P p hP hInfiniteP
+    [IsAPF K M] [IsAPF K N] [IsAPF K P]
+    [Fact (¬ Module.Finite K M)] [Fact (¬ Module.Finite K N)]
+    [Fact (¬ Module.Finite K P)] :
+    letI := normLimitField K M p
+    letI := normLimitField K N p
+    letI := normLimitField K P p
     letI : Module.Finite M P := Module.Finite.trans N P
     letI : Algebra.IsSeparable M P := Algebra.IsSeparable.trans M N P
-    letI := (finiteNormLimitRingHom K M N p hM hN hInfiniteM hInfiniteN).toAlgebra
-    letI := (finiteNormLimitRingHom K M P p hM hP hInfiniteM hInfiniteP).toAlgebra
-    letI := (finiteNormLimitRingHom K N P p hN hP hInfiniteN hInfiniteP).toAlgebra
+    letI := (finiteNormLimitRingHom K M N p).toAlgebra
+    letI := (finiteNormLimitRingHom K M P p).toAlgebra
+    letI := (finiteNormLimitRingHom K N P p).toAlgebra
     IsScalarTower (NormLimit K M) (NormLimit K N) (NormLimit K P) := by
-  let := normLimitField K M p hM hInfiniteM
-  let := normLimitField K N p hN hInfiniteN
-  let := normLimitField K P p hP hInfiniteP
+  let := normLimitField K M p
+  let := normLimitField K N p
+  let := normLimitField K P p
   let : Module.Finite M P := Module.Finite.trans N P
   let : Algebra.IsSeparable M P := Algebra.IsSeparable.trans M N P
-  let := (finiteNormLimitRingHom K M N p hM hN hInfiniteM hInfiniteN).toAlgebra
-  let := (finiteNormLimitRingHom K M P p hM hP hInfiniteM hInfiniteP).toAlgebra
-  let := (finiteNormLimitRingHom K N P p hN hP hInfiniteN hInfiniteP).toAlgebra
+  let := (finiteNormLimitRingHom K M N p).toAlgebra
+  let := (finiteNormLimitRingHom K M P p).toAlgebra
+  let := (finiteNormLimitRingHom K N P p).toAlgebra
   apply IsScalarTower.of_algebraMap_eq
   intro x
   exact (finiteNormLimitMap_trans K M N P x).symm
@@ -85,12 +85,12 @@ variable (p : ℕ) [Fact p.Prime]
 /-- A genuine finite normal closure proves finiteness, separability and
 preservation of the full original degree for the actual inclusion field map. -/
 theorem finiteNormLimit_finite_separable_degree
-    (hM : IsAPF K M) (hN : IsAPF K N)
-    (hInfiniteM : ¬ Module.Finite K M) (hInfiniteN : ¬ Module.Finite K N) :
+    [IsAPF K M] [IsAPF K N]
+    [Fact (¬ Module.Finite K M)] [Fact (¬ Module.Finite K N)] :
     letI : Algebra.IsSeparable M N := Algebra.isSeparable_tower_top_of_isSeparable K M N
-    letI := normLimitField K M p hM hInfiniteM
-    letI := normLimitField K N p hN hInfiniteN
-    letI := (finiteNormLimitRingHom K M N p hM hN hInfiniteM hInfiniteN).toAlgebra
+    letI := normLimitField K M p
+    letI := normLimitField K N p
+    letI := (finiteNormLimitRingHom K M N p).toAlgebra
     FiniteDimensional (NormLimit K M) (NormLimit K N) ∧
       Algebra.IsSeparable (NormLimit K M) (NormLimit K N) ∧
       Module.finrank (NormLimit K M) (NormLimit K N) = Module.finrank M N := by
@@ -104,71 +104,71 @@ theorem finiteNormLimit_finite_separable_degree
   let : IsGalois M P := inferInstance
   let : IsGalois N P := IsGalois.tower_top_of_isGalois M N P
   let : Algebra.IsSeparable K P := Algebra.IsSeparable.trans K M P
-  have hP : IsAPF K P := (isAPF_finite_extension_iff K P M).mpr hM
+  have hP : IsAPF K P := (isAPF_finite_extension_iff K P M).mpr ‹_›
   have hInfiniteP : ¬ Module.Finite K P := by
     intro h
     let : Module.Finite K P := h
-    exact hInfiniteM (FiniteDimensional.of_injective
+    exact (Fact.out : ¬ Module.Finite K M) (FiniteDimensional.of_injective
       (IsScalarTower.toAlgHom K M P).toLinearMap (algebraMap M P).injective)
-  let := normLimitField K M p hM hInfiniteM
-  let := normLimitField K N p hN hInfiniteN
-  let := normLimitField K P p hP hInfiniteP
-  let := (finiteNormLimitRingHom K M N p hM hN hInfiniteM hInfiniteN).toAlgebra
-  let := (finiteNormLimitRingHom K M P p hM hP hInfiniteM hInfiniteP).toAlgebra
-  let := (finiteNormLimitRingHom K N P p hN hP hInfiniteN hInfiniteP).toAlgebra
+  have : Fact (¬ Module.Finite K P) := ⟨hInfiniteP⟩
+  let := normLimitField K M p
+  let := normLimitField K N p
+  let := normLimitField K P p
+  let := (finiteNormLimitRingHom K M N p).toAlgebra
+  let := (finiteNormLimitRingHom K M P p).toAlgebra
+  let := (finiteNormLimitRingHom K N P p).toAlgebra
   let : IsScalarTower (NormLimit K M) (NormLimit K N) (NormLimit K P) :=
-    finiteNormLimitRingHom_isScalarTower K M N P p hM hN hP
-      hInfiniteM hInfiniteN hInfiniteP
+    finiteNormLimitRingHom_isScalarTower K M N P p
   let : FiniteDimensional (NormLimit K M) (NormLimit K P) :=
-    finiteDimensional_finiteNormLimit_of_isGalois K M P p hM hP hInfiniteM hInfiniteP
+    finiteDimensional_finiteNormLimit_of_isGalois K M P p
   let : FiniteDimensional (NormLimit K N) (NormLimit K P) :=
-    finiteDimensional_finiteNormLimit_of_isGalois K N P p hN hP hInfiniteN hInfiniteP
+    finiteDimensional_finiteNormLimit_of_isGalois K N P p
   let : FiniteDimensional (NormLimit K M) (NormLimit K N) :=
     FiniteDimensional.of_injective
       (IsScalarTower.toAlgHom (NormLimit K M) (NormLimit K N) (NormLimit K P)).toLinearMap
       (algebraMap (NormLimit K N) (NormLimit K P)).injective
   let : IsGalois (NormLimit K M) (NormLimit K P) :=
-    isGalois_finiteNormLimit K M P p hM hP hInfiniteM hInfiniteP
+    isGalois_finiteNormLimit K M P p
   refine ⟨inferInstance, Algebra.isSeparable_tower_bot_of_isSeparable
     (NormLimit K M) (NormLimit K N) (NormLimit K P), ?_⟩
   have hmul := Module.finrank_mul_finrank (NormLimit K M) (NormLimit K N) (NormLimit K P)
-  rw [finrank_finiteNormLimit_of_isGalois K N P p hN hP hInfiniteN hInfiniteP,
-    finrank_finiteNormLimit_of_isGalois K M P p hM hP hInfiniteM hInfiniteP,
+  rw [finrank_finiteNormLimit_of_isGalois K N P p,
+    finrank_finiteNormLimit_of_isGalois K M P p,
     ← Module.finrank_mul_finrank M N P] at hmul
   exact Nat.eq_of_mul_eq_mul_right (Module.finrank_pos (R := N) (M := P)) hmul
 
 /-- The actual finite-inclusion norm-field extension is finite-dimensional. -/
 theorem finiteDimensional_finiteNormLimit
-    (hM : IsAPF K M) (hN : IsAPF K N)
-    (hInfiniteM : ¬ Module.Finite K M) (hInfiniteN : ¬ Module.Finite K N) :
+    [IsAPF K M] [IsAPF K N]
+    [Fact (¬ Module.Finite K M)] [Fact (¬ Module.Finite K N)] :
     letI : Algebra.IsSeparable M N := Algebra.isSeparable_tower_top_of_isSeparable K M N
-    letI := normLimitField K M p hM hInfiniteM
-    letI := normLimitField K N p hN hInfiniteN
-    letI := (finiteNormLimitRingHom K M N p hM hN hInfiniteM hInfiniteN).toAlgebra
+    letI := normLimitField K M p
+    letI := normLimitField K N p
+    letI := (finiteNormLimitRingHom K M N p).toAlgebra
     FiniteDimensional (NormLimit K M) (NormLimit K N) :=
-  (finiteNormLimit_finite_separable_degree K M N p hM hN hInfiniteM hInfiniteN).1
+  (finiteNormLimit_finite_separable_degree K M N p).1
 
 /-- The actual finite-inclusion norm-field extension is separable. -/
 theorem isSeparable_finiteNormLimit
-    (hM : IsAPF K M) (hN : IsAPF K N)
-    (hInfiniteM : ¬ Module.Finite K M) (hInfiniteN : ¬ Module.Finite K N) :
+    [IsAPF K M] [IsAPF K N]
+    [Fact (¬ Module.Finite K M)] [Fact (¬ Module.Finite K N)] :
     letI : Algebra.IsSeparable M N := Algebra.isSeparable_tower_top_of_isSeparable K M N
-    letI := normLimitField K M p hM hInfiniteM
-    letI := normLimitField K N p hN hInfiniteN
-    letI := (finiteNormLimitRingHom K M N p hM hN hInfiniteM hInfiniteN).toAlgebra
+    letI := normLimitField K M p
+    letI := normLimitField K N p
+    letI := (finiteNormLimitRingHom K M N p).toAlgebra
     Algebra.IsSeparable (NormLimit K M) (NormLimit K N) :=
-  (finiteNormLimit_finite_separable_degree K M N p hM hN hInfiniteM hInfiniteN).2.1
+  (finiteNormLimit_finite_separable_degree K M N p).2.1
 
 /-- The actual finite-inclusion norm-field extension has the full original degree. -/
 theorem finrank_finiteNormLimit
-    (hM : IsAPF K M) (hN : IsAPF K N)
-    (hInfiniteM : ¬ Module.Finite K M) (hInfiniteN : ¬ Module.Finite K N) :
+    [IsAPF K M] [IsAPF K N]
+    [Fact (¬ Module.Finite K M)] [Fact (¬ Module.Finite K N)] :
     letI : Algebra.IsSeparable M N := Algebra.isSeparable_tower_top_of_isSeparable K M N
-    letI := normLimitField K M p hM hInfiniteM
-    letI := normLimitField K N p hN hInfiniteN
-    letI := (finiteNormLimitRingHom K M N p hM hN hInfiniteM hInfiniteN).toAlgebra
+    letI := normLimitField K M p
+    letI := normLimitField K N p
+    letI := (finiteNormLimitRingHom K M N p).toAlgebra
     Module.finrank (NormLimit K M) (NormLimit K N) = Module.finrank M N :=
-  (finiteNormLimit_finite_separable_degree K M N p hM hN hInfiniteM hInfiniteN).2.2
+  (finiteNormLimit_finite_separable_degree K M N p).2.2
 
 end FiniteSeparable
 
@@ -187,29 +187,29 @@ variable (p : ℕ) [Fact p.Prime]
 and the full degree to every original finite separable algebra embedding. -/
 theorem finiteNormLimitEmbedding_finite_separable_degree (τ : L →ₐ[K] M)
     [Module.Finite τ.fieldRange M] [Algebra.IsSeparable τ.fieldRange M]
-    (hL : IsAPF K L) (hM : IsAPF K M)
-    (hInfiniteL : ¬ Module.Finite K L) (hInfiniteM : ¬ Module.Finite K M) :
-    letI := normLimitField K L p hL hInfiniteL
-    letI := normLimitField K M p hM hInfiniteM
-    letI := (finiteNormLimitEmbeddingRingHom K p τ hL hM hInfiniteL hInfiniteM).toAlgebra
+    [IsAPF K L] [IsAPF K M]
+    [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)] :
+    letI := normLimitField K L p
+    letI := normLimitField K M p
+    letI := (finiteNormLimitEmbeddingRingHom K p τ).toAlgebra
     FiniteDimensional (NormLimit K L) (NormLimit K M) ∧
       Algebra.IsSeparable (NormLimit K L) (NormLimit K M) ∧
       Module.finrank (NormLimit K L) (NormLimit K M) = Module.finrank τ.fieldRange M := by
-  have hR : IsAPF K τ.fieldRange := (isAPF_algEquiv K τ.equivFieldRange).mp hL
-  have hInfiniteR := not_finite_fieldRange τ hInfiniteL
-  let := normLimitField K L p hL hInfiniteL
-  let := normLimitField K M p hM hInfiniteM
-  let := normLimitField K τ.fieldRange p hR hInfiniteR
-  let := (finiteNormLimitEmbeddingRingHom K p τ hL hM hInfiniteL hInfiniteM).toAlgebra
-  let := (finiteNormLimitRingHom K τ.fieldRange M p hR hM hInfiniteR hInfiniteM).toAlgebra
-  let e := normLimitRingEquiv K p hL hR hInfiniteL hInfiniteR τ.equivFieldRange
+  have hR : IsAPF K τ.fieldRange := (isAPF_algEquiv K τ.equivFieldRange).mp ‹_›
+  have : Fact (¬ Module.Finite K τ.fieldRange) := ⟨not_finite_fieldRange τ⟩
+  let := normLimitField K L p
+  let := normLimitField K M p
+  let := normLimitField K τ.fieldRange p
+  let := (finiteNormLimitEmbeddingRingHom K p τ).toAlgebra
+  let := (finiteNormLimitRingHom K τ.fieldRange M p).toAlgebra
+  let e := normLimitRingEquiv K p τ.equivFieldRange
   have he : (algebraMap (NormLimit K τ.fieldRange) (NormLimit K M)).comp e.toRingHom =
       (RingEquiv.refl (NormLimit K M)).toRingHom.comp
         (algebraMap (NormLimit K L) (NormLimit K M)) := rfl
   have hdeg : Module.finrank (NormLimit K L) (NormLimit K M) =
       Module.finrank τ.fieldRange M :=
     (Algebra.finrank_eq_of_equiv_equiv e (RingEquiv.refl _) he).trans
-      (finrank_finiteNormLimit K τ.fieldRange M p hR hM hInfiniteR hInfiniteM)
+      (finrank_finiteNormLimit K τ.fieldRange M p)
   have hpos : 0 < Module.finrank (NormLimit K L) (NormLimit K M) := by
     rw [hdeg]
     exact Module.finrank_pos
@@ -217,7 +217,7 @@ theorem finiteNormLimitEmbedding_finite_separable_degree (τ : L →ₐ[K] M)
     FiniteDimensional.of_finrank_pos hpos
   refine ⟨inferInstance, ?_, hdeg⟩
   exact (Algebra.IsSeparable.iff_of_equiv_equiv e (RingEquiv.refl _) he).mpr
-    (isSeparable_finiteNormLimit K τ.fieldRange M p hR hM hInfiniteR hInfiniteM)
+    (isSeparable_finiteNormLimit K τ.fieldRange M p)
 
 end ArbitraryEmbeddings
 

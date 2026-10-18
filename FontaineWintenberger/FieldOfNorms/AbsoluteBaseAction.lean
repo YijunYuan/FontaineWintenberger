@@ -34,36 +34,36 @@ variable (L : IntermediateField K (SeparableClosure K)) [Normal K L]
 variable (p : ℕ) [Fact p.Prime]
     [CharP (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring) p]
-variable (hL : IsAPF K L) (hInfinite : ¬ Module.Finite K L)
+variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 
 /-- The actual absolute Galois group acts on the original norm field through
 its ordinary restriction to the given normal APF extension. -/
 def normLimitAbsoluteAut :
-    letI := normLimitField K L p hL hInfinite
+    letI := normLimitField K L p
     (SeparableClosure K ≃ₐ[K] SeparableClosure K) →*
       (NormLimit K L ≃+* NormLimit K L) := by
-  letI := normLimitField K L p hL hInfinite
-  exact (normLimitAut K p hL hInfinite).comp (AlgEquiv.restrictNormalHom L)
+  letI := normLimitField K L p
+  exact (normLimitAut K L p).comp (AlgEquiv.restrictNormalHom L)
 
 /-- The absolute base action factors through the actual Galois restriction. -/
 @[simp]
 theorem normLimitAbsoluteAut_apply (σ : SeparableClosure K ≃ₐ[K] SeparableClosure K)
     (x : NormLimit K L) :
-    letI := normLimitField K L p hL hInfinite
-    normLimitAbsoluteAut K L p hL hInfinite σ x =
-      normLimitAut K p hL hInfinite (AlgEquiv.restrictNormalHom L σ) x := rfl
+    letI := normLimitField K L p
+    normLimitAbsoluteAut K L p σ x =
+      normLimitAut K L p (AlgEquiv.restrictNormalHom L σ) x := rfl
 
 /-- The original coordinate formula, viewed in the same actual separable closure. -/
 theorem coe_normLimitEval_normLimitAbsoluteAut
     (σ : SeparableClosure K ≃ₐ[K] SeparableClosure K)
     (x : NormLimit K L) (E : FiniteLayer K L) :
-    letI := normLimitField K L p hL hInfinite
-    ((normLimitEval K L E (normLimitAbsoluteAut K L p hL hInfinite σ x) : L) :
+    letI := normLimitField K L p
+    ((normLimitEval K L E (normLimitAbsoluteAut K L p σ x) : L) :
         SeparableClosure K) =
       σ ((normLimitEval K L
         (FiniteLayer.map (AlgEquiv.restrictNormalHom L σ).symm.toAlgHom E) x : L) :
           SeparableClosure K) := by
-  let := normLimitField K L p hL hInfinite
+  let := normLimitField K L p
   let τ := AlgEquiv.restrictNormalHom L σ
   change ((normLimitEval K L E (normLimitMap τ x) : L) : SeparableClosure K) = _
   calc
@@ -76,37 +76,37 @@ theorem coe_normLimitEval_normLimitAbsoluteAut
 /-- Absolute Galois transport preserves the original normalized valuation. -/
 theorem normLimitAbsoluteAut_valuation
     (σ : SeparableClosure K ≃ₐ[K] SeparableClosure K) (x : NormLimit K L) :
-    letI := normLimitField K L p hL hInfinite
-    normLimitValuation K L hL (normLimitAbsoluteAut K L p hL hInfinite σ x) =
-      normLimitValuation K L hL x :=
-  normLimitAut_valuation K p hL hInfinite (AlgEquiv.restrictNormalHom L σ) x
+    letI := normLimitField K L p
+    normLimitValuation K L (normLimitAbsoluteAut K L p σ x) =
+      normLimitValuation K L x :=
+  normLimitAut_valuation K p (AlgEquiv.restrictNormalHom L σ) x
 
 /-- Every absolute Galois orbit is continuous for the original Krull and
 norm-field valuation topologies. -/
 theorem continuous_normLimitAbsoluteAut_apply :
-    letI := normLimitField K L p hL hInfinite
-    letI := normLimitValued K L p hL hInfinite
+    letI := normLimitField K L p
+    letI := normLimitValued K L p
     ∀ x : NormLimit K L,
       Continuous (fun σ : SeparableClosure K ≃ₐ[K] SeparableClosure K =>
-        normLimitAbsoluteAut K L p hL hInfinite σ x) := by
-  let := normLimitField K L p hL hInfinite
-  let := normLimitValued K L p hL hInfinite
+        normLimitAbsoluteAut K L p σ x) := by
+  let := normLimitField K L p
+  let := normLimitValued K L p
   intro x
-  exact (continuous_normLimitAut_apply K L p hL hInfinite x).comp
+  exact (continuous_normLimitAut_apply K L p x).comp
     (InfiniteGalois.restrictNormalHom_continuous L)
 
 /-- The kernel is exactly the original pointwise fixer of the actual field `L`. -/
 theorem normLimitAbsoluteAut_ker :
-    letI := normLimitField K L p hL hInfinite
-    (normLimitAbsoluteAut K L p hL hInfinite).ker = L.fixingSubgroup := by
-  let := normLimitField K L p hL hInfinite
+    letI := normLimitField K L p
+    (normLimitAbsoluteAut K L p).ker = L.fixingSubgroup := by
+  let := normLimitField K L p
   rw [← L.restrictNormalHom_ker]
   ext σ
-  change normLimitAut K p hL hInfinite (AlgEquiv.restrictNormalHom L σ) = 1 ↔
+  change normLimitAut K L p (AlgEquiv.restrictNormalHom L σ) = 1 ↔
     AlgEquiv.restrictNormalHom L σ = 1
   constructor
   · intro h
-    apply normLimitAut_injective K L p hL hInfinite
+    apply normLimitAut_injective K L p
     simpa only [map_one] using h
   · intro h
     rw [h, map_one]
@@ -114,10 +114,10 @@ theorem normLimitAbsoluteAut_ker :
 /-- Extension of actual normal-field automorphisms to the same separable
 closure shows that restricting the absolute action does not change its image. -/
 theorem normLimitAbsoluteAut_range :
-    letI := normLimitField K L p hL hInfinite
-    (normLimitAbsoluteAut K L p hL hInfinite).range =
-      (normLimitAut K p hL hInfinite).range := by
-  let := normLimitField K L p hL hInfinite
+    letI := normLimitField K L p
+    (normLimitAbsoluteAut K L p).range =
+      (normLimitAut K L p).range := by
+  let := normLimitField K L p
   ext e
   constructor
   · rintro ⟨σ, rfl⟩
@@ -125,6 +125,6 @@ theorem normLimitAbsoluteAut_range :
   · rintro ⟨τ, rfl⟩
     obtain ⟨σ, hσ⟩ := AlgEquiv.restrictNormalHom_surjective
       (F := K) (K₁ := L) (SeparableClosure K) τ
-    exact ⟨σ, congrArg (normLimitAut K p hL hInfinite) hσ⟩
+    exact ⟨σ, congrArg (normLimitAut K L p) hσ⟩
 
 end FontaineWintenberger

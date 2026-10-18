@@ -117,10 +117,10 @@ theorem exists_apfPsi_spectral_ramificationIdx_affine :
         intro v hv
         simp only [apfHerbrandSlope, max_eq_left (hU.trans hv.1), hidx v hv.1]
       _ = _ := by simp
-  have hM := isAPF_of_finite K M
+  have := isAPF_of_finite K M
   have hadd := intervalIntegral.integral_add_adjacent_intervals
-    (IsAPF.intervalIntegrable_apfHerbrandSlope K M hM 0 U)
-    (IsAPF.intervalIntegrable_apfHerbrandSlope K M hM U u)
+    (IsAPF.intervalIntegrable_apfHerbrandSlope K M 0 U)
+    (IsAPF.intervalIntegrable_apfHerbrandSlope K M U u)
   change apfPsi K M U + (∫ v in U..u, apfHerbrandSlope K M v) = apfPsi K M u at hadd
   rw [hi] at hadd
   exact hadd.symm.trans (by ring)

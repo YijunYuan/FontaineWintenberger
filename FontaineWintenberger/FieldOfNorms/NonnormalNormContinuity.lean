@@ -172,7 +172,7 @@ theorem intNorm_sub_congruence_of_totallyRamified_fixedField
       Algebra.intNorm (NormedField.valuation (K := K)).valuationSubring
         (spectralIntegerRing K (IntermediateField.fixedField H)) y ∈
       IsLocalRing.maximalIdeal (NormedField.valuation (K := K)).valuationSubring ^
-        ⌈apfPhi K (IntermediateField.fixedField H) (isAPF_of_finite K _) (r : ℝ)⌉₊ := by
+        ⌈apfPhi K (IntermediateField.fixedField H) (r : ℝ)⌉₊ := by
   let R := (NormedField.valuation (K := K)).valuationSubring
   let F := IntermediateField.fixedField H
   let S := spectralIntegerRing K F
@@ -203,7 +203,7 @@ theorem intNorm_sub_congruence_of_totallyRamified_fixedField
     exact fixedField_wild_norm_baseChange K Ω p H he n hd (z : F)
   have hdefect := congrArg₂ (fun a b : T => a - b) (hnorm x) (hnorm y)
   apply mem_maximalIdeal_pow_of_algebraMap_mem_ceil R T
-    (apfPhi K F (isAPF_of_finite K F) (r : ℝ))
+    (apfPhi K F (r : ℝ))
   simpa only [map_sub] using hdefect ▸ hc
 
 end ActualCompositum
@@ -231,7 +231,7 @@ theorem intNorm_sub_congruence_of_totallyRamified_intermediateField
     (hxy : x - y ∈ IsLocalRing.maximalIdeal (spectralIntegerRing K M) ^ r) :
     Algebra.intNorm R (spectralIntegerRing K M) x -
       Algebra.intNorm R (spectralIntegerRing K M) y ∈ IsLocalRing.maximalIdeal R ^
-        ⌈apfPhi K M (isAPF_of_finite K M) (r : ℝ)⌉₊ := by
+        ⌈apfPhi K M (r : ℝ)⌉₊ := by
   let H := M.fixingSubgroup
   have hM : IntermediateField.fixedField H = M := IsGalois.fixedField_fixingSubgroup M
   clear_value H
@@ -260,17 +260,17 @@ private theorem intNorm_sub_congruence_of_algEquiv
       u - v ∈ IsLocalRing.maximalIdeal (spectralIntegerRing K M) ^ r →
         Algebra.intNorm R (spectralIntegerRing K M) u -
           Algebra.intNorm R (spectralIntegerRing K M) v ∈ IsLocalRing.maximalIdeal R ^
-            ⌈apfPhi K M (isAPF_of_finite K M) (r : ℝ)⌉₊)
+            ⌈apfPhi K M (r : ℝ)⌉₊)
     (x y : S) (hxy : x - y ∈ IsLocalRing.maximalIdeal S ^ r) :
     Algebra.intNorm R S x - Algebra.intNorm R S y ∈ IsLocalRing.maximalIdeal R ^
-      ⌈apfPhi K L (isAPF_of_finite K L) (r : ℝ)⌉₊ := by
+      ⌈apfPhi K L (r : ℝ)⌉₊ := by
   let f := spectralIntegerRingEquiv K e
   have hxy' : f x - f y ∈ IsLocalRing.maximalIdeal (spectralIntegerRing K M) ^ r := by
     rw [← map_sub, mem_maximalIdeal_pow_iff_addVal,
       spectralIntegerRingEquiv_addVal K e]
     exact (mem_maximalIdeal_pow_iff_addVal _ _).mp hxy
   have h := hM (f x) (f y) hxy'
-  rw [← apfPhi_algEquiv K L e (isAPF_of_finite K L) (isAPF_of_finite K M) (r : ℝ)] at h
+  rw [← apfPhi_algEquiv K L e (r : ℝ)] at h
   simpa only [Algebra.intNorm_map_algEquiv] using h
 
 /-- Every original finite separable totally ramified prime-power extension
@@ -282,7 +282,7 @@ theorem intNorm_sub_congruence_of_totallyRamified
     (n : ℕ) (hd : Module.finrank K L = p ^ n)
     (r : ℕ) (x y : S) (hxy : x - y ∈ IsLocalRing.maximalIdeal S ^ r) :
     Algebra.intNorm R S x - Algebra.intNorm R S y ∈ IsLocalRing.maximalIdeal R ^
-      ⌈apfPhi K L (isAPF_of_finite K L) (r : ℝ)⌉₊ := by
+      ⌈apfPhi K L (r : ℝ)⌉₊ := by
   let j : L →ₐ[K] SeparableClosure K := IsSepClosed.lift
   let Ω := IntermediateField.normalClosure K L (SeparableClosure K)
   let : NontriviallyNormedField Ω := spectralNorm.nontriviallyNormedField K Ω

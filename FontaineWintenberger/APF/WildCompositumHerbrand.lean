@@ -183,9 +183,9 @@ theorem wild_compositum_apfPsi_scaling (F : IntermediateField K Ω)
     change FiniteDimensional K (A ⊔ F : IntermediateField K Ω)
     infer_instance
   have hA := IsAPF.apfPsi_finiteBase_comp_of_normedAlgebra K A MA
-    (isAPF_of_finite K MA) u
+    u
   have hF := IsAPF.apfPsi_finiteBase_comp_of_normedAlgebra K F MF
-    (isAPF_of_finite K MF) u
+    u
   calc
     _ = apfPsi K MA u := by
       rw [← wild_fixedField_apfPsi K Ω hu]
@@ -193,26 +193,26 @@ theorem wild_compositum_apfPsi_scaling (F : IntermediateField K Ω)
     _ = apfPsi K MF u := rfl
     _ = apfPsi F MF (apfPsi K F u) := hF.symm
     _ = _ := wild_compositum_apfPsi_over_right_of_sup_eq_top K Ω F hFP
-      (hu.trans (IsAPF.le_apfPsi K F (isAPF_of_finite K F) u))
+      (hu.trans (IsAPF.le_apfPsi K F u))
 
 /-- Inverting the actual scaled Herbrand equality gives the same scaling
 for the original Herbrand moduli, including zero. -/
 theorem wild_compositum_apfPhi_scaling (F : IntermediateField K Ω)
     (hFP : F.fixingSubgroup ⊔ P = ⊤) {u : ℝ} (hu : 0 ≤ u) :
     apfPhi A (IntermediateField.extendScalars
-        (show A ≤ A ⊔ F from le_sup_left)) (isAPF_of_finite A _) ((e : ℝ) * u) =
-      (e : ℝ) * apfPhi K F (isAPF_of_finite K F) u := by
+        (show A ≤ A ⊔ F from le_sup_left)) ((e : ℝ) * u) =
+      (e : ℝ) * apfPhi K F u := by
   let MA := IntermediateField.extendScalars (show A ≤ A ⊔ F from le_sup_left)
-  have hv : 0 ≤ apfPhi K F (isAPF_of_finite K F) u := by
+  have hv : 0 ≤ apfPhi K F u := by
     by_contra h
-    have hneg : apfPhi K F (isAPF_of_finite K F) u < 0 := lt_of_not_ge h
+    have hneg : apfPhi K F u < 0 := lt_of_not_ge h
     have heq := apfPsi_of_nonpos K F hneg.le
     rw [apfPsi_apfPhi] at heq
     linarith
-  apply (IsAPF.strictMono_apfPsi A MA (isAPF_of_finite A MA)).injective
+  apply (IsAPF.strictMono_apfPsi A MA).injective
   calc
-    _ = (e : ℝ) * u := apfPsi_apfPhi A MA (isAPF_of_finite A MA) _
-    _ = (e : ℝ) * apfPsi K F (apfPhi K F (isAPF_of_finite K F) u) := by
+    _ = (e : ℝ) * u := apfPsi_apfPhi A MA _
+    _ = (e : ℝ) * apfPsi K F (apfPhi K F u) := by
       rw [apfPsi_apfPhi]
     _ = _ := (wild_compositum_apfPsi_scaling K Ω F hFP hv).symm
 
@@ -236,8 +236,8 @@ theorem wild_compositum_herbrand_scaling_of_totallyRamified
     ∀ u : ℝ, 0 ≤ u →
       apfPsi F MF u = (e : ℝ) * u ∧
       apfPsi A MA ((e : ℝ) * u) = (e : ℝ) * apfPsi K F u ∧
-      apfPhi A MA (isAPF_of_finite A MA) ((e : ℝ) * u) =
-        (e : ℝ) * apfPhi K F (isAPF_of_finite K F) u := by
+      apfPhi A MA ((e : ℝ) * u) =
+        (e : ℝ) * apfPhi K F u := by
   let F := IntermediateField.fixedField H
   have hFP : F.fixingSubgroup ⊔ P = ⊤ := by
     simpa only [F, IntermediateField.fixingSubgroup_fixedField] using

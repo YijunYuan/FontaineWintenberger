@@ -39,7 +39,7 @@ theorem apfSubgroup_eq_top_of_bound_eq_top (h : apfRamificationBound K L = ⊤)
   exact apfSubgroup_antitoneOn K i.fieldRange hu hv (EReal.coe_lt_coe_iff.mp huv).le
 
 theorem isAPF_of_bound_eq_top (h : apfRamificationBound K L = ⊤) : IsAPF K L := by
-  intro i u hu
+  refine ⟨fun i => ⟨fun u hu => ?_⟩⟩
   simpa only [apfSubgroup_eq_top_of_bound_eq_top K L h i hu, Subgroup.coe_top] using
     (isOpen_univ : IsOpen (Set.univ : Set (SeparableClosure K ≃ₐ[K] SeparableClosure K)))
 
@@ -59,8 +59,8 @@ theorem apfPsi_eq_self_of_bound_eq_top (h : apfRamificationBound K L = ⊤) (u :
   simp only [apfPsi, hs, intervalIntegral.integral_const, sub_zero, smul_eq_mul, mul_one]
 
 theorem apfPhi_eq_self_of_bound_eq_top (h : apfRamificationBound K L = ⊤)
-    (hL : IsAPF K L) (u : ℝ) : apfPhi K L hL u = u := by
-  simpa only [apfPsi_eq_self_of_bound_eq_top K L h] using apfPhi_apfPsi K L hL u
+    [IsAPF K L] (u : ℝ) : apfPhi K L u = u := by
+  simpa only [apfPsi_eq_self_of_bound_eq_top K L h] using apfPhi_apfPsi K L u
 
 /-- The source ratio, embedded in the nonnegative extended reals. -/
 noncomputable def apfStrictnessRatio (u : ℝ) : ℝ≥0∞ :=
@@ -70,9 +70,14 @@ noncomputable def apfStrictnessRatio (u : ℝ) : ℝ≥0∞ :=
 noncomputable def apfStrictnessConstant : ℝ≥0∞ :=
   ⨅ u : ℝ, ⨅ (_ : apfRamificationBound K L ≤ (u : EReal)), apfStrictnessRatio K L u
 
-/-- Strict arithmetic profiniteness of an abstract separable extension. -/
-def IsStrictlyAPF : Prop :=
-  IsAPF K L ∧ 0 < liminf (apfStrictnessRatio K L) atTop
+/-- Strict arithmetic profiniteness of an abstract separable extension (Wintenberger 1.2.1):
+APF, and the ratio `ψ_{L/K}(u) / (G_K^0 : G_L^0 G_K^u)` stays bounded below as `u → ∞`. -/
+class IsStrictlyAPF : Prop extends IsAPF K L where
+  liminf_pos : 0 < liminf (apfStrictnessRatio K L) atTop
+
+theorem isStrictlyAPF_iff :
+    IsStrictlyAPF K L ↔ IsAPF K L ∧ 0 < liminf (apfStrictnessRatio K L) atTop :=
+  ⟨fun h => ⟨h.toIsAPF, h.liminf_pos⟩, fun h => { toIsAPF := h.1, liminf_pos := h.2 }⟩
 
 theorem apfStrictnessConstant_le {u : ℝ} (hu : apfRamificationBound K L ≤ (u : EReal)) :
     apfStrictnessConstant K L ≤ apfStrictnessRatio K L u :=
@@ -90,7 +95,8 @@ theorem apfStrictnessConstant_of_bound_eq_top (h : apfRamificationBound K L = �
 
 theorem isStrictlyAPF_of_bound_eq_top (h : apfRamificationBound K L = ⊤) :
     IsStrictlyAPF K L := by
-  refine ⟨isAPF_of_bound_eq_top K L h, ?_⟩
+  have := isAPF_of_bound_eq_top K L h
+  refine ⟨?_⟩
   have hlower : (1 : ℝ≥0∞) ≤ liminf (apfStrictnessRatio K L) atTop := by
     refine le_liminf_of_le (h := ?_)
     apply eventually_atTop.mpr
@@ -122,7 +128,7 @@ theorem apfStrictnessConstant_algEquiv {M : Type*} [Field M] [Algebra K M]
 theorem isStrictlyAPF_algEquiv {M : Type*} [Field M] [Algebra K M]
     [Algebra.IsSeparable K M] (e : L ≃ₐ[K] M) :
     IsStrictlyAPF K L ↔ IsStrictlyAPF K M := by
-  simp only [IsStrictlyAPF, isAPF_algEquiv K e,
+  simp only [isStrictlyAPF_iff, isAPF_algEquiv K e,
     funext (apfStrictnessRatio_algEquiv K L e)]
 
 end FontaineWintenberger

@@ -118,70 +118,70 @@ variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField 
     (p : ℕ) [Fact p.Prime]
     [CharP (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring) p]
-    (hL : IsAPF K L) (hInfinite : ¬ Module.Finite K L)
+    [IsAPF K L] [Fact (¬ Module.Finite K L)]
 
 local notation "X" => NormLimit K L
-local notation "U" => SeparableNormUnion K L Ω p hL hInfinite
+local notation "U" => SeparableNormUnion K L Ω p
 
 /-- The same original norm-field union is compared to the canonical
 separable closure using its proved separable-closure structure. -/
 def normUnionSeparableClosureEquiv :
-    letI := normLimitField K L p hL hInfinite
+    letI := normLimitField K L p
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
-    letI := separableNormUnionField K L Ω p hL hInfinite
-    letI := separableNormUnionAlgebra K L Ω p hL hInfinite
+    letI := separableNormUnionField K L Ω p
+    letI := separableNormUnionAlgebra K L Ω p
     U ≃ₐ[X] SeparableClosure X := by
-  let := normLimitField K L p hL hInfinite
+  let := normLimitField K L p
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
-  let := separableNormUnionField K L Ω p hL hInfinite
-  let := separableNormUnionAlgebra K L Ω p hL hInfinite
-  let := separableNormUnion_isSepClosure K L Ω p hL hInfinite
+  let := separableNormUnionField K L Ω p
+  let := separableNormUnionAlgebra K L Ω p
+  let := separableNormUnion_isSepClosure K L Ω p
   exact IsSepClosure.equiv X U (SeparableClosure X)
 
 /-- The source corollary for the actual original closure and the canonical
 separable closure of the same original norm field. -/
 def normUnionAbsoluteGaloisEquiv :
-    letI := normLimitField K L p hL hInfinite
+    letI := normLimitField K L p
     (Ω ≃ₐ[L] Ω) ≃ₜ* (SeparableClosure X ≃ₐ[X] SeparableClosure X) := by
-  let := normLimitField K L p hL hInfinite
+  let := normLimitField K L p
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
-  let := separableNormUnionField K L Ω p hL hInfinite
-  let := separableNormUnionAlgebra K L Ω p hL hInfinite
-  exact (separableNormUnionKrullEquiv K L Ω p hL hInfinite).trans
-    (krullAutCongr (normUnionSeparableClosureEquiv K L Ω p hL hInfinite))
+  let := separableNormUnionField K L Ω p
+  let := separableNormUnionAlgebra K L Ω p
+  exact (separableNormUnionKrullEquiv K L Ω p).trans
+    (krullAutCongr (normUnionSeparableClosureEquiv K L Ω p))
 
 /-- The source comparison agrees on the same union with the original
 norm-field automorphism, rather than an independently constructed action. -/
 theorem normUnionAbsoluteGaloisEquiv_apply (σ : Ω ≃ₐ[L] Ω)
     (z : letI : Algebra.IsSeparable L Ω :=
       Algebra.isSeparable_tower_top_of_isSeparable K L Ω; U) :
-    letI := normLimitField K L p hL hInfinite
+    letI := normLimitField K L p
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
-    letI := separableNormUnionField K L Ω p hL hInfinite
-    letI := separableNormUnionAlgebra K L Ω p hL hInfinite
-    normUnionAbsoluteGaloisEquiv K L Ω p hL hInfinite σ
-      (normUnionSeparableClosureEquiv K L Ω p hL hInfinite z) =
-      normUnionSeparableClosureEquiv K L Ω p hL hInfinite
-        (separableNormUnionMap K L Ω p hL hInfinite Ω σ.toAlgHom z) := by
-  let := normLimitField K L p hL hInfinite
+    letI := separableNormUnionField K L Ω p
+    letI := separableNormUnionAlgebra K L Ω p
+    normUnionAbsoluteGaloisEquiv K L Ω p σ
+      (normUnionSeparableClosureEquiv K L Ω p z) =
+      normUnionSeparableClosureEquiv K L Ω p
+        (separableNormUnionMap K L Ω p Ω σ.toAlgHom z) := by
+  let := normLimitField K L p
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
-  let := separableNormUnionField K L Ω p hL hInfinite
-  let := separableNormUnionAlgebra K L Ω p hL hInfinite
-  change (normUnionSeparableClosureEquiv K L Ω p hL hInfinite)
-    ((separableNormUnionKrullEquiv K L Ω p hL hInfinite σ)
-      ((normUnionSeparableClosureEquiv K L Ω p hL hInfinite).symm
-        (normUnionSeparableClosureEquiv K L Ω p hL hInfinite z))) = _
+  let := separableNormUnionField K L Ω p
+  let := separableNormUnionAlgebra K L Ω p
+  change (normUnionSeparableClosureEquiv K L Ω p)
+    ((separableNormUnionKrullEquiv K L Ω p σ)
+      ((normUnionSeparableClosureEquiv K L Ω p).symm
+        (normUnionSeparableClosureEquiv K L Ω p z))) = _
   rw [AlgEquiv.symm_apply_apply, separableNormUnionKrullEquiv_apply]
 
 /-- The actual absolute Galois equivalence on the project's canonical
 separable-closure automorphism groups, with their existing Krull topologies. -/
 def normLimitAbsoluteGaloisEquiv :
-    letI := normLimitField K L p hL hInfinite
+    letI := normLimitField K L p
     (SeparableClosure L ≃ₐ[L] SeparableClosure L) ≃ₜ*
       (SeparableClosure X ≃ₐ[X] SeparableClosure X) := by
-  let := normLimitField K L p hL hInfinite
+  let := normLimitField K L p
   exact (krullAutCongr (originalSeparableClosureEquiv K L Ω)).trans
-    (normUnionAbsoluteGaloisEquiv K L Ω p hL hInfinite)
+    (normUnionAbsoluteGaloisEquiv K L Ω p)
 
 /-- The canonical absolute-group equivalence retains precisely the
 original union map after conjugating the original closure. -/
@@ -189,30 +189,30 @@ theorem normLimitAbsoluteGaloisEquiv_apply
     (σ : SeparableClosure L ≃ₐ[L] SeparableClosure L)
     (z : letI : Algebra.IsSeparable L Ω :=
       Algebra.isSeparable_tower_top_of_isSeparable K L Ω; U) :
-    letI := normLimitField K L p hL hInfinite
+    letI := normLimitField K L p
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
-    letI := separableNormUnionField K L Ω p hL hInfinite
-    letI := separableNormUnionAlgebra K L Ω p hL hInfinite
-    normLimitAbsoluteGaloisEquiv K L Ω p hL hInfinite σ
-      (normUnionSeparableClosureEquiv K L Ω p hL hInfinite z) =
-      normUnionSeparableClosureEquiv K L Ω p hL hInfinite
-        (separableNormUnionMap K L Ω p hL hInfinite Ω
+    letI := separableNormUnionField K L Ω p
+    letI := separableNormUnionAlgebra K L Ω p
+    normLimitAbsoluteGaloisEquiv K L Ω p σ
+      (normUnionSeparableClosureEquiv K L Ω p z) =
+      normUnionSeparableClosureEquiv K L Ω p
+        (separableNormUnionMap K L Ω p Ω
           ((originalSeparableClosureEquiv K L Ω).autCongr σ).toAlgHom z) := by
-  let := normLimitField K L p hL hInfinite
+  let := normLimitField K L p
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
-  let := separableNormUnionField K L Ω p hL hInfinite
-  let := separableNormUnionAlgebra K L Ω p hL hInfinite
-  exact normUnionAbsoluteGaloisEquiv_apply K L Ω p hL hInfinite
+  let := separableNormUnionField K L Ω p
+  let := separableNormUnionAlgebra K L Ω p
+  exact normUnionAbsoluteGaloisEquiv_apply K L Ω p
     ((originalSeparableClosureEquiv K L Ω).autCongr σ) z
 
 /-- The absolute Galois equivalence with no supplied closure or embedding
 data: the canonical separable closure of the original field is itself a
 separable closure of the original base via the actual composite algebra. -/
 def fieldOfNormsAbsoluteGaloisEquiv :
-    letI := normLimitField K L p hL hInfinite
+    letI := normLimitField K L p
     (SeparableClosure L ≃ₐ[L] SeparableClosure L) ≃ₜ*
       (SeparableClosure X ≃ₐ[X] SeparableClosure X) := by
-  let := normLimitField K L p hL hInfinite
+  let := normLimitField K L p
   let : Algebra K (SeparableClosure L) :=
     ((algebraMap L (SeparableClosure L)).comp (algebraMap K L)).toAlgebra
   let : IsScalarTower K L (SeparableClosure L) := IsScalarTower.of_algebraMap_eq' rfl
@@ -220,7 +220,7 @@ def fieldOfNormsAbsoluteGaloisEquiv :
     Algebra.IsSeparable.trans K L (SeparableClosure L)
   let : IsSepClosure K (SeparableClosure L) :=
     isSepClosure_iff.mpr ⟨IsSepClosure.sep_closed L, inferInstance⟩
-  exact normUnionAbsoluteGaloisEquiv K L (SeparableClosure L) p hL hInfinite
+  exact normUnionAbsoluteGaloisEquiv K L (SeparableClosure L) p
 
 end NormField
 

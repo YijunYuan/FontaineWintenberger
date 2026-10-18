@@ -204,15 +204,15 @@ variable (p : ℕ) [Fact p.Prime]
 surjective residue maps and p-power degrees on every original finite step
 above it, including nonnormal steps. -/
 theorem IsAPF.exists_finiteLayer_residue_surjective_and_degree_prime_pow
-    (hL : IsAPF K L) :
+    [IsAPF K L] :
     ∃ T : FiniteLayer K L, ∀ E F : FiniteLayer K L, T ≤ E → ∀ hEF : E ≤ F,
       Function.Surjective
           (spectralResidueInclusion K (IntermediateField.inclusion hEF)) ∧
         ∃ n : ℕ, Module.finrank E.val (IntermediateField.extendScalars hEF) = p ^ n := by
   let j : L →ₐ[K] SeparableClosure K := IsSepClosed.lift
-  obtain ⟨T₁, hT₁⟩ := exists_finiteLayer_map_eq_apfFiniteStage K L hL j
+  obtain ⟨T₁, hT₁⟩ := exists_finiteLayer_map_eq_apfFiniteStage K L j
     (by norm_num : -1 ≤ (1 : ℝ))
-  obtain ⟨T₀, hT₀⟩ := IsAPF.exists_finiteLayer_residueInclusion_surjective K L hL
+  obtain ⟨T₀, hT₀⟩ := IsAPF.exists_finiteLayer_residueInclusion_surjective K L
   refine ⟨FiniteLayer.sup T₀ T₁, fun E F hE hEF ↦
     ⟨hT₀ E F ((FiniteLayer.le_sup_left T₀ T₁).trans hE) hEF, ?_⟩⟩
   have : FiniteDimensional K (F.val.map j) :=
@@ -236,7 +236,7 @@ theorem IsAPF.exists_finiteLayer_residue_surjective_and_degree_prime_pow
 all original residue inclusions are onto, all degrees are powers of the
 residue characteristic, and every step is totally ramified on its actual
 spectral integer rings. -/
-theorem IsAPF.exists_finiteLayer_wild_tail (hL : IsAPF K L) :
+theorem IsAPF.exists_finiteLayer_wild_tail [IsAPF K L] :
     ∃ T : FiniteLayer K L, ∀ E F : FiniteLayer K L, T ≤ E → ∀ hEF : E ≤ F,
       Function.Surjective
           (spectralResidueInclusion K (IntermediateField.inclusion hEF)) ∧
@@ -247,7 +247,7 @@ theorem IsAPF.exists_finiteLayer_wild_tail (hL : IsAPF K L) :
         (IsLocalRing.maximalIdeal (spectralIntegerRing K F.val)).ramificationIdx
             (spectralIntegerRing K E.val) =
           Module.finrank E.val (IntermediateField.extendScalars hEF) := by
-  obtain ⟨T, hT⟩ := IsAPF.exists_finiteLayer_residue_surjective_and_degree_prime_pow K L p hL
+  obtain ⟨T, hT⟩ := IsAPF.exists_finiteLayer_residue_surjective_and_degree_prime_pow K L p
   refine ⟨T, fun E F hE hEF ↦ ?_⟩
   obtain ⟨hs, hn⟩ := hT E F hE hEF
   exact ⟨hs, hn, FiniteLayer.ramificationIdx_eq_finrank_of_residueInclusion_surjective K L

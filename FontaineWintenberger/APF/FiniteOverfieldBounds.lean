@@ -78,10 +78,10 @@ theorem finiteOverfield_fixing_sup_upper_eq_top
 in any finite Galois overfield, including both infinite endpoints. -/
 theorem apfHerbrandERealOrderIso_bound_le_of_finiteGalois
     (M N : IntermediateField K L) (hMN : M ≤ N) :
-    apfHerbrandERealOrderIso K M (isAPF_of_finite K M) (apfRamificationBound K N) ≤
+    apfHerbrandERealOrderIso K M (apfRamificationBound K N) ≤
       apfRamificationBound M (IntermediateField.extendScalars hMN) := by
   rw [apfRamificationBound_eq_sSup_fixingSubgroup_sup_upper K L N,
-    (apfHerbrandERealOrderIso K M (isAPF_of_finite K M)).map_sSup]
+    (apfHerbrandERealOrderIso K M).map_sSup]
   apply iSup_le
   intro x
   apply iSup_le
@@ -90,7 +90,7 @@ theorem apfHerbrandERealOrderIso_bound_le_of_finiteGalois
     apfRamificationBound_eq_sSup_fixingSubgroup_sup_upper M L
       (IntermediateField.extendScalars hMN)]
   exact le_sSup ⟨apfPsi K M u,
-    IsAPF.apfPsi_mem_Ici K M (isAPF_of_finite K M) hu,
+    IsAPF.apfPsi_mem_Ici K M hu,
     finiteOverfield_fixing_sup_upper_eq_top K L M N hMN hu htop, rfl⟩
 
 /-- Finite base change increases the same actual intrinsic first bound. -/
@@ -98,7 +98,7 @@ theorem apfRamificationBound_le_finiteBase_of_finiteGalois
     (M N : IntermediateField K L) (hMN : M ≤ N) :
     apfRamificationBound K N ≤
       apfRamificationBound M (IntermediateField.extendScalars hMN) :=
-  (IsAPF.le_apfHerbrandERealOrderIso K M (isAPF_of_finite K M) _).trans
+  (IsAPF.le_apfHerbrandERealOrderIso K M _).trans
     (apfHerbrandERealOrderIso_bound_le_of_finiteGalois K L M N hMN)
 
 /-- The same old first bound is a common lower bound for every actual

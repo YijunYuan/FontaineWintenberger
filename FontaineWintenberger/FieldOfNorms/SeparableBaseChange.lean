@@ -344,18 +344,19 @@ local notation "M" => IntermediateField.adjoin L (Singleton.singleton x : Set (S
 omit [PerfectField (IsLocalRing.ResidueField
     (NormedField.valuation (K := K)).valuationSubring)] in
 /-- The actual finite separable root adjunction remains APF over the original base. -/
-theorem isAPF_rootAdjunction (hL : IsAPF K L) : IsAPF K M :=
-  (isAPF_finite_extension_iff K M L).mpr hL
+theorem isAPF_rootAdjunction [IsAPF K L] : IsAPF K M :=
+  (isAPF_finite_extension_iff K M L).mpr ‹_›
 
 omit [IsCompleteDiscreteValuedField K] [PerfectField (IsLocalRing.ResidueField
     (NormedField.valuation (K := K)).valuationSubring)]
       in
 /-- The original infinite field embeds in its actual simple compositum,
 so that compositum still has infinite degree over the original base. -/
-theorem rootAdjunction_not_finite (hL : ¬ Module.Finite K L) : ¬ Module.Finite K M := by
+theorem rootAdjunction_not_finite [Fact (¬ Module.Finite K L)] : ¬ Module.Finite K M := by
   intro hM
   let : Module.Finite K M := hM
-  exact hL (Module.Finite.of_injective (IsScalarTower.toAlgHom K L M).toLinearMap
+  exact (Fact.out : ¬ Module.Finite K L)
+    (Module.Finite.of_injective (IsScalarTower.toAlgHom K L M).toLinearMap
     (IsScalarTower.toAlgHom K L M).injective)
 
 /-- The original compositum has full relative upper product over the original
@@ -407,7 +408,7 @@ theorem apfPsi_le_rootAdjunction_firstBound
     (apfPsi K D b : EReal) ≤ apfRamificationBound D M := by
   have hb0 : 0 ≤ b := (mul_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)).trans hb
   exact le_apfRamificationBound D M IsSepClosed.lift
-    (IsAPF.apfPsi_mem_Ici K D (isAPF_of_finite K D) (by linarith))
+    (IsAPF.apfPsi_mem_Ici K D (by linarith))
     (rootAdjunction_fullUpper K x L f hf hsep hb htop hx)
 
 /-- The actual new-base first bound is at least the original full-product
@@ -418,7 +419,7 @@ theorem le_rootAdjunction_firstBound
       (IsDiscreteValuationRing.addVal OK f.discr).toNat ≤ b)
     (htop : apfSubgroup K L b = ⊤) (hx : aeval x f = 0) :
     (b : EReal) ≤ apfRamificationBound D M :=
-  (EReal.coe_le_coe_iff.mpr (IsAPF.le_apfPsi K D (isAPF_of_finite K D) b)).trans
+  (EReal.coe_le_coe_iff.mpr (IsAPF.le_apfPsi K D b)).trans
     (apfPsi_le_rootAdjunction_firstBound K x L f hf hsep hb htop hx)
 
 end RelativeRoot
@@ -627,19 +628,20 @@ local notation "M" => IntermediateField.adjoin L (Singleton.singleton x : Set Ω
 omit [PerfectField (IsLocalRing.ResidueField
     (NormedField.valuation (K := K)).valuationSubring)] in
 /-- The same original root compositum in the chosen common closure remains APF. -/
-theorem isAPF_rootAdjunction_commonClosure (hL : IsAPF K L) : IsAPF K M :=
-  (isAPF_finite_extension_iff K M L).mpr hL
+theorem isAPF_rootAdjunction_commonClosure [IsAPF K L] : IsAPF K M :=
+  (isAPF_finite_extension_iff K M L).mpr ‹_›
 
 omit [IsCompleteDiscreteValuedField K] [PerfectField (IsLocalRing.ResidueField
     (NormedField.valuation (K := K)).valuationSubring)]
       [IsSepClosure K Ω] in
 /-- Infinite degree is retained by the same original root compositum in the
 chosen common closure. -/
-theorem rootAdjunction_not_finite_commonClosure (hL : ¬ Module.Finite K L) :
+theorem rootAdjunction_not_finite_commonClosure [Fact (¬ Module.Finite K L)] :
     ¬ Module.Finite K M := by
   intro hM
   let : Module.Finite K M := hM
-  exact hL (Module.Finite.of_injective (IsScalarTower.toAlgHom K L M).toLinearMap
+  exact (Fact.out : ¬ Module.Finite K L)
+    (Module.Finite.of_injective (IsScalarTower.toAlgHom K L M).toLinearMap
     (IsScalarTower.toAlgHom K L M).injective)
 
 /-- The full relative upper product over the actual root field in the
@@ -710,7 +712,7 @@ theorem apfPsi_le_rootAdjunction_firstBound_commonClosure
     (apfPsi K D b : EReal) ≤ apfRamificationBound D M := by
   have hb0 : 0 ≤ b := (mul_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)).trans hb
   exact le_apfRamificationBound D M IsSepClosed.lift
-    (IsAPF.apfPsi_mem_Ici K D (isAPF_of_finite K D) (by linarith))
+    (IsAPF.apfPsi_mem_Ici K D (by linarith))
     (rootAdjunction_fullUpper_commonClosure K x L f hf hsep hb htop hx)
 
 /-- The same original new-base first bound also dominates the original
@@ -722,7 +724,7 @@ theorem le_rootAdjunction_firstBound_commonClosure
     (htop : L.fixingSubgroup ⊔ upperRamificationGroupInfinite K Ω b = ⊤)
     (hx : aeval x f = 0) :
     (b : EReal) ≤ apfRamificationBound D M :=
-  (EReal.coe_le_coe_iff.mpr (IsAPF.le_apfPsi K D (isAPF_of_finite K D) b)).trans
+  (EReal.coe_le_coe_iff.mpr (IsAPF.le_apfPsi K D b)).trans
     (apfPsi_le_rootAdjunction_firstBound_commonClosure K x L f hf hsep hb htop hx)
 
 end RelativeCommonClosure

@@ -144,11 +144,11 @@ theorem isAPF_finiteBase_iff : IsAPF K N ↔ IsAPF M N := by
     isAPF_iff_embedding M N i, isAPFSubextension_iff_finiteIndex,
     isAPFSubextension_iff_finiteIndex]
   let := absoluteGaloisBaseChange_range_finiteIndex K M
-  have hM := isAPF_of_finite K M
+  have := isAPF_of_finite K M
   constructor
   · intro h v hv
-    let u := apfPhi K M hM v
-    have hu : -1 ≤ u := apfPhi_mem_Ici K M hM hv
+    let u := apfPhi K M v
+    have hu : -1 ≤ u := apfPhi_mem_Ici K M hv
     have hindex := (Subgroup.finiteIndex_iff_comap_of_range ρ
       (apfSubgroup K (baseChangedSeparableEmbedding K M i).fieldRange u)).mp (h u hu)
     rw [comap_apfSubgroup_finiteBase K M i hu, apfPsi_apfPhi] at hindex
@@ -157,7 +157,7 @@ theorem isAPF_finiteBase_iff : IsAPF K N ↔ IsAPF M N := by
     apply (Subgroup.finiteIndex_iff_comap_of_range ρ
       (apfSubgroup K (baseChangedSeparableEmbedding K M i).fieldRange u)).mpr
     rw [comap_apfSubgroup_finiteBase K M i hu]
-    exact h (apfPsi K M u) (IsAPF.apfPsi_mem_Ici K M hM hu)
+    exact h (apfPsi K M u) (IsAPF.apfPsi_mem_Ici K M hu)
 
 end Valued
 

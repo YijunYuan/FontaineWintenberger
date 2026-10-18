@@ -49,7 +49,7 @@ theorem comap_apfInertiaSubgroup_finiteBase (i : N →ₐ[M] SeparableClosure M)
     {u : ℝ} (hu : 0 ≤ u) :
     (apfInertiaSubgroup K (baseChangedSeparableEmbedding K M i).fieldRange u).comap ρ =
       apfInertiaSubgroup M i.fieldRange (apfPsi K M u) := by
-  have hψ : 0 ≤ apfPsi K M u := hu.trans (IsAPF.le_apfPsi K M (isAPF_of_finite K M) u)
+  have hψ : 0 ≤ apfPsi K M u := hu.trans (IsAPF.le_apfPsi K M u)
   rw [apfInertiaSubgroup_eq_inf K _ u hu, Subgroup.comap_inf,
     comap_apfSubgroup_finiteBase K M i (by linarith),
     comap_absoluteUpper_finiteBase K M (by norm_num : (-1 : ℝ) ≤ 0),

@@ -113,7 +113,7 @@ theorem mem_upperRamificationGroupInfinite_finiteBase_iff
     {u : ℝ} (hu : -1 ≤ u) (g : SeparableClosure K ≃ₐ[M] SeparableClosure K) :
     g ∈ upperRamificationGroupInfinite M (SeparableClosure K) (apfPsi K M u) ↔
       g.restrictScalars K ∈ upperRamificationGroupInfinite K (SeparableClosure K) u := by
-  have hv := IsAPF.apfPsi_mem_Ici K M (isAPF_of_finite K M) hu
+  have hv := IsAPF.apfPsi_mem_Ici K M hu
   rw [mem_upperRamificationGroupInfinite_base_iff K M hv g,
     mem_upperRamificationGroupInfinite_containing_base_iff K M hu (g.restrictScalars K)]
   exact forall_congr' fun E => forall_congr' fun hME =>
@@ -125,7 +125,7 @@ theorem absoluteGaloisBaseChange_mem_upper_iff
     g ∈ upperRamificationGroupInfinite M (SeparableClosure M) (apfPsi K M u) ↔
       (absoluteGaloisBaseChangeEquiv K M g).1 ∈
         upperRamificationGroupInfinite K (SeparableClosure K) u := by
-  have hv := IsAPF.apfPsi_mem_Ici K M (isAPF_of_finite K M) hu
+  have hv := IsAPF.apfPsi_mem_Ici K M hu
   exact (mem_upperRamificationGroupInfinite_autCongr_iff M
     (separableClosureBaseChangeEquiv K M) hv g).symm.trans
       (mem_upperRamificationGroupInfinite_finiteBase_iff K M hu

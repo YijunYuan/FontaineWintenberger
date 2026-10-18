@@ -266,8 +266,8 @@ theorem apfPsi_eq_of_index_profile {b : ℝ} (hb : 0 ≤ b)
             hprofile x (hb.trans hx.1.le), ite_eq_right (not_le.mpr hx.1)]
         _ = _ := by simp
     have hadd := intervalIntegral.integral_add_adjacent_intervals
-      (IsAPF.intervalIntegrable_apfHerbrandSlope K L (isAPF_of_finite K L) 0 b)
-      (IsAPF.intervalIntegrable_apfHerbrandSlope K L (isAPF_of_finite K L) b u)
+      (IsAPF.intervalIntegrable_apfHerbrandSlope K L 0 b)
+      (IsAPF.intervalIntegrable_apfHerbrandSlope K L b u)
     change apfPsi K L b + _ = apfPsi K L u at hadd
     rw [hlow b le_rfl, hint] at hadd
     rw [ite_eq_right hu, ← hadd, mul_comm]
@@ -277,11 +277,11 @@ forward change of parameter, for every real argument. -/
 theorem apfPhi_eq_of_index_profile {b : ℝ} (hb : 0 ≤ b)
     (hprofile : ∀ u : ℝ, 0 ≤ u →
       apfIndex K L u = if u ≤ b then 1 else Module.finrank K L) (v : ℝ) :
-    apfPhi K L (isAPF_of_finite K L) v =
+    apfPhi K L v =
       if v ≤ b then v else b + (v - b) / (Module.finrank K L : ℝ) := by
   have hn : (0 : ℝ) < Module.finrank K L :=
     Nat.cast_pos.mpr (Module.finrank_pos : 0 < Module.finrank K L)
-  apply (IsAPF.strictMono_apfPsi K L (isAPF_of_finite K L)).injective
+  apply (IsAPF.strictMono_apfPsi K L).injective
   rw [apfPsi_apfPhi]
   by_cases hv : v ≤ b
   · rw [ite_eq_left hv, apfPsi_eq_of_index_profile K L hb hprofile, ite_eq_left hv]
@@ -315,7 +315,7 @@ theorem apf_prime_degree_different_profile
       (∀ u : ℝ, 0 ≤ u → apfIndex K L u = if u ≤ b then 1 else Module.finrank K L) ∧
       (∀ u : ℝ, apfPsi K L u =
         if u ≤ b then u else b + (Module.finrank K L : ℝ) * (u - b)) ∧
-      (∀ v : ℝ, apfPhi K L (isAPF_of_finite K L) v =
+      (∀ v : ℝ, apfPhi K L v =
         if v ≤ b then v else b + (v - b) / (Module.finrank K L : ℝ)) ∧
       ((emultiplicity (IsLocalRing.maximalIdeal B) (differentIdeal A B)).toNat : ℝ) =
         ((Module.finrank K L : ℝ) - 1) * (b + 1) := by

@@ -111,10 +111,10 @@ theorem apfPsi_eq_subgroup_herbrand_comp_inverse {u : ℝ} (hu : -1 ≤ u) :
 
 /-- The inverse change of parameter uses the same actual finite overfield and subgroup. -/
 theorem apfPhi_eq_herbrand_comp_subgroup_inverse {v : ℝ} (hv : -1 ≤ v) :
-    apfPhi K M (isAPF_of_finite K M) v =
+    apfPhi K M v =
       herbrandFunction (R := spectralIntegerRing K E) (E ≃ₐ[K] E)
         (inverseHerbrandFunction (R := spectralIntegerRing K E) H₀ v) := by
-  apply (IsAPF.strictMono_apfPsi K M (isAPF_of_finite K M)).injective
+  apply (IsAPF.strictMono_apfPsi K M).injective
   rw [apfPsi_apfPhi,
     apfPsi_eq_subgroup_herbrand_comp_inverse K E M
       (herbrandFunction_mem_Ici _ (inverseHerbrandFunction_mem_Ici _ v)),

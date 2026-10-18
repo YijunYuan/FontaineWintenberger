@@ -33,10 +33,15 @@ noncomputable def apfSubgroup (L : IntermediateField K (SeparableClosure K)) (u 
   L.fixingSubgroup ⊔ absoluteUpperRamificationGroup K u
 
 /-- Arithmetic profiniteness for an arbitrary separable extension inside the fixed separable
-closure. -/
-def IsAPFSubextension (L : IntermediateField K (SeparableClosure K)) : Prop :=
-  ∀ u : ℝ, -1 ≤ u →
+closure: `G_K^u · G_L` is open in `G_K` for every `u ≥ -1` (Wintenberger 1.2.1). -/
+class IsAPFSubextension (L : IntermediateField K (SeparableClosure K)) : Prop where
+  isOpen_apfSubgroup : ∀ u : ℝ, -1 ≤ u →
     IsOpen (apfSubgroup K L u : Set (SeparableClosure K ≃ₐ[K] SeparableClosure K))
+
+theorem isAPFSubextension_iff (L : IntermediateField K (SeparableClosure K)) :
+    IsAPFSubextension K L ↔ ∀ u : ℝ, -1 ≤ u →
+      IsOpen (apfSubgroup K L u : Set (SeparableClosure K ≃ₐ[K] SeparableClosure K)) :=
+  ⟨fun h => h.isOpen_apfSubgroup, fun h => ⟨h⟩⟩
 
 theorem coe_apfSubgroup (L : IntermediateField K (SeparableClosure K)) (u : ℝ) :
     (apfSubgroup K L u : Set (SeparableClosure K ≃ₐ[K] SeparableClosure K)) =
@@ -75,28 +80,28 @@ theorem isOpen_apfSubgroup_iff_finiteIndex
 
 theorem isAPFSubextension_iff_finiteIndex (L : IntermediateField K (SeparableClosure K)) :
     IsAPFSubextension K L ↔ ∀ u : ℝ, -1 ≤ u → (apfSubgroup K L u).FiniteIndex := by
-  simp only [IsAPFSubextension, isOpen_apfSubgroup_iff_finiteIndex]
+  simp only [isAPFSubextension_iff, isOpen_apfSubgroup_iff_finiteIndex]
 
-theorem IsAPFSubextension.index_pos {L : IntermediateField K (SeparableClosure K)} (hL :
-    IsAPFSubextension K L)
+theorem IsAPFSubextension.index_pos {L : IntermediateField K (SeparableClosure K)}
+    [hL : IsAPFSubextension K L]
     (u : ℝ) (hu : -1 ≤ u) : 0 < (apfSubgroup K L u).index := by
   exact Nat.pos_of_ne_zero (Subgroup.finiteIndex_iff.mp
-    ((isAPFSubextension_iff_finiteIndex K L).mp hL u hu))
+    ((isAPFSubextension_iff_finiteIndex K L).mp ‹_› u hu))
 
 /-- Every finite separable subextension is APF, without a Galois hypothesis. -/
-theorem isAPFSubextension_of_finite (L : IntermediateField K (SeparableClosure K))
+instance isAPFSubextension_of_finite (L : IntermediateField K (SeparableClosure K))
     [FiniteDimensional K L] :
     IsAPFSubextension K L := by
-  intro u _
+  refine ⟨fun u _ => ?_⟩
   exact Subgroup.isOpen_mono (show L.fixingSubgroup ≤ apfSubgroup K L u from le_sup_left)
     (IntermediateField.fixingSubgroup_isOpen L)
 
 /-- APF descends to every intermediate subextension, including nonnormal ones. -/
 theorem IsAPFSubextension.of_le {M L : IntermediateField K (SeparableClosure K)}
-    (hL : IsAPFSubextension K L) (hML : M ≤ L) : IsAPFSubextension K M := by
-  intro u hu
+    [hL : IsAPFSubextension K L] (hML : M ≤ L) : IsAPFSubextension K M := by
+  refine ⟨fun u hu => ?_⟩
   exact Subgroup.isOpen_mono
-    (sup_le_sup_right (IntermediateField.fixingSubgroup_le hML) _) (hL u hu)
+    (sup_le_sup_right (IntermediateField.fixingSubgroup_le hML) _) (hL.isOpen_apfSubgroup u hu)
 
 theorem apfSubgroup_antitoneOn (L : IntermediateField K (SeparableClosure K)) :
     AntitoneOn (apfSubgroup K L) (Set.Ici (-1)) := by

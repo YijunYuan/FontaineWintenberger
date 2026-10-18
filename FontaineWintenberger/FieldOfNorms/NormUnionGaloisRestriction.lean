@@ -30,17 +30,17 @@ variable (L : IntermediateField K (SeparableClosure K))
 variable (p : ℕ) [Fact p.Prime]
     [CharP (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring) p]
-variable (hL : IsAPF K L) (hInfinite : ¬ Module.Finite K L)
+variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 
 local notation "Ω" => SeparableClosure K
 local notation "X" => NormLimit K L
-local notation "U" => SeparableNormUnion K L Ω p hL hInfinite
-local notation "ι" => separableNormUnionBaseHom K L Ω p hL hInfinite
-local notation "ρ" => normLimitAut K p hL hInfinite
+local notation "U" => SeparableNormUnion K L Ω p
+local notation "ι" => separableNormUnionBaseHom K L Ω p
+local notation "ρ" => normLimitAut K L p
 
-local notation "S" => normUnionGaloisSubgroup K L p hL hInfinite
+local notation "S" => normUnionGaloisSubgroup K L p
 
-local notation "f" => normUnionGaloisRestrictionFun K L p hL hInfinite
+local notation "f" => normUnionGaloisRestrictionFun K L p
 
 /-- The actual restriction preserves multiplication in the canonical
 homomorphism domain structure. -/
@@ -51,25 +51,25 @@ theorem normUnionGaloisRestrictionFun_mul :
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
   dsimp only
   intro β γ
-  apply normUnionGaloisSubgroup_base_unique K L p hL hInfinite
+  apply normUnionGaloisSubgroup_base_unique K L p
     (β * γ).val (f (β * γ)) (f β * f γ)
-    (normUnionGaloisRestrictionFun_base K L p hL hInfinite (β * γ))
+    (normUnionGaloisRestrictionFun_base K L p (β * γ))
   intro x
   calc
     (β * γ).val (ι x) = β.val (γ.val (ι x)) :=
       congrArg (fun a => a (ι x)) ((Subgroup.subtype S).map_mul β γ)
     _ = ι (ρ (f β) (ρ (f γ) x)) :=
-      (congrArg β.val (normUnionGaloisRestrictionFun_base K L p hL hInfinite γ x)).trans
-        (normUnionGaloisRestrictionFun_base K L p hL hInfinite β (ρ (f γ) x))
+      (congrArg β.val (normUnionGaloisRestrictionFun_base K L p γ x)).trans
+        (normUnionGaloisRestrictionFun_base K L p β (ρ (f γ) x))
     _ = ι (ρ (f β * f γ) x) := by
       rw [(ρ).map_mul]
       rfl
 
 /-- The actual original base restriction, as a group homomorphism. -/
 def normUnionGaloisRestriction : S →* (L ≃ₐ[K] L) :=
-  MonoidHom.mk' f (normUnionGaloisRestrictionFun_mul K L p hL hInfinite)
+  MonoidHom.mk' f (normUnionGaloisRestrictionFun_mul K L p)
 
-local notation "r" => normUnionGaloisRestriction K L p hL hInfinite
+local notation "r" => normUnionGaloisRestriction K L p
 
 /-- The restriction retains the actual base square on every element. -/
 theorem normUnionGaloisRestriction_base :
@@ -77,7 +77,7 @@ theorem normUnionGaloisRestriction_base :
     ∀ (β : S) (x : X), β.val (ι x) = ι (ρ (r β) x) := by
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
   intro β x
-  exact normUnionGaloisRestrictionFun_base K L p hL hInfinite β x
+  exact normUnionGaloisRestrictionFun_base K L p β x
 
 /-- The original automorphism is determined by its genuine base square. -/
 theorem normUnionGaloisRestriction_eq_iff :
@@ -88,10 +88,10 @@ theorem normUnionGaloisRestriction_eq_iff :
   intro β σ
   constructor
   · rintro rfl
-    exact normUnionGaloisRestriction_base K L p hL hInfinite β
+    exact normUnionGaloisRestriction_base K L p β
   · intro hσ
-    exact normUnionGaloisSubgroup_base_unique K L p hL hInfinite β.val (r β) σ
-      (normUnionGaloisRestriction_base K L p hL hInfinite β) hσ
+    exact normUnionGaloisSubgroup_base_unique K L p β.val (r β) σ
+      (normUnionGaloisRestriction_base K L p β) hσ
 
 /-- The kernel consists exactly of automorphisms fixing the actual base pointwise. -/
 theorem mem_normUnionGaloisRestriction_ker_iff :

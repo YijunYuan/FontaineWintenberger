@@ -62,16 +62,16 @@ theorem exists_apfIndex_finite_constant :
     exact apfIndex_le_fixingSubgroup_inertiaRelIndex K M (max u 0)
   obtain ⟨C, ⟨⟨a, ha⟩, hmax⟩⟩ :=
     hbound.exists_isGreatest_of_nonempty (show (Set.range f).Nonempty from ⟨f 0, 0, rfl⟩)
-  have hM := isAPF_of_finite K M
+  have := isAPF_of_finite K M
   refine ⟨C, ?_, max a 0, le_max_right a 0, ?_⟩
   · rw [← ha]
-    exact IsAPF.apfIndex_pos K M hM (le_max_right a 0)
+    exact IsAPF.apfIndex_pos K M (le_max_right a 0)
   · intro u hu
     have hu0 : 0 ≤ u := (le_max_right a 0).trans hu
     apply le_antisymm
     · simpa only [f, max_eq_left hu0] using hmax (show f u ∈ Set.range f from ⟨u, rfl⟩)
     · rw [← ha]
-      exact IsAPF.apfIndex_monotoneOn K M hM (le_max_right a 0) hu0 hu
+      exact IsAPF.apfIndex_monotoneOn K M (le_max_right a 0) hu0 hu
 
 /-- The actual finite-base Herbrand integral is affine on a genuine eventual constant-index tail. -/
 theorem exists_apfPsi_finite_affine :
@@ -89,10 +89,10 @@ theorem exists_apfPsi_finite_affine :
         intro v hv
         simp only [apfHerbrandSlope, max_eq_left (hb.trans hv.1), hidx v hv.1]
       _ = _ := by simp
-  have hM := isAPF_of_finite K M
+  have := isAPF_of_finite K M
   have hadd := intervalIntegral.integral_add_adjacent_intervals
-    (IsAPF.intervalIntegrable_apfHerbrandSlope K M hM 0 b)
-    (IsAPF.intervalIntegrable_apfHerbrandSlope K M hM b u)
+    (IsAPF.intervalIntegrable_apfHerbrandSlope K M 0 b)
+    (IsAPF.intervalIntegrable_apfHerbrandSlope K M b u)
   change apfPsi K M b + (∫ v in b..u, apfHerbrandSlope K M v) = apfPsi K M u at hadd
   rw [hi] at hadd
   exact hadd.symm.trans (by ring)

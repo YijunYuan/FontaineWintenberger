@@ -68,54 +68,54 @@ variable (p : ℕ) [Fact p.Prime]
     [CharP (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring) p]
 
-variable (hL : IsAPF K L) (hInfinite : ¬ Module.Finite K L)
+variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 
 /-- Fixing an actual deep finite field gives its prescribed original
 valuation precision, uniformly for all integral original norm families. -/
 theorem normLimitValuation_sub_le_of_mem_deep_fixingSubgroup (n : ℕ)
     (σ : L ≃ₐ[K] L)
-    (hσ : σ ∈ (deepFiniteTower K L p hL hInfinite (FiniteLayer.bottom) n).val.fixingSubgroup) :
-    letI := normLimitField K L p hL hInfinite
-    ∀ (x : NormLimit K L), normLimitValuation K L hL x ≤ 1 →
-      normLimitValuation K L hL (normLimitAut K p hL hInfinite σ x - x) ≤
+    (hσ : σ ∈ (deepFiniteTower K L p (FiniteLayer.bottom) n).val.fixingSubgroup) :
+    letI := normLimitField K L p
+    ∀ (x : NormLimit K L), normLimitValuation K L x ≤ 1 →
+      normLimitValuation K L (normLimitAut K L p σ x - x) ≤
         WithZero.exp (-((n + 2 : ℕ) : ℤ)) := by
-  let := normLimitField K L p hL hInfinite
+  let := normLimitField K L p
   intro x hx
-  let A := (normLimitFieldValuation K L p hL hInfinite).valuationSubring
+  let A := (normLimitFieldValuation K L p).valuationSubring
   let a : A := ⟨x, hx⟩
-  let b : A := ⟨normLimitAut K p hL hInfinite σ x,
-    (normLimitAut_valuation K p hL hInfinite σ x).trans_le hx⟩
-  let q := normLimitTruncation K L p hL hInfinite (FiniteLayer.bottom) n
-  have he : normLimitIntegralCoordinate K L p hL hInfinite (FiniteLayer.bottom) b n =
-      normLimitIntegralCoordinate K L p hL hInfinite (FiniteLayer.bottom) a n := by
+  let b : A := ⟨normLimitAut K L p σ x,
+    (normLimitAut_valuation K p σ x).trans_le hx⟩
+  let q := normLimitTruncation K L p (FiniteLayer.bottom) n
+  have he : normLimitIntegralCoordinate K L p (FiniteLayer.bottom) b n =
+      normLimitIntegralCoordinate K L p (FiniteLayer.bottom) a n := by
     apply Subtype.ext
     change normLimitEval K L _ (normLimitMap σ x) = normLimitEval K L _ x
     exact normLimitEval_normLimitMap_of_mem_fixingSubgroup K L _ σ hσ x
   have hq : q b = q a := congrArg (Ideal.Quotient.mk _) he
   have hz : q (b - a) = 0 := by rw [map_sub, hq, sub_self]
-  exact (normLimitTruncation_eq_zero_iff K L p hL hInfinite (FiniteLayer.bottom) n
+  exact (normLimitTruncation_eq_zero_iff K L p (FiniteLayer.bottom) n
     (b - a)).mp hz
 
 /-- Every integral original family has a continuous orbit under the
 original Krull topology, with its inherited original valuation topology. -/
 theorem continuous_normLimitAut_apply_of_integral :
-    letI := normLimitField K L p hL hInfinite
-    letI := normLimitValued K L p hL hInfinite
-    ∀ (x : NormLimit K L), normLimitValuation K L hL x ≤ 1 →
-      Continuous (fun σ : L ≃ₐ[K] L => normLimitAut K p hL hInfinite σ x) := by
-  let := normLimitField K L p hL hInfinite
-  let := normLimitValued K L p hL hInfinite
+    letI := normLimitField K L p
+    letI := normLimitValued K L p
+    ∀ (x : NormLimit K L), normLimitValuation K L x ≤ 1 →
+      Continuous (fun σ : L ≃ₐ[K] L => normLimitAut K L p σ x) := by
+  let := normLimitField K L p
+  let := normLimitValued K L p
   intro x hx
   apply continuous_iff_continuousAt.mpr
   intro σ₀
   have hz : Tendsto (fun σ : L ≃ₐ[K] L =>
-      normLimitAut K p hL hInfinite σ x - normLimitAut K p hL hInfinite σ₀ x)
+      normLimitAut K L p σ x - normLimitAut K L p σ₀ x)
       (nhds σ₀) (nhds 0) := by
     apply (Valued.nhds_zero_hasBasis_integer_closedBall (NormLimit K L)
-      (normLimitUniformizer K L p hL hInfinite)
-      (normLimitValuation_normLimitUniformizer K L p hL hInfinite)).tendsto_right_iff.mpr
+      (normLimitUniformizer K L p)
+      (normLimitValuation_normLimitUniformizer K L p)).tendsto_right_iff.mpr
     intro n _
-    let E := deepFiniteTower K L p hL hInfinite (FiniteLayer.bottom) n
+    let E := deepFiniteTower K L p (FiniteLayer.bottom) n
     have hH : (E.val.fixingSubgroup : Set (L ≃ₐ[K] L)) ∈ nhds 1 :=
       E.val.fixingSubgroup_isOpen.mem_nhds (Subgroup.one_mem _)
     have ht : Tendsto (fun σ : L ≃ₐ[K] L => σ₀⁻¹ * σ) (nhds σ₀) (nhds 1) := by
@@ -124,59 +124,59 @@ theorem continuous_normLimitAut_apply_of_integral :
       simpa only [inv_mul_cancel] using
         hcont.continuousAt.tendsto (x := σ₀)
     filter_upwards [ht hH] with σ hσ
-    have hb := normLimitValuation_sub_le_of_mem_deep_fixingSubgroup K L p hL hInfinite
+    have hb := normLimitValuation_sub_le_of_mem_deep_fixingSubgroup K L p
       n (σ₀⁻¹ * σ) hσ x hx
-    let e := normLimitAut K p hL hInfinite σ₀
-    have hcomp : normLimitAut K p hL hInfinite σ x =
-        e (normLimitAut K p hL hInfinite (σ₀⁻¹ * σ) x) := by
+    let e := normLimitAut K L p σ₀
+    have hcomp : normLimitAut K L p σ x =
+        e (normLimitAut K L p (σ₀⁻¹ * σ) x) := by
       have hm := congrArg (fun a : NormLimit K L ≃+* NormLimit K L => a x)
-        ((normLimitAut K p hL hInfinite).map_mul σ₀ (σ₀⁻¹ * σ))
-      change normLimitAut K p hL hInfinite (σ₀ * (σ₀⁻¹ * σ)) x =
-        normLimitAut K p hL hInfinite σ₀
-          (normLimitAut K p hL hInfinite (σ₀⁻¹ * σ) x) at hm
+        ((normLimitAut K L p).map_mul σ₀ (σ₀⁻¹ * σ))
+      change normLimitAut K L p (σ₀ * (σ₀⁻¹ * σ)) x =
+        normLimitAut K L p σ₀
+          (normLimitAut K L p (σ₀⁻¹ * σ) x) at hm
       simpa only [mul_inv_cancel_left] using hm
-    have heq : e (normLimitAut K p hL hInfinite (σ₀⁻¹ * σ) x - x) =
-        normLimitAut K p hL hInfinite σ x - normLimitAut K p hL hInfinite σ₀ x := by
+    have heq : e (normLimitAut K L p (σ₀⁻¹ * σ) x - x) =
+        normLimitAut K L p σ x - normLimitAut K L p σ₀ x := by
       rw [map_sub e, ← hcomp]
-    have hv := normLimitAut_valuation K p hL hInfinite σ₀
-      (normLimitAut K p hL hInfinite (σ₀⁻¹ * σ) x - x)
+    have hv := normLimitAut_valuation K p σ₀
+      (normLimitAut K L p (σ₀⁻¹ * σ) x - x)
     rw [heq] at hv
     exact hv.trans_le hb
-  change Tendsto (fun σ : L ≃ₐ[K] L => normLimitAut K p hL hInfinite σ x)
-    (nhds σ₀) (nhds (normLimitAut K p hL hInfinite σ₀ x))
+  change Tendsto (fun σ : L ≃ₐ[K] L => normLimitAut K L p σ x)
+    (nhds σ₀) (nhds (normLimitAut K L p σ₀ x))
   simpa only [sub_add_cancel, zero_add] using
-    hz.add_const (normLimitAut K p hL hInfinite σ₀ x)
+    hz.add_const (normLimitAut K L p σ₀ x)
 
 /-- Every original norm-field family has a continuous orbit under the
 original Krull topology and the same original valuation topology. -/
 theorem continuous_normLimitAut_apply :
-    letI := normLimitField K L p hL hInfinite
-    letI := normLimitValued K L p hL hInfinite
+    letI := normLimitField K L p
+    letI := normLimitValued K L p
     ∀ x : NormLimit K L,
-      Continuous (fun σ : L ≃ₐ[K] L => normLimitAut K p hL hInfinite σ x) := by
-  let := normLimitField K L p hL hInfinite
-  let := normLimitValued K L p hL hInfinite
+      Continuous (fun σ : L ≃ₐ[K] L => normLimitAut K L p σ x) := by
+  let := normLimitField K L p
+  let := normLimitValued K L p
   intro x
-  let A := (normLimitFieldValuation K L p hL hInfinite).valuationSubring
+  let A := (normLimitFieldValuation K L p).valuationSubring
   obtain ⟨a, b, hb, heq⟩ := IsFractionRing.div_surjective A x
-  have ha := continuous_normLimitAut_apply_of_integral K L p hL hInfinite (a : NormLimit K L)
+  have ha := continuous_normLimitAut_apply_of_integral K L p (a : NormLimit K L)
     a.property
-  have hc := continuous_normLimitAut_apply_of_integral K L p hL hInfinite (b : NormLimit K L)
+  have hc := continuous_normLimitAut_apply_of_integral K L p (b : NormLimit K L)
     b.property
   have hne : (b : NormLimit K L) ≠ 0 := fun h =>
     nonZeroDivisors.ne_zero hb (Subtype.ext h)
-  have hbσ (σ : L ≃ₐ[K] L) : normLimitAut K p hL hInfinite σ (b : NormLimit K L) ≠ 0 := by
+  have hbσ (σ : L ≃ₐ[K] L) : normLimitAut K L p σ (b : NormLimit K L) ≠ 0 := by
     intro h
     apply hne
-    apply (normLimitAut K p hL hInfinite σ).injective
+    apply (normLimitAut K L p σ).injective
     exact h.trans (map_zero _).symm
   have hd := ha.div hc hbσ
   convert hd using 1
   funext σ
-  change normLimitAut K p hL hInfinite σ x =
-    normLimitAut K p hL hInfinite σ (a : NormLimit K L) /
-      normLimitAut K p hL hInfinite σ (b : NormLimit K L)
+  change normLimitAut K L p σ x =
+    normLimitAut K L p σ (a : NormLimit K L) /
+      normLimitAut K L p σ (b : NormLimit K L)
   rw [← map_div₀]
-  exact congrArg (normLimitAut K p hL hInfinite σ) heq.symm
+  exact congrArg (normLimitAut K L p σ) heq.symm
 
 end FontaineWintenberger

@@ -32,15 +32,15 @@ variable (p : ℕ) [Fact p.Prime]
 
 /-- Associativity of the actual norm-limit addition follows from four
 coordinate approximations and separation at a fixed original finite base. -/
-theorem normLimitAdd_assoc (hL : IsAPF K L) (α β γ : NormLimit K L) :
-    normLimitAdd K L p hL (normLimitAdd K L p hL α β) γ =
-      normLimitAdd K L p hL α (normLimitAdd K L p hL β γ) := by
-  apply normLimit_ext_of_eventually_sub_mem K L p hL
+theorem normLimitAdd_assoc [IsAPF K L] (α β γ : NormLimit K L) :
+    normLimitAdd K L p (normLimitAdd K L p α β) γ =
+      normLimitAdd K L p α (normLimitAdd K L p β γ) := by
+  apply normLimit_ext_of_eventually_sub_mem K L p
   intro n
-  obtain ⟨T₁, hT₁⟩ := normLimitAdd_sub_mem K L p hL (normLimitAdd K L p hL α β) γ n
-  obtain ⟨T₂, hT₂⟩ := normLimitAdd_sub_mem K L p hL α β n
-  obtain ⟨T₃, hT₃⟩ := normLimitAdd_sub_mem K L p hL α (normLimitAdd K L p hL β γ) n
-  obtain ⟨T₄, hT₄⟩ := normLimitAdd_sub_mem K L p hL β γ n
+  obtain ⟨T₁, hT₁⟩ := normLimitAdd_sub_mem K L p (normLimitAdd K L p α β) γ n
+  obtain ⟨T₂, hT₂⟩ := normLimitAdd_sub_mem K L p α β n
+  obtain ⟨T₃, hT₃⟩ := normLimitAdd_sub_mem K L p α (normLimitAdd K L p β γ) n
+  obtain ⟨T₄, hT₄⟩ := normLimitAdd_sub_mem K L p β γ n
   refine ⟨FiniteLayer.sup (FiniteLayer.sup T₁ T₂) (FiniteLayer.sup T₃ T₄), fun E hE => ?_⟩
   have hE₁₂ := (FiniteLayer.le_sup_left (FiniteLayer.sup T₁ T₂)
     (FiniteLayer.sup T₃ T₄)).trans hE
@@ -58,13 +58,13 @@ theorem normLimitAdd_assoc (hL : IsAPF K L) (α β γ : NormLimit K L) :
 /-- The original zero and the constructed addition form a commutative monoid
 on the same carrier. This named value is used by the subsequent field structure. -/
 @[instance_reducible]
-def normLimitAddCommMonoid (hL : IsAPF K L) : AddCommMonoid (NormLimit K L) where
+def normLimitAddCommMonoid [IsAPF K L] : AddCommMonoid (NormLimit K L) where
   zero := 0
-  add := normLimitAdd K L p hL
-  add_assoc := normLimitAdd_assoc K L p hL
-  zero_add := normLimitAdd_zero_left K L p hL
-  add_zero := normLimitAdd_zero_right K L p hL
-  add_comm := normLimitAdd_comm K L p hL
-  nsmul := @nsmulRec (NormLimit K L) inferInstance ⟨normLimitAdd K L p hL⟩
+  add := normLimitAdd K L p
+  add_assoc := normLimitAdd_assoc K L p
+  zero_add := normLimitAdd_zero_left K L p
+  add_zero := normLimitAdd_zero_right K L p
+  add_comm := normLimitAdd_comm K L p
+  nsmul := @nsmulRec (NormLimit K L) inferInstance ⟨normLimitAdd K L p⟩
 
 end FontaineWintenberger

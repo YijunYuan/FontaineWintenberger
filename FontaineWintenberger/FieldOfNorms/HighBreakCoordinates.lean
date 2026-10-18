@@ -116,10 +116,10 @@ absolute stage through the original finite-base inverse Herbrand function. -/
 theorem FiniteLayer.hasFullUpper_iff_stage_le (E : FiniteLayer K L)
     (j : L →ₐ[K] SeparableClosure K) {b : ℝ} (hb : 0 ≤ b) :
     E.HasFullUpper K L b ↔ apfFiniteStage K j.fieldRange
-      (apfPhi K E.val (isAPF_of_finite K E.val) b) ≤ E.val.map j := by
-  have hu : 0 ≤ apfPhi K E.val (isAPF_of_finite K E.val) b := by
-    have h := (strictMono_apfPhi K E.val (isAPF_of_finite K E.val)).monotone hb
-    simpa only [apfPhi_of_nonpos K E.val _ le_rfl] using h
+      (apfPhi K E.val b) ≤ E.val.map j := by
+  have hu : 0 ≤ apfPhi K E.val b := by
+    have h := (strictMono_apfPhi K E.val).monotone hb
+    simpa only [apfPhi_of_nonpos K E.val le_rfl] using h
   simpa only [apfPsi_apfPhi] using E.hasFullUpper_apfPsi_iff K L j hu
 
 section PositiveWild
@@ -219,29 +219,29 @@ theorem FiniteLayer.HasFullUpper.of_le {E : FiniteLayer K L} {b c : ℝ}
 
 /-- Actual full relative upper products become arbitrarily deep on an original
 finite-field tail; this retains the product, rather than only its first bound. -/
-theorem IsAPF.exists_finiteLayer_fullUpper_tail (hL : IsAPF K L) (b : ℝ) (hb : 0 ≤ b) :
+theorem IsAPF.exists_finiteLayer_fullUpper_tail [IsAPF K L] (b : ℝ) (hb : 0 ≤ b) :
     ∃ T : FiniteLayer K L, ∀ E : FiniteLayer K L, T ≤ E → E.HasFullUpper K L b := by
   let j : L →ₐ[K] SeparableClosure K := IsSepClosed.lift
-  obtain ⟨T, hT⟩ := exists_finiteLayer_map_eq_apfFiniteStage K L hL j
+  obtain ⟨T, hT⟩ := exists_finiteLayer_map_eq_apfFiniteStage K L j
     (by linarith : -1 ≤ b)
   refine ⟨T, fun E hTE ↦ ?_⟩
   have hstage : apfFiniteStage K j.fieldRange b ≤ E.val.map j := by
     rw [← hT]
     exact IntermediateField.map_mono j hTE
   have h := (E.hasFullUpper_apfPsi_iff K L j hb).mpr hstage
-  exact h.of_le K L hb (IsAPF.le_apfPsi K E.val (isAPF_of_finite K E.val) b)
+  exact h.of_le K L hb (IsAPF.le_apfPsi K E.val b)
 
 /-- A positive full relative product forces every original finite overstep
 to have surjective original residue inclusion. -/
 theorem FiniteLayer.HasFullUpper.residue_surjective
-    (hL : IsAPF K L) {E : FiniteLayer K L} {b : ℝ} (hb : 0 < b)
+    [IsAPF K L] {E : FiniteLayer K L} {b : ℝ} (hb : 0 < b)
     (h : E.HasFullUpper K L b) (F : FiniteLayer K L) (hEF : E ≤ F) :
     Function.Surjective (spectralResidueInclusion K (IntermediateField.inclusion hEF)) := by
   let j : L →ₐ[K] SeparableClosure K := IsSepClosed.lift
-  let u := apfPhi K E.val (isAPF_of_finite K E.val) b
+  let u := apfPhi K E.val b
   have hu : 0 < u := by
-    have ht := strictMono_apfPhi K E.val (isAPF_of_finite K E.val) hb
-    simpa only [apfPhi_of_nonpos K E.val _ le_rfl] using ht
+    have ht := strictMono_apfPhi K E.val hb
+    simpa only [apfPhi_of_nonpos K E.val le_rfl] using ht
   have hstage := (E.hasFullUpper_iff_stage_le K L j hb.le).mp h
   have hzero : apfFiniteStage K j.fieldRange 0 ≤ E.val.map j :=
     (apfFiniteStage_mono K j.fieldRange (by norm_num) (by linarith) hu.le).trans hstage
@@ -253,9 +253,9 @@ theorem FiniteLayer.HasFullUpper.residue_surjective
   have hFL : F.val.map j ≤ j.fieldRange := by
     rintro z ⟨x, _, rfl⟩
     exact ⟨x, rfl⟩
-  have hd := (residueDegree_eq_zeroStage_of_apfFiniteStage_le K j.fieldRange (hL j)
+  have hd := (residueDegree_eq_zeroStage_of_apfFiniteStage_le K j.fieldRange
     (E.val.map j) (hmap.trans hFL) hzero).trans
-      (residueDegree_eq_zeroStage_of_apfFiniteStage_le K j.fieldRange (hL j)
+      (residueDegree_eq_zeroStage_of_apfFiniteStage_le K j.fieldRange
         (F.val.map j) hFL (hzero.trans hmap)).symm
   rw [spectral_residueDegree_algEquiv K E.val (IntermediateField.equivMap E.val j),
     spectral_residueDegree_algEquiv K F.val (IntermediateField.equivMap F.val j)] at hd
@@ -273,10 +273,10 @@ theorem FiniteLayer.HasFullUpper.finrank_eq_prime_pow
     (F : FiniteLayer K L) (hEF : E ≤ F) :
     ∃ n : ℕ, Module.finrank E.val (IntermediateField.extendScalars hEF) = p ^ n := by
   let j : L →ₐ[K] SeparableClosure K := IsSepClosed.lift
-  let u := apfPhi K E.val (isAPF_of_finite K E.val) b
+  let u := apfPhi K E.val b
   have hu : 0 < u := by
-    have ht := strictMono_apfPhi K E.val (isAPF_of_finite K E.val) hb
-    simpa only [apfPhi_of_nonpos K E.val _ le_rfl] using ht
+    have ht := strictMono_apfPhi K E.val hb
+    simpa only [apfPhi_of_nonpos K E.val le_rfl] using ht
   have hstage := (E.hasFullUpper_iff_stage_le K L j hb.le).mp h
   have : FiniteDimensional K (F.val.map j) :=
     Module.Finite.equiv (IntermediateField.equivMap F.val j).toLinearEquiv
@@ -299,10 +299,10 @@ theorem FiniteLayer.HasFullUpper.le_relativeFirstBound
     (F : FiniteLayer K L) (hEF : E ≤ F) :
     (b : EReal) ≤ apfRamificationBound E.val (IntermediateField.extendScalars hEF) := by
   let j : L →ₐ[K] SeparableClosure K := IsSepClosed.lift
-  let u := apfPhi K E.val (isAPF_of_finite K E.val) b
+  let u := apfPhi K E.val b
   have hu : 0 ≤ u := by
-    have ht := (strictMono_apfPhi K E.val (isAPF_of_finite K E.val)).monotone hb
-    simpa only [apfPhi_of_nonpos K E.val _ le_rfl] using ht
+    have ht := (strictMono_apfPhi K E.val).monotone hb
+    simpa only [apfPhi_of_nonpos K E.val le_rfl] using ht
   have hstage := (E.hasFullUpper_iff_stage_le K L j hb).mp h
   have ht := apfPsi_le_relativeFirstBound_of_apfFiniteStage_le K L E F hEF j hu hstage
   simpa only [u, apfPsi_apfPhi] using ht
@@ -311,31 +311,31 @@ theorem FiniteLayer.HasFullUpper.le_relativeFirstBound
 computes the normalized valuation of every original norm family, including
 zero and nonintegral families. -/
 theorem normLimitValuation_eq_coordinate_of_fullUpper
-    (hL : IsAPF K L) {E : FiniteLayer K L} {b : ℝ} (hb : 0 < b)
+    [IsAPF K L] {E : FiniteLayer K L} {b : ℝ} (hb : 0 < b)
     (h : E.HasFullUpper K L b) (α : NormLimit K L) :
-    normLimitValuation K L hL α = normLimitCoordinateValuation K L E α := by
-  obtain ⟨V, hV⟩ := IsAPF.exists_normLimitValuation_eq_coordinate K L hL
+    normLimitValuation K L α = normLimitCoordinateValuation K L E α := by
+  obtain ⟨V, hV⟩ := IsAPF.exists_normLimitValuation_eq_coordinate K L
   let F := FiniteLayer.sup E V
   have hEF : E ≤ F := FiniteLayer.le_sup_left E V
   rw [hV F (FiniteLayer.le_sup_right E V)]
   have hv := FiniteLayer.normalizedValuation_norm_of_residueInclusion_surjective K L
-    E F hEF (h.residue_surjective K L hL hb F hEF) (normLimitEval K L F α)
+    E F hEF (h.residue_surjective K L hb F hEF) (normLimitEval K L F α)
   rw [normLimitEval_norm] at hv
   exact hv.symm
 
 /-- Any prescribed nonnegative depths are attained by an increasing cofinal
 sequence of original finite subfields, each with its actual full upper product.
 No growth assumption on the depths is needed for this stronger statement. -/
-theorem IsAPF.exists_monotone_cofinal_fullUpper_stages (hL : IsAPF K L)
+theorem IsAPF.exists_monotone_cofinal_fullUpper_stages [IsAPF K L]
     (b : ℕ → ℝ) (hb : ∀ n, 0 ≤ b n) :
     ∃ E : ℕ → FiniteLayer K L, Monotone E ∧
       (∀ n, (E n).HasFullUpper K L (b n)) ∧
       ∀ D : FiniteLayer K L, ∃ n, D ≤ E n := by
-  let T (n : ℕ) := (IsAPF.exists_finiteLayer_fullUpper_tail K L hL (b n) (hb n)).choose
+  let T (n : ℕ) := (IsAPF.exists_finiteLayer_fullUpper_tail K L (b n) (hb n)).choose
   obtain ⟨E, hmono, hTE, hcofinal⟩ :=
-    IsAPF.exists_monotone_cofinal_finiteLayers_ge K L hL T
+    IsAPF.exists_monotone_cofinal_finiteLayers_ge K L T
   exact ⟨E, hmono, fun n ↦
-    (IsAPF.exists_finiteLayer_fullUpper_tail K L hL (b n) (hb n)).choose_spec
+    (IsAPF.exists_finiteLayer_fullUpper_tail K L (b n) (hb n)).choose_spec
       (E n) (hTE n), hcofinal⟩
 
 section Projections
@@ -343,7 +343,7 @@ section Projections
 variable (p : ℕ) [Fact p.Prime]
     [CharP (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring) p]
-variable (hL : IsAPF K L)
+variable [IsAPF K L]
 variable {E : FiniteLayer K L} {b : ℝ} (hb : 0 < b) (h : E.HasFullUpper K L b)
 
 /-- The original finite norm on original integer quotients, whose wildness,
@@ -356,7 +356,7 @@ def FiniteLayer.HasFullUpper.truncatedNorm (F : FiniteLayer K L) (hEF : E ≤ F)
   let hd := h.finrank_eq_prime_pow K L p hb F hEF
   exact FiniteLayer.truncatedNorm E F hEF p hd.choose b
     (FiniteLayer.ramificationIdx_eq_finrank_of_residueInclusion_surjective K L E F hEF
-      (h.residue_surjective K L hL hb F hEF)) hd.choose_spec
+      (h.residue_surjective K L hb F hEF)) hd.choose_spec
     (h.le_relativeFirstBound K L hb.le F hEF) r s hrs hrb
 
 /-- The finite quotient map is the class of the original integer norm. -/
@@ -364,98 +364,98 @@ def FiniteLayer.HasFullUpper.truncatedNorm (F : FiniteLayer K L) (hEF : E ≤ F)
 theorem FiniteLayer.HasFullUpper.truncatedNorm_mk (F : FiniteLayer K L) (hEF : E ≤ F)
     (r s : ℕ) (hrs : r ≤ s) (hrb : r ≤ ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊)
     (x : spectralIntegerRing K F.val) :
-    h.truncatedNorm K L p hL hb F hEF r s hrs hrb (Ideal.Quotient.mk _ x) =
+    h.truncatedNorm K L p hb F hEF r s hrs hrb (Ideal.Quotient.mk _ x) =
       Ideal.Quotient.mk _ (FiniteLayer.integerNorm E F hEF x) := rfl
 
 /-- Surjectivity is supplied by the actual finite wild norm digit argument. -/
 theorem FiniteLayer.HasFullUpper.truncatedNorm_surjective
     (F : FiniteLayer K L) (hEF : E ≤ F)
     (r s : ℕ) (hrs : r ≤ s) (hrb : r ≤ ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊) :
-    Function.Surjective (h.truncatedNorm K L p hL hb F hEF r s hrs hrb) := by
+    Function.Surjective (h.truncatedNorm K L p hb F hEF r s hrs hrb) := by
   let hd := h.finrank_eq_prime_pow K L p hb F hEF
   exact FiniteLayer.truncatedNorm_surjective E F hEF p hd.choose b
     (FiniteLayer.ramificationIdx_eq_finrank_of_residueInclusion_surjective K L E F hEF
-      (h.residue_surjective K L hL hb F hEF)) hd.choose_spec
+      (h.residue_surjective K L hb F hEF)) hd.choose_spec
     (h.le_relativeFirstBound K L hb.le F hEF) r s hrs hrb
 
-variable (hInfinite : ¬ Module.Finite K L)
+variable [Fact (¬ Module.Finite K L)]
 
 /-- Integral evaluation in any original finite layer, with no chosen model. -/
 def normLimitIntegralCoordinateAt (E : FiniteLayer K L) :
-    letI := normLimitField K L p hL hInfinite
-    (normLimitFieldValuation K L p hL hInfinite).valuationSubring → spectralIntegerRing K E.val :=
+    letI := normLimitField K L p
+    (normLimitFieldValuation K L p).valuationSubring → spectralIntegerRing K E.val :=
         by
-  letI := normLimitField K L p hL hInfinite
+  letI := normLimitField K L p
   exact fun α ↦ ⟨normLimitEval K L E α.val,
-    normLimitEval_mem_of_valuation_le_one K L hL α.val α.property E⟩
+    normLimitEval_mem_of_valuation_le_one K L α.val α.property E⟩
 
 /-- The original high-break coordinate ring map. Its construction composes the
 proved deep projection with the actual finite truncated norm back to E. -/
 def normLimitHighBreakProjection (r : ℕ) (hrb : r ≤ ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊) :
-    letI := normLimitField K L p hL hInfinite
-    (normLimitFieldValuation K L p hL hInfinite).valuationSubring →+*
+    letI := normLimitField K L p
+    (normLimitFieldValuation K L p).valuationSubring →+*
       spectralIntegerRing K E.val ⧸ IsLocalRing.maximalIdeal (spectralIntegerRing K E.val) ^ r := by
-  letI := normLimitField K L p hL hInfinite
-  exact (h.truncatedNorm K L p hL hb (deepFiniteTower K L p hL hInfinite E r)
-    (le_deepFiniteTower K L p hL hInfinite E r) r (r + 2) (by omega) hrb).comp
-      (normLimitTruncation K L p hL hInfinite E r)
+  letI := normLimitField K L p
+  exact (h.truncatedNorm K L p hb (deepFiniteTower K L p E r)
+    (le_deepFiniteTower K L p E r) r (r + 2) (by omega) hrb).comp
+      (normLimitTruncation K L p E r)
 
 /-- The constructed ring homomorphism is precisely reduction of the original
 E-coordinate, by the original norm-family compatibility. -/
 @[simp]
 theorem normLimitHighBreakProjection_apply
     (r : ℕ) (hrb : r ≤ ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊) :
-    letI := normLimitField K L p hL hInfinite
-    ∀ α : (normLimitFieldValuation K L p hL hInfinite).valuationSubring,
-      normLimitHighBreakProjection K L p hL hb h hInfinite r hrb α =
-        Ideal.Quotient.mk _ (normLimitIntegralCoordinateAt K L p hL hInfinite E α) := by
-  let := normLimitField K L p hL hInfinite
+    letI := normLimitField K L p
+    ∀ α : (normLimitFieldValuation K L p).valuationSubring,
+      normLimitHighBreakProjection K L p hb h r hrb α =
+        Ideal.Quotient.mk _ (normLimitIntegralCoordinateAt K L p E α) := by
+  let := normLimitField K L p
   intro α
-  change h.truncatedNorm K L p hL hb _ _ r (r + 2) (by omega) hrb
-    (normLimitTruncation K L p hL hInfinite E r α) = _
+  change h.truncatedNorm K L p hb _ _ r (r + 2) (by omega) hrb
+    (normLimitTruncation K L p E r α) = _
   rw [normLimitTruncation_apply, FiniteLayer.HasFullUpper.truncatedNorm_mk]
   apply congrArg (Ideal.Quotient.mk _)
   apply Subtype.ext
   rw [FiniteLayer.coe_integerNorm]
-  exact normLimitEval_norm K L E (deepFiniteTower K L p hL hInfinite E r)
-    (le_deepFiniteTower K L p hL hInfinite E r) α.val
+  exact normLimitEval_norm K L E (deepFiniteTower K L p E r)
+    (le_deepFiniteTower K L p E r) α.val
 
 /-- Every class of the original integer quotient occurs as an actual original
 norm-family coordinate. Both surjections are proved on their actual carriers. -/
 theorem normLimitHighBreakProjection_surjective
     (r : ℕ) (hrb : r ≤ ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊) :
-    letI := normLimitField K L p hL hInfinite
-    Function.Surjective (normLimitHighBreakProjection K L p hL hb h hInfinite r hrb) := by
-  let := normLimitField K L p hL hInfinite
-  exact (h.truncatedNorm_surjective K L p hL hb
-    (deepFiniteTower K L p hL hInfinite E r)
-    (le_deepFiniteTower K L p hL hInfinite E r) r (r + 2) (by omega) hrb).comp
-      (normLimitTruncation_surjective K L p hL hInfinite E r)
+    letI := normLimitField K L p
+    Function.Surjective (normLimitHighBreakProjection K L p hb h r hrb) := by
+  let := normLimitField K L p
+  exact (h.truncatedNorm_surjective K L p hb
+    (deepFiniteTower K L p E r)
+    (le_deepFiniteTower K L p E r) r (r + 2) (by omega) hrb).comp
+      (normLimitTruncation_surjective K L p E r)
 
 /-- The exact kernel is the original normalized valuation ball of depth r. -/
 theorem normLimitHighBreakProjection_eq_zero_iff
     (r : ℕ) (hrb : r ≤ ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊) :
-    letI := normLimitField K L p hL hInfinite
-    ∀ α : (normLimitFieldValuation K L p hL hInfinite).valuationSubring,
-      normLimitHighBreakProjection K L p hL hb h hInfinite r hrb α = 0 ↔
-        normLimitValuation K L hL α.val ≤ WithZero.exp (-(r : ℤ)) := by
-  let := normLimitField K L p hL hInfinite
+    letI := normLimitField K L p
+    ∀ α : (normLimitFieldValuation K L p).valuationSubring,
+      normLimitHighBreakProjection K L p hb h r hrb α = 0 ↔
+        normLimitValuation K L α.val ≤ WithZero.exp (-(r : ℤ)) := by
+  let := normLimitField K L p
   intro α
   rw [normLimitHighBreakProjection_apply, Ideal.Quotient.eq_zero_iff_mem,
     ValuationSubring.mem_maximalIdeal_pow_iff_normalizedValuation,
-    normLimitValuation_eq_coordinate_of_fullUpper K L hL hb h]
+    normLimitValuation_eq_coordinate_of_fullUpper K L hb h]
   rfl
 
 /-- Equality of original quotient coordinates is measured by the same original
 valuation, at the exact requested precision. -/
 theorem normLimitHighBreakProjection_eq_iff
     (r : ℕ) (hrb : r ≤ ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊) :
-    letI := normLimitField K L p hL hInfinite
-    ∀ α β : (normLimitFieldValuation K L p hL hInfinite).valuationSubring,
-      normLimitHighBreakProjection K L p hL hb h hInfinite r hrb α =
-        normLimitHighBreakProjection K L p hL hb h hInfinite r hrb β ↔
-          normLimitValuation K L hL (α.val - β.val) ≤ WithZero.exp (-(r : ℤ)) := by
-  let := normLimitField K L p hL hInfinite
+    letI := normLimitField K L p
+    ∀ α β : (normLimitFieldValuation K L p).valuationSubring,
+      normLimitHighBreakProjection K L p hb h r hrb α =
+        normLimitHighBreakProjection K L p hb h r hrb β ↔
+          normLimitValuation K L (α.val - β.val) ≤ WithZero.exp (-(r : ℤ)) := by
+  let := normLimitField K L p
   intro α β
   rw [← sub_eq_zero, ← map_sub, normLimitHighBreakProjection_eq_zero_iff]
   rfl
@@ -464,16 +464,16 @@ theorem normLimitHighBreakProjection_eq_iff
 norm-limit valuation ring, with its proved normalized valuation. -/
 theorem ker_normLimitHighBreakProjection
     (r : ℕ) (hrb : r ≤ ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊) :
-    letI := normLimitField K L p hL hInfinite
-    RingHom.ker (normLimitHighBreakProjection K L p hL hb h hInfinite r hrb) =
+    letI := normLimitField K L p
+    RingHom.ker (normLimitHighBreakProjection K L p hb h r hrb) =
       IsLocalRing.maximalIdeal
-        (normLimitFieldValuation K L p hL hInfinite).valuationSubring ^ r := by
-  let := normLimitField K L p hL hInfinite
-  let := normLimitFieldValuation_isDiscreteValuationRing K L p hL hInfinite
+        (normLimitFieldValuation K L p).valuationSubring ^ r := by
+  let := normLimitField K L p
+  let := normLimitFieldValuation_isDiscreteValuationRing K L p
   ext α
   rw [RingHom.mem_ker, normLimitHighBreakProjection_eq_zero_iff,
     ValuationSubring.mem_maximalIdeal_pow_iff_normalizedValuation,
-    normLimitFieldValuation_eq_normalized K L p hL hInfinite]
+    normLimitFieldValuation_eq_normalized K L p]
   rfl
 
 end Projections

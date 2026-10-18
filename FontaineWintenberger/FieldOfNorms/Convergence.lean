@@ -36,15 +36,15 @@ include p
 /-- Every requested integral precision is attained by the actual additive
 norm defect on an entire original finite-layer tail. -/
 theorem IsAPF.exists_finiteLayer_integerNorm_add_congruence
-    (hL : IsAPF K L) (s : ℕ) :
+    [IsAPF K L] (s : ℕ) :
     ∃ T : FiniteLayer K L, ∀ E F : FiniteLayer K L, T ≤ E → ∀ hEF : E ≤ F,
       ∀ x y : spectralIntegerRing K F.val,
         FiniteLayer.integerNorm E F hEF (x + y) - FiniteLayer.integerNorm E F hEF x -
           FiniteLayer.integerNorm E F hEF y ∈
             IsLocalRing.maximalIdeal (spectralIntegerRing K E.val) ^ s := by
   let c : ℝ := (p : ℝ) / ((p - 1 : ℕ) : ℝ) * s
-  obtain ⟨T₀, hT₀⟩ := IsAPF.exists_finiteLayer_wild_tail K L p hL
-  obtain ⟨T₁, hT₁⟩ := IsAPF.exists_finiteLayer_relativeFirstBound_ge K L hL c
+  obtain ⟨T₀, hT₀⟩ := IsAPF.exists_finiteLayer_wild_tail K L p
+  obtain ⟨T₁, hT₁⟩ := IsAPF.exists_finiteLayer_relativeFirstBound_ge K L c
   refine ⟨FiniteLayer.sup T₀ T₁, fun E F hE hEF x y => ?_⟩
   let : Algebra E.val F.val := (IntermediateField.inclusion hEF).toRingHom.toAlgebra
   let : IsScalarTower K E.val F.val := IsScalarTower.of_algebraMap_eq' rfl
@@ -69,21 +69,21 @@ theorem IsAPF.exists_finiteLayer_integerNorm_add_congruence
 
 /-- The actual norm-sum term differs from the two original integral
 coordinates by any requested precision on one entire finite-layer tail. -/
-theorem IsAPF.exists_finiteLayer_normSumNet_sub_mem (hL : IsAPF K L) (s : ℕ) :
+theorem IsAPF.exists_finiteLayer_normSumNet_sub_mem [IsAPF K L] (s : ℕ) :
     ∃ T : FiniteLayer K L, ∀ E : FiniteLayer K L, T ≤ E →
       ∀ α β : NormLimit K L,
-      normLimitValuation K L hL α ≤ 1 → normLimitValuation K L hL β ≤ 1 →
+      normLimitValuation K L α ≤ 1 → normLimitValuation K L β ≤ 1 →
       ∀ F : Set.Ici E,
         normSumNet K L E α β F - normLimitEval K L E α - normLimitEval K L E β ∈
           (fun x : spectralIntegerRing K E.val => (x : E.val)) ''
             ((IsLocalRing.maximalIdeal (spectralIntegerRing K E.val) ^ s :
               Ideal (spectralIntegerRing K E.val)) : Set (spectralIntegerRing K E.val)) := by
-  obtain ⟨T, hT⟩ := IsAPF.exists_finiteLayer_integerNorm_add_congruence K L p hL s
+  obtain ⟨T, hT⟩ := IsAPF.exists_finiteLayer_integerNorm_add_congruence K L p s
   refine ⟨T, fun E hE α β hα hβ F => ?_⟩
   let x : spectralIntegerRing K F.val.val :=
-    ⟨normLimitEval K L F.val α, normLimitEval_mem_of_valuation_le_one K L hL α hα F.val⟩
+    ⟨normLimitEval K L F.val α, normLimitEval_mem_of_valuation_le_one K L α hα F.val⟩
   let y : spectralIntegerRing K F.val.val :=
-    ⟨normLimitEval K L F.val β, normLimitEval_mem_of_valuation_le_one K L hL β hβ F.val⟩
+    ⟨normLimitEval K L F.val β, normLimitEval_mem_of_valuation_le_one K L β hβ F.val⟩
   refine ⟨FiniteLayer.integerNorm E F.val F.property (x + y) -
     FiniteLayer.integerNorm E F.val F.property x -
     FiniteLayer.integerNorm E F.val F.property y, hT E F.val hE F.property x y, ?_⟩
@@ -101,13 +101,13 @@ theorem IsAPF.exists_finiteLayer_normSumNet_sub_mem (hL : IsAPF K L) (s : ℕ) :
 
 /-- On an actual wild tail, every integral-family norm-sum net is Cauchy
 in its original fixed finite field. All finite precision estimates are proved. -/
-theorem IsAPF.exists_finiteLayer_normSumNet_cauchy (hL : IsAPF K L) :
+theorem IsAPF.exists_finiteLayer_normSumNet_cauchy [IsAPF K L] :
     ∃ T : FiniteLayer K L, ∀ E : FiniteLayer K L, T ≤ E →
       ∀ α β : NormLimit K L,
-      normLimitValuation K L hL α ≤ 1 → normLimitValuation K L hL β ≤ 1 →
+      normLimitValuation K L α ≤ 1 → normLimitValuation K L β ≤ 1 →
       letI := spectralNorm.nontriviallyNormedField K E.val
       Cauchy (map (normSumNet K L E α β) atTop) := by
-  obtain ⟨T, hT⟩ := IsAPF.exists_finiteLayer_wild_tail K L p hL
+  obtain ⟨T, hT⟩ := IsAPF.exists_finiteLayer_wild_tail K L p
   refine ⟨T, fun E hE α β hα hβ => ?_⟩
   let := spectralNorm.nontriviallyNormedField K E.val
   let := spectralNorm.normedAlgebra K E.val
@@ -117,9 +117,9 @@ theorem IsAPF.exists_finiteLayer_normSumNet_cauchy (hL : IsAPF K L) :
   let := normedAlgebra_isCompleteDiscreteValuedField K E.val
   let := Algebra.isSeparable_tower_top_of_isSeparable K E.val L
   let a (F : FiniteLayer K L) : spectralIntegerRing K F.val :=
-    ⟨normLimitEval K L F α, normLimitEval_mem_of_valuation_le_one K L hL α hα F⟩
+    ⟨normLimitEval K L F α, normLimitEval_mem_of_valuation_le_one K L α hα F⟩
   let b (F : FiniteLayer K L) : spectralIntegerRing K F.val :=
-    ⟨normLimitEval K L F β, normLimitEval_mem_of_valuation_le_one K L hL β hβ F⟩
+    ⟨normLimitEval K L F β, normLimitEval_mem_of_valuation_le_one K L β hβ F⟩
   have ha (F G : FiniteLayer K L) (hFG : F ≤ G) :
       FiniteLayer.integerNorm F G hFG (a G) = a F := by
     apply Subtype.ext
@@ -134,7 +134,7 @@ theorem IsAPF.exists_finiteLayer_normSumNet_cauchy (hL : IsAPF K L) :
   intro N
   let s := ⌈apfPsi E.val L (N : ℝ)⌉₊
   have hs : apfPsi E.val L (N : ℝ) ≤ (s : ℝ) := Nat.le_ceil _
-  obtain ⟨U, hU⟩ := IsAPF.exists_finiteLayer_integerNorm_add_congruence K L p hL s
+  obtain ⟨U, hU⟩ := IsAPF.exists_finiteLayer_integerNorm_add_congruence K L p s
   let A : Set.Ici E := ⟨FiniteLayer.sup E U, FiniteLayer.le_sup_left E U⟩
   have hstep (B C : FiniteLayer K L) (hEB : E ≤ B) (hBC : B ≤ C) (hUB : U ≤ B) :
       normSumNet K L E α β ⟨C, hEB.trans hBC⟩ -
@@ -154,7 +154,7 @@ theorem IsAPF.exists_finiteLayer_normSumNet_cauchy (hL : IsAPF K L) :
     obtain ⟨_, ⟨n, hd⟩, he⟩ := hT E B hE hEB
     have h := FiniteLayer.integerNorm_sub_congruence_of_totallyRamified
       E B hEB p he n hd s x y hxy
-    have hprecision := FiniteLayer.le_ceil_apfPhi_of_apfPsi_le K L hL E B hEB N s hs
+    have hprecision := FiniteLayer.le_ceil_apfPhi_of_apfPsi_le K L E B hEB N s hs
     have hmem := Ideal.pow_le_pow_right hprecision h
     refine ⟨FiniteLayer.integerNorm E B hEB x - FiniteLayer.integerNorm E B hEB y,
       hmem, ?_⟩
@@ -180,13 +180,13 @@ theorem IsAPF.exists_finiteLayer_normSumNet_cauchy (hL : IsAPF K L) :
 
 /-- Actual integral-family norm-sum nets converge at every original finite
 base, including bases below or incomparable with the wild tail. -/
-theorem exists_tendsto_normSumNet_of_valuation_le_one (hL : IsAPF K L)
-    (α β : NormLimit K L) (hα : normLimitValuation K L hL α ≤ 1)
-    (hβ : normLimitValuation K L hL β ≤ 1) :
+theorem exists_tendsto_normSumNet_of_valuation_le_one [IsAPF K L]
+    (α β : NormLimit K L) (hα : normLimitValuation K L α ≤ 1)
+    (hβ : normLimitValuation K L β ≤ 1) :
     ∀ E : FiniteLayer K L, ∃ z : E.val,
       letI := spectralNorm.nontriviallyNormedField K E.val
       Tendsto (normSumNet K L E α β) atTop (nhds z) := by
-  obtain ⟨T, hT⟩ := IsAPF.exists_finiteLayer_normSumNet_cauchy K L p hL
+  obtain ⟨T, hT⟩ := IsAPF.exists_finiteLayer_normSumNet_cauchy K L p
   apply exists_tendsto_normSumNet_of_upper_tail K L T α β
   intro E hE
   let := spectralNorm.nontriviallyNormedField K E.val
@@ -195,10 +195,10 @@ theorem exists_tendsto_normSumNet_of_valuation_le_one (hL : IsAPF K L)
 
 /-- The same original norm limit contains the unique integral sum family.
 Its finite-coordinate approximation is proved by closed actual ideal powers. -/
-theorem existsUnique_normLimit_integral_add (hL : IsAPF K L)
-    (α β : NormLimit K L) (hα : normLimitValuation K L hL α ≤ 1)
-    (hβ : normLimitValuation K L hL β ≤ 1) :
-    ∃! γ : NormLimit K L, normLimitValuation K L hL γ ≤ 1 ∧
+theorem existsUnique_normLimit_integral_add [IsAPF K L]
+    (α β : NormLimit K L) (hα : normLimitValuation K L α ≤ 1)
+    (hβ : normLimitValuation K L β ≤ 1) :
+    ∃! γ : NormLimit K L, normLimitValuation K L γ ≤ 1 ∧
       (∀ E : FiniteLayer K L,
         letI := spectralNorm.nontriviallyNormedField K E.val
         Tendsto (normSumNet K L E α β) atTop (nhds (normLimitEval K L E γ))) ∧
@@ -208,13 +208,13 @@ theorem existsUnique_normLimit_integral_add (hL : IsAPF K L)
             ((IsLocalRing.maximalIdeal (spectralIntegerRing K E.val) ^ s :
               Ideal (spectralIntegerRing K E.val)) : Set (spectralIntegerRing K E.val)) := by
   obtain ⟨γ, hγ, huniq⟩ := existsUnique_normLimit_of_normSumNet_tendsto K L α β
-    (exists_tendsto_normSumNet_of_valuation_le_one K L p hL α β hα hβ)
+    (exists_tendsto_normSumNet_of_valuation_le_one K L p α β hα hβ)
   refine ⟨γ, ⟨?_, hγ, ?_⟩, fun δ hδ => huniq δ hδ.2.1⟩
-  · rw [normLimitValuation_le_one_iff K L hL γ]
+  · rw [normLimitValuation_le_one_iff K L γ]
     intro E
-    exact normSumNet_limit_mem_of_valuation_le_one K L hL α β hα hβ E _ (hγ E)
+    exact normSumNet_limit_mem_of_valuation_le_one K L α β hα hβ E _ (hγ E)
   · intro s
-    obtain ⟨T, hT⟩ := IsAPF.exists_finiteLayer_normSumNet_sub_mem K L p hL s
+    obtain ⟨T, hT⟩ := IsAPF.exists_finiteLayer_normSumNet_sub_mem K L p s
     refine ⟨T, fun E hE => ?_⟩
     let := spectralNorm.nontriviallyNormedField K E.val
     exact (FiniteLayer.isClosed_image_maximalIdeal_pow E s).mem_of_tendsto

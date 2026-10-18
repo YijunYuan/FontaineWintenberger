@@ -74,27 +74,27 @@ theorem apfInertiaIndex_zero (L : IntermediateField K (SeparableClosure K)) :
   simp
 
 theorem IsAPFSubextension.inertiaIndex_pos {L : IntermediateField K (SeparableClosure K)}
-    (hL : IsAPFSubextension K L) (u : ℝ) (hu : 0 ≤ u) : 0 < apfInertiaIndex K L u := by
+    [IsAPFSubextension K L] (u : ℝ) (hu : 0 ≤ u) : 0 < apfInertiaIndex K L u := by
   unfold apfInertiaIndex
   rw [apfInertiaSubgroup_eq_inf K L u hu, Subgroup.inf_relIndex_right]
   let : (apfSubgroup K L u).FiniteIndex :=
-    (isAPFSubextension_iff_finiteIndex K L).mp hL u (by linarith)
+    (isAPFSubextension_iff_finiteIndex K L).mp ‹_› u (by linarith)
   exact Nat.pos_of_ne_zero (Subgroup.isFiniteRelIndex_iff_relIndex_ne_zero.mp
     (Subgroup.isFiniteRelIndex_of_finiteIndex))
 
 theorem IsAPFSubextension.inertia_isFiniteRelIndex {L : IntermediateField K (SeparableClosure K)}
-    (hL : IsAPFSubextension K L) (u : ℝ) (hu : 0 ≤ u) :
+    [IsAPFSubextension K L] (u : ℝ) (hu : 0 ≤ u) :
     (apfInertiaSubgroup K L u).IsFiniteRelIndex (absoluteUpperRamificationGroup K 0) :=
   Subgroup.isFiniteRelIndex_iff_relIndex_ne_zero.mpr
-    (Nat.ne_of_gt (IsAPFSubextension.inertiaIndex_pos K hL u hu))
+    (Nat.ne_of_gt (IsAPFSubextension.inertiaIndex_pos K u hu))
 
 theorem IsAPFSubextension.inertiaIndex_monotoneOn {L : IntermediateField K (SeparableClosure K)}
-    (hL : IsAPFSubextension K L) : MonotoneOn (apfInertiaIndex K L) (Set.Ici (0 : ℝ)) := by
+    [IsAPFSubextension K L] : MonotoneOn (apfInertiaIndex K L) (Set.Ici (0 : ℝ)) := by
   intro u hu v hv huv
   have hvu := apfInertiaSubgroup_antitoneOn K L hu hv huv
   have hmul := Subgroup.relIndex_mul_relIndex (apfInertiaSubgroup K L v)
     (apfInertiaSubgroup K L u) (absoluteUpperRamificationGroup K 0) hvu
     (apfInertiaSubgroup_le_zero K L u hu)
-  exact Nat.le_of_dvd (IsAPFSubextension.inertiaIndex_pos K hL v hv) (dvd_of_mul_left_eq _ hmul)
+  exact Nat.le_of_dvd (IsAPFSubextension.inertiaIndex_pos K v hv) (dvd_of_mul_left_eq _ hmul)
 
 end FontaineWintenberger

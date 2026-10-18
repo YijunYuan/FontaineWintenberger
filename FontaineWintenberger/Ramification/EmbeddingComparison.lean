@@ -519,11 +519,11 @@ theorem apfPsi_extendScalars_eq_fixing_herbrand
   let : IsScalarTower K E F' := IsScalarTower.of_algebraMap_eq (fun _ => rfl)
   let : Algebra.IsSeparable K F' := inferInstanceAs (Algebra.IsSeparable K F)
   have hcomp := IsAPF.apfPsi_finiteBase_comp_of_normedAlgebra K E F'
-    (isAPF_of_finite K F') (apfPhi K E (isAPF_of_finite K E) u)
+    (apfPhi K E u)
   rw [apfPsi_apfPhi] at hcomp
   dsimp only
   rw [hcomp]
-  change apfPsi K F (apfPhi K E (isAPF_of_finite K E) u) = _
+  change apfPsi K F (apfPhi K E u) = _
   rw [apfPhi_eq_herbrand_comp_subgroup_inverse_of_finiteGalois K Ω E hu,
     apfPsi_eq_subgroup_herbrand_comp_inverse_of_finiteGalois K Ω F
       (herbrandFunction_mem_Ici _ (inverseHerbrandFunction_mem_Ici _ u)),
@@ -624,7 +624,7 @@ theorem apfRamificationBound_le_embeddingNumber
   rw [hri]
   apply EReal.coe_le_coe_iff.mpr
   calc
-    u ≤ apfPsi K F u := IsAPF.le_apfPsi K F (isAPF_of_finite K F) u
+    u ≤ apfPsi K F u := IsAPF.le_apfPsi K F u
     _ = _ := apfPsi_eq_subgroup_herbrand_comp_inverse_of_finiteGalois K Ω F hu
     _ ≤ _ := (strictMonoOn_herbrandFunction (R := O₂) F.fixingSubgroup).monotoneOn
       (inverseHerbrandFunction_mem_Ici _ u) hdom harg

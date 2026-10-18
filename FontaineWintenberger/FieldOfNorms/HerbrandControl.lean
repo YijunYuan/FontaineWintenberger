@@ -31,7 +31,7 @@ variable {M : Type*} [Field M] [Algebra K M] [Algebra.IsSeparable K M]
 
 /-- The intrinsic Herbrand integral increases along every actual embedding
 into an abstract APF extension. -/
-theorem apfPsi_le_of_algHom (hL : IsAPF K L) (f : M →ₐ[K] L)
+theorem apfPsi_le_of_algHom [IsAPF K L] (f : M →ₐ[K] L)
     {u : ℝ} (hu : 0 ≤ u) : apfPsi K M u ≤ apfPsi K L u := by
   let j : L →ₐ[K] SeparableClosure K := IsSepClosed.lift
   let i := j.comp f
@@ -39,33 +39,37 @@ theorem apfPsi_le_of_algHom (hL : IsAPF K L) (f : M →ₐ[K] L)
     rintro x ⟨y, rfl⟩
     exact ⟨f y, rfl⟩
   rw [apfPsi_algEquiv K M i.equivFieldRange, apfPsi_algEquiv K L j.equivFieldRange]
-  exact apfPsi_mono_extension K i.fieldRange j.fieldRange
-    ((isAPF_algEquiv K j.equivFieldRange).mp hL) hij hu
+  have := (isAPF_algEquiv K j.equivFieldRange).mp ‹_›
+  exact apfPsi_mono_extension K i.fieldRange j.fieldRange hij hu
 
 /-- Inverting the actual integral comparison reverses the extension-field
 inequality for nonnegative parameters. -/
-theorem apfPhi_le_of_algHom (hL : IsAPF K L) (f : M →ₐ[K] L)
+theorem apfPhi_le_of_algHom [IsAPF K L] (f : M →ₐ[K] L)
     {u : ℝ} (hu : 0 ≤ u) :
-    apfPhi K L hL u ≤ apfPhi K M (hL.of_algHom K f) u := by
-  have hv : 0 ≤ apfPhi K L hL u := by
-    simpa only [apfPhi_of_nonpos K L hL le_rfl] using
-      (strictMono_apfPhi K L hL).monotone hu
-  apply (IsAPF.strictMono_apfPsi K M (hL.of_algHom K f)).le_iff_le.mp
+    have := IsAPF.of_algHom K f
+    apfPhi K L u ≤ apfPhi K M u := by
+  have := IsAPF.of_algHom K f
+  have hv : 0 ≤ apfPhi K L u := by
+    simpa only [apfPhi_of_nonpos K L le_rfl] using
+      (strictMono_apfPhi K L).monotone hu
+  apply (IsAPF.strictMono_apfPsi K M).le_iff_le.mp
   rw [apfPsi_apfPhi]
-  exact (apfPsi_le_of_algHom K L hL f hv).trans_eq (apfPsi_apfPhi K L hL u)
+  exact (apfPsi_le_of_algHom K L f hv).trans_eq (apfPsi_apfPhi K L u)
 
 /-- A single intrinsic APF precision controls the inverse Herbrand function
 of every embedded subextension. -/
-theorem le_ceil_apfPhi_of_apfPsi_le (hL : IsAPF K L) (f : M →ₐ[K] L)
+theorem le_ceil_apfPhi_of_apfPsi_le [IsAPF K L] (f : M →ₐ[K] L)
     (N s : ℕ) (hs : apfPsi K L (N : ℝ) ≤ (s : ℝ)) :
-    N ≤ ⌈apfPhi K M (hL.of_algHom K f) (s : ℝ)⌉₊ := by
-  have h : (N : ℝ) ≤ apfPhi K M (hL.of_algHom K f) (s : ℝ) := by
+    have := IsAPF.of_algHom K f
+    N ≤ ⌈apfPhi K M (s : ℝ)⌉₊ := by
+  have := IsAPF.of_algHom K f
+  have h : (N : ℝ) ≤ apfPhi K M (s : ℝ) := by
     calc
-      (N : ℝ) = apfPhi K L hL (apfPsi K L (N : ℝ)) :=
-        (apfPhi_apfPsi K L hL (N : ℝ)).symm
-      _ ≤ apfPhi K L hL (s : ℝ) := (strictMono_apfPhi K L hL).monotone hs
-      _ ≤ apfPhi K M (hL.of_algHom K f) (s : ℝ) :=
-        apfPhi_le_of_algHom K L hL f (Nat.cast_nonneg s)
+      (N : ℝ) = apfPhi K L (apfPsi K L (N : ℝ)) :=
+        (apfPhi_apfPsi K L (N : ℝ)).symm
+      _ ≤ apfPhi K L (s : ℝ) := (strictMono_apfPhi K L).monotone hs
+      _ ≤ apfPhi K M (s : ℝ) :=
+        apfPhi_le_of_algHom K L f (Nat.cast_nonneg s)
   exact_mod_cast h.trans (Nat.le_ceil _)
 
 variable [PerfectField (IsLocalRing.ResidueField
@@ -73,7 +77,7 @@ variable [PerfectField (IsLocalRing.ResidueField
 
 /-- Uniform precision for the actual relative finite fields, with the
 canonical spectral norm on their original finite base. -/
-theorem FiniteLayer.le_ceil_apfPhi_of_apfPsi_le (hL : IsAPF K L)
+theorem FiniteLayer.le_ceil_apfPhi_of_apfPsi_le [IsAPF K L]
     (E F : FiniteLayer K L) (hEF : E ≤ F) :
     letI := spectralNorm.nontriviallyNormedField K E.val
     letI := spectralNorm.normedAlgebra K E.val
@@ -86,7 +90,7 @@ theorem FiniteLayer.le_ceil_apfPhi_of_apfPsi_le (hL : IsAPF K L)
     letI : FiniteDimensional K F' := F.property
     letI : FiniteDimensional E.val F' := Module.Finite.right K E.val F'
     ∀ (N s : ℕ), apfPsi E.val L (N : ℝ) ≤ (s : ℝ) →
-      N ≤ ⌈apfPhi E.val F' (isAPF_of_finite E.val F') (s : ℝ)⌉₊ := by
+      N ≤ ⌈apfPhi E.val F' (s : ℝ)⌉₊ := by
   let := spectralNorm.nontriviallyNormedField K E.val
   let := spectralNorm.normedAlgebra K E.val
   let := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
@@ -100,7 +104,7 @@ theorem FiniteLayer.le_ceil_apfPhi_of_apfPsi_le (hL : IsAPF K L)
   dsimp only
   intro N s hs
   have hrelative : IsAPF E.val L :=
-    (isAPF_finiteBase_iff_of_normedAlgebra K E.val L).mp hL
-  exact FontaineWintenberger.le_ceil_apfPhi_of_apfPsi_le E.val L hrelative F'.val N s hs
+    (isAPF_finiteBase_iff_of_normedAlgebra K E.val L).mp ‹_›
+  exact FontaineWintenberger.le_ceil_apfPhi_of_apfPsi_le E.val L F'.val N s hs
 
 end FontaineWintenberger

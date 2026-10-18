@@ -109,11 +109,11 @@ theorem isClosed_apfTameSubgroup (L : IntermediateField K (SeparableClosure K)) 
 
 /-- APF openness at upper parameter one proves the actual tame product is open. -/
 theorem isOpen_apfTameSubgroup (L : IntermediateField K (SeparableClosure K))
-    (hL : IsAPFSubextension K L) :
+    [IsAPFSubextension K L] :
     IsOpen (apfTameSubgroup K L : Set (SeparableClosure K ≃ₐ[K] SeparableClosure K)) :=
   Subgroup.isOpen_mono (sup_le_sup_left
     (absoluteUpper_le_absoluteWildInertia K (by norm_num : (0 : ℝ) < 1)) _)
-    (hL 1 (by norm_num))
+    (IsAPFSubextension.isOpen_apfSubgroup 1 (by norm_num))
 
 /-- The original separable-closure field fixed by the actual tame product. -/
 def apfTameStage (L : IntermediateField K (SeparableClosure K)) :
@@ -133,10 +133,10 @@ theorem apfTameStage_le (L : IntermediateField K (SeparableClosure K)) :
 
 /-- The actual tame fixed field has genuinely finite degree over the original base. -/
 theorem finiteDimensional_apfTameStage (L : IntermediateField K (SeparableClosure K))
-    (hL : IsAPFSubextension K L) : FiniteDimensional K (apfTameStage K L) := by
+    [IsAPFSubextension K L] : FiniteDimensional K (apfTameStage K L) := by
   apply (InfiniteGalois.isOpen_iff_finite _).mp
   rw [fixingSubgroup_apfTameStage]
-  exact isOpen_apfTameSubgroup K L hL
+  exact isOpen_apfTameSubgroup K L
 
 /-- The actual inertia-fixed stage is contained in the actual tame stage. -/
 theorem apfFiniteStage_zero_le_tameStage (L : IntermediateField K (SeparableClosure K)) :
@@ -407,11 +407,11 @@ omit [PerfectField (IsLocalRing.ResidueField
   (NormedField.valuation (K := K)).valuationSubring)] in
 /-- The actual tame fixed stage pulls back to a genuinely finite subfield
 of the original abstract extension under every specified separable embedding. -/
-theorem IsAPF.exists_finiteLayer_map_eq_apfTameStage (hL : IsAPF K L)
+theorem IsAPF.exists_finiteLayer_map_eq_apfTameStage [IsAPF K L]
     (j : L →ₐ[K] SeparableClosure K) :
     ∃ E : FiniteLayer K L, E.val.map j = apfTameStage K j.fieldRange := by
   let A := apfTameStage K j.fieldRange
-  have : FiniteDimensional K A := finiteDimensional_apfTameStage K j.fieldRange (hL j)
+  have : FiniteDimensional K A := finiteDimensional_apfTameStage K j.fieldRange
   let f : A →ₐ[K] L := j.equivFieldRange.symm.toAlgHom.comp
     (IntermediateField.inclusion (apfTameStage_le K j.fieldRange))
   let E : FiniteLayer K L :=
@@ -428,29 +428,29 @@ theorem IsAPF.exists_finiteLayer_map_eq_apfTameStage (hL : IsAPF K L)
   rw [he, IntermediateField.fieldRange_val]
 
 /-- The actual finite maximal unramified subfield of the original abstract APF extension. -/
-def apfMaximalUnramified (hL : IsAPF K L) : FiniteLayer K L :=
-  (exists_finiteLayer_map_eq_apfFiniteStage K L hL
+def apfMaximalUnramified [IsAPF K L] : FiniteLayer K L :=
+  (exists_finiteLayer_map_eq_apfFiniteStage K L
     (IsSepClosed.lift : L →ₐ[K] SeparableClosure K) (by norm_num : -1 ≤ (0 : ℝ))).choose
 
 /-- The actual finite maximal tame subfield of the original abstract APF extension. -/
-def apfMaximalTame (hL : IsAPF K L) : FiniteLayer K L :=
-  (IsAPF.exists_finiteLayer_map_eq_apfTameStage K L hL
+def apfMaximalTame [IsAPF K L] : FiniteLayer K L :=
+  (IsAPF.exists_finiteLayer_map_eq_apfTameStage K L
     (IsSepClosed.lift : L →ₐ[K] SeparableClosure K)).choose
 
 omit [PerfectField (IsLocalRing.ResidueField
   (NormedField.valuation (K := K)).valuationSubring)] in
-private theorem apfMaximalUnramified_map (hL : IsAPF K L) :
-    (apfMaximalUnramified K L hL).val.map (IsSepClosed.lift : L →ₐ[K] SeparableClosure K) =
+private theorem apfMaximalUnramified_map [IsAPF K L] :
+    (apfMaximalUnramified K L).val.map (IsSepClosed.lift : L →ₐ[K] SeparableClosure K) =
       apfFiniteStage K (IsSepClosed.lift : L →ₐ[K] SeparableClosure K).fieldRange 0 :=
-  (exists_finiteLayer_map_eq_apfFiniteStage K L hL
+  (exists_finiteLayer_map_eq_apfFiniteStage K L
     (IsSepClosed.lift : L →ₐ[K] SeparableClosure K) (by norm_num : -1 ≤ (0 : ℝ))).choose_spec
 
 omit [PerfectField (IsLocalRing.ResidueField
   (NormedField.valuation (K := K)).valuationSubring)] in
-private theorem apfMaximalTame_map (hL : IsAPF K L) :
-    (apfMaximalTame K L hL).val.map (IsSepClosed.lift : L →ₐ[K] SeparableClosure K) =
+private theorem apfMaximalTame_map [IsAPF K L] :
+    (apfMaximalTame K L).val.map (IsSepClosed.lift : L →ₐ[K] SeparableClosure K) =
       apfTameStage K (IsSepClosed.lift : L →ₐ[K] SeparableClosure K).fieldRange :=
-  (IsAPF.exists_finiteLayer_map_eq_apfTameStage K L hL
+  (IsAPF.exists_finiteLayer_map_eq_apfTameStage K L
     (IsSepClosed.lift : L →ₐ[K] SeparableClosure K)).choose_spec
 
 omit [IsCompleteDiscreteValuedField K] [Algebra.IsSeparable K L]
@@ -466,8 +466,8 @@ private theorem finiteLayer_map_le_map_iff (j : L →ₐ[K] SeparableClosure K)
 
 /-- A finite subfield of the original extension is contained in its actual
 maximal unramified part exactly when its original ramification index is one. -/
-theorem le_apfMaximalUnramified_iff (hL : IsAPF K L) (E : FiniteLayer K L) :
-    E ≤ apfMaximalUnramified K L hL ↔
+theorem le_apfMaximalUnramified_iff [IsAPF K L] (E : FiniteLayer K L) :
+    E ≤ apfMaximalUnramified K L ↔
       (IsLocalRing.maximalIdeal (spectralIntegerRing K E.val)).ramificationIdx
         (NormedField.valuation (K := K)).valuationSubring = 1 := by
   let j : L →ₐ[K] SeparableClosure K := IsSepClosed.lift
@@ -478,41 +478,41 @@ theorem le_apfMaximalUnramified_iff (hL : IsAPF K L) (E : FiniteLayer K L) :
     exact ⟨y, rfl⟩
   have hc := le_apfFiniteStage_zero_iff_ramificationIdx_eq_one K j.fieldRange
     (E.val.map j) hEL
-  rw [← apfMaximalUnramified_map K L hL,
+  rw [← apfMaximalUnramified_map K L,
     spectral_ramificationIdx_algEquiv K (IntermediateField.equivMap E.val j)] at hc
-  exact (finiteLayer_map_le_map_iff K L j E (apfMaximalUnramified K L hL)).symm.trans hc
+  exact (finiteLayer_map_le_map_iff K L j E (apfMaximalUnramified K L)).symm.trans hc
 
 /-- The unramified finite subfields have the stated greatest element;
 this universal property also gives its uniqueness. -/
-theorem isGreatest_apfMaximalUnramified (hL : IsAPF K L) :
+theorem isGreatest_apfMaximalUnramified [IsAPF K L] :
     IsGreatest {E : FiniteLayer K L |
       (IsLocalRing.maximalIdeal (spectralIntegerRing K E.val)).ramificationIdx
         (NormedField.valuation (K := K)).valuationSubring = 1}
-      (apfMaximalUnramified K L hL) :=
-  ⟨(le_apfMaximalUnramified_iff K L hL _).mp le_rfl,
-    fun E hE => (le_apfMaximalUnramified_iff K L hL E).mpr hE⟩
+      (apfMaximalUnramified K L) :=
+  ⟨(le_apfMaximalUnramified_iff K L _).mp le_rfl,
+    fun E hE => (le_apfMaximalUnramified_iff K L E).mpr hE⟩
 
 omit [PerfectField (IsLocalRing.ResidueField
   (NormedField.valuation (K := K)).valuationSubring)] in
 /-- Actual inclusion of the maximal unramified part in the maximal tame part. -/
-theorem apfMaximalUnramified_le_maximalTame (hL : IsAPF K L) :
-    apfMaximalUnramified K L hL ≤ apfMaximalTame K L hL := by
+theorem apfMaximalUnramified_le_maximalTame [IsAPF K L] :
+    apfMaximalUnramified K L ≤ apfMaximalTame K L := by
   let j : L →ₐ[K] SeparableClosure K := IsSepClosed.lift
   apply (finiteLayer_map_le_map_iff K L j _ _).mp
-  rw [apfMaximalUnramified_map K L hL, apfMaximalTame_map K L hL]
+  rw [apfMaximalUnramified_map K L, apfMaximalTame_map K L]
   exact apfFiniteStage_zero_le_tameStage K j.fieldRange
 
 /-- Every finite layer above the actual maximal unramified part has its
 original residue degree, with no normality assumption. -/
-theorem residueDegree_eq_apfMaximalUnramified (hL : IsAPF K L)
-    (E : FiniteLayer K L) (hE : apfMaximalUnramified K L hL ≤ E) :
+theorem residueDegree_eq_apfMaximalUnramified [IsAPF K L]
+    (E : FiniteLayer K L) (hE : apfMaximalUnramified K L ≤ E) :
     Module.finrank (IsLocalRing.ResidueField
         (NormedField.valuation (K := K)).valuationSubring)
       (IsLocalRing.ResidueField (spectralIntegerRing K E.val)) =
     Module.finrank (IsLocalRing.ResidueField
         (NormedField.valuation (K := K)).valuationSubring)
       (IsLocalRing.ResidueField
-        (spectralIntegerRing K (apfMaximalUnramified K L hL).val)) := by
+        (spectralIntegerRing K (apfMaximalUnramified K L).val)) := by
   let j : L →ₐ[K] SeparableClosure K := IsSepClosed.lift
   have : FiniteDimensional K (E.val.map j) :=
     Module.Finite.equiv (IntermediateField.equivMap E.val j).toLinearEquiv
@@ -520,24 +520,24 @@ theorem residueDegree_eq_apfMaximalUnramified (hL : IsAPF K L)
     rintro x ⟨y, _, rfl⟩
     exact ⟨y, rfl⟩
   have hstage : apfFiniteStage K j.fieldRange 0 ≤ E.val.map j := by
-    rw [← apfMaximalUnramified_map K L hL]
+    rw [← apfMaximalUnramified_map K L]
     exact IntermediateField.map_mono j hE
-  have hd := residueDegree_eq_zeroStage_of_apfFiniteStage_le K j.fieldRange (hL j)
+  have hd := residueDegree_eq_zeroStage_of_apfFiniteStage_le K j.fieldRange
     (E.val.map j) hEL hstage
-  rw [← apfMaximalUnramified_map K L hL,
+  rw [← apfMaximalUnramified_map K L,
     spectral_residueDegree_algEquiv K E.val (IntermediateField.equivMap E.val j),
-    spectral_residueDegree_algEquiv K (apfMaximalUnramified K L hL).val
-      (IntermediateField.equivMap (apfMaximalUnramified K L hL).val j)] at hd
+    spectral_residueDegree_algEquiv K (apfMaximalUnramified K L).val
+      (IntermediateField.equivMap (apfMaximalUnramified K L).val j)] at hd
   exact hd
 
 /-- All actual finite residue inclusions above the maximal unramified
 part are onto. -/
 theorem spectralResidueInclusion_surjective_of_apfMaximalUnramified_le
-    (hL : IsAPF K L) (E F : FiniteLayer K L)
-    (hE : apfMaximalUnramified K L hL ≤ E) (hEF : E ≤ F) :
+    [IsAPF K L] (E F : FiniteLayer K L)
+    (hE : apfMaximalUnramified K L ≤ E) (hEF : E ≤ F) :
     Function.Surjective (spectralResidueInclusion K (IntermediateField.inclusion hEF)) := by
-  have hd := (residueDegree_eq_apfMaximalUnramified K L hL E hE).trans
-    (residueDegree_eq_apfMaximalUnramified K L hL F (hE.trans hEF)).symm
+  have hd := (residueDegree_eq_apfMaximalUnramified K L E hE).trans
+    (residueDegree_eq_apfMaximalUnramified K L F (hE.trans hEF)).symm
   exact (LinearMap.injective_iff_surjective_of_finrank_eq_finrank hd
     (f := (spectralResidueInclusion K (IntermediateField.inclusion hEF)).toLinearMap)).mp
       (spectralResidueInclusion K (IntermediateField.inclusion hEF)).injective
@@ -545,13 +545,13 @@ theorem spectralResidueInclusion_surjective_of_apfMaximalUnramified_le
 /-- Every finite layer above the maximal unramified part has exactly the
 actual residue field of the original infinite extension. -/
 theorem spectralResidueInclusion_bijective_of_apfMaximalUnramified_le
-    (hL : IsAPF K L) (E : FiniteLayer K L)
-    (hE : apfMaximalUnramified K L hL ≤ E) :
+    [IsAPF K L] (E : FiniteLayer K L)
+    (hE : apfMaximalUnramified K L ≤ E) :
     Function.Bijective (spectralResidueInclusion K E.val.val) := by
-  obtain ⟨T, hT⟩ := IsAPF.exists_finiteLayer_spectralResidueInclusion_bijective K L hL
+  obtain ⟨T, hT⟩ := IsAPF.exists_finiteLayer_spectralResidueInclusion_bijective K L
   let F := FiniteLayer.sup E T
   have hEF : E ≤ F := FiniteLayer.le_sup_left E T
-  have hs := spectralResidueInclusion_surjective_of_apfMaximalUnramified_le K L hL
+  have hs := spectralResidueInclusion_surjective_of_apfMaximalUnramified_le K L
     E F hE hEF
   have hF := hT F (FiniteLayer.le_sup_right E T)
   have hi : (spectralResidueInclusion K F.val.val).comp
@@ -566,28 +566,28 @@ theorem spectralResidueInclusion_bijective_of_apfMaximalUnramified_le
 /-- The canonical integral-closure residue map is bijective already at
 the actual maximal unramified part, and at every larger finite layer. -/
 theorem integralClosureResidueFromLayer_bijective_of_apfMaximalUnramified_le
-    (hL : IsAPF K L) (E : FiniteLayer K L)
-    (hE : apfMaximalUnramified K L hL ≤ E) :
+    [IsAPF K L] (E : FiniteLayer K L)
+    (hE : apfMaximalUnramified K L ≤ E) :
     Function.Bijective (integralClosureResidueFromLayer K L E) :=
   (integralClosureSpectralResidueEquiv K (L := L)).symm.bijective.comp
-    (spectralResidueInclusion_bijective_of_apfMaximalUnramified_le K L hL E hE)
+    (spectralResidueInclusion_bijective_of_apfMaximalUnramified_le K L E hE)
 
 /-- The original inclusion of the maximal unramified part induces the
 residue-field equivalence with the canonical integral closure of the original L. -/
-def apfMaximalUnramifiedResidueEquiv (hL : IsAPF K L) :
-    IsLocalRing.ResidueField (spectralIntegerRing K (apfMaximalUnramified K L hL).val)
+def apfMaximalUnramifiedResidueEquiv [IsAPF K L] :
+    IsLocalRing.ResidueField (spectralIntegerRing K (apfMaximalUnramified K L).val)
       ≃ₐ[IsLocalRing.ResidueField (NormedField.valuation (K := K)).valuationSubring]
         IsLocalRing.ResidueField
           (integralClosure (NormedField.valuation (K := K)).valuationSubring L) :=
-  AlgEquiv.ofBijective (integralClosureResidueFromLayer K L (apfMaximalUnramified K L hL))
-    (integralClosureResidueFromLayer_bijective_of_apfMaximalUnramified_le K L hL _ le_rfl)
+  AlgEquiv.ofBijective (integralClosureResidueFromLayer K L (apfMaximalUnramified K L))
+    (integralClosureResidueFromLayer_bijective_of_apfMaximalUnramified_le K L _ le_rfl)
 
 @[simp]
-theorem apfMaximalUnramifiedResidueEquiv_apply (hL : IsAPF K L)
+theorem apfMaximalUnramifiedResidueEquiv_apply [IsAPF K L]
     (z : IsLocalRing.ResidueField
-      (spectralIntegerRing K (apfMaximalUnramified K L hL).val)) :
-    apfMaximalUnramifiedResidueEquiv K L hL z =
-      integralClosureResidueFromLayer K L (apfMaximalUnramified K L hL) z := rfl
+      (spectralIntegerRing K (apfMaximalUnramified K L).val)) :
+    apfMaximalUnramifiedResidueEquiv K L z =
+      integralClosureResidueFromLayer K L (apfMaximalUnramified K L) z := rfl
 
 variable (p : ℕ) [Fact p.Prime]
     [CharP (IsLocalRing.ResidueField
@@ -595,8 +595,8 @@ variable (p : ℕ) [Fact p.Prime]
 
 /-- A finite subfield is in the actual maximal tame part exactly when
 its original ramification index is prime to the residue characteristic. -/
-theorem le_apfMaximalTame_iff (hL : IsAPF K L) (E : FiniteLayer K L) :
-    E ≤ apfMaximalTame K L hL ↔
+theorem le_apfMaximalTame_iff [IsAPF K L] (E : FiniteLayer K L) :
+    E ≤ apfMaximalTame K L ↔
       Nat.Coprime p ((IsLocalRing.maximalIdeal (spectralIntegerRing K E.val)).ramificationIdx
         (NormedField.valuation (K := K)).valuationSubring) := by
   let j : L →ₐ[K] SeparableClosure K := IsSepClosed.lift
@@ -607,24 +607,24 @@ theorem le_apfMaximalTame_iff (hL : IsAPF K L) (E : FiniteLayer K L) :
     exact ⟨y, rfl⟩
   have hc := le_apfTameStage_iff_ramificationIdx_coprime K p j.fieldRange
     (E.val.map j) hEL
-  rw [← apfMaximalTame_map K L hL,
+  rw [← apfMaximalTame_map K L,
     spectral_ramificationIdx_algEquiv K (IntermediateField.equivMap E.val j)] at hc
-  exact (finiteLayer_map_le_map_iff K L j E (apfMaximalTame K L hL)).symm.trans hc
+  exact (finiteLayer_map_le_map_iff K L j E (apfMaximalTame K L)).symm.trans hc
 
 /-- The tame finite subfields have the stated greatest element, without
 normality of the original extension or of any finite subfield. -/
-theorem isGreatest_apfMaximalTame (hL : IsAPF K L) :
+theorem isGreatest_apfMaximalTame [IsAPF K L] :
     IsGreatest {E : FiniteLayer K L |
       Nat.Coprime p ((IsLocalRing.maximalIdeal (spectralIntegerRing K E.val)).ramificationIdx
         (NormedField.valuation (K := K)).valuationSubring)}
-      (apfMaximalTame K L hL) :=
-  ⟨(le_apfMaximalTame_iff K L p hL _).mp le_rfl,
-    fun E hE => (le_apfMaximalTame_iff K L p hL E).mpr hE⟩
+      (apfMaximalTame K L) :=
+  ⟨(le_apfMaximalTame_iff K L p _).mp le_rfl,
+    fun E hE => (le_apfMaximalTame_iff K L p E).mpr hE⟩
 
 /-- All actual finite steps above the maximal tame part have p-power
 degree, with no normality assumption on either endpoint. -/
-theorem finrank_eq_prime_pow_of_apfMaximalTame_le (hL : IsAPF K L)
-    (E F : FiniteLayer K L) (hE : apfMaximalTame K L hL ≤ E) (hEF : E ≤ F) :
+theorem finrank_eq_prime_pow_of_apfMaximalTame_le [IsAPF K L]
+    (E F : FiniteLayer K L) (hE : apfMaximalTame K L ≤ E) (hEF : E ≤ F) :
     ∃ n : ℕ, Module.finrank E.val (IntermediateField.extendScalars hEF) = p ^ n := by
   let j : L →ₐ[K] SeparableClosure K := IsSepClosed.lift
   have : FiniteDimensional K (F.val.map j) :=
@@ -634,7 +634,7 @@ theorem finrank_eq_prime_pow_of_apfMaximalTame_le (hL : IsAPF K L)
     exact ⟨y, rfl⟩
   have hmap : E.val.map j ≤ F.val.map j := IntermediateField.map_mono j hEF
   have hstage : apfTameStage K j.fieldRange ≤ E.val.map j := by
-    rw [← apfMaximalTame_map K L hL]
+    rw [← apfMaximalTame_map K L]
     exact IntermediateField.map_mono j hE
   obtain ⟨n, hn⟩ := finrank_eq_prime_pow_of_apfTameStage_le K p
     j.fieldRange (E.val.map j) (F.val.map j) hFL hmap hstage
@@ -647,8 +647,8 @@ theorem finrank_eq_prime_pow_of_apfMaximalTame_le (hL : IsAPF K L)
 /-- The actual maximal tame part starts the wild tail: every original
 finite step has surjective residue map, p-power degree, and ramification
 index equal to that full relative degree. -/
-theorem apfMaximalTame_wild_tail (hL : IsAPF K L)
-    (E F : FiniteLayer K L) (hE : apfMaximalTame K L hL ≤ E) (hEF : E ≤ F) :
+theorem apfMaximalTame_wild_tail [IsAPF K L]
+    (E F : FiniteLayer K L) (hE : apfMaximalTame K L ≤ E) (hEF : E ≤ F) :
     Function.Surjective
         (spectralResidueInclusion K (IntermediateField.inclusion hEF)) ∧
       (∃ n : ℕ, Module.finrank E.val (IntermediateField.extendScalars hEF) = p ^ n) ∧
@@ -658,9 +658,9 @@ theorem apfMaximalTame_wild_tail (hL : IsAPF K L)
       (IsLocalRing.maximalIdeal (spectralIntegerRing K F.val)).ramificationIdx
           (spectralIntegerRing K E.val) =
         Module.finrank E.val (IntermediateField.extendScalars hEF) := by
-  have hs := spectralResidueInclusion_surjective_of_apfMaximalUnramified_le K L hL E F
-    ((apfMaximalUnramified_le_maximalTame K L hL).trans hE) hEF
-  exact ⟨hs, finrank_eq_prime_pow_of_apfMaximalTame_le K L p hL E F hE hEF,
+  have hs := spectralResidueInclusion_surjective_of_apfMaximalUnramified_le K L E F
+    ((apfMaximalUnramified_le_maximalTame K L).trans hE) hEF
+  exact ⟨hs, finrank_eq_prime_pow_of_apfMaximalTame_le K L p E F hE hEF,
     FiniteLayer.ramificationIdx_eq_finrank_of_residueInclusion_surjective K L E F hEF hs⟩
 
 end AbstractExtension

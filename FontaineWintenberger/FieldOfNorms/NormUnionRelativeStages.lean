@@ -51,17 +51,17 @@ variable (L : IntermediateField K M) [Normal K L]
 variable (p : ℕ) [Fact p.Prime]
     [CharP (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring) p]
-variable (hL : IsAPF K L) (hInfinite : ¬ Module.Finite K L)
+variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 
 /-- Forgetting the base scalars transports each original family to the same union element. -/
 theorem normUnionAbsolute_relative_stage (τ : M ≃ₐ[L] M)
     (N : FiniteLayer L M) (x : NormLimit K N.val) :
-    separableNormUnionOf K L M p hL hInfinite
+    separableNormUnionOf K L M p
         (normUnionAbsoluteLayer K M L (τ.restrictScalars K) N)
         (normLimitMap (normUnionAbsoluteLayerEquiv K M L (τ.restrictScalars K) N) x) =
-      separableNormUnionOf K L M p hL hInfinite (FiniteLayer.map τ.toAlgHom N)
+      separableNormUnionOf K L M p (FiniteLayer.map τ.toAlgHom N)
         (normLimitMap ((FiniteLayer.equivMap τ.toAlgHom N).restrictScalars K) x) := by
-  exact separableNormUnionOf_transport_congr K L p hL hInfinite M
+  exact separableNormUnionOf_transport_congr K L p M
     (normUnionAbsoluteLayer K M L (τ.restrictScalars K) N) (FiniteLayer.map τ.toAlgHom N)
     (normUnionAbsoluteLayerEquiv K M L (τ.restrictScalars K) N)
     ((FiniteLayer.equivMap τ.toAlgHom N).restrictScalars K)

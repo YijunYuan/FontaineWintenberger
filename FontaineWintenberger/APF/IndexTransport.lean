@@ -65,13 +65,13 @@ theorem apfIndex_eq_embedding (i : L →ₐ[K] SeparableClosure K) (u : ℝ) :
 theorem apfIndex_zero : apfIndex K L 0 = 1 :=
   apfInertiaIndex_zero K _
 
-theorem IsAPF.apfIndex_pos (hL : IsAPF K L) {u : ℝ} (hu : 0 ≤ u) :
+theorem IsAPF.apfIndex_pos [IsAPF K L] {u : ℝ} (hu : 0 ≤ u) :
     0 < apfIndex K L u :=
-  IsAPFSubextension.inertiaIndex_pos K (hL _) u hu
+  IsAPFSubextension.inertiaIndex_pos K u hu
 
-theorem IsAPF.apfIndex_monotoneOn (hL : IsAPF K L) :
+theorem IsAPF.apfIndex_monotoneOn [IsAPF K L] :
     MonotoneOn (apfIndex K L) (Set.Ici (0 : ℝ)) :=
-  IsAPFSubextension.inertiaIndex_monotoneOn K (hL _)
+  IsAPFSubextension.inertiaIndex_monotoneOn K
 
 theorem apfIndex_algEquiv {M : Type*} [Field M] [Algebra K M]
     [Algebra.IsSeparable K M] (e : L ≃ₐ[K] M) (u : ℝ) :

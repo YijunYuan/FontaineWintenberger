@@ -54,11 +54,11 @@ normed base is the absolute function composed with its actual inverse. -/
 theorem apfPsi_eq_absolute_comp_apfPhi_of_normedAlgebra (u : ℝ) :
     letI := normedAlgebra_isCompleteDiscreteValuedField K M
     letI := Algebra.isSeparable_tower_top_of_isSeparable K M F
-    apfPsi M F u = apfPsi K F (apfPhi K M (isAPF_of_finite K M) u) := by
+    apfPsi M F u = apfPsi K F (apfPhi K M u) := by
   let := normedAlgebra_isCompleteDiscreteValuedField K M
   let := Algebra.isSeparable_tower_top_of_isSeparable K M F
   have h := IsAPF.apfPsi_finiteBase_comp_of_normedAlgebra K M F
-    (isAPF_of_finite K F) (apfPhi K M (isAPF_of_finite K M) u)
+    (apfPhi K M u)
   rwa [apfPsi_apfPhi] at h
 
 end OriginalFiniteBase
@@ -100,10 +100,9 @@ theorem apfPsi_originalBase_eq_fixing_herbrand (i : F →ₐ[M] Ω)
   let : FiniteDimensional K (i.restrictScalars K).fieldRange :=
     Module.Finite.equiv (i.restrictScalars K).equivFieldRange.toLinearEquiv
   rw [apfPsi_eq_absolute_comp_apfPhi_of_normedAlgebra K M F,
-    apfPhi_algEquiv K M (jM).equivFieldRange (isAPF_of_finite K M)
-      (isAPF_of_finite K (jM).fieldRange),
+    apfPhi_algEquiv K M (jM).equivFieldRange,
     apfPsi_algEquiv K F (i.restrictScalars K).equivFieldRange]
-  have hv := apfPhi_mem_Ici K (jM).fieldRange (isAPF_of_finite K (jM).fieldRange) hu
+  have hv := apfPhi_mem_Ici K (jM).fieldRange hu
   rw [apfPsi_eq_subgroup_herbrand_comp_inverse_of_finiteGalois K Ω
       (i.restrictScalars K).fieldRange hv,
     apfPhi_eq_herbrand_comp_subgroup_inverse_of_finiteGalois K Ω (jM).fieldRange hu,

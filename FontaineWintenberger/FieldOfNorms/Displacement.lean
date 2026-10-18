@@ -32,9 +32,9 @@ variable (p : ℕ) [Fact p.Prime]
 
 /-- Actual norm-field subtraction agrees with ordinary coordinate subtraction
 to every ideal-power precision on an original finite tail. -/
-theorem normLimitEval_sub_sub_mem (hL : IsAPF K L)
-    (hInfinite : ¬ Module.Finite K L) :
-    letI := normLimitField K L p hL hInfinite
+theorem normLimitEval_sub_sub_mem [IsAPF K L]
+    [Fact (¬ Module.Finite K L)] :
+    letI := normLimitField K L p
     ∀ (α β : NormLimit K L) (n : ℕ),
       ∃ T : FiniteLayer K L, ∀ E : FiniteLayer K L, T ≤ E →
         normLimitEval K L E (α - β) - normLimitEval K L E α +
@@ -42,10 +42,10 @@ theorem normLimitEval_sub_sub_mem (hL : IsAPF K L)
           (fun x : spectralIntegerRing K E.val => (x : E.val)) ''
             ((IsLocalRing.maximalIdeal (spectralIntegerRing K E.val) ^ n :
               Ideal (spectralIntegerRing K E.val)) : Set (spectralIntegerRing K E.val)) := by
-  let := normLimitField K L p hL hInfinite
+  let := normLimitField K L p
   intro α β n
-  obtain ⟨T, hT⟩ := normLimitAdd_sub_mem K L p hL (α - β) β n
-  have hs : normLimitAdd K L p hL (α - β) β = α := sub_add_cancel α β
+  obtain ⟨T, hT⟩ := normLimitAdd_sub_mem K L p (α - β) β n
+  have hs : normLimitAdd K L p (α - β) β = α := sub_add_cancel α β
   refine ⟨T, fun E hE => ?_⟩
   obtain ⟨z, hz, heq⟩ := hT E hE
   rw [hs] at heq
@@ -55,19 +55,19 @@ theorem normLimitEval_sub_sub_mem (hL : IsAPF K L)
 
 /-- Cofinal exact valuations of actual finite-coordinate differences compute
 the same original norm-field valuation, for every signed displacement order. -/
-theorem normLimitValuation_sub_eq_of_cofinal_coordinate (hL : IsAPF K L)
-    (hInfinite : ¬ Module.Finite K L) :
-    letI := normLimitField K L p hL hInfinite
+theorem normLimitValuation_sub_eq_of_cofinal_coordinate [IsAPF K L]
+    [Fact (¬ Module.Finite K L)] :
+    letI := normLimitField K L p
     ∀ (α β : NormLimit K L) (n : ℤ),
       (∀ T : FiniteLayer K L, ∃ E : FiniteLayer K L, T ≤ E ∧
         (IsDiscreteValuationRing.maximalIdeal (spectralIntegerRing K E.val)).valuation E.val
           (normLimitEval K L E α - normLimitEval K L E β) = WithZero.exp (-n)) →
-      normLimitValuation K L hL (α - β) = WithZero.exp (-n) := by
-  let := normLimitField K L p hL hInfinite
+      normLimitValuation K L (α - β) = WithZero.exp (-n) := by
+  let := normLimitField K L p
   intro α β n hcofinal
   let s : ℕ := n.toNat + 1
-  obtain ⟨T₀, hT₀⟩ := IsAPF.exists_normLimitValuation_eq_coordinate K L hL
-  obtain ⟨T₁, hT₁⟩ := normLimitEval_sub_sub_mem K L p hL hInfinite α β s
+  obtain ⟨T₀, hT₀⟩ := IsAPF.exists_normLimitValuation_eq_coordinate K L
+  obtain ⟨T₁, hT₁⟩ := normLimitEval_sub_sub_mem K L p α β s
   obtain ⟨E, hE, hval⟩ := hcofinal (FiniteLayer.sup T₀ T₁)
   have hE₀ := (FiniteLayer.le_sup_left T₀ T₁).trans hE
   have hE₁ := (FiniteLayer.le_sup_right T₀ T₁).trans hE

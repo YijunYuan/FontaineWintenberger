@@ -134,7 +134,7 @@ theorem finiteTower_upper_map_restrictScalars {u : ℝ} (hu : -1 ≤ u) :
         (S₀).fixingSubgroup := by
   have hpsi : apfPsi K M u = apfPsi K S₀ u := apfPsi_algEquiv K M e₀ u
   have hnonneg : -1 ≤ apfPsi K M u :=
-    IsAPF.apfPsi_mem_Ici K M (isAPF_of_finite K M) hu
+    IsAPF.apfPsi_mem_Ici K M hu
   rw [← finiteTower_fixingSubtype_comp K E M, ← Subgroup.map_map,
     ← Subgroup.map_map, finiteTower_upper_map_autEquivImage K E M hnonneg, hpsi,
     finiteBase_upperRamificationGroup K E S₀ hu, Subgroup.map_map]

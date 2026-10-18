@@ -106,7 +106,7 @@ theorem integerNorm_sub_congruence_of_totallyRamified
       x - y ∈ IsLocalRing.maximalIdeal (spectralIntegerRing K F.val) ^ r →
         integerNorm E F hEF x - integerNorm E F hEF y ∈
           IsLocalRing.maximalIdeal (spectralIntegerRing K E.val) ^
-            ⌈apfPhi E.val F' (isAPF_of_finite E.val F') (r : ℝ)⌉₊ := by
+            ⌈apfPhi E.val F' (r : ℝ)⌉₊ := by
   let : Algebra E.val F.val := (IntermediateField.inclusion hEF).toRingHom.toAlgebra
   let : IsScalarTower K E.val F.val := IsScalarTower.of_algebraMap_eq' rfl
   let := spectralValuation_hasExtension_tower K (E := E.val) (L := F.val)

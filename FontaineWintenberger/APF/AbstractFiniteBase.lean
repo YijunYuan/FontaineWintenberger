@@ -173,7 +173,7 @@ theorem mem_upper_finiteBase_iff {u : ℝ} (hu : -1 ≤ u)
     (g : SeparableClosure K ≃ₐ[M] SeparableClosure K) :
     g ∈ upperRamificationGroupInfinite M (SeparableClosure K) (apfPsi K M u) ↔
       g.restrictScalars K ∈ upperRamificationGroupInfinite K (SeparableClosure K) u := by
-  have hv := IsAPF.apfPsi_mem_Ici K M (isAPF_of_finite K M) hu
+  have hv := IsAPF.apfPsi_mem_Ici K M hu
   rw [mem_upper_iff_cofinal K M hv g,
     mem_upperRamificationGroupInfinite_containing_base_iff K S₀ hu (g.restrictScalars K)]
   exact forall_congr' fun E => forall_congr' fun hME =>
@@ -226,7 +226,7 @@ theorem comap_upper {u : ℝ} (hu : -1 ≤ u) :
     (absoluteUpperRamificationGroup K u).comap (closureHom K M) =
       absoluteUpperRamificationGroup M (apfPsi K M u) := by
   ext g
-  have hv := IsAPF.apfPsi_mem_Ici K M (isAPF_of_finite K M) hu
+  have hv := IsAPF.apfPsi_mem_Ici K M hu
   exact ((mem_upperRamificationGroupInfinite_autCongr_iff M (closureEquiv K M) hv g).symm.trans
     (mem_upper_finiteBase_iff K M hu ((closureEquiv K M).autCongr g))).symm
 
@@ -296,11 +296,11 @@ theorem isAPF_iff : IsAPF K N ↔ IsAPF M N := by
   rw [isAPF_iff_embedding K N (embedding K M i), isAPF_iff_embedding M N i,
     isAPFSubextension_iff_finiteIndex, isAPFSubextension_iff_finiteIndex]
   let := closureHom_range_finiteIndex K M
-  have hM := isAPF_of_finite K M
+  have := isAPF_of_finite K M
   constructor
   · intro h v hv
-    let u := apfPhi K M hM v
-    have hu : -1 ≤ u := apfPhi_mem_Ici K M hM hv
+    let u := apfPhi K M v
+    have hu : -1 ≤ u := apfPhi_mem_Ici K M hv
     have hindex := (Subgroup.finiteIndex_iff_comap_of_range (closureHom K M)
       (apfSubgroup K (embedding K M i).fieldRange u)).mp (h u hu)
     rw [comap_apf K M i hu, apfPsi_apfPhi] at hindex
@@ -309,14 +309,14 @@ theorem isAPF_iff : IsAPF K N ↔ IsAPF M N := by
     apply (Subgroup.finiteIndex_iff_comap_of_range (closureHom K M)
       (apfSubgroup K (embedding K M i).fieldRange u)).mpr
     rw [comap_apf K M i hu]
-    exact h (apfPsi K M u) (IsAPF.apfPsi_mem_Ici K M hM hu)
+    exact h (apfPsi K M u) (IsAPF.apfPsi_mem_Ici K M hu)
 
 omit [Algebra.IsSeparable K N] [Algebra.IsSeparable M N] in
 /-- The original inertia product over the abstract base is an actual preimage. -/
 theorem comap_inertia (i : N →ₐ[M] SeparableClosure M) {u : ℝ} (hu : 0 ≤ u) :
     (apfInertiaSubgroup K (embedding K M i).fieldRange u).comap (closureHom K M) =
       apfInertiaSubgroup M i.fieldRange (apfPsi K M u) := by
-  have hψ : 0 ≤ apfPsi K M u := hu.trans (IsAPF.le_apfPsi K M (isAPF_of_finite K M) u)
+  have hψ : 0 ≤ apfPsi K M u := hu.trans (IsAPF.le_apfPsi K M u)
   rw [apfInertiaSubgroup_eq_inf K _ u hu, Subgroup.comap_inf,
     comap_apf K M i (by linarith), comap_upper K M (by norm_num : (-1 : ℝ) ≤ 0),
     apfPsi_zero, ← apfInertiaSubgroup_eq_inf M _ _ hψ]
@@ -354,19 +354,19 @@ open MeasureTheory Filter
 open scoped ENNReal
 
 /-- The derivative of the actual finite-base composite agrees off a countable set. -/
-theorem exists_comp_derivative (hN : IsAPF K N) :
+theorem exists_comp_derivative [IsAPF K N] :
     ∃ S : Set ℝ, S.Countable ∧ ∀ u : ℝ, 0 < u → u ∉ S →
       HasDerivAt ((apfPsi M N) ∘ (apfPsi K M)) (apfHerbrandSlope K N u) u := by
-  have hM := isAPF_of_finite K M
-  have hNM := (isAPF_iff K M).mp hN
-  obtain ⟨S₁, hS₁, hd₁⟩ := IsAPF.exists_apfPsi_derivative_countable K M hM
-  obtain ⟨S₂, hS₂, hd₂⟩ := IsAPF.exists_apfPsi_derivative_countable M N hNM
+  have := isAPF_of_finite K M
+  have hNM : IsAPF M N := (isAPF_iff K M).mp ‹_›
+  obtain ⟨S₁, hS₁, hd₁⟩ := IsAPF.exists_apfPsi_derivative_countable K M
+  obtain ⟨S₂, hS₂, hd₂⟩ := IsAPF.exists_apfPsi_derivative_countable M N
   refine ⟨S₁ ∪ (apfPsi K M ⁻¹' S₂),
-    hS₁.union (hS₂.preimage (IsAPF.strictMono_apfPsi K M hM).injective), ?_⟩
+    hS₁.union (hS₂.preimage (IsAPF.strictMono_apfPsi K M).injective), ?_⟩
   intro u hu hnot
   have hn₁ : u ∉ S₁ := fun h => hnot (Or.inl h)
   have hn₂ : apfPsi K M u ∉ S₂ := fun h => hnot (Or.inr h)
-  have hψ : 0 ≤ apfPsi K M u := hu.le.trans (IsAPF.le_apfPsi K M hM u)
+  have hψ : 0 ≤ apfPsi K M u := hu.le.trans (IsAPF.le_apfPsi K M u)
   have hd := (hd₂ (apfPsi K M u) hn₂).comp u (hd₁ u hn₁)
   have he : (apfIndex M N (apfPsi K M u) : ℝ) * (apfIndex K M u : ℝ) =
       (apfIndex K N u : ℝ) := by
@@ -376,35 +376,36 @@ theorem exists_comp_derivative (hN : IsAPF K N) :
 
 /-- Genuine Herbrand integrals compose over the original normed finite base on all real
 parameters. -/
-theorem psi_comp (hN : IsAPF K N) (u : ℝ) :
+theorem psi_comp [IsAPF K N] (u : ℝ) :
     apfPsi M N (apfPsi K M u) = apfPsi K N u := by
+  have : IsAPF M N := (isAPF_iff K M).mp ‹_›
   by_cases hu : 0 ≤ u
-  · obtain ⟨S, hS, hd⟩ := exists_comp_derivative K M hN
+  · obtain ⟨S, hS, hd⟩ := exists_comp_derivative K M (N := N)
     have hcont : ContinuousOn ((apfPsi M N) ∘ (apfPsi K M)) (Set.Icc 0 u) :=
-      ((IsAPF.continuous_apfPsi M N ((isAPF_iff K M).mp hN)).comp
-        (IsAPF.continuous_apfPsi K M (isAPF_of_finite K M))).continuousOn
+      ((IsAPF.continuous_apfPsi M N).comp
+        (IsAPF.continuous_apfPsi K M)).continuousOn
     have h := MeasureTheory.integral_eq_of_hasDerivAt_off_countable_of_le
       ((apfPsi M N) ∘ (apfPsi K M)) (apfHerbrandSlope K N) hu hS hcont
       (fun v hv => hd v hv.1.1 hv.2)
-      (IsAPF.intervalIntegrable_apfHerbrandSlope K N hN 0 u)
+      (IsAPF.intervalIntegrable_apfHerbrandSlope K N 0 u)
     conv_rhs => rw [apfPsi]
     simpa only [Function.comp_apply, apfPsi_zero, sub_zero] using h.symm
   · rw [apfPsi_of_nonpos K M (le_of_not_ge hu),
       apfPsi_of_nonpos M N (le_of_not_ge hu), apfPsi_of_nonpos K N (le_of_not_ge hu)]
 
 /-- The actual strictness ratios satisfy the original finite-base identity. -/
-theorem ratio (hN : IsAPF K N) {u : ℝ} (hu : 0 ≤ u) :
+theorem ratio [IsAPF K N] {u : ℝ} (hu : 0 ≤ u) :
     apfStrictnessRatio M N (apfPsi K M u) =
       (apfIndex K M u : ℝ≥0∞) * apfStrictnessRatio K N u := by
-  have hM := isAPF_of_finite K M
-  have hNM := (isAPF_iff K M).mp hN
-  have hψ : 0 ≤ apfPsi K M u := hu.trans (IsAPF.le_apfPsi K M hM u)
+  have := isAPF_of_finite K M
+  have hNM : IsAPF M N := (isAPF_iff K M).mp ‹_›
+  have hψ : 0 ≤ apfPsi K M u := hu.trans (IsAPF.le_apfPsi K M u)
   have ha : (0 : ℝ) < (apfIndex K M u : ℝ) :=
-    Nat.cast_pos.mpr (IsAPF.apfIndex_pos K M hM hu)
+    Nat.cast_pos.mpr (IsAPF.apfIndex_pos K M hu)
   have hb : (0 : ℝ) < (apfIndex M N (apfPsi K M u) : ℝ) :=
-    Nat.cast_pos.mpr (IsAPF.apfIndex_pos M N hNM hψ)
+    Nat.cast_pos.mpr (IsAPF.apfIndex_pos M N hψ)
   simp only [apfStrictnessRatio]
-  rw [psi_comp K M hN u, ← ENNReal.ofReal_natCast,
+  rw [psi_comp K M u, ← ENNReal.ofReal_natCast,
     ← ENNReal.ofReal_mul (Nat.cast_nonneg _)]
   apply congrArg ENNReal.ofReal
   have he : (apfIndex K N u : ℝ) =
@@ -427,7 +428,7 @@ theorem exists_index_constant :
   exact hidx u hu
 
 /-- The actual strictness lower limits differ by a positive finite multiplier. -/
-theorem exists_liminf_mul (hN : IsAPF K N) :
+theorem exists_liminf_mul [IsAPF K N] :
     ∃ C : ℕ, 0 < C ∧ liminf (apfStrictnessRatio M N) atTop =
       (C : ℝ≥0∞) * liminf (apfStrictnessRatio K N) atTop := by
   obtain ⟨C, hC, b, hb, hidx⟩ := exists_index_constant K M
@@ -435,25 +436,25 @@ theorem exists_liminf_mul (hN : IsAPF K N) :
   have hev : (apfStrictnessRatio M N ∘ apfPsi K M) =ᶠ[atTop]
       (fun u => (C : ℝ≥0∞) * apfStrictnessRatio K N u) :=
     eventually_atTop.mpr ⟨b, fun u hu => by
-      rw [Function.comp_apply, ratio K M hN (hb.trans hu), hidx u hu]⟩
+      rw [Function.comp_apply, ratio K M (hb.trans hu), hidx u hu]⟩
   have he := liminf_congr hev
   rw [ENNReal.liminf_const_mul_of_ne_top (by simp : (C : ℝ≥0∞) ≠ ⊤)] at he
-  exact (IsAPF.liminf_comp_apfPsi K M (isAPF_of_finite K M)
+  exact (IsAPF.liminf_comp_apfPsi K M
     (apfStrictnessRatio M N)).symm.trans he
 
 /-- Strict APF is invariant over the original abstract compatible normed finite base. -/
 theorem isStrictlyAPF_iff : IsStrictlyAPF K N ↔ IsStrictlyAPF M N := by
   by_cases hN : IsAPF K N
-  · have hNM := (isAPF_iff K M).mp hN
-    obtain ⟨C, hC, he⟩ := exists_liminf_mul K M hN
-    simp only [IsStrictlyAPF, hN, hNM, true_and]
+  · have hNM := (isAPF_iff K M).mp ‹_›
+    obtain ⟨C, hC, he⟩ := exists_liminf_mul K M (N := N)
+    simp only [FontaineWintenberger.isStrictlyAPF_iff, hN, hNM, true_and]
     rw [he, ENNReal.mul_pos_iff]
     exact ⟨fun hp => ⟨Nat.cast_pos.mpr hC, hp⟩, And.right⟩
   · constructor
     · intro h
-      exact (hN h.1).elim
+      exact (hN h.toIsAPF).elim
     · intro h
-      exact (hN ((isAPF_iff K M).mpr h.1)).elim
+      exact (hN ((isAPF_iff K M).mpr h.toIsAPF)).elim
 
 end ValuedCommonClosure
 
@@ -499,7 +500,7 @@ theorem apfIndex_eq_mul_finiteBase_of_normedAlgebra {u : ℝ} (hu : 0 ≤ u) :
   exact AbstractFiniteBase.index_mul K M hu
 
 /-- The intrinsic Herbrand integral composes over any abstract finite compatible normed base. -/
-theorem IsAPF.apfPsi_finiteBase_comp_of_normedAlgebra (hN : IsAPF K N) (u : ℝ) :
+theorem IsAPF.apfPsi_finiteBase_comp_of_normedAlgebra [IsAPF K N] (u : ℝ) :
     letI := normedAlgebra_isCompleteDiscreteValuedField K M
     letI := Algebra.isSeparable_tower_top_of_isSeparable K M N
     apfPsi M N (apfPsi K M u) = apfPsi K N u := by
@@ -509,11 +510,11 @@ theorem IsAPF.apfPsi_finiteBase_comp_of_normedAlgebra (hN : IsAPF K N) (u : ℝ)
   obtain ⟨i⟩ := nonempty_separableClosure_embeddings K M
   let : Algebra M (SeparableClosure K) := i.toRingHom.toAlgebra
   let : IsScalarTower K M (SeparableClosure K) := IsScalarTower.of_algHom i
-  exact AbstractFiniteBase.psi_comp K M hN u
+  exact AbstractFiniteBase.psi_comp K M u
 
 /-- The actual strictness ratio is preserved with the genuine finite-base inertia factor. -/
 theorem IsAPF.apfStrictnessRatio_finiteBase_of_normedAlgebra
-    (hN : IsAPF K N) {u : ℝ} (hu : 0 ≤ u) :
+    [IsAPF K N] {u : ℝ} (hu : 0 ≤ u) :
     letI := normedAlgebra_isCompleteDiscreteValuedField K M
     letI := Algebra.isSeparable_tower_top_of_isSeparable K M N
     apfStrictnessRatio M N (apfPsi K M u) =
@@ -524,7 +525,7 @@ theorem IsAPF.apfStrictnessRatio_finiteBase_of_normedAlgebra
   obtain ⟨i⟩ := nonempty_separableClosure_embeddings K M
   let : Algebra M (SeparableClosure K) := i.toRingHom.toAlgebra
   let : IsScalarTower K M (SeparableClosure K) := IsScalarTower.of_algHom i
-  exact AbstractFiniteBase.ratio K M hN hu
+  exact AbstractFiniteBase.ratio K M hu
 
 /-- Strict APF is invariant under any abstract finite change of base with its original norm. -/
 theorem isStrictlyAPF_finiteBase_iff_of_normedAlgebra :

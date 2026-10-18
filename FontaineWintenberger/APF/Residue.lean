@@ -87,14 +87,14 @@ theorem apfSubgroup_zero_eq_of_apfFiniteStage_le
 /-- The actual residue degree over K is constant beyond the genuine finite
 zero stage of an APF extension. -/
 theorem residueDegree_eq_zeroStage_of_apfFiniteStage_le
-    (L : IntermediateField K (SeparableClosure K)) (hL : IsAPFSubextension K L)
+    (L : IntermediateField K (SeparableClosure K)) [IsAPFSubextension K L]
     (E : IntermediateField K (SeparableClosure K)) [FiniteDimensional K E]
     (hEL : E ≤ L) (hstage : apfFiniteStage K L 0 ≤ E) :
     Module.finrank (IsLocalRing.ResidueField R)
         (IsLocalRing.ResidueField (spectralIntegerRing K E)) =
       Module.finrank (IsLocalRing.ResidueField R)
         (IsLocalRing.ResidueField (spectralIntegerRing K (apfFiniteStage K L 0))) := by
-  have := finiteDimensional_apfFiniteStage K L hL (by norm_num : -1 ≤ (0 : ℝ))
+  have := finiteDimensional_apfFiniteStage K L (by norm_num : -1 ≤ (0 : ℝ))
   rw [← apfSubgroup_index_zero_eq_residueDegree K E E.val,
     ← apfSubgroup_index_zero_eq_residueDegree K (apfFiniteStage K L 0)
       (apfFiniteStage K L 0).val]
@@ -106,27 +106,27 @@ theorem residueDegree_eq_zeroStage_of_apfFiniteStage_le
 /-- The actual residue inclusion from the zero stage onto a finite stage
 above it is surjective. The tower uses its original residue map. -/
 theorem spectralResidueInclusion_zeroStage_surjective
-    (L : IntermediateField K (SeparableClosure K)) (hL : IsAPFSubextension K L)
+    (L : IntermediateField K (SeparableClosure K)) [IsAPFSubextension K L]
     (E : IntermediateField K (SeparableClosure K)) [FiniteDimensional K E]
     (hEL : E ≤ L) (hstage : apfFiniteStage K L 0 ≤ E) :
     Function.Surjective (spectralResidueInclusion K (IntermediateField.inclusion hstage)) := by
-  have := finiteDimensional_apfFiniteStage K L hL (by norm_num : -1 ≤ (0 : ℝ))
+  have := finiteDimensional_apfFiniteStage K L (by norm_num : -1 ≤ (0 : ℝ))
   exact (LinearMap.injective_iff_surjective_of_finrank_eq_finrank
-    (residueDegree_eq_zeroStage_of_apfFiniteStage_le K L hL E hEL hstage).symm
+    (residueDegree_eq_zeroStage_of_apfFiniteStage_le K L E hEL hstage).symm
     (f := (spectralResidueInclusion K (IntermediateField.inclusion hstage)).toLinearMap)).mp
       (spectralResidueInclusion K (IntermediateField.inclusion hstage)).injective
 
 /-- Actual finite inclusions beyond the zero stage induce surjective
 residue maps, without normality of either field. -/
 theorem spectralResidueInclusion_surjective_of_zeroStage_le
-    (L : IntermediateField K (SeparableClosure K)) (hL : IsAPFSubextension K L)
+    (L : IntermediateField K (SeparableClosure K)) [IsAPFSubextension K L]
     (E F : IntermediateField K (SeparableClosure K))
     [FiniteDimensional K E] [FiniteDimensional K F]
     (hFL : F ≤ L) (hstage : apfFiniteStage K L 0 ≤ E) (hEF : E ≤ F) :
     Function.Surjective (spectralResidueInclusion K (IntermediateField.inclusion hEF)) := by
-  have hdim := (residueDegree_eq_zeroStage_of_apfFiniteStage_le K L hL E
+  have hdim := (residueDegree_eq_zeroStage_of_apfFiniteStage_le K L E
     (hEF.trans hFL) hstage).trans
-      (residueDegree_eq_zeroStage_of_apfFiniteStage_le K L hL F hFL (hstage.trans hEF)).symm
+      (residueDegree_eq_zeroStage_of_apfFiniteStage_le K L F hFL (hstage.trans hEF)).symm
   exact (LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim
     (f := (spectralResidueInclusion K (IntermediateField.inclusion hEF)).toLinearMap)).mp
       (spectralResidueInclusion K (IntermediateField.inclusion hEF)).injective
@@ -135,14 +135,14 @@ variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
 /-- In the original abstract APF extension, residue degrees stabilize above
 an actual finite layer pulled back from its genuine zero stage. -/
-theorem IsAPF.exists_finiteLayer_residueDegree_stable (hL : IsAPF K L) :
+theorem IsAPF.exists_finiteLayer_residueDegree_stable [IsAPF K L] :
     ∃ E₀ : FiniteLayer K L, ∀ F : FiniteLayer K L, E₀ ≤ F →
       Module.finrank (IsLocalRing.ResidueField R)
           (IsLocalRing.ResidueField (spectralIntegerRing K F.val)) =
         Module.finrank (IsLocalRing.ResidueField R)
           (IsLocalRing.ResidueField (spectralIntegerRing K E₀.val)) := by
   let j : L →ₐ[K] SeparableClosure K := IsSepClosed.lift
-  obtain ⟨E₀, hE₀⟩ := exists_finiteLayer_map_eq_apfFiniteStage K L hL j
+  obtain ⟨E₀, hE₀⟩ := exists_finiteLayer_map_eq_apfFiniteStage K L j
     (by norm_num : -1 ≤ (0 : ℝ))
   refine ⟨E₀, fun F hF => ?_⟩
   have : FiniteDimensional K (F.val.map j) :=
@@ -153,7 +153,7 @@ theorem IsAPF.exists_finiteLayer_residueDegree_stable (hL : IsAPF K L) :
   have hstage : apfFiniteStage K j.fieldRange 0 ≤ F.val.map j := by
     rw [← hE₀]
     exact IntermediateField.map_mono j hF
-  have hd := residueDegree_eq_zeroStage_of_apfFiniteStage_le K j.fieldRange (hL j)
+  have hd := residueDegree_eq_zeroStage_of_apfFiniteStage_le K j.fieldRange
     (F.val.map j) hFL hstage
   rw [← hE₀, spectral_residueDegree_algEquiv K F.val (IntermediateField.equivMap F.val j),
     spectral_residueDegree_algEquiv K E₀.val (IntermediateField.equivMap E₀.val j)] at hd
@@ -161,11 +161,11 @@ theorem IsAPF.exists_finiteLayer_residueDegree_stable (hL : IsAPF K L) :
 
 /-- The original abstract APF extension has an actual finite residue-stable
 tail: every inclusion on that tail induces a surjection on actual residues. -/
-theorem IsAPF.exists_finiteLayer_residueInclusion_surjective (hL : IsAPF K L) :
+theorem IsAPF.exists_finiteLayer_residueInclusion_surjective [IsAPF K L] :
     ∃ E₀ : FiniteLayer K L, ∀ E F : FiniteLayer K L, E₀ ≤ E → ∀ hEF : E ≤ F,
       Function.Surjective
         (spectralResidueInclusion K (IntermediateField.inclusion hEF)) := by
-  obtain ⟨E₀, hE₀⟩ := IsAPF.exists_finiteLayer_residueDegree_stable K L hL
+  obtain ⟨E₀, hE₀⟩ := IsAPF.exists_finiteLayer_residueDegree_stable K L
   refine ⟨E₀, fun E F hE hEF => ?_⟩
   have hdim := (hE₀ E hE).trans (hE₀ F (hE.trans hEF)).symm
   exact (LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim

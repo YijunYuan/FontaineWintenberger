@@ -72,17 +72,20 @@ theorem isAPFSubextension_fieldRange_iff (i j : L →ₐ[K] SeparableClosure K) 
   rw [← hr]
   exact (isAPFSubextension_map_iff K i.fieldRange σ).symm
 
-/-- Arithmetic profiniteness of an abstract separable field extension. -/
-def IsAPF (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L] : Prop :=
-  ∀ i : L →ₐ[K] SeparableClosure K, IsAPFSubextension K i.fieldRange
+/-- Arithmetic profiniteness of an abstract separable field extension `L/K`
+(Wintenberger 1.2.1): the image of every `K`-embedding `L → K^sep` is an APF subextension. -/
+class IsAPF (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L] : Prop where
+  isAPFSubextension (i : L →ₐ[K] SeparableClosure K) : IsAPFSubextension K i.fieldRange
+
+attribute [instance] IsAPF.isAPFSubextension
 
 /-- The public APF predicate can be tested using any specified embedding. -/
 theorem isAPF_iff_embedding (i : L →ₐ[K] SeparableClosure K) :
     IsAPF K L ↔ IsAPFSubextension K i.fieldRange := by
   constructor
-  · exact fun h ↦ h i
-  · intro h j
-    exact (isAPFSubextension_fieldRange_iff K L i j).mp h
+  · exact fun h ↦ h.isAPFSubextension i
+  · intro h
+    exact ⟨fun j => (isAPFSubextension_fieldRange_iff K L i j).mp h⟩
 
 /-- The embedding quantifier in `IsAPF` is nonvacuous. -/
 theorem isAPF_iff_exists_embedding :
@@ -90,7 +93,7 @@ theorem isAPF_iff_exists_embedding :
   constructor
   · intro h
     obtain ⟨i⟩ := nonempty_separableClosure_embeddings K L
-    exact ⟨i, h i⟩
+    exact ⟨i, h.isAPFSubextension i⟩
   · rintro ⟨i, hi⟩
     exact (isAPF_iff_embedding K L i).mpr hi
 
@@ -98,27 +101,39 @@ theorem isAPF_iff_subextension (E : IntermediateField K (SeparableClosure K)) :
     IsAPF K E ↔ IsAPFSubextension K E := by
   simpa only [IntermediateField.fieldRange_val] using isAPF_iff_embedding K E E.val
 
-/-- Every finite separable abstract extension is APF. -/
-theorem isAPF_of_finite [FiniteDimensional K L] : IsAPF K L := by
-  intro i
+instance (E : IntermediateField K (SeparableClosure K)) [IsAPFSubextension K E] : IsAPF K E :=
+  (isAPF_iff_subextension K E).mpr ‹_›
+
+instance (E : IntermediateField K (SeparableClosure K)) [IsAPF K E] : IsAPFSubextension K E :=
+  (isAPF_iff_subextension K E).mp ‹_›
+
+/-- Every finite separable abstract extension is APF (Wintenberger 1.2.2). -/
+instance isAPF_of_finite [FiniteDimensional K L] : IsAPF K L := by
+  refine ⟨fun i => ?_⟩
   let : FiniteDimensional K i.fieldRange := Module.Finite.equiv i.equivFieldRange.toLinearEquiv
   exact isAPFSubextension_of_finite K i.fieldRange
 
 variable {L}
 variable {M : Type*} [Field M] [Algebra K M] [Algebra.IsSeparable K M]
 
-/-- APF descends along every algebra embedding, including nonnormal subextensions. -/
-theorem IsAPF.of_algHom (hL : IsAPF K L) (f : M →ₐ[K] L) : IsAPF K M := by
+/-- APF descends along every algebra embedding, including nonnormal subextensions
+(Wintenberger 1.2.3 (iii)). -/
+theorem IsAPF.of_algHom [hL : IsAPF K L] (f : M →ₐ[K] L) : IsAPF K M := by
   obtain ⟨i⟩ := nonempty_separableClosure_embeddings K L
   have hr : (i.comp f).fieldRange ≤ i.fieldRange := by
     intro x hx
     obtain ⟨a, ha⟩ := AlgHom.mem_fieldRange.mp hx
     exact AlgHom.mem_fieldRange.mpr ⟨f a, ha⟩
-  exact (isAPF_iff_embedding K M (i.comp f)).mpr (IsAPFSubextension.of_le K (hL i) hr)
+  have := hL.isAPFSubextension i
+  exact (isAPF_iff_embedding K M (i.comp f)).mpr (IsAPFSubextension.of_le K hr)
+
+/-- Every intermediate field of an APF extension is APF over the base. -/
+instance IsAPF.intermediateField [IsAPF K L] (E : IntermediateField K L) : IsAPF K E :=
+  IsAPF.of_algHom K E.val
 
 theorem isAPF_algEquiv (e : L ≃ₐ[K] M) : IsAPF K L ↔ IsAPF K M := by
   constructor
-  · exact fun h ↦ IsAPF.of_algHom K h e.symm.toAlgHom
-  · exact fun h ↦ IsAPF.of_algHom K h e.toAlgHom
+  · exact fun h ↦ haveI := h; IsAPF.of_algHom K e.symm.toAlgHom
+  · exact fun h ↦ haveI := h; IsAPF.of_algHom K e.toAlgHom
 
 end FontaineWintenberger

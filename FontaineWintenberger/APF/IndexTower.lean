@@ -54,21 +54,21 @@ theorem apfTowerIndexFactor_eq_inertiaRelIndex (hMN : M ≤ N) (u : ℝ) :
     (inf_le_inf_right _ (IntermediateField.fixingSubgroup_le hMN))
 
 /-- APF gives genuine positive finite factors, including a nonnormal intermediate extension. -/
-theorem IsAPFSubextension.towerIndexFactor_pos (hN : IsAPFSubextension K N)
+theorem IsAPFSubextension.towerIndexFactor_pos [IsAPFSubextension K N]
     {u : ℝ} (hu : 0 ≤ u) : 0 < apfTowerIndexFactor K M N u := by
   apply Nat.pos_of_ne_zero
   intro hzero
   have h := Subgroup.relIndex_eq_zero_of_le_right
     (apfInertiaSubgroup_le_zero K M u hu) hzero
-  exact (Nat.ne_of_gt (IsAPFSubextension.inertiaIndex_pos K hN u hu)) h
+  exact (Nat.ne_of_gt (IsAPFSubextension.inertiaIndex_pos K u hu)) h
 
 /-- The intrinsic finite relative factor is nondecreasing with the upper parameter. -/
-theorem IsAPFSubextension.towerIndexFactor_monotoneOn (hN : IsAPFSubextension K N)
+theorem IsAPFSubextension.towerIndexFactor_monotoneOn [IsAPFSubextension K N]
     (hMN : M ≤ N) : MonotoneOn (apfTowerIndexFactor K M N) (Set.Ici (0 : ℝ)) := by
   intro u hu v hv huv
   change 0 ≤ u at hu
   change 0 ≤ v at hv
-  have hdv := Nat.ne_of_gt (IsAPFSubextension.towerIndexFactor_pos K M N hN hv)
+  have hdv := Nat.ne_of_gt (IsAPFSubextension.towerIndexFactor_pos K M N hv)
   rw [apfTowerIndexFactor_eq_inertiaRelIndex K M N hMN v] at hdv
   rw [apfTowerIndexFactor_eq_inertiaRelIndex K M N hMN u,
     apfTowerIndexFactor_eq_inertiaRelIndex K M N hMN v]

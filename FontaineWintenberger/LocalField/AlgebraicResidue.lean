@@ -214,10 +214,10 @@ variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
 /-- Every sufficiently large original finite layer maps bijectively onto
 the residue field of the original algebraic extension. -/
-theorem IsAPF.exists_finiteLayer_spectralResidueInclusion_bijective (hL : IsAPF K L) :
+theorem IsAPF.exists_finiteLayer_spectralResidueInclusion_bijective [IsAPF K L] :
     ∃ T : FiniteLayer K L, ∀ E : FiniteLayer K L, T ≤ E →
       Function.Bijective (spectralResidueInclusion K E.val.val) := by
-  obtain ⟨T, hT⟩ := IsAPF.exists_finiteLayer_residueInclusion_surjective K L hL
+  obtain ⟨T, hT⟩ := IsAPF.exists_finiteLayer_residueInclusion_surjective K L
   refine ⟨T, fun E hE => ⟨(spectralResidueInclusion K E.val.val).injective, ?_⟩⟩
   intro z
   obtain ⟨F, y, hy⟩ := exists_finiteLayer_spectralResidue_preimage K L z
@@ -263,41 +263,41 @@ theorem integralClosureResidueFromLayer_residue (E : FiniteLayer K L)
 
 /-- Actual APF residue stabilization identifies the intrinsic canonical
 residue field with that of every sufficiently large original finite layer. -/
-theorem IsAPF.exists_finiteLayer_integralClosureResidue_bijective (hL : IsAPF K L) :
+theorem IsAPF.exists_finiteLayer_integralClosureResidue_bijective [IsAPF K L] :
     ∃ T : FiniteLayer K L, ∀ E : FiniteLayer K L, T ≤ E →
       Function.Bijective (integralClosureResidueFromLayer K L E) := by
-  obtain ⟨T, hT⟩ := IsAPF.exists_finiteLayer_spectralResidueInclusion_bijective K L hL
+  obtain ⟨T, hT⟩ := IsAPF.exists_finiteLayer_spectralResidueInclusion_bijective K L
   exact ⟨T, fun E hE =>
     (integralClosureSpectralResidueEquiv K (L := L)).symm.bijective.comp (hT E hE)⟩
 
 /-- The actual residue-stable finite layer supplied by the proved APF theorem. -/
-def apfResidueLayer (hL : IsAPF K L) : FiniteLayer K L :=
-  (IsAPF.exists_finiteLayer_integralClosureResidue_bijective K L hL).choose
+def apfResidueLayer [IsAPF K L] : FiniteLayer K L :=
+  (IsAPF.exists_finiteLayer_integralClosureResidue_bijective K L).choose
 
 /-- The original finite inclusion is the residue-field isomorphism; no
 residue-field equivalence is assumed. -/
-def integralClosureResidueEquiv (hL : IsAPF K L) (E : FiniteLayer K L)
-    (hE : apfResidueLayer K L hL ≤ E) :
+def integralClosureResidueEquiv [IsAPF K L] (E : FiniteLayer K L)
+    (hE : apfResidueLayer K L ≤ E) :
     IsLocalRing.ResidueField (spectralIntegerRing K E.val) ≃ₐ[IsLocalRing.ResidueField R₀]
       IsLocalRing.ResidueField (integralClosure R₀ L) :=
   AlgEquiv.ofBijective (integralClosureResidueFromLayer K L E)
-    ((IsAPF.exists_finiteLayer_integralClosureResidue_bijective K L hL).choose_spec E hE)
+    ((IsAPF.exists_finiteLayer_integralClosureResidue_bijective K L).choose_spec E hE)
 
 /-- The residue isomorphism acts by the original finite residue inclusion. -/
 @[simp]
-theorem integralClosureResidueEquiv_apply (hL : IsAPF K L) (E : FiniteLayer K L)
-    (hE : apfResidueLayer K L hL ≤ E)
+theorem integralClosureResidueEquiv_apply [IsAPF K L] (E : FiniteLayer K L)
+    (hE : apfResidueLayer K L ≤ E)
     (z : IsLocalRing.ResidueField (spectralIntegerRing K E.val)) :
-    integralClosureResidueEquiv K L hL E hE z = integralClosureResidueFromLayer K L E z := rfl
+    integralClosureResidueEquiv K L E hE z = integralClosureResidueFromLayer K L E z := rfl
 
 /-- The intrinsic residue field of the original APF algebraic extension is
 perfect, without a finiteness assumption on its cardinality. -/
-theorem IsAPF.perfectField_integralClosureResidue (hL : IsAPF K L) :
+theorem IsAPF.perfectField_integralClosureResidue [IsAPF K L] :
     PerfectField (IsLocalRing.ResidueField (integralClosure R₀ L)) := by
-  let E := apfResidueLayer K L hL
+  let E := apfResidueLayer K L
   let : PerfectField (IsLocalRing.ResidueField (spectralIntegerRing K E.val)) :=
     Algebra.IsAlgebraic.perfectField (IsLocalRing.ResidueField R₀)
-  exact PerfectField.of_ringEquiv (integralClosureResidueEquiv K L hL E le_rfl).toRingEquiv
+  exact PerfectField.of_ringEquiv (integralClosureResidueEquiv K L E le_rfl).toRingEquiv
 
 end ResidueStabilization
 

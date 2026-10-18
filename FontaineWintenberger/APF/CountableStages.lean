@@ -28,13 +28,13 @@ variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
 /-- The actual integer-parameter APF stages give a monotone cofinal
 sequence of original finite fields, with exact original embedded images. -/
-theorem IsAPF.exists_monotone_cofinal_finiteLayers_map (hL : IsAPF K L)
+theorem IsAPF.exists_monotone_cofinal_finiteLayers_map [IsAPF K L]
     (j : L →ₐ[K] SeparableClosure K) :
     ∃ E : ℕ → FiniteLayer K L, Monotone E ∧
       (∀ n : ℕ, (E n).val.map j = apfFiniteStage K j.fieldRange (n : ℝ)) ∧
       ∀ D : FiniteLayer K L, ∃ n : ℕ, D ≤ E n := by
   choose E hE using fun n : ℕ =>
-    exists_finiteLayer_map_eq_apfFiniteStage K L hL j
+    exists_finiteLayer_map_eq_apfFiniteStage K L j
       (by have := Nat.cast_nonneg (α := ℝ) n; linarith : -1 ≤ (n : ℝ))
   refine ⟨E, ?_, hE, ?_⟩
   · intro m n hmn x hx
@@ -64,11 +64,11 @@ theorem IsAPF.exists_monotone_cofinal_finiteLayers_map (hL : IsAPF K L)
 
 /-- Every original abstract separable APF extension has a countable
 monotone cofinal sequence among all of its actual finite layers. -/
-theorem IsAPF.exists_monotone_cofinal_finiteLayers (hL : IsAPF K L) :
+theorem IsAPF.exists_monotone_cofinal_finiteLayers [IsAPF K L] :
     ∃ E : ℕ → FiniteLayer K L, Monotone E ∧ ∀ D : FiniteLayer K L, ∃ n : ℕ, D ≤ E n := by
   obtain ⟨j⟩ := nonempty_separableClosure_embeddings K L
   obtain ⟨E, hmono, _hmap, hcofinal⟩ :=
-    IsAPF.exists_monotone_cofinal_finiteLayers_map K L hL j
+    IsAPF.exists_monotone_cofinal_finiteLayers_map K L j
   exact ⟨E, hmono, hcofinal⟩
 
 end FontaineWintenberger
