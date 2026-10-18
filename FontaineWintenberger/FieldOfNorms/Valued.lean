@@ -62,11 +62,8 @@ theorem normLimitValuation_add_le_max [IsAPF K L] (α β : NormLimit K L) :
 /-- The same stable map, now bundled as a field valuation for the actual
 constructed field. No new map or alternate field carrier is introduced. -/
 def normLimitFieldValuation [IsAPF K L] [Fact (¬ Module.Finite K L)] :
-    letI := normLimitField K L
-    Valuation (NormLimit K L) (WithZero (Multiplicative ℤ)) := by
-  letI := normLimitField K L
-  exact {
-    normLimitValuation K L with
+    Valuation (NormLimit K L) (WithZero (Multiplicative ℤ)) :=
+  { normLimitValuation K L with
     map_add_le_max' := normLimitValuation_add_le_max K L }
 
 /-- Bundling the field valuation preserves exactly the existing stable map. -/
@@ -77,11 +74,8 @@ theorem normLimitFieldValuation_apply [IsAPF K L]
 
 /-- The canonical valued-field structure uses exactly the existing stable
 map and its valuation uniformity on the same original field carrier. -/
-@[instance_reducible]
-def normLimitValued [IsAPF K L] [Fact (¬ Module.Finite K L)] :
-    letI := normLimitField K L
-    Valued (NormLimit K L) (WithZero (Multiplicative ℤ)) := by
-  letI := normLimitField K L
-  exact Valued.mk' (normLimitFieldValuation K L)
+instance normLimitValued [IsAPF K L] [Fact (¬ Module.Finite K L)] :
+    Valued (NormLimit K L) (WithZero (Multiplicative ℤ)) :=
+  Valued.mk' (normLimitFieldValuation K L)
 
 end FontaineWintenberger

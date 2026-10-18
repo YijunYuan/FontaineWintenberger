@@ -107,8 +107,59 @@ def normLimitGroup : Subgroup (∀ E : FiniteLayer K L, E.valˣ) where
     rw [map_inv, hx E F h]
 
 /-- The single multiplicative carrier for the field of norms: its actual unit
-limit with an absorbing zero adjoined. -/
-abbrev NormLimit := WithZero (normLimitGroup K L)
+limit with an absorbing zero adjoined.
+
+This is a `def`, not an `abbrev`: every algebraic structure on it (the group with zero here,
+the addition, field, valuation, ... in later files) is a global instance keyed on `NormLimit`,
+so instance search never unfolds the carrier. -/
+def NormLimit := WithZero (normLimitGroup K L)
+
+instance NormLimit.instCommGroupWithZero : CommGroupWithZero (NormLimit K L) :=
+  inferInstanceAs (CommGroupWithZero (WithZero (normLimitGroup K L)))
+
+instance NormLimit.instNontrivial : Nontrivial (NormLimit K L) :=
+  inferInstanceAs (Nontrivial (WithZero (normLimitGroup K L)))
+
+/-- The coercion of a norm-compatible unit family into the carrier. -/
+instance NormLimit.instCoeTC : CoeTC (normLimitGroup K L) (NormLimit K L) := ⟨WithZero.coe⟩
+
+namespace NormLimit
+
+variable {K L}
+
+theorem coe_injective : Function.Injective ((↑) : normLimitGroup K L → NormLimit K L) :=
+  WithZero.coe_injective
+
+@[simp]
+theorem coe_inj {x y : normLimitGroup K L} : (x : NormLimit K L) = y ↔ x = y :=
+  WithZero.coe_inj
+
+@[simp]
+theorem coe_ne_zero {x : normLimitGroup K L} : (x : NormLimit K L) ≠ 0 :=
+  WithZero.coe_ne_zero
+
+@[simp]
+theorem zero_ne_coe {x : normLimitGroup K L} : (0 : NormLimit K L) ≠ x :=
+  WithZero.zero_ne_coe
+
+@[simp]
+theorem coe_mul (x y : normLimitGroup K L) :
+    ((x * y : normLimitGroup K L) : NormLimit K L) = x * y := rfl
+
+@[simp]
+theorem coe_one : ((1 : normLimitGroup K L) : NormLimit K L) = 1 := rfl
+
+@[simp]
+theorem coe_inv (x : normLimitGroup K L) :
+    ((x⁻¹ : normLimitGroup K L) : NormLimit K L) = (x : NormLimit K L)⁻¹ := rfl
+
+/-- Case analysis on the carrier: zero or a coerced unit family. -/
+@[elab_as_elim, induction_eliminator, cases_eliminator]
+protected def recZeroCoe {motive : NormLimit K L → Sort*} (zero : motive 0)
+    (coe : ∀ x : normLimitGroup K L, motive x) : ∀ x : NormLimit K L, motive x :=
+  WithZero.recZeroCoe zero coe
+
+end NormLimit
 
 /-- Evaluation at an actual finite layer, extended by zero. -/
 def normLimitEval (E : FiniteLayer K L) : NormLimit K L →*₀ E.val :=
@@ -125,21 +176,21 @@ theorem normLimitEval_coe (E : FiniteLayer K L) (x : normLimitGroup K L) :
 @[simp]
 theorem normLimitEval_eq_zero_iff (E : FiniteLayer K L) (x : NormLimit K L) :
     normLimitEval K L E x = 0 ↔ x = 0 := by
-  induction x using WithZero.recZeroCoe with
+  induction x using NormLimit.recZeroCoe with
   | zero => simp
-  | coe x => simp
+  | coe x => exact iff_of_false (Units.ne_zero (x.val E)) WithZero.coe_ne_zero
 
 /-- The evaluations jointly distinguish all elements of the multiplicative limit. -/
 @[ext]
 theorem NormLimit.ext {x y : NormLimit K L}
     (h : ∀ E, normLimitEval K L E x = normLimitEval K L E y) : x = y := by
-  induction x using WithZero.recZeroCoe with
+  induction x using NormLimit.recZeroCoe with
   | zero =>
       have hy := (normLimitEval_eq_zero_iff K L (FiniteLayer.bottom) y).mp
         (by simpa using (h FiniteLayer.bottom).symm)
       exact hy.symm
   | coe x =>
-      induction y using WithZero.recZeroCoe with
+      induction y using NormLimit.recZeroCoe with
       | zero =>
           have hx := (normLimitEval_eq_zero_iff K L (FiniteLayer.bottom)
             (x : NormLimit K L)).mp (by simpa using h FiniteLayer.bottom)
@@ -153,7 +204,7 @@ theorem NormLimit.ext {x y : NormLimit K L}
 /-- The actual coordinates satisfy the actual finite-layer norm equations. -/
 theorem normLimitEval_norm (E F : FiniteLayer K L) (h : E ≤ F) (x : NormLimit K L) :
     FiniteLayer.norm E F h (normLimitEval K L F x) = normLimitEval K L E x := by
-  induction x using WithZero.recZeroCoe with
+  induction x using NormLimit.recZeroCoe with
   | zero =>
       exact (FiniteLayer.norm_eq_zero_iff E F h 0).mpr rfl
   | coe x =>

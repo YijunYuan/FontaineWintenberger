@@ -53,9 +53,8 @@ theorem normLimitAdd_assoc [IsAPF K L] (α β γ : NormLimit K L) :
   linear_combination heq₁ + heq₂ - heq₃ - heq₄
 
 /-- The original zero and the constructed addition form a commutative monoid
-on the same carrier. This named value is used by the subsequent field structure. -/
-@[instance_reducible]
-def normLimitAddCommMonoid [IsAPF K L] : AddCommMonoid (NormLimit K L) where
+on the same carrier. -/
+instance normLimitAddCommMonoid [IsAPF K L] : AddCommMonoid (NormLimit K L) where
   zero := 0
   add := normLimitAdd K L
   add_assoc := normLimitAdd_assoc K L

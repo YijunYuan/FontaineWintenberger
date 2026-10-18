@@ -77,9 +77,10 @@ instance separableNormUnionStage_isAPF [IsAPF K L] (N : FiniteLayer L M) :
 
 variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 
-/-- The field structure at each stage is exactly its existing original norm field. -/
+/-- The field structure at each stage is exactly its existing original norm field.
+Alias for the global instance, kept while `letI` installs are being removed. -/
 abbrev separableNormUnionStageField (N : FiniteLayer L M) : Field (NormLimit K N.val) :=
-  normLimitField K N.val
+  inferInstance
 
 /-- The transition homomorphism is the existing original finite-inclusion map. -/
 def separableNormUnionTransition (N P : FiniteLayer L M) (h : N ≤ P) :
@@ -155,17 +156,20 @@ instance separableNormUnionDirectedSystem :
     exact congrArg (fun f : NormLimit K i.val →+* NormLimit K k.val => f x)
       (separableNormUnionTransition_comp K L M i j k hij hjk)
 
-/-- The single canonical directed colimit of the original finite norm fields. -/
-abbrev SeparableNormUnion :=
+/-- The single canonical directed colimit of the original finite norm fields.
+
+A `def`, not an `abbrev`: its structures are global instances keyed on `SeparableNormUnion`. -/
+def SeparableNormUnion :=
   DirectLimit (fun N : FiniteLayer L M => NormLimit K N.val)
     (separableNormUnionTransition K L M)
 
 /-- Mathlib's field structure on this directed colimit of the original fields. -/
-abbrev separableNormUnionField : Field (SeparableNormUnion K L M) := by
-  letI (N : FiniteLayer L M) : Field (NormLimit K N.val) :=
-    separableNormUnionStageField K L M N
-  exact inferInstanceAs (Field (DirectLimit (fun N : FiniteLayer L M => NormLimit K N.val)
+instance SeparableNormUnion.instField : Field (SeparableNormUnion K L M) :=
+  inferInstanceAs (Field (DirectLimit (fun N : FiniteLayer L M => NormLimit K N.val)
     (separableNormUnionTransition K L M)))
+
+/-- Alias for the field instance, kept while `letI` installs are being removed. -/
+abbrev separableNormUnionField : Field (SeparableNormUnion K L M) := inferInstance
 
 /-- The canonical structural embedding of an original finite-stage norm field. -/
 def separableNormUnionOf (N : FiniteLayer L M) :
@@ -302,22 +306,14 @@ theorem separableNormUnionOf_base (N : FiniteLayer L M) (x : NormLimit K L) :
     (FiniteLayer.bottom_le N) _
 
 /-- The finite-stage algebra is induced by its original finite norm-field map. -/
-abbrev separableNormUnionStageAlgebra (N : FiniteLayer L M) :
-    letI := normLimitField K L
-    letI := separableNormUnionStageField K L M N
-    Algebra (NormLimit K L) (NormLimit K N.val) := by
-  letI := normLimitField K L
-  letI := separableNormUnionStageField K L M N
-  exact (separableNormUnionBaseToStage K L M N).toAlgebra
+instance separableNormUnionStageAlgebra (N : FiniteLayer L M) :
+    Algebra (NormLimit K L) (NormLimit K N.val) :=
+  (separableNormUnionBaseToStage K L M N).toAlgebra
 
 /-- The sole base algebra structure comes from the canonical original base map. -/
-abbrev separableNormUnionAlgebra :
-    letI := normLimitField K L
-    letI := separableNormUnionField K L M
-    Algebra (NormLimit K L) (SeparableNormUnion K L M) := by
-  letI := normLimitField K L
-  letI := separableNormUnionField K L M
-  exact (separableNormUnionBaseHom K L M).toAlgebra
+instance separableNormUnionAlgebra :
+    Algebra (NormLimit K L) (SeparableNormUnion K L M) :=
+  (separableNormUnionBaseHom K L M).toAlgebra
 
 /-- The original finite-stage embedding as an algebra homomorphism over the base. -/
 def separableNormUnionOfAlgHom (N : FiniteLayer L M) :
@@ -547,12 +543,9 @@ theorem separableNormUnionValuation_base (x : NormLimit K L) :
     separableNormUnionValuation_of, separableNormUnionStageValuation_base]
 
 /-- The canonical valuation equips the same original union with its valuation topology. -/
-@[instance_reducible]
-def separableNormUnionValued :
-    letI := separableNormUnionField K L M
-    Valued (SeparableNormUnion K L M) (WithZero (Multiplicative ℚ)) := by
-  letI := separableNormUnionField K L M
-  exact Valued.mk' (separableNormUnionValuation K L M)
+instance separableNormUnionValued :
+    Valued (SeparableNormUnion K L M) (WithZero (Multiplicative ℚ)) :=
+  Valued.mk' (separableNormUnionValuation K L M)
 
 section FiniteAmbient
 

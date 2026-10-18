@@ -53,52 +53,49 @@ theorem normLimit_natCast_prime_eq_zero [IsAPF K L]
 /-- The actual (p-1)-fold sum is an additive inverse, including p=2. -/
 theorem normLimit_pred_nsmul_add_eq_zero [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (α : NormLimit K L) :
-    letI := normLimitCommSemiring K L
     (p - 1) • α + α = 0 := by
-  let := normLimitCommSemiring K L
   rw [← AddMonoid.nsmul_succ, Nat.sub_add_cancel (Fact.out : Nat.Prime p).one_le]
   rw [nsmul_eq_mul, normLimit_natCast_prime_eq_zero K L, zero_mul]
 
 /-- The original multiplicative norm limit is a field under the actual
 addition. Every additive inverse is its actual (p-1)-fold sum. -/
-@[instance_reducible]
-def normLimitField [IsAPF K L] [Fact (¬ Module.Finite K L)] :
-    Field (NormLimit K L) := by
-  letI := normLimitCommSemiring K L
-  letI : Neg (NormLimit K L) := ⟨fun α => (p - 1) • α⟩
-  letI : CommRing (NormLimit K L) := CommRing.ofMinimalAxioms
-    add_assoc zero_add (normLimit_pred_nsmul_add_eq_zero K L)
-    mul_assoc mul_comm one_mul left_distrib
-  exact {
-    (inferInstance : CommRing (NormLimit K L)),
-    (inferInstance : CommGroupWithZero (NormLimit K L)) with
+instance normLimitNeg [IsAPF K L] [Fact (¬ Module.Finite K L)] : Neg (NormLimit K L) :=
+  ⟨fun α => (p - 1) • α⟩
+
+instance normLimitField [IsAPF K L] [Fact (¬ Module.Finite K L)] :
+    Field (NormLimit K L) :=
+  { normLimitCommSemiring K L, NormLimit.instCommGroupWithZero K L, normLimitNeg K L with
+    neg_add_cancel := normLimit_pred_nsmul_add_eq_zero K L
+    zsmul := zsmulRec
     nnqsmul := _
     qsmul := _ }
 
+/-- The field structure extends the semiring structure definitionally: there is a single
+addition, `natCast` and `nsmul` on the carrier. -/
+theorem normLimitField_toCommSemiring [IsAPF K L] [Fact (¬ Module.Finite K L)] :
+    @Semifield.toCommSemiring _ (normLimitField K L).toSemifield = normLimitCommSemiring K L :=
+  rfl
+
 /-- The actual field has residue characteristic p, with no finiteness
 assumption on the perfect residue field of the original base. -/
-theorem normLimitField_charP [IsAPF K L] [Fact (¬ Module.Finite K L)] :
-    letI := normLimitField K L
+instance normLimitField_charP [IsAPF K L] [Fact (¬ Module.Finite K L)] :
     CharP (NormLimit K L) p := by
-  let := normLimitField K L
-  apply (CharP.charP_iff_prime_eq_zero (Fact.out : Nat.Prime p)).mpr
   have h := normLimit_natCast_prime_eq_zero K L
   change p • (1 : NormLimit K L) = 0 at h
-  simpa only [nsmul_one] using h
+  exact (CharP.charP_iff_prime_eq_zero (R := NormLimit K L) (Fact.out : Nat.Prime p)).mpr
+    (by simpa only [nsmul_one] using h)
 
 /-- The field addition is definitionally the actual norm-limit sum operation. -/
 @[simp]
 theorem normLimitField_add [IsAPF K L] [Fact (¬ Module.Finite K L)]
     (α β : NormLimit K L) :
-    letI := normLimitField K L
     α + β = normLimitAdd K L α β := rfl
 
 /-- The entire original commutative group with zero is retained definitionally
 by the field structure, including multiplication, inversion and division. -/
 theorem normLimitField_toCommGroupWithZero [IsAPF K L]
     [Fact (¬ Module.Finite K L)] :
-    let original : CommGroupWithZero (NormLimit K L) := inferInstance
-    letI := normLimitField K L
-    (inferInstance : CommGroupWithZero (NormLimit K L)) = original := rfl
+    @Semifield.toCommGroupWithZero _ (normLimitField K L).toSemifield =
+      NormLimit.instCommGroupWithZero K L := rfl
 
 end FontaineWintenberger
