@@ -63,7 +63,27 @@ theorem separableNormUnionAbsoluteMap_of
         (separableNormUnionOf K L (SeparableClosure K) N x) =
       separableNormUnionOf K L (SeparableClosure K)
         (normUnionAbsoluteLayer K (SeparableClosure K) L σ N)
-        (normUnionAbsoluteStageMap K L σ N x) := rfl
+        (normUnionAbsoluteStageMap K L σ N x) := by
+  -- Stated with every argument of `lift_of` explicit: unifying the lemma against the folded
+  -- `separableNormUnionAbsoluteMap` is what used to cost minutes here.
+  have h := DirectLimit.Ring.lift_of
+    (G := fun N : FiniteLayer L (SeparableClosure K) => NormLimit K N.val)
+    (f := separableNormUnionTransition K L (SeparableClosure K))
+    (SeparableNormUnion K L (SeparableClosure K))
+    (fun N =>
+      (separableNormUnionOf K L (SeparableClosure K)
+        (normUnionAbsoluteLayer K (SeparableClosure K) L σ N)).comp
+        (normUnionAbsoluteStageMap K L σ N).toRingHom) (fun N P hNP x =>
+    (congrArg
+      (separableNormUnionOf K L (SeparableClosure K)
+        (normUnionAbsoluteLayer K (SeparableClosure K) L σ P))
+      (normUnionAbsoluteStageMap_transition K L σ N P hNP x)).trans
+        (separableNormUnionOf_transition K L (SeparableClosure K)
+          (normUnionAbsoluteLayer K (SeparableClosure K) L σ N)
+          (normUnionAbsoluteLayer K (SeparableClosure K) L σ P)
+          (normUnionAbsoluteLayer_mono K (SeparableClosure K) L σ hNP)
+          (normUnionAbsoluteStageMap K L σ N x))) N x
+  exact h
 
 /-- The original identity transport fixes each element of the same union. -/
 @[simp]
