@@ -186,9 +186,6 @@ local notation "p" => residueChar K
 variable (L : IntermediateField K (SeparableClosure K)) [Normal K L]
 variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 
-set_option synthInstance.maxHeartbeats 80000 in
--- TODO(F5): remove once `NormLimit` is a `def` with genuine instances; as an `abbrev` of
--- `WithZero`, instance search for `Add`/`AddMonoid` tries the generic `WithZero` instances first.
 /-- The actual ambient restriction gives the existing isomorphism of original norm fields. -/
 def normUnionAbsoluteStageMap (σ : SeparableClosure K ≃ₐ[K] SeparableClosure K)
     (N : FiniteLayer L (SeparableClosure K)) :

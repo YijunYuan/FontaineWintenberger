@@ -511,7 +511,23 @@ FontaineWintenberger/
 - 坑：（1）`local notation "p"` 在 `variable (hd : … = p ^ d)` 这类 `variable` 命令里会被展开成 `sorry`（无报错，下游声明静默带 `sorryAx`）——`variable` 中必须写 `residueChar K`；（2）记号不能点号调用，`p.Prime` → `Nat.Prime p`；（3）declaration 头部留下的空行触发 "do not place empty lines within commands"。
 - 脚本 `scripts/f1b_residue_char.py`（从干净树一次跑完 62 个文件）+ 约 40 处手工修正。全量构建见 `.lake/f1b-build.log`。
 
-### F5 设计细化（待 F1b 提交后执行）
+### F5（分支 `refactor`，2026-10-19，进行中）
+- **(1/3，提交 69bb39a)** `NormLimit K L := WithZero (normLimitGroup K L)` 与 `SeparableNormUnion K L M := DirectLimit …` 改为 `def`。全局实例：`NormLimit` 上 `CommGroupWithZero`（无条件）、`AddCommMonoid`/`CommSemiring`（`[IsAPF K L]`，低优先级）、`Neg`/`Field`/`CharP (residueChar K)`/`Valued ℤᵐ⁰`（再加 `[Fact (¬ Module.Finite K L)]`）；`SeparableNormUnion` 上 `Field`、`Algebra (NormLimit K L) _`、`Valued ℚᵐ⁰`。`Field` 实例用 `{ normLimitCommSemiring, instCommGroupWithZero, normLimitNeg with … }` 构造（不再经 `CommRing.ofMinimalAxioms`），`Semifield.toCommSemiring`/`toCommGroupWithZero` 对原实例 `rfl`。`NormLimit.recZeroCoe`、`coe_*` 小 API 替代直接的 `WithZero` 引理。旧名 `normLimitField`、`separableNormUnionField`、`…StageField` 保留为 `abbrev … := inferInstance` 别名。
+- **(2/3，提交 7b0c1a1)** `scripts/f5_remove_letI.py` 删除 1233 处 `letI := normLimitField …` 等安装与 169 行 `.toMul/.toAdd/.toNonAssocSemiring` 投影 pin；再删 100 处 stage 级 `Algebra.IsSeparable K N.val`、`IsAPF K N.val`、`Fact (¬ Module.Finite K N.val)` 的局部安装。坑：这三个 stage 实例原先以 `N.val`（`N : FiniteLayer L M`）为键，对字面量 stage `(⟨E, _⟩ : FiniteLayer L M).val` 不触发（判别树把 `Subtype.val ⟨E,_⟩` 约化成 `E`）；改为以任意 `E : IntermediateField L M` 为键后两种写法都命中。`FiniteSubfieldReconstruction` 里对 `let P := ⟨normalClosure …, _⟩` 加 `clear_value P`。
+- 效果（全量构建，零错误零警告，`.lake/f5-s3-full.log`）：
+
+| 文件 | F1b | F5(2/3) |
+|---|---|---|
+| NormUnionAbsoluteAction | 6564 s | 557 s |
+| NormUnionGaloisEquiv | 1814 s | 12 s |
+| NormUnionGaloisRestrictionFun | 785 s | 2 s |
+| NormUnionGaloisAction | 747 s | 13 s |
+| NormUnionGaloisIsomorphism | 429 s | 24 s |
+| NormUnionAbsoluteStages | 409 s | 49 s |
+
+- **(3/3，进行中)** 删除两处 `synthInstance.maxHeartbeats 80000` 过渡设置，重新打开 `maxSynthPendingDepth = 3`；`NormUnionAbsoluteAction` 仍 557 s，用 profiler 定位；六个文件的 `Ω = SeparableClosure K` 泛化为 `[IsSepClosure K Ω]`。
+
+### F5 设计细化（原计划，供对照）
 1. **`FieldOfNorms K L`**：`def FieldOfNorms := WithZero (normCompatibleUnits K L)`；`instance : CommGroupWithZero := inferInstanceAs …`（无条件）；`instance : Nontrivial`、`Inhabited`。`coord E : FieldOfNorms K L →*₀ E` 替代 `normLimitEval`。
 2. **加法与域**：`normLimitAdd` 的定义只依赖 `[IsAPF K L]`（`p` 仅被线程传递，`Convergence.lean` 中唯一实质使用是 `p ∈ 𝔪^n` 的发散性，来自 `PrimeValuation`）。目标：
    - `instance [IsAPF K L] : AddCommMonoid (FieldOfNorms K L)`、`CommSemiring`（term-mode，`add := FieldOfNorms.add`）。
