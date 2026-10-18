@@ -59,18 +59,8 @@ has its entire canonical norm-field image in that intermediate union's
 original inclusion map. -/
 theorem separableNormUnionFiniteImage_le_fieldRange_of_le
     (M : IntermediateField L Ω) (N : FiniteLayer L Ω) (hNM : N.val ≤ M) :
-    letI := normLimitField K L
-    letI := separableNormUnionField K L M
-    letI := separableNormUnionField K L Ω
-    letI := separableNormUnionAlgebra K L M
-    letI := separableNormUnionAlgebra K L Ω
     separableNormUnionFiniteImage K L Ω N ≤
       (separableNormUnionAlgMap K L M Ω M.val).fieldRange := by
-  let := normLimitField K L
-  let := separableNormUnionField K L M
-  let := separableNormUnionField K L Ω
-  let := separableNormUnionAlgebra K L M
-  let := separableNormUnionAlgebra K L Ω
   let Q₀ := N.val.comap M.val
   let q : Q₀ →ₐ[L] N.val :=
     { toFun := fun a => ⟨(a.val : Ω), a.property⟩
@@ -122,26 +112,10 @@ is the literal image of the canonical union of an original intermediate
 field. The original field is the directed supremum of the unique finite
 original preimages, with inclusion supplied by finite reconstruction. -/
 theorem separableNormUnion_exists_subfield_preimage :
-    letI := normLimitField K L
-    letI := separableNormUnionField K L Ω
-    letI := separableNormUnionAlgebra K L Ω
-    letI : Module (NormLimit K L) (SeparableNormUnion K L Ω) := Algebra.toModule
-    letI : MulAction (NormLimit K L) (SeparableNormUnion K L Ω) :=
-      (Algebra.toModule : Module (NormLimit K L)
-        (SeparableNormUnion K L Ω)).toDistribMulAction.toMulAction
     ∀ D : IntermediateField (NormLimit K L) (SeparableNormUnion K L Ω),
       ∃ M : IntermediateField L Ω,
-        letI := separableNormUnionField K L M
-        letI := separableNormUnionAlgebra K L M
         (separableNormUnionAlgMap K L M Ω M.val).fieldRange = D := by
   classical
-  let := normLimitField K L
-  let := separableNormUnionField K L Ω
-  let := separableNormUnionAlgebra K L Ω
-  let : Module (NormLimit K L) (SeparableNormUnion K L Ω) := Algebra.toModule
-  let : MulAction (NormLimit K L) (SeparableNormUnion K L Ω) :=
-    (Algebra.toModule : Module (NormLimit K L)
-      (SeparableNormUnion K L Ω)).toDistribMulAction.toMulAction
   let : Algebra.IsSeparable (NormLimit K L) (SeparableNormUnion K L Ω) :=
     separableNormUnion_isSeparable K L Ω
   intro D
@@ -161,8 +135,6 @@ theorem separableNormUnion_exists_subfield_preimage :
     exact ⟨FiniteLayer.sup P Q, hmono (FiniteLayer.le_sup_left P Q),
       hmono (FiniteLayer.le_sup_right P Q)⟩
   let M : IntermediateField L Ω := ⨆ P, (A P).val
-  let := separableNormUnionField K L M
-  let := separableNormUnionAlgebra K L M
   let j := separableNormUnionAlgMap K L M Ω M.val
   refine ⟨M, ?_⟩
   ext z
@@ -201,26 +173,18 @@ set_option synthInstance.maxHeartbeats 80000 in
 of an actual original intermediate field in the prescribed separable
 closure. Both identifications are the actual canonical image maps. -/
 theorem exists_separableNormUnion_algEquiv_of_separableClosure :
-    letI := normLimitField K L
     ∀ (F : Type*) [Field F] [Algebra (NormLimit K L) F]
       [Algebra.IsSeparable (NormLimit K L) F],
       ∃ M : IntermediateField L Ω,
-        letI := separableNormUnionField K L M
-        letI := separableNormUnionAlgebra K L M
         Nonempty (SeparableNormUnion K L M ≃ₐ[NormLimit K L] F) := by
-  let := normLimitField K L
   intro F _ _ _
   let : IsSepClosure K Ω :=
     ⟨IsSepClosure.sep_closed L, Algebra.IsSeparable.trans K L Ω⟩
-  let := separableNormUnionField K L Ω
-  let := separableNormUnionAlgebra K L Ω
   let : IsSepClosed (SeparableNormUnion K L Ω) :=
     separableNormUnion_isSepClosed K L Ω
   let t : F →ₐ[NormLimit K L] SeparableNormUnion K L Ω := IsSepClosed.lift
   obtain ⟨M, hM⟩ := separableNormUnion_exists_subfield_preimage
     K L Ω t.fieldRange
-  let := separableNormUnionField K L M
-  let := separableNormUnionAlgebra K L M
   let j := separableNormUnionAlgMap K L M Ω M.val
   exact ⟨M, ⟨j.equivFieldRange.trans ((IntermediateField.equivOfEq hM).trans
     t.equivFieldRange.symm)⟩⟩

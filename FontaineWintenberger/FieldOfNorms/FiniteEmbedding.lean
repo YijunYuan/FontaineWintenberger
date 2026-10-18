@@ -173,11 +173,7 @@ theorem finiteNormLimitMap_add [IsAPF K M] [IsAPF K N]
 norm-limit carriers and their already constructed field structures. -/
 def finiteNormLimitRingHom [IsAPF K M] [IsAPF K N]
     [Fact (¬ Module.Finite K M)] [Fact (¬ Module.Finite K N)] :
-    letI := normLimitField K M
-    letI := normLimitField K N
     NormLimit K M →+* NormLimit K N := by
-  let := normLimitField K M
-  let := normLimitField K N
   exact { finiteNormLimitMap K M N with
     map_add' := finiteNormLimitMap_add K M N }
 
@@ -185,8 +181,6 @@ def finiteNormLimitRingHom [IsAPF K M] [IsAPF K N]
 theorem finiteNormLimitRingHom_apply [IsAPF K M] [IsAPF K N]
     [Fact (¬ Module.Finite K M)] [Fact (¬ Module.Finite K N)]
     (x : NormLimit K M) :
-    letI := normLimitField K M
-    letI := normLimitField K N
     finiteNormLimitRingHom K M N x =
       finiteNormLimitMap K M N x := rfl
 
@@ -194,8 +188,6 @@ theorem finiteNormLimitRingHom_apply [IsAPF K M] [IsAPF K N]
 theorem finiteNormLimitMap_injective [IsAPF K M] [IsAPF K N]
     [Fact (¬ Module.Finite K M)] [Fact (¬ Module.Finite K N)] :
     Function.Injective (finiteNormLimitMap K M N) := by
-  let := normLimitField K M
-  let := normLimitField K N
   exact (finiteNormLimitRingHom K M N).injective
 
 /-- An actual good field on both stable tails computes one fixed positive
@@ -244,15 +236,7 @@ theorem exists_finiteNormLimitMap_valuation_scaling [IsAPF K M] [IsAPF K N] :
 valuation uniformities, by its proved positive integral scaling. -/
 theorem uniformContinuous_finiteNormLimitMap [IsAPF K M] [IsAPF K N]
     [Fact (¬ Module.Finite K M)] [Fact (¬ Module.Finite K N)] :
-    letI := normLimitField K M
-    letI := normLimitField K N
-    letI := normLimitValued K M
-    letI := normLimitValued K N
     UniformContinuous (finiteNormLimitMap K M N) := by
-  let := normLimitField K M
-  let := normLimitField K N
-  let := normLimitValued K M
-  let := normLimitValued K N
   obtain ⟨e, he, hv⟩ := exists_finiteNormLimitMap_valuation_scaling K M N
   have hbM := Valued.nhds_zero_hasBasis_integer_closedBall (NormLimit K M)
     (normLimitUniformizer K M)
@@ -280,15 +264,7 @@ theorem uniformContinuous_finiteNormLimitMap [IsAPF K M] [IsAPF K N]
 /-- Continuity uses the original valuation topology on each original norm field. -/
 theorem continuous_finiteNormLimitMap [IsAPF K M] [IsAPF K N]
     [Fact (¬ Module.Finite K M)] [Fact (¬ Module.Finite K N)] :
-    letI := normLimitField K M
-    letI := normLimitField K N
-    letI := normLimitValued K M
-    letI := normLimitValued K N
     Continuous (finiteNormLimitMap K M N) := by
-  let := normLimitField K M
-  let := normLimitField K N
-  let := normLimitValued K M
-  let := normLimitValued K N
   exact (uniformContinuous_finiteNormLimitMap K M N).continuous
 
 end ValuedFields

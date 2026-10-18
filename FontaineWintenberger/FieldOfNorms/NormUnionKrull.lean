@@ -51,8 +51,6 @@ theorem separableNormUnionMap_eq_on_stage_iff (s t : M →ₐ[L] M)
   let ψ : Q.val →ₐ[L] P.val :=
     (IntermediateField.inclusion (FiniteLayer.le_sup_right _ _)).comp
       (FiniteLayer.equivMap t Q).toAlgHom
-  let : Algebra.IsSeparable K Q.val := Algebra.IsSeparable.trans K L Q.val
-  let : Algebra.IsSeparable K P.val := Algebra.IsSeparable.trans K L P.val
   have hs (x : NormLimit K Q.val) :
       separableNormUnionMap K L M M s
           (separableNormUnionOf K L M Q x) =
@@ -76,39 +74,12 @@ theorem separableNormUnionMap_eq_on_stage_iff (s t : M →ₐ[L] M)
 
 /-- The actual finite original norm-field image inside the same canonical union. -/
 def separableNormUnionFiniteImage (Q : FiniteLayer L M) :
-    letI := normLimitField K L
-    letI := separableNormUnionField K L M
-    letI := separableNormUnionAlgebra K L M
     IntermediateField (NormLimit K L) (SeparableNormUnion K L M) := by
-  letI := normLimitField K L
-  letI := separableNormUnionField K L M
-  letI := separableNormUnionAlgebra K L M
-  letI := separableNormUnionStageField K L M Q
-  letI := separableNormUnionStageAlgebra K L M Q
   exact (separableNormUnionOfAlgHom K L M Q).fieldRange
 
 /-- Each actual finite original image is a finite extension of the base norm field. -/
 theorem separableNormUnionFiniteImage_finite (Q : FiniteLayer L M) :
-    letI := normLimitField K L
-    letI := separableNormUnionField K L M
-    letI := separableNormUnionAlgebra K L M
-    letI : Module (NormLimit K L) (SeparableNormUnion K L M) :=
-      Algebra.toModule
-    letI : MulAction (NormLimit K L) (SeparableNormUnion K L M) :=
-      (Algebra.toModule : Module (NormLimit K L)
-        (SeparableNormUnion K L M)).toDistribMulAction.toMulAction
     Module.Finite (NormLimit K L) (separableNormUnionFiniteImage K L M Q) := by
-  let := normLimitField K L
-  let := separableNormUnionField K L M
-  let := separableNormUnionAlgebra K L M
-  let : Module (NormLimit K L) (SeparableNormUnion K L M) := Algebra.toModule
-  let : MulAction (NormLimit K L) (SeparableNormUnion K L M) :=
-    (Algebra.toModule : Module (NormLimit K L)
-      (SeparableNormUnion K L M)).toDistribMulAction.toMulAction
-  let := separableNormUnionStageField K L M Q
-  let := separableNormUnionStageAlgebra K L M Q
-  let : Module (NormLimit K L) (NormLimit K Q.val) := Algebra.toModule
-  let : Algebra.IsSeparable K Q.val := Algebra.IsSeparable.trans K L Q.val
   let : Module.Finite (NormLimit K L) (NormLimit K Q.val) :=
     (finiteNormLimit_finite_separable_degree K L Q.val
 ).1
@@ -119,24 +90,15 @@ theorem separableNormUnionFiniteImage_finite (Q : FiniteLayer L M) :
 @[simp]
 theorem mem_separableNormUnionFiniteImage (Q : FiniteLayer L M)
     (z : SeparableNormUnion K L M) :
-    letI := normLimitField K L
-    letI := separableNormUnionField K L M
-    letI := separableNormUnionAlgebra K L M
     z ∈ separableNormUnionFiniteImage K L M Q ↔
       ∃ x : NormLimit K Q.val, separableNormUnionOf K L M Q x = z := Iff.rfl
 
 /-- Full faithfulness identifies the actual finite pointwise fixing subgroups. -/
 theorem separableNormUnionAutEquiv_mem_fixingSubgroup_iff
     (Q : FiniteLayer L M) (σ : M ≃ₐ[L] M) :
-    letI := normLimitField K L
-    letI := separableNormUnionField K L M
-    letI := separableNormUnionAlgebra K L M
     separableNormUnionAutEquiv K L M σ ∈
         (separableNormUnionFiniteImage K L M Q).fixingSubgroup ↔
       σ ∈ Q.val.fixingSubgroup := by
-  let := normLimitField K L
-  let := separableNormUnionField K L M
-  let := separableNormUnionAlgebra K L M
   have hstage :
       (∀ x : NormLimit K Q.val,
         separableNormUnionAutEquiv K L M σ
@@ -158,30 +120,13 @@ theorem separableNormUnionAutEquiv_mem_fixingSubgroup_iff
 
 /-- Every actual finite target subfield lies in one actual original finite image. -/
 theorem separableNormUnion_exists_finiteImage_ge :
-    letI := normLimitField K L
-    letI := separableNormUnionField K L M
-    letI := separableNormUnionAlgebra K L M
-    letI : Module (NormLimit K L) (SeparableNormUnion K L M) :=
-      Algebra.toModule
-    letI : MulAction (NormLimit K L) (SeparableNormUnion K L M) :=
-      (Algebra.toModule : Module (NormLimit K L)
-        (SeparableNormUnion K L M)).toDistribMulAction.toMulAction
     ∀ (D : IntermediateField (NormLimit K L) (SeparableNormUnion K L M))
       [FiniteDimensional (NormLimit K L) D],
       ∃ Q : FiniteLayer L M, D ≤ separableNormUnionFiniteImage K L M Q := by
-  let := normLimitField K L
-  let := separableNormUnionField K L M
-  let := separableNormUnionAlgebra K L M
-  let : Module (NormLimit K L) (SeparableNormUnion K L M) := Algebra.toModule
-  let : MulAction (NormLimit K L) (SeparableNormUnion K L M) :=
-    (Algebra.toModule : Module (NormLimit K L)
-      (SeparableNormUnion K L M)).toDistribMulAction.toMulAction
   intro D _
   obtain ⟨Q, x, hx⟩ := separableNormUnion_exists_finiteStage K L M
     (fun i => ((Module.finBasis (NormLimit K L) D i : D) :
       SeparableNormUnion K L M))
-  let := separableNormUnionStageField K L M Q
-  let := separableNormUnionStageAlgebra K L M Q
   obtain ⟨g, hg⟩ := exists_algHom_factor_of_basis_mem_range D.val
     (separableNormUnionOfAlgHom K L M Q)
     (fun i => ⟨x i, hx i⟩)
@@ -192,17 +137,7 @@ theorem separableNormUnion_exists_finiteImage_ge :
 open scoped Topology in
 /-- The original norm-union automorphism correspondence is Krull-continuous. -/
 theorem continuous_separableNormUnionAutEquiv :
-    letI := normLimitField K L
-    letI := separableNormUnionField K L M
-    letI := separableNormUnionAlgebra K L M
     Continuous (separableNormUnionAutEquiv K L M) := by
-  let := normLimitField K L
-  let := separableNormUnionField K L M
-  let := separableNormUnionAlgebra K L M
-  let : Module (NormLimit K L) (SeparableNormUnion K L M) := Algebra.toModule
-  let : MulAction (NormLimit K L) (SeparableNormUnion K L M) :=
-    (Algebra.toModule : Module (NormLimit K L)
-      (SeparableNormUnion K L M)).toDistribMulAction.toMulAction
   apply continuous_of_continuousAt_one
     (separableNormUnionAutEquiv K L M)
   change Filter.Tendsto (separableNormUnionAutEquiv K L M) (𝓝 1)
@@ -224,17 +159,7 @@ theorem continuous_separableNormUnionAutEquiv :
 open scoped Topology in
 /-- The inverse correspondence is continuous for the same actual Krull topologies. -/
 theorem continuous_separableNormUnionAutEquiv_symm :
-    letI := normLimitField K L
-    letI := separableNormUnionField K L M
-    letI := separableNormUnionAlgebra K L M
     Continuous (separableNormUnionAutEquiv K L M).symm := by
-  let := normLimitField K L
-  let := separableNormUnionField K L M
-  let := separableNormUnionAlgebra K L M
-  let : Module (NormLimit K L) (SeparableNormUnion K L M) := Algebra.toModule
-  let : MulAction (NormLimit K L) (SeparableNormUnion K L M) :=
-    (Algebra.toModule : Module (NormLimit K L)
-      (SeparableNormUnion K L M)).toDistribMulAction.toMulAction
   apply continuous_of_continuousAt_one
     (separableNormUnionAutEquiv K L M).symm
   change Filter.Tendsto (separableNormUnionAutEquiv K L M).symm (𝓝 1)
@@ -258,14 +183,8 @@ theorem continuous_separableNormUnionAutEquiv_symm :
 
 /-- The original automorphism correspondence as a Krull-topological group isomorphism. -/
 def separableNormUnionKrullEquiv :
-    letI := normLimitField K L
-    letI := separableNormUnionField K L M
-    letI := separableNormUnionAlgebra K L M
     (M ≃ₐ[L] M) ≃ₜ* (SeparableNormUnion K L M ≃ₐ[NormLimit K L]
       SeparableNormUnion K L M) := by
-  letI := normLimitField K L
-  letI := separableNormUnionField K L M
-  letI := separableNormUnionAlgebra K L M
   exact { separableNormUnionAutEquiv K L M with
     continuous_toFun := continuous_separableNormUnionAutEquiv K L M
     continuous_invFun := continuous_separableNormUnionAutEquiv_symm K L M }
@@ -273,9 +192,6 @@ def separableNormUnionKrullEquiv :
 /-- The topological comparison retains exactly the original algebraic correspondence. -/
 @[simp]
 theorem separableNormUnionKrullEquiv_toMulEquiv :
-    letI := normLimitField K L
-    letI := separableNormUnionField K L M
-    letI := separableNormUnionAlgebra K L M
     (separableNormUnionKrullEquiv K L M).toMulEquiv =
       separableNormUnionAutEquiv K L M := rfl
 
@@ -283,9 +199,6 @@ theorem separableNormUnionKrullEquiv_toMulEquiv :
 @[simp]
 theorem separableNormUnionKrullEquiv_apply (σ : M ≃ₐ[L] M)
     (z : SeparableNormUnion K L M) :
-    letI := normLimitField K L
-    letI := separableNormUnionField K L M
-    letI := separableNormUnionAlgebra K L M
     separableNormUnionKrullEquiv K L M σ z =
       separableNormUnionMap K L M M σ.toAlgHom z := rfl
 

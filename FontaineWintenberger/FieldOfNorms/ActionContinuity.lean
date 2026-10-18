@@ -72,11 +72,9 @@ valuation precision, uniformly for all integral original norm families. -/
 theorem normLimitValuation_sub_le_of_mem_deep_fixingSubgroup (n : ℕ)
     (σ : L ≃ₐ[K] L)
     (hσ : σ ∈ (deepFiniteTower K L (FiniteLayer.bottom) n).val.fixingSubgroup) :
-    letI := normLimitField K L
     ∀ (x : NormLimit K L), normLimitValuation K L x ≤ 1 →
       normLimitValuation K L (normLimitAut K L σ x - x) ≤
         WithZero.exp (-((n + 2 : ℕ) : ℤ)) := by
-  let := normLimitField K L
   intro x hx
   let A := (normLimitFieldValuation K L).valuationSubring
   let a : A := ⟨x, hx⟩
@@ -96,12 +94,8 @@ theorem normLimitValuation_sub_le_of_mem_deep_fixingSubgroup (n : ℕ)
 /-- Every integral original family has a continuous orbit under the
 original Krull topology, with its inherited original valuation topology. -/
 theorem continuous_normLimitAut_apply_of_integral :
-    letI := normLimitField K L
-    letI := normLimitValued K L
     ∀ (x : NormLimit K L), normLimitValuation K L x ≤ 1 →
       Continuous (fun σ : L ≃ₐ[K] L => normLimitAut K L σ x) := by
-  let := normLimitField K L
-  let := normLimitValued K L
   intro x hx
   apply continuous_iff_continuousAt.mpr
   intro σ₀
@@ -147,12 +141,8 @@ theorem continuous_normLimitAut_apply_of_integral :
 /-- Every original norm-field family has a continuous orbit under the
 original Krull topology and the same original valuation topology. -/
 theorem continuous_normLimitAut_apply :
-    letI := normLimitField K L
-    letI := normLimitValued K L
     ∀ x : NormLimit K L,
       Continuous (fun σ : L ≃ₐ[K] L => normLimitAut K L σ x) := by
-  let := normLimitField K L
-  let := normLimitValued K L
   intro x
   let A := (normLimitFieldValuation K L).valuationSubring
   obtain ⟨a, b, hb, heq⟩ := IsFractionRing.div_surjective A x

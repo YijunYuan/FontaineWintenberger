@@ -38,18 +38,8 @@ variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 
 /-- An original algebra isomorphism induces the original isomorphism of the same unions. -/
 def separableNormUnionCongr (e : M ≃ₐ[L] N) :
-    letI := normLimitField K L
-    letI := separableNormUnionField K L M
-    letI := separableNormUnionField K L N
-    letI := separableNormUnionAlgebra K L M
-    letI := separableNormUnionAlgebra K L N
     SeparableNormUnion K L M ≃ₐ[NormLimit K L]
       SeparableNormUnion K L N := by
-  letI := normLimitField K L
-  letI := separableNormUnionField K L M
-  letI := separableNormUnionField K L N
-  letI := separableNormUnionAlgebra K L M
-  letI := separableNormUnionAlgebra K L N
   refine AlgEquiv.ofAlgHom
     (separableNormUnionAlgMap K L M N e.toAlgHom)
     (separableNormUnionAlgMap K L N M e.symm.toAlgHom) ?_ ?_
@@ -77,11 +67,6 @@ def separableNormUnionCongr (e : M ≃ₐ[L] N) :
 /-- The comparison has exactly the original induced algebra homomorphism. -/
 @[simp]
 theorem separableNormUnionCongr_toAlgHom (e : M ≃ₐ[L] N) :
-    letI := normLimitField K L
-    letI := separableNormUnionField K L M
-    letI := separableNormUnionField K L N
-    letI := separableNormUnionAlgebra K L M
-    letI := separableNormUnionAlgebra K L N
     (separableNormUnionCongr K L M N e).toAlgHom =
       separableNormUnionAlgMap K L M N e.toAlgHom := rfl
 
@@ -96,11 +81,6 @@ theorem separableNormUnionCongr_apply (e : M ≃ₐ[L] N)
 @[simp]
 theorem separableNormUnionCongr_symm_apply (e : M ≃ₐ[L] N)
     (x : SeparableNormUnion K L N) :
-    letI := normLimitField K L
-    letI := separableNormUnionField K L M
-    letI := separableNormUnionField K L N
-    letI := separableNormUnionAlgebra K L M
-    letI := separableNormUnionAlgebra K L N
     (separableNormUnionCongr K L M N e).symm x =
       separableNormUnionMap K L N M e.symm.toAlgHom x := rfl
 
@@ -117,7 +97,6 @@ theorem separableNormUnionCongr_valuation (e : M ≃ₐ[L] N)
 theorem separableNormUnionCongr_refl_apply
     (x : SeparableNormUnion K L M) :
     separableNormUnionCongr K L M M (AlgEquiv.refl : M ≃ₐ[L] M) x = x := by
-  let := separableNormUnionField K L M
   change separableNormUnionMap K L M M (AlgHom.id L M) x = x
   exact DFunLike.congr_fun (separableNormUnionMap_id K L M) x
 
@@ -130,9 +109,6 @@ theorem separableNormUnionCongr_trans_apply (e : M ≃ₐ[L] N) (f : N ≃ₐ[L]
     separableNormUnionCongr K L M P (e.trans f) x =
       separableNormUnionCongr K L N P f
         (separableNormUnionCongr K L M N e x) := by
-  let := separableNormUnionField K L M
-  let := separableNormUnionField K L N
-  let := separableNormUnionField K L P
   change separableNormUnionMap K L M P (f.toAlgHom.comp e.toAlgHom) x =
     separableNormUnionMap K L N P f.toAlgHom
       (separableNormUnionMap K L M N e.toAlgHom x)
@@ -143,11 +119,6 @@ theorem separableNormUnionCongr_trans_apply (e : M ≃ₐ[L] N) (f : N ≃ₐ[L]
 abbrev separableNormUnionULiftEquiv :
     letI : Algebra.IsSeparable L (ULift.{z} M) :=
       AlgEquiv.Algebra.isSeparable (ULift.algEquiv.{v, w, z} (R := L) (A := M)).symm
-    letI := normLimitField K L
-    letI := separableNormUnionField K L (ULift.{z} M)
-    letI := separableNormUnionField K L M
-    letI := separableNormUnionAlgebra K L (ULift.{z} M)
-    letI := separableNormUnionAlgebra K L M
     SeparableNormUnion K L (ULift.{z} M) ≃ₐ[NormLimit K L]
       SeparableNormUnion K L M := by
   letI : Algebra.IsSeparable L (ULift.{z} M) :=

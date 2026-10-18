@@ -68,10 +68,8 @@ theorem normLimitAdd_deep_sub_mem (α β : NormLimit K L)
 
 /-- Integral evaluation uses each original finite layer's original integer ring. -/
 def normLimitIntegralCoordinate :
-    letI := normLimitField K L
     Valuation.valuationSubring (normLimitFieldValuation K L) →
       (n : ℕ) → spectralIntegerRing K (𝔈 n).val := by
-  letI := normLimitField K L
   intro α n
   exact ⟨normLimitEval K L (𝔈 n) α.val,
     normLimitEval_mem_of_valuation_le_one K L α.val α.property (𝔈 n)⟩
@@ -79,9 +77,7 @@ def normLimitIntegralCoordinate :
 /-- The actual original integral family has a ring-valued coordinate
 at the deep stage's specified precision. -/
 def normLimitTruncation (n : ℕ) :
-    letI := normLimitField K L
     Valuation.valuationSubring (normLimitFieldValuation K L) →+* 𝔅 n := by
-  letI := normLimitField K L
   let c := normLimitIntegralCoordinate K L D
   let q := Ideal.Quotient.mk
     (IsLocalRing.maximalIdeal (spectralIntegerRing K (𝔈 n).val) ^ (n + 2))
@@ -109,22 +105,18 @@ def normLimitTruncation (n : ℕ) :
 /-- The ring coordinate is exactly the original finite-field quotient class. -/
 @[simp]
 theorem normLimitTruncation_apply (n : ℕ) :
-    letI := normLimitField K L
     ∀ α : Valuation.valuationSubring (normLimitFieldValuation K L),
     normLimitTruncation K L D n α =
       Ideal.Quotient.mk _ (normLimitIntegralCoordinate K L D α n) := by
-  let := normLimitField K L
   intro α
   rfl
 
 /-- The quotient coordinates obey the actual original norm transitions. -/
 theorem normLimitTruncation_compatible (n m : ℕ) (hnm : n ≤ m) :
-    letI := normLimitField K L
     ∀ α : Valuation.valuationSubring (normLimitFieldValuation K L),
     deepFiniteTowerTransition K L D n m hnm
       (normLimitTruncation K L D m α) =
         normLimitTruncation K L D n α := by
-  let := normLimitField K L
   intro α
   rw [normLimitTruncation_apply, deepFiniteTowerTransition_mk, normLimitTruncation_apply]
   apply congrArg (Ideal.Quotient.mk _)
@@ -136,9 +128,7 @@ theorem normLimitTruncation_compatible (n m : ℕ) (hnm : n ≤ m) :
 /-- Actual quotient coordinates define the ring map on the original
 valuation ring into the actual compatible truncated-family subring. -/
 def normLimitTruncationHom :
-    letI := normLimitField K L
     Valuation.valuationSubring (normLimitFieldValuation K L) →+* 𝒜 := by
-  letI := normLimitField K L
   exact {
     toFun := fun α => ⟨fun n => normLimitTruncation K L D n α,
       (SequentialInverseLimit.mem_subring _ _ _).mpr
@@ -156,9 +146,7 @@ def normLimitTruncationHom :
 /-- The actual original reconstruction, with its proved integrality,
 is an element of the original canonical valuation ring. -/
 def deepIntegralReconstruction :
-    letI := normLimitField K L
     𝒜 → Valuation.valuationSubring (normLimitFieldValuation K L) := by
-  letI := normLimitField K L
   exact fun a => ⟨deepNormReconstruction K L D a,
     deepNormReconstruction_valuation_le_one K L D a⟩
 
@@ -167,7 +155,6 @@ the originally prescribed quotient coordinates. -/
 theorem normLimitTruncationHom_deepIntegralReconstruction (a : 𝒜) :
     normLimitTruncationHom K L D
       (deepIntegralReconstruction K L D a) = a := by
-  let := normLimitField K L
   apply Subtype.ext
   funext n
   change Ideal.Quotient.mk _
@@ -186,11 +173,9 @@ theorem normLimitTruncationHom_deepIntegralReconstruction (a : 𝒜) :
 /-- Reconstructing the actual quotient coordinates returns the same original
 integral family, rather than a new model of its field. -/
 theorem deepIntegralReconstruction_normLimitTruncationHom :
-    letI := normLimitField K L
     ∀ α : Valuation.valuationSubring (normLimitFieldValuation K L),
     deepIntegralReconstruction K L D
       (normLimitTruncationHom K L D α) = α := by
-  let := normLimitField K L
   intro α
   apply Subtype.ext
   apply NormLimit.ext
@@ -224,9 +209,7 @@ theorem deepIntegralReconstruction_normLimitTruncationHom :
 /-- The actual integral norm limit is the actual complete truncated
 inverse-limit ring, with the original norm reconstruction as inverse. -/
 def normLimitTruncationEquiv :
-    letI := normLimitField K L
     Valuation.valuationSubring (normLimitFieldValuation K L) ≃+* 𝒜 := by
-  letI := normLimitField K L
   exact { normLimitTruncationHom K L D with
     invFun := deepIntegralReconstruction K L D
     left_inv := deepIntegralReconstruction_normLimitTruncationHom K L D
@@ -234,11 +217,9 @@ def normLimitTruncationEquiv :
 
 /-- The exact quotient kernel is the same original valuation ball. -/
 theorem normLimitTruncation_eq_zero_iff (n : ℕ) :
-    letI := normLimitField K L
     ∀ α : Valuation.valuationSubring (normLimitFieldValuation K L),
     normLimitTruncation K L D n α = 0 ↔
       normLimitValuation K L α.val ≤ WithZero.exp (-((n + 2 : ℕ) : ℤ)) := by
-  let := normLimitField K L
   intro α
   rw [normLimitTruncation_apply, Ideal.Quotient.eq_zero_iff_mem,
     ValuationSubring.mem_maximalIdeal_pow_iff_normalizedValuation]

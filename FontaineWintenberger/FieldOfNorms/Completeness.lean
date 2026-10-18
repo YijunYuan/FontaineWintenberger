@@ -87,14 +87,10 @@ local notation "𝒜" => deepNormInverseLimit K L D
 /-- The inherited topology on the original valuation ring has exactly
 the integer closed-ball basis of the existing stable valuation. -/
 theorem normLimitIntegral_nhds_zero_hasBasis :
-    letI := normLimitField K L
-    letI := normLimitValued K L
     (nhds (0 : Valuation.valuationSubring (normLimitFieldValuation K L))).HasBasis
       (fun _ : ℕ => True)
       (fun n => {α | normLimitValuation K L α.val ≤
         WithZero.exp (-((n + 2 : ℕ) : ℤ))}) := by
-  let := normLimitField K L
-  let := normLimitValued K L
   have h := Valued.nhds_zero_hasBasis_integer_closedBall (NormLimit K L)
     (normLimitUniformizer K L)
     (normLimitValuation_normLimitUniformizer K L)
@@ -104,14 +100,10 @@ theorem normLimitIntegral_nhds_zero_hasBasis :
 /-- The actual truncation isomorphism pulls back precisely the original
 valuation-ring neighborhoods, with the canonical discrete-product uniformity. -/
 theorem normLimitTruncationHom_comap_nhds_zero :
-    letI := normLimitField K L
-    letI := normLimitValued K L
     letI : ∀ n, UniformSpace (𝔅 n) := fun _ => ⊥
     letI : ∀ n, DiscreteUniformity (𝔅 n) := fun _ => inferInstance
     Filter.comap (normLimitTruncationHom K L D) (nhds (0 : 𝒜)) =
       nhds (0 : Valuation.valuationSubring (normLimitFieldValuation K L)) := by
-  let := normLimitField K L
-  let := normLimitValued K L
   let : ∀ n, UniformSpace (𝔅 n) := fun _ => ⊥
   let : ∀ n, DiscreteUniformity (𝔅 n) := fun _ => inferInstance
   let q := fun n => deepFiniteTowerTransition K L D
@@ -129,13 +121,9 @@ theorem normLimitTruncationHom_comap_nhds_zero :
 /-- The exact original truncation map induces the original valuation-ring
 uniformity from the same canonical discrete-product inverse limit. -/
 theorem normLimitTruncationHom_isUniformInducing :
-    letI := normLimitField K L
-    letI := normLimitValued K L
     letI : ∀ n, UniformSpace (𝔅 n) := fun _ => ⊥
     letI : ∀ n, DiscreteUniformity (𝔅 n) := fun _ => inferInstance
     IsUniformInducing (normLimitTruncationHom K L D) := by
-  let := normLimitField K L
-  let := normLimitValued K L
   let : ∀ n, UniformSpace (𝔅 n) := fun _ => ⊥
   let : ∀ n, DiscreteUniformity (𝔅 n) := fun _ => inferInstance
   let O := Valuation.valuationSubring (normLimitFieldValuation K L)
@@ -156,11 +144,7 @@ include D in
 /-- The inherited original valuation ring is complete; its uniformity
 is identified with the actual complete truncated inverse limit. -/
 theorem normLimitIntegral_completeSpace :
-    letI := normLimitField K L
-    letI := normLimitValued K L
     CompleteSpace (Valuation.valuationSubring (normLimitFieldValuation K L)) := by
-  let := normLimitField K L
-  let := normLimitValued K L
   let : ∀ n, UniformSpace (𝔅 n) := fun _ => ⊥
   let : ∀ n, DiscreteUniformity (𝔅 n) := fun _ => inferInstance
   let : CompleteSpace 𝒜 := SequentialInverseLimit.completeSpace (fun n => 𝔅 n)
@@ -172,30 +156,18 @@ theorem normLimitIntegral_completeSpace :
 /-- The original norm-limit field is complete for precisely the already
 constructed canonical stable-valuation uniformity. -/
 theorem normLimit_completeSpace :
-    letI := normLimitField K L
-    letI := normLimitValued K L
     CompleteSpace (NormLimit K L) := by
-  let := normLimitField K L
-  let := normLimitValued K L
   let := normLimitIntegral_completeSpace K L (FiniteLayer.bottom (K := K) (L := L))
   exact Valued.completeSpace_of_completeSpace_valuationSubring (NormLimit K L)
 
 /-- The same original field has a Hausdorff valuation uniformity. -/
 theorem normLimit_t2Space :
-    letI := normLimitField K L
-    letI := normLimitValued K L
     T2Space (NormLimit K L) := by
-  let := normLimitField K L
-  let := normLimitValued K L
   infer_instance
 
 /-- Its original valuation ring carries the inherited Hausdorff topology. -/
 theorem normLimitIntegral_t2Space :
-    letI := normLimitField K L
-    letI := normLimitValued K L
     T2Space (Valuation.valuationSubring (normLimitFieldValuation K L)) := by
-  let := normLimitField K L
-  let := normLimitValued K L
   infer_instance
 
 end FontaineWintenberger

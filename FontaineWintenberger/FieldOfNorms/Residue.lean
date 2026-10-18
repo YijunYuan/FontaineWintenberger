@@ -36,9 +36,7 @@ local notation "𝒜" => deepNormInverseLimit K L D
 /-- Each actual integral truncated coordinate is onto, by the actual
 surjective norm tower and the proved reconstruction equivalence. -/
 theorem normLimitTruncation_surjective (n : ℕ) :
-    letI := normLimitField K L
     Function.Surjective (normLimitTruncation K L D n) := by
-  let := normLimitField K L
   let q (i : ℕ) := deepFiniteTowerTransition K L D i (i + 1) (Nat.le_succ i)
   have hs (i : ℕ) : Function.Surjective (q i) :=
     deepFiniteTowerTransition_surjective K L D i (i + 1) (Nat.le_succ i)
@@ -52,29 +50,23 @@ theorem normLimitTruncation_surjective (n : ℕ) :
 /-- Reduction of the actual first original coordinate, factored through
 its checked quotient by the square of the maximal ideal. -/
 def normLimitResidueReduction :
-    letI := normLimitField K L
     (normLimitFieldValuation K L).valuationSubring →+*
       IsLocalRing.ResidueField (spectralIntegerRing K (𝔈 0).val) := by
-  letI := normLimitField K L
   exact (Ideal.Quotient.factor (Ideal.pow_le_self (by decide : (2 : ℕ) ≠ 0))).comp
     (normLimitTruncation K L D 0)
 
 /-- This reduction is the residue of the original finite-field coordinate. -/
 @[simp]
 theorem normLimitResidueReduction_apply :
-    letI := normLimitField K L
     ∀ α : (normLimitFieldValuation K L).valuationSubring,
     normLimitResidueReduction K L D α =
       IsLocalRing.residue _ (normLimitIntegralCoordinate K L D α 0) := by
-  let := normLimitField K L
   intro α
   rfl
 
 /-- Actual coordinate reduction is onto the original first-stage residue field. -/
 theorem normLimitResidueReduction_surjective :
-    letI := normLimitField K L
     Function.Surjective (normLimitResidueReduction K L D) := by
-  let := normLimitField K L
   intro z
   obtain ⟨x, hx⟩ := IsLocalRing.residue_surjective z
   obtain ⟨α, hα⟩ := normLimitTruncation_surjective K L D 0
@@ -88,10 +80,8 @@ theorem normLimitResidueReduction_surjective :
 /-- The kernel is exactly the maximal ideal of the same original norm-limit
 valuation ring, by the proved equality of its normalized valuation. -/
 theorem normLimitResidueReduction_ker :
-    letI := normLimitField K L
     RingHom.ker (normLimitResidueReduction K L D) =
       IsLocalRing.maximalIdeal (normLimitFieldValuation K L).valuationSubring := by
-  let := normLimitField K L
   let := normLimitFieldValuation_isDiscreteValuationRing K L
   ext α
   change normLimitResidueReduction K L D α = 0 ↔ _
@@ -109,10 +99,8 @@ theorem normLimitResidueReduction_ker :
 /-- The actual coordinate reduction descends through the original maximal
 ideal to the original first-stage residue field. -/
 def normLimitResidueToLayer :
-    letI := normLimitField K L
     IsLocalRing.ResidueField (normLimitFieldValuation K L).valuationSubring →+*
       IsLocalRing.ResidueField (spectralIntegerRing K (𝔈 0).val) := by
-  letI := normLimitField K L
   exact Ideal.Quotient.lift _ (normLimitResidueReduction K L D)
     (fun α hα => by
       change α ∈ RingHom.ker (normLimitResidueReduction K L D)
@@ -122,21 +110,17 @@ def normLimitResidueToLayer :
 /-- The descended map acts on the actual residue of an original integral family. -/
 @[simp]
 theorem normLimitResidueToLayer_residue :
-    letI := normLimitField K L
     ∀ α : (normLimitFieldValuation K L).valuationSubring,
     normLimitResidueToLayer K L D (IsLocalRing.residue _ α) =
       IsLocalRing.residue _ (normLimitIntegralCoordinate K L D α 0) := by
-  let := normLimitField K L
   intro α
   rfl
 
 /-- The original norm-limit residue field is identified with the original
 deep stage's residue field by the actual coordinate-reduction map. -/
 def normLimitResidueLayerEquiv :
-    letI := normLimitField K L
     IsLocalRing.ResidueField (normLimitFieldValuation K L).valuationSubring ≃+*
       IsLocalRing.ResidueField (spectralIntegerRing K (𝔈 0).val) := by
-  letI := normLimitField K L
   refine RingEquiv.ofBijective (normLimitResidueToLayer K L D)
     ⟨(normLimitResidueToLayer K L D).injective, ?_⟩
   intro z
@@ -146,11 +130,9 @@ def normLimitResidueLayerEquiv :
 /-- The residue equivalence retains the actual original finite coordinate. -/
 @[simp]
 theorem normLimitResidueLayerEquiv_residue :
-    letI := normLimitField K L
     ∀ α : (normLimitFieldValuation K L).valuationSubring,
     normLimitResidueLayerEquiv K L D (IsLocalRing.residue _ α) =
       IsLocalRing.residue _ (normLimitIntegralCoordinate K L D α 0) := by
-  let := normLimitField K L
   intro α
   rfl
 
@@ -158,11 +140,9 @@ theorem normLimitResidueLayerEquiv_residue :
 identifies the original norm-limit residue field with the intrinsic residue
 field of the canonical integral closure in the original extension. -/
 def normLimitResidueEquiv :
-    letI := normLimitField K L
     IsLocalRing.ResidueField (normLimitFieldValuation K L).valuationSubring ≃+*
       IsLocalRing.ResidueField
         (integralClosure (NormedField.valuation (K := K)).valuationSubring L) := by
-  letI := normLimitField K L
   let T := apfResidueLayer K L
   let E := deepFiniteTower K L T 0
   exact (normLimitResidueLayerEquiv K L T).trans
@@ -173,24 +153,20 @@ def normLimitResidueEquiv :
 isomorphism is the original finite residue inclusion after coordinate reduction. -/
 @[simp]
 theorem normLimitResidueEquiv_residue :
-    letI := normLimitField K L
     ∀ α : (normLimitFieldValuation K L).valuationSubring,
     normLimitResidueEquiv K L (IsLocalRing.residue _ α) =
       integralClosureResidueFromLayer K L
         (deepFiniteTower K L (apfResidueLayer K L) 0)
         (IsLocalRing.residue _ (normLimitIntegralCoordinate K L
           (apfResidueLayer K L) α 0)) := by
-  let := normLimitField K L
   intro α
   rfl
 
 /-- The actual original norm-limit residue field is perfect, with no finite
 residue-field hypothesis. -/
 theorem normLimitResidue_perfectField :
-    letI := normLimitField K L
     PerfectField (IsLocalRing.ResidueField
       (normLimitFieldValuation K L).valuationSubring) := by
-  let := normLimitField K L
   let := IsAPF.perfectField_integralClosureResidue K L
   exact PerfectField.of_ringEquiv (normLimitResidueEquiv K L).symm
 

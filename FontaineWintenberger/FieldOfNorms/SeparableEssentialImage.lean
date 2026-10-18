@@ -36,24 +36,13 @@ variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 isomorphic over that same field to an original finite norm-field stage in
 the prescribed original separable closure. -/
 theorem exists_finite_normLimit_algEquiv_of_separableClosure :
-    letI := normLimitField K L
     ∀ (F : Type*) [Field F] [Algebra (NormLimit K L) F]
       [Module.Finite (NormLimit K L) F] [Algebra.IsSeparable (NormLimit K L) F],
       ∃ N : FiniteLayer L Ω,
-        letI : Algebra.IsSeparable K N.val := Algebra.IsSeparable.trans K L N.val
-        letI := separableNormUnionStageField K L Ω N
-        letI := separableNormUnionStageAlgebra K L Ω N
         Nonempty (NormLimit K N.val ≃ₐ[NormLimit K L] F) := by
-  let := normLimitField K L
   intro F _ _ _ _
   let : IsSepClosure K Ω :=
     ⟨IsSepClosure.sep_closed L, Algebra.IsSeparable.trans K L Ω⟩
-  let := separableNormUnionField K L Ω
-  let := separableNormUnionAlgebra K L Ω
-  let : Module (NormLimit K L) (SeparableNormUnion K L Ω) := Algebra.toModule
-  let : MulAction (NormLimit K L) (SeparableNormUnion K L Ω) :=
-    (Algebra.toModule : Module (NormLimit K L)
-      (SeparableNormUnion K L Ω)).toDistribMulAction.toMulAction
   let : IsSepClosed (SeparableNormUnion K L Ω) :=
     separableNormUnion_isSepClosed K L Ω
   let t : F →ₐ[NormLimit K L] SeparableNormUnion K L Ω := IsSepClosed.lift
@@ -61,9 +50,6 @@ theorem exists_finite_normLimit_algEquiv_of_separableClosure :
     Module.Finite.equiv t.equivFieldRange.toLinearEquiv
   obtain ⟨N, hN, _⟩ := separableNormUnion_existsUnique_finite_subfield_preimage
     K L Ω t.fieldRange
-  let : Algebra.IsSeparable K N.val := Algebra.IsSeparable.trans K L N.val
-  let := separableNormUnionStageField K L Ω N
-  let := separableNormUnionStageAlgebra K L Ω N
   let i := separableNormUnionOfAlgHom K L Ω N
   refine ⟨N, ⟨i.equivFieldRange.trans ((IntermediateField.equivOfEq hN).trans
     t.equivFieldRange.symm)⟩⟩
@@ -71,15 +57,10 @@ theorem exists_finite_normLimit_algEquiv_of_separableClosure :
 /-- Without prescribing an original separable closure, every finite
 separable target is still an actual original finite norm-field stage. -/
 theorem exists_finite_normLimit_algEquiv :
-    letI := normLimitField K L
     ∀ (F : Type*) [Field F] [Algebra (NormLimit K L) F]
       [Module.Finite (NormLimit K L) F] [Algebra.IsSeparable (NormLimit K L) F],
       ∃ N : FiniteLayer L (SeparableClosure L),
-        letI : Algebra.IsSeparable K N.val := Algebra.IsSeparable.trans K L N.val
-        letI := separableNormUnionStageField K L (SeparableClosure L) N
-        letI := separableNormUnionStageAlgebra K L (SeparableClosure L) N
         Nonempty (NormLimit K N.val ≃ₐ[NormLimit K L] F) := by
-  let := normLimitField K L
   intro F _ _ _ _
   exact exists_finite_normLimit_algEquiv_of_separableClosure
     K L (SeparableClosure L) F

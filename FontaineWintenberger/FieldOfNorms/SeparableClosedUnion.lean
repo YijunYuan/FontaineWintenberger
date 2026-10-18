@@ -41,14 +41,10 @@ variable [IsAPF K L] [IsAPF K M]
 /-- Positive actual finite-map scaling makes the original target valuation
 an extension of the original source valuation, on their same field map. -/
 theorem finiteNormLimitFieldValuation_hasExtension :
-    letI := normLimitField K L
-    letI := normLimitField K M
     letI : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
     letI := (finiteNormLimitRingHom K L M).toAlgebra
     (normLimitFieldValuation K L).HasExtension
       (normLimitFieldValuation K M) := by
-  let := normLimitField K L
-  let := normLimitField K M
   let : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
   let := (finiteNormLimitRingHom K L M).toAlgebra
   obtain ⟨e, he, hv⟩ := exists_finiteNormLimitMap_valuation_scaling K L M
@@ -81,28 +77,18 @@ finite original norm field in the prescribed common separable closure.
 All approximation and valuation-extension hypotheses of Newton--Krasner
 extraction are produced on the actual original fields. -/
 theorem exists_finite_normLimit_exact_root :
-    letI := normLimitField K L
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
     ∀ f : Oₓ[X], f.Monic → (f.map (algebraMap Oₓ (NormLimit K L))).Separable →
       0 < f.natDegree →
       ∃ N : FiniteLayer L Ω, Module.finrank L N.val ≤ f.natDegree ∧
-        letI : Algebra.IsSeparable K N.val := Algebra.IsSeparable.trans K L N.val
-        haveI := separableNormUnionStage_isAPF K L Ω N
-        haveI : Fact (¬ Module.Finite K N.val) := ⟨separableNormUnionStage_infinite K L Ω N⟩
-        letI := separableNormUnionStageField K L Ω N
         letI := (finiteNormLimitRingHom K L N.val).toAlgebra
         ∃ a : NormLimit K N.val, aeval a (f.map (algebraMap Oₓ (NormLimit K L))) = 0 := by
-  let := normLimitField K L
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
   intro f hf hsep hdegree
   obtain ⟨d, hd⟩ := exists_normLimit_discr_precision K L f hf hsep
   let r := 2 * f.natDegree * d + 1
   obtain ⟨N, hdegreeN, hz⟩ := exists_normLimit_approximate_root_at_precision
     K L (Ω := Ω) r f hf hsep hdegree
-  let : Algebra.IsSeparable K N.val := Algebra.IsSeparable.trans K L N.val
-  have := separableNormUnionStage_isAPF K L Ω N
-  have : Fact (¬ Module.Finite K N.val) := ⟨separableNormUnionStage_infinite K L Ω N⟩
-  let := separableNormUnionStageField K L Ω N
   let φ := finiteNormLimitRingHom K L N.val
   let : Algebra (NormLimit K L) (NormLimit K N.val) := φ.toAlgebra
   let : Algebra Oₓ (NormLimit K N.val) := (φ.comp (Oₓ).subtype).toAlgebra
@@ -135,7 +121,6 @@ theorem exists_finite_normLimit_exact_root :
     push_cast
     have hmul' : (e : ℤ) * d ≤ (f.natDegree : ℤ) * d := by exact_mod_cast hmul
     nlinarith
-  let := normLimitValued K L
   let := normLimitFieldValuation_isRankOneDiscrete K L
   let := normLimitFieldValuation_isDiscreteValuationRing K L
   let := normLimit_completeSpace K L
@@ -249,17 +234,11 @@ local notation "Oₓ" => Valuation.valuationSubring
 polynomial to the proved integral case, then divides its genuine root by
 the same nonzero scalar in the same original finite norm field. -/
 theorem exists_finite_normLimit_root_of_monic :
-    letI := normLimitField K L
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
     ∀ f : (NormLimit K L)[X], f.Monic → f.Separable → 0 < f.natDegree →
       ∃ N : FiniteLayer L Ω, Module.finrank L N.val ≤ f.natDegree ∧
-        letI : Algebra.IsSeparable K N.val := Algebra.IsSeparable.trans K L N.val
-        haveI := separableNormUnionStage_isAPF K L Ω N
-        haveI : Fact (¬ Module.Finite K N.val) := ⟨separableNormUnionStage_infinite K L Ω N⟩
-        letI := separableNormUnionStageField K L Ω N
         letI := (finiteNormLimitRingHom K L N.val).toAlgebra
         ∃ a : NormLimit K N.val, aeval a f = 0 := by
-  let := normLimitField K L
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
   intro f hf hsep hdegree
   let π := normLimitUniformizer K L
@@ -281,10 +260,6 @@ theorem exists_finite_normLimit_root_of_monic :
     exact separable_scaleRoots_of_monic f hf hsep s hs
   obtain ⟨N, hdegreeN, ha⟩ := exists_finite_normLimit_exact_root
     K L (Ω := Ω) g hg hgsep (by rwa [hgdegree])
-  let : Algebra.IsSeparable K N.val := Algebra.IsSeparable.trans K L N.val
-  have := separableNormUnionStage_isAPF K L Ω N
-  have : Fact (¬ Module.Finite K N.val) := ⟨separableNormUnionStage_infinite K L Ω N⟩
-  let := separableNormUnionStageField K L Ω N
   let := (finiteNormLimitRingHom K L N.val).toAlgebra
   obtain ⟨a, ha⟩ := ha
   rw [hgmap] at ha
@@ -311,18 +286,11 @@ are descended, the produced finite original root stage is retained, and
 original finite-map composition gives the literal union inclusion square. -/
 theorem separableNormUnion_exists_root_of_monic :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
-    letI := separableNormUnionField K L Ω
     ∀ F : U[X], F.Monic → F.Separable → 0 < F.natDegree → ∃ a : U, F.eval a = 0 := by
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
-  let := separableNormUnionField K L Ω
   intro F hF hsep hdegree
   obtain ⟨N, f, hfmap⟩ := separableNormUnion_exists_polynomial K L Ω F
-  let := normLimitField K L
-  let : Algebra.IsSeparable K N.val := Algebra.IsSeparable.trans K L N.val
   let : IsScalarTower K N.val Ω := IsScalarTower.to₁₃₄ K L N.val Ω
-  have := separableNormUnionStage_isAPF K L Ω N
-  have : Fact (¬ Module.Finite K N.val) := ⟨separableNormUnionStage_infinite K L Ω N⟩
-  let := separableNormUnionStageField K L Ω N
   let i := separableNormUnionOf K L Ω N
   have hf : f.Monic := Polynomial.monic_of_injective i.injective (by rwa [hfmap])
   have hfsep : f.Separable := (separable_map i).mp (by rwa [hfmap])
@@ -340,9 +308,6 @@ theorem separableNormUnion_exists_root_of_monic :
     intro x hx
     exact Q.val.algebraMap_mem ⟨x, hx⟩
   let : Algebra.IsSeparable K Q.val := Algebra.IsSeparable.trans K N.val Q.val
-  have := separableNormUnionStage_isAPF K N.val Ω Q
-  have : Fact (¬ Module.Finite K Q.val) := ⟨separableNormUnionStage_infinite K N.val Ω Q⟩
-  let := separableNormUnionStageField K N.val Ω Q
   let originalAlgebras := ((inferInstance : Algebra K Q.val), (inferInstance : Algebra N.val Q.val))
   have originalTower : IsScalarTower K N.val Q.val := inferInstance
   have originalFinite : Module.Finite N.val Q.val := inferInstance
@@ -351,10 +316,6 @@ theorem separableNormUnion_exists_root_of_monic :
   let := φ.toAlgebra
   obtain ⟨a, ha⟩ := ha
   let : Module.Finite L R.val := R.property
-  let : Algebra.IsSeparable K R.val := Algebra.IsSeparable.trans K L R.val
-  have := separableNormUnionStage_isAPF K L Ω R
-  have : Fact (¬ Module.Finite K R.val) := ⟨separableNormUnionStage_infinite K L Ω R⟩
-  let := separableNormUnionStageField K L Ω R
   let e : Q.val ≃ₐ[K] R.val :=
     { RingEquiv.refl Q.val with
       commutes' x := by
@@ -398,10 +359,8 @@ theorem separableNormUnion_exists_root_of_monic :
 root construction and Mathlib's monic irreducible root criterion. -/
 theorem separableNormUnion_isSepClosed :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
-    letI := separableNormUnionField K L Ω
     IsSepClosed U := by
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
-  let := separableNormUnionField K L Ω
   apply IsSepClosed.of_exists_root
   intro F hF hirr hsep
   exact separableNormUnion_exists_root_of_monic K L Ω
@@ -410,15 +369,9 @@ theorem separableNormUnion_isSepClosed :
 /-- The same canonical union, with its original base algebra, is a genuine
 separable closure of the original norm field. -/
 theorem separableNormUnion_isSepClosure :
-    letI := normLimitField K L
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
-    letI := separableNormUnionField K L Ω
-    letI := separableNormUnionAlgebra K L Ω
     IsSepClosure (NormLimit K L) U := by
-  let := normLimitField K L
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
-  let := separableNormUnionField K L Ω
-  let := separableNormUnionAlgebra K L Ω
   let : IsSepClosed U := separableNormUnion_isSepClosed K L Ω
   let : Algebra.IsSeparable (NormLimit K L) U :=
     separableNormUnion_isSeparable K L Ω

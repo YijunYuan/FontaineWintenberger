@@ -364,20 +364,16 @@ variable [Fact (¬ Module.Finite K L)]
 
 /-- Integral evaluation in any original finite layer, with no chosen model. -/
 def normLimitIntegralCoordinateAt (E : FiniteLayer K L) :
-    letI := normLimitField K L
     (normLimitFieldValuation K L).valuationSubring → spectralIntegerRing K E.val :=
         by
-  letI := normLimitField K L
   exact fun α ↦ ⟨normLimitEval K L E α.val,
     normLimitEval_mem_of_valuation_le_one K L α.val α.property E⟩
 
 /-- The original high-break coordinate ring map. Its construction composes the
 proved deep projection with the actual finite truncated norm back to E. -/
 def normLimitHighBreakProjection (r : ℕ) (hrb : r ≤ ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊) :
-    letI := normLimitField K L
     (normLimitFieldValuation K L).valuationSubring →+*
       spectralIntegerRing K E.val ⧸ IsLocalRing.maximalIdeal (spectralIntegerRing K E.val) ^ r := by
-  letI := normLimitField K L
   exact (h.truncatedNorm K L hb (deepFiniteTower K L E r)
     (le_deepFiniteTower K L E r) r (r + 2) (by omega) hrb).comp
       (normLimitTruncation K L E r)
@@ -387,11 +383,9 @@ E-coordinate, by the original norm-family compatibility. -/
 @[simp]
 theorem normLimitHighBreakProjection_apply
     (r : ℕ) (hrb : r ≤ ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊) :
-    letI := normLimitField K L
     ∀ α : (normLimitFieldValuation K L).valuationSubring,
       normLimitHighBreakProjection K L hb h r hrb α =
         Ideal.Quotient.mk _ (normLimitIntegralCoordinateAt K L E α) := by
-  let := normLimitField K L
   intro α
   change h.truncatedNorm K L hb _ _ r (r + 2) (by omega) hrb
     (normLimitTruncation K L E r α) = _
@@ -406,9 +400,7 @@ theorem normLimitHighBreakProjection_apply
 norm-family coordinate. Both surjections are proved on their actual carriers. -/
 theorem normLimitHighBreakProjection_surjective
     (r : ℕ) (hrb : r ≤ ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊) :
-    letI := normLimitField K L
     Function.Surjective (normLimitHighBreakProjection K L hb h r hrb) := by
-  let := normLimitField K L
   exact (h.truncatedNorm_surjective K L hb
     (deepFiniteTower K L E r)
     (le_deepFiniteTower K L E r) r (r + 2) (by omega) hrb).comp
@@ -417,11 +409,9 @@ theorem normLimitHighBreakProjection_surjective
 /-- The exact kernel is the original normalized valuation ball of depth r. -/
 theorem normLimitHighBreakProjection_eq_zero_iff
     (r : ℕ) (hrb : r ≤ ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊) :
-    letI := normLimitField K L
     ∀ α : (normLimitFieldValuation K L).valuationSubring,
       normLimitHighBreakProjection K L hb h r hrb α = 0 ↔
         normLimitValuation K L α.val ≤ WithZero.exp (-(r : ℤ)) := by
-  let := normLimitField K L
   intro α
   rw [normLimitHighBreakProjection_apply, Ideal.Quotient.eq_zero_iff_mem,
     ValuationSubring.mem_maximalIdeal_pow_iff_normalizedValuation,
@@ -432,12 +422,10 @@ theorem normLimitHighBreakProjection_eq_zero_iff
 valuation, at the exact requested precision. -/
 theorem normLimitHighBreakProjection_eq_iff
     (r : ℕ) (hrb : r ≤ ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊) :
-    letI := normLimitField K L
     ∀ α β : (normLimitFieldValuation K L).valuationSubring,
       normLimitHighBreakProjection K L hb h r hrb α =
         normLimitHighBreakProjection K L hb h r hrb β ↔
           normLimitValuation K L (α.val - β.val) ≤ WithZero.exp (-(r : ℤ)) := by
-  let := normLimitField K L
   intro α β
   rw [← sub_eq_zero, ← map_sub, normLimitHighBreakProjection_eq_zero_iff]
   rfl
@@ -446,11 +434,9 @@ theorem normLimitHighBreakProjection_eq_iff
 norm-limit valuation ring, with its proved normalized valuation. -/
 theorem ker_normLimitHighBreakProjection
     (r : ℕ) (hrb : r ≤ ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊) :
-    letI := normLimitField K L
     RingHom.ker (normLimitHighBreakProjection K L hb h r hrb) =
       IsLocalRing.maximalIdeal
         (normLimitFieldValuation K L).valuationSubring ^ r := by
-  let := normLimitField K L
   let := normLimitFieldValuation_isDiscreteValuationRing K L
   ext α
   rw [RingHom.mem_ker, normLimitHighBreakProjection_eq_zero_iff,

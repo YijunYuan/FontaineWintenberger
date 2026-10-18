@@ -371,9 +371,7 @@ instance sourceDeepResidue_charP (n : ℕ) :
 /-- The actual source constants, restricted to the original norm-limit
 valuation ring using their proved integrality. -/
 def sourceResidueConstantsInteger :
-    letI := normLimitField K L
     κL →*₀ (normLimitFieldValuation K L).valuationSubring := by
-  letI := normLimitField K L
   exact {
     toFun := fun x => ⟨sourceResidueConstants K L x,
       sourceResidueConstants_valuation_le_one K L x⟩
@@ -384,12 +382,10 @@ def sourceResidueConstantsInteger :
 /-- The original integral deep coordinate of a source constant is its
 actual finite integral source representative. -/
 theorem normLimitIntegralCoordinate_sourceResidueConstantsInteger (n : ℕ) (x : κL) :
-    letI := normLimitField K L
     normLimitIntegralCoordinate K L K₁
       (sourceResidueConstantsInteger K L x) n =
       sourceResidueIntegralCoordinate K L (deepFiniteTower K L K₁ n)
         (le_deepFiniteTower K L K₁ n) x := by
-  let := normLimitField K L
   apply Subtype.ext
   exact normLimitEval_sourceResidueConstants K L _
     (le_deepFiniteTower K L K₁ n) x
@@ -412,11 +408,9 @@ def sourceResidueTruncatedHom (n : ℕ) : κL →+* 𝔅 n :=
 actual original source constant. This uses the existing Teichmüller section's
 actual naturality under the original quotient projection. -/
 theorem normLimitTruncation_sourceResidueConstantsInteger (n : ℕ) (x : κL) :
-    letI := normLimitField K L
     normLimitTruncation K L K₁ n
       (sourceResidueConstantsInteger K L x) =
       sourceResidueTruncatedHom K L n x := by
-  let := normLimitField K L
   let q : spectralIntegerRing K (𝔈 n).val →+* 𝔅 n := Ideal.Quotient.mk _
   let : IsLocalHom q := Ideal.Quotient.mk_surjective.isLocalHom
   let := isAdicComplete_of_isNilpotent_ideal (IsLocalRing.maximalIdeal (𝔅 n))
@@ -434,11 +428,9 @@ theorem normLimitTruncation_sourceResidueConstantsInteger (n : ℕ) (x : κL) :
 /-- The actual integral source constants are additive: their actual deep
 truncations are additive ring maps, and the actual truncation equivalence is injective. -/
 theorem sourceResidueConstantsInteger_add (x y : κL) :
-    letI := normLimitField K L
     sourceResidueConstantsInteger K L (x + y) =
       sourceResidueConstantsInteger K L x +
         sourceResidueConstantsInteger K L y := by
-  let := normLimitField K L
   apply (normLimitTruncationEquiv K L K₁).injective
   apply Subtype.ext
   funext n
@@ -455,18 +447,14 @@ theorem sourceResidueConstantsInteger_add (x y : κL) :
 
 /-- The actual integral source constants as a unital ring map. -/
 def sourceResidueConstantsIntegerHom :
-    letI := normLimitField K L
     κL →+* (normLimitFieldValuation K L).valuationSubring := by
-  letI := normLimitField K L
   exact { sourceResidueConstantsInteger K L with
     map_add' := sourceResidueConstantsInteger_add K L }
 
 /-- The source-normalized coefficient field embedding into the same original
 field of norms, with the original addition and multiplication. -/
 def sourceResidueConstantsFieldEmbedding :
-    letI := normLimitField K L
     κL →+* NormLimit K L := by
-  letI := normLimitField K L
   exact (normLimitFieldValuation K L).valuationSubring.subtype.comp
     (sourceResidueConstantsIntegerHom K L)
 
@@ -474,25 +462,21 @@ def sourceResidueConstantsFieldEmbedding :
 source-normalized norm-compatible family already constructed. -/
 @[simp]
 theorem sourceResidueConstantsFieldEmbedding_apply (x : κL) :
-    letI := normLimitField K L
     sourceResidueConstantsFieldEmbedding K L x =
       sourceResidueConstants K L x := rfl
 
 /-- The actual source coefficient map is an injective field homomorphism. -/
 theorem sourceResidueConstantsFieldEmbedding_injective :
-    letI := normLimitField K L
     Function.Injective (sourceResidueConstantsFieldEmbedding K L) :=
   sourceResidueConstants_injective K L
 
 /-- Under the actual original residue-field identification, the reduction
 of a source constant is precisely the inverse-Frobenius-normalized coordinate. -/
 theorem normLimitResidueLayerEquiv_sourceResidueConstantsInteger (x : κL) :
-    letI := normLimitField K L
     normLimitResidueLayerEquiv K L K₁
       (IsLocalRing.residue _ (sourceResidueConstantsInteger K L x)) =
       sourceResidueCoordinateEquiv K L (deepFiniteTower K L K₁ 0)
         (le_deepFiniteTower K L K₁ 0) x := by
-  let := normLimitField K L
   rw [normLimitResidueLayerEquiv_residue,
     normLimitIntegralCoordinate_sourceResidueConstantsInteger,
     sourceResidueCoordinateEquiv_apply]
@@ -501,10 +485,8 @@ theorem normLimitResidueLayerEquiv_sourceResidueConstantsInteger (x : κL) :
 field with the entire original norm-limit residue field, retaining the
 finite starting-stage Frobenius normalization. -/
 def sourceResidueConstantsResidueEquiv :
-    letI := normLimitField K L
     κL ≃+* IsLocalRing.ResidueField
       (normLimitFieldValuation K L).valuationSubring := by
-  letI := normLimitField K L
   exact (sourceResidueCoordinateEquiv K L (deepFiniteTower K L K₁ 0)
     (le_deepFiniteTower K L K₁ 0)).trans
       (normLimitResidueLayerEquiv K L K₁).symm
@@ -513,10 +495,8 @@ def sourceResidueConstantsResidueEquiv :
 constants, rather than by a new coefficient model. -/
 @[simp]
 theorem sourceResidueConstantsResidueEquiv_apply (x : κL) :
-    letI := normLimitField K L
     sourceResidueConstantsResidueEquiv K L x =
       IsLocalRing.residue _ (sourceResidueConstantsInteger K L x) := by
-  let := normLimitField K L
   apply (normLimitResidueLayerEquiv K L K₁).injective
   exact (normLimitResidueLayerEquiv K L K₁).apply_symm_apply _ |>.trans
     (normLimitResidueLayerEquiv_sourceResidueConstantsInteger K L x).symm

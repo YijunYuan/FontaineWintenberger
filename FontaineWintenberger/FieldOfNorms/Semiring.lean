@@ -28,7 +28,7 @@ variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
 /-- The actual norm-limit addition and original multiplication give a named
 commutative semiring, preserving the original multiplicative structure. -/
-instance normLimitCommSemiring [IsAPF K L] : CommSemiring (NormLimit K L) :=
+instance (priority := low) normLimitCommSemiring [IsAPF K L] : CommSemiring (NormLimit K L) :=
   {
     (inferInstance : CommMonoidWithZero (NormLimit K L)), normLimitAddCommMonoid K L with
     left_distrib := mul_normLimitAdd K L

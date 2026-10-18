@@ -127,11 +127,7 @@ variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 /-- A field isomorphism between actual finite indices gives their original norm-field
 isomorphism. -/
 def normUnionStageEquiv (N P : FiniteLayer L M) (e : N.val ≃ₐ[K] P.val) :
-    letI := separableNormUnionStageField K L M N
-    letI := separableNormUnionStageField K L M P
     NormLimit K N.val ≃+* NormLimit K P.val := by
-  letI : Algebra.IsSeparable K N.val := Algebra.IsSeparable.trans K L N.val
-  letI : Algebra.IsSeparable K P.val := Algebra.IsSeparable.trans K L P.val
   exact normLimitRingEquiv K (L := N.val) (M := P.val)
     e
 
@@ -148,8 +144,6 @@ theorem normUnionStageEquiv_base (N P : FiniteLayer L M)
     (x : NormLimit K L) :
     normLimitMap e (separableNormUnionBaseToStage K L M N x) =
       separableNormUnionBaseToStage K L M P (normLimitMap a x) := by
-  let : Algebra.IsSeparable K N.val := Algebra.IsSeparable.trans K L N.val
-  let : Algebra.IsSeparable K P.val := Algebra.IsSeparable.trans K L P.val
   simpa only [separableNormUnionBaseToStage, finiteNormLimitRingHom_apply] using
     finiteNormLimitMap_naturality K (M := L) (N := N.val) (M' := L) (N' := P.val)
       a e h x
@@ -165,10 +159,6 @@ theorem normUnionStageEquiv_transition (N P A B : FiniteLayer L M)
         (separableNormUnionTransition K L M N P hNP x) =
       separableNormUnionTransition K L M A B hAB
         (normLimitMap eN x) := by
-  let : Algebra.IsSeparable K N.val := Algebra.IsSeparable.trans K L N.val
-  let : Algebra.IsSeparable K P.val := Algebra.IsSeparable.trans K L P.val
-  let : Algebra.IsSeparable K A.val := Algebra.IsSeparable.trans K L A.val
-  let : Algebra.IsSeparable K B.val := Algebra.IsSeparable.trans K L B.val
   let : Algebra N.val P.val := (IntermediateField.inclusion hNP).toRingHom.toAlgebra
   let : IsScalarTower L N.val P.val := IsScalarTower.of_algebraMap_eq' rfl
   let : IsScalarTower K N.val P.val := IsScalarTower.of_algebraMap_eq' rfl
@@ -202,9 +192,6 @@ set_option synthInstance.maxHeartbeats 80000 in
 /-- The actual ambient restriction gives the existing isomorphism of original norm fields. -/
 def normUnionAbsoluteStageMap (σ : SeparableClosure K ≃ₐ[K] SeparableClosure K)
     (N : FiniteLayer L (SeparableClosure K)) :
-    letI := separableNormUnionStageField K L (SeparableClosure K) N
-    letI := separableNormUnionStageField K L (SeparableClosure K)
-      (normUnionAbsoluteLayer K (SeparableClosure K) L σ N)
     NormLimit K N.val ≃+*
       NormLimit K (normUnionAbsoluteLayer K (SeparableClosure K) L σ N).val := by
   exact normUnionStageEquiv K L (SeparableClosure K) N

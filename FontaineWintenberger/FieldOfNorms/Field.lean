@@ -32,9 +32,7 @@ variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 coordinate approximation and actual ramification divergence. -/
 theorem normLimit_natCast_prime_eq_zero [IsAPF K L]
     [Fact (¬ Module.Finite K L)] :
-    letI := normLimitCommSemiring K L
     (p : NormLimit K L) = 0 := by
-  let := normLimitCommSemiring K L
   apply normLimit_ext_of_eventually_sub_mem K L
   intro n
   obtain ⟨T₁, hT₁⟩ := normLimitEval_nsmul_sub_mem K L p 1 n

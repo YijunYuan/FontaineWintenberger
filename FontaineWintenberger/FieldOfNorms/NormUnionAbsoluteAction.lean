@@ -33,17 +33,8 @@ variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 /-- The compatible original finite-stage transports act on the same canonical union. -/
 def separableNormUnionAbsoluteMap
     (σ : SeparableClosure K ≃ₐ[K] SeparableClosure K) :
-    letI := separableNormUnionField K L (SeparableClosure K)
     SeparableNormUnion K L (SeparableClosure K) →+*
       SeparableNormUnion K L (SeparableClosure K) := by
-  letI (N : FiniteLayer L (SeparableClosure K)) : Field (NormLimit K N.val) :=
-    separableNormUnionStageField K L (SeparableClosure K) N
-  letI := separableNormUnionField K L (SeparableClosure K)
-  letI (N : FiniteLayer L (SeparableClosure K)) : NonAssocSemiring (NormLimit K N.val) :=
-    (separableNormUnionStageField K L (SeparableClosure K) N).toNonAssocSemiring
-  letI : NonAssocSemiring
-      (SeparableNormUnion K L (SeparableClosure K)) :=
-    (separableNormUnionField K L (SeparableClosure K)).toNonAssocSemiring
   refine DirectLimit.Ring.lift
     (fun N : FiniteLayer L (SeparableClosure K) => NormLimit K N.val)
     (separableNormUnionTransition K L (SeparableClosure K))
@@ -162,24 +153,11 @@ theorem separableNormUnionAbsoluteMap_mul_apply
 
 /-- The original ambient transports form an automorphism action on the same union. -/
 def separableNormUnionAbsoluteAut :
-    letI unionField : Field (SeparableNormUnion K L (SeparableClosure K)) :=
-      separableNormUnionField K L (SeparableClosure K)
-    letI unionRing : NonAssocSemiring (SeparableNormUnion K L (SeparableClosure K))
-        :=
-      unionField.toSemifield.toCommSemiring.toSemiring.toNonAssocSemiring
-    letI : Mul (SeparableNormUnion K L (SeparableClosure K)) := unionRing.toMul
-    letI : Add (SeparableNormUnion K L (SeparableClosure K)) := unionRing.toAdd
     letI : Group (RingAut (SeparableNormUnion K L (SeparableClosure K))) :=
         RingAut.instGroup _
     (SeparableClosure K ≃ₐ[K] SeparableClosure K) →*
       (SeparableNormUnion K L (SeparableClosure K) ≃+*
         SeparableNormUnion K L (SeparableClosure K)) :=
-  letI unionField : Field (SeparableNormUnion K L (SeparableClosure K)) :=
-      separableNormUnionField K L (SeparableClosure K)
-  letI unionRing : NonAssocSemiring (SeparableNormUnion K L (SeparableClosure K)) :=
-    unionField.toSemifield.toCommSemiring.toSemiring.toNonAssocSemiring
-  letI : Mul (SeparableNormUnion K L (SeparableClosure K)) := unionRing.toMul
-  letI : Add (SeparableNormUnion K L (SeparableClosure K)) := unionRing.toAdd
   letI : Group (RingAut (SeparableNormUnion K L (SeparableClosure K))) :=
       RingAut.instGroup _
   let f (σ : SeparableClosure K ≃ₐ[K] SeparableClosure K) :

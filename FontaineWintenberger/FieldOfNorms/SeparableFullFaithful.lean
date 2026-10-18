@@ -85,8 +85,6 @@ theorem normLimitMap_fixes_finiteNormLimitMap_iff
   let : IsGalois M N := IsGalois.tower_top_of_isGalois L M N
   constructor
   · intro hσ
-    let := normLimitField K M
-    let := normLimitField K N
     let := (finiteNormLimitRingHom K M N).toAlgebra
     let σX : NormLimit K N ≃ₐ[NormLimit K M] NormLimit K N :=
       { normLimitAut K N (σ.restrictScalars K) with
@@ -151,17 +149,11 @@ def finiteNormLimitAlgHom [Algebra.IsSeparable K L] [Module.Finite L M]
     [IsAPF K L] [IsAPF K M] [IsAPF K N]
     [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)]
     [Fact (¬ Module.Finite K N)] (φ : M →ₐ[L] N) :
-    letI := normLimitField K L
-    letI := normLimitField K M
-    letI := normLimitField K N
     letI : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
     letI : Algebra.IsSeparable L N := Algebra.isSeparable_tower_top_of_isSeparable K L N
     letI := (finiteNormLimitRingHom K L M).toAlgebra
     letI := (finiteNormLimitRingHom K L N).toAlgebra
     NormLimit K M →ₐ[NormLimit K L] NormLimit K N := by
-  let := normLimitField K L
-  let := normLimitField K M
-  let := normLimitField K N
   let : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
   let : Algebra.IsSeparable L N := Algebra.isSeparable_tower_top_of_isSeparable K L N
   let := (finiteNormLimitRingHom K L M).toAlgebra
@@ -201,9 +193,6 @@ theorem finiteNormLimitAlgHom_eq_of_extend [Algebra.IsSeparable K L] [Module.Fin
     [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)]
     [Fact (¬ Module.Finite K N)] (φ : M →ₐ[L] N) (σ : N ≃ₐ[L] N)
     (hσ : ∀ m : M, σ (algebraMap M N m) = φ m) (x : NormLimit K M) :
-    letI := normLimitField K L
-    letI := normLimitField K M
-    letI := normLimitField K N
     letI : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
     letI : Algebra.IsSeparable L N := Algebra.isSeparable_tower_top_of_isSeparable K L N
     letI := (finiteNormLimitRingHom K L M).toAlgebra
@@ -212,9 +201,6 @@ theorem finiteNormLimitAlgHom_eq_of_extend [Algebra.IsSeparable K L] [Module.Fin
     letI : IsGalois M N := IsGalois.tower_top_of_isGalois L M N
     finiteNormLimitAlgHom K L M N φ x =
       normLimitMap (σ.restrictScalars K) (finiteNormLimitMap K M N x) := by
-  let := normLimitField K L
-  let := normLimitField K M
-  let := normLimitField K N
   let : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
   let : Algebra.IsSeparable L N := Algebra.isSeparable_tower_top_of_isSeparable K L N
   let := (finiteNormLimitRingHom K L M).toAlgebra
@@ -248,18 +234,12 @@ theorem finiteNormLimitAlgHom_injective_of_isGalois
     [IsAPF K L] [IsAPF K M] [IsAPF K N]
     [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)]
     [Fact (¬ Module.Finite K N)] :
-    letI := normLimitField K L
-    letI := normLimitField K M
-    letI := normLimitField K N
     letI : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
     letI : Algebra.IsSeparable L N := Algebra.isSeparable_tower_top_of_isSeparable K L N
     letI := (finiteNormLimitRingHom K L M).toAlgebra
     letI := (finiteNormLimitRingHom K L N).toAlgebra
     Function.Injective
       (finiteNormLimitAlgHom K L M N) := by
-  let := normLimitField K L
-  let := normLimitField K M
-  let := normLimitField K N
   let : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
   let : Algebra.IsSeparable L N := Algebra.isSeparable_tower_top_of_isSeparable K L N
   let := (finiteNormLimitRingHom K L M).toAlgebra
@@ -295,18 +275,12 @@ theorem finiteNormLimitAlgHom_surjective_of_isGalois
     [IsAPF K L] [IsAPF K M] [IsAPF K N]
     [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)]
     [Fact (¬ Module.Finite K N)] :
-    letI := normLimitField K L
-    letI := normLimitField K M
-    letI := normLimitField K N
     letI : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
     letI : Algebra.IsSeparable L N := Algebra.isSeparable_tower_top_of_isSeparable K L N
     letI := (finiteNormLimitRingHom K L M).toAlgebra
     letI := (finiteNormLimitRingHom K L N).toAlgebra
     Function.Surjective
       (finiteNormLimitAlgHom K L M N) := by
-  let := normLimitField K L
-  let := normLimitField K M
-  let := normLimitField K N
   let : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
   let : Algebra.IsSeparable L N := Algebra.isSeparable_tower_top_of_isSeparable K L N
   let := (finiteNormLimitRingHom K L M).toAlgebra
@@ -345,9 +319,6 @@ theorem finiteNormLimitAlgHom_postcomp_aut [Algebra.IsSeparable K L] [Module.Fin
     [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)]
     [Fact (¬ Module.Finite K N)] (φ : M →ₐ[L] N) (σ : N ≃ₐ[L] N)
     (x : NormLimit K M) :
-    letI := normLimitField K L
-    letI := normLimitField K M
-    letI := normLimitField K N
     letI : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
     letI : Algebra.IsSeparable L N := Algebra.isSeparable_tower_top_of_isSeparable K L N
     letI := (finiteNormLimitRingHom K L M).toAlgebra
@@ -356,9 +327,6 @@ theorem finiteNormLimitAlgHom_postcomp_aut [Algebra.IsSeparable K L] [Module.Fin
         (σ.toAlgHom.comp φ) x =
       normLimitMap (σ.restrictScalars K)
         (finiteNormLimitAlgHom K L M N φ x) := by
-  let := normLimitField K L
-  let := normLimitField K M
-  let := normLimitField K N
   let : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
   let : Algebra.IsSeparable L N := Algebra.isSeparable_tower_top_of_isSeparable K L N
   let := (finiteNormLimitRingHom K L M).toAlgebra
@@ -392,9 +360,6 @@ theorem finiteNormLimitAlgHom_bijective_of_isGalois
     [IsAPF K L] [IsAPF K M] [IsAPF K N]
     [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)]
     [Fact (¬ Module.Finite K N)] :
-    letI := normLimitField K L
-    letI := normLimitField K M
-    letI := normLimitField K N
     letI : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
     letI : Algebra.IsSeparable L N := Algebra.isSeparable_tower_top_of_isSeparable K L N
     letI := (finiteNormLimitRingHom K L M).toAlgebra

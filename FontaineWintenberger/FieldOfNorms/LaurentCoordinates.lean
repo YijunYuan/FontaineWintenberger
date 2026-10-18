@@ -42,10 +42,7 @@ variable (u : NormLimit K L) (hu : normLimitValuation K L u = exp (-1 : ℤ))
 source constants and precisely the residue isomorphism induced by them.
 It is available for every original normalized uniformizer. -/
 def normLimitPowerSeriesEquiv :
-    letI := normLimitField K L
     PowerSeries κL ≃+* (normLimitFieldValuation K L).valuationSubring := by
-  letI := normLimitField K L
-  letI := normLimitValued K L
   letI := normLimit_completeSpace K L
   letI : UniformSpace κL := ⊥
   letI : DiscreteUniformity κL := inferInstance
@@ -60,10 +57,7 @@ def normLimitPowerSeriesEquiv :
 /-- The canonical Laurent-coordinate field isomorphism on the same original
 norm-limit field, for every chosen original normalized uniformizer. -/
 def normLimitLaurentEquiv :
-    letI := normLimitField K L
     LaurentSeries κL ≃+* NormLimit K L := by
-  letI := normLimitField K L
-  letI := normLimitValued K L
   letI := normLimit_completeSpace K L
   letI : UniformSpace κL := ⊥
   letI : DiscreteUniformity κL := inferInstance
@@ -78,11 +72,8 @@ def normLimitLaurentEquiv :
 /-- Integral constants are exactly the original source coefficient section. -/
 @[simp]
 theorem normLimitPowerSeriesEquiv_C (a : κL) :
-    letI := normLimitField K L
     normLimitPowerSeriesEquiv K L u hu (PowerSeries.C a) =
       sourceResidueConstantsIntegerHom K L a := by
-  let := normLimitField K L
-  let := normLimitValued K L
   let := normLimit_completeSpace K L
   let : UniformSpace κL := ⊥
   let : DiscreteUniformity κL := inferInstance
@@ -95,10 +86,7 @@ theorem normLimitPowerSeriesEquiv_C (a : κL) :
 /-- The integral parameter represents precisely the chosen original uniformizer. -/
 @[simp]
 theorem normLimitPowerSeriesEquiv_X :
-    letI := normLimitField K L
     (normLimitPowerSeriesEquiv K L u hu PowerSeries.X : NormLimit K L) = u := by
-  let := normLimitField K L
-  let := normLimitValued K L
   let := normLimit_completeSpace K L
   let : UniformSpace κL := ⊥
   let : DiscreteUniformity κL := inferInstance
@@ -111,12 +99,9 @@ theorem normLimitPowerSeriesEquiv_X :
 
 /-- The Laurent isomorphism extends the actual integral evaluation. -/
 theorem normLimitLaurentEquiv_powerSeries (A : PowerSeries κL) :
-    letI := normLimitField K L
     normLimitLaurentEquiv K L u hu
       (algebraMap (PowerSeries κL) (LaurentSeries κL) A) =
         (normLimitPowerSeriesEquiv K L u hu A : NormLimit K L) := by
-  let := normLimitField K L
-  let := normLimitValued K L
   let := normLimit_completeSpace K L
   let : UniformSpace κL := ⊥
   let : DiscreteUniformity κL := inferInstance
@@ -126,11 +111,8 @@ theorem normLimitLaurentEquiv_powerSeries (A : PowerSeries κL) :
 its original inverse-Frobenius normalization. -/
 @[simp]
 theorem normLimitLaurentEquiv_C (a : κL) :
-    letI := normLimitField K L
     normLimitLaurentEquiv K L u hu (algebraMap κL (LaurentSeries κL) a) =
       sourceResidueConstantsFieldEmbedding K L a := by
-  let := normLimitField K L
-  let := normLimitValued K L
   let := normLimit_completeSpace K L
   let : UniformSpace κL := ⊥
   let : DiscreteUniformity κL := inferInstance
@@ -139,7 +121,6 @@ theorem normLimitLaurentEquiv_C (a : κL) :
 /-- The original Laurent parameter is exactly the chosen original norm family. -/
 @[simp]
 theorem normLimitLaurentEquiv_X :
-    letI := normLimitField K L
     normLimitLaurentEquiv K L u hu
       (algebraMap (PowerSeries κL) (LaurentSeries κL) PowerSeries.X) = u := by
   rw [normLimitLaurentEquiv_powerSeries, normLimitPowerSeriesEquiv_X]
@@ -147,11 +128,8 @@ theorem normLimitLaurentEquiv_X :
 /-- Exact preservation of the original stable norm-limit valuation on every
 Laurent series, including negative orders and zero. -/
 theorem normLimitLaurentEquiv_valuation (A : LaurentSeries κL) :
-    letI := normLimitField K L
     normLimitValuation K L (normLimitLaurentEquiv K L u hu A) =
       Valued.v A := by
-  let := normLimitField K L
-  let := normLimitValued K L
   let := normLimit_completeSpace K L
   let : UniformSpace κL := ⊥
   let : DiscreteUniformity κL := inferInstance
@@ -162,11 +140,7 @@ theorem normLimitLaurentEquiv_valuation (A : LaurentSeries κL) :
 /-- The original coordinate map is uniformly continuous for precisely the
 already constructed stable-valuation uniformity on the original field. -/
 theorem uniformContinuous_normLimitLaurentEquiv :
-    letI := normLimitField K L
-    letI := normLimitValued K L
     UniformContinuous (normLimitLaurentEquiv K L u hu) := by
-  let := normLimitField K L
-  let := normLimitValued K L
   let := normLimit_completeSpace K L
   let : UniformSpace κL := ⊥
   let : DiscreteUniformity κL := inferInstance
@@ -176,11 +150,7 @@ theorem uniformContinuous_normLimitLaurentEquiv :
 
 /-- The inverse also preserves the original valuation uniformities. -/
 theorem uniformContinuous_normLimitLaurentEquiv_symm :
-    letI := normLimitField K L
-    letI := normLimitValued K L
     UniformContinuous (normLimitLaurentEquiv K L u hu).symm := by
-  let := normLimitField K L
-  let := normLimitValued K L
   let := normLimit_completeSpace K L
   let : UniformSpace κL := ⊥
   let : DiscreteUniformity κL := inferInstance
@@ -190,34 +160,22 @@ theorem uniformContinuous_normLimitLaurentEquiv_symm :
 
 /-- Continuity for the existing original norm-limit field topology. -/
 theorem continuous_normLimitLaurentEquiv :
-    letI := normLimitField K L
-    letI := normLimitValued K L
     Continuous (normLimitLaurentEquiv K L u hu) := by
-  let := normLimitField K L
-  let := normLimitValued K L
   exact (uniformContinuous_normLimitLaurentEquiv K L u hu).continuous
 
 /-- Continuity of the original Laurent expansion map. -/
 theorem continuous_normLimitLaurentEquiv_symm :
-    letI := normLimitField K L
-    letI := normLimitValued K L
     Continuous (normLimitLaurentEquiv K L u hu).symm := by
-  let := normLimitField K L
-  let := normLimitValued K L
   exact (uniformContinuous_normLimitLaurentEquiv_symm K L u hu).continuous
 
 /-- The actual source constants and chosen original uniformizer characterize
 the continuous Laurent-coordinate field map uniquely. -/
 theorem normLimitLaurentEquiv_unique :
-    letI := normLimitField K L
-    letI := normLimitValued K L
     ∀ (f : LaurentSeries κL →+* NormLimit K L), Continuous f →
       (∀ a, f (algebraMap κL (LaurentSeries κL) a) =
         sourceResidueConstantsFieldEmbedding K L a) →
       f (algebraMap (PowerSeries κL) (LaurentSeries κL) PowerSeries.X) = u →
       f = (normLimitLaurentEquiv K L u hu).toRingHom := by
-  let := normLimitField K L
-  let := normLimitValued K L
   let := normLimit_completeSpace K L
   let : UniformSpace κL := ⊥
   let : DiscreteUniformity κL := inferInstance
@@ -229,12 +187,8 @@ theorem normLimitLaurentEquiv_unique :
 /-- Integral evaluation is continuous for the inherited original integer
 ring topology and the discrete-coefficient power-series topology. -/
 theorem continuous_normLimitPowerSeriesEquiv :
-    letI := normLimitField K L
-    letI := normLimitValued K L
     letI : UniformSpace κL := ⊥
     Continuous (normLimitPowerSeriesEquiv K L u hu) := by
-  let := normLimitField K L
-  let := normLimitValued K L
   let := normLimit_completeSpace K L
   let : UniformSpace κL := ⊥
   let : DiscreteUniformity κL := inferInstance
@@ -263,11 +217,8 @@ theorem continuous_normLimitPowerSeriesEquiv :
 /-- The same exact first-nonzero-coefficient valuation formula holds in the
 original field of norms for the actual integral evaluation. -/
 theorem normLimitPowerSeriesEquiv_valuation (A : PowerSeries κL) (hA : A ≠ 0) :
-    letI := normLimitField K L
     normLimitValuation K L (normLimitPowerSeriesEquiv K L u hu A :
       NormLimit K L) = exp (-(A.order.toNat : ℤ)) := by
-  let := normLimitField K L
-  let := normLimitValued K L
   let := normLimit_completeSpace K L
   let : UniformSpace κL := ⊥
   let : DiscreteUniformity κL := inferInstance

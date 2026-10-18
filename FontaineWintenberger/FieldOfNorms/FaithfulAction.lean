@@ -180,9 +180,7 @@ theorem normLimitMap_eq_self_iff [IsAPF K L] [Fact (¬ Module.Finite K L)]
 
 /-- The actual automorphism homomorphism on the original norm field is injective. -/
 theorem normLimitAut_injective [IsAPF K L] [Fact (¬ Module.Finite K L)] :
-    letI := normLimitField K L
     Function.Injective (normLimitAut K L) := by
-  let := normLimitField K L
   intro σ τ hστ
   have hker : normLimitAut K L (τ⁻¹ * σ) = 1 := by
     rw [map_mul, map_inv, hστ, inv_mul_cancel]

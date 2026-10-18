@@ -44,18 +44,12 @@ theorem finiteNormLimitRingHom_isScalarTower
     [IsAPF K M] [IsAPF K N] [IsAPF K P]
     [Fact (¬ Module.Finite K M)] [Fact (¬ Module.Finite K N)]
     [Fact (¬ Module.Finite K P)] :
-    letI := normLimitField K M
-    letI := normLimitField K N
-    letI := normLimitField K P
     letI : Module.Finite M P := Module.Finite.trans N P
     letI : Algebra.IsSeparable M P := Algebra.IsSeparable.trans M N P
     letI := (finiteNormLimitRingHom K M N).toAlgebra
     letI := (finiteNormLimitRingHom K M P).toAlgebra
     letI := (finiteNormLimitRingHom K N P).toAlgebra
     IsScalarTower (NormLimit K M) (NormLimit K N) (NormLimit K P) := by
-  let := normLimitField K M
-  let := normLimitField K N
-  let := normLimitField K P
   let : Module.Finite M P := Module.Finite.trans N P
   let : Algebra.IsSeparable M P := Algebra.IsSeparable.trans M N P
   let := (finiteNormLimitRingHom K M N).toAlgebra
@@ -82,8 +76,6 @@ theorem finiteNormLimit_finite_separable_degree
     [IsAPF K M] [IsAPF K N]
     [Fact (¬ Module.Finite K M)] [Fact (¬ Module.Finite K N)] :
     letI : Algebra.IsSeparable M N := Algebra.isSeparable_tower_top_of_isSeparable K M N
-    letI := normLimitField K M
-    letI := normLimitField K N
     letI := (finiteNormLimitRingHom K M N).toAlgebra
     FiniteDimensional (NormLimit K M) (NormLimit K N) ∧
       Algebra.IsSeparable (NormLimit K M) (NormLimit K N) ∧
@@ -105,9 +97,6 @@ theorem finiteNormLimit_finite_separable_degree
     exact (Fact.out : ¬ Module.Finite K M) (FiniteDimensional.of_injective
       (IsScalarTower.toAlgHom K M P).toLinearMap (algebraMap M P).injective)
   have : Fact (¬ Module.Finite K P) := ⟨hInfiniteP⟩
-  let := normLimitField K M
-  let := normLimitField K N
-  let := normLimitField K P
   let := (finiteNormLimitRingHom K M N).toAlgebra
   let := (finiteNormLimitRingHom K M P).toAlgebra
   let := (finiteNormLimitRingHom K N P).toAlgebra
@@ -136,8 +125,6 @@ theorem finiteDimensional_finiteNormLimit
     [IsAPF K M] [IsAPF K N]
     [Fact (¬ Module.Finite K M)] [Fact (¬ Module.Finite K N)] :
     letI : Algebra.IsSeparable M N := Algebra.isSeparable_tower_top_of_isSeparable K M N
-    letI := normLimitField K M
-    letI := normLimitField K N
     letI := (finiteNormLimitRingHom K M N).toAlgebra
     FiniteDimensional (NormLimit K M) (NormLimit K N) :=
   (finiteNormLimit_finite_separable_degree K M N).1
@@ -147,8 +134,6 @@ theorem isSeparable_finiteNormLimit
     [IsAPF K M] [IsAPF K N]
     [Fact (¬ Module.Finite K M)] [Fact (¬ Module.Finite K N)] :
     letI : Algebra.IsSeparable M N := Algebra.isSeparable_tower_top_of_isSeparable K M N
-    letI := normLimitField K M
-    letI := normLimitField K N
     letI := (finiteNormLimitRingHom K M N).toAlgebra
     Algebra.IsSeparable (NormLimit K M) (NormLimit K N) :=
   (finiteNormLimit_finite_separable_degree K M N).2.1
@@ -158,8 +143,6 @@ theorem finrank_finiteNormLimit
     [IsAPF K M] [IsAPF K N]
     [Fact (¬ Module.Finite K M)] [Fact (¬ Module.Finite K N)] :
     letI : Algebra.IsSeparable M N := Algebra.isSeparable_tower_top_of_isSeparable K M N
-    letI := normLimitField K M
-    letI := normLimitField K N
     letI := (finiteNormLimitRingHom K M N).toAlgebra
     Module.finrank (NormLimit K M) (NormLimit K N) = Module.finrank M N :=
   (finiteNormLimit_finite_separable_degree K M N).2.2
@@ -180,17 +163,12 @@ theorem finiteNormLimitEmbedding_finite_separable_degree (τ : L →ₐ[K] M)
     [Module.Finite τ.fieldRange M] [Algebra.IsSeparable τ.fieldRange M]
     [IsAPF K L] [IsAPF K M]
     [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)] :
-    letI := normLimitField K L
-    letI := normLimitField K M
     letI := (finiteNormLimitEmbeddingRingHom K τ).toAlgebra
     FiniteDimensional (NormLimit K L) (NormLimit K M) ∧
       Algebra.IsSeparable (NormLimit K L) (NormLimit K M) ∧
       Module.finrank (NormLimit K L) (NormLimit K M) = Module.finrank τ.fieldRange M := by
   have hR : IsAPF K τ.fieldRange := (isAPF_algEquiv K τ.equivFieldRange).mp ‹_›
   have : Fact (¬ Module.Finite K τ.fieldRange) := ⟨not_finite_fieldRange τ⟩
-  let := normLimitField K L
-  let := normLimitField K M
-  let := normLimitField K τ.fieldRange
   let := (finiteNormLimitEmbeddingRingHom K τ).toAlgebra
   let := (finiteNormLimitRingHom K τ.fieldRange M).toAlgebra
   let e := normLimitRingEquiv K τ.equivFieldRange

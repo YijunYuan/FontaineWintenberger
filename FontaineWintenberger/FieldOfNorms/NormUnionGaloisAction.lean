@@ -41,18 +41,8 @@ local notation "ρ" => normLimitAut K L
 /-- The literal source target, inside ring automorphisms of the same union. -/
 def normUnionGaloisSubgroup :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
-    letI := normLimitField K L
-    letI := separableNormUnionField K L Ω
-    letI : Mul U := (separableNormUnionField K L Ω).toMul
-    letI : Add U := (separableNormUnionField K L Ω).toAdd
-    letI : Group (RingAut U) := RingAut.instGroup U
     Subgroup (RingAut U) := by
   letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
-  letI := normLimitField K L
-  letI := separableNormUnionField K L Ω
-  letI : Mul U := (separableNormUnionField K L Ω).toMul
-  letI : Add U := (separableNormUnionField K L Ω).toAdd
-  letI : Group (RingAut U) := RingAut.instGroup U
   exact
     { carrier := {β | ∃ σ : L ≃ₐ[K] L, ∀ x : X, β (ι x) = ι (ρ σ x)}
       one_mem' := by
@@ -81,44 +71,23 @@ def normUnionGaloisSubgroup :
 /-- Membership means an actual commuting square with an original automorphism. -/
 theorem mem_normUnionGaloisSubgroup :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
-    letI := normLimitField K L
-    letI := separableNormUnionField K L Ω
-    letI : Mul U := (separableNormUnionField K L Ω).toMul
-    letI : Add U := (separableNormUnionField K L Ω).toAdd
-    letI : Group (RingAut U) := RingAut.instGroup U
     ∀ β : RingAut U, β ∈ normUnionGaloisSubgroup K L ↔
       ∃ σ : L ≃ₐ[K] L, ∀ x : X, β (ι x) = ι (ρ σ x) := by
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
-  let := normLimitField K L
-  let := separableNormUnionField K L Ω
-  let : Mul U := (separableNormUnionField K L Ω).toMul
-  let : Add U := (separableNormUnionField K L Ω).toAdd
-  let : Group (RingAut U) := RingAut.instGroup U
   intro β
   rfl
 
 /-- The base square determines its original automorphism uniquely. -/
 theorem normUnionGaloisSubgroup_base_unique :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
-    letI := normLimitField K L
-    letI := separableNormUnionField K L Ω
-    letI : Mul U := (separableNormUnionField K L Ω).toMul
-    letI : Add U := (separableNormUnionField K L Ω).toAdd
-    letI : Group (RingAut U) := RingAut.instGroup U
     ∀ (β : RingAut U) (σ τ : L ≃ₐ[K] L),
       (∀ x : X, β (ι x) = ι (ρ σ x)) →
       (∀ x : X, β (ι x) = ι (ρ τ x)) → σ = τ := by
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
-  let := normLimitField K L
-  let := separableNormUnionField K L Ω
-  let : Mul U := (separableNormUnionField K L Ω).toMul
-  let : Add U := (separableNormUnionField K L Ω).toAdd
-  let : Group (RingAut U) := RingAut.instGroup U
   intro β σ τ hσ hτ
   apply normLimitAut_injective K L
   apply RingEquiv.ext
   intro x
-  let : Nontrivial U := (separableNormUnionField K L Ω).toNontrivial
   apply (ι).injective
   exact (hσ x).symm.trans (hτ x)
 
@@ -126,20 +95,10 @@ theorem normUnionGaloisSubgroup_base_unique :
 and membership of its transported restriction in the actual action image. -/
 theorem mem_normUnionGaloisSubgroup_iff_stable_image :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
-    letI := normLimitField K L
-    letI := separableNormUnionField K L Ω
-    letI : Mul U := (separableNormUnionField K L Ω).toMul
-    letI : Add U := (separableNormUnionField K L Ω).toAdd
-    letI : Group (RingAut U) := RingAut.instGroup U
     ∀ β : RingAut U, β ∈ normUnionGaloisSubgroup K L ↔
       β '' Set.range ι = Set.range ι ∧
         ∃ a ∈ (ρ).range, ∀ x : X, β (ι x) = ι (a x) := by
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
-  let := normLimitField K L
-  let := separableNormUnionField K L Ω
-  let : Mul U := (separableNormUnionField K L Ω).toMul
-  let : Add U := (separableNormUnionField K L Ω).toAdd
-  let : Group (RingAut U) := RingAut.instGroup U
   intro β
   rw [mem_normUnionGaloisSubgroup]
   constructor

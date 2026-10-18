@@ -42,40 +42,8 @@ local notation "r" => normUnionGaloisRestriction K L
 /-- Forgetting the base algebra gives an actual member of the source target. -/
 def normUnionGaloisRelativeHom :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
-    letI (N : FiniteLayer L Ω) : Field (NormLimit K N.val) :=
-      separableNormUnionStageField K L Ω N
-    letI (N : FiniteLayer L Ω) : NonAssocSemiring (NormLimit K N.val) :=
-      (separableNormUnionStageField K L Ω N).toNonAssocSemiring
-    letI := normLimitField K L
-    letI := separableNormUnionField K L Ω
-    letI : Semiring U :=
-      @CommSemiring.toSemiring U
-        (@Semifield.toCommSemiring U
-          (@Field.toSemifield U (separableNormUnionField K L Ω)))
-    letI : NonAssocSemiring U :=
-      (separableNormUnionField K L Ω).toNonAssocSemiring
-    letI : Mul U := (separableNormUnionField K L Ω).toMul
-    letI : Add U := (separableNormUnionField K L Ω).toAdd
-    letI : Group (RingAut U) := RingAut.instGroup U
-    letI := separableNormUnionAlgebra K L Ω
     (U ≃ₐ[X] U) →* S := by
   letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
-  letI (N : FiniteLayer L Ω) : Field (NormLimit K N.val) :=
-    separableNormUnionStageField K L Ω N
-  letI (N : FiniteLayer L Ω) : NonAssocSemiring (NormLimit K N.val) :=
-    (separableNormUnionStageField K L Ω N).toNonAssocSemiring
-  letI := normLimitField K L
-  letI := separableNormUnionField K L Ω
-  letI : Semiring U :=
-    @CommSemiring.toSemiring U
-      (@Semifield.toCommSemiring U
-        (@Field.toSemifield U (separableNormUnionField K L Ω)))
-  letI : NonAssocSemiring U :=
-    (separableNormUnionField K L Ω).toNonAssocSemiring
-  letI : Mul U := (separableNormUnionField K L Ω).toMul
-  letI : Add U := (separableNormUnionField K L Ω).toAdd
-  letI : Group (RingAut U) := RingAut.instGroup U
-  letI := separableNormUnionAlgebra K L Ω
   exact
     (MulSemiringAction.toRingEquiv (U ≃ₐ[X] U) U).codRestrict S fun β => by
       apply (mem_normUnionGaloisSubgroup K L β.toRingEquiv).mpr
@@ -105,12 +73,6 @@ theorem normUnionGaloisRelativeHom_surjective_ker :
       ((normUnionGaloisRelativeHom K L).codRestrict (r).ker
         (normUnionGaloisRelativeHom_mem_ker K L)) := by
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
-  let := normLimitField K L
-  let : Semiring U :=
-    @CommSemiring.toSemiring U
-      (@Semifield.toCommSemiring U
-        (@Field.toSemifield U (separableNormUnionField K L Ω)))
-  let := separableNormUnionAlgebra K L Ω
   intro β
   have hfix := (mem_normUnionGaloisRestriction_ker_iff K L β.val).mp
     β.property
@@ -135,15 +97,8 @@ def normUnionGaloisRelativeKernelEquiv :=
 /-- The canonical kernel comparison retains the same underlying automorphism. -/
 theorem normUnionGaloisRelativeKernelEquiv_apply :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
-    letI := normLimitField K L
-    letI : Semiring U :=
-      @CommSemiring.toSemiring U
-        (@Semifield.toCommSemiring U
-          (@Field.toSemifield U (separableNormUnionField K L Ω)))
-    letI := separableNormUnionAlgebra K L Ω
     ∀ β, (normUnionGaloisRelativeKernelEquiv K L β).val.val =
       β.toRingEquiv := by
-  let := normLimitField K L
   intro β
   apply DFunLike.ext
   intro z

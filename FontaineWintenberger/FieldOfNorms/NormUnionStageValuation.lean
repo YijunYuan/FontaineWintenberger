@@ -37,8 +37,6 @@ theorem normUnionStageEquiv_exponent (N P : FiniteLayer L M)
     (h : ∀ z : L, e (algebraMap L N.val z) = algebraMap L P.val (a z)) :
     separableNormUnionStageExponent K L M P =
       separableNormUnionStageExponent K L M N := by
-  let : Algebra.IsSeparable K N.val := Algebra.IsSeparable.trans K L N.val
-  let : Algebra.IsSeparable K P.val := Algebra.IsSeparable.trans K L P.val
   apply separableNormUnionStageExponent_unique K L M N
   intro x
   change normLimitValuation K N.val
@@ -66,8 +64,6 @@ theorem normUnionStageEquiv_valuation (N P : FiniteLayer L M)
     (x : NormLimit K N.val) :
     separableNormUnionStageValuation K L M P (normLimitMap e x) =
       separableNormUnionStageValuation K L M N x := by
-  let : Algebra.IsSeparable K N.val := Algebra.IsSeparable.trans K L N.val
-  let : Algebra.IsSeparable K P.val := Algebra.IsSeparable.trans K L P.val
   rw [separableNormUnionStageValuation_apply, separableNormUnionStageValuation_apply,
     normUnionStageEquiv_exponent K L M N P a e h,
     normLimitValuation_normLimitMap K

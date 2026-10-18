@@ -39,10 +39,8 @@ variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 valuation ring, using its proved preservation of the same stable valuation. -/
 def normLimitIntegerAut [IsAPF K L] [Fact (¬ Module.Finite K L)]
     (σ : L ≃ₐ[K] L) :
-    letI := normLimitField K L
     (normLimitFieldValuation K L).valuationSubring ≃+*
       (normLimitFieldValuation K L).valuationSubring := by
-  letI := normLimitField K L
   let g := normLimitAut K L σ
   have hv (x : NormLimit K L) :
       normLimitValuation K L (g x) = normLimitValuation K L x :=
@@ -65,7 +63,6 @@ def normLimitIntegerAut [IsAPF K L] [Fact (¬ Module.Finite K L)]
 @[simp]
 theorem coe_normLimitIntegerAut [IsAPF K L] [Fact (¬ Module.Finite K L)]
     (σ : L ≃ₐ[K] L) :
-    letI := normLimitField K L
     ∀ x : (normLimitFieldValuation K L).valuationSubring,
       (normLimitIntegerAut K L σ x : NormLimit K L) =
         normLimitAut K L σ x := by
@@ -76,7 +73,6 @@ theorem coe_normLimitIntegerAut [IsAPF K L] [Fact (¬ Module.Finite K L)]
 with infinity retained in the standard extended reals. -/
 def normLimitRamificationNumber [IsAPF K L] [Fact (¬ Module.Finite K L)]
     (σ : L ≃ₐ[K] L) : EReal := by
-  letI := normLimitField K L
   letI := normLimitFieldValuation_isDiscreteValuationRing K L
   let O := (normLimitFieldValuation K L).valuationSubring
   exact ((ramificationOrder (R := O) (O ≃+* O)
@@ -86,12 +82,10 @@ def normLimitRamificationNumber [IsAPF K L] [Fact (¬ Module.Finite K L)]
 valuation-preserving restriction on the same original valuation ring. -/
 theorem normLimitIntegerAut_eq_valuationIntegerAut [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (σ : L ≃ₐ[K] L) :
-    letI := normLimitField K L
     normLimitIntegerAut K L σ =
       valuationIntegerAut (normLimitFieldValuation K L)
         (normLimitAut K L σ)
         (normLimitAut_valuation K σ) := by
-  let := normLimitField K L
   apply RingEquiv.ext
   intro x
   rfl
@@ -100,13 +94,11 @@ theorem normLimitIntegerAut_eq_valuationIntegerAut [IsAPF K L]
 norm-field number, with the same field, valuation and actual automorphism. -/
 theorem normLimitRamificationNumber_eq_valuedRamificationNumber [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (σ : L ≃ₐ[K] L) :
-    letI := normLimitField K L
     letI := normLimitFieldValuation_isDiscreteValuationRing K L
     normLimitRamificationNumber K L σ =
       valuedRamificationNumber (normLimitFieldValuation K L)
         (normLimitAut K L σ)
         (normLimitAut_valuation K σ) := by
-  let := normLimitField K L
   let := normLimitFieldValuation_isDiscreteValuationRing K L
   change integerRamificationNumber (normLimitIntegerAut K L σ) = _
   rw [normLimitIntegerAut_eq_valuationIntegerAut]
@@ -116,9 +108,7 @@ theorem normLimitRamificationNumber_eq_valuedRamificationNumber [IsAPF K L]
 faithfulness of the original norm-field action. -/
 theorem normLimitIntegerAut_eq_one_iff [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (σ : L ≃ₐ[K] L) :
-    letI := normLimitField K L
     normLimitIntegerAut K L σ = 1 ↔ σ = 1 := by
-  let := normLimitField K L
   let O := (normLimitFieldValuation K L).valuationSubring
   constructor
   · intro hg
@@ -149,7 +139,6 @@ theorem neg_one_le_normLimitRamificationNumber [IsAPF K L]
 theorem normLimitRamificationNumber_eq_top_iff [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (σ : L ≃ₐ[K] L) :
     normLimitRamificationNumber K L σ = ⊤ ↔ σ = 1 := by
-  let := normLimitField K L
   let := normLimitFieldValuation_isDiscreteValuationRing K L
   let O := (normLimitFieldValuation K L).valuationSubring
   change ((ramificationOrder (R := O) (O ≃+* O)
@@ -181,16 +170,13 @@ theorem normLimitRamificationNumber_exists_real [IsAPF K L]
 on its actual valuation ring. -/
 def normLimitResidueAut [IsAPF K L] [Fact (¬ Module.Finite K L)]
     (σ : L ≃ₐ[K] L) :
-    letI := normLimitField K L
     IsLocalRing.ResidueField (normLimitFieldValuation K L).valuationSubring ≃+*
       IsLocalRing.ResidueField (normLimitFieldValuation K L).valuationSubring := by
-  letI := normLimitField K L
   exact IsLocalRing.ResidueField.mapEquiv (normLimitIntegerAut K L σ)
 
 @[simp]
 theorem normLimitResidueAut_residue [IsAPF K L] [Fact (¬ Module.Finite K L)]
     (σ : L ≃ₐ[K] L) :
-    letI := normLimitField K L
     ∀ a : (normLimitFieldValuation K L).valuationSubring,
       normLimitResidueAut K L σ (IsLocalRing.residue _ a) =
         IsLocalRing.residue _ (normLimitIntegerAut K L σ a) := by
@@ -201,11 +187,9 @@ theorem normLimitResidueAut_residue [IsAPF K L] [Fact (¬ Module.Finite K L)]
 actual integral elements modulo the actual maximal ideal. -/
 theorem normLimitResidueAut_eq_refl_iff [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (σ : L ≃ₐ[K] L) :
-    letI := normLimitField K L
     normLimitResidueAut K L σ = RingEquiv.refl _ ↔
       ∀ a : (normLimitFieldValuation K L).valuationSubring,
         normLimitIntegerAut K L σ a - a ∈ IsLocalRing.maximalIdeal _ := by
-  let := normLimitField K L
   let O := (normLimitFieldValuation K L).valuationSubring
   constructor
   · intro h a
@@ -221,16 +205,13 @@ theorem normLimitResidueAut_eq_refl_iff [IsAPF K L]
 intrinsic ramification number; this includes the identity and infinity. -/
 theorem normLimitRamificationNumber_eq_uniformizer [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (σ : L ≃ₐ[K] L) :
-    letI := normLimitField K L
     letI := normLimitFieldValuation_isDiscreteValuationRing K L
     ∀ (_hres : normLimitResidueAut K L σ = RingEquiv.refl _)
       (π : (normLimitFieldValuation K L).valuationSubring),
       Irreducible π → normLimitRamificationNumber K L σ =
         (((IsDiscreteValuationRing.addVal _
           (normLimitIntegerAut K L σ π - π) : ℝ≥0∞) : EReal) - 1) := by
-  let := normLimitField K L
   let := normLimitFieldValuation_isDiscreteValuationRing K L
-  let := normLimitField_charP K L
   let O := (normLimitFieldValuation K L).valuationSubring
   let : CharP O p :=
     (algebraMap O (NormLimit K L)).charP Subtype.val_injective p
@@ -245,7 +226,6 @@ theorem normLimitRamificationNumber_eq_uniformizer [IsAPF K L]
 intrinsic original norm-field number on its same original field. -/
 theorem normLimitRamificationNumber_eq_uniformizer_ratio [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (σ : L ≃ₐ[K] L) :
-    letI := normLimitField K L
     letI := normLimitFieldValuation_isDiscreteValuationRing K L
     ∀ (_hres : normLimitResidueAut K L σ = RingEquiv.refl _)
       (π : (normLimitFieldValuation K L).valuationSubring),
@@ -254,9 +234,7 @@ theorem normLimitRamificationNumber_eq_uniformizer_ratio [IsAPF K L]
           (normLimitFieldValuation K L).valuationSubring
           (normLimitAut K L σ (π : NormLimit K L) /
             (π : NormLimit K L) - 1) := by
-  let := normLimitField K L
   let := normLimitFieldValuation_isDiscreteValuationRing K L
-  let := normLimitField_charP K L
   let O := (normLimitFieldValuation K L).valuationSubring
   let : CharP O p :=
     (algebraMap O (NormLimit K L)).charP Subtype.val_injective p
@@ -277,10 +255,8 @@ theorem normLimitRamificationNumber_eq_uniformizer_ratio [IsAPF K L]
 ramification number minus one. -/
 theorem normLimitRamificationNumber_eq_neg_one_of_residue_ne [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (σ : L ≃ₐ[K] L) :
-    letI := normLimitField K L
     normLimitResidueAut K L σ ≠ RingEquiv.refl _ →
       normLimitRamificationNumber K L σ = -1 := by
-  let := normLimitField K L
   let := normLimitFieldValuation_isDiscreteValuationRing K L
   let O := (normLimitFieldValuation K L).valuationSubring
   let g := normLimitIntegerAut K L σ
@@ -302,7 +278,6 @@ namely a natural integral displacement order minus one. -/
 theorem normLimitRamificationNumber_eq_nat_sub_one [IsAPF K L]
     [Fact (¬ Module.Finite K L)] {σ : L ≃ₐ[K] L} (hσ : σ ≠ 1) :
     ∃ n : ℕ, normLimitRamificationNumber K L σ = (n : EReal) - 1 := by
-  let := normLimitField K L
   let := normLimitFieldValuation_isDiscreteValuationRing K L
   let O := (normLimitFieldValuation K L).valuationSubring
   let g := normLimitIntegerAut K L σ
@@ -454,11 +429,9 @@ theorem normLimitMap_sourceResidueConstants [IsAPF K L]
 norm-field valuation ring. -/
 theorem normLimitIntegerAut_sourceResidueConstantsInteger [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (σ : L ≃ₐ[K] L) :
-    letI := normLimitField K L
     ∀ a, normLimitIntegerAut K L σ
       (sourceResidueConstantsInteger K L a) =
         sourceResidueConstantsInteger K L (algebraicResidueAut K L σ a) := by
-  let := normLimitField K L
   intro a
   apply Subtype.ext
   change normLimitMap σ (sourceResidueConstants K L a) =
@@ -469,11 +442,9 @@ theorem normLimitIntegerAut_sourceResidueConstantsInteger [IsAPF K L]
 intertwines the two actual original residue actions. -/
 theorem normLimitResidueAut_sourceResidueConstantsResidueEquiv [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (σ : L ≃ₐ[K] L) :
-    letI := normLimitField K L
     ∀ a, normLimitResidueAut K L σ
       (sourceResidueConstantsResidueEquiv K L a) =
         sourceResidueConstantsResidueEquiv K L (algebraicResidueAut K L σ a) := by
-  let := normLimitField K L
   intro a
   rw [sourceResidueConstantsResidueEquiv_apply, normLimitResidueAut_residue,
     normLimitIntegerAut_sourceResidueConstantsInteger,
@@ -482,10 +453,8 @@ theorem normLimitResidueAut_sourceResidueConstantsResidueEquiv [IsAPF K L]
 /-- Original inertia is exactly inertia on the actual original norm field. -/
 theorem normLimitResidueAut_eq_refl_iff_algebraicResidueAut [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (σ : L ≃ₐ[K] L) :
-    letI := normLimitField K L
     normLimitResidueAut K L σ = RingEquiv.refl _ ↔
       algebraicResidueAut K L σ = RingEquiv.refl _ := by
-  let := normLimitField K L
   let e := sourceResidueConstantsResidueEquiv K L
   constructor
   · intro h
@@ -895,13 +864,11 @@ by the ordinary difference of its actual coordinates at every sufficiently
 deep original finite field, with no stability assumption on those fields. -/
 theorem normLimitValuation_sub_eventually_coordinate [IsAPF K L]
     [Fact (¬ Module.Finite K L)] :
-    letI := normLimitField K L
     ∀ (α β : NormLimit K L) (n : ℤ),
       normLimitValuation K L (α - β) = WithZero.exp (-n) →
       ∃ T : FiniteLayer K L, ∀ E : FiniteLayer K L, T ≤ E →
         (IsDiscreteValuationRing.maximalIdeal (spectralIntegerRing K E.val)).valuation E.val
           (normLimitEval K L E α - normLimitEval K L E β) = WithZero.exp (-n) := by
-  let := normLimitField K L
   intro α β n hn
   let s : ℕ := n.toNat + 1
   obtain ⟨T₀, hT₀⟩ := IsAPF.exists_normLimitValuation_eq_coordinate K L
@@ -939,7 +906,6 @@ theorem exists_finiteLayer_stableRamificationNumber_eq [IsAPF K L]
       FiniteLayer.map σ.toAlgHom E = E →
       finiteLayerRamificationNumber K L σ E =
         normLimitRamificationNumber K L σ := by
-  let := normLimitField K L
   let := normLimitFieldValuation_isDiscreteValuationRing K L
   let O := (normLimitFieldValuation K L).valuationSubring
   let π := normLimitUniformizerInteger K L

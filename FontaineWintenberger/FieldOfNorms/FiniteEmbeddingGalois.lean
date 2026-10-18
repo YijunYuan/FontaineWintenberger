@@ -34,15 +34,10 @@ theorem isGalois_finiteNormLimitEmbedding (τ : L →ₐ[K] M)
     [Module.Finite τ.fieldRange M] [IsGalois τ.fieldRange M]
     [IsAPF K L] [IsAPF K M]
     [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)] :
-    letI := normLimitField K L
-    letI := normLimitField K M
     letI := (finiteNormLimitEmbeddingRingHom K τ).toAlgebra
     IsGalois (NormLimit K L) (NormLimit K M) := by
   have hR : IsAPF K τ.fieldRange := (isAPF_algEquiv K τ.equivFieldRange).mp ‹_›
   have : Fact (¬ Module.Finite K τ.fieldRange) := ⟨not_finite_fieldRange τ⟩
-  let := normLimitField K L
-  let := normLimitField K M
-  let := normLimitField K τ.fieldRange
   let := (finiteNormLimitEmbeddingRingHom K τ).toAlgebra
   let := (finiteNormLimitRingHom K τ.fieldRange M).toAlgebra
   let e := normLimitRingEquiv K τ.equivFieldRange
@@ -62,16 +57,11 @@ def finiteNormLimitEmbeddingGaloisEquiv (τ : L →ₐ[K] M)
     [Module.Finite τ.fieldRange M] [IsGalois τ.fieldRange M]
     [IsAPF K L] [IsAPF K M]
     [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)] :
-    letI := normLimitField K L
-    letI := normLimitField K M
     letI := (finiteNormLimitEmbeddingRingHom K τ).toAlgebra
     (M ≃ₐ[τ.fieldRange] M) ≃*
       (NormLimit K M ≃ₐ[NormLimit K L] NormLimit K M) := by
   haveI hR : IsAPF K τ.fieldRange := (isAPF_algEquiv K τ.equivFieldRange).mp ‹_›
   haveI : Fact (¬ Module.Finite K τ.fieldRange) := ⟨not_finite_fieldRange τ⟩
-  let := normLimitField K L
-  let := normLimitField K M
-  let := normLimitField K τ.fieldRange
   let := (finiteNormLimitEmbeddingRingHom K τ).toAlgebra
   let := (finiteNormLimitRingHom K τ.fieldRange M).toAlgebra
   let e := normLimitRingEquiv K τ.equivFieldRange
@@ -102,8 +92,6 @@ theorem finiteNormLimitEmbeddingGaloisEquiv_apply (τ : L →ₐ[K] M)
     [IsAPF K L] [IsAPF K M]
     [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)]
     (σ : M ≃ₐ[τ.fieldRange] M) (x : NormLimit K M) :
-    letI := normLimitField K L
-    letI := normLimitField K M
     letI := (finiteNormLimitEmbeddingRingHom K τ).toAlgebra
     finiteNormLimitEmbeddingGaloisEquiv K τ σ x =
       normLimitMap (σ.restrictScalars K) x := rfl

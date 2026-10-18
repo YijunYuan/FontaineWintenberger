@@ -124,27 +124,17 @@ local notation "U" => SeparableNormUnion K L Ω
 /-- The same original norm-field union is compared to the canonical
 separable closure using its proved separable-closure structure. -/
 def normUnionSeparableClosureEquiv :
-    letI := normLimitField K L
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
-    letI := separableNormUnionField K L Ω
-    letI := separableNormUnionAlgebra K L Ω
     U ≃ₐ[X] SeparableClosure X := by
-  let := normLimitField K L
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
-  let := separableNormUnionField K L Ω
-  let := separableNormUnionAlgebra K L Ω
   let := separableNormUnion_isSepClosure K L Ω
   exact IsSepClosure.equiv X U (SeparableClosure X)
 
 /-- The source corollary for the actual original closure and the canonical
 separable closure of the same original norm field. -/
 def normUnionAbsoluteGaloisEquiv :
-    letI := normLimitField K L
     (Ω ≃ₐ[L] Ω) ≃ₜ* (SeparableClosure X ≃ₐ[X] SeparableClosure X) := by
-  let := normLimitField K L
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
-  let := separableNormUnionField K L Ω
-  let := separableNormUnionAlgebra K L Ω
   exact (separableNormUnionKrullEquiv K L Ω).trans
     (krullAutCongr (normUnionSeparableClosureEquiv K L Ω))
 
@@ -153,18 +143,12 @@ norm-field automorphism, rather than an independently constructed action. -/
 theorem normUnionAbsoluteGaloisEquiv_apply (σ : Ω ≃ₐ[L] Ω)
     (z : letI : Algebra.IsSeparable L Ω :=
       Algebra.isSeparable_tower_top_of_isSeparable K L Ω; U) :
-    letI := normLimitField K L
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
-    letI := separableNormUnionField K L Ω
-    letI := separableNormUnionAlgebra K L Ω
     normUnionAbsoluteGaloisEquiv K L Ω σ
       (normUnionSeparableClosureEquiv K L Ω z) =
       normUnionSeparableClosureEquiv K L Ω
         (separableNormUnionMap K L Ω Ω σ.toAlgHom z) := by
-  let := normLimitField K L
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
-  let := separableNormUnionField K L Ω
-  let := separableNormUnionAlgebra K L Ω
   change (normUnionSeparableClosureEquiv K L Ω)
     ((separableNormUnionKrullEquiv K L Ω σ)
       ((normUnionSeparableClosureEquiv K L Ω).symm
@@ -174,10 +158,8 @@ theorem normUnionAbsoluteGaloisEquiv_apply (σ : Ω ≃ₐ[L] Ω)
 /-- The actual absolute Galois equivalence on the project's canonical
 separable-closure automorphism groups, with their existing Krull topologies. -/
 def normLimitAbsoluteGaloisEquiv :
-    letI := normLimitField K L
     (SeparableClosure L ≃ₐ[L] SeparableClosure L) ≃ₜ*
       (SeparableClosure X ≃ₐ[X] SeparableClosure X) := by
-  let := normLimitField K L
   exact (krullAutCongr (originalSeparableClosureEquiv K L Ω)).trans
     (normUnionAbsoluteGaloisEquiv K L Ω)
 
@@ -187,19 +169,13 @@ theorem normLimitAbsoluteGaloisEquiv_apply
     (σ : SeparableClosure L ≃ₐ[L] SeparableClosure L)
     (z : letI : Algebra.IsSeparable L Ω :=
       Algebra.isSeparable_tower_top_of_isSeparable K L Ω; U) :
-    letI := normLimitField K L
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
-    letI := separableNormUnionField K L Ω
-    letI := separableNormUnionAlgebra K L Ω
     normLimitAbsoluteGaloisEquiv K L Ω σ
       (normUnionSeparableClosureEquiv K L Ω z) =
       normUnionSeparableClosureEquiv K L Ω
         (separableNormUnionMap K L Ω Ω
           ((originalSeparableClosureEquiv K L Ω).autCongr σ).toAlgHom z) := by
-  let := normLimitField K L
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
-  let := separableNormUnionField K L Ω
-  let := separableNormUnionAlgebra K L Ω
   exact normUnionAbsoluteGaloisEquiv_apply K L Ω
     ((originalSeparableClosureEquiv K L Ω).autCongr σ) z
 
@@ -207,10 +183,8 @@ theorem normLimitAbsoluteGaloisEquiv_apply
 data: the canonical separable closure of the original field is itself a
 separable closure of the original base via the actual composite algebra. -/
 def fieldOfNormsAbsoluteGaloisEquiv :
-    letI := normLimitField K L
     (SeparableClosure L ≃ₐ[L] SeparableClosure L) ≃ₜ*
       (SeparableClosure X ≃ₐ[X] SeparableClosure X) := by
-  let := normLimitField K L
   let : Algebra K (SeparableClosure L) :=
     ((algebraMap L (SeparableClosure L)).comp (algebraMap K L)).toAlgebra
   let : IsScalarTower K L (SeparableClosure L) := IsScalarTower.of_algebraMap_eq' rfl

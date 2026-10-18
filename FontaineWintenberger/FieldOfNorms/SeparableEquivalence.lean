@@ -43,17 +43,11 @@ isomorphism. -/
 def separableNormUnionObjectIso
     (M : Type (max u v w)) [Field M]
     [Algebra K M] [Algebra L M] [IsScalarTower K L M] [Algebra.IsSeparable L M]
-    (B : letI := normLimitField K L
+    (B :
       SeparableExtensionCat.{v, max u v w} (NormLimit K L))
-    (e : letI := normLimitField K L
-      letI := separableNormUnionField K L M
-      letI := separableNormUnionAlgebra K L M
+    (e :
       SeparableNormUnion K L M ≃ₐ[NormLimit K L] B.obj) :
-    letI := normLimitField K L
     separableNormUnionObjectOf.{u, v, w} K L M ≅ B := by
-  letI := normLimitField K L
-  letI := separableNormUnionField K L M
-  letI := separableNormUnionAlgebra K L M
   dsimp only [separableNormUnionObjectOf]
   exact (separableFieldProperty (NormLimit K L)).isoMk (CommAlgCat.isoMk e)
 
@@ -62,15 +56,11 @@ when the original field is replaced by a universe-lifted isomorphic copy. -/
 theorem separableNormUnionFunctor_mem_essImage_of_algEquiv
     {M : Type v} [Field M] [Algebra K M] [Algebra L M] [IsScalarTower K L M]
     [Algebra.IsSeparable L M]
-    (B : letI := normLimitField K L
+    (B :
       SeparableExtensionCat.{v, max u v w} (NormLimit K L))
-    (e : letI := normLimitField K L
-      letI := separableNormUnionField K L M
-      letI := separableNormUnionAlgebra K L M
+    (e :
       SeparableNormUnion K L M ≃ₐ[NormLimit K L] B.obj) :
-    letI := normLimitField K L
     (separableNormUnionFunctor.{u, v, w} K L).essImage B := by
-  let := normLimitField K L
   let : Algebra.IsSeparable L (ULift.{max u v w} M) :=
     AlgEquiv.Algebra.isSeparable
       (ULift.algEquiv.{v, v, max u v w} (R := L) (A := M)).symm
@@ -84,10 +74,6 @@ theorem separableNormUnionFunctor_mem_essImage_of_algEquiv
   let : IsScalarTower K L A.obj := IsScalarTower.of_algebraMap_eq' rfl
   let : Algebra.IsSeparable L A.obj := A.property.2
   let a : A.obj ≃ₐ[L] M := ULift.algEquiv.{v, v, max u v w}
-  let := separableNormUnionField K L M
-  let := separableNormUnionAlgebra K L M
-  let := separableNormUnionField K L A.obj
-  let := separableNormUnionAlgebra K L A.obj
   let c := separableNormUnionCongr K L A.obj M a
   let d := c.trans e
   let i := separableNormUnionObjectIso.{u, v, w} K L A.obj B d
@@ -97,9 +83,7 @@ theorem separableNormUnionFunctor_mem_essImage_of_algEquiv
 
 /-- Every canonical separable target object is the value of an actual original extension. -/
 theorem separableNormUnionFunctorEssSurj :
-    letI := normLimitField K L
     (separableNormUnionFunctor.{u, v, w} K L).EssSurj := by
-  let := normLimitField K L
   constructor
   intro B
   let : Field B.obj := { B.property.1.toField with toCommRing := B.obj.commRing }
@@ -110,26 +94,21 @@ theorem separableNormUnionFunctorEssSurj :
 
 /-- Full faithfulness and the constructed original essential image prove equivalence. -/
 theorem separableNormUnionFunctorIsEquivalence :
-    letI := normLimitField K L
     (separableNormUnionFunctor.{u, v, w} K L).IsEquivalence := by
-  let := normLimitField K L
   let ff := separableNormUnionFunctorFullyFaithful.{u, v, w} K L
   exact ⟨ff.faithful, ff.full,
     separableNormUnionFunctorEssSurj.{u, v, w} K L⟩
 
 /-- The field-of-norms equivalence has exactly the original canonical union functor. -/
 def separableNormUnionEquivalence :
-    letI := normLimitField K L
     SeparableExtensionCat.{v, max u v w} L ≌
       SeparableExtensionCat.{v, max u v w} (NormLimit K L) := by
-  letI := normLimitField K L
   letI := separableNormUnionFunctorIsEquivalence.{u, v, w} K L
   exact (separableNormUnionFunctor.{u, v, w} K L).asEquivalence
 
 /-- The equivalence retains the literal original induced maps. -/
 @[simp]
 theorem separableNormUnionEquivalence_functor :
-    letI := normLimitField K L
     (separableNormUnionEquivalence.{u, v, w} K L).functor =
       separableNormUnionFunctor.{u, v, w} K L := rfl
 

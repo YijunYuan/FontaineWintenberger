@@ -41,11 +41,7 @@ variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 def separableNormUnionObjectOf (M : Type (max u v w)) [Field M]
     [Algebra K M] [Algebra L M] [IsScalarTower K L M]
     [Algebra.IsSeparable L M] :
-    letI := normLimitField K L
     SeparableExtensionCat.{v, max u v w} (NormLimit K L) := by
-  letI := normLimitField K L
-  letI := separableNormUnionField K L M
-  letI := separableNormUnionAlgebra K L M
   letI : Algebra.IsSeparable (NormLimit K L)
       (SeparableNormUnion K L M) :=
     separableNormUnion_isSeparable K L M
@@ -59,21 +55,14 @@ def separableNormUnionObjectMapOf
     [Algebra K N] [Algebra L N] [IsScalarTower K L N]
     [Algebra.IsSeparable L M] [Algebra.IsSeparable L N]
     (t : M →ₐ[L] N) :
-    letI := normLimitField K L
     separableNormUnionObjectOf.{u, v, w} K L M ⟶
       separableNormUnionObjectOf.{u, v, w} K L N := by
-  letI := normLimitField K L
-  letI := separableNormUnionField K L M
-  letI := separableNormUnionField K L N
-  letI := separableNormUnionAlgebra K L M
-  letI := separableNormUnionAlgebra K L N
   dsimp only [separableNormUnionObjectOf]
   exact ObjectProperty.homMk
     (CommAlgCat.ofHom (separableNormUnionAlgMap K L M N t))
 
 /-- The actual separable norm-field union, as an object of the canonical category. -/
 abbrev separableNormUnionObj (A : SeparableExtensionCat.{v, max u v w} L) :
-    letI := normLimitField K L
     SeparableExtensionCat.{v, max u v w} (NormLimit K L) := by
   letI : Field A.obj := { A.property.1.toField with toCommRing := A.obj.commRing }
   letI : Algebra K A.obj := Algebra.compHom A.obj (algebraMap K L)
@@ -84,7 +73,6 @@ abbrev separableNormUnionObj (A : SeparableExtensionCat.{v, max u v w} L) :
 /-- The categorical morphism is exactly the original induced algebra embedding. -/
 def separableNormUnionObjMap
     {A B : SeparableExtensionCat.{v, max u v w} L} (f : A ⟶ B) :
-    letI := normLimitField K L
     separableNormUnionObj.{u, v, w} K L A ⟶
       separableNormUnionObj.{u, v, w} K L B := by
   letI : Field A.obj := { A.property.1.toField with toCommRing := A.obj.commRing }
@@ -107,12 +95,8 @@ variable (M N P : Type (max u v w)) [Field M] [Field N] [Field P]
 
 /-- The bundled original union map preserves identities. -/
 theorem separableNormUnionObjectMapOf_id :
-    letI := normLimitField K L
     separableNormUnionObjectMapOf.{u, v, w} K L M M (AlgHom.id L M) =
       𝟙 (separableNormUnionObjectOf.{u, v, w} K L M) := by
-  let := normLimitField K L
-  let := separableNormUnionField K L M
-  let := separableNormUnionAlgebra K L M
   dsimp only [separableNormUnionObjectMapOf, separableNormUnionObjectOf]
   apply ObjectProperty.hom_ext
   apply CommAlgCat.hom_ext
@@ -122,17 +106,9 @@ theorem separableNormUnionObjectMapOf_id :
 
 /-- The bundled original union map preserves composition. -/
 theorem separableNormUnionObjectMapOf_comp (t : M →ₐ[L] N) (s : N →ₐ[L] P) :
-    letI := normLimitField K L
     separableNormUnionObjectMapOf.{u, v, w} K L M P (s.comp t) =
       separableNormUnionObjectMapOf.{u, v, w} K L M N t ≫
         separableNormUnionObjectMapOf.{u, v, w} K L N P s := by
-  let := normLimitField K L
-  let := separableNormUnionField K L M
-  let := separableNormUnionAlgebra K L M
-  let := separableNormUnionField K L N
-  let := separableNormUnionAlgebra K L N
-  let := separableNormUnionField K L P
-  let := separableNormUnionAlgebra K L P
   dsimp only [separableNormUnionObjectMapOf, separableNormUnionObjectOf]
   apply ObjectProperty.hom_ext
   apply CommAlgCat.hom_ext
@@ -143,10 +119,8 @@ theorem separableNormUnionObjectMapOf_comp (t : M →ₐ[L] N) (s : N →ₐ[L] 
 
 /-- The actual full Hom correspondence remains bijective after canonical bundling. -/
 theorem separableNormUnionObjectMapOf_bijective :
-    letI := normLimitField K L
     Function.Bijective (separableNormUnionObjectMapOf.{u, v, w}
       K L M N) := by
-  let := normLimitField K L
   dsimp only [separableNormUnionObjectMapOf, separableNormUnionObjectOf]
   exact (SeparableExtensionCat.homEquiv _ _).symm.bijective.comp
     (separableNormUnionAlgMap_bijective K L N M)
@@ -154,14 +128,12 @@ theorem separableNormUnionObjectMapOf_bijective :
 /-- Canonical categorical bundling leaves the original union embedding unchanged. -/
 theorem separableNormUnionObjectMapOf_apply (t : M →ₐ[L] N)
     (x : SeparableNormUnion K L M) :
-    letI := normLimitField K L
     (separableNormUnionObjectMapOf.{u, v, w} K L M N t).hom.hom x =
       separableNormUnionMap K L M N t x := rfl
 
 /-- The original compatible rational valuations are preserved by the categorical map. -/
 theorem separableNormUnionObjectMapOf_valuation (t : M →ₐ[L] N)
     (x : SeparableNormUnion K L M) :
-    letI := normLimitField K L
     separableNormUnionValuation K L N
         ((separableNormUnionObjectMapOf.{u, v, w} K L M N t).hom.hom x) =
       separableNormUnionValuation K L M x :=
@@ -172,10 +144,8 @@ def separableNormUnionObjectFiniteAlgEquiv [Module.Finite L M] :
     letI : Algebra.IsSeparable K M := Algebra.IsSeparable.trans K L M
     letI : IsAPF K M := (isAPF_finite_extension_iff K M L).mpr ‹_›
     letI : Fact (¬ Module.Finite K M) := ⟨separableNormUnion_ambient_infinite K L M⟩
-    letI := normLimitField K L
     letI : IsAPF K M := (isAPF_finite_extension_iff K M L).mpr ‹_›
     letI : Fact (¬ Module.Finite K M) := ⟨separableNormUnion_ambient_infinite K L M⟩
-    letI := normLimitField K M
     letI := (finiteNormLimitRingHom K L M
 ).toAlgebra
     (separableNormUnionObjectOf.{u, v, w} K L M).obj ≃ₐ[NormLimit K L]
@@ -183,10 +153,8 @@ def separableNormUnionObjectFiniteAlgEquiv [Module.Finite L M] :
   letI : Algebra.IsSeparable K M := Algebra.IsSeparable.trans K L M
   letI : IsAPF K M := (isAPF_finite_extension_iff K M L).mpr ‹_›
   letI : Fact (¬ Module.Finite K M) := ⟨separableNormUnion_ambient_infinite K L M⟩
-  letI := normLimitField K L
   letI : IsAPF K M := (isAPF_finite_extension_iff K M L).mpr ‹_›
   letI : Fact (¬ Module.Finite K M) := ⟨separableNormUnion_ambient_infinite K L M⟩
-  letI := normLimitField K M
   letI := (finiteNormLimitRingHom K L M
 ).toAlgebra
   dsimp only [separableNormUnionObjectOf]
@@ -197,7 +165,6 @@ end OriginalFields
 /-- The categorical map on each original pair of field algebras is bijective. -/
 theorem separableNormUnionObjMap_bijective
     (A B : SeparableExtensionCat.{v, max u v w} L) :
-    letI := normLimitField K L
     Function.Bijective (separableNormUnionObjMap.{u, v, w}
       K L (A := A) (B := B)) := by
   let : Field A.obj := { A.property.1.toField with toCommRing := A.obj.commRing }
@@ -222,10 +189,8 @@ theorem separableNormUnionObjMap_bijective
 
 /-- The original norm-union construction is a functor on the canonical categories. -/
 def separableNormUnionFunctor :
-    let := normLimitField K L
     SeparableExtensionCat.{v, max u v w} L ⥤
       SeparableExtensionCat.{v, max u v w} (NormLimit K L) := by
-  letI := normLimitField K L
   refine { obj := separableNormUnionObj.{u, v, w} K L
            map := fun f => separableNormUnionObjMap.{u, v, w} K L f
            map_id := ?_
@@ -254,9 +219,7 @@ def separableNormUnionFunctor :
 
 /-- Full faithfulness uses the proved original Hom correspondence. -/
 def separableNormUnionFunctorFullyFaithful :
-    letI := normLimitField K L
     (separableNormUnionFunctor.{u, v, w} K L).FullyFaithful := by
-  letI := normLimitField K L
   exact Classical.choice ((Functor.FullyFaithful.nonempty_iff_map_bijective
     (separableNormUnionFunctor.{u, v, w} K L)).2
     (fun A B => separableNormUnionObjMap_bijective.{u, v, w} K L A B))
