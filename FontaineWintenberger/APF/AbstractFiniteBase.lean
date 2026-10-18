@@ -49,7 +49,7 @@ noncomputable def closureEquiv : SeparableClosure M ≃ₐ[M] SeparableClosure K
   exact IsSepClosure.equiv M (SeparableClosure M) (SeparableClosure K)
 
 /-- Rebase an actual old-base finite Galois layer, without changing its carrier. -/
-noncomputable def finiteLayer
+noncomputable def rebaseFiniteGaloisLayer
     (E : FiniteGaloisIntermediateField K (SeparableClosure K))
     (hME : S₀ ≤ E.toIntermediateField) :
     FiniteGaloisIntermediateField M (SeparableClosure K) := by
@@ -69,7 +69,7 @@ omit [Algebra.IsSeparable K M] in
 /-- Old-base normal overfields are cofinal over the abstract new base. -/
 theorem exists_layer (D : FiniteGaloisIntermediateField M (SeparableClosure K)) :
     ∃ (E : FiniteGaloisIntermediateField K (SeparableClosure K))
-      (hME : S₀ ≤ E.toIntermediateField), D ≤ finiteLayer K M E hME := by
+      (hME : S₀ ≤ E.toIntermediateField), D ≤ rebaseFiniteGaloisLayer K M E hME := by
   let : FiniteDimensional K D := FiniteDimensional.trans K M D
   let T := D.toIntermediateField.restrictScalars K
   let : FiniteDimensional K T := inferInstanceAs (FiniteDimensional K D)
@@ -127,11 +127,11 @@ theorem mem_upper_iff_cofinal {v : ℝ} (hv : -1 ≤ v)
     g ∈ upperRamificationGroupInfinite M (SeparableClosure K) v ↔
       ∀ (E : FiniteGaloisIntermediateField K (SeparableClosure K))
         (hME : S₀ ≤ E.toIntermediateField),
-        g.restrictNormal (finiteLayer K M E hME) ∈
-          upperRamificationGroup (R := spectralIntegerRing M (finiteLayer K M E hME))
-            (finiteLayer K M E hME ≃ₐ[M] finiteLayer K M E hME) v := by
+        g.restrictNormal (rebaseFiniteGaloisLayer K M E hME) ∈
+          upperRamificationGroup (R := spectralIntegerRing M (rebaseFiniteGaloisLayer K M E hME))
+            (rebaseFiniteGaloisLayer K M E hME ≃ₐ[M] rebaseFiniteGaloisLayer K M E hME) v := by
   let F (j : {E : FiniteGaloisIntermediateField K (SeparableClosure K) //
-      S₀ ≤ E.toIntermediateField}) := finiteLayer K M j.1 j.2
+      S₀ ≤ E.toIntermediateField}) := rebaseFiniteGaloisLayer K M j.1 j.2
   have hF : ∀ D : FiniteGaloisIntermediateField M (SeparableClosure K), ∃ j, D ≤ F j := by
     intro D
     obtain ⟨E, hME, hDE⟩ := exists_layer K M D
@@ -141,28 +141,30 @@ theorem mem_upper_iff_cofinal {v : ℝ} (hv : -1 ≤ v)
 
 omit [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := M)).valuationSubring)] in
-/-- A restriction to an actual finite layer detects the upper condition over either base. -/
+/-- A restriction to an actual finite intermediate field detects the upper condition over either
+    base. -/
 theorem finite_restriction_mem_upper_iff
     (E : FiniteGaloisIntermediateField K (SeparableClosure K))
     (hME : S₀ ≤ E.toIntermediateField) {u : ℝ} (hu : -1 ≤ u)
     (g : SeparableClosure K ≃ₐ[M] SeparableClosure K) :
-    g.restrictNormal (finiteLayer K M E hME) ∈
-        upperRamificationGroup (R := spectralIntegerRing M (finiteLayer K M E hME))
-          (finiteLayer K M E hME ≃ₐ[M] finiteLayer K M E hME) (apfPsi K M u) ↔
+    g.restrictNormal (rebaseFiniteGaloisLayer K M E hME) ∈
+        upperRamificationGroup (R := spectralIntegerRing M (rebaseFiniteGaloisLayer K M E hME))
+          (rebaseFiniteGaloisLayer K M E hME ≃ₐ[M] rebaseFiniteGaloisLayer K M E hME) (apfPsi K M
+              u) ↔
       (g.restrictScalars K).restrictNormal E ∈
         upperRamificationGroup (R := spectralIntegerRing K E) (E ≃ₐ[K] E) u := by
-  let : Algebra M E := inferInstanceAs (Algebra M (finiteLayer K M E hME))
+  let : Algebra M E := inferInstanceAs (Algebra M (rebaseFiniteGaloisLayer K M E hME))
   let : IsScalarTower K M E := IsScalarTower.of_algebraMap_eq (fun x =>
     Subtype.ext (IsScalarTower.algebraMap_apply K M (SeparableClosure K) x))
   let : FiniteDimensional M E := Module.Finite.right K M E
   let : Algebra.IsSeparable M E := Algebra.isSeparable_tower_top_of_isSeparable K M E
   let : Algebra.IsAlgebraic M E := Algebra.IsAlgebraic.tower_top (K := K) M
-  let q : E ≃ₐ[M] E := g.restrictNormal (finiteLayer K M E hME)
+  let q : E ≃ₐ[M] E := g.restrictNormal (rebaseFiniteGaloisLayer K M E hME)
   have hq : q.restrictScalars K = (g.restrictScalars K).restrictNormal E := by
     apply AlgEquiv.ext
     intro x
     apply Subtype.ext
-    exact (AlgEquiv.restrictNormal_commutes g (finiteLayer K M E hME) x).trans
+    exact (AlgEquiv.restrictNormal_commutes g (rebaseFiniteGaloisLayer K M E hME) x).trans
       (AlgEquiv.restrictNormal_commutes (g.restrictScalars K) E x).symm
   change q ∈ upperRamificationGroup (R := spectralIntegerRing M E) (E ≃ₐ[M] E)
     (apfPsi K M u) ↔ _

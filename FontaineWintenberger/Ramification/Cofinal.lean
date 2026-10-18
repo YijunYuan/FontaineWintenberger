@@ -9,7 +9,7 @@ public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.Absolute
 
 /-!
-# Testing actual infinite upper groups on cofinal finite layers
+# Testing actual infinite upper groups on cofinal finite intermediate fields
 -/
 
 @[expose] public section
@@ -21,7 +21,7 @@ variable (K Ω : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedFie
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
 
-/-- A cofinal family of actual finite layers tests all infinite upper conditions. -/
+/-- A cofinal family of actual finite intermediate fields tests all infinite upper conditions. -/
 theorem mem_upperRamificationGroupInfinite_iff_cofinal
     {ι : Type*} (E : ι → FiniteGaloisIntermediateField K Ω)
     (hE : ∀ D : FiniteGaloisIntermediateField K Ω, ∃ j, D ≤ E j)

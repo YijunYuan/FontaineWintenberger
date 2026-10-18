@@ -35,34 +35,34 @@ variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 /-- Every actual finite separable extension of the original norm field is
 isomorphic over that same field to an original finite norm-field stage in
 the prescribed original separable closure. -/
-theorem exists_finite_normLimit_algEquiv_of_separableClosure :
-    ∀ (F : Type*) [Field F] [Algebra (NormLimit K L) F]
-      [Module.Finite (NormLimit K L) F] [Algebra.IsSeparable (NormLimit K L) F],
-      ∃ N : FiniteLayer L Ω,
-        Nonempty (NormLimit K N.val ≃ₐ[NormLimit K L] F) := by
+theorem exists_finite_fieldOfNorms_algEquiv_of_separableClosure :
+    ∀ (F : Type*) [Field F] [Algebra (FieldOfNorms K L) F]
+      [Module.Finite (FieldOfNorms K L) F] [Algebra.IsSeparable (FieldOfNorms K L) F],
+      ∃ N : FiniteIntermediateField L Ω,
+        Nonempty (FieldOfNorms K N.val ≃ₐ[FieldOfNorms K L] F) := by
   intro F _ _ _ _
   let : IsSepClosure K Ω :=
     ⟨IsSepClosure.sep_closed L, Algebra.IsSeparable.trans K L Ω⟩
-  let : IsSepClosed (SeparableNormUnion K L Ω) :=
-    separableNormUnion_isSepClosed K L Ω
-  let t : F →ₐ[NormLimit K L] SeparableNormUnion K L Ω := IsSepClosed.lift
-  let : Module.Finite (NormLimit K L) t.fieldRange :=
+  let : IsSepClosed (RelFieldOfNorms K L Ω) :=
+    RelFieldOfNorms._isSepClosed K L Ω
+  let t : F →ₐ[FieldOfNorms K L] RelFieldOfNorms K L Ω := IsSepClosed.lift
+  let : Module.Finite (FieldOfNorms K L) t.fieldRange :=
     Module.Finite.equiv t.equivFieldRange.toLinearEquiv
-  obtain ⟨N, hN, _⟩ := separableNormUnion_existsUnique_finite_subfield_preimage
+  obtain ⟨N, hN, _⟩ := RelFieldOfNorms._existsUnique_finite_subfield_preimage
     K L Ω t.fieldRange
-  let i := separableNormUnionOfAlgHom K L Ω N
+  let i := RelFieldOfNorms.ofAlgHom K L Ω N
   refine ⟨N, ⟨i.equivFieldRange.trans ((IntermediateField.equivOfEq hN).trans
     t.equivFieldRange.symm)⟩⟩
 
 /-- Without prescribing an original separable closure, every finite
 separable target is still an actual original finite norm-field stage. -/
-theorem exists_finite_normLimit_algEquiv :
-    ∀ (F : Type*) [Field F] [Algebra (NormLimit K L) F]
-      [Module.Finite (NormLimit K L) F] [Algebra.IsSeparable (NormLimit K L) F],
-      ∃ N : FiniteLayer L (SeparableClosure L),
-        Nonempty (NormLimit K N.val ≃ₐ[NormLimit K L] F) := by
+theorem exists_finite_fieldOfNorms_algEquiv :
+    ∀ (F : Type*) [Field F] [Algebra (FieldOfNorms K L) F]
+      [Module.Finite (FieldOfNorms K L) F] [Algebra.IsSeparable (FieldOfNorms K L) F],
+      ∃ N : FiniteIntermediateField L (SeparableClosure L),
+        Nonempty (FieldOfNorms K N.val ≃ₐ[FieldOfNorms K L] F) := by
   intro F _ _ _ _
-  exact exists_finite_normLimit_algEquiv_of_separableClosure
+  exact exists_finite_fieldOfNorms_algEquiv_of_separableClosure
     K L (SeparableClosure L) F
 
 end FontaineWintenberger

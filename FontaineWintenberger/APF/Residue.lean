@@ -134,15 +134,15 @@ theorem spectralResidueInclusion_surjective_of_zeroStage_le
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
 /-- In the original abstract APF extension, residue degrees stabilize above
-an actual finite layer pulled back from its genuine zero stage. -/
-theorem IsAPF.exists_finiteLayer_residueDegree_stable [IsAPF K L] :
-    ∃ E₀ : FiniteLayer K L, ∀ F : FiniteLayer K L, E₀ ≤ F →
+an actual finite intermediate field pulled back from its genuine zero stage. -/
+theorem IsAPF.exists_finiteIntermediateField_residueDegree_stable [IsAPF K L] :
+    ∃ E₀ : FiniteIntermediateField K L, ∀ F : FiniteIntermediateField K L, E₀ ≤ F →
       Module.finrank (IsLocalRing.ResidueField R)
           (IsLocalRing.ResidueField (spectralIntegerRing K F.val)) =
         Module.finrank (IsLocalRing.ResidueField R)
           (IsLocalRing.ResidueField (spectralIntegerRing K E₀.val)) := by
   let j : L →ₐ[K] SeparableClosure K := IsSepClosed.lift
-  obtain ⟨E₀, hE₀⟩ := exists_finiteLayer_map_eq_apfFiniteStage K L j
+  obtain ⟨E₀, hE₀⟩ := exists_finiteIntermediateField_map_eq_apfFiniteStage K L j
     (by norm_num : -1 ≤ (0 : ℝ))
   refine ⟨E₀, fun F hF => ?_⟩
   have : FiniteDimensional K (F.val.map j) :=
@@ -161,11 +161,11 @@ theorem IsAPF.exists_finiteLayer_residueDegree_stable [IsAPF K L] :
 
 /-- The original abstract APF extension has an actual finite residue-stable
 tail: every inclusion on that tail induces a surjection on actual residues. -/
-theorem IsAPF.exists_finiteLayer_residueInclusion_surjective [IsAPF K L] :
-    ∃ E₀ : FiniteLayer K L, ∀ E F : FiniteLayer K L, E₀ ≤ E → ∀ hEF : E ≤ F,
+theorem IsAPF.exists_finiteIntermediateField_residueInclusion_surjective [IsAPF K L] :
+    ∃ E₀ : FiniteIntermediateField K L, ∀ E F : FiniteIntermediateField K L, E₀ ≤ E → ∀ hEF : E ≤ F,
       Function.Surjective
         (spectralResidueInclusion K (IntermediateField.inclusion hEF)) := by
-  obtain ⟨E₀, hE₀⟩ := IsAPF.exists_finiteLayer_residueDegree_stable K L
+  obtain ⟨E₀, hE₀⟩ := IsAPF.exists_finiteIntermediateField_residueDegree_stable K L
   refine ⟨E₀, fun E F hE hEF => ?_⟩
   have hdim := (hE₀ E hE).trans (hE₀ F (hE.trans hEF)).symm
   exact (LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim

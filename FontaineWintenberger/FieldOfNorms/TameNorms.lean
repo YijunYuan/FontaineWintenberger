@@ -107,18 +107,18 @@ theorem exists_intNorm_add_congruence_of_totallyRamified_fixedField
     exists_apfRamificationBound_wild_compositum_of_totallyRamified K Ω p H he n hd hdegree
   refine ⟨b, hb, hbound, ?_⟩
   intro x y
-  let E : FiniteLayer K Ω := ⟨A, inferInstance⟩
-  let N : FiniteLayer K Ω := ⟨A ⊔ F, inferInstance⟩
+  let E : FiniteIntermediateField K Ω := ⟨A, inferInstance⟩
+  let N : FiniteIntermediateField K Ω := ⟨A ⊔ F, inferInstance⟩
   have hEN : E ≤ N := (show A ≤ A ⊔ F from le_sup_left)
   let j : F →ₐ[K] (A ⊔ F : IntermediateField K Ω) :=
     IntermediateField.inclusion (show F ≤ A ⊔ F from le_sup_right)
   let J := spectralIntegerInclusion K j
-  have hc := FiniteLayer.integerNorm_add_congruence_of_wild_field p E N hEN le_rfl
+  have hc := FiniteIntermediateField.integerNorm_add_congruence_of_wild_field p E N hEN le_rfl
     ((e : ℝ) * b) (le_of_eq hboundA.symm) (J x) (J y)
-  have hnorm (z : S) : FiniteLayer.integerNorm E N hEN (J z) =
+  have hnorm (z : S) : FiniteIntermediateField.integerNorm E N hEN (J z) =
       algebraMap R T (Algebra.intNorm R S z) := by
     apply Subtype.ext
-    rw [FiniteLayer.coe_integerNorm]
+    rw [FiniteIntermediateField.coe_integerNorm]
     change Algebra.norm A
       (⟨((z : F) : Ω), (show F ≤ A ⊔ F from le_sup_right) (z : F).property⟩ :
         IntermediateField.extendScalars (show A ≤ A ⊔ F from le_sup_left)) =
@@ -126,7 +126,7 @@ theorem exists_intNorm_add_congruence_of_totallyRamified_fixedField
     rw [show algebraMap R K (Algebra.intNorm R S z) = Algebra.norm K (z : F) from
       Algebra.algebraMap_intNorm z]
     exact fixedField_wild_norm_baseChange K Ω p H he n hd (z : F)
-  have hsum := (congrArg (FiniteLayer.integerNorm E N hEN)
+  have hsum := (congrArg (FiniteIntermediateField.integerNorm E N hEN)
     (map_add J x y).symm).trans (hnorm (x + y))
   have hdefect := congrArg₂ (fun a b : T => a - b)
     (congrArg₂ (fun a b : T => a - b) hsum (hnorm x)) (hnorm y)

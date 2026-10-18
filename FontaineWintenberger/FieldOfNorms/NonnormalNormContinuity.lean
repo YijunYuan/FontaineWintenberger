@@ -176,20 +176,20 @@ theorem intNorm_sub_congruence_of_totallyRamified_fixedField
   have hFP : F.fixingSubgroup ⊔ P = ⊤ := by
     simpa only [F, IntermediateField.fixingSubgroup_fixedField] using
       fixedField_sup_wild_eq_top K Ω p H he n hd
-  let E : FiniteLayer K Ω := ⟨A, inferInstance⟩
-  let N : FiniteLayer K Ω := ⟨A ⊔ F, inferInstance⟩
+  let E : FiniteIntermediateField K Ω := ⟨A, inferInstance⟩
+  let N : FiniteIntermediateField K Ω := ⟨A ⊔ F, inferInstance⟩
   have hEN : E ≤ N := (show A ≤ A ⊔ F from le_sup_left)
   let j : F →ₐ[K] (A ⊔ F : IntermediateField K Ω) :=
     IntermediateField.inclusion (show F ≤ A ⊔ F from le_sup_right)
   let J := spectralIntegerInclusion K j
   have hxy' := spectralIntegerInclusion_sub_mem_wild_compositum_pow K Ω F hFP r x y hxy
-  have hc := FiniteLayer.integerNorm_sub_congruence_of_wild_field p E N hEN le_rfl
+  have hc := FiniteIntermediateField.integerNorm_sub_congruence_of_wild_field p E N hEN le_rfl
     (e * r) (J x) (J y) hxy'
   rw [Nat.cast_mul, wild_compositum_apfPhi_scaling K Ω F hFP (Nat.cast_nonneg r)] at hc
-  have hnorm (z : S) : FiniteLayer.integerNorm E N hEN (J z) =
+  have hnorm (z : S) : FiniteIntermediateField.integerNorm E N hEN (J z) =
       algebraMap R T (Algebra.intNorm R S z) := by
     apply Subtype.ext
-    rw [FiniteLayer.coe_integerNorm]
+    rw [FiniteIntermediateField.coe_integerNorm]
     change Algebra.norm A
       (⟨((z : F) : Ω), (show F ≤ A ⊔ F from le_sup_right) (z : F).property⟩ :
         IntermediateField.extendScalars (show A ≤ A ⊔ F from le_sup_left)) =

@@ -68,7 +68,7 @@ theorem truncatedAddVal_mk (r : ℕ) (x : R) :
 
 end TruncatedValuation
 
-namespace FiniteLayer
+namespace FiniteIntermediateField
 
 variable {K L : Type*} [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
     [Field L] [Algebra K L] [Algebra.IsSeparable K L]
@@ -77,7 +77,7 @@ local notation "p" => residueChar K
 
 section HighBreak
 
-variable (E F : FiniteLayer K L) (hEF : E ≤ F)
+variable (E F : FiniteIntermediateField K L) (hEF : E ≤ F)
 variable (d : ℕ) (b : ℝ)
 variable (he :
     letI : Algebra E.val F.val := (IntermediateField.inclusion hEF).toRingHom.toAlgebra
@@ -316,7 +316,7 @@ theorem truncatedNorm_truncatedAddVal (r s : ℕ) (hrs : r ≤ s)
 
 /-- Original norm transitivity gives exact composition of the actual
 truncated ring maps across every tower of the stated precisions. -/
-theorem truncatedNorm_comp (G : FiniteLayer K L) (hFG : F ≤ G)
+theorem truncatedNorm_comp (G : FiniteIntermediateField K L) (hFG : F ≤ G)
     (dFG dEG : ℕ) (bFG bEG : ℝ)
     (heFG : letI : Algebra F.val G.val := (IntermediateField.inclusion hFG).toRingHom.toAlgebra
       letI : IsScalarTower K F.val G.val := IsScalarTower.of_algebraMap_eq' rfl
@@ -410,7 +410,8 @@ end HighBreak
 
 /-- Every equal-field norm gives a surjective quotient reduction at arbitrary
 precisions, without any numerical hypothesis on the infinite first bound. -/
-theorem exists_surjective_truncatedNorm_self (E : FiniteLayer K L) (r s : ℕ) (hrs : r ≤ s) :
+theorem exists_surjective_truncatedNorm_self (E : FiniteIntermediateField K L) (r s : ℕ) (hrs : r ≤
+    s) :
     ∃ N : (spectralIntegerRing K E.val ⧸ IsLocalRing.maximalIdeal (spectralIntegerRing K E.val) ^ s)
         →+*
         spectralIntegerRing K E.val ⧸ IsLocalRing.maximalIdeal (spectralIntegerRing K E.val) ^ r,
@@ -422,6 +423,6 @@ theorem exists_surjective_truncatedNorm_self (E : FiniteLayer K L) (r s : ℕ) (
     exact ⟨Ideal.Quotient.mk _ x, Ideal.Quotient.factor_mk _ x⟩
   · simp only [Ideal.Quotient.factor_mk, integerNorm_self]
 
-end FiniteLayer
+end FiniteIntermediateField
 
 end FontaineWintenberger

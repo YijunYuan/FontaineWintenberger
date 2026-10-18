@@ -40,27 +40,27 @@ variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 
 /-- An actual original-union algebra isomorphism gives the same canonical categorical
 isomorphism. -/
-def separableNormUnionObjectIso
+def RelFieldOfNorms.objectIso
     (M : Type (max u v w)) [Field M]
     [Algebra K M] [Algebra L M] [IsScalarTower K L M] [Algebra.IsSeparable L M]
     (B :
-      SeparableExtensionCat.{v, max u v w} (NormLimit K L))
+      SeparableExtensionCat.{v, max u v w} (FieldOfNorms K L))
     (e :
-      SeparableNormUnion K L M ≃ₐ[NormLimit K L] B.obj) :
-    separableNormUnionObjectOf.{u, v, w} K L M ≅ B := by
-  dsimp only [separableNormUnionObjectOf]
-  exact (separableFieldProperty (NormLimit K L)).isoMk (CommAlgCat.isoMk e)
+      RelFieldOfNorms K L M ≃ₐ[FieldOfNorms K L] B.obj) :
+    RelFieldOfNorms.objectOf.{u, v, w} K L M ≅ B := by
+  dsimp only [RelFieldOfNorms.objectOf]
+  exact (separableFieldProperty (FieldOfNorms K L)).isoMk (CommAlgCat.isoMk e)
 
 /-- An actual union isomorphism remains in the same functor's essential image
 when the original field is replaced by a universe-lifted isomorphic copy. -/
-theorem separableNormUnionFunctor_mem_essImage_of_algEquiv
+theorem RelFieldOfNorms.functor_mem_essImage_of_algEquiv
     {M : Type v} [Field M] [Algebra K M] [Algebra L M] [IsScalarTower K L M]
     [Algebra.IsSeparable L M]
     (B :
-      SeparableExtensionCat.{v, max u v w} (NormLimit K L))
+      SeparableExtensionCat.{v, max u v w} (FieldOfNorms K L))
     (e :
-      SeparableNormUnion K L M ≃ₐ[NormLimit K L] B.obj) :
-    (separableNormUnionFunctor.{u, v, w} K L).essImage B := by
+      RelFieldOfNorms K L M ≃ₐ[FieldOfNorms K L] B.obj) :
+    (RelFieldOfNorms.functor.{u, v, w} K L).essImage B := by
   let : Algebra.IsSeparable L (ULift.{max u v w} M) :=
     AlgEquiv.Algebra.isSeparable
       (ULift.algEquiv.{v, v, max u v w} (R := L) (A := M)).symm
@@ -74,42 +74,42 @@ theorem separableNormUnionFunctor_mem_essImage_of_algEquiv
   let : IsScalarTower K L A.obj := IsScalarTower.of_algebraMap_eq' rfl
   let : Algebra.IsSeparable L A.obj := A.property.2
   let a : A.obj ≃ₐ[L] M := ULift.algEquiv.{v, v, max u v w}
-  let c := separableNormUnionCongr K L A.obj M a
+  let c := RelFieldOfNorms.congr K L A.obj M a
   let d := c.trans e
-  let i := separableNormUnionObjectIso.{u, v, w} K L A.obj B d
+  let i := RelFieldOfNorms.objectIso.{u, v, w} K L A.obj B d
   refine ⟨A, ?_⟩
-  dsimp only [separableNormUnionFunctor, separableNormUnionObj]
+  dsimp only [RelFieldOfNorms.functor, RelFieldOfNorms.obj]
   exact ⟨i⟩
 
 /-- Every canonical separable target object is the value of an actual original extension. -/
-theorem separableNormUnionFunctorEssSurj :
-    (separableNormUnionFunctor.{u, v, w} K L).EssSurj := by
+theorem RelFieldOfNorms.functorEssSurj :
+    (RelFieldOfNorms.functor.{u, v, w} K L).EssSurj := by
   constructor
   intro B
   let : Field B.obj := { B.property.1.toField with toCommRing := B.obj.commRing }
-  let : Algebra.IsSeparable (NormLimit K L) B.obj := B.property.2
-  obtain ⟨M, ⟨e⟩⟩ := exists_separableNormUnion_algEquiv K L B.obj
-  exact separableNormUnionFunctor_mem_essImage_of_algEquiv.{u, v, w}
+  let : Algebra.IsSeparable (FieldOfNorms K L) B.obj := B.property.2
+  obtain ⟨M, ⟨e⟩⟩ := exists_relFieldOfNorms_algEquiv K L B.obj
+  exact RelFieldOfNorms.functor_mem_essImage_of_algEquiv.{u, v, w}
     K L B e
 
 /-- Full faithfulness and the constructed original essential image prove equivalence. -/
-theorem separableNormUnionFunctorIsEquivalence :
-    (separableNormUnionFunctor.{u, v, w} K L).IsEquivalence := by
-  let ff := separableNormUnionFunctorFullyFaithful.{u, v, w} K L
+theorem RelFieldOfNorms.functorIsEquivalence :
+    (RelFieldOfNorms.functor.{u, v, w} K L).IsEquivalence := by
+  let ff := RelFieldOfNorms.functorFullyFaithful.{u, v, w} K L
   exact ⟨ff.faithful, ff.full,
-    separableNormUnionFunctorEssSurj.{u, v, w} K L⟩
+    RelFieldOfNorms.functorEssSurj.{u, v, w} K L⟩
 
-/-- The field-of-norms equivalence has exactly the original canonical union functor. -/
-def separableNormUnionEquivalence :
+/-- The field-of-norms equivalence has exactly the original relative field of norms functor. -/
+def RelFieldOfNorms.equivalence :
     SeparableExtensionCat.{v, max u v w} L ≌
-      SeparableExtensionCat.{v, max u v w} (NormLimit K L) := by
-  letI := separableNormUnionFunctorIsEquivalence.{u, v, w} K L
-  exact (separableNormUnionFunctor.{u, v, w} K L).asEquivalence
+      SeparableExtensionCat.{v, max u v w} (FieldOfNorms K L) := by
+  letI := RelFieldOfNorms.functorIsEquivalence.{u, v, w} K L
+  exact (RelFieldOfNorms.functor.{u, v, w} K L).asEquivalence
 
 /-- The equivalence retains the literal original induced maps. -/
 @[simp]
-theorem separableNormUnionEquivalence_functor :
-    (separableNormUnionEquivalence.{u, v, w} K L).functor =
-      separableNormUnionFunctor.{u, v, w} K L := rfl
+theorem RelFieldOfNorms.equivalence_functor :
+    (RelFieldOfNorms.equivalence.{u, v, w} K L).functor =
+      RelFieldOfNorms.functor.{u, v, w} K L := rfl
 
 end FontaineWintenberger

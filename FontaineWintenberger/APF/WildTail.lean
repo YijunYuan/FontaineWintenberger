@@ -14,10 +14,10 @@ public import Mathlib.FieldTheory.Relrank
 /-!
 # Actual wild tails of separable APF extensions
 
-An actual finite APF stage supplies a tail of the original finite layers
+An actual finite APF stage supplies a tail of the original finite intermediate fields
 whose original residue maps are surjective and whose degrees are powers of
 the residue characteristic. No normality of the infinite extension or its
-finite layers is assumed.
+finite intermediate fields is assumed.
 -/
 
 @[expose] public section
@@ -157,8 +157,8 @@ variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
 /-- Surjectivity of the actual residue inclusion makes the actual finite
 step totally ramified, using its original spectral integer-ring map. -/
-theorem FiniteLayer.ramificationIdx_eq_finrank_of_residueInclusion_surjective
-    (E F : FiniteLayer K L) (hEF : E ≤ F)
+theorem FiniteIntermediateField.ramificationIdx_eq_finrank_of_residueInclusion_surjective
+    (E F : FiniteIntermediateField K L) (hEF : E ≤ F)
     (hs : Function.Surjective
       (spectralResidueInclusion K (IntermediateField.inclusion hEF))) :
     letI : Algebra E.val F.val := (IntermediateField.inclusion hEF).toRingHom.toAlgebra
@@ -191,21 +191,21 @@ theorem FiniteLayer.ramificationIdx_eq_finrank_of_residueInclusion_surjective
   rw [hf, mul_one] at h
   exact h
 
-/-- An actual finite layer in the original abstract APF extension gives
+/-- An actual finite intermediate field in the original abstract APF extension gives
 surjective residue maps and p-power degrees on every original finite step
 above it, including nonnormal steps. -/
-theorem IsAPF.exists_finiteLayer_residue_surjective_and_degree_prime_pow
+theorem IsAPF.exists_finiteIntermediateField_residue_surjective_and_degree_prime_pow
     [IsAPF K L] :
-    ∃ T : FiniteLayer K L, ∀ E F : FiniteLayer K L, T ≤ E → ∀ hEF : E ≤ F,
+    ∃ T : FiniteIntermediateField K L, ∀ E F : FiniteIntermediateField K L, T ≤ E → ∀ hEF : E ≤ F,
       Function.Surjective
           (spectralResidueInclusion K (IntermediateField.inclusion hEF)) ∧
         ∃ n : ℕ, Module.finrank E.val (IntermediateField.extendScalars hEF) = p ^ n := by
   let j : L →ₐ[K] SeparableClosure K := IsSepClosed.lift
-  obtain ⟨T₁, hT₁⟩ := exists_finiteLayer_map_eq_apfFiniteStage K L j
+  obtain ⟨T₁, hT₁⟩ := exists_finiteIntermediateField_map_eq_apfFiniteStage K L j
     (by norm_num : -1 ≤ (1 : ℝ))
-  obtain ⟨T₀, hT₀⟩ := IsAPF.exists_finiteLayer_residueInclusion_surjective K L
-  refine ⟨FiniteLayer.sup T₀ T₁, fun E F hE hEF ↦
-    ⟨hT₀ E F ((FiniteLayer.le_sup_left T₀ T₁).trans hE) hEF, ?_⟩⟩
+  obtain ⟨T₀, hT₀⟩ := IsAPF.exists_finiteIntermediateField_residueInclusion_surjective K L
+  refine ⟨FiniteIntermediateField.sup T₀ T₁, fun E F hE hEF ↦
+    ⟨hT₀ E F ((FiniteIntermediateField.le_sup_left T₀ T₁).trans hE) hEF, ?_⟩⟩
   have : FiniteDimensional K (F.val.map j) :=
     Module.Finite.equiv (IntermediateField.equivMap F.val j).toLinearEquiv
   have hFL : F.val.map j ≤ j.fieldRange := by
@@ -214,7 +214,7 @@ theorem IsAPF.exists_finiteLayer_residue_surjective_and_degree_prime_pow
   have hmap : E.val.map j ≤ F.val.map j := IntermediateField.map_mono j hEF
   have hstage : apfFiniteStage K j.fieldRange 1 ≤ E.val.map j := by
     rw [← hT₁]
-    exact IntermediateField.map_mono j ((FiniteLayer.le_sup_right T₀ T₁).trans hE)
+    exact IntermediateField.map_mono j ((FiniteIntermediateField.le_sup_right T₀ T₁).trans hE)
   obtain ⟨n, hn⟩ := finrank_eq_prime_pow_of_apfFiniteStage_one_le K
     j.fieldRange (E.val.map j) (F.val.map j) hFL hmap hstage
   refine ⟨n, ?_⟩
@@ -227,8 +227,8 @@ theorem IsAPF.exists_finiteLayer_residue_surjective_and_degree_prime_pow
 all original residue inclusions are onto, all degrees are powers of the
 residue characteristic, and every step is totally ramified on its actual
 spectral integer rings. -/
-theorem IsAPF.exists_finiteLayer_wild_tail [IsAPF K L] :
-    ∃ T : FiniteLayer K L, ∀ E F : FiniteLayer K L, T ≤ E → ∀ hEF : E ≤ F,
+theorem IsAPF.exists_finiteIntermediateField_wild_tail [IsAPF K L] :
+    ∃ T : FiniteIntermediateField K L, ∀ E F : FiniteIntermediateField K L, T ≤ E → ∀ hEF : E ≤ F,
       Function.Surjective
           (spectralResidueInclusion K (IntermediateField.inclusion hEF)) ∧
         (∃ n : ℕ, Module.finrank E.val (IntermediateField.extendScalars hEF) = p ^ n) ∧
@@ -238,10 +238,11 @@ theorem IsAPF.exists_finiteLayer_wild_tail [IsAPF K L] :
         (IsLocalRing.maximalIdeal (spectralIntegerRing K F.val)).ramificationIdx
             (spectralIntegerRing K E.val) =
           Module.finrank E.val (IntermediateField.extendScalars hEF) := by
-  obtain ⟨T, hT⟩ := IsAPF.exists_finiteLayer_residue_surjective_and_degree_prime_pow K L
+  obtain ⟨T, hT⟩ := IsAPF.exists_finiteIntermediateField_residue_surjective_and_degree_prime_pow K L
   refine ⟨T, fun E F hE hEF ↦ ?_⟩
   obtain ⟨hs, hn⟩ := hT E F hE hEF
-  exact ⟨hs, hn, FiniteLayer.ramificationIdx_eq_finrank_of_residueInclusion_surjective K L
+  exact ⟨hs, hn, FiniteIntermediateField.ramificationIdx_eq_finrank_of_residueInclusion_surjective
+      K L
     E F hEF hs⟩
 
 end AbstractExtension

@@ -32,41 +32,41 @@ variable (L M : Type*) [Field L] [Field M]
 variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 
 /-- The actual original commuting square identifies the normalization exponents. -/
-theorem normUnionStageEquiv_exponent (N P : FiniteLayer L M)
+theorem RelFieldOfNorms.stageEquiv_exponent (N P : FiniteIntermediateField L M)
     (a : L ≃ₐ[K] L) (e : N.val ≃ₐ[K] P.val)
     (h : ∀ z : L, e (algebraMap L N.val z) = algebraMap L P.val (a z)) :
-    separableNormUnionStageExponent K L M P =
-      separableNormUnionStageExponent K L M N := by
-  apply separableNormUnionStageExponent_unique K L M N
+    RelFieldOfNorms.stageExponent K L M P =
+      RelFieldOfNorms.stageExponent K L M N := by
+  apply RelFieldOfNorms.stageExponent_unique K L M N
   intro x
-  change normLimitValuation K N.val
-      (separableNormUnionBaseToStage K L M N x) = _
+  change FieldOfNorms.valuation K N.val
+      (RelFieldOfNorms.baseToStage K L M N x) = _
   calc
-    _ = normLimitValuation K P.val
-        (normLimitMap e
-          (separableNormUnionBaseToStage K L M N x)) :=
-      (normLimitValuation_normLimitMap K
+    _ = FieldOfNorms.valuation K P.val
+        (FieldOfNorms.map e
+          (RelFieldOfNorms.baseToStage K L M N x)) :=
+      (FieldOfNorms.valuation_fieldOfNormsMap K
         e _).symm
-    _ = normLimitValuation K P.val
-        (separableNormUnionBaseToStage K L M P (normLimitMap a x)) :=
-      congrArg (normLimitValuation K P.val)
-        (normUnionStageEquiv_base K L M N P a e h x)
-    _ = normLimitValuation K L (normLimitMap a x) ^
-        separableNormUnionStageExponent K L M P :=
-      separableNormUnionStageExponent_spec K L M P (normLimitMap a x)
-    _ = normLimitValuation K L x ^ separableNormUnionStageExponent K L M P := by
-      rw [normLimitValuation_normLimitMap K a x]
+    _ = FieldOfNorms.valuation K P.val
+        (RelFieldOfNorms.baseToStage K L M P (FieldOfNorms.map a x)) :=
+      congrArg (FieldOfNorms.valuation K P.val)
+        (RelFieldOfNorms.stageEquiv_base K L M N P a e h x)
+    _ = FieldOfNorms.valuation K L (FieldOfNorms.map a x) ^
+        RelFieldOfNorms.stageExponent K L M P :=
+      RelFieldOfNorms.stageExponent_spec K L M P (FieldOfNorms.map a x)
+    _ = FieldOfNorms.valuation K L x ^ RelFieldOfNorms.stageExponent K L M P := by
+      rw [FieldOfNorms.valuation_fieldOfNormsMap K a x]
 
 /-- An original finite-stage isomorphism preserves the same rational valuation. -/
-theorem normUnionStageEquiv_valuation (N P : FiniteLayer L M)
+theorem RelFieldOfNorms.stageEquiv_valuation (N P : FiniteIntermediateField L M)
     (a : L ≃ₐ[K] L) (e : N.val ≃ₐ[K] P.val)
     (h : ∀ z : L, e (algebraMap L N.val z) = algebraMap L P.val (a z))
-    (x : NormLimit K N.val) :
-    separableNormUnionStageValuation K L M P (normLimitMap e x) =
-      separableNormUnionStageValuation K L M N x := by
-  rw [separableNormUnionStageValuation_apply, separableNormUnionStageValuation_apply,
-    normUnionStageEquiv_exponent K L M N P a e h,
-    normLimitValuation_normLimitMap K
+    (x : FieldOfNorms K N.val) :
+    RelFieldOfNorms.stageValuation K L M P (FieldOfNorms.map e x) =
+      RelFieldOfNorms.stageValuation K L M N x := by
+  rw [RelFieldOfNorms.stageValuation_apply, RelFieldOfNorms.stageValuation_apply,
+    RelFieldOfNorms.stageEquiv_exponent K L M N P a e h,
+    FieldOfNorms.valuation_fieldOfNormsMap K
       e x]
 
 end FontaineWintenberger

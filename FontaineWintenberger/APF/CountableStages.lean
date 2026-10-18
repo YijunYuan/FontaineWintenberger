@@ -9,7 +9,7 @@ public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.APF.FiniteStages
 
 /-!
-# Countable cofinal finite layers of an APF extension
+# Countable cofinal finite intermediate fields of an APF extension
 
 The genuine APF fixed fields at integer parameters pull back to a monotone
 cofinal sequence in the original abstract extension. No finite-residue or
@@ -28,13 +28,13 @@ variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
 /-- The actual integer-parameter APF stages give a monotone cofinal
 sequence of original finite fields, with exact original embedded images. -/
-theorem IsAPF.exists_monotone_cofinal_finiteLayers_map [IsAPF K L]
+theorem IsAPF.exists_monotone_cofinal_finiteIntermediateFields_map [IsAPF K L]
     (j : L →ₐ[K] SeparableClosure K) :
-    ∃ E : ℕ → FiniteLayer K L, Monotone E ∧
+    ∃ E : ℕ → FiniteIntermediateField K L, Monotone E ∧
       (∀ n : ℕ, (E n).val.map j = apfFiniteStage K j.fieldRange (n : ℝ)) ∧
-      ∀ D : FiniteLayer K L, ∃ n : ℕ, D ≤ E n := by
+      ∀ D : FiniteIntermediateField K L, ∃ n : ℕ, D ≤ E n := by
   choose E hE using fun n : ℕ =>
-    exists_finiteLayer_map_eq_apfFiniteStage K L j
+    exists_finiteIntermediateField_map_eq_apfFiniteStage K L j
       (by have := Nat.cast_nonneg (α := ℝ) n; linarith : -1 ≤ (n : ℝ))
   refine ⟨E, ?_, hE, ?_⟩
   · intro m n hmn x hx
@@ -63,12 +63,13 @@ theorem IsAPF.exists_monotone_cofinal_finiteLayers_map [IsAPF K L]
     exact (j.injective he) ▸ hy
 
 /-- Every original abstract separable APF extension has a countable
-monotone cofinal sequence among all of its actual finite layers. -/
-theorem IsAPF.exists_monotone_cofinal_finiteLayers [IsAPF K L] :
-    ∃ E : ℕ → FiniteLayer K L, Monotone E ∧ ∀ D : FiniteLayer K L, ∃ n : ℕ, D ≤ E n := by
+monotone cofinal sequence among all of its actual finite intermediate fields. -/
+theorem IsAPF.exists_monotone_cofinal_finiteIntermediateFields [IsAPF K L] :
+    ∃ E : ℕ → FiniteIntermediateField K L, Monotone E ∧ ∀ D : FiniteIntermediateField K L, ∃ n : ℕ,
+        D ≤ E n := by
   obtain ⟨j⟩ := nonempty_separableClosure_embeddings K L
   obtain ⟨E, hmono, _hmap, hcofinal⟩ :=
-    IsAPF.exists_monotone_cofinal_finiteLayers_map K L j
+    IsAPF.exists_monotone_cofinal_finiteIntermediateFields_map K L j
   exact ⟨E, hmono, hcofinal⟩
 
 end FontaineWintenberger

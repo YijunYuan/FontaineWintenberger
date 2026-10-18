@@ -11,7 +11,7 @@ public import FontaineWintenberger.FieldOfNorms.Uniformizer
 public import FontaineWintenberger.FieldOfNorms.ValuationCompleteness
 
 /-!
-# Completeness in the original norm-limit valuation uniformity
+# Completeness in the original field of norms valuation uniformity
 
 The exact original valuation kernels identify the inherited integral-ring uniformity
 with the canonical complete discrete-product inverse limit.
@@ -79,57 +79,57 @@ variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
 
 local notation "p" => residueChar K
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
-variable [IsAPF K L] [Fact (¬ Module.Finite K L)] (D : FiniteLayer K L)
+variable [IsAPF K L] [Fact (¬ Module.Finite K L)] (D : FiniteIntermediateField K L)
 
 local notation "𝔅" => deepFiniteTowerQuotient K L D
 local notation "𝒜" => deepNormInverseLimit K L D
 
 /-- The inherited topology on the original valuation ring has exactly
 the integer closed-ball basis of the existing stable valuation. -/
-theorem normLimitIntegral_nhds_zero_hasBasis :
-    (nhds (0 : Valuation.valuationSubring (normLimitFieldValuation K L))).HasBasis
+theorem FieldOfNorms.integral_nhds_zero_hasBasis :
+    (nhds (0 : Valuation.valuationSubring (FieldOfNorms.fieldValuation K L))).HasBasis
       (fun _ : ℕ => True)
-      (fun n => {α | normLimitValuation K L α.val ≤
+      (fun n => {α | FieldOfNorms.valuation K L α.val ≤
         WithZero.exp (-((n + 2 : ℕ) : ℤ))}) := by
-  have h := Valued.nhds_zero_hasBasis_integer_closedBall (NormLimit K L)
-    (normLimitUniformizer K L)
-    (normLimitValuation_normLimitUniformizer K L)
+  have h := Valued.nhds_zero_hasBasis_integer_closedBall (FieldOfNorms K L)
+    (FieldOfNorms.uniformizer K L)
+    (FieldOfNorms.valuation_fieldOfNormsUniformizer K L)
   rw [nhds_subtype]
   exact h.comap Subtype.val
 
 /-- The actual truncation isomorphism pulls back precisely the original
 valuation-ring neighborhoods, with the canonical discrete-product uniformity. -/
-theorem normLimitTruncationHom_comap_nhds_zero :
+theorem FieldOfNorms.truncationHom_comap_nhds_zero :
     letI : ∀ n, UniformSpace (𝔅 n) := fun _ => ⊥
     letI : ∀ n, DiscreteUniformity (𝔅 n) := fun _ => inferInstance
-    Filter.comap (normLimitTruncationHom K L D) (nhds (0 : 𝒜)) =
-      nhds (0 : Valuation.valuationSubring (normLimitFieldValuation K L)) := by
+    Filter.comap (FieldOfNorms.truncationHom K L D) (nhds (0 : 𝒜)) =
+      nhds (0 : Valuation.valuationSubring (FieldOfNorms.fieldValuation K L)) := by
   let : ∀ n, UniformSpace (𝔅 n) := fun _ => ⊥
   let : ∀ n, DiscreteUniformity (𝔅 n) := fun _ => inferInstance
   let q := fun n => deepFiniteTowerTransition K L D
     n (n + 1) (Nat.le_succ n)
-  let f := normLimitTruncationHom K L D
+  let f := FieldOfNorms.truncationHom K L D
   have h := (SequentialInverseLimit.nhds_zero_hasBasis_ker_projection (fun n => 𝔅 n) q).comap f
   have heq (n : ℕ) :
       f ⁻¹' (RingHom.ker (SequentialInverseLimit.projection (fun n => 𝔅 n) q n) : Set 𝒜) =
-      {α | normLimitValuation K L α.val ≤ WithZero.exp (-((n + 2 : ℕ) : ℤ))} := by
+      {α | FieldOfNorms.valuation K L α.val ≤ WithZero.exp (-((n + 2 : ℕ) : ℤ))} := by
     ext α
-    exact normLimitTruncation_eq_zero_iff K L D n α
+    exact FieldOfNorms.truncation_eq_zero_iff K L D n α
   simp only [heq] at h
-  exact h.eq_of_same_basis (normLimitIntegral_nhds_zero_hasBasis K L)
+  exact h.eq_of_same_basis (FieldOfNorms.integral_nhds_zero_hasBasis K L)
 
 /-- The exact original truncation map induces the original valuation-ring
 uniformity from the same canonical discrete-product inverse limit. -/
-theorem normLimitTruncationHom_isUniformInducing :
+theorem FieldOfNorms.truncationHom_isUniformInducing :
     letI : ∀ n, UniformSpace (𝔅 n) := fun _ => ⊥
     letI : ∀ n, DiscreteUniformity (𝔅 n) := fun _ => inferInstance
-    IsUniformInducing (normLimitTruncationHom K L D) := by
+    IsUniformInducing (FieldOfNorms.truncationHom K L D) := by
   let : ∀ n, UniformSpace (𝔅 n) := fun _ => ⊥
   let : ∀ n, DiscreteUniformity (𝔅 n) := fun _ => inferInstance
-  let O := Valuation.valuationSubring (normLimitFieldValuation K L)
+  let O := Valuation.valuationSubring (FieldOfNorms.fieldValuation K L)
   let : IsUniformAddGroup O := IsUniformAddGroup.comap O.subtype.toAddMonoidHom
   let : IsUniformAddGroup 𝒜 := IsUniformAddGroup.comap (𝒜).subtype.toAddMonoidHom
-  let f := normLimitTruncationHom K L D
+  let f := FieldOfNorms.truncationHom K L D
   rw [isUniformInducing_iff, uniformity_eq_comap_nhds_zero O,
     uniformity_eq_comap_nhds_zero 𝒜, Filter.comap_comap]
   have heq : (fun z : 𝒜 × 𝒜 => z.2 - z.1) ∘ Prod.map f f =
@@ -138,36 +138,36 @@ theorem normLimitTruncationHom_isUniformInducing :
     exact (map_sub f z.2 z.1).symm
   change Filter.comap ((fun z : 𝒜 × 𝒜 => z.2 - z.1) ∘ Prod.map f f) (nhds (0 : 𝒜)) =
     Filter.comap (fun z : O × O => z.2 - z.1) (nhds (0 : O))
-  rw [heq, ← Filter.comap_comap, normLimitTruncationHom_comap_nhds_zero]
+  rw [heq, ← Filter.comap_comap, FieldOfNorms.truncationHom_comap_nhds_zero]
 
 include D in
 /-- The inherited original valuation ring is complete; its uniformity
 is identified with the actual complete truncated inverse limit. -/
-theorem normLimitIntegral_completeSpace :
-    CompleteSpace (Valuation.valuationSubring (normLimitFieldValuation K L)) := by
+theorem FieldOfNorms.integral_completeSpace :
+    CompleteSpace (Valuation.valuationSubring (FieldOfNorms.fieldValuation K L)) := by
   let : ∀ n, UniformSpace (𝔅 n) := fun _ => ⊥
   let : ∀ n, DiscreteUniformity (𝔅 n) := fun _ => inferInstance
   let : CompleteSpace 𝒜 := SequentialInverseLimit.completeSpace (fun n => 𝔅 n)
     (fun n => deepFiniteTowerTransition K L D n (n + 1) (Nat.le_succ n))
-  have h := normLimitTruncationHom_isUniformInducing K L D
-  exact (h.completeSpace_congr (normLimitTruncationEquiv K L D).surjective).mpr
+  have h := FieldOfNorms.truncationHom_isUniformInducing K L D
+  exact (h.completeSpace_congr (FieldOfNorms.truncationEquiv K L D).surjective).mpr
     inferInstance
 
-/-- The original norm-limit field is complete for precisely the already
+/-- The original field of norms field is complete for precisely the already
 constructed canonical stable-valuation uniformity. -/
-instance normLimit_completeSpace :
-    CompleteSpace (NormLimit K L) := by
-  let := normLimitIntegral_completeSpace K L (FiniteLayer.bottom (K := K) (L := L))
-  exact Valued.completeSpace_of_completeSpace_valuationSubring (NormLimit K L)
+instance FieldOfNorms.instCompleteSpace :
+    CompleteSpace (FieldOfNorms K L) := by
+  let := FieldOfNorms.integral_completeSpace K L (FiniteIntermediateField.bottom (K := K) (L := L))
+  exact Valued.completeSpace_of_completeSpace_valuationSubring (FieldOfNorms K L)
 
 /-- The same original field has a Hausdorff valuation uniformity. -/
-theorem normLimit_t2Space :
-    T2Space (NormLimit K L) := by
+theorem FieldOfNorms._t2Space :
+    T2Space (FieldOfNorms K L) := by
   infer_instance
 
 /-- Its original valuation ring carries the inherited Hausdorff topology. -/
-theorem normLimitIntegral_t2Space :
-    T2Space (Valuation.valuationSubring (normLimitFieldValuation K L)) := by
+theorem FieldOfNorms.integral_t2Space :
+    T2Space (Valuation.valuationSubring (FieldOfNorms.fieldValuation K L)) := by
   infer_instance
 
 end FontaineWintenberger

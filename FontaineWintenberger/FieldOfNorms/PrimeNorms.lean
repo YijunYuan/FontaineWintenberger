@@ -23,7 +23,7 @@ prime congruence applies to the same finite-layer maps used in the norm chain.
 
 noncomputable section
 
-namespace FontaineWintenberger.FiniteLayer
+namespace FontaineWintenberger.FiniteIntermediateField
 
 variable {K Ω : Type*} [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
@@ -31,12 +31,13 @@ variable {K Ω : Type*} [NontriviallyNormedField K] [IsCompleteDiscreteValuedFie
     [NontriviallyNormedField Ω] [NormedAlgebra K Ω] [IsUltrametricDist Ω]
     [Algebra.IsSeparable K Ω]
 
-local instance primeNorm_completeSpace (E : FiniteLayer K Ω) : CompleteSpace E.val :=
+local instance primeNorm_completeSpace (E : FiniteIntermediateField K Ω) : CompleteSpace E.val :=
   FiniteDimensional.complete K E.val
-local instance primeNorm_discreteValuationRing (E : FiniteLayer K Ω) :
+local instance primeNorm_discreteValuationRing (E : FiniteIntermediateField K Ω) :
     IsCompleteDiscreteValuedField E.val :=
   normedAlgebra_isCompleteDiscreteValuedField K E.val
-local instance primeNorm_perfectField (E : FiniteLayer K Ω) : PerfectField (IsLocalRing.ResidueField
+local instance primeNorm_perfectField (E : FiniteIntermediateField K Ω) : PerfectField
+    (IsLocalRing.ResidueField
     (NormedField.valuation (K := E.val)).valuationSubring) :=
   Algebra.IsAlgebraic.perfectField (IsLocalRing.ResidueField
     (NormedField.valuation (K := K)).valuationSubring)
@@ -45,7 +46,7 @@ local instance primeNorm_perfectField (E : FiniteLayer K Ω) : PerfectField (IsL
 /-- Actual prime-step congruence for the same finite-layer integral norm,
 with the same intrinsic first bound and the original spectral integers. -/
 theorem integerNorm_prime_add_congruence_of_bound
-    (E F : FiniteLayer K Ω) (hEF : E ≤ F) (p : ℕ) [Fact p.Prime] :
+    (E F : FiniteIntermediateField K Ω) (hEF : E ≤ F) (p : ℕ) [Fact p.Prime] :
     let F' := IntermediateField.extendScalars hEF
     ∀ (_ : IsGalois E.val F') (_ : Module.finrank E.val F' = p)
       (_ : (IsLocalRing.maximalIdeal (spectralIntegerRing E.val F')).ramificationIdx
@@ -105,4 +106,4 @@ theorem integerNorm_prime_add_congruence_of_bound
   rw [mem_maximalIdeal_pow_iff_addVal, addVal_ringEquiv f] at hm
   exact (mem_maximalIdeal_pow_iff_addVal _ _).mpr hm
 
-end FontaineWintenberger.FiniteLayer
+end FontaineWintenberger.FiniteIntermediateField

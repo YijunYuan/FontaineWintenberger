@@ -73,7 +73,7 @@ private theorem add_sub_mem_pow_of_norm_commutes
     mem_maximalIdeal_pow_iff_addVal, addVal_ringEquiv] at h
   exact (mem_maximalIdeal_pow_iff_addVal _ _).mpr h
 
-namespace FiniteLayer
+namespace FiniteIntermediateField
 
 variable {K L : Type*} [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
     [Field L] [Algebra K L] [Algebra.IsSeparable K L]
@@ -84,7 +84,7 @@ local notation "p" => residueChar K
 Herbrand modulus on every totally ramified prime-power step, including
 the identity step. No norm on the ambient separable extension is chosen. -/
 theorem integerNorm_sub_congruence_of_totallyRamified
-    (E F : FiniteLayer K L) (hEF : E ≤ F) :
+    (E F : FiniteIntermediateField K L) (hEF : E ≤ F) :
     letI : Algebra E.val F.val := (IntermediateField.inclusion hEF).toRingHom.toAlgebra
     letI : IsScalarTower K E.val F.val := IsScalarTower.of_algebraMap_eq' rfl
     letI := spectralValuation_hasExtension_tower K (E := E.val) (L := F.val)
@@ -166,7 +166,7 @@ theorem integerNorm_sub_congruence_of_totallyRamified
 /-- The actual original additive norm defect has the precision given by
 the actual first bound of a nontrivial totally ramified prime-power step. -/
 theorem exists_integerNorm_add_congruence_of_totallyRamified
-    (E F : FiniteLayer K L) (hEF : E ≤ F) :
+    (E F : FiniteIntermediateField K L) (hEF : E ≤ F) :
     letI : Algebra E.val F.val := (IntermediateField.inclusion hEF).toRingHom.toAlgebra
     letI : IsScalarTower K E.val F.val := IsScalarTower.of_algebraMap_eq' rfl
     letI := spectralValuation_hasExtension_tower K (E := E.val) (L := F.val)
@@ -243,10 +243,10 @@ theorem exists_integerNorm_add_congruence_of_totallyRamified
   exact add_sub_mem_pow_of_norm_commutes f g (integerNorm E F hEF)
     (Algebra.intNorm R' S') hnorm _ x y (hadd (g x) (g y))
 
-/-- A degree-one inclusion is an equality of the actual finite layers,
+/-- A degree-one inclusion is an equality of the actual finite intermediate fields,
 so its actual norm has exactly zero additive defect. -/
 theorem integerNorm_add_sub_eq_zero_of_finrank_eq_one
-    (E F : FiniteLayer K L) (hEF : E ≤ F)
+    (E F : FiniteIntermediateField K L) (hEF : E ≤ F)
     (hd : Module.finrank E.val (IntermediateField.extendScalars hEF) = 1)
     (x y : spectralIntegerRing K F.val) :
     integerNorm E F hEF (x + y) - integerNorm E F hEF x - integerNorm E F hEF y = 0 := by
@@ -266,7 +266,7 @@ theorem integerNorm_add_sub_eq_zero_of_finrank_eq_one
 original additive norm defect. The identity step has infinite first bound
 and zero defect, so all finite precisions are covered uniformly. -/
 theorem integerNorm_add_congruence_of_le_apfRamificationBound
-    (E F : FiniteLayer K L) (hEF : E ≤ F) :
+    (E F : FiniteIntermediateField K L) (hEF : E ≤ F) :
     letI : Algebra E.val F.val := (IntermediateField.inclusion hEF).toRingHom.toAlgebra
     letI : IsScalarTower K E.val F.val := IsScalarTower.of_algebraMap_eq' rfl
     letI := spectralValuation_hasExtension_tower K (E := E.val) (L := F.val)
@@ -315,6 +315,6 @@ theorem integerNorm_add_congruence_of_le_apfRamificationBound
     rw [integerNorm_add_sub_eq_zero_of_finrank_eq_one E F hEF hd1]
     exact Ideal.zero_mem _
 
-end FiniteLayer
+end FiniteIntermediateField
 
 end FontaineWintenberger

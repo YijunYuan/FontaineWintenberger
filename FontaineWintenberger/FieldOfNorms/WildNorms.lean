@@ -23,7 +23,7 @@ Composition uses the same original finite-layer integral norm maps.
 
 noncomputable section
 
-namespace FontaineWintenberger.FiniteLayer
+namespace FontaineWintenberger.FiniteIntermediateField
 
 variable {K Ω : Type*} [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
@@ -31,12 +31,13 @@ variable {K Ω : Type*} [NontriviallyNormedField K] [IsCompleteDiscreteValuedFie
     [NontriviallyNormedField Ω] [NormedAlgebra K Ω] [IsUltrametricDist Ω]
     [FiniteDimensional K Ω] [IsGalois K Ω]
 
-local instance wildNorm_completeSpace (E : FiniteLayer K Ω) : CompleteSpace E.val :=
+local instance wildNorm_completeSpace (E : FiniteIntermediateField K Ω) : CompleteSpace E.val :=
   FiniteDimensional.complete K E.val
-local instance wildNorm_discreteValuationRing (E : FiniteLayer K Ω) :
+local instance wildNorm_discreteValuationRing (E : FiniteIntermediateField K Ω) :
     IsCompleteDiscreteValuedField E.val :=
   normedAlgebra_isCompleteDiscreteValuedField K E.val
-local instance wildNorm_perfectField (E : FiniteLayer K Ω) : PerfectField (IsLocalRing.ResidueField
+local instance wildNorm_perfectField (E : FiniteIntermediateField K Ω) : PerfectField
+    (IsLocalRing.ResidueField
     (NormedField.valuation (K := E.val)).valuationSubring) :=
   Algebra.IsAlgebraic.perfectField (IsLocalRing.ResidueField
     (NormedField.valuation (K := K)).valuationSubring)
@@ -48,7 +49,7 @@ local notation "P" => lowerRamificationGroup (Ω ≃ₐ[K] Ω)
 congruences, total ramification and the common first bound are proved. -/
 theorem integerNorm_add_congruence_of_wild_field (p : ℕ) [Fact p.Prime]
     [CharP (IsLocalRing.ResidueField (spectralIntegerRing K Ω)) p]
-    (E F : FiniteLayer K Ω) (hEF : E ≤ F)
+    (E F : FiniteIntermediateField K Ω) (hEF : E ≤ F)
     (hE : IntermediateField.fixedField P ≤ E.val)
     (b : ℝ) (hb : (b : EReal) ≤
       apfRamificationBound E.val (IntermediateField.extendScalars hEF)) :
@@ -98,10 +99,10 @@ theorem integerNorm_add_congruence_of_wild_field (p : ℕ) [Fact p.Prime]
         have hb' := hb.trans
           (apfRamificationBound_le_step_of_finiteGalois E.val Ω A' B' F' hAB' hBF')
         have hnorm := integerNorm_prime_add_congruence_of_bound
-          (⟨A, inferInstance⟩ : FiniteLayer K Ω) ⟨B, inferInstance⟩ hAB p hg hd he b hb'
+          (⟨A, inferInstance⟩ : FiniteIntermediateField K Ω) ⟨B, inferInstance⟩ hAB p hg hd he b hb'
         exact ⟨hAB.trans hBF, integerNorm_add_congruence_tower
           ⟨A, inferInstance⟩ ⟨B, inferInstance⟩ F hAB hBF hnorm htail⟩
   obtain ⟨_, hn⟩ := hmain E.val hchain le_rfl
   exact hn
 
-end FontaineWintenberger.FiniteLayer
+end FontaineWintenberger.FiniteIntermediateField

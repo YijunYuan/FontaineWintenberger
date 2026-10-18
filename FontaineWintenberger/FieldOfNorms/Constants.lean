@@ -12,10 +12,10 @@ public import FontaineWintenberger.APF.MaximalTame
 public import FontaineWintenberger.LocalField.TruncatedCoefficients
 
 /-!
-# Source-normalized residue constants in the original norm limit
+# Source-normalized residue constants in the original field of norms
 
 Compatible tail coordinates extend through actual finite composita and field
-norms to the original zero-adjoined multiplicative norm-limit carrier.
+norms to the original zero-adjoined multiplicative field of norms carrier.
 -/
 
 @[expose] public section
@@ -30,8 +30,9 @@ variable (K L : Type*) [Field K] [Field L] [Algebra K L]
 
 /-- The actual norm of an original element from the smaller finite field
 is its power by the genuine relative field degree. -/
-theorem FiniteLayer.norm_inclusion (E F : FiniteLayer K L) (hEF : E ≤ F) (x : E.val) :
-    FiniteLayer.norm E F hEF (IntermediateField.inclusion hEF x) =
+theorem FiniteIntermediateField.norm_inclusion (E F : FiniteIntermediateField K L) (hEF : E ≤ F) (x
+    : E.val) :
+    FiniteIntermediateField.norm E F hEF (IntermediateField.inclusion hEF x) =
       x ^ Module.finrank E.val (IntermediateField.extendScalars hEF) := by
   let F' := IntermediateField.extendScalars hEF
   have : FiniteDimensional K F' := F.property
@@ -40,75 +41,85 @@ theorem FiniteLayer.norm_inclusion (E F : FiniteLayer K L) (hEF : E ≤ F) (x : 
   change Algebra.norm E.val (algebraMap E.val F' x) = _
   exact Algebra.norm_algebraMap x
 
-/-- Actual evaluations on the cofinal tail above any finite layer already
-distinguish elements of the original norm-limit carrier. -/
-theorem NormLimit.ext_tail (D : FiniteLayer K L) {α β : NormLimit K L}
-    (h : ∀ E : FiniteLayer K L, D ≤ E → normLimitEval K L E α = normLimitEval K L E β) :
+/-- Actual evaluations on the cofinal tail above any finite intermediate field already
+distinguish elements of the original field of norms carrier. -/
+theorem FieldOfNorms.ext_tail (D : FiniteIntermediateField K L) {α β : FieldOfNorms K L}
+    (h : ∀ E : FiniteIntermediateField K L, D ≤ E → FieldOfNorms.coord K L E α = FieldOfNorms.coord
+        K L E β) :
     α = β := by
-  apply NormLimit.ext K L
+  apply FieldOfNorms.ext K L
   intro E
-  rw [← normLimitEval_norm K L E (FiniteLayer.sup E D) (FiniteLayer.le_sup_left E D) α,
-    ← normLimitEval_norm K L E (FiniteLayer.sup E D) (FiniteLayer.le_sup_left E D) β,
-    h (FiniteLayer.sup E D) (FiniteLayer.le_sup_right E D)]
+  rw [← FieldOfNorms.coord_norm K L E (FiniteIntermediateField.sup E D)
+      (FiniteIntermediateField.le_sup_left E D) α,
+    ← FieldOfNorms.coord_norm K L E (FiniteIntermediateField.sup E D)
+        (FiniteIntermediateField.le_sup_left E D) β,
+    h (FiniteIntermediateField.sup E D) (FiniteIntermediateField.le_sup_right E D)]
 
 /-- A compatible family on an actual cofinal finite-layer tail extends
-uniquely to an element of the original multiplicative norm limit. -/
-theorem existsUnique_normLimit_of_compatible_tail (D : FiniteLayer K L)
-    (x : ∀ E : FiniteLayer K L, D ≤ E → E.val)
-    (hx : ∀ (E F : FiniteLayer K L) (hDE : D ≤ E) (hDF : D ≤ F) (hEF : E ≤ F),
-      FiniteLayer.norm E F hEF (x F hDF) = x E hDE) :
-    ∃! α : NormLimit K L, ∀ (E : FiniteLayer K L) (hDE : D ≤ E),
-      normLimitEval K L E α = x E hDE := by
-  let f (E : FiniteLayer K L) := FiniteLayer.norm E (FiniteLayer.sup E D)
-    (FiniteLayer.le_sup_left E D) (x (FiniteLayer.sup E D) (FiniteLayer.le_sup_right E D))
-  have hf (E F : FiniteLayer K L) (hEF : E ≤ F) : FiniteLayer.norm E F hEF (f F) = f E := by
-    have hs : FiniteLayer.sup E D ≤ FiniteLayer.sup F D :=
+uniquely to an element of the original multiplicative field of norms. -/
+theorem existsUnique_fieldOfNorms_of_compatible_tail (D : FiniteIntermediateField K L)
+    (x : ∀ E : FiniteIntermediateField K L, D ≤ E → E.val)
+    (hx : ∀ (E F : FiniteIntermediateField K L) (hDE : D ≤ E) (hDF : D ≤ F) (hEF : E ≤ F),
+      FiniteIntermediateField.norm E F hEF (x F hDF) = x E hDE) :
+    ∃! α : FieldOfNorms K L, ∀ (E : FiniteIntermediateField K L) (hDE : D ≤ E),
+      FieldOfNorms.coord K L E α = x E hDE := by
+  let f (E : FiniteIntermediateField K L) := FiniteIntermediateField.norm E
+      (FiniteIntermediateField.sup E D)
+    (FiniteIntermediateField.le_sup_left E D) (x (FiniteIntermediateField.sup E D)
+        (FiniteIntermediateField.le_sup_right E D))
+  have hf (E F : FiniteIntermediateField K L) (hEF : E ≤ F) : FiniteIntermediateField.norm E F hEF
+      (f F) = f E := by
+    have hs : FiniteIntermediateField.sup E D ≤ FiniteIntermediateField.sup F D :=
       (show E.val ⊔ D.val ≤ F.val ⊔ D.val from sup_le_sup hEF le_rfl)
     dsimp only [f]
-    rw [FiniteLayer.norm_norm, ← FiniteLayer.norm_norm E (FiniteLayer.sup E D)
-      (FiniteLayer.sup F D) (FiniteLayer.le_sup_left E D) hs]
-    rw [hx (FiniteLayer.sup E D) (FiniteLayer.sup F D)
-      (FiniteLayer.le_sup_right E D) (FiniteLayer.le_sup_right F D) hs]
-  obtain ⟨α, hα, _⟩ := existsUnique_normLimit_of_compatible K L f hf
+    rw [FiniteIntermediateField.norm_norm, ← FiniteIntermediateField.norm_norm E
+        (FiniteIntermediateField.sup E D)
+      (FiniteIntermediateField.sup F D) (FiniteIntermediateField.le_sup_left E D) hs]
+    rw [hx (FiniteIntermediateField.sup E D) (FiniteIntermediateField.sup F D)
+      (FiniteIntermediateField.le_sup_right E D) (FiniteIntermediateField.le_sup_right F D) hs]
+  obtain ⟨α, hα, _⟩ := existsUnique_fieldOfNorms_of_compatible K L f hf
   refine ⟨α, ?_, ?_⟩
   · intro E hDE
-    exact (hα E).trans (hx E (FiniteLayer.sup E D) hDE (FiniteLayer.le_sup_right E D)
-      (FiniteLayer.le_sup_left E D))
+    exact (hα E).trans (hx E (FiniteIntermediateField.sup E D) hDE
+        (FiniteIntermediateField.le_sup_right E D)
+      (FiniteIntermediateField.le_sup_left E D))
   · intro β hβ
-    apply NormLimit.ext_tail K L D
+    apply FieldOfNorms.ext_tail K L D
     intro E hDE
     exact (hβ E hDE).trans ((hα E).trans
-      (hx E (FiniteLayer.sup E D) hDE (FiniteLayer.le_sup_right E D)
-        (FiniteLayer.le_sup_left E D))).symm
+      (hx E (FiniteIntermediateField.sup E D) hDE (FiniteIntermediateField.le_sup_right E D)
+        (FiniteIntermediateField.le_sup_left E D))).symm
 
 /-- The unique extension of an actual compatible cofinal tail. -/
-def normLimitOfTail (D : FiniteLayer K L)
-    (x : ∀ E : FiniteLayer K L, D ≤ E → E.val)
-    (hx : ∀ (E F : FiniteLayer K L) (hDE : D ≤ E) (hDF : D ≤ F) (hEF : E ≤ F),
-      FiniteLayer.norm E F hEF (x F hDF) = x E hDE) : NormLimit K L :=
-  (existsUnique_normLimit_of_compatible_tail K L D x hx).choose
+def FieldOfNorms.ofTail (D : FiniteIntermediateField K L)
+    (x : ∀ E : FiniteIntermediateField K L, D ≤ E → E.val)
+    (hx : ∀ (E F : FiniteIntermediateField K L) (hDE : D ≤ E) (hDF : D ≤ F) (hEF : E ≤ F),
+      FiniteIntermediateField.norm E F hEF (x F hDF) = x E hDE) : FieldOfNorms K L :=
+  (existsUnique_fieldOfNorms_of_compatible_tail K L D x hx).choose
 
 /-- The extension retains every specified original tail coordinate. -/
 @[simp]
-theorem normLimitEval_normLimitOfTail (D : FiniteLayer K L)
-    (x : ∀ E : FiniteLayer K L, D ≤ E → E.val)
-    (hx : ∀ (E F : FiniteLayer K L) (hDE : D ≤ E) (hDF : D ≤ F) (hEF : E ≤ F),
-      FiniteLayer.norm E F hEF (x F hDF) = x E hDE)
-    (E : FiniteLayer K L) (hDE : D ≤ E) :
-    normLimitEval K L E (normLimitOfTail K L D x hx) = x E hDE :=
-  (existsUnique_normLimit_of_compatible_tail K L D x hx).choose_spec.1 E hDE
+theorem FieldOfNorms.coord_fieldOfNormsOfTail (D : FiniteIntermediateField K L)
+    (x : ∀ E : FiniteIntermediateField K L, D ≤ E → E.val)
+    (hx : ∀ (E F : FiniteIntermediateField K L) (hDE : D ≤ E) (hDF : D ≤ F) (hEF : E ≤ F),
+      FiniteIntermediateField.norm E F hEF (x F hDF) = x E hDE)
+    (E : FiniteIntermediateField K L) (hDE : D ≤ E) :
+    FieldOfNorms.coord K L E (FieldOfNorms.ofTail K L D x hx) = x E hDE :=
+  (existsUnique_fieldOfNorms_of_compatible_tail K L D x hx).choose_spec.1 E hDE
 
-/-- At any original finite layer, the extension is an actual finite norm
+/-- At any original finite intermediate field, the extension is an actual finite norm
 from the finite compositum with the specified starting field. -/
-theorem normLimitEval_normLimitOfTail_any (D : FiniteLayer K L)
-    (x : ∀ E : FiniteLayer K L, D ≤ E → E.val)
-    (hx : ∀ (E F : FiniteLayer K L) (hDE : D ≤ E) (hDF : D ≤ F) (hEF : E ≤ F),
-      FiniteLayer.norm E F hEF (x F hDF) = x E hDE) (E : FiniteLayer K L) :
-    normLimitEval K L E (normLimitOfTail K L D x hx) =
-      FiniteLayer.norm E (FiniteLayer.sup E D) (FiniteLayer.le_sup_left E D)
-        (x (FiniteLayer.sup E D) (FiniteLayer.le_sup_right E D)) := by
-  rw [← normLimitEval_norm K L E (FiniteLayer.sup E D) (FiniteLayer.le_sup_left E D),
-    normLimitEval_normLimitOfTail]
+theorem FieldOfNorms.coord_fieldOfNormsOfTail_any (D : FiniteIntermediateField K L)
+    (x : ∀ E : FiniteIntermediateField K L, D ≤ E → E.val)
+    (hx : ∀ (E F : FiniteIntermediateField K L) (hDE : D ≤ E) (hDF : D ≤ F) (hEF : E ≤ F),
+      FiniteIntermediateField.norm E F hEF (x F hDF) = x E hDE) (E : FiniteIntermediateField K L) :
+    FieldOfNorms.coord K L E (FieldOfNorms.ofTail K L D x hx) =
+      FiniteIntermediateField.norm E (FiniteIntermediateField.sup E D)
+          (FiniteIntermediateField.le_sup_left E D)
+        (x (FiniteIntermediateField.sup E D) (FiniteIntermediateField.le_sup_right E D)) := by
+  rw [← FieldOfNorms.coord_norm K L E (FiniteIntermediateField.sup E D)
+      (FiniteIntermediateField.le_sup_left E D),
+    FieldOfNorms.coord_fieldOfNormsOfTail]
 
 end CofinalTail
 
@@ -127,18 +138,19 @@ local notation "κL" => IsLocalRing.ResidueField
 
 /-- The exponent of the actual finite degree over the actual maximal tame
 part, supplied by the proved original-field wild-tail theorem. -/
-def sourceResidueDegree (E : FiniteLayer K L) (hE : K₁ ≤ E) : ℕ :=
+def sourceResidueDegree (E : FiniteIntermediateField K L) (hE : K₁ ≤ E) : ℕ :=
   (finrank_eq_prime_pow_of_apfMaximalTame_le K L K₁ E le_rfl hE).choose
 
 /-- The chosen exponent computes the genuine original relative field degree. -/
-theorem sourceResidueDegree_spec (E : FiniteLayer K L) (hE : K₁ ≤ E) :
+theorem sourceResidueDegree_spec (E : FiniteIntermediateField K L) (hE : K₁ ≤ E) :
     Module.finrank (K₁).val (IntermediateField.extendScalars hE) =
       p ^ sourceResidueDegree K L E hE :=
   (finrank_eq_prime_pow_of_apfMaximalTame_le K L K₁ E le_rfl hE).choose_spec
 
 /-- The actual source-normalized residue root, transported from the
 intrinsic residue field to the actual maximal unramified field. -/
-def sourceResidueRoot (E : FiniteLayer K L) (hE : K₁ ≤ E) : κL ≃+* (IsLocalRing.ResidueField
+def sourceResidueRoot (E : FiniteIntermediateField K L) (hE : K₁ ≤ E) : κL ≃+*
+    (IsLocalRing.ResidueField
     (spectralIntegerRing K (K₀).val)) :=
   (apfMaximalUnramifiedResidueEquiv K L).symm.toRingEquiv.trans
     (iterateFrobeniusEquiv (IsLocalRing.ResidueField (spectralIntegerRing K (K₀).val)) p
@@ -146,7 +158,7 @@ def sourceResidueRoot (E : FiniteLayer K L) (hE : K₁ ≤ E) : κL ≃+* (IsLoc
 
 /-- Transported back to the intrinsic original residue field, the actual
 source root has precisely the prescribed p-power degree as its exponent. -/
-theorem sourceResidueRoot_pow (E : FiniteLayer K L) (hE : K₁ ≤ E) (x : κL) :
+theorem sourceResidueRoot_pow (E : FiniteIntermediateField K L) (hE : K₁ ≤ E) (x : κL) :
     apfMaximalUnramifiedResidueEquiv K L (sourceResidueRoot K L E hE x) ^
       p ^ sourceResidueDegree K L E hE = x := by
   rw [← map_pow]
@@ -157,7 +169,7 @@ theorem sourceResidueRoot_pow (E : FiniteLayer K L) (hE : K₁ ≤ E) (x : κL) 
 
 /-- The source coordinate is already in the actual finite integer ring,
 by the original inclusion from the actual maximal unramified part. -/
-def sourceResidueIntegralCoordinate (E : FiniteLayer K L) (hE : K₁ ≤ E) :
+def sourceResidueIntegralCoordinate (E : FiniteIntermediateField K L) (hE : K₁ ≤ E) :
     κL →*₀ spectralIntegerRing K E.val :=
   (spectralIntegerInclusion K (IntermediateField.inclusion
     ((apfMaximalUnramified_le_maximalTame K L).trans hE))).toMonoidWithZeroHom.comp
@@ -167,7 +179,8 @@ def sourceResidueIntegralCoordinate (E : FiniteLayer K L) (hE : K₁ ≤ E) :
 /-- Reduction of the actual integral coordinate is the actual finite
 residue inclusion applied to the prescribed inverse Frobenius root. -/
 @[simp]
-theorem residue_sourceResidueIntegralCoordinate (E : FiniteLayer K L) (hE : K₁ ≤ E) (x : κL) :
+theorem residue_sourceResidueIntegralCoordinate (E : FiniteIntermediateField K L) (hE : K₁ ≤ E) (x
+    : κL) :
     IsLocalRing.residue _ (sourceResidueIntegralCoordinate K L E hE x) =
       spectralResidueInclusion K (IntermediateField.inclusion
         ((apfMaximalUnramified_le_maximalTame K L).trans hE))
@@ -179,7 +192,7 @@ theorem residue_sourceResidueIntegralCoordinate (E : FiniteLayer K L) (hE : K₁
 /-- The actual coordinate reduction has the source's inverse-Frobenius
 degree normalization. It is an isomorphism, with the actual original
 residue inclusion as its second factor. -/
-def sourceResidueCoordinateEquiv (E : FiniteLayer K L) (hE : K₁ ≤ E) :
+def sourceResidueCoordinateEquiv (E : FiniteIntermediateField K L) (hE : K₁ ≤ E) :
     κL ≃+* IsLocalRing.ResidueField (spectralIntegerRing K E.val) :=
   (sourceResidueRoot K L E hE).trans
     (AlgEquiv.ofBijective
@@ -192,7 +205,8 @@ def sourceResidueCoordinateEquiv (E : FiniteLayer K L) (hE : K₁ ≤ E) :
 /-- The normalization is exactly reduction of the actual original integral
 source coordinate, including the finite-stage inverse Frobenius twist. -/
 @[simp]
-theorem sourceResidueCoordinateEquiv_apply (E : FiniteLayer K L) (hE : K₁ ≤ E) (x : κL) :
+theorem sourceResidueCoordinateEquiv_apply (E : FiniteIntermediateField K L) (hE : K₁ ≤ E) (x : κL)
+    :
     sourceResidueCoordinateEquiv K L E hE x =
       IsLocalRing.residue _ (sourceResidueIntegralCoordinate K L E hE x) :=
   (residue_sourceResidueIntegralCoordinate K L E hE x).symm
@@ -200,7 +214,7 @@ theorem sourceResidueCoordinateEquiv_apply (E : FiniteLayer K L) (hE : K₁ ≤ 
 /-- The original finite inclusion preserves the actual canonical section,
 so the source integral coordinate is the finite field's own Teichmüller lift. -/
 theorem sourceResidueIntegralCoordinate_eq_spectralTeichmuller
-    (E : FiniteLayer K L) (hE : K₁ ≤ E) (x : κL) :
+    (E : FiniteIntermediateField K L) (hE : K₁ ≤ E) (x : κL) :
     sourceResidueIntegralCoordinate K L E hE x =
       spectralTeichmuller K E.val (sourceResidueCoordinateEquiv K L E hE x) :=
   spectralTeichmuller_naturality K (K₀).val
@@ -209,13 +223,13 @@ theorem sourceResidueIntegralCoordinate_eq_spectralTeichmuller
 
 /-- The original finite coordinate prescribed by the source: the inverse
 Frobenius degree root's canonical representative already lies in K₀. -/
-def sourceResidueCoordinate (E : FiniteLayer K L) (hE : K₁ ≤ E) : κL →*₀ E.val :=
+def sourceResidueCoordinate (E : FiniteIntermediateField K L) (hE : K₁ ≤ E) : κL →*₀ E.val :=
   (spectralIntegerRing K E.val).subtype.toMonoidWithZeroHom.comp
     (sourceResidueIntegralCoordinate K L E hE)
 
 /-- The actual source degree exponents add in each original finite tower
 above K₁; the step exponent is supplied by the proved wild-tail theorem. -/
-theorem sourceResidueDegree_step (E F : FiniteLayer K L) (hE : K₁ ≤ E) (hEF : E ≤ F) :
+theorem sourceResidueDegree_step (E F : FiniteIntermediateField K L) (hE : K₁ ≤ E) (hEF : E ≤ F) :
     ∃ d : ℕ, Module.finrank E.val (IntermediateField.extendScalars hEF) = p ^ d ∧
       sourceResidueDegree K L F (hE.trans hEF) =
         d + sourceResidueDegree K L E hE := by
@@ -234,9 +248,9 @@ theorem sourceResidueDegree_step (E F : FiniteLayer K L) (hE : K₁ ≤ E) (hEF 
 
 /-- The actual source coordinates satisfy the genuine original relative
 norm equations; all degree hypotheses come from the actual maximal tame part. -/
-theorem sourceResidueCoordinate_norm (E F : FiniteLayer K L)
+theorem sourceResidueCoordinate_norm (E F : FiniteIntermediateField K L)
     (hE : K₁ ≤ E) (hF : K₁ ≤ F) (hEF : E ≤ F) (x : κL) :
-    FiniteLayer.norm E F hEF (sourceResidueCoordinate K L F hF x) =
+    FiniteIntermediateField.norm E F hEF (sourceResidueCoordinate K L F hF x) =
       sourceResidueCoordinate K L E hE x := by
   obtain ⟨d, hd, hadd⟩ := sourceResidueDegree_step K L E F hE hEF
   have hr : sourceResidueRoot K L F hF x ^ p ^ d =
@@ -248,58 +262,60 @@ theorem sourceResidueCoordinate_norm (E F : FiniteLayer K L)
   have ht : spectralTeichmuller K (K₀).val (sourceResidueRoot K L F hF x) ^ p ^ d =
       spectralTeichmuller K (K₀).val (sourceResidueRoot K L E hE x) := by
     rw [← map_pow, hr]
-  change FiniteLayer.norm E F hEF (IntermediateField.inclusion hEF
+  change FiniteIntermediateField.norm E F hEF (IntermediateField.inclusion hEF
     (IntermediateField.inclusion ((apfMaximalUnramified_le_maximalTame K L).trans hE)
       (spectralTeichmuller K (K₀).val (sourceResidueRoot K L F hF x) : (K₀).val))) = _
-  rw [FiniteLayer.norm_inclusion, hd, ← map_pow]
+  rw [FiniteIntermediateField.norm_inclusion, hd, ← map_pow]
   apply congrArg (IntermediateField.inclusion
     ((apfMaximalUnramified_le_maximalTame K L).trans hE))
   exact congrArg (fun z : spectralIntegerRing K (K₀).val => (z : (K₀).val)) ht
 
 /-- The actual source-normalized multiplicative constants on the same
-original norm-limit carrier, extending the proved compatible finite tail. -/
-def sourceResidueConstants : κL →*₀ NormLimit K L := by
-  let f (x : κL) := normLimitOfTail K L K₁
+original field of norms carrier, extending the proved compatible finite tail. -/
+def sourceResidueConstants : κL →*₀ FieldOfNorms K L := by
+  let f (x : κL) := FieldOfNorms.ofTail K L K₁
     (fun E hE => sourceResidueCoordinate K L E hE x)
     (fun E F hE hF hEF => sourceResidueCoordinate_norm K L E F hE hF hEF x)
-  have he (E : FiniteLayer K L) (hE : K₁ ≤ E) (x : κL) :
-      normLimitEval K L E (f x) = sourceResidueCoordinate K L E hE x :=
-    normLimitEval_normLimitOfTail K L K₁
+  have he (E : FiniteIntermediateField K L) (hE : K₁ ≤ E) (x : κL) :
+      FieldOfNorms.coord K L E (f x) = sourceResidueCoordinate K L E hE x :=
+    FieldOfNorms.coord_fieldOfNormsOfTail K L K₁
       (fun E hE => sourceResidueCoordinate K L E hE x)
       (fun E F hE hF hEF => sourceResidueCoordinate_norm K L E F hE hF hEF x) E hE
   exact {
     toFun := f
     map_zero' := by
-      apply NormLimit.ext_tail K L K₁
+      apply FieldOfNorms.ext_tail K L K₁
       intro E hE
       rw [he E hE, map_zero, map_zero]
     map_one' := by
-      apply NormLimit.ext_tail K L K₁
+      apply FieldOfNorms.ext_tail K L K₁
       intro E hE
       rw [he E hE, map_one, map_one]
     map_mul' := fun x y => by
-      apply NormLimit.ext_tail K L K₁
+      apply FieldOfNorms.ext_tail K L K₁
       intro E hE
       rw [map_mul, he E hE, he E hE, he E hE, map_mul] }
 
 /-- Every tail coordinate of the actual source constants is exactly its
 prescribed inverse-Frobenius Teichmüller representative. -/
 @[simp]
-theorem normLimitEval_sourceResidueConstants (E : FiniteLayer K L) (hE : K₁ ≤ E) (x : κL) :
-    normLimitEval K L E (sourceResidueConstants K L x) =
+theorem FieldOfNorms.coord_sourceResidueConstants (E : FiniteIntermediateField K L) (hE : K₁ ≤ E)
+    (x : κL) :
+    FieldOfNorms.coord K L E (sourceResidueConstants K L x) =
       sourceResidueCoordinate K L E hE x :=
-  normLimitEval_normLimitOfTail K L K₁
+  FieldOfNorms.coord_fieldOfNormsOfTail K L K₁
     (fun E hE => sourceResidueCoordinate K L E hE x)
     (fun E F hE hF hEF => sourceResidueCoordinate_norm K L E F hE hF hEF x) E hE
 
 /-- At every original finite field, including those incomparable with K₁,
 the source constant is the actual norm from the finite compositum. -/
-theorem normLimitEval_sourceResidueConstants_any (E : FiniteLayer K L) (x : κL) :
-    normLimitEval K L E (sourceResidueConstants K L x) =
-      FiniteLayer.norm E (FiniteLayer.sup E K₁) (FiniteLayer.le_sup_left E K₁)
-        (sourceResidueCoordinate K L (FiniteLayer.sup E K₁)
-          (FiniteLayer.le_sup_right E K₁) x) :=
-  normLimitEval_normLimitOfTail_any K L K₁
+theorem FieldOfNorms.coord_sourceResidueConstants_any (E : FiniteIntermediateField K L) (x : κL) :
+    FieldOfNorms.coord K L E (sourceResidueConstants K L x) =
+      FiniteIntermediateField.norm E (FiniteIntermediateField.sup E K₁)
+          (FiniteIntermediateField.le_sup_left E K₁)
+        (sourceResidueCoordinate K L (FiniteIntermediateField.sup E K₁)
+          (FiniteIntermediateField.le_sup_right E K₁) x) :=
+  FieldOfNorms.coord_fieldOfNormsOfTail_any K L K₁
     (fun E hE => sourceResidueCoordinate K L E hE x)
     (fun E F hE hF hEF => sourceResidueCoordinate_norm K L E F hE hF hEF x) E
 
@@ -308,9 +324,9 @@ map, by an original finite coordinate and its genuine residue section. -/
 theorem sourceResidueConstants_injective :
     Function.Injective (sourceResidueConstants K L) := by
   intro x y hxy
-  have hc := congrArg (normLimitEval K L K₁) hxy
-  rw [normLimitEval_sourceResidueConstants K L K₁ le_rfl,
-    normLimitEval_sourceResidueConstants K L K₁ le_rfl] at hc
+  have hc := congrArg (FieldOfNorms.coord K L K₁) hxy
+  rw [FieldOfNorms.coord_sourceResidueConstants K L K₁ le_rfl,
+    FieldOfNorms.coord_sourceResidueConstants K L K₁ le_rfl] at hc
   have hi : sourceResidueIntegralCoordinate K L K₁ le_rfl x =
       sourceResidueIntegralCoordinate K L K₁ le_rfl y := Subtype.ext hc
   have hr := congrArg (IsLocalRing.residue (spectralIntegerRing K (K₁).val)) hi
@@ -321,14 +337,14 @@ theorem sourceResidueConstants_injective :
 
 /-- The source constants are integral for the same original stable valuation. -/
 theorem sourceResidueConstants_valuation_le_one (x : κL) :
-    normLimitValuation K L (sourceResidueConstants K L x) ≤ 1 := by
-  obtain ⟨T, hT⟩ := IsAPF.exists_normLimitValuation_eq_coordinate K L
-  let E := FiniteLayer.sup T K₁
-  have hE : K₁ ≤ E := FiniteLayer.le_sup_right T K₁
-  rw [hT E (FiniteLayer.le_sup_left T K₁)]
+    FieldOfNorms.valuation K L (sourceResidueConstants K L x) ≤ 1 := by
+  obtain ⟨T, hT⟩ := IsAPF.exists_fieldOfNormsValuation_eq_coordinate K L
+  let E := FiniteIntermediateField.sup T K₁
+  have hE : K₁ ≤ E := FiniteIntermediateField.le_sup_right T K₁
+  rw [hT E (FiniteIntermediateField.le_sup_left T K₁)]
   change (IsDiscreteValuationRing.maximalIdeal (spectralIntegerRing K E.val)).valuation E.val
-    (normLimitEval K L E (sourceResidueConstants K L x)) ≤ 1
-  rw [normLimitEval_sourceResidueConstants K L E hE]
+    (FieldOfNorms.coord K L E (sourceResidueConstants K L x)) ≤ 1
+  rw [FieldOfNorms.coord_sourceResidueConstants K L E hE]
   exact (IsDiscreteValuationRing.maximalIdeal (spectralIntegerRing K E.val)).valuation_le_one
     (sourceResidueIntegralCoordinate K L E hE x)
 
@@ -368,10 +384,10 @@ instance sourceDeepResidue_charP (n : ℕ) :
     CharP (IsLocalRing.ResidueField (𝔅 n)) p :=
   charP_of_injective_ringHom (sourceDeepResidueEquiv K L n).injective p
 
-/-- The actual source constants, restricted to the original norm-limit
+/-- The actual source constants, restricted to the original field of norms
 valuation ring using their proved integrality. -/
 def sourceResidueConstantsInteger :
-    κL →*₀ (normLimitFieldValuation K L).valuationSubring := by
+    κL →*₀ (FieldOfNorms.fieldValuation K L).valuationSubring := by
   exact {
     toFun := fun x => ⟨sourceResidueConstants K L x,
       sourceResidueConstants_valuation_le_one K L x⟩
@@ -381,13 +397,13 @@ def sourceResidueConstantsInteger :
 
 /-- The original integral deep coordinate of a source constant is its
 actual finite integral source representative. -/
-theorem normLimitIntegralCoordinate_sourceResidueConstantsInteger (n : ℕ) (x : κL) :
-    normLimitIntegralCoordinate K L K₁
+theorem FieldOfNorms.integralCoordinate_sourceResidueConstantsInteger (n : ℕ) (x : κL) :
+    FieldOfNorms.integralCoordinate K L K₁
       (sourceResidueConstantsInteger K L x) n =
       sourceResidueIntegralCoordinate K L (deepFiniteTower K L K₁ n)
         (le_deepFiniteTower K L K₁ n) x := by
   apply Subtype.ext
-  exact normLimitEval_sourceResidueConstants K L _
+  exact FieldOfNorms.coord_sourceResidueConstants K L _
     (le_deepFiniteTower K L K₁ n) x
 
 /-- The maximal ideal of each actual truncated coordinate ring is nilpotent. -/
@@ -407,15 +423,15 @@ def sourceResidueTruncatedHom (n : ℕ) : κL →+* 𝔅 n :=
 /-- The ring-valued truncated coordinate is exactly the truncation of the
 actual original source constant. This uses the existing Teichmüller section's
 actual naturality under the original quotient projection. -/
-theorem normLimitTruncation_sourceResidueConstantsInteger (n : ℕ) (x : κL) :
-    normLimitTruncation K L K₁ n
+theorem FieldOfNorms.truncation_sourceResidueConstantsInteger (n : ℕ) (x : κL) :
+    FieldOfNorms.truncation K L K₁ n
       (sourceResidueConstantsInteger K L x) =
       sourceResidueTruncatedHom K L n x := by
   let q : spectralIntegerRing K (𝔈 n).val →+* 𝔅 n := Ideal.Quotient.mk _
   let : IsLocalHom q := Ideal.Quotient.mk_surjective.isLocalHom
   let := isAdicComplete_of_isNilpotent_ideal (IsLocalRing.maximalIdeal (𝔅 n))
     (sourceDeep_maximalIdeal_isNilpotent K L n)
-  rw [normLimitTruncation_apply, normLimitIntegralCoordinate_sourceResidueConstantsInteger,
+  rw [FieldOfNorms.truncation_apply, FieldOfNorms.integralCoordinate_sourceResidueConstantsInteger,
     sourceResidueIntegralCoordinate_eq_spectralTeichmuller]
   change q (residueTeichmuller (spectralIntegerRing K (𝔈 n).val) p
       (sourceResidueCoordinateEquiv K L (𝔈 n)
@@ -431,31 +447,31 @@ theorem sourceResidueConstantsInteger_add (x y : κL) :
     sourceResidueConstantsInteger K L (x + y) =
       sourceResidueConstantsInteger K L x +
         sourceResidueConstantsInteger K L y := by
-  apply (normLimitTruncationEquiv K L K₁).injective
+  apply (FieldOfNorms.truncationEquiv K L K₁).injective
   apply Subtype.ext
   funext n
-  change normLimitTruncation K L K₁ n
+  change FieldOfNorms.truncation K L K₁ n
     (sourceResidueConstantsInteger K L (x + y)) =
-    normLimitTruncation K L K₁ n
+    FieldOfNorms.truncation K L K₁ n
       (sourceResidueConstantsInteger K L x +
         sourceResidueConstantsInteger K L y)
-  rw [map_add (normLimitTruncation K L K₁ n),
-    normLimitTruncation_sourceResidueConstantsInteger,
-    normLimitTruncation_sourceResidueConstantsInteger,
-    normLimitTruncation_sourceResidueConstantsInteger]
+  rw [map_add (FieldOfNorms.truncation K L K₁ n),
+    FieldOfNorms.truncation_sourceResidueConstantsInteger,
+    FieldOfNorms.truncation_sourceResidueConstantsInteger,
+    FieldOfNorms.truncation_sourceResidueConstantsInteger]
   exact map_add (sourceResidueTruncatedHom K L n) x y
 
 /-- The actual integral source constants as a unital ring map. -/
 def sourceResidueConstantsIntegerHom :
-    κL →+* (normLimitFieldValuation K L).valuationSubring := by
+    κL →+* (FieldOfNorms.fieldValuation K L).valuationSubring := by
   exact { sourceResidueConstantsInteger K L with
     map_add' := sourceResidueConstantsInteger_add K L }
 
 /-- The source-normalized coefficient field embedding into the same original
 field of norms, with the original addition and multiplication. -/
 def sourceResidueConstantsFieldEmbedding :
-    κL →+* NormLimit K L := by
-  exact (normLimitFieldValuation K L).valuationSubring.subtype.comp
+    κL →+* FieldOfNorms K L := by
+  exact (FieldOfNorms.fieldValuation K L).valuationSubring.subtype.comp
     (sourceResidueConstantsIntegerHom K L)
 
 /-- The field embedding's underlying function is exactly the original
@@ -472,24 +488,24 @@ theorem sourceResidueConstantsFieldEmbedding_injective :
 
 /-- Under the actual original residue-field identification, the reduction
 of a source constant is precisely the inverse-Frobenius-normalized coordinate. -/
-theorem normLimitResidueLayerEquiv_sourceResidueConstantsInteger (x : κL) :
-    normLimitResidueLayerEquiv K L K₁
+theorem FieldOfNorms.residueLayerEquiv_sourceResidueConstantsInteger (x : κL) :
+    FieldOfNorms.residueLayerEquiv K L K₁
       (IsLocalRing.residue _ (sourceResidueConstantsInteger K L x)) =
       sourceResidueCoordinateEquiv K L (deepFiniteTower K L K₁ 0)
         (le_deepFiniteTower K L K₁ 0) x := by
-  rw [normLimitResidueLayerEquiv_residue,
-    normLimitIntegralCoordinate_sourceResidueConstantsInteger,
+  rw [FieldOfNorms.residueLayerEquiv_residue,
+    FieldOfNorms.integralCoordinate_sourceResidueConstantsInteger,
     sourceResidueCoordinateEquiv_apply]
 
 /-- The actual source constants identify the intrinsic original residue
-field with the entire original norm-limit residue field, retaining the
+field with the entire original field of norms residue field, retaining the
 finite starting-stage Frobenius normalization. -/
 def sourceResidueConstantsResidueEquiv :
     κL ≃+* IsLocalRing.ResidueField
-      (normLimitFieldValuation K L).valuationSubring := by
+      (FieldOfNorms.fieldValuation K L).valuationSubring := by
   exact (sourceResidueCoordinateEquiv K L (deepFiniteTower K L K₁ 0)
     (le_deepFiniteTower K L K₁ 0)).trans
-      (normLimitResidueLayerEquiv K L K₁).symm
+      (FieldOfNorms.residueLayerEquiv K L K₁).symm
 
 /-- This residue isomorphism is induced by the actual original source
 constants, rather than by a new coefficient model. -/
@@ -497,9 +513,9 @@ constants, rather than by a new coefficient model. -/
 theorem sourceResidueConstantsResidueEquiv_apply (x : κL) :
     sourceResidueConstantsResidueEquiv K L x =
       IsLocalRing.residue _ (sourceResidueConstantsInteger K L x) := by
-  apply (normLimitResidueLayerEquiv K L K₁).injective
-  exact (normLimitResidueLayerEquiv K L K₁).apply_symm_apply _ |>.trans
-    (normLimitResidueLayerEquiv_sourceResidueConstantsInteger K L x).symm
+  apply (FieldOfNorms.residueLayerEquiv K L K₁).injective
+  exact (FieldOfNorms.residueLayerEquiv K L K₁).apply_symm_apply _ |>.trans
+    (FieldOfNorms.residueLayerEquiv_sourceResidueConstantsInteger K L x).symm
 
 end SourceConstants
 

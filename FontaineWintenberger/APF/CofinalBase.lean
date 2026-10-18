@@ -12,7 +12,7 @@ public import Mathlib.FieldTheory.Galois.GaloisClosure
 # Cofinal finite Galois layers after finite base change
 
 Normal closure is taken inside the actual separable closure. Changing the
-base preserves the actual carrier of a finite layer containing the new base.
+base preserves the actual carrier of a finite intermediate field containing the new base.
 -/
 
 @[expose] public section
@@ -75,7 +75,7 @@ noncomputable def finiteGaloisLayerOverBase
   exact { S with }
 
 omit [FiniteDimensional K M] in
-/-- Rebasing a finite layer keeps its actual ambient field. -/
+/-- Rebasing a finite intermediate field keeps its actual ambient field. -/
 theorem finiteGaloisLayerOverBase_restrictScalars
     (E : FiniteGaloisIntermediateField K (SeparableClosure K))
     (hME : M ≤ E.toIntermediateField) :

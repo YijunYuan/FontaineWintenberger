@@ -14,7 +14,7 @@ public import FontaineWintenberger.FieldOfNorms.Valued
 
 A genuine uniformizer class in the first original finite quotient lifts
 through the actual surjective norm tower. Reconstruction supplies a family
-on the same original norm-limit carrier with normalized value one.
+on the same original field of norms carrier with normalized value one.
 -/
 
 @[expose] public section
@@ -30,10 +30,10 @@ variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
 /-- An actual compatible norm family has normalized value one. The family
 is reconstructed from a lifted genuine first-stage uniformizer class. -/
-theorem exists_normLimitValuation_eq_exp_neg_one [IsAPF K L]
+theorem exists_fieldOfNormsValuation_eq_exp_neg_one [IsAPF K L]
     [Fact (¬ Module.Finite K L)] :
-    ∃ πX : NormLimit K L, normLimitValuation K L πX = WithZero.exp (-1 : ℤ) := by
-  let D : FiniteLayer K L := FiniteLayer.bottom
+    ∃ πX : FieldOfNorms K L, FieldOfNorms.valuation K L πX = WithZero.exp (-1 : ℤ) := by
+  let D : FiniteIntermediateField K L := FiniteIntermediateField.bottom
   let E := deepFiniteTower K L D
   let B := deepFiniteTowerQuotient K L D
   let q (n : ℕ) := deepFiniteTowerTransition K L D n (n + 1) (Nat.le_succ n)
@@ -44,10 +44,10 @@ theorem exists_normLimitValuation_eq_exp_neg_one [IsAPF K L]
   obtain ⟨a, ha⟩ := SequentialInverseLimit.projection_surjective B q hs 0 (Ideal.Quotient.mk _ π)
   change a.val 0 = Ideal.Quotient.mk _ π at ha
   let πX := deepNormReconstruction K L D a
-  have hπX : normLimitValuation K L πX ≤ 1 :=
+  have hπX : FieldOfNorms.valuation K L πX ≤ 1 :=
     deepNormReconstruction_valuation_le_one K L D a
-  let z : R := ⟨normLimitEval K L (E 0) πX,
-    normLimitEval_mem_of_valuation_le_one K L πX hπX (E 0)⟩
+  let z : R := ⟨FieldOfNorms.coord K L (E 0) πX,
+    FieldOfNorms.coord_mem_of_valuation_le_one K L πX hπX (E 0)⟩
   let x := deepNormRepresentative K L D a 0
   obtain ⟨d, hd, heq⟩ := deepNormReconstruction_sub_mem K L D a 0
   have hzd : z - x = d := Subtype.ext heq.symm
@@ -66,172 +66,173 @@ theorem exists_normLimitValuation_eq_exp_neg_one [IsAPF K L]
     · exact h
     · norm_num at h
   refine ⟨πX, ?_⟩
-  rw [normLimitValuation_eq_deepFiniteTower K L D 0]
+  rw [FieldOfNorms.valuation_eq_deepFiniteTower K L D 0]
   change (IsDiscreteValuationRing.maximalIdeal R).valuation (E 0).val (algebraMap R (E 0).val z) = _
   rw [IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap,
     IsDiscreteValuationRing.intValuation_maximalIdeal, hzval]
   rfl
 
 /-- A chosen actual original norm-compatible family with normalized value one. -/
-def normLimitUniformizer [IsAPF K L] [Fact (¬ Module.Finite K L)] : NormLimit K L :=
-  (exists_normLimitValuation_eq_exp_neg_one K L).choose
+def FieldOfNorms.uniformizer [IsAPF K L] [Fact (¬ Module.Finite K L)] : FieldOfNorms K L :=
+  (exists_fieldOfNormsValuation_eq_exp_neg_one K L).choose
 
 @[simp]
-theorem normLimitValuation_normLimitUniformizer [IsAPF K L]
+theorem FieldOfNorms.valuation_fieldOfNormsUniformizer [IsAPF K L]
     [Fact (¬ Module.Finite K L)] :
-    normLimitValuation K L (normLimitUniformizer K L) =
+    FieldOfNorms.valuation K L (FieldOfNorms.uniformizer K L) =
       WithZero.exp (-1 : ℤ) :=
-  (exists_normLimitValuation_eq_exp_neg_one K L).choose_spec
+  (exists_fieldOfNormsValuation_eq_exp_neg_one K L).choose_spec
 
 /-- The actual reconstructed uniformizer is a nonzero original norm family. -/
-theorem normLimitUniformizer_ne_zero [IsAPF K L] [Fact (¬ Module.Finite K L)] :
-    normLimitUniformizer K L ≠ 0 := by
+theorem FieldOfNorms.uniformizer_ne_zero [IsAPF K L] [Fact (¬ Module.Finite K L)] :
+    FieldOfNorms.uniformizer K L ≠ 0 := by
   intro h
-  have hv := normLimitValuation_normLimitUniformizer K L
-  rw [h, map_zero] at hv
+  have hv := FieldOfNorms.valuation_fieldOfNormsUniformizer K L
+  rw [h, _root_.map_zero] at hv
   exact WithZero.exp_ne_zero hv.symm
 
 /-- All original integer powers have their exact original normalized values. -/
-theorem normLimitUniformizer_zpow_valuation [IsAPF K L]
+theorem FieldOfNorms.uniformizer_zpow_valuation [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (m : ℤ) :
-    normLimitValuation K L (normLimitUniformizer K L ^ m) =
+    FieldOfNorms.valuation K L (FieldOfNorms.uniformizer K L ^ m) =
       WithZero.exp (-m) := by
-  rw [map_zpow₀, normLimitValuation_normLimitUniformizer, ← WithZero.exp_zsmul]
+  rw [map_zpow₀, FieldOfNorms.valuation_fieldOfNormsUniformizer, ← WithZero.exp_zsmul]
   congr 1
   simp
 
 /-- The same original stable valuation attains every normalized integer value and zero. -/
-theorem normLimitValuation_surjective [IsAPF K L] [Fact (¬ Module.Finite K L)] :
-    Function.Surjective (normLimitValuation K L) := by
+theorem FieldOfNorms.valuation_surjective [IsAPF K L] [Fact (¬ Module.Finite K L)] :
+    Function.Surjective (FieldOfNorms.valuation K L) := by
   intro a
   induction a using WithZero.recZeroCoe with
-  | zero => exact ⟨0, map_zero _⟩
+  | zero => exact ⟨0, _root_.map_zero _⟩
   | coe a =>
-      refine ⟨normLimitUniformizer K L ^ (-Multiplicative.toAdd a), ?_⟩
-      rw [normLimitUniformizer_zpow_valuation, neg_neg]
+      refine ⟨FieldOfNorms.uniformizer K L ^ (-Multiplicative.toAdd a), ?_⟩
+      rw [FieldOfNorms.uniformizer_zpow_valuation, neg_neg]
       rfl
 
 /-- Bundling the same original map as a field valuation preserves its proved surjectivity. -/
-theorem normLimitFieldValuation_surjective [IsAPF K L]
+theorem FieldOfNorms.fieldValuation_surjective [IsAPF K L]
     [Fact (¬ Module.Finite K L)] :
-    Function.Surjective (normLimitFieldValuation K L) := by
-  exact normLimitValuation_surjective K L
+    Function.Surjective (FieldOfNorms.fieldValuation K L) := by
+  exact FieldOfNorms.valuation_surjective K L
 
 /-- The value group of the actual original field valuation is the entire integer group. -/
-theorem normLimitFieldValuation_valueGroup_eq_top [IsAPF K L]
+theorem FieldOfNorms.fieldValuation_valueGroup_eq_top [IsAPF K L]
     [Fact (¬ Module.Finite K L)] :
-    (normLimitFieldValuation K L).valueGroup = ⊤ := by
+    (FieldOfNorms.fieldValuation K L).valueGroup = ⊤ := by
   apply top_unique
   intro a _ha
   apply MonoidWithZeroHom.mem_valueGroup
-  exact normLimitValuation_surjective K L a.val
+  exact FieldOfNorms.valuation_surjective K L a.val
 
 /-- The original normalized field valuation is rank-one discrete by its actual value group. -/
-instance normLimitFieldValuation_isRankOneDiscrete [IsAPF K L]
+instance FieldOfNorms.fieldValuation_isRankOneDiscrete [IsAPF K L]
     [Fact (¬ Module.Finite K L)] :
-    Valuation.IsRankOneDiscrete (normLimitFieldValuation K L) := by
-  let hG : Nontrivial (normLimitFieldValuation K L).valueGroup := by
-    rw [normLimitFieldValuation_valueGroup_eq_top K L]
+    Valuation.IsRankOneDiscrete (FieldOfNorms.fieldValuation K L) := by
+  let hG : Nontrivial (FieldOfNorms.fieldValuation K L).valueGroup := by
+    rw [FieldOfNorms.fieldValuation_valueGroup_eq_top K L]
     infer_instance
   exact @Valuation.IsRankOneDiscrete.mk' _ _ _ _
-    (normLimitFieldValuation K L) inferInstance hG
+    (FieldOfNorms.fieldValuation K L) inferInstance hG
 
 /-- The actual valuation subring of the same original field is a discrete valuation ring. -/
-instance normLimitFieldValuation_isDiscreteValuationRing [IsAPF K L]
+instance FieldOfNorms.fieldValuation_isDiscreteValuationRing [IsAPF K L]
     [Fact (¬ Module.Finite K L)] :
-    IsDiscreteValuationRing (normLimitFieldValuation K L).valuationSubring := by
-  let hG : Nontrivial (normLimitFieldValuation K L).valueGroup := by
-    rw [normLimitFieldValuation_valueGroup_eq_top K L]
+    IsDiscreteValuationRing (FieldOfNorms.fieldValuation K L).valuationSubring := by
+  let hG : Nontrivial (FieldOfNorms.fieldValuation K L).valueGroup := by
+    rw [FieldOfNorms.fieldValuation_valueGroup_eq_top K L]
     infer_instance
   exact @Valuation.valuationSubring_isDiscreteValuationRing _ _ _ _
-    (normLimitFieldValuation K L) inferInstance hG
+    (FieldOfNorms.fieldValuation K L) inferInstance hG
 
 /-- The valuation of the `Valued` instance is the field valuation, definitionally. -/
 @[simp]
-theorem normLimitValued_v [IsAPF K L] [Fact (¬ Module.Finite K L)] :
-    (Valued.v : Valuation (NormLimit K L) (WithZero (Multiplicative ℤ))) =
-      normLimitFieldValuation K L := rfl
+theorem FieldOfNorms.valued_v [IsAPF K L] [Fact (¬ Module.Finite K L)] :
+    (Valued.v : Valuation (FieldOfNorms K L) (WithZero (Multiplicative ℤ))) =
+      FieldOfNorms.fieldValuation K L := rfl
 
-instance normLimitValued_isRankOneDiscrete [IsAPF K L] [Fact (¬ Module.Finite K L)] :
-    (Valued.v : Valuation (NormLimit K L) (WithZero (Multiplicative ℤ))).IsRankOneDiscrete :=
-  normLimitFieldValuation_isRankOneDiscrete K L
+instance FieldOfNorms.instIsRankOneDiscrete [IsAPF K L] [Fact (¬ Module.Finite K L)] :
+    (Valued.v : Valuation (FieldOfNorms K L) (WithZero (Multiplicative ℤ))).IsRankOneDiscrete :=
+  FieldOfNorms.fieldValuation_isRankOneDiscrete K L
 
-instance normLimitValued_isDiscreteValuationRing [IsAPF K L] [Fact (¬ Module.Finite K L)] :
+instance FieldOfNorms.instIsDiscreteValuationRing [IsAPF K L] [Fact (¬ Module.Finite K L)] :
     IsDiscreteValuationRing
-      (Valued.v : Valuation (NormLimit K L) (WithZero (Multiplicative ℤ))).valuationSubring :=
-  normLimitFieldValuation_isDiscreteValuationRing K L
+      (Valued.v : Valuation (FieldOfNorms K L) (WithZero (Multiplicative ℤ))).valuationSubring :=
+  FieldOfNorms.fieldValuation_isDiscreteValuationRing K L
 
 /-- The reconstructed family as an element of its actual original valuation ring. -/
-def normLimitUniformizerInteger [IsAPF K L] [Fact (¬ Module.Finite K L)] :
-    (normLimitFieldValuation K L).valuationSubring := by
-  refine ⟨normLimitUniformizer K L, ?_⟩
-  change normLimitValuation K L (normLimitUniformizer K L) ≤ 1
-  rw [normLimitValuation_normLimitUniformizer]
+def FieldOfNorms.uniformizerInteger [IsAPF K L] [Fact (¬ Module.Finite K L)] :
+    (FieldOfNorms.fieldValuation K L).valuationSubring := by
+  refine ⟨FieldOfNorms.uniformizer K L, ?_⟩
+  change FieldOfNorms.valuation K L (FieldOfNorms.uniformizer K L) ≤ 1
+  rw [FieldOfNorms.valuation_fieldOfNormsUniformizer]
   change WithZero.exp (-1 : ℤ) ≤ WithZero.exp 0
   exact WithZero.exp_le_exp.mpr (by omega)
 
 @[simp]
-theorem normLimitUniformizerInteger_coe [IsAPF K L] [Fact (¬ Module.Finite K L)] :
-    (normLimitUniformizerInteger K L : NormLimit K L) =
-      normLimitUniformizer K L := rfl
+theorem FieldOfNorms.uniformizerInteger_coe [IsAPF K L] [Fact (¬ Module.Finite K L)] :
+    (FieldOfNorms.uniformizerInteger K L : FieldOfNorms K L) =
+      FieldOfNorms.uniformizer K L := rfl
 
 /-- The original family is a uniformizer for the same actual field valuation. -/
-theorem normLimitUniformizer_isUniformizer [IsAPF K L]
+theorem FieldOfNorms.uniformizer_isUniformizer [IsAPF K L]
     [Fact (¬ Module.Finite K L)] :
-    (normLimitFieldValuation K L).IsUniformizer
-      (normLimitUniformizer K L) := by
+    (FieldOfNorms.fieldValuation K L).IsUniformizer
+      (FieldOfNorms.uniformizer K L) := by
   rw [Valuation.IsUniformizer.iff,
     Valuation.IsRankOneDiscrete.generator_eq_exp_neg_one_of_surjective
-      (normLimitFieldValuation_surjective K L)]
-  exact normLimitValuation_normLimitUniformizer K L
+      (FieldOfNorms.fieldValuation_surjective K L)]
+  exact FieldOfNorms.valuation_fieldOfNormsUniformizer K L
 
 /-- The actual original maximal ideal is generated by the reconstructed uniformizer. -/
-theorem normLimitUniformizer_maximalIdeal [IsAPF K L]
+theorem FieldOfNorms.uniformizer_maximalIdeal [IsAPF K L]
     [Fact (¬ Module.Finite K L)] :
-    IsLocalRing.maximalIdeal (normLimitFieldValuation K L).valuationSubring =
-      Ideal.span {normLimitUniformizerInteger K L} := by
+    IsLocalRing.maximalIdeal (FieldOfNorms.fieldValuation K L).valuationSubring =
+      Ideal.span {FieldOfNorms.uniformizerInteger K L} := by
   exact Valuation.IsUniformizer.is_generator
-    (π := normLimitUniformizerInteger K L)
-    (normLimitUniformizer_isUniformizer K L)
+    (π := FieldOfNorms.uniformizerInteger K L)
+    (FieldOfNorms.uniformizer_isUniformizer K L)
 
 /-- The actual reconstructed valuation-ring element is irreducible in that same DVR. -/
-theorem normLimitUniformizerInteger_irreducible [IsAPF K L]
+theorem FieldOfNorms.uniformizerInteger_irreducible [IsAPF K L]
     [Fact (¬ Module.Finite K L)] :
-    Irreducible (normLimitUniformizerInteger K L) := by
+    Irreducible (FieldOfNorms.uniformizerInteger K L) := by
   exact (IsDiscreteValuationRing.irreducible_iff_uniformizer _).mpr
-    (normLimitUniformizer_maximalIdeal K L)
+    (FieldOfNorms.uniformizer_maximalIdeal K L)
 
 /-- The canonical normalized valuation of the actual original valuation ring
 is exactly the existing stable field valuation on the same original carrier. -/
-theorem normLimitFieldValuation_eq_normalized [IsAPF K L]
+theorem FieldOfNorms.fieldValuation_eq_normalized [IsAPF K L]
     [Fact (¬ Module.Finite K L)] :
     (IsDiscreteValuationRing.maximalIdeal
-      (normLimitFieldValuation K L).valuationSubring).valuation (NormLimit K L) =
-        normLimitFieldValuation K L := by
-  let v := normLimitFieldValuation K L
+      (FieldOfNorms.fieldValuation K L).valuationSubring).valuation (FieldOfNorms K L) =
+        FieldOfNorms.fieldValuation K L := by
+  let v := FieldOfNorms.fieldValuation K L
   let R := v.valuationSubring
-  let π := normLimitUniformizerInteger K L
-  have hπ : Irreducible π := normLimitUniformizerInteger_irreducible K L
-  let w := (IsDiscreteValuationRing.maximalIdeal R).valuation (NormLimit K L)
-  have hwπ : w (algebraMap R (NormLimit K L) π) = WithZero.exp (-1 : ℤ) := by
+  let π := FieldOfNorms.uniformizerInteger K L
+  have hπ : Irreducible π := FieldOfNorms.uniformizerInteger_irreducible K L
+  let w := (IsDiscreteValuationRing.maximalIdeal R).valuation (FieldOfNorms K L)
+  have hwπ : w (algebraMap R (FieldOfNorms K L) π) = WithZero.exp (-1 : ℤ) := by
     rw [IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap]
     exact (IsDiscreteValuationRing.maximalIdeal R).intValuation_singleton hπ.ne_zero
         hπ.maximalIdeal_eq
-  have hvπ : v (algebraMap R (NormLimit K L) π) = WithZero.exp (-1 : ℤ) :=
-    normLimitValuation_normLimitUniformizer K L
-  have hval (a : R) : w (algebraMap R (NormLimit K L) a) = v (algebraMap R (NormLimit K L) a) := by
+  have hvπ : v (algebraMap R (FieldOfNorms K L) π) = WithZero.exp (-1 : ℤ) :=
+    FieldOfNorms.valuation_fieldOfNormsUniformizer K L
+  have hval (a : R) : w (algebraMap R (FieldOfNorms K L) a) = v (algebraMap R (FieldOfNorms K L) a)
+      := by
     by_cases ha : a = 0
-    · simp only [ha, map_zero]
+    · simp only [ha, _root_.map_zero]
     obtain ⟨n, u, ha⟩ := IsDiscreteValuationRing.eq_unit_mul_pow_irreducible ha hπ
-    have hwu : w (algebraMap R (NormLimit K L) (u : R)) = 1 := by
+    have hwu : w (algebraMap R (FieldOfNorms K L) (u : R)) = 1 := by
       rw [IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap]
       apply IsDedekindDomain.HeightOneSpectrum.intValuation_eq_one_iff.mpr
       change ¬ (u : R) ∈ IsLocalRing.maximalIdeal R
       exact fun h => h u.isUnit
-    have hvu : v (algebraMap R (NormLimit K L) (u : R)) = 1 :=
+    have hvu : v (algebraMap R (FieldOfNorms K L) (u : R)) = 1 :=
       (Valuation.Integers.isUnit_iff_valuation_eq_one (Valuation.integer.integers v)).mp u.isUnit
     rw [ha]
-    simp only [map_mul, map_pow, hwu, hvu, hwπ, hvπ]
+    simp only [_root_.map_mul, map_pow, hwu, hvu, hwπ, hvπ]
   apply Valuation.ext
   intro a
   obtain ⟨x, y, _hy, ha⟩ := IsFractionRing.div_surjective R a

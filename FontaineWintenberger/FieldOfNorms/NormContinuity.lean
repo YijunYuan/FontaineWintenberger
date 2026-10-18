@@ -70,7 +70,7 @@ theorem apfPhi_finiteBase_comp_of_normedAlgebra (r : ℝ) :
 
 end HerbrandTowers
 
-namespace FiniteLayer
+namespace FiniteIntermediateField
 
 variable {K Ω : Type*} [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
@@ -78,18 +78,19 @@ variable {K Ω : Type*} [NontriviallyNormedField K] [IsCompleteDiscreteValuedFie
     [NontriviallyNormedField Ω] [NormedAlgebra K Ω] [IsUltrametricDist Ω]
     [Algebra.IsSeparable K Ω]
 
-local instance (E : FiniteLayer K Ω) : CompleteSpace E.val := FiniteDimensional.complete K E.val
-local instance (E : FiniteLayer K Ω) :
+local instance (E : FiniteIntermediateField K Ω) : CompleteSpace E.val :=
+    FiniteDimensional.complete K E.val
+local instance (E : FiniteIntermediateField K Ω) :
     IsCompleteDiscreteValuedField E.val :=
   normedAlgebra_isCompleteDiscreteValuedField K E.val
-local instance (E : FiniteLayer K Ω) : PerfectField (IsLocalRing.ResidueField
+local instance (E : FiniteIntermediateField K Ω) : PerfectField (IsLocalRing.ResidueField
     (NormedField.valuation (K := E.val)).valuationSubring) :=
   normedAlgebra_residueField_perfectField K E.val
 
 /-- Prime Herbrand continuity applies to the same original finite-layer
 norm maps and integer rings used by the actual inverse system. -/
 theorem integerNorm_prime_sub_congruence
-    (E F : FiniteLayer K Ω) (hEF : E ≤ F) (p : ℕ) [Fact p.Prime] :
+    (E F : FiniteIntermediateField K Ω) (hEF : E ≤ F) (p : ℕ) [Fact p.Prime] :
     let F' := IntermediateField.extendScalars hEF
     letI : FiniteDimensional K F' := F.property
     letI : FiniteDimensional E.val F' := Module.Finite.right K E.val F'
@@ -142,8 +143,8 @@ theorem integerNorm_prime_sub_congruence
     (Algebra.intNorm (NormedField.valuation (K := E.val)).valuationSubring T) e hnorm s x y hc
 
 /-- Actual Herbrand moduli compose through the original inclusions of
-three finite layers, with all relative scalar structures explicitly fixed. -/
-theorem apfPhi_tower (E F G : FiniteLayer K Ω) (hEF : E ≤ F) (hFG : F ≤ G) (r : ℝ) :
+three finite intermediate fields, with all relative scalar structures explicitly fixed. -/
+theorem apfPhi_tower (E F G : FiniteIntermediateField K Ω) (hEF : E ≤ F) (hFG : F ≤ G) (r : ℝ) :
     letI : Algebra E.val F.val := (IntermediateField.inclusion hEF).toRingHom.toAlgebra
     letI : Algebra F.val G.val := (IntermediateField.inclusion hFG).toRingHom.toAlgebra
     letI : Algebra E.val G.val := (IntermediateField.inclusion (hEF.trans hFG)).toRingHom.toAlgebra
@@ -179,6 +180,6 @@ theorem apfPhi_tower (E F G : FiniteLayer K Ω) (hEF : E ≤ F) (hFG : F ≤ G) 
       exact norm_mul_le _ _ }
   exact apfPhi_finiteBase_comp_of_normedAlgebra E.val F.val G.val r
 
-end FiniteLayer
+end FiniteIntermediateField
 
 end FontaineWintenberger

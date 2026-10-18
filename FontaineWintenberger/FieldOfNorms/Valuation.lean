@@ -11,7 +11,7 @@ public import FontaineWintenberger.FieldOfNorms.Integral
 public import FontaineWintenberger.Ramification.NormValuation
 
 /-!
-# The actual stable valuation on the multiplicative norm limit
+# The actual stable valuation on the multiplicative field of norms
 
 Actual residue inclusions on an APF finite tail are bijective, so actual field
 norms preserve their normalized valuations. The original multiplicative limit
@@ -28,14 +28,14 @@ variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField 
 
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
-namespace FiniteLayer
+namespace FiniteIntermediateField
 
 local notation "R₀" => Valuation.valuationSubring (NormedField.valuation (K := K))
 
 /-- Original field norms preserve normalized valuations whenever their actual
 residue inclusion is surjective. No normality is required. -/
 theorem normalizedValuation_norm_of_residueInclusion_surjective
-    (E F : FiniteLayer K L) (hEF : E ≤ F)
+    (E F : FiniteIntermediateField K L) (hEF : E ≤ F)
     (hs : Function.Surjective
       (spectralResidueInclusion K (IntermediateField.inclusion hEF))) (x : F.val) :
     (IsDiscreteValuationRing.maximalIdeal (spectralIntegerRing K E.val)).valuation E.val
@@ -67,53 +67,57 @@ theorem normalizedValuation_norm_of_residueInclusion_surjective
   convert hv using 1
   congr 1
 
-end FiniteLayer
+end FiniteIntermediateField
 
 /-- Evaluate the original multiplicative limit and then use the actual
 normalized valuation of that finite field. -/
-def normLimitCoordinateValuation (E : FiniteLayer K L) : NormLimit K L →*₀ WithZero (Multiplicative
+def FieldOfNorms.coordinateValuation (E : FiniteIntermediateField K L) : FieldOfNorms K L →*₀
+    WithZero (Multiplicative
     ℤ) :=
   let v := (IsDiscreteValuationRing.maximalIdeal (spectralIntegerRing K E.val)).valuation E.val
-  v.toMonoidWithZeroHom.comp (normLimitEval K L E)
+  v.toMonoidWithZeroHom.comp (FieldOfNorms.coord K L E)
 
 variable [PerfectField (IsLocalRing.ResidueField
   (NormedField.valuation (K := K)).valuationSubring)]
 
 /-- The normalized coordinate valuations agree on an actual APF finite tail. -/
-theorem IsAPF.exists_normLimitCoordinateValuation_stable [IsAPF K L] :
-    ∃ E₀ : FiniteLayer K L, ∀ E F : FiniteLayer K L, E₀ ≤ E → E₀ ≤ F →
-      ∀ x : NormLimit K L,
-        normLimitCoordinateValuation K L E x = normLimitCoordinateValuation K L F x := by
-  obtain ⟨E₀, hE₀⟩ := IsAPF.exists_finiteLayer_residueInclusion_surjective K L
+theorem IsAPF.exists_fieldOfNormsCoordinateValuation_stable [IsAPF K L] :
+    ∃ E₀ : FiniteIntermediateField K L, ∀ E F : FiniteIntermediateField K L, E₀ ≤ E → E₀ ≤ F →
+      ∀ x : FieldOfNorms K L,
+        FieldOfNorms.coordinateValuation K L E x = FieldOfNorms.coordinateValuation K L F x := by
+  obtain ⟨E₀, hE₀⟩ := IsAPF.exists_finiteIntermediateField_residueInclusion_surjective K L
   refine ⟨E₀, fun E F hE hF x => ?_⟩
-  let G := FiniteLayer.sup E F
-  have hEG : E ≤ G := FiniteLayer.le_sup_left E F
-  have hFG : F ≤ G := FiniteLayer.le_sup_right E F
-  have hvE := FiniteLayer.normalizedValuation_norm_of_residueInclusion_surjective K L E G hEG
-    (hE₀ E G hE hEG) (normLimitEval K L G x)
-  have hvF := FiniteLayer.normalizedValuation_norm_of_residueInclusion_surjective K L F G hFG
-    (hE₀ F G hF hFG) (normLimitEval K L G x)
-  rw [normLimitEval_norm] at hvE hvF
+  let G := FiniteIntermediateField.sup E F
+  have hEG : E ≤ G := FiniteIntermediateField.le_sup_left E F
+  have hFG : F ≤ G := FiniteIntermediateField.le_sup_right E F
+  have hvE := FiniteIntermediateField.normalizedValuation_norm_of_residueInclusion_surjective K L E
+      G hEG
+    (hE₀ E G hE hEG) (FieldOfNorms.coord K L G x)
+  have hvF := FiniteIntermediateField.normalizedValuation_norm_of_residueInclusion_surjective K L F
+      G hFG
+    (hE₀ F G hF hFG) (FieldOfNorms.coord K L G x)
+  rw [FieldOfNorms.coord_norm] at hvE hvF
   exact hvE.trans hvF.symm
 
 /-- The stable normalized multiplicative valuation on the original single
-norm-limit carrier. APF supplies and proves the actual finite stable tail. -/
-def normLimitValuation [IsAPF K L] : NormLimit K L →*₀ WithZero (Multiplicative ℤ) :=
-  normLimitCoordinateValuation K L
-    (IsAPF.exists_normLimitCoordinateValuation_stable K L).choose
+field of norms carrier. APF supplies and proves the actual finite stable tail. -/
+def FieldOfNorms.valuation [IsAPF K L] : FieldOfNorms K L →*₀ WithZero (Multiplicative ℤ) :=
+  FieldOfNorms.coordinateValuation K L
+    (IsAPF.exists_fieldOfNormsCoordinateValuation_stable K L).choose
 
 /-- The same normalized valuation is computed by every sufficiently large
 original finite coordinate. -/
-theorem IsAPF.exists_normLimitValuation_eq_coordinate [IsAPF K L] :
-    ∃ E₀ : FiniteLayer K L, ∀ E : FiniteLayer K L, E₀ ≤ E → ∀ x : NormLimit K L,
-      normLimitValuation K L x = normLimitCoordinateValuation K L E x := by
-  let hex := IsAPF.exists_normLimitCoordinateValuation_stable K L
+theorem IsAPF.exists_fieldOfNormsValuation_eq_coordinate [IsAPF K L] :
+    ∃ E₀ : FiniteIntermediateField K L, ∀ E : FiniteIntermediateField K L, E₀ ≤ E → ∀ x :
+        FieldOfNorms K L,
+      FieldOfNorms.valuation K L x = FieldOfNorms.coordinateValuation K L E x := by
+  let hex := IsAPF.exists_fieldOfNormsCoordinateValuation_stable K L
   exact ⟨hex.choose, fun E hE x => hex.choose_spec hex.choose E le_rfl hE x⟩
 
-/-- The stable normalized valuation detects zero on the original norm limit. -/
+/-- The stable normalized valuation detects zero on the original field of norms. -/
 @[simp]
-theorem normLimitValuation_eq_zero_iff [IsAPF K L] (x : NormLimit K L) :
-    normLimitValuation K L x = 0 ↔ x = 0 := by
-  simp [normLimitValuation, normLimitCoordinateValuation]
+theorem FieldOfNorms.valuation_eq_zero_iff [IsAPF K L] (x : FieldOfNorms K L) :
+    FieldOfNorms.valuation K L x = 0 ↔ x = 0 := by
+  simp [FieldOfNorms.valuation, FieldOfNorms.coordinateValuation]
 
 end FontaineWintenberger

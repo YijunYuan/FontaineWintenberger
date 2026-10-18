@@ -22,7 +22,7 @@ introducing another inverse-limit carrier.
 
 noncomputable section
 
-namespace FontaineWintenberger.FiniteLayer
+namespace FontaineWintenberger.FiniteIntermediateField
 
 attribute [local instance] FractionRing.liftAlgebra
 
@@ -31,8 +31,8 @@ variable {K Ω : Type*} [NontriviallyNormedField K] [IsCompleteDiscreteValuedFie
 
 local notation "R₀" => Valuation.valuationSubring (NormedField.valuation (K := K))
 
-/-- The actual integral norm for an actual inclusion of finite layers. -/
-def integerNorm (E F : FiniteLayer K Ω) (hEF : E ≤ F) :
+/-- The actual integral norm for an actual inclusion of finite intermediate fields. -/
+def integerNorm (E F : FiniteIntermediateField K Ω) (hEF : E ≤ F) :
     spectralIntegerRing K F.val →* spectralIntegerRing K E.val := by
   let : Algebra E.val F.val := (IntermediateField.inclusion hEF).toRingHom.toAlgebra
   have : IsScalarTower K E.val F.val := IsScalarTower.of_algebraMap_eq' rfl
@@ -46,7 +46,7 @@ def integerNorm (E F : FiniteLayer K Ω) (hEF : E ≤ F) :
 
 /-- The integral norm is literally the original field norm under inclusion. -/
 @[simp]
-theorem coe_integerNorm (E F : FiniteLayer K Ω) (hEF : E ≤ F)
+theorem coe_integerNorm (E F : FiniteIntermediateField K Ω) (hEF : E ≤ F)
     (x : spectralIntegerRing K F.val) :
     (integerNorm E F hEF x : E.val) = norm E F hEF (x : F.val) := by
   let : Algebra E.val F.val := (IntermediateField.inclusion hEF).toRingHom.toAlgebra
@@ -68,13 +68,13 @@ theorem coe_integerNorm (E F : FiniteLayer K Ω) (hEF : E ≤ F)
 
 /-- The actual integral norm of the identity field inclusion is the identity. -/
 @[simp]
-theorem integerNorm_self (E : FiniteLayer K Ω) (x : spectralIntegerRing K E.val) :
+theorem integerNorm_self (E : FiniteIntermediateField K Ω) (x : spectralIntegerRing K E.val) :
     integerNorm E E le_rfl x = x := by
   apply Subtype.ext
   rw [coe_integerNorm, norm_self]
 
 /-- Integral norms compose because their original field norms compose. -/
-theorem integerNorm_integerNorm (E F G : FiniteLayer K Ω)
+theorem integerNorm_integerNorm (E F G : FiniteIntermediateField K Ω)
     (hEF : E ≤ F) (hFG : F ≤ G) (x : spectralIntegerRing K G.val) :
     integerNorm E F hEF (integerNorm F G hFG x) = integerNorm E G (hEF.trans hFG) x := by
   apply Subtype.ext
@@ -83,7 +83,7 @@ theorem integerNorm_integerNorm (E F G : FiniteLayer K Ω)
 
 /-- The actual integral norm preserves every nonnegative maximal-ideal
 precision, on all finite separable layers including nonnormal ones. -/
-theorem integerNorm_mem_maximalIdeal_pow (E F : FiniteLayer K Ω) (hEF : E ≤ F)
+theorem integerNorm_mem_maximalIdeal_pow (E F : FiniteIntermediateField K Ω) (hEF : E ≤ F)
     {r : ℕ} {x : spectralIntegerRing K F.val}
     (hx : x ∈ IsLocalRing.maximalIdeal (spectralIntegerRing K F.val) ^ r) :
     integerNorm E F hEF x ∈ IsLocalRing.maximalIdeal (spectralIntegerRing K E.val) ^ r := by
@@ -117,7 +117,7 @@ theorem integerNorm_mem_maximalIdeal_pow (E F : FiniteLayer K Ω) (hEF : E ≤ F
 
 /-- The actual integral norm addition congruence composes in a finite-layer
 triple, consuming the proved integral-norm tower theorem. -/
-theorem integerNorm_add_congruence_tower (E F G : FiniteLayer K Ω)
+theorem integerNorm_add_congruence_tower (E F G : FiniteIntermediateField K Ω)
     (hEF : E ≤ F) (hFG : F ≤ G) {r : ℕ}
     (hE : ∀ x y : spectralIntegerRing K F.val,
       integerNorm E F hEF (x + y) - integerNorm E F hEF x - integerNorm E F hEF y ∈
@@ -173,9 +173,9 @@ theorem integerNorm_add_congruence_tower (E F G : FiniteLayer K Ω)
 
 /-- Actual norm congruences at a common precision compose along an actual
 finite chain of intermediate fields. -/
-theorem integerNorm_add_congruence_of_chain (r : ℕ) (E F : FiniteLayer K Ω)
+theorem integerNorm_add_congruence_of_chain (r : ℕ) (E F : FiniteIntermediateField K Ω)
     (hchain : Relation.ReflTransGen
-      (fun A B : FiniteLayer K Ω => ∃ hAB : A ≤ B,
+      (fun A B : FiniteIntermediateField K Ω => ∃ hAB : A ≤ B,
         ∀ x y : spectralIntegerRing K B.val,
           integerNorm A B hAB (x + y) - integerNorm A B hAB x - integerNorm A B hAB y ∈
             IsLocalRing.maximalIdeal (spectralIntegerRing K A.val) ^ r) E F) :
@@ -191,4 +191,4 @@ theorem integerNorm_add_congruence_of_chain (r : ℕ) (E F : FiniteLayer K Ω)
       obtain ⟨hFG, hF⟩ := hstep
       exact ⟨hEF.trans hFG, integerNorm_add_congruence_tower E F G hEF hFG hE hF⟩
 
-end FontaineWintenberger.FiniteLayer
+end FontaineWintenberger.FiniteIntermediateField

@@ -30,25 +30,25 @@ variable (L : IntermediateField K (SeparableClosure K))
 variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 
 local notation "Ω" => SeparableClosure K
-local notation "X" => NormLimit K L
-local notation "U" => SeparableNormUnion K L Ω
-local notation "ι" => separableNormUnionBaseHom K L Ω
-local notation "ρ" => normLimitAut K L
+local notation "X" => FieldOfNorms K L
+local notation "U" => RelFieldOfNorms K L Ω
+local notation "ι" => RelFieldOfNorms.baseHom K L Ω
+local notation "ρ" => FieldOfNorms.aut K L
 
-local notation "S" => normUnionGaloisSubgroup K L
+local notation "S" => RelFieldOfNorms.galoisSubgroup K L
 
 /-- The original automorphism supplied by the actual subgroup membership theorem. -/
-def normUnionGaloisRestrictionFun (β : S) : L ≃ₐ[K] L :=
-  Classical.choose ((mem_normUnionGaloisSubgroup K L β.val).mp β.property)
+def RelFieldOfNorms.galoisRestrictionFun (β : S) : L ≃ₐ[K] L :=
+  Classical.choose ((mem_relFieldOfNormsGaloisSubgroup K L β.val).mp β.property)
 
 /-- The chosen original automorphism has the actual base square on every element. -/
-theorem normUnionGaloisRestrictionFun_base :
+theorem RelFieldOfNorms.galoisRestrictionFun_base :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
     ∀ (β : S) (x : X), β.val (ι x) =
-      ι (ρ (normUnionGaloisRestrictionFun K L β) x) := by
+      ι (ρ (RelFieldOfNorms.galoisRestrictionFun K L β) x) := by
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
   intro β x
   exact Classical.choose_spec
-    ((mem_normUnionGaloisSubgroup K L β.val).mp β.property) x
+    ((mem_relFieldOfNormsGaloisSubgroup K L β.val).mp β.property) x
 
 end FontaineWintenberger

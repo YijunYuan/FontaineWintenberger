@@ -9,7 +9,7 @@ public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.FieldOfNorms.Convergence
 
 /-!
-# The actual norm-limit addition operation
+# The actual field of norms addition operation
 
 Multiplicative scaling of the proved integral convergence constructs addition
 on the same original multiplicative carrier.
@@ -29,12 +29,12 @@ variable (K L : Type*) [Field K] [Field L] [Algebra K L]
 
 /-- Multiplicative scaling is an exact identity on the original norm-sum
 nets, before any limits or additive structure are chosen on the carrier. -/
-theorem normSumNet_mul_left (E : FiniteLayer K L) (δ α β : NormLimit K L)
+theorem normSumNet_mul_left (E : FiniteIntermediateField K L) (δ α β : FieldOfNorms K L)
     (F : Set.Ici E) :
     normSumNet K L E (δ * α) (δ * β) F =
-      normLimitEval K L E δ * normSumNet K L E α β F := by
+      FieldOfNorms.coord K L E δ * normSumNet K L E α β F := by
   simp only [normSumNet, map_mul]
-  rw [← mul_add, map_mul, normLimitEval_norm K L E F.val F.property δ]
+  rw [← mul_add, map_mul, FieldOfNorms.coord_norm K L E F.val F.property δ]
 
 end ScalarCovariance
 
@@ -45,15 +45,15 @@ variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
 /-- Every pair of actual norm-compatible families has convergent original
 norm-sum nets; existing nonzero families themselves provide the scaling. -/
-theorem exists_tendsto_normSumNet [IsAPF K L] (α β : NormLimit K L) :
-    ∀ E : FiniteLayer K L, ∃ z : E.val,
+theorem exists_tendsto_normSumNet [IsAPF K L] (α β : FieldOfNorms K L) :
+    ∀ E : FiniteIntermediateField K L, ∃ z : E.val,
       letI := spectralNorm.nontriviallyNormedField K E.val
       Tendsto (normSumNet K L E α β) atTop (nhds z) := by
   by_cases hα : α = 0
   · intro E
     let := spectralNorm.nontriviallyNormedField K E.val
-    refine ⟨normLimitEval K L E β, ?_⟩
-    have heq : normSumNet K L E α β = fun _ => normLimitEval K L E β := by
+    refine ⟨FieldOfNorms.coord K L E β, ?_⟩
+    have heq : normSumNet K L E α β = fun _ => FieldOfNorms.coord K L E β := by
       funext F
       simp only [hα, normSumNet_zero_left]
     rw [heq]
@@ -61,16 +61,16 @@ theorem exists_tendsto_normSumNet [IsAPF K L] (α β : NormLimit K L) :
   by_cases hβ : β = 0
   · intro E
     let := spectralNorm.nontriviallyNormedField K E.val
-    refine ⟨normLimitEval K L E α, ?_⟩
-    have heq : normSumNet K L E α β = fun _ => normLimitEval K L E α := by
+    refine ⟨FieldOfNorms.coord K L E α, ?_⟩
+    have heq : normSumNet K L E α β = fun _ => FieldOfNorms.coord K L E α := by
       funext F
       simp only [hβ, normSumNet_zero_right]
     rw [heq]
     exact tendsto_const_nhds
-  let w := normLimitValuation K L
-  have hαw : w α ≠ 0 := fun h => hα ((normLimitValuation_eq_zero_iff K L α).mp h)
-  have hβw : w β ≠ 0 := fun h => hβ ((normLimitValuation_eq_zero_iff K L β).mp h)
-  have hscale : ∃ δ : NormLimit K L, δ ≠ 0 ∧ w (α / δ) ≤ 1 ∧ w (β / δ) ≤ 1 := by
+  let w := FieldOfNorms.valuation K L
+  have hαw : w α ≠ 0 := fun h => hα ((FieldOfNorms.valuation_eq_zero_iff K L α).mp h)
+  have hβw : w β ≠ 0 := fun h => hβ ((FieldOfNorms.valuation_eq_zero_iff K L β).mp h)
+  have hscale : ∃ δ : FieldOfNorms K L, δ ≠ 0 ∧ w (α / δ) ≤ 1 ∧ w (β / δ) ≤ 1 := by
     rcases le_total (w α) (w β) with h | h
     · refine ⟨β, hβ, ?_, ?_⟩
       · rw [map_div₀]
@@ -89,103 +89,103 @@ theorem exists_tendsto_normSumNet [IsAPF K L] (α β : NormLimit K L) :
   let := spectralNorm.nontriviallyNormedField K E.val
   obtain ⟨z, hz⟩ := exists_tendsto_normSumNet_of_valuation_le_one
     K L (α / δ) (β / δ) ha hb E
-  refine ⟨normLimitEval K L E δ * z, ?_⟩
+  refine ⟨FieldOfNorms.coord K L E δ * z, ?_⟩
   simpa only [← normSumNet_mul_left, hδα, hδβ] using
-    hz.const_mul (normLimitEval K L E δ)
+    hz.const_mul (FieldOfNorms.coord K L E δ)
 
-/-- The actual original norm limit contains the unique sum family of any
+/-- The actual original field of norms contains the unique sum family of any
 pair of its elements, characterized by the original norm-sum limits. -/
-theorem existsUnique_normLimit_add [IsAPF K L] (α β : NormLimit K L) :
-    ∃! γ : NormLimit K L, ∀ E : FiniteLayer K L,
+theorem existsUnique_fieldOfNorms_add [IsAPF K L] (α β : FieldOfNorms K L) :
+    ∃! γ : FieldOfNorms K L, ∀ E : FiniteIntermediateField K L,
       letI := spectralNorm.nontriviallyNormedField K E.val
-      Tendsto (normSumNet K L E α β) atTop (nhds (normLimitEval K L E γ)) :=
-  existsUnique_normLimit_of_normSumNet_tendsto K L α β
+      Tendsto (normSumNet K L E α β) atTop (nhds (FieldOfNorms.coord K L E γ)) :=
+  existsUnique_fieldOfNorms_of_normSumNet_tendsto K L α β
     (exists_tendsto_normSumNet K L α β)
 
-/-- Addition on the same original multiplicative norm-limit carrier,
+/-- Addition on the same original multiplicative field of norms carrier,
 characterized by the actual norm-sum limits at every finite base. -/
-def normLimitAdd [IsAPF K L] (α β : NormLimit K L) : NormLimit K L :=
-  (existsUnique_normLimit_add K L α β).choose
+def FieldOfNorms.add [IsAPF K L] (α β : FieldOfNorms K L) : FieldOfNorms K L :=
+  (existsUnique_fieldOfNorms_add K L α β).choose
 
 /-- Every original coordinate of the actual sum is its original norm-sum limit. -/
-theorem tendsto_normSumNet_normLimitAdd [IsAPF K L] (α β : NormLimit K L)
-    (E : FiniteLayer K L) :
+theorem tendsto_normSumNet_fieldOfNormsAdd [IsAPF K L] (α β : FieldOfNorms K L)
+    (E : FiniteIntermediateField K L) :
     letI := spectralNorm.nontriviallyNormedField K E.val
     Tendsto (normSumNet K L E α β) atTop
-      (nhds (normLimitEval K L E (normLimitAdd K L α β))) :=
-  (existsUnique_normLimit_add K L α β).choose_spec.1 E
+      (nhds (FieldOfNorms.coord K L E (FieldOfNorms.add K L α β))) :=
+  (existsUnique_fieldOfNorms_add K L α β).choose_spec.1 E
 
 /-- The original norm-sum limits uniquely characterize the same sum operation. -/
-theorem eq_normLimitAdd_of_tendsto [IsAPF K L] (α β γ : NormLimit K L)
-    (hγ : ∀ E : FiniteLayer K L,
+theorem eq_fieldOfNormsAdd_of_tendsto [IsAPF K L] (α β γ : FieldOfNorms K L)
+    (hγ : ∀ E : FiniteIntermediateField K L,
       letI := spectralNorm.nontriviallyNormedField K E.val
-      Tendsto (normSumNet K L E α β) atTop (nhds (normLimitEval K L E γ))) :
-    γ = normLimitAdd K L α β :=
-  (existsUnique_normLimit_add K L α β).choose_spec.2 γ hγ
+      Tendsto (normSumNet K L E α β) atTop (nhds (FieldOfNorms.coord K L E γ))) :
+    γ = FieldOfNorms.add K L α β :=
+  (existsUnique_fieldOfNorms_add K L α β).choose_spec.2 γ hγ
 
 /-- Commutativity follows from the exact finite-field sums in the defining nets. -/
-theorem normLimitAdd_comm [IsAPF K L] (α β : NormLimit K L) :
-    normLimitAdd K L α β = normLimitAdd K L β α := by
+theorem FieldOfNorms.add_comm [IsAPF K L] (α β : FieldOfNorms K L) :
+    FieldOfNorms.add K L α β = FieldOfNorms.add K L β α := by
   symm
-  apply eq_normLimitAdd_of_tendsto K L α β
+  apply eq_fieldOfNormsAdd_of_tendsto K L α β
   intro E
   let := spectralNorm.nontriviallyNormedField K E.val
   have heq : normSumNet K L E α β = normSumNet K L E β α := by
     funext F
-    simp only [normSumNet, add_comm]
+    simp only [normSumNet, _root_.add_comm]
   rw [heq]
-  exact tendsto_normSumNet_normLimitAdd K L β α E
+  exact tendsto_normSumNet_fieldOfNormsAdd K L β α E
 
-/-- The original zero is the left identity for the actual norm-limit addition. -/
-theorem normLimitAdd_zero_left [IsAPF K L] (α : NormLimit K L) :
-    normLimitAdd K L 0 α = α := by
+/-- The original zero is the left identity for the actual field of norms addition. -/
+theorem FieldOfNorms.add_zero_left [IsAPF K L] (α : FieldOfNorms K L) :
+    FieldOfNorms.add K L 0 α = α := by
   symm
-  apply eq_normLimitAdd_of_tendsto K L 0 α α
+  apply eq_fieldOfNormsAdd_of_tendsto K L 0 α α
   intro E
   let := spectralNorm.nontriviallyNormedField K E.val
-  have heq : normSumNet K L E 0 α = fun _ => normLimitEval K L E α :=
+  have heq : normSumNet K L E 0 α = fun _ => FieldOfNorms.coord K L E α :=
     funext (normSumNet_zero_left K L E α)
   rw [heq]
   exact tendsto_const_nhds
 
-/-- The original zero is the right identity for the actual norm-limit addition. -/
-theorem normLimitAdd_zero_right [IsAPF K L] (α : NormLimit K L) :
-    normLimitAdd K L α 0 = α := by
-  rw [normLimitAdd_comm, normLimitAdd_zero_left]
+/-- The original zero is the right identity for the actual field of norms addition. -/
+theorem FieldOfNorms.add_zero_right [IsAPF K L] (α : FieldOfNorms K L) :
+    FieldOfNorms.add K L α 0 = α := by
+  rw [FieldOfNorms.add_comm, FieldOfNorms.add_zero_left]
 
 /-- Exact norm multiplicativity gives distributivity of the original
-multiplication over the actual norm-limit addition. -/
-theorem mul_normLimitAdd [IsAPF K L] (δ α β : NormLimit K L) :
-    δ * normLimitAdd K L α β =
-      normLimitAdd K L (δ * α) (δ * β) := by
-  apply eq_normLimitAdd_of_tendsto K L (δ * α) (δ * β)
+multiplication over the actual field of norms addition. -/
+theorem mul_fieldOfNormsAdd [IsAPF K L] (δ α β : FieldOfNorms K L) :
+    δ * FieldOfNorms.add K L α β =
+      FieldOfNorms.add K L (δ * α) (δ * β) := by
+  apply eq_fieldOfNormsAdd_of_tendsto K L (δ * α) (δ * β)
   intro E
   let := spectralNorm.nontriviallyNormedField K E.val
   rw [map_mul]
   simpa only [← normSumNet_mul_left] using
-    (tendsto_normSumNet_normLimitAdd K L α β E).const_mul (normLimitEval K L E δ)
+    (tendsto_normSumNet_fieldOfNormsAdd K L α β E).const_mul (FieldOfNorms.coord K L E δ)
 
 /-- Integral inputs have an integral actual sum, on the same stable valuation. -/
-theorem normLimitValuation_normLimitAdd_le_one [IsAPF K L] (α β : NormLimit K L)
-    (hα : normLimitValuation K L α ≤ 1) (hβ : normLimitValuation K L β ≤ 1) :
-    normLimitValuation K L (normLimitAdd K L α β) ≤ 1 := by
-  rw [normLimitValuation_le_one_iff K L]
+theorem FieldOfNorms.valuation_fieldOfNormsAdd_le_one [IsAPF K L] (α β : FieldOfNorms K L)
+    (hα : FieldOfNorms.valuation K L α ≤ 1) (hβ : FieldOfNorms.valuation K L β ≤ 1) :
+    FieldOfNorms.valuation K L (FieldOfNorms.add K L α β) ≤ 1 := by
+  rw [FieldOfNorms.valuation_le_one_iff K L]
   intro E
   exact normSumNet_limit_mem_of_valuation_le_one K L α β hα hβ E _
-    (tendsto_normSumNet_normLimitAdd K L α β E)
+    (tendsto_normSumNet_fieldOfNormsAdd K L α β E)
 
 /-- The actual sum of integral inputs has the proved eventual coordinate
 approximation at every finite precision. -/
-theorem normLimitAdd_sub_mem_of_valuation_le_one [IsAPF K L] (α β : NormLimit K L)
-    (hα : normLimitValuation K L α ≤ 1) (hβ : normLimitValuation K L β ≤ 1) :
-    ∀ s : ℕ, ∃ T : FiniteLayer K L, ∀ E : FiniteLayer K L, T ≤ E →
-      normLimitEval K L E (normLimitAdd K L α β) -
-        normLimitEval K L E α - normLimitEval K L E β ∈
+theorem FieldOfNorms.add_sub_mem_of_valuation_le_one [IsAPF K L] (α β : FieldOfNorms K L)
+    (hα : FieldOfNorms.valuation K L α ≤ 1) (hβ : FieldOfNorms.valuation K L β ≤ 1) :
+    ∀ s : ℕ, ∃ T : FiniteIntermediateField K L, ∀ E : FiniteIntermediateField K L, T ≤ E →
+      FieldOfNorms.coord K L E (FieldOfNorms.add K L α β) -
+        FieldOfNorms.coord K L E α - FieldOfNorms.coord K L E β ∈
         (fun x : spectralIntegerRing K E.val => (x : E.val)) ''
           ((IsLocalRing.maximalIdeal (spectralIntegerRing K E.val) ^ s :
             Ideal (spectralIntegerRing K E.val)) : Set (spectralIntegerRing K E.val)) := by
-  obtain ⟨γ, hγ, _⟩ := existsUnique_normLimit_integral_add K L α β hα hβ
-  have heq := eq_normLimitAdd_of_tendsto K L α β γ hγ.2.1
+  obtain ⟨γ, hγ, _⟩ := existsUnique_fieldOfNorms_integral_add K L α β hα hβ
+  have heq := eq_fieldOfNormsAdd_of_tendsto K L α β γ hγ.2.1
   simpa only [heq] using hγ.2.2
 
 end FontaineWintenberger

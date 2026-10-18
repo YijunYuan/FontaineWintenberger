@@ -89,14 +89,14 @@ variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
 /-- The actual stage pulls back to a finite intermediate field of the
 original abstract L, with a proved equality of its original embedded image. -/
-theorem exists_finiteLayer_map_eq_apfFiniteStage [IsAPF K L]
+theorem exists_finiteIntermediateField_map_eq_apfFiniteStage [IsAPF K L]
     (j : L →ₐ[K] SeparableClosure K) {u : ℝ} (hu : -1 ≤ u) :
-    ∃ E : FiniteLayer K L, E.val.map j = apfFiniteStage K j.fieldRange u := by
+    ∃ E : FiniteIntermediateField K L, E.val.map j = apfFiniteStage K j.fieldRange u := by
   let A := apfFiniteStage K j.fieldRange u
   have : FiniteDimensional K A := finiteDimensional_apfFiniteStage K j.fieldRange hu
   let f : A →ₐ[K] L := j.equivFieldRange.symm.toAlgHom.comp
     (IntermediateField.inclusion (apfFiniteStage_le K j.fieldRange u))
-  let E : FiniteLayer K L :=
+  let E : FiniteIntermediateField K L :=
     ⟨f.fieldRange, Module.Finite.equiv f.equivFieldRange.toLinearEquiv⟩
   refine ⟨E, ?_⟩
   change f.fieldRange.map j = A
@@ -111,9 +111,9 @@ theorem exists_finiteLayer_map_eq_apfFiniteStage [IsAPF K L]
 
 /-- The actual pulled-back stages are cofinal among finite subfields of
 an arbitrary original abstract separable APF extension. -/
-theorem IsAPF.exists_finiteLayer_ge_map_eq_apfFiniteStage [IsAPF K L]
-    (j : L →ₐ[K] SeparableClosure K) (D : FiniteLayer K L) :
-    ∃ (u : ℝ) (E : FiniteLayer K L), 0 ≤ u ∧ D ≤ E ∧
+theorem IsAPF.exists_finiteIntermediateField_ge_map_eq_apfFiniteStage [IsAPF K L]
+    (j : L →ₐ[K] SeparableClosure K) (D : FiniteIntermediateField K L) :
+    ∃ (u : ℝ) (E : FiniteIntermediateField K L), 0 ≤ u ∧ D ≤ E ∧
       E.val.map j = apfFiniteStage K j.fieldRange u := by
   have : FiniteDimensional K (D.val.map j) :=
     Module.Finite.equiv (IntermediateField.equivMap D.val j).toLinearEquiv
@@ -121,7 +121,7 @@ theorem IsAPF.exists_finiteLayer_ge_map_eq_apfFiniteStage [IsAPF K L]
     rintro z ⟨x, _, rfl⟩
     exact AlgHom.mem_fieldRange.mpr ⟨x, rfl⟩
   obtain ⟨u, hu, hstage⟩ := exists_le_apfFiniteStage K j.fieldRange (D.val.map j) hD
-  obtain ⟨E, hE⟩ := exists_finiteLayer_map_eq_apfFiniteStage K L j
+  obtain ⟨E, hE⟩ := exists_finiteIntermediateField_map_eq_apfFiniteStage K L j
     (by linarith : -1 ≤ u)
   refine ⟨u, E, hu, ?_, hE⟩
   intro x hx

@@ -25,7 +25,7 @@ noncomputable section
 
 namespace FontaineWintenberger
 
-section FiniteLayers
+section FiniteIntermediateFields
 
 variable (K M N : Type*) [Field K] [Field M] [Field N]
     [Algebra K M] [Algebra K N] [Algebra M N] [IsScalarTower K M N]
@@ -33,40 +33,42 @@ variable (K M N : Type*) [Field K] [Field M] [Field N]
 
 /-- Good target fields can simultaneously dominate a target field and the
 actual image of any prescribed finite source field. -/
-theorem exists_goodFiniteLayer_ge_pullback (D : FiniteLayer K N)
-    (C : FiniteLayer K M) :
-    ∃ F : FiniteLayer K N, D ≤ F ∧ IsGoodFiniteLayer K M F ∧
-      C ≤ finiteLayerPullbackLayer K M F := by
+theorem exists_goodFiniteLayer_ge_pullback (D : FiniteIntermediateField K N)
+    (C : FiniteIntermediateField K M) :
+    ∃ F : FiniteIntermediateField K N, D ≤ F ∧ IsGoodFiniteLayer K M F ∧
+      C ≤ FiniteIntermediateField.pullbackLayer K M F := by
   let i := IsScalarTower.toAlgHom K M N
-  obtain ⟨F, hF, hg⟩ := exists_goodFiniteLayer_ge K M (FiniteLayer.sup D (FiniteLayer.map i C))
-  refine ⟨F, (FiniteLayer.le_sup_left D _).trans hF, hg, ?_⟩
+  obtain ⟨F, hF, hg⟩ := exists_goodFiniteLayer_ge K M (FiniteIntermediateField.sup D
+      (FiniteIntermediateField.map i C))
+  refine ⟨F, (FiniteIntermediateField.le_sup_left D _).trans hF, hg, ?_⟩
   intro x hx
-  exact hF (FiniteLayer.le_sup_right D _ ⟨x, hx, rfl⟩)
+  exact hF (FiniteIntermediateField.le_sup_right D _ ⟨x, hx, rfl⟩)
 
 /-- On an actual good pair, the target norm-sum term is literally the image
 of the corresponding original source term. -/
-theorem normSumNet_finiteNormLimitMap (D F : FiniteLayer K N) (hDF : D ≤ F)
+theorem normSumNet_finiteFieldOfNormsMap (D F : FiniteIntermediateField K N) (hDF : D ≤ F)
     (hD : IsGoodFiniteLayer K M D) (hF : IsGoodFiniteLayer K M F)
-    (x y : NormLimit K M) :
-    normSumNet K N D (finiteNormLimitMap K M N x) (finiteNormLimitMap K M N y)
+    (x y : FieldOfNorms K M) :
+    normSumNet K N D (FieldOfNorms.finiteMap K M N x) (FieldOfNorms.finiteMap K M N y)
         ⟨F, hDF⟩ =
-      finiteLayerPullbackTo K M D
-        (normSumNet K M (finiteLayerPullbackLayer K M D) x y
-          ⟨finiteLayerPullbackLayer K M F, finiteLayerPullback_mono K M hDF⟩) := by
-  change FiniteLayer.norm D F hDF
-      (normLimitEval K N F (finiteNormLimitMap K M N x) +
-        normLimitEval K N F (finiteNormLimitMap K M N y)) = _
-  rw [normLimitEval_finiteNormLimitMap K M N F hF,
-    normLimitEval_finiteNormLimitMap K M N F hF]
-  exact (congrArg (FiniteLayer.norm D F hDF)
-    (map_add (finiteLayerPullbackTo K M F)
-      (normLimitEval K M (finiteLayerPullbackLayer K M F) x)
-      (normLimitEval K M (finiteLayerPullbackLayer K M F) y)).symm).trans
+      FiniteIntermediateField.pullbackTo K M D
+        (normSumNet K M (FiniteIntermediateField.pullbackLayer K M D) x y
+          ⟨FiniteIntermediateField.pullbackLayer K M F, FiniteIntermediateField.pullback_mono K M
+              hDF⟩) := by
+  change FiniteIntermediateField.norm D F hDF
+      (FieldOfNorms.coord K N F (FieldOfNorms.finiteMap K M N x) +
+        FieldOfNorms.coord K N F (FieldOfNorms.finiteMap K M N y)) = _
+  rw [FieldOfNorms.coord_finiteFieldOfNormsMap K M N F hF,
+    FieldOfNorms.coord_finiteFieldOfNormsMap K M N F hF]
+  exact (congrArg (FiniteIntermediateField.norm D F hDF)
+    (map_add (FiniteIntermediateField.pullbackTo K M F)
+      (FieldOfNorms.coord K M (FiniteIntermediateField.pullbackLayer K M F) x)
+      (FieldOfNorms.coord K M (FiniteIntermediateField.pullbackLayer K M F) y)).symm).trans
     (goodFinitePair_norm K M D F hDF hD hF
-      (normLimitEval K M (finiteLayerPullbackLayer K M F) x +
-        normLimitEval K M (finiteLayerPullbackLayer K M F) y))
+      (FieldOfNorms.coord K M (FiniteIntermediateField.pullbackLayer K M F) x +
+        FieldOfNorms.coord K M (FiniteIntermediateField.pullbackLayer K M F) y))
 
-end FiniteLayers
+end FiniteIntermediateFields
 
 section NormalizedValuation
 
@@ -115,20 +117,21 @@ variable (M N : Type*) [Field M] [Field N] [Algebra K M] [Algebra K N]
 
 /-- The two original sum limits agree at every good finite target coordinate,
 by comparison on the same genuinely directed cofinal set. -/
-theorem finiteNormLimitMap_add_coordinate [IsAPF K M] [IsAPF K N]
-    (D : FiniteLayer K N) (hD : IsGoodFiniteLayer K M D) (x y : NormLimit K M) :
-    normLimitEval K N D (finiteNormLimitMap K M N (normLimitAdd K M x y)) =
-      normLimitEval K N D (normLimitAdd K N
-        (finiteNormLimitMap K M N x) (finiteNormLimitMap K M N y)) := by
-  let C := finiteLayerPullbackLayer K M D
-  let S := {F : FiniteLayer K N // D ≤ F ∧ IsGoodFiniteLayer K M F}
+theorem FieldOfNorms.finiteMap_add_coordinate [IsAPF K M] [IsAPF K N]
+    (D : FiniteIntermediateField K N) (hD : IsGoodFiniteLayer K M D) (x y : FieldOfNorms K M) :
+    FieldOfNorms.coord K N D (FieldOfNorms.finiteMap K M N (FieldOfNorms.add K M x y)) =
+      FieldOfNorms.coord K N D (FieldOfNorms.add K N
+        (FieldOfNorms.finiteMap K M N x) (FieldOfNorms.finiteMap K M N y)) := by
+  let C := FiniteIntermediateField.pullbackLayer K M D
+  let S := {F : FiniteIntermediateField K N // D ≤ F ∧ IsGoodFiniteLayer K M F}
   let : Nonempty S := ⟨⟨D, le_rfl, hD⟩⟩
   let : IsDirectedOrder S := ⟨fun F G => by
     obtain ⟨H, hFH, hGH, hH⟩ := exists_goodFiniteLayer_ge_pair K M F.val G.val
     exact ⟨⟨H, F.property.1.trans hFH, hH⟩, hFH, hGH⟩⟩
   let u (F : S) : Set.Ici D := ⟨F.val, F.property.1⟩
   let v (F : S) : Set.Ici C :=
-    ⟨finiteLayerPullbackLayer K M F.val, finiteLayerPullback_mono K M F.property.1⟩
+    ⟨FiniteIntermediateField.pullbackLayer K M F.val, FiniteIntermediateField.pullback_mono K M
+        F.property.1⟩
   have hu : Tendsto u atTop atTop := by
     apply tendsto_atTop_atTop.mpr
     intro A
@@ -138,119 +141,120 @@ theorem finiteNormLimitMap_add_coordinate [IsAPF K M] [IsAPF K N]
     apply tendsto_atTop_atTop.mpr
     intro A
     obtain ⟨F, hDF, hF, hAF⟩ := exists_goodFiniteLayer_ge_pullback K M N D A.val
-    exact ⟨⟨F, hDF, hF⟩, fun G hFG => hAF.trans (finiteLayerPullback_mono K M hFG)⟩
-  let := spectralNorm.nontriviallyNormedField K (finiteLayerPullback K M D)
+    exact ⟨⟨F, hDF, hF⟩, fun G hFG => hAF.trans (FiniteIntermediateField.pullback_mono K M hFG)⟩
+  let := spectralNorm.nontriviallyNormedField K (FiniteIntermediateField.pullback K M D)
   let := spectralNorm.nontriviallyNormedField K D.val
-  let := spectralNorm.normedAlgebra K (finiteLayerPullback K M D)
+  let := spectralNorm.normedAlgebra K (FiniteIntermediateField.pullback K M D)
   let := spectralNorm.normedAlgebra K D.val
-  have hc : Continuous (finiteLayerPullbackTo K M D) :=
-    (finiteLayerPullbackTo K M D).toLinearMap.continuous_of_finiteDimensional
+  have hc : Continuous (FiniteIntermediateField.pullbackTo K M D) :=
+    (FiniteIntermediateField.pullbackTo K M D).toLinearMap.continuous_of_finiteDimensional
   have hsource := hc.continuousAt.tendsto.comp
-    ((tendsto_normSumNet_normLimitAdd K M x y C).comp hv)
-  have htarget := (tendsto_normSumNet_normLimitAdd K N
-    (finiteNormLimitMap K M N x) (finiteNormLimitMap K M N y) D).comp hu
+    ((tendsto_normSumNet_fieldOfNormsAdd K M x y C).comp hv)
+  have htarget := (tendsto_normSumNet_fieldOfNormsAdd K N
+    (FieldOfNorms.finiteMap K M N x) (FieldOfNorms.finiteMap K M N y) D).comp hu
   have heq : (fun F : S => normSumNet K N D
-      (finiteNormLimitMap K M N x) (finiteNormLimitMap K M N y) (u F)) =
-      fun F : S => finiteLayerPullbackTo K M D (normSumNet K M C x y (v F)) := by
+      (FieldOfNorms.finiteMap K M N x) (FieldOfNorms.finiteMap K M N y) (u F)) =
+      fun F : S => FiniteIntermediateField.pullbackTo K M D (normSumNet K M C x y (v F)) := by
     funext F
-    exact normSumNet_finiteNormLimitMap K M N D F.val F.property.1 hD F.property.2 x y
+    exact normSumNet_finiteFieldOfNormsMap K M N D F.val F.property.1 hD F.property.2 x y
   change Tendsto (fun F : S => normSumNet K N D
-    (finiteNormLimitMap K M N x) (finiteNormLimitMap K M N y) (u F)) _ _ at htarget
+    (FieldOfNorms.finiteMap K M N x) (FieldOfNorms.finiteMap K M N y) (u F)) _ _ at htarget
   rw [heq] at htarget
-  exact (normLimitEval_finiteNormLimitMap K M N D hD _).trans
+  exact (FieldOfNorms.coord_finiteFieldOfNormsMap K M N D hD _).trans
     (tendsto_nhds_unique hsource htarget)
 
-/-- The literal finite-inclusion map preserves the actual norm-limit addition. -/
-theorem finiteNormLimitMap_add [IsAPF K M] [IsAPF K N]
-    (x y : NormLimit K M) :
-    finiteNormLimitMap K M N (normLimitAdd K M x y) =
-      normLimitAdd K N (finiteNormLimitMap K M N x) (finiteNormLimitMap K M N y) := by
-  apply NormLimit.ext_cofinal K N (IsGoodFiniteLayer K M) (goodFiniteLayers_cofinal K M N)
+/-- The literal finite-inclusion map preserves the actual field of norms addition. -/
+theorem FieldOfNorms.finiteMap_add [IsAPF K M] [IsAPF K N]
+    (x y : FieldOfNorms K M) :
+    FieldOfNorms.finiteMap K M N (FieldOfNorms.add K M x y) =
+      FieldOfNorms.add K N (FieldOfNorms.finiteMap K M N x) (FieldOfNorms.finiteMap K M N y) := by
+  apply FieldOfNorms.ext_cofinal K N (IsGoodFiniteLayer K M) (goodFiniteLayers_cofinal K M N)
   intro D hD
-  exact finiteNormLimitMap_add_coordinate K M N D hD x y
+  exact FieldOfNorms.finiteMap_add_coordinate K M N D hD x y
 
 /-- The actual finite-inclusion map is a field homomorphism on the original
-norm-limit carriers and their already constructed field structures. -/
-def finiteNormLimitRingHom [IsAPF K M] [IsAPF K N]
+field of norms carriers and their already constructed field structures. -/
+def FieldOfNorms.finiteRingHom [IsAPF K M] [IsAPF K N]
     [Fact (¬ Module.Finite K M)] [Fact (¬ Module.Finite K N)] :
-    NormLimit K M →+* NormLimit K N := by
-  exact { finiteNormLimitMap K M N with
-    map_add' := finiteNormLimitMap_add K M N }
+    FieldOfNorms K M →+* FieldOfNorms K N := by
+  exact { FieldOfNorms.finiteMap K M N with
+    map_add' := FieldOfNorms.finiteMap_add K M N }
 
 @[simp]
-theorem finiteNormLimitRingHom_apply [IsAPF K M] [IsAPF K N]
+theorem FieldOfNorms.finiteRingHom_apply [IsAPF K M] [IsAPF K N]
     [Fact (¬ Module.Finite K M)] [Fact (¬ Module.Finite K N)]
-    (x : NormLimit K M) :
-    finiteNormLimitRingHom K M N x =
-      finiteNormLimitMap K M N x := rfl
+    (x : FieldOfNorms K M) :
+    FieldOfNorms.finiteRingHom K M N x =
+      FieldOfNorms.finiteMap K M N x := rfl
 
 /-- Unitality and the actual original field structures give injectivity. -/
-theorem finiteNormLimitMap_injective [IsAPF K M] [IsAPF K N]
+theorem FieldOfNorms.finiteMap_injective [IsAPF K M] [IsAPF K N]
     [Fact (¬ Module.Finite K M)] [Fact (¬ Module.Finite K N)] :
-    Function.Injective (finiteNormLimitMap K M N) := by
-  exact (finiteNormLimitRingHom K M N).injective
+    Function.Injective (FieldOfNorms.finiteMap K M N) := by
+  exact (FieldOfNorms.finiteRingHom K M N).injective
 
 /-- An actual good field on both stable tails computes one fixed positive
 finite valuation exponent for every original norm family, including zero. -/
-theorem exists_goodFiniteLayer_finiteNormLimitMap_valuation
+theorem exists_goodFiniteLayer_finiteFieldOfNormsMap_valuation
     [IsAPF K M] [IsAPF K N] :
-    ∃ D : FiniteLayer K N, IsGoodFiniteLayer K M D ∧
-      0 < embeddingRamificationIdx K (finiteLayerPullbackTo K M D) ∧
-      ∀ x : NormLimit K M,
-        normLimitValuation K N (finiteNormLimitMap K M N x) =
-          normLimitValuation K M x ^
-            embeddingRamificationIdx K (finiteLayerPullbackTo K M D) := by
-  obtain ⟨C₀, hC₀⟩ := IsAPF.exists_normLimitValuation_eq_coordinate K M
-  obtain ⟨D₀, hD₀⟩ := IsAPF.exists_normLimitValuation_eq_coordinate K N
+    ∃ D : FiniteIntermediateField K N, IsGoodFiniteLayer K M D ∧
+      0 < embeddingRamificationIdx K (FiniteIntermediateField.pullbackTo K M D) ∧
+      ∀ x : FieldOfNorms K M,
+        FieldOfNorms.valuation K N (FieldOfNorms.finiteMap K M N x) =
+          FieldOfNorms.valuation K M x ^
+            embeddingRamificationIdx K (FiniteIntermediateField.pullbackTo K M D) := by
+  obtain ⟨C₀, hC₀⟩ := IsAPF.exists_fieldOfNormsValuation_eq_coordinate K M
+  obtain ⟨D₀, hD₀⟩ := IsAPF.exists_fieldOfNormsValuation_eq_coordinate K N
   obtain ⟨D, hD₀D, hD, hC₀D⟩ := exists_goodFiniteLayer_ge_pullback K M N D₀ C₀
-  let C := finiteLayerPullbackLayer K M D
-  refine ⟨D, hD, embeddingRamificationIdx_pos K (finiteLayerPullbackTo K M D), fun x => ?_⟩
+  let C := FiniteIntermediateField.pullbackLayer K M D
+  refine ⟨D, hD, embeddingRamificationIdx_pos K (FiniteIntermediateField.pullbackTo K M D), fun x
+      => ?_⟩
   calc
-    normLimitValuation K N (finiteNormLimitMap K M N x) =
-        normLimitCoordinateValuation K N D (finiteNormLimitMap K M N x) :=
+    FieldOfNorms.valuation K N (FieldOfNorms.finiteMap K M N x) =
+        FieldOfNorms.coordinateValuation K N D (FieldOfNorms.finiteMap K M N x) :=
       hD₀ D hD₀D _
     _ = (IsDiscreteValuationRing.maximalIdeal (spectralIntegerRing K D.val)).valuation
-        D.val (finiteLayerPullbackTo K M D (normLimitEval K M C x)) :=
+        D.val (FiniteIntermediateField.pullbackTo K M D (FieldOfNorms.coord K M C x)) :=
       congrArg ((IsDiscreteValuationRing.maximalIdeal (spectralIntegerRing K D.val)).valuation
           D.val)
-        (normLimitEval_finiteNormLimitMap K M N D hD x)
-    _ = normLimitCoordinateValuation K M C x ^
-        embeddingRamificationIdx K (finiteLayerPullbackTo K M D) :=
-      spectral_normalizedValuation_algHom K (finiteLayerPullbackTo K M D)
-        (normLimitEval K M C x)
-    _ = normLimitValuation K M x ^
-        embeddingRamificationIdx K (finiteLayerPullbackTo K M D) :=
-      congrArg (fun z => z ^ embeddingRamificationIdx K (finiteLayerPullbackTo K M D))
+        (FieldOfNorms.coord_finiteFieldOfNormsMap K M N D hD x)
+    _ = FieldOfNorms.coordinateValuation K M C x ^
+        embeddingRamificationIdx K (FiniteIntermediateField.pullbackTo K M D) :=
+      spectral_normalizedValuation_algHom K (FiniteIntermediateField.pullbackTo K M D)
+        (FieldOfNorms.coord K M C x)
+    _ = FieldOfNorms.valuation K M x ^
+        embeddingRamificationIdx K (FiniteIntermediateField.pullbackTo K M D) :=
+      congrArg (fun z => z ^ embeddingRamificationIdx K (FiniteIntermediateField.pullbackTo K M D))
         (hC₀ C hC₀D x).symm
 
 /-- Positive integral scaling is produced from an actual original finite
 integer-ring inclusion, rather than supplied as an additional hypothesis. -/
-theorem exists_finiteNormLimitMap_valuation_scaling [IsAPF K M] [IsAPF K N] :
-    ∃ e : ℕ, 0 < e ∧ ∀ x : NormLimit K M,
-      normLimitValuation K N (finiteNormLimitMap K M N x) =
-        normLimitValuation K M x ^ e := by
-  obtain ⟨D, _, he, hv⟩ := exists_goodFiniteLayer_finiteNormLimitMap_valuation K M N
-  exact ⟨embeddingRamificationIdx K (finiteLayerPullbackTo K M D), he, hv⟩
+theorem exists_finiteFieldOfNormsMap_valuation_scaling [IsAPF K M] [IsAPF K N] :
+    ∃ e : ℕ, 0 < e ∧ ∀ x : FieldOfNorms K M,
+      FieldOfNorms.valuation K N (FieldOfNorms.finiteMap K M N x) =
+        FieldOfNorms.valuation K M x ^ e := by
+  obtain ⟨D, _, he, hv⟩ := exists_goodFiniteLayer_finiteFieldOfNormsMap_valuation K M N
+  exact ⟨embeddingRamificationIdx K (FiniteIntermediateField.pullbackTo K M D), he, hv⟩
 
 /-- The actual finite-inclusion map is uniformly continuous for the existing
 valuation uniformities, by its proved positive integral scaling. -/
-theorem uniformContinuous_finiteNormLimitMap [IsAPF K M] [IsAPF K N]
+theorem uniformContinuous_finiteFieldOfNormsMap [IsAPF K M] [IsAPF K N]
     [Fact (¬ Module.Finite K M)] [Fact (¬ Module.Finite K N)] :
-    UniformContinuous (finiteNormLimitMap K M N) := by
-  obtain ⟨e, he, hv⟩ := exists_finiteNormLimitMap_valuation_scaling K M N
-  have hbM := Valued.nhds_zero_hasBasis_integer_closedBall (NormLimit K M)
-    (normLimitUniformizer K M)
-    (normLimitValuation_normLimitUniformizer K M)
-  have hbN := Valued.nhds_zero_hasBasis_integer_closedBall (NormLimit K N)
-    (normLimitUniformizer K N)
-    (normLimitValuation_normLimitUniformizer K N)
-  change UniformContinuous (finiteNormLimitRingHom K M N)
+    UniformContinuous (FieldOfNorms.finiteMap K M N) := by
+  obtain ⟨e, he, hv⟩ := exists_finiteFieldOfNormsMap_valuation_scaling K M N
+  have hbM := Valued.nhds_zero_hasBasis_integer_closedBall (FieldOfNorms K M)
+    (FieldOfNorms.uniformizer K M)
+    (FieldOfNorms.valuation_fieldOfNormsUniformizer K M)
+  have hbN := Valued.nhds_zero_hasBasis_integer_closedBall (FieldOfNorms K N)
+    (FieldOfNorms.uniformizer K N)
+    (FieldOfNorms.valuation_fieldOfNormsUniformizer K N)
+  change UniformContinuous (FieldOfNorms.finiteRingHom K M N)
   apply uniformContinuous_of_continuousAt_zero
-    (finiteNormLimitRingHom K M N).toAddMonoidHom
+    (FieldOfNorms.finiteRingHom K M N).toAddMonoidHom
   simp only [ContinuousAt, map_zero, hbM.tendsto_iff hbN, true_and, forall_const]
   intro n
   refine ⟨n, fun x hx => ?_⟩
-  change normLimitValuation K N (finiteNormLimitMap K M N x) ≤
+  change FieldOfNorms.valuation K N (FieldOfNorms.finiteMap K M N x) ≤
     WithZero.exp (-((n + 2 : ℕ) : ℤ))
   rw [hv x]
   have hpow : WithZero.exp (-((n + 2 : ℕ) : ℤ)) ^ e ≤
@@ -262,10 +266,10 @@ theorem uniformContinuous_finiteNormLimitMap [IsAPF K M] [IsAPF K N]
   exact (pow_le_pow_left₀ zero_le hx e).trans hpow
 
 /-- Continuity uses the original valuation topology on each original norm field. -/
-theorem continuous_finiteNormLimitMap [IsAPF K M] [IsAPF K N]
+theorem continuous_finiteFieldOfNormsMap [IsAPF K M] [IsAPF K N]
     [Fact (¬ Module.Finite K M)] [Fact (¬ Module.Finite K N)] :
-    Continuous (finiteNormLimitMap K M N) := by
-  exact (uniformContinuous_finiteNormLimitMap K M N).continuous
+    Continuous (FieldOfNorms.finiteMap K M N) := by
+  exact (uniformContinuous_finiteFieldOfNormsMap K M N).continuous
 
 end ValuedFields
 

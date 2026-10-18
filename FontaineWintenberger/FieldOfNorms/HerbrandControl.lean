@@ -77,8 +77,8 @@ variable [PerfectField (IsLocalRing.ResidueField
 
 /-- Uniform precision for the actual relative finite fields, with the
 canonical spectral norm on their original finite base. -/
-theorem FiniteLayer.le_ceil_apfPhi_of_apfPsi_le [IsAPF K L]
-    (E F : FiniteLayer K L) (hEF : E ≤ F) :
+theorem FiniteIntermediateField.le_ceil_apfPhi_of_apfPsi_le [IsAPF K L]
+    (E F : FiniteIntermediateField K L) (hEF : E ≤ F) :
     letI := spectralNorm.nontriviallyNormedField K E.val
     letI := spectralNorm.normedAlgebra K E.val
     letI := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr

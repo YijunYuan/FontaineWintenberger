@@ -65,7 +65,7 @@ variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 /-- A genuine APF-stage containment gives the actual relative extended
 first bound on the original finite fields and their canonical spectral norm. -/
 theorem apfPsi_le_relativeFirstBound_of_apfFiniteStage_le
-    (E F : FiniteLayer K L) (hEF : E ≤ F) (j : L →ₐ[K] SeparableClosure K)
+    (E F : FiniteIntermediateField K L) (hEF : E ≤ F) (j : L →ₐ[K] SeparableClosure K)
     {u : ℝ} (hu : 0 ≤ u) (hstage : apfFiniteStage K j.fieldRange u ≤ E.val.map j) :
     letI := spectralNorm.nontriviallyNormedField K E.val
     letI := spectralNorm.normedAlgebra K E.val
@@ -117,8 +117,8 @@ theorem apfPsi_le_relativeFirstBound_of_apfFiniteStage_le
 /-- The actual relative first bounds become arbitrarily large on a genuine
 finite-layer tail of the original abstract separable APF extension. Trivial
 steps retain their extended bound `∞`. -/
-theorem IsAPF.exists_finiteLayer_relativeFirstBound_ge [IsAPF K L] (c : ℝ) :
-    ∃ T : FiniteLayer K L, ∀ E F : FiniteLayer K L, T ≤ E → ∀ hEF : E ≤ F,
+theorem IsAPF.exists_finiteIntermediateField_relativeFirstBound_ge [IsAPF K L] (c : ℝ) :
+    ∃ T : FiniteIntermediateField K L, ∀ E F : FiniteIntermediateField K L, T ≤ E → ∀ hEF : E ≤ F,
       letI := spectralNorm.nontriviallyNormedField K E.val
       letI := spectralNorm.normedAlgebra K E.val
       letI := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
@@ -129,7 +129,7 @@ theorem IsAPF.exists_finiteLayer_relativeFirstBound_ge [IsAPF K L] (c : ℝ) :
   let j : L →ₐ[K] SeparableClosure K := IsSepClosed.lift
   let u := max c 0
   have hu : 0 ≤ u := le_max_right _ _
-  obtain ⟨T, hT⟩ := exists_finiteLayer_map_eq_apfFiniteStage K L j
+  obtain ⟨T, hT⟩ := exists_finiteIntermediateField_map_eq_apfFiniteStage K L j
     (by linarith : -1 ≤ u)
   refine ⟨T, fun E F hTE hEF ↦ ?_⟩
   let := spectralNorm.nontriviallyNormedField K E.val

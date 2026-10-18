@@ -233,8 +233,8 @@ variable (K : Type*) [Field K] {M N P : Type*} [Field M] [Field N] [Field P]
 /-- Simultaneous good finite fields are cofinal in an actual finite separable
 tower. The three tensor isomorphisms are constructed canonical multiplication
 maps, and the middle field is the actual intersection. -/
-theorem exists_finiteLayer_tensor_descent_tower (D₀ : FiniteLayer K P) :
-    ∃ (C : FiniteLayer K M) (D : IntermediateField C.val P),
+theorem exists_finiteIntermediateField_tensor_descent_tower (D₀ : FiniteIntermediateField K P) :
+    ∃ (C : FiniteIntermediateField K M) (D : IntermediateField C.val P),
       Module.Finite K (D.restrictScalars K) ∧
       D₀.val ≤ D.restrictScalars K ∧
       D.LinearDisjoint M ∧
@@ -253,15 +253,15 @@ theorem exists_finiteLayer_tensor_descent_tower (D₀ : FiniteLayer K P) :
   let : Algebra.IsSeparable M P := Algebra.IsSeparable.trans M N P
   let : Algebra.IsAlgebraic K P := Algebra.IsAlgebraic.trans K M P
   let b := Field.powerBasisOfFiniteOfSeparable M N
-  let A : FiniteLayer K P := ⟨IntermediateField.adjoin K {algebraMap N P b.gen},
+  let A : FiniteIntermediateField K P := ⟨IntermediateField.adjoin K {algebraMap N P b.gen},
     IntermediateField.adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral _)⟩
   obtain ⟨C, D, hfinite, hcontains, hD, hinf, eMP, heMP⟩ :=
-    exists_finiteLayer_tensor_descent K (M := M) (FiniteLayer.sup D₀ A)
+    exists_finiteIntermediateField_tensor_descent K (M := M) (FiniteIntermediateField.sup D₀ A)
   let : Module.Finite K D := hfinite
   let : Module.Finite C.val D := Module.Finite.of_restrictScalars_finite K C.val D
   let B := finiteDescentIntersection (N := N) D
   have hgen : algebraMap N P b.gen ∈ D := hcontains
-    ((FiniteLayer.le_sup_right D₀ A)
+    ((FiniteIntermediateField.le_sup_right D₀ A)
       (IntermediateField.mem_adjoin_simple_self K (algebraMap N P b.gen)))
   have hB : B.LinearDisjoint M := linearDisjoint_finiteDescentIntersection D hD
   have hBinf : B ⊓ (IsScalarTower.toAlgHom C.val M N).fieldRange = ⊥ := by
@@ -276,7 +276,7 @@ theorem exists_finiteLayer_tensor_descent_tower (D₀ : FiniteLayer K P) :
     rw [hf]
     exact eMP.surjective
   have hD₀ : D₀.val ≤ D.restrictScalars K :=
-    fun _ hx => hcontains (FiniteLayer.le_sup_left D₀ A hx)
+    fun _ hx => hcontains (FiniteIntermediateField.le_sup_left D₀ A hx)
   have hBfinite : Module.Finite K (B.restrictScalars K) := by
     let j : B.restrictScalars K →ₐ[K] D.restrictScalars K :=
       ((IsScalarTower.toAlgHom K N P).comp (B.restrictScalars K).val).codRestrict
@@ -292,9 +292,9 @@ theorem exists_finiteLayer_tensor_descent_tower (D₀ : FiniteLayer K P) :
 
 /-- Two prescribed finite fields have a common upper field which is good
 simultaneously at both levels of the original separable tower. -/
-theorem exists_common_finiteLayer_tensor_descent_tower
-    (D₁ D₂ : FiniteLayer K P) :
-    ∃ (C : FiniteLayer K M) (D : IntermediateField C.val P),
+theorem exists_common_finiteIntermediateField_tensor_descent_tower
+    (D₁ D₂ : FiniteIntermediateField K P) :
+    ∃ (C : FiniteIntermediateField K M) (D : IntermediateField C.val P),
       Module.Finite K (D.restrictScalars K) ∧
       D₁.val ≤ D.restrictScalars K ∧ D₂.val ≤ D.restrictScalars K ∧
       D ⊓ (IsScalarTower.toAlgHom C.val M P).fieldRange = ⊥ ∧
@@ -306,9 +306,10 @@ theorem exists_common_finiteLayer_tensor_descent_tower
       ∃ e : N ⊗[B] D ≃ₐ[N] P,
         ∀ (n : N) (d : D), e (n ⊗ₜ[B] d) = algebraMap N P n * (d : P) := by
   obtain ⟨C, D, hf, hc, _hD, hi, _hBf, _hB, _hBi, eMP, eMN, eNP⟩ :=
-    exists_finiteLayer_tensor_descent_tower K (M := M) (N := N) (FiniteLayer.sup D₁ D₂)
-  exact ⟨C, D, hf, (fun _ hx => hc (FiniteLayer.le_sup_left D₁ D₂ hx)),
-    (fun _ hx => hc (FiniteLayer.le_sup_right D₁ D₂ hx)), hi, eMP, eMN, eNP⟩
+    exists_finiteIntermediateField_tensor_descent_tower K (M := M) (N := N)
+        (FiniteIntermediateField.sup D₁ D₂)
+  exact ⟨C, D, hf, (fun _ hx => hc (FiniteIntermediateField.le_sup_left D₁ D₂ hx)),
+    (fun _ hx => hc (FiniteIntermediateField.le_sup_right D₁ D₂ hx)), hi, eMP, eMN, eNP⟩
 
 end CofinalTower
 

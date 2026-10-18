@@ -27,20 +27,21 @@ section FiniteDegrees
 variable (K L : Type*) [Field K] [Field L] [Algebra K L]
     [Algebra.IsAlgebraic K L]
 
-/-- The relative degrees above any original finite layer tend to infinity
+/-- The relative degrees above any original finite intermediate field tend to infinity
 when the original algebraic extension is infinite. -/
-theorem FiniteLayer.exists_tail_finrank_ge [Fact (¬ Module.Finite K L)]
-    (D : FiniteLayer K L) (n : ℕ) :
-    ∃ T : FiniteLayer K L, ∃ hDT : D ≤ T, ∀ E : FiniteLayer K L, ∀ hTE : T ≤ E,
+theorem FiniteIntermediateField.exists_tail_finrank_ge [Fact (¬ Module.Finite K L)]
+    (D : FiniteIntermediateField K L) (n : ℕ) :
+    ∃ T : FiniteIntermediateField K L, ∃ hDT : D ≤ T, ∀ E : FiniteIntermediateField K L, ∀ hTE : T
+        ≤ E,
       n ≤ Module.finrank D.val (IntermediateField.extendScalars (hDT.trans hTE)) := by
   obtain ⟨F, hF, hdegree⟩ :=
     IntermediateField.exists_lt_finrank_of_infinite_dimensional (Fact.out : ¬ Module.Finite K L)
       (Module.finrank K D.val * n)
-  let F₀ : FiniteLayer K L := ⟨F, hF⟩
-  let T := FiniteLayer.sup D F₀
-  refine ⟨T, FiniteLayer.le_sup_left D F₀, fun E hTE => ?_⟩
-  have hDE : D ≤ E := (FiniteLayer.le_sup_left D F₀).trans hTE
-  have hFE : F ≤ E.val := (FiniteLayer.le_sup_right D F₀).trans hTE
+  let F₀ : FiniteIntermediateField K L := ⟨F, hF⟩
+  let T := FiniteIntermediateField.sup D F₀
+  refine ⟨T, FiniteIntermediateField.le_sup_left D F₀, fun E hTE => ?_⟩
+  have hDE : D ≤ E := (FiniteIntermediateField.le_sup_left D F₀).trans hTE
+  have hFE : F ≤ E.val := (FiniteIntermediateField.le_sup_right D F₀).trans hTE
   have hmono := IntermediateField.finrank_le_of_le_right hFE
   have hmul := IntermediateField.finrank_bot_mul_relfinrank hDE
   rw [IntermediateField.relfinrank_eq_finrank_of_le hDE] at hmul
@@ -57,20 +58,21 @@ local notation "p" => residueChar K
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
 /-- On an actual APF wild tail, the canonical ramification indices above
-every fixed original finite layer tend to infinity. -/
-theorem IsAPF.exists_finiteLayer_ramificationIdx_unbounded [IsAPF K L]
+every fixed original finite intermediate field tend to infinity. -/
+theorem IsAPF.exists_finiteIntermediateField_ramificationIdx_unbounded [IsAPF K L]
     [Fact (¬ Module.Finite K L)] :
-    ∃ W : FiniteLayer K L, ∀ D : FiniteLayer K L, W ≤ D → ∀ n : ℕ,
-      ∃ T : FiniteLayer K L, ∃ hDT : D ≤ T, ∀ E : FiniteLayer K L, ∀ hTE : T ≤ E,
+    ∃ W : FiniteIntermediateField K L, ∀ D : FiniteIntermediateField K L, W ≤ D → ∀ n : ℕ,
+      ∃ T : FiniteIntermediateField K L, ∃ hDT : D ≤ T, ∀ E : FiniteIntermediateField K L, ∀ hTE :
+          T ≤ E,
         letI : Algebra D.val E.val :=
           (IntermediateField.inclusion (hDT.trans hTE)).toRingHom.toAlgebra
         letI : IsScalarTower K D.val E.val := IsScalarTower.of_algebraMap_eq' rfl
         letI := spectralValuation_hasExtension_tower K (E := D.val) (L := E.val)
         n ≤ (IsLocalRing.maximalIdeal (spectralIntegerRing K E.val)).ramificationIdx
           (spectralIntegerRing K D.val) := by
-  obtain ⟨W, hW⟩ := IsAPF.exists_finiteLayer_wild_tail K L
+  obtain ⟨W, hW⟩ := IsAPF.exists_finiteIntermediateField_wild_tail K L
   refine ⟨W, fun D hWD n => ?_⟩
-  obtain ⟨T, hDT, hT⟩ := FiniteLayer.exists_tail_finrank_ge K L D n
+  obtain ⟨T, hDT, hT⟩ := FiniteIntermediateField.exists_tail_finrank_ge K L D n
   refine ⟨T, hDT, fun E hTE => ?_⟩
   let : Algebra D.val E.val :=
     (IntermediateField.inclusion (hDT.trans hTE)).toRingHom.toAlgebra
@@ -82,12 +84,12 @@ theorem IsAPF.exists_finiteLayer_ramificationIdx_unbounded [IsAPF K L]
 /-- The residue prime belongs to every fixed power of the actual maximal
 ideal on a sufficiently large original finite-layer tail. The proof also
 covers equal characteristic, where the prime is already zero. -/
-theorem IsAPF.exists_finiteLayer_natCast_mem_maximalIdeal_pow [IsAPF K L]
+theorem IsAPF.exists_finiteIntermediateField_natCast_mem_maximalIdeal_pow [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (n : ℕ) :
-    ∃ T : FiniteLayer K L, ∀ E : FiniteLayer K L, T ≤ E →
+    ∃ T : FiniteIntermediateField K L, ∀ E : FiniteIntermediateField K L, T ≤ E →
       (p : spectralIntegerRing K E.val) ∈
         IsLocalRing.maximalIdeal (spectralIntegerRing K E.val) ^ n := by
-  obtain ⟨W, hW⟩ := IsAPF.exists_finiteLayer_ramificationIdx_unbounded K L
+  obtain ⟨W, hW⟩ := IsAPF.exists_finiteIntermediateField_ramificationIdx_unbounded K L
   obtain ⟨T, hWT, hT⟩ := hW W le_rfl n
   refine ⟨T, fun E hTE => ?_⟩
   let : Algebra W.val E.val :=
@@ -111,13 +113,13 @@ theorem IsAPF.exists_finiteLayer_natCast_mem_maximalIdeal_pow [IsAPF K L]
 
 /-- The image of the original residue prime in each original finite field
 is eventually in the image of every actual maximal-ideal power. -/
-theorem IsAPF.exists_finiteLayer_natCast_mem_image_maximalIdeal_pow [IsAPF K L]
+theorem IsAPF.exists_finiteIntermediateField_natCast_mem_image_maximalIdeal_pow [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (n : ℕ) :
-    ∃ T : FiniteLayer K L, ∀ E : FiniteLayer K L, T ≤ E →
+    ∃ T : FiniteIntermediateField K L, ∀ E : FiniteIntermediateField K L, T ≤ E →
       (p : E.val) ∈ (fun x : spectralIntegerRing K E.val => (x : E.val)) ''
         ((IsLocalRing.maximalIdeal (spectralIntegerRing K E.val) ^ n :
           Ideal (spectralIntegerRing K E.val)) : Set (spectralIntegerRing K E.val)) := by
-  obtain ⟨T, hT⟩ := IsAPF.exists_finiteLayer_natCast_mem_maximalIdeal_pow K L n
+  obtain ⟨T, hT⟩ := IsAPF.exists_finiteIntermediateField_natCast_mem_maximalIdeal_pow K L n
   exact ⟨T, fun E hTE => ⟨(p : spectralIntegerRing K E.val), hT E hTE, by simp⟩⟩
 
 end APF

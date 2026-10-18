@@ -55,7 +55,7 @@ theorem restrictNormalHom_map_upperRamificationGroup_tower (u : ‚Ñù) (hu : -1 ‚â
 
 end Tower
 
-section FiniteLayers
+section FiniteIntermediateFields
 
 open CategoryTheory Opposite
 
@@ -76,6 +76,6 @@ theorem finGaloisGroupMap_map_upperRamificationGroup
   have : IsScalarTower K B.unop A.unop := IsScalarTower.of_algebraMap_eq (congrFun rfl)
   exact restrictNormalHom_map_upperRamificationGroup_tower K B.unop A.unop u hu
 
-end FiniteLayers
+end FiniteIntermediateFields
 
 end FontaineWintenberger

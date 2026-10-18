@@ -9,7 +9,7 @@ public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.FieldOfNorms.Operations
 
 /-!
-# Asymptotic coordinate approximation of the original norm-limit addition
+# Asymptotic coordinate approximation of the original field of norms addition
 
 The existing normalized valuations control multiplicative scaling of integral
 coordinate errors on the original fields.
@@ -53,22 +53,22 @@ variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
 /-- The actual sum of arbitrary original norm families agrees with coordinate
 addition to every eventual ideal-power precision. -/
-theorem normLimitAdd_sub_mem [IsAPF K L] (α β : NormLimit K L) :
-    ∀ n : ℕ, ∃ T : FiniteLayer K L, ∀ E : FiniteLayer K L, T ≤ E →
-      normLimitEval K L E (normLimitAdd K L α β) -
-        normLimitEval K L E α - normLimitEval K L E β ∈
+theorem FieldOfNorms.add_sub_mem [IsAPF K L] (α β : FieldOfNorms K L) :
+    ∀ n : ℕ, ∃ T : FiniteIntermediateField K L, ∀ E : FiniteIntermediateField K L, T ≤ E →
+      FieldOfNorms.coord K L E (FieldOfNorms.add K L α β) -
+        FieldOfNorms.coord K L E α - FieldOfNorms.coord K L E β ∈
         (fun x : spectralIntegerRing K E.val => (x : E.val)) ''
           ((IsLocalRing.maximalIdeal (spectralIntegerRing K E.val) ^ n :
             Ideal (spectralIntegerRing K E.val)) : Set (spectralIntegerRing K E.val)) := by
   classical
-  let w := normLimitValuation K L
-  let S : Finset (NormLimit K L) := {1, α, β}
+  let w := FieldOfNorms.valuation K L
+  let S : Finset (FieldOfNorms K L) := {1, α, β}
   obtain ⟨δ, _, hmax⟩ := Finset.exists_max_image S w ⟨1, by simp [S]⟩
-  have hone : 1 ≤ w δ := by simpa only [map_one] using hmax 1 (by simp [S])
+  have hone : 1 ≤ w δ := by simpa only [_root_.map_one] using hmax 1 (by simp [S])
   have hδpos : 0 < w δ := zero_lt_one.trans_le hone
   have hδ : δ ≠ 0 := by
     intro hz
-    rw [hz, map_zero] at hone
+    rw [hz, _root_.map_zero] at hone
     exact not_le_of_gt zero_lt_one hone
   have ha : w (α / δ) ≤ 1 := by
     rw [map_div₀]
@@ -83,41 +83,41 @@ theorem normLimitAdd_sub_mem [IsAPF K L] (α β : NormLimit K L) :
   let q := (WithZero.log (w δ)).toNat
   have hδbound : w δ ≤ WithZero.exp (q : ℤ) :=
     WithZero.le_exp_log.trans (WithZero.exp_le_exp.mpr (Int.self_le_toNat _))
-  obtain ⟨T₀, hT₀⟩ := IsAPF.exists_normLimitValuation_eq_coordinate K L
+  obtain ⟨T₀, hT₀⟩ := IsAPF.exists_fieldOfNormsValuation_eq_coordinate K L
   intro n
-  obtain ⟨T₁, hT₁⟩ := normLimitAdd_sub_mem_of_valuation_le_one
+  obtain ⟨T₁, hT₁⟩ := FieldOfNorms.add_sub_mem_of_valuation_le_one
     K L (α / δ) (β / δ) ha hb (n + q)
-  refine ⟨FiniteLayer.sup T₀ T₁, fun E hE => ?_⟩
-  have hE₀ := (FiniteLayer.le_sup_left T₀ T₁).trans hE
-  have hE₁ := (FiniteLayer.le_sup_right T₀ T₁).trans hE
+  refine ⟨FiniteIntermediateField.sup T₀ T₁, fun E hE => ?_⟩
+  have hE₀ := (FiniteIntermediateField.le_sup_left T₀ T₁).trans hE
+  have hE₁ := (FiniteIntermediateField.le_sup_right T₀ T₁).trans hE
   let v := (IsDiscreteValuationRing.maximalIdeal (spectralIntegerRing K E.val)).valuation E.val
-  have hvδ : v (normLimitEval K L E δ) ≤ WithZero.exp (q : ℤ) := by
-    change normLimitCoordinateValuation K L E δ ≤ _
+  have hvδ : v (FieldOfNorms.coord K L E δ) ≤ WithZero.exp (q : ℤ) := by
+    change FieldOfNorms.coordinateValuation K L E δ ≤ _
     rw [← hT₀ E hE₀ δ]
     exact hδbound
-  have hvε : v (normLimitEval K L E (normLimitAdd K L (α / δ) (β / δ)) -
-      normLimitEval K L E (α / δ) - normLimitEval K L E (β / δ)) ≤
+  have hvε : v (FieldOfNorms.coord K L E (FieldOfNorms.add K L (α / δ) (β / δ)) -
+      FieldOfNorms.coord K L E (α / δ) - FieldOfNorms.coord K L E (β / δ)) ≤
         WithZero.exp (-((n + q : ℕ) : ℤ)) :=
     (ValuationSubring.mem_image_maximalIdeal_pow_iff_normalizedValuation
       (spectralIntegerRing K E.val) _ (n + q)).mp (hT₁ E hE₁)
   apply (ValuationSubring.mem_image_maximalIdeal_pow_iff_normalizedValuation
     (spectralIntegerRing K E.val) _ n).mpr
-  have hs := congrArg (normLimitEval K L E)
-    (mul_normLimitAdd K L δ (α / δ) (β / δ))
-  rw [map_mul, hδα, hδβ] at hs
-  have hαE : normLimitEval K L E δ * normLimitEval K L E (α / δ) =
-      normLimitEval K L E α := by rw [← map_mul, hδα]
-  have hβE : normLimitEval K L E δ * normLimitEval K L E (β / δ) =
-      normLimitEval K L E β := by rw [← map_mul, hδβ]
-  have heq : normLimitEval K L E (normLimitAdd K L α β) -
-      normLimitEval K L E α - normLimitEval K L E β =
-      normLimitEval K L E δ *
-        (normLimitEval K L E (normLimitAdd K L (α / δ) (β / δ)) -
-          normLimitEval K L E (α / δ) - normLimitEval K L E (β / δ)) := by
+  have hs := congrArg (FieldOfNorms.coord K L E)
+    (mul_fieldOfNormsAdd K L δ (α / δ) (β / δ))
+  rw [_root_.map_mul, hδα, hδβ] at hs
+  have hαE : FieldOfNorms.coord K L E δ * FieldOfNorms.coord K L E (α / δ) =
+      FieldOfNorms.coord K L E α := by rw [← _root_.map_mul, hδα]
+  have hβE : FieldOfNorms.coord K L E δ * FieldOfNorms.coord K L E (β / δ) =
+      FieldOfNorms.coord K L E β := by rw [← _root_.map_mul, hδβ]
+  have heq : FieldOfNorms.coord K L E (FieldOfNorms.add K L α β) -
+      FieldOfNorms.coord K L E α - FieldOfNorms.coord K L E β =
+      FieldOfNorms.coord K L E δ *
+        (FieldOfNorms.coord K L E (FieldOfNorms.add K L (α / δ) (β / δ)) -
+          FieldOfNorms.coord K L E (α / δ) - FieldOfNorms.coord K L E (β / δ)) := by
     rw [← hs, ← hαE, ← hβE]
     ring
   change v _ ≤ _
-  rw [heq, map_mul]
+  rw [heq, _root_.map_mul]
   calc
     _ ≤ WithZero.exp (q : ℤ) * WithZero.exp (-((n + q : ℕ) : ℤ)) :=
       mul_le_mul' hvδ hvε

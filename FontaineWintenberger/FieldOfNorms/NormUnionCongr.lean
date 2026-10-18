@@ -37,93 +37,93 @@ variable (L : Type v) (M : Type w) (N : Type w') [Field L] [Field M] [Field N]
 variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 
 /-- An original algebra isomorphism induces the original isomorphism of the same unions. -/
-def separableNormUnionCongr (e : M ≃ₐ[L] N) :
-    SeparableNormUnion K L M ≃ₐ[NormLimit K L]
-      SeparableNormUnion K L N := by
+def RelFieldOfNorms.congr (e : M ≃ₐ[L] N) :
+    RelFieldOfNorms K L M ≃ₐ[FieldOfNorms K L]
+      RelFieldOfNorms K L N := by
   refine AlgEquiv.ofAlgHom
-    (separableNormUnionAlgMap K L M N e.toAlgHom)
-    (separableNormUnionAlgMap K L N M e.symm.toAlgHom) ?_ ?_
+    (RelFieldOfNorms.algMap K L M N e.toAlgHom)
+    (RelFieldOfNorms.algMap K L N M e.symm.toAlgHom) ?_ ?_
   · apply AlgHom.ext
     intro x
-    change separableNormUnionMap K L M N e.toAlgHom
-      (separableNormUnionMap K L N M e.symm.toAlgHom x) = x
+    change RelFieldOfNorms.map K L M N e.toAlgHom
+      (RelFieldOfNorms.map K L N M e.symm.toAlgHom x) = x
     have h := congrArg
-      (fun f : SeparableNormUnion K L N →+*
-        SeparableNormUnion K L N => f x)
-      (separableNormUnionMap_comp K L N M e.symm.toAlgHom N e.toAlgHom)
-    simpa only [RingHom.comp_apply, AlgEquiv.comp_symm, separableNormUnionMap_id,
+      (fun f : RelFieldOfNorms K L N →+*
+        RelFieldOfNorms K L N => f x)
+      (RelFieldOfNorms.map_comp K L N M e.symm.toAlgHom N e.toAlgHom)
+    simpa only [RingHom.comp_apply, AlgEquiv.comp_symm, RelFieldOfNorms.map_id,
       RingHom.id_apply] using h
   · apply AlgHom.ext
     intro x
-    change separableNormUnionMap K L N M e.symm.toAlgHom
-      (separableNormUnionMap K L M N e.toAlgHom x) = x
+    change RelFieldOfNorms.map K L N M e.symm.toAlgHom
+      (RelFieldOfNorms.map K L M N e.toAlgHom x) = x
     have h := congrArg
-      (fun f : SeparableNormUnion K L M →+*
-        SeparableNormUnion K L M => f x)
-      (separableNormUnionMap_comp K L M N e.toAlgHom M e.symm.toAlgHom)
-    simpa only [RingHom.comp_apply, AlgEquiv.symm_comp, separableNormUnionMap_id,
+      (fun f : RelFieldOfNorms K L M →+*
+        RelFieldOfNorms K L M => f x)
+      (RelFieldOfNorms.map_comp K L M N e.toAlgHom M e.symm.toAlgHom)
+    simpa only [RingHom.comp_apply, AlgEquiv.symm_comp, RelFieldOfNorms.map_id,
       RingHom.id_apply] using h
 
 /-- The comparison has exactly the original induced algebra homomorphism. -/
 @[simp]
-theorem separableNormUnionCongr_toAlgHom (e : M ≃ₐ[L] N) :
-    (separableNormUnionCongr K L M N e).toAlgHom =
-      separableNormUnionAlgMap K L M N e.toAlgHom := rfl
+theorem RelFieldOfNorms.congr_toAlgHom (e : M ≃ₐ[L] N) :
+    (RelFieldOfNorms.congr K L M N e).toAlgHom =
+      RelFieldOfNorms.algMap K L M N e.toAlgHom := rfl
 
 /-- The comparison acts by the original map on the original union carrier. -/
 @[simp]
-theorem separableNormUnionCongr_apply (e : M ≃ₐ[L] N)
-    (x : SeparableNormUnion K L M) :
-    separableNormUnionCongr K L M N e x =
-      separableNormUnionMap K L M N e.toAlgHom x := rfl
+theorem RelFieldOfNorms.congr_apply (e : M ≃ₐ[L] N)
+    (x : RelFieldOfNorms K L M) :
+    RelFieldOfNorms.congr K L M N e x =
+      RelFieldOfNorms.map K L M N e.toAlgHom x := rfl
 
 /-- The inverse comparison is induced by the original inverse isomorphism. -/
 @[simp]
-theorem separableNormUnionCongr_symm_apply (e : M ≃ₐ[L] N)
-    (x : SeparableNormUnion K L N) :
-    (separableNormUnionCongr K L M N e).symm x =
-      separableNormUnionMap K L N M e.symm.toAlgHom x := rfl
+theorem RelFieldOfNorms.congr_symm_apply (e : M ≃ₐ[L] N)
+    (x : RelFieldOfNorms K L N) :
+    (RelFieldOfNorms.congr K L M N e).symm x =
+      RelFieldOfNorms.map K L N M e.symm.toAlgHom x := rfl
 
 /-- The actual union comparison preserves the original rational valuation. -/
-theorem separableNormUnionCongr_valuation (e : M ≃ₐ[L] N)
-    (x : SeparableNormUnion K L M) :
-    separableNormUnionValuation K L N
-        (separableNormUnionCongr K L M N e x) =
-      separableNormUnionValuation K L M x :=
-  separableNormUnionMap_valuation K L M N e.toAlgHom x
+theorem RelFieldOfNorms.congr_valuation (e : M ≃ₐ[L] N)
+    (x : RelFieldOfNorms K L M) :
+    RelFieldOfNorms.valuation K L N
+        (RelFieldOfNorms.congr K L M N e x) =
+      RelFieldOfNorms.valuation K L M x :=
+  RelFieldOfNorms.map_valuation K L M N e.toAlgHom x
 
 /-- The identity original isomorphism acts as the identity on the actual union. -/
 @[simp]
-theorem separableNormUnionCongr_refl_apply
-    (x : SeparableNormUnion K L M) :
-    separableNormUnionCongr K L M M (AlgEquiv.refl : M ≃ₐ[L] M) x = x := by
-  change separableNormUnionMap K L M M (AlgHom.id L M) x = x
-  exact DFunLike.congr_fun (separableNormUnionMap_id K L M) x
+theorem RelFieldOfNorms.congr_refl_apply
+    (x : RelFieldOfNorms K L M) :
+    RelFieldOfNorms.congr K L M M (AlgEquiv.refl : M ≃ₐ[L] M) x = x := by
+  change RelFieldOfNorms.map K L M M (AlgHom.id L M) x = x
+  exact DFunLike.congr_fun (RelFieldOfNorms.map_id K L M) x
 
 variable (P : Type w'') [Field P] [Algebra K P] [Algebra L P]
     [IsScalarTower K L P] [Algebra.IsSeparable L P]
 
 /-- The actual comparison of a composite is the composite of the actual comparisons. -/
-theorem separableNormUnionCongr_trans_apply (e : M ≃ₐ[L] N) (f : N ≃ₐ[L] P)
-    (x : SeparableNormUnion K L M) :
-    separableNormUnionCongr K L M P (e.trans f) x =
-      separableNormUnionCongr K L N P f
-        (separableNormUnionCongr K L M N e x) := by
-  change separableNormUnionMap K L M P (f.toAlgHom.comp e.toAlgHom) x =
-    separableNormUnionMap K L N P f.toAlgHom
-      (separableNormUnionMap K L M N e.toAlgHom x)
+theorem RelFieldOfNorms.congr_trans_apply (e : M ≃ₐ[L] N) (f : N ≃ₐ[L] P)
+    (x : RelFieldOfNorms K L M) :
+    RelFieldOfNorms.congr K L M P (e.trans f) x =
+      RelFieldOfNorms.congr K L N P f
+        (RelFieldOfNorms.congr K L M N e x) := by
+  change RelFieldOfNorms.map K L M P (f.toAlgHom.comp e.toAlgHom) x =
+    RelFieldOfNorms.map K L N P f.toAlgHom
+      (RelFieldOfNorms.map K L M N e.toAlgHom x)
   exact (DFunLike.congr_fun
-    (separableNormUnionMap_comp K L M N e.toAlgHom P f.toAlgHom) x).symm
+    (RelFieldOfNorms.map_comp K L M N e.toAlgHom P f.toAlgHom) x).symm
 
 /-- The actual union of a universe-lifted original extension is canonically the same field. -/
-abbrev separableNormUnionULiftEquiv :
+abbrev RelFieldOfNorms.uLiftEquiv :
     letI : Algebra.IsSeparable L (ULift.{z} M) :=
       AlgEquiv.Algebra.isSeparable (ULift.algEquiv.{v, w, z} (R := L) (A := M)).symm
-    SeparableNormUnion K L (ULift.{z} M) ≃ₐ[NormLimit K L]
-      SeparableNormUnion K L M := by
+    RelFieldOfNorms K L (ULift.{z} M) ≃ₐ[FieldOfNorms K L]
+      RelFieldOfNorms K L M := by
   letI : Algebra.IsSeparable L (ULift.{z} M) :=
     AlgEquiv.Algebra.isSeparable (ULift.algEquiv.{v, w, z} (R := L) (A := M)).symm
-  exact separableNormUnionCongr K L (ULift.{z} M) M
+  exact RelFieldOfNorms.congr K L (ULift.{z} M) M
     ULift.algEquiv.{v, w, z}
 
 end FontaineWintenberger

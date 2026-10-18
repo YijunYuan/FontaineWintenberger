@@ -30,9 +30,9 @@ variable (K M N : Type*) [Field K] [Field M] [Field N]
 
 /-- Restriction of the original relative Galois group to an actual stable
 finite field, over its original pullback to the source. -/
-def galoisFiniteLayerRestrict (D : FiniteLayer K N)
+def galoisFiniteLayerRestrict (D : FiniteIntermediateField K N)
     (hD : ∀ σ : N ≃ₐ[M] N, D.val.map (σ.restrictScalars K).toAlgHom = D.val) :
-    (N ≃ₐ[M] N) →* (D.val ≃ₐ[finiteLayerPullback K M D] D.val) where
+    (N ≃ₐ[M] N) →* (D.val ≃ₐ[FiniteIntermediateField.pullback K M D] D.val) where
   toFun σ := by
     let e : D.val ≃ₐ[K] D.val :=
       (IntermediateField.equivMap D.val (σ.restrictScalars K).toAlgHom).trans
@@ -47,7 +47,7 @@ def galoisFiniteLayerRestrict (D : FiniteLayer K N)
     rfl
 
 @[simp]
-theorem coe_galoisFiniteLayerRestrict (D : FiniteLayer K N)
+theorem coe_galoisFiniteLayerRestrict (D : FiniteIntermediateField K N)
     (hD : ∀ σ : N ≃ₐ[M] N, D.val.map (σ.restrictScalars K).toAlgHom = D.val)
     (σ : N ≃ₐ[M] N) (x : D.val) :
     (galoisFiniteLayerRestrict K M N D hD σ x : N) = σ (x : N) := rfl
@@ -56,7 +56,7 @@ variable [Module.Finite M N] [IsGalois M N]
 
 /-- The fixed field of the actual restriction range is exactly the original
 pullback, represented as the bottom field over that very pullback. -/
-theorem galoisFiniteLayerRestrict_fixedField (D : FiniteLayer K N)
+theorem galoisFiniteLayerRestrict_fixedField (D : FiniteIntermediateField K N)
     (hD : ∀ σ : N ≃ₐ[M] N, D.val.map (σ.restrictScalars K).toAlgHom = D.val) :
     IntermediateField.fixedField (galoisFiniteLayerRestrict K M N D hD).range = ⊥ := by
   apply le_antisymm ?_ bot_le
@@ -74,7 +74,7 @@ theorem galoisFiniteLayerRestrict_fixedField (D : FiniteLayer K N)
 
 omit [Module.Finite M N] in
 /-- A genuine original primitive element makes the restriction faithful. -/
-theorem galoisFiniteLayerRestrict_injective (D : FiniteLayer K N)
+theorem galoisFiniteLayerRestrict_injective (D : FiniteIntermediateField K N)
     (hD : ∀ σ : N ≃ₐ[M] N, D.val.map (σ.restrictScalars K).toAlgHom = D.val)
     (α : N) (hα : IntermediateField.adjoin M {α} = ⊤) (hαD : α ∈ D.val) :
     Function.Injective (galoisFiniteLayerRestrict K M N D hD) := by
@@ -87,15 +87,15 @@ theorem galoisFiniteLayerRestrict_injective (D : FiniteLayer K N)
     intro z hz
     have hz' : z = α := Set.mem_singleton_iff.mp hz
     subst z
-    exact congrArg (fun s : D.val ≃ₐ[finiteLayerPullback K M D] D.val =>
+    exact congrArg (fun s : D.val ≃ₐ[FiniteIntermediateField.pullback K M D] D.val =>
       (s ⟨α, hαD⟩ : N)) hστ
   exact AlgEquiv.ext (fun x => AlgHom.congr_fun he x)
 
 /-- Finite Artin theory computes the actual degree over the original pullback. -/
-theorem finrank_galois_stableFiniteLayer (D : FiniteLayer K N)
+theorem finrank_galois_stableFiniteLayer (D : FiniteIntermediateField K N)
     (hD : ∀ σ : N ≃ₐ[M] N, D.val.map (σ.restrictScalars K).toAlgHom = D.val)
     (α : N) (hα : IntermediateField.adjoin M {α} = ⊤) (hαD : α ∈ D.val) :
-    Module.finrank (finiteLayerPullback K M D) D.val = Module.finrank M N := by
+    Module.finrank (FiniteIntermediateField.pullback K M D) D.val = Module.finrank M N := by
   have hf := IntermediateField.finrank_fixedField_eq_card
     (H := (galoisFiniteLayerRestrict K M N D hD).range)
   rw [galoisFiniteLayerRestrict_fixedField, IntermediateField.finrank_bot'] at hf
@@ -105,12 +105,12 @@ theorem finrank_galois_stableFiniteLayer (D : FiniteLayer K N)
 
 /-- Stability and a genuine primitive element prove goodness of the canonical
 original tensor map, rather than assuming a descent presentation. -/
-theorem isGoodFiniteLayer_of_galois_stable (D : FiniteLayer K N)
+theorem isGoodFiniteLayer_of_galois_stable (D : FiniteIntermediateField K N)
     (hD : ∀ σ : N ≃ₐ[M] N, D.val.map (σ.restrictScalars K).toAlgHom = D.val)
     (α : N) (hα : IntermediateField.adjoin M {α} = ⊤) (hαD : α ∈ D.val) :
     IsGoodFiniteLayer K M D := by
-  let C := finiteLayerPullback K M D
-  let f := finiteLayerTensorMap K M D
+  let C := FiniteIntermediateField.pullback K M D
+  let f := FiniteIntermediateField.tensorMap K M D
   have hA : Algebra.adjoin M ({α} : Set N) = ⊤ := by
     rw [← IntermediateField.adjoin_toSubalgebra, hα]
     rfl
@@ -134,29 +134,29 @@ variable [Algebra.IsAlgebraic K N]
 
 /-- Actual finite image composita containing a genuine primitive element
 give cofinal original Galois-stable good fields, without normality over K. -/
-theorem exists_galois_stable_goodFiniteLayer_ge (E : FiniteLayer K N) :
-    ∃ D : FiniteLayer K N, E ≤ D ∧ IsGoodFiniteLayer K M D ∧
+theorem exists_galois_stable_goodFiniteLayer_ge (E : FiniteIntermediateField K N) :
+    ∃ D : FiniteIntermediateField K N, E ≤ D ∧ IsGoodFiniteLayer K M D ∧
       (∀ σ : N ≃ₐ[M] N, D.val.map (σ.restrictScalars K).toAlgHom = D.val) ∧
       ∃ α : N, α ∈ D.val ∧ IntermediateField.adjoin M {α} = ⊤ := by
   obtain ⟨α, hα⟩ := Field.exists_primitive_element M N
-  let A : FiniteLayer K N := ⟨IntermediateField.adjoin K {α}, inferInstance⟩
-  let D₀ := FiniteLayer.sup E A
-  let D : FiniteLayer K N := ⟨IntermediateField.normalClosure K D₀.val N, inferInstance⟩
+  let A : FiniteIntermediateField K N := ⟨IntermediateField.adjoin K {α}, inferInstance⟩
+  let D₀ := FiniteIntermediateField.sup E A
+  let D : FiniteIntermediateField K N := ⟨IntermediateField.normalClosure K D₀.val N, inferInstance⟩
   have hD₀D : D₀ ≤ D := IntermediateField.le_normalClosure D₀.val
   have hαA : α ∈ A.val := IntermediateField.subset_adjoin K {α} (by simp)
-  have hαD : α ∈ D.val := hD₀D (FiniteLayer.le_sup_right E A hαA)
+  have hαD : α ∈ D.val := hD₀D (FiniteIntermediateField.le_sup_right E A hαA)
   have hD : ∀ σ : N ≃ₐ[M] N, D.val.map (σ.restrictScalars K).toAlgHom = D.val :=
     fun σ => IntermediateField.map_normalClosure_eq D₀.val (σ.restrictScalars K)
-  exact ⟨D, (FiniteLayer.le_sup_left E A).trans hD₀D,
+  exact ⟨D, (FiniteIntermediateField.le_sup_left E A).trans hD₀D,
     isGoodFiniteLayer_of_galois_stable K M N D hD α hα hαD, hD, α, hαD, hα⟩
 
 /-- Two original finite fields have a common actual stable good upper field. -/
-theorem exists_galois_stable_goodFiniteLayer_ge_pair (E F : FiniteLayer K N) :
-    ∃ D : FiniteLayer K N, E ≤ D ∧ F ≤ D ∧ IsGoodFiniteLayer K M D ∧
+theorem exists_galois_stable_goodFiniteLayer_ge_pair (E F : FiniteIntermediateField K N) :
+    ∃ D : FiniteIntermediateField K N, E ≤ D ∧ F ≤ D ∧ IsGoodFiniteLayer K M D ∧
       ∀ σ : N ≃ₐ[M] N, D.val.map (σ.restrictScalars K).toAlgHom = D.val := by
   obtain ⟨D, hD, hg, hs, _⟩ := exists_galois_stable_goodFiniteLayer_ge K M N
-    (FiniteLayer.sup E F)
-  exact ⟨D, (FiniteLayer.le_sup_left E F).trans hD,
-    (FiniteLayer.le_sup_right E F).trans hD, hg, hs⟩
+    (FiniteIntermediateField.sup E F)
+  exact ⟨D, (FiniteIntermediateField.le_sup_left E F).trans hD,
+    (FiniteIntermediateField.le_sup_right E F).trans hD, hg, hs⟩
 
 end FontaineWintenberger

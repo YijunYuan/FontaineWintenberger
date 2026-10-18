@@ -61,7 +61,8 @@ theorem mem_upperRamificationGroupInfinite_base_iff
   rw [mem_upperRamificationGroupInfinite_iff_cofinal M (SeparableClosure K) F hF hv g]
   exact ⟨fun h E hME => h ⟨E, hME⟩, fun h j => h j.1 j.2⟩
 
-/-- Old-base upper conditions can be tested on finite layers containing the new base. -/
+/-- Old-base upper conditions can be tested on finite intermediate fields containing the new
+base. -/
 theorem mem_upperRamificationGroupInfinite_containing_base_iff
     {u : ℝ} (hu : -1 ≤ u) (g : SeparableClosure K ≃ₐ[K] SeparableClosure K) :
     g ∈ upperRamificationGroupInfinite K (SeparableClosure K) u ↔

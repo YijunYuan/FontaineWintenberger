@@ -20,7 +20,7 @@ original finite-layer norm, without a continuity hypothesis in the endpoint.
 
 noncomputable section
 
-namespace FontaineWintenberger.FiniteLayer
+namespace FontaineWintenberger.FiniteIntermediateField
 
 variable {K Ω : Type*} [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField (IsLocalRing.ResidueField
@@ -28,11 +28,12 @@ variable {K Ω : Type*} [NontriviallyNormedField K] [IsCompleteDiscreteValuedFie
     [NontriviallyNormedField Ω] [NormedAlgebra K Ω] [IsUltrametricDist Ω]
     [Algebra.IsSeparable K Ω]
 
-local instance (E : FiniteLayer K Ω) : CompleteSpace E.val := FiniteDimensional.complete K E.val
-local instance (E : FiniteLayer K Ω) :
+local instance (E : FiniteIntermediateField K Ω) : CompleteSpace E.val :=
+    FiniteDimensional.complete K E.val
+local instance (E : FiniteIntermediateField K Ω) :
     IsCompleteDiscreteValuedField E.val :=
   normedAlgebra_isCompleteDiscreteValuedField K E.val
-local instance (E : FiniteLayer K Ω) : PerfectField (IsLocalRing.ResidueField
+local instance (E : FiniteIntermediateField K Ω) : PerfectField (IsLocalRing.ResidueField
     (NormedField.valuation (K := E.val)).valuationSubring) :=
   normedAlgebra_residueField_perfectField K E.val
 
@@ -40,7 +41,7 @@ omit [PerfectField (IsLocalRing.ResidueField
     (NormedField.valuation (K := K)).valuationSubring)] [IsUltrametricDist Ω] in
 /-- The same original integral norms compose arbitrary proved input and
 output precisions through an actual triple of finite fields. -/
-theorem integerNorm_sub_congruence_tower (E F G : FiniteLayer K Ω)
+theorem integerNorm_sub_congruence_tower (E F G : FiniteIntermediateField K Ω)
     (hEF : E ≤ F) (hFG : F ≤ G) (r s t : ℕ)
     (hE : ∀ x y : spectralIntegerRing K F.val,
       x - y ∈ IsLocalRing.maximalIdeal (spectralIntegerRing K F.val) ^ s →
@@ -57,7 +58,7 @@ theorem integerNorm_sub_congruence_tower (E F G : FiniteLayer K Ω)
   simpa only [integerNorm_integerNorm] using
     hE (integerNorm F G hFG x) (integerNorm F G hFG y) (hF x y hxy)
 
-private def finitePhi (E F : FiniteLayer K Ω) (hEF : E ≤ F) (r : ℝ) : ℝ := by
+private def finitePhi (E F : FiniteIntermediateField K Ω) (hEF : E ≤ F) (r : ℝ) : ℝ := by
   let : Algebra E.val F.val := (IntermediateField.inclusion hEF).toRingHom.toAlgebra
   have : IsScalarTower K E.val F.val := IsScalarTower.of_algebraMap_eq' rfl
   have : FiniteDimensional E.val F.val := Module.Finite.right K E.val F.val
@@ -66,14 +67,15 @@ private def finitePhi (E F : FiniteLayer K Ω) (hEF : E ≤ F) (r : ℝ) : ℝ :
 
 omit [PerfectField (IsLocalRing.ResidueField
     (NormedField.valuation (K := K)).valuationSubring)] in
-private theorem finitePhi_self (E : FiniteLayer K Ω) (r : ℝ) :
+private theorem finitePhi_self (E : FiniteIntermediateField K Ω) (r : ℝ) :
     finitePhi E E le_rfl r = r := by
   change apfPhi E.val E.val r = r
   exact apfPhi_eq_self_of_bound_eq_top E.val E.val (apfRamificationBound_self E.val) r
 
 omit [PerfectField (IsLocalRing.ResidueField
     (NormedField.valuation (K := K)).valuationSubring)] in
-private theorem finitePhi_eq_extendScalars (E F : FiniteLayer K Ω) (hEF : E ≤ F) (r : ℝ) :
+private theorem finitePhi_eq_extendScalars (E F : FiniteIntermediateField K Ω) (hEF : E ≤ F) (r :
+    ℝ) :
     let F' := IntermediateField.extendScalars hEF
     letI : FiniteDimensional K F' := F.property
     letI : FiniteDimensional E.val F' := Module.Finite.right K E.val F'
@@ -91,7 +93,7 @@ private theorem finitePhi_eq_extendScalars (E F : FiniteLayer K Ω) (hEF : E ≤
 
 omit [PerfectField (IsLocalRing.ResidueField
     (NormedField.valuation (K := K)).valuationSubring)] in
-private theorem finitePhi_mono (E F : FiniteLayer K Ω) (hEF : E ≤ F) :
+private theorem finitePhi_mono (E F : FiniteIntermediateField K Ω) (hEF : E ≤ F) :
     Monotone (finitePhi E F hEF) := by
   let : Algebra E.val F.val := (IntermediateField.inclusion hEF).toRingHom.toAlgebra
   have : IsScalarTower K E.val F.val := IsScalarTower.of_algebraMap_eq' rfl
@@ -99,7 +101,7 @@ private theorem finitePhi_mono (E F : FiniteLayer K Ω) (hEF : E ≤ F) :
   have := Algebra.isSeparable_tower_top_of_isSeparable K E.val F.val
   exact (strictMono_apfPhi E.val F.val).monotone
 
-private theorem finitePhi_comp (E F G : FiniteLayer K Ω)
+private theorem finitePhi_comp (E F G : FiniteIntermediateField K Ω)
     (hEF : E ≤ F) (hFG : F ≤ G) (r : ℝ) :
     finitePhi E F hEF (finitePhi F G hFG r) = finitePhi E G (hEF.trans hFG) r := by
   exact apfPhi_tower E F G hEF hFG r
@@ -114,7 +116,7 @@ its intrinsic Herbrand modulus. Each cyclic prime step and its total
 ramification are produced by the actual field chain. -/
 theorem integerNorm_sub_congruence_of_wild_field (p : ℕ) [Fact p.Prime]
     [CharP (IsLocalRing.ResidueField (spectralIntegerRing K Ω)) p]
-    (E F : FiniteLayer K Ω) (hEF : E ≤ F)
+    (E F : FiniteIntermediateField K Ω) (hEF : E ≤ F)
     (hE : IntermediateField.fixedField P ≤ E.val) :
     let F' := IntermediateField.extendScalars hEF
     letI : FiniteDimensional K F' := F.property
@@ -157,8 +159,8 @@ theorem integerNorm_sub_congruence_of_wild_field (p : ℕ) [Fact p.Prime]
         obtain ⟨hAB, hg, hd, _⟩ := hstep
         obtain ⟨hBF, htail⟩ := ih (hEA.trans hAB)
         have he := wildField_step_ramificationIdx_eq_finrank K Ω A B hAB (hE.trans hEA)
-        let A' : FiniteLayer K Ω := ⟨A, inferInstance⟩
-        let B' : FiniteLayer K Ω := ⟨B, inferInstance⟩
+        let A' : FiniteIntermediateField K Ω := ⟨A, inferInstance⟩
+        let B' : FiniteIntermediateField K Ω := ⟨B, inferInstance⟩
         refine ⟨hAB.trans hBF, fun r x y hxy => ?_⟩
         let q : ℕ := ⌈finitePhi B' F hBF (r : ℝ)⌉₊
         have hprime (u v : spectralIntegerRing K B) (huv :
@@ -181,4 +183,4 @@ theorem integerNorm_sub_congruence_of_wild_field (p : ℕ) [Fact p.Prime]
   rw [finitePhi_eq_extendScalars] at ht
   exact ht
 
-end FontaineWintenberger.FiniteLayer
+end FontaineWintenberger.FiniteIntermediateField

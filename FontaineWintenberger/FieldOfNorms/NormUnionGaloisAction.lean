@@ -33,13 +33,13 @@ variable (L : IntermediateField K (SeparableClosure K))
 variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 
 local notation "Ω" => SeparableClosure K
-local notation "X" => NormLimit K L
-local notation "U" => SeparableNormUnion K L Ω
-local notation "ι" => separableNormUnionBaseHom K L Ω
-local notation "ρ" => normLimitAut K L
+local notation "X" => FieldOfNorms K L
+local notation "U" => RelFieldOfNorms K L Ω
+local notation "ι" => RelFieldOfNorms.baseHom K L Ω
+local notation "ρ" => FieldOfNorms.aut K L
 
 /-- The literal source target, inside ring automorphisms of the same union. -/
-def normUnionGaloisSubgroup :
+def RelFieldOfNorms.galoisSubgroup :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
     Subgroup (RingAut U) := by
   letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
@@ -69,23 +69,23 @@ def normUnionGaloisSubgroup :
         rw [RingEquiv.apply_symm_apply] }
 
 /-- Membership means an actual commuting square with an original automorphism. -/
-theorem mem_normUnionGaloisSubgroup :
+theorem mem_relFieldOfNormsGaloisSubgroup :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
-    ∀ β : RingAut U, β ∈ normUnionGaloisSubgroup K L ↔
+    ∀ β : RingAut U, β ∈ RelFieldOfNorms.galoisSubgroup K L ↔
       ∃ σ : L ≃ₐ[K] L, ∀ x : X, β (ι x) = ι (ρ σ x) := by
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
   intro β
   rfl
 
 /-- The base square determines its original automorphism uniquely. -/
-theorem normUnionGaloisSubgroup_base_unique :
+theorem RelFieldOfNorms.galoisSubgroup_base_unique :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
     ∀ (β : RingAut U) (σ τ : L ≃ₐ[K] L),
       (∀ x : X, β (ι x) = ι (ρ σ x)) →
       (∀ x : X, β (ι x) = ι (ρ τ x)) → σ = τ := by
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
   intro β σ τ hσ hτ
-  apply normLimitAut_injective K L
+  apply FieldOfNorms.aut_injective K L
   apply RingEquiv.ext
   intro x
   apply (ι).injective
@@ -93,14 +93,14 @@ theorem normUnionGaloisSubgroup_base_unique :
 
 /-- The existential square is exactly preservation of the actual base image
 and membership of its transported restriction in the actual action image. -/
-theorem mem_normUnionGaloisSubgroup_iff_stable_image :
+theorem mem_relFieldOfNormsGaloisSubgroup_iff_stable_image :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
-    ∀ β : RingAut U, β ∈ normUnionGaloisSubgroup K L ↔
+    ∀ β : RingAut U, β ∈ RelFieldOfNorms.galoisSubgroup K L ↔
       β '' Set.range ι = Set.range ι ∧
         ∃ a ∈ (ρ).range, ∀ x : X, β (ι x) = ι (a x) := by
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
   intro β
-  rw [mem_normUnionGaloisSubgroup]
+  rw [mem_relFieldOfNormsGaloisSubgroup]
   constructor
   · rintro ⟨σ, hσ⟩
     refine ⟨?_, ρ σ, ⟨σ, rfl⟩, hσ⟩

@@ -99,7 +99,7 @@ theorem mem_integralClosure_inclusion_iff (i : E →ₐ[K] L) (x : E) :
 
 omit [Algebra.IsAlgebraic K L] in
 /-- The intersection with an original embedded algebraic subfield is
-exactly its original spectral integer ring, including every finite layer. -/
+exactly its original spectral integer ring, including every finite intermediate field. -/
 theorem mem_integralClosure_embedding_iff_spectral (i : E →ₐ[K] L) (x : E) :
     i x ∈ integralClosure R₀ L ↔ x ∈ spectralIntegerRing K E := by
   exact (mem_integralClosure_inclusion_iff K i x).trans
@@ -185,13 +185,13 @@ variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsAlgebraic K L]
 
 /-- Every actual infinite residue class is represented in an actual finite
 subfield of the original algebraic extension. -/
-theorem exists_finiteLayer_spectralResidue_preimage
+theorem exists_finiteIntermediateField_spectralResidue_preimage
     (z : IsLocalRing.ResidueField (spectralIntegerRing K L)) :
-    ∃ E : FiniteLayer K L,
+    ∃ E : FiniteIntermediateField K L,
       ∃ y : IsLocalRing.ResidueField (spectralIntegerRing K E.val),
         spectralResidueInclusion K E.val.val y = z := by
   obtain ⟨x, rfl⟩ := IsLocalRing.residue_surjective z
-  let E : FiniteLayer K L := ⟨IntermediateField.adjoin K {(x : L)},
+  let E : FiniteIntermediateField K L := ⟨IntermediateField.adjoin K {(x : L)},
     IntermediateField.adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral (R := K) (x : L))⟩
   let y : E.val := ⟨x, IntermediateField.mem_adjoin_simple_self K (x : L)⟩
   have hy : y ∈ spectralIntegerRing K E.val := by
@@ -212,19 +212,19 @@ variable [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
-/-- Every sufficiently large original finite layer maps bijectively onto
+/-- Every sufficiently large original finite intermediate field maps bijectively onto
 the residue field of the original algebraic extension. -/
-theorem IsAPF.exists_finiteLayer_spectralResidueInclusion_bijective [IsAPF K L] :
-    ∃ T : FiniteLayer K L, ∀ E : FiniteLayer K L, T ≤ E →
+theorem IsAPF.exists_finiteIntermediateField_spectralResidueInclusion_bijective [IsAPF K L] :
+    ∃ T : FiniteIntermediateField K L, ∀ E : FiniteIntermediateField K L, T ≤ E →
       Function.Bijective (spectralResidueInclusion K E.val.val) := by
-  obtain ⟨T, hT⟩ := IsAPF.exists_finiteLayer_residueInclusion_surjective K L
+  obtain ⟨T, hT⟩ := IsAPF.exists_finiteIntermediateField_residueInclusion_surjective K L
   refine ⟨T, fun E hE => ⟨(spectralResidueInclusion K E.val.val).injective, ?_⟩⟩
   intro z
-  obtain ⟨F, y, hy⟩ := exists_finiteLayer_spectralResidue_preimage K L z
-  let G := FiniteLayer.sup E F
-  let i := IntermediateField.inclusion (FiniteLayer.le_sup_left E F)
-  let j := IntermediateField.inclusion (FiniteLayer.le_sup_right E F)
-  obtain ⟨a, ha⟩ := hT E G hE (FiniteLayer.le_sup_left E F)
+  obtain ⟨F, y, hy⟩ := exists_finiteIntermediateField_spectralResidue_preimage K L z
+  let G := FiniteIntermediateField.sup E F
+  let i := IntermediateField.inclusion (FiniteIntermediateField.le_sup_left E F)
+  let j := IntermediateField.inclusion (FiniteIntermediateField.le_sup_right E F)
+  obtain ⟨a, ha⟩ := hT E G hE (FiniteIntermediateField.le_sup_left E F)
     (spectralResidueInclusion K j y)
   have hi : (spectralResidueInclusion K G.val.val).comp
       (spectralResidueInclusion K i) = spectralResidueInclusion K E.val.val := by
@@ -246,7 +246,7 @@ theorem IsAPF.exists_finiteLayer_spectralResidueInclusion_bijective [IsAPF K L] 
 
 /-- The actual finite spectral residue inclusion into the canonical
 integral-closure residue field of the original extension. -/
-def integralClosureResidueFromLayer (E : FiniteLayer K L) :
+def integralClosureResidueFromLayer (E : FiniteIntermediateField K L) :
     IsLocalRing.ResidueField (spectralIntegerRing K E.val) →ₐ[IsLocalRing.ResidueField R₀]
       IsLocalRing.ResidueField (integralClosure R₀ L) :=
   (integralClosureSpectralResidueEquiv K (L := L)).symm.toAlgHom.comp
@@ -255,37 +255,37 @@ def integralClosureResidueFromLayer (E : FiniteLayer K L) :
 omit [PerfectField (IsLocalRing.ResidueField
     (NormedField.valuation (K := K)).valuationSubring)] in
 @[simp]
-theorem integralClosureResidueFromLayer_residue (E : FiniteLayer K L)
+theorem integralClosureResidueFromLayer_residue (E : FiniteIntermediateField K L)
     (x : spectralIntegerRing K E.val) :
     integralClosureResidueFromLayer K L E (IsLocalRing.residue _ x) =
       IsLocalRing.residue _ ((integralClosureSpectralEquiv K L).symm
         (spectralIntegerInclusion K E.val.val x)) := rfl
 
 /-- Actual APF residue stabilization identifies the intrinsic canonical
-residue field with that of every sufficiently large original finite layer. -/
-theorem IsAPF.exists_finiteLayer_integralClosureResidue_bijective [IsAPF K L] :
-    ∃ T : FiniteLayer K L, ∀ E : FiniteLayer K L, T ≤ E →
+residue field with that of every sufficiently large original finite intermediate field. -/
+theorem IsAPF.exists_finiteIntermediateField_integralClosureResidue_bijective [IsAPF K L] :
+    ∃ T : FiniteIntermediateField K L, ∀ E : FiniteIntermediateField K L, T ≤ E →
       Function.Bijective (integralClosureResidueFromLayer K L E) := by
-  obtain ⟨T, hT⟩ := IsAPF.exists_finiteLayer_spectralResidueInclusion_bijective K L
+  obtain ⟨T, hT⟩ := IsAPF.exists_finiteIntermediateField_spectralResidueInclusion_bijective K L
   exact ⟨T, fun E hE =>
     (integralClosureSpectralResidueEquiv K (L := L)).symm.bijective.comp (hT E hE)⟩
 
-/-- The actual residue-stable finite layer supplied by the proved APF theorem. -/
-def apfResidueLayer [IsAPF K L] : FiniteLayer K L :=
-  (IsAPF.exists_finiteLayer_integralClosureResidue_bijective K L).choose
+/-- The actual residue-stable finite intermediate field supplied by the proved APF theorem. -/
+def apfResidueLayer [IsAPF K L] : FiniteIntermediateField K L :=
+  (IsAPF.exists_finiteIntermediateField_integralClosureResidue_bijective K L).choose
 
 /-- The original finite inclusion is the residue-field isomorphism; no
 residue-field equivalence is assumed. -/
-def integralClosureResidueEquiv [IsAPF K L] (E : FiniteLayer K L)
+def integralClosureResidueEquiv [IsAPF K L] (E : FiniteIntermediateField K L)
     (hE : apfResidueLayer K L ≤ E) :
     IsLocalRing.ResidueField (spectralIntegerRing K E.val) ≃ₐ[IsLocalRing.ResidueField R₀]
       IsLocalRing.ResidueField (integralClosure R₀ L) :=
   AlgEquiv.ofBijective (integralClosureResidueFromLayer K L E)
-    ((IsAPF.exists_finiteLayer_integralClosureResidue_bijective K L).choose_spec E hE)
+    ((IsAPF.exists_finiteIntermediateField_integralClosureResidue_bijective K L).choose_spec E hE)
 
 /-- The residue isomorphism acts by the original finite residue inclusion. -/
 @[simp]
-theorem integralClosureResidueEquiv_apply [IsAPF K L] (E : FiniteLayer K L)
+theorem integralClosureResidueEquiv_apply [IsAPF K L] (E : FiniteIntermediateField K L)
     (hE : apfResidueLayer K L ≤ E)
     (z : IsLocalRing.ResidueField (spectralIntegerRing K E.val)) :
     integralClosureResidueEquiv K L E hE z = integralClosureResidueFromLayer K L E z := rfl

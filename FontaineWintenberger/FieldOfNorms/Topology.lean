@@ -45,17 +45,17 @@ theorem continuous_algebraNorm_of_finiteDimensional :
 
 end NormContinuity
 
-section FiniteLayers
+section FiniteIntermediateFields
 
 variable {K L : Type*} [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
     [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
 /-- Continuity of the same original finite-layer norm, with the canonical
 spectral norms on the original two finite fields. -/
-theorem FiniteLayer.continuous_norm (E F : FiniteLayer K L) (hEF : E ≤ F) :
+theorem FiniteIntermediateField.continuous_norm (E F : FiniteIntermediateField K L) (hEF : E ≤ F) :
     letI := spectralNorm.nontriviallyNormedField K E.val
     letI := spectralNorm.nontriviallyNormedField K F.val
-    Continuous (norm E F hEF : F.val → E.val) := by
+    Continuous (FiniteIntermediateField.norm E F hEF : F.val → E.val) := by
   let := spectralNorm.nontriviallyNormedField K E.val
   let := spectralNorm.nontriviallyNormedField K F.val
   let := spectralNorm.normedAlgebra K E.val
@@ -64,7 +64,7 @@ theorem FiniteLayer.continuous_norm (E F : FiniteLayer K L) (hEF : E ≤ F) :
   have : IsScalarTower K E.val F.val := IsScalarTower.of_algebraMap_eq' rfl
   exact continuous_algebraNorm_of_finiteDimensional K E.val F.val
 
-end FiniteLayers
+end FiniteIntermediateFields
 
 section IdealPowers
 
@@ -159,7 +159,8 @@ variable {K L : Type*} [NontriviallyNormedField K] [IsCompleteDiscreteValuedFiel
 
 /-- Actual spectral ideal powers have closed image for the canonical norm
 on the original finite field. -/
-theorem FiniteLayer.isClosed_image_maximalIdeal_pow (E : FiniteLayer K L) (n : ℕ) :
+theorem FiniteIntermediateField.isClosed_image_maximalIdeal_pow (E : FiniteIntermediateField K L)
+    (n : ℕ) :
     letI := spectralNorm.nontriviallyNormedField K E.val
     IsClosed ((fun x : spectralIntegerRing K E.val => (x : E.val)) ''
       ((IsLocalRing.maximalIdeal (spectralIntegerRing K E.val) ^ n :
@@ -172,8 +173,9 @@ theorem FiniteLayer.isClosed_image_maximalIdeal_pow (E : FiniteLayer K L) (n : �
   exact FontaineWintenberger.isClosed_image_maximalIdeal_pow E.val n
 
 /-- The original spectral ideal powers give the actual field topology at
-zero for every actual finite layer. -/
-theorem FiniteLayer.nhds_zero_hasBasis_maximalIdeal_pow (E : FiniteLayer K L) :
+zero for every actual finite intermediate field. -/
+theorem FiniteIntermediateField.nhds_zero_hasBasis_maximalIdeal_pow (E : FiniteIntermediateField K
+    L) :
     letI := spectralNorm.nontriviallyNormedField K E.val
     (nhds (0 : E.val)).HasBasis (fun _ : ℕ => True)
       (fun n => (fun x : spectralIntegerRing K E.val => (x : E.val)) ''

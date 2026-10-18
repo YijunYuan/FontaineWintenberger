@@ -28,77 +28,77 @@ variable (K M : Type*) [Field K] [Field M] [Algebra K M]
     {N : Type*} [Field N] [Algebra K N] [Algebra M N] [IsScalarTower K M N]
 
 /-- The original pullback of an actual finite field along the base inclusion. -/
-def finiteLayerPullback (D : FiniteLayer K N) : IntermediateField K M :=
+def FiniteIntermediateField.pullback (D : FiniteIntermediateField K N) : IntermediateField K M :=
   D.val.comap (IsScalarTower.toAlgHom K M N)
 
 /-- The original inclusion of the pullback into the actual finite field. -/
-def finiteLayerPullbackTo (D : FiniteLayer K N) :
-    finiteLayerPullback K M D →ₐ[K] D.val :=
-  ((IsScalarTower.toAlgHom K M N).comp (finiteLayerPullback K M D).val).codRestrict
+def FiniteIntermediateField.pullbackTo (D : FiniteIntermediateField K N) :
+    FiniteIntermediateField.pullback K M D →ₐ[K] D.val :=
+  ((IsScalarTower.toAlgHom K M N).comp (FiniteIntermediateField.pullback K M D).val).codRestrict
     D.val.toSubalgebra fun x => x.property
 
-instance finiteLayerPullback_finite (D : FiniteLayer K N) :
-    Module.Finite K (finiteLayerPullback K M D) :=
-  Module.Finite.of_injective (finiteLayerPullbackTo K M D).toLinearMap
-    (finiteLayerPullbackTo K M D).injective
+instance FiniteIntermediateField.pullback_finite (D : FiniteIntermediateField K N) :
+    Module.Finite K (FiniteIntermediateField.pullback K M D) :=
+  Module.Finite.of_injective (FiniteIntermediateField.pullbackTo K M D).toLinearMap
+    (FiniteIntermediateField.pullbackTo K M D).injective
 
 /-- The same original finite field, as an intermediate field over its pullback. -/
-def finiteLayerOverPullback (D : FiniteLayer K N) :
-    IntermediateField (finiteLayerPullback K M D) N where
+def FiniteIntermediateField.overPullback (D : FiniteIntermediateField K N) :
+    IntermediateField (FiniteIntermediateField.pullback K M D) N where
   __ := D.val.toSubfield
   algebraMap_mem' c := c.property
 
-instance finiteLayerPullbackAlgebra (D : FiniteLayer K N) :
-    Algebra (finiteLayerPullback K M D) D.val :=
-  (finiteLayerOverPullback K M D).algebra
+instance FiniteIntermediateField.pullbackAlgebra (D : FiniteIntermediateField K N) :
+    Algebra (FiniteIntermediateField.pullback K M D) D.val :=
+  (FiniteIntermediateField.overPullback K M D).algebra
 
-instance finiteLayerPullback_scalarTower (D : FiniteLayer K N) :
-    IsScalarTower K (finiteLayerPullback K M D) D.val :=
+instance FiniteIntermediateField.pullback_scalarTower (D : FiniteIntermediateField K N) :
+    IsScalarTower K (FiniteIntermediateField.pullback K M D) D.val :=
   IsScalarTower.of_algebraMap_eq' (by
     ext x
     exact IsScalarTower.algebraMap_apply K M N x)
 
-instance finiteLayerPullback_scalarTower_top (D : FiniteLayer K N) :
-    IsScalarTower (finiteLayerPullback K M D) D.val N :=
+instance FiniteIntermediateField.pullback_scalarTower_top (D : FiniteIntermediateField K N) :
+    IsScalarTower (FiniteIntermediateField.pullback K M D) D.val N :=
   IsScalarTower.of_algebraMap_eq' rfl
 
-instance finiteLayerOverPullback_finite (D : FiniteLayer K N) :
-    Module.Finite (finiteLayerPullback K M D) D.val :=
+instance FiniteIntermediateField.overPullback_finite (D : FiniteIntermediateField K N) :
+    Module.Finite (FiniteIntermediateField.pullback K M D) D.val :=
   Module.Finite.of_restrictScalars_finite K _ _
 
 /-- The original multiplication map over the original pullback field. -/
-def finiteLayerTensorMap (D : FiniteLayer K N) :
-    M ⊗[finiteLayerPullback K M D] D.val →ₐ[M] N :=
-  AlgHom.liftEquiv (finiteLayerPullback K M D) M D.val N
-    (IsScalarTower.toAlgHom (finiteLayerPullback K M D) D.val N)
+def FiniteIntermediateField.tensorMap (D : FiniteIntermediateField K N) :
+    M ⊗[FiniteIntermediateField.pullback K M D] D.val →ₐ[M] N :=
+  AlgHom.liftEquiv (FiniteIntermediateField.pullback K M D) M D.val N
+    (IsScalarTower.toAlgHom (FiniteIntermediateField.pullback K M D) D.val N)
 
 /-- An actual finite field is good when its canonical multiplication map is bijective. -/
-def IsGoodFiniteLayer (D : FiniteLayer K N) : Prop :=
-  Function.Bijective (finiteLayerTensorMap K M D)
+def IsGoodFiniteLayer (D : FiniteIntermediateField K N) : Prop :=
+  Function.Bijective (FiniteIntermediateField.tensorMap K M D)
 
 /-- The canonical tensor isomorphism of a good actual finite field. -/
-def goodFiniteLayerTensorEquiv (D : FiniteLayer K N) (hD : IsGoodFiniteLayer K M D) :
-    M ⊗[finiteLayerPullback K M D] D.val ≃ₐ[M] N :=
-  AlgEquiv.ofBijective (finiteLayerTensorMap K M D) hD
+def goodFiniteLayerTensorEquiv (D : FiniteIntermediateField K N) (hD : IsGoodFiniteLayer K M D) :
+    M ⊗[FiniteIntermediateField.pullback K M D] D.val ≃ₐ[M] N :=
+  AlgEquiv.ofBijective (FiniteIntermediateField.tensorMap K M D) hD
 
 @[simp]
-theorem goodFiniteLayerTensorEquiv_tmul (D : FiniteLayer K N)
+theorem goodFiniteLayerTensorEquiv_tmul (D : FiniteIntermediateField K N)
     (hD : IsGoodFiniteLayer K M D) (m : M) (d : D.val) :
-    goodFiniteLayerTensorEquiv K M D hD (m ⊗ₜ[finiteLayerPullback K M D] d) =
+    goodFiniteLayerTensorEquiv K M D hD (m ⊗ₜ[FiniteIntermediateField.pullback K M D] d) =
       algebraMap M N m * (d : N) :=
   Algebra.smul_def m (d : N)
 
 /-- Original pullbacks preserve inclusions of the original finite fields. -/
-theorem finiteLayerPullback_mono {D D' : FiniteLayer K N} (h : D ≤ D') :
-    finiteLayerPullback K M D ≤ finiteLayerPullback K M D' :=
+theorem FiniteIntermediateField.pullback_mono {D D' : FiniteIntermediateField K N} (h : D ≤ D') :
+    FiniteIntermediateField.pullback K M D ≤ FiniteIntermediateField.pullback K M D' :=
   fun _ hx => h hx
 
 /-- The coefficient field supplied by finite descent equals the original
 pullback; the auxiliary presentation introduces no different finite field. -/
-theorem finiteLayerPullback_eq_of_inf (C : IntermediateField K M)
+theorem FiniteIntermediateField.pullback_eq_of_inf (C : IntermediateField K M)
     (D : IntermediateField C N) (hfin : Module.Finite K (D.restrictScalars K))
     (hinf : D ⊓ (IsScalarTower.toAlgHom C M N).fieldRange = ⊥) :
-    finiteLayerPullback K M ⟨D.restrictScalars K, hfin⟩ = C := by
+    FiniteIntermediateField.pullback K M ⟨D.restrictScalars K, hfin⟩ = C := by
   ext x
   constructor
   · intro hx
@@ -113,33 +113,34 @@ theorem finiteLayerPullback_eq_of_inf (C : IntermediateField K M)
 
 /-- Changing a descended presentation to its equal original pullback and
 original finite field preserves the canonical tensor bijection. -/
-theorem isGoodFiniteLayer_of_descent (E : FiniteLayer K N)
+theorem isGoodFiniteLayer_of_descent (E : FiniteIntermediateField K N)
     (C : IntermediateField K M) (D : IntermediateField C N)
     (hE : D.restrictScalars K = E.val)
-    (hC : finiteLayerPullback K M E = C)
+    (hC : FiniteIntermediateField.pullback K M E = C)
     [Module.Finite C D] (hD : D.LinearDisjoint M)
     (hsurj : Function.Surjective (AlgHom.liftEquiv C M D N D.val)) :
     IsGoodFiniteLayer K M E := by
   subst C
-  have hDfield : D = finiteLayerOverPullback K M E := by
+  have hDfield : D = FiniteIntermediateField.overPullback K M E := by
     ext x
     exact SetLike.ext_iff.mp hE x
   subst D
-  change Function.Bijective (AlgHom.liftEquiv (finiteLayerPullback K M E) M
-    (finiteLayerOverPullback K M E) N (finiteLayerOverPullback K M E).val)
-  exact ⟨injective_tensor_lift_of_linearDisjoint (finiteLayerOverPullback K M E) hD, hsurj⟩
+  change Function.Bijective (AlgHom.liftEquiv (FiniteIntermediateField.pullback K M E) M
+    (FiniteIntermediateField.overPullback K M E) N (FiniteIntermediateField.overPullback K M E).val)
+  exact ⟨injective_tensor_lift_of_linearDisjoint (FiniteIntermediateField.overPullback K M E) hD,
+      hsurj⟩
 
 /-- Good original finite fields are cofinal; goodness is proved from actual
 finite tensor descent, rather than assumed as part of the interface. -/
 theorem exists_goodFiniteLayer_ge [Algebra.IsAlgebraic K M]
-    [Module.Finite M N] [Algebra.IsSeparable M N] (E : FiniteLayer K N) :
-    ∃ D : FiniteLayer K N, E ≤ D ∧ IsGoodFiniteLayer K M D := by
+    [Module.Finite M N] [Algebra.IsSeparable M N] (E : FiniteIntermediateField K N) :
+    ∃ D : FiniteIntermediateField K N, E ≤ D ∧ IsGoodFiniteLayer K M D := by
   obtain ⟨C, D, hf, hE, hD, hi, e, he⟩ :=
-    exists_finiteLayer_tensor_descent K (M := M) E
+    exists_finiteIntermediateField_tensor_descent K (M := M) E
   let : Module.Finite K D := hf
   let : Module.Finite C.val D := Module.Finite.of_restrictScalars_finite K C.val D
-  let E' : FiniteLayer K N := ⟨D.restrictScalars K, hf⟩
-  have hC := finiteLayerPullback_eq_of_inf K M C.val D hf hi
+  let E' : FiniteIntermediateField K N := ⟨D.restrictScalars K, hf⟩
+  have hC := FiniteIntermediateField.pullback_eq_of_inf K M C.val D hf hi
   have hmap : AlgHom.liftEquiv C.val M D N D.val = e.toAlgHom := by
     ext d
     change (1 : M) • (d : N) = e (1 ⊗ₜ[C.val] d)
@@ -150,50 +151,55 @@ theorem exists_goodFiniteLayer_ge [Algebra.IsAlgebraic K M]
 
 /-- Two original finite fields have a common upper good finite field. -/
 theorem exists_goodFiniteLayer_ge_pair [Algebra.IsAlgebraic K M]
-    [Module.Finite M N] [Algebra.IsSeparable M N] (E E' : FiniteLayer K N) :
-    ∃ D : FiniteLayer K N, E ≤ D ∧ E' ≤ D ∧ IsGoodFiniteLayer K M D := by
-  obtain ⟨D, h, hD⟩ := exists_goodFiniteLayer_ge K M (FiniteLayer.sup E E')
-  exact ⟨D, (FiniteLayer.le_sup_left E E').trans h,
-    (FiniteLayer.le_sup_right E E').trans h, hD⟩
+    [Module.Finite M N] [Algebra.IsSeparable M N] (E E' : FiniteIntermediateField K N) :
+    ∃ D : FiniteIntermediateField K N, E ≤ D ∧ E' ≤ D ∧ IsGoodFiniteLayer K M D := by
+  obtain ⟨D, h, hD⟩ := exists_goodFiniteLayer_ge K M (FiniteIntermediateField.sup E E')
+  exact ⟨D, (FiniteIntermediateField.le_sup_left E E').trans h,
+    (FiniteIntermediateField.le_sup_right E E').trans h, hD⟩
 
 /-- Goodness gives the original finite relative degree. -/
-theorem finrank_goodFiniteLayer (D : FiniteLayer K N) (hD : IsGoodFiniteLayer K M D) :
-    Module.finrank (finiteLayerPullback K M D) D.val = Module.finrank M N := by
+theorem finrank_goodFiniteLayer (D : FiniteIntermediateField K N) (hD : IsGoodFiniteLayer K M D) :
+    Module.finrank (FiniteIntermediateField.pullback K M D) D.val = Module.finrank M N := by
   rw [← Module.finrank_baseChange (R := M)]
   exact (goodFiniteLayerTensorEquiv K M D hD).toLinearEquiv.finrank_eq
 
 /-- Goodness gives actual linear disjointness over the original pullback. -/
-theorem linearDisjoint_goodFiniteLayer (D : FiniteLayer K N)
+theorem linearDisjoint_goodFiniteLayer (D : FiniteIntermediateField K N)
     (hD : IsGoodFiniteLayer K M D) :
-    (finiteLayerOverPullback K M D).LinearDisjoint M := by
-  have hfield : IsField (M ⊗[finiteLayerPullback K M D] D.val) :=
+    (FiniteIntermediateField.overPullback K M D).LinearDisjoint M := by
+  have hfield : IsField (M ⊗[FiniteIntermediateField.pullback K M D] D.val) :=
     (goodFiniteLayerTensorEquiv K M D hD).toMulEquiv.isField (Field.toIsField N)
   apply IntermediateField.LinearDisjoint.of_isField
-  exact (Algebra.TensorProduct.comm (finiteLayerPullback K M D) D.val M).toMulEquiv.isField hfield
+  exact (Algebra.TensorProduct.comm (FiniteIntermediateField.pullback K M D) D.val
+      M).toMulEquiv.isField hfield
 
 /-- The original pullback, as an index in the original finite-layer system. -/
-def finiteLayerPullbackLayer (D : FiniteLayer K N) : FiniteLayer K M :=
-  ⟨finiteLayerPullback K M D, inferInstance⟩
+def FiniteIntermediateField.pullbackLayer (D : FiniteIntermediateField K N) :
+    FiniteIntermediateField K M :=
+  ⟨FiniteIntermediateField.pullback K M D, inferInstance⟩
 
 /-- An inclusion of good finite fields is the actual tensor base change of
 the corresponding inclusion of their original pullbacks. -/
-def goodFinitePairTensorEquiv (D D' : FiniteLayer K N) (h : D ≤ D')
+def goodFinitePairTensorEquiv (D D' : FiniteIntermediateField K N) (h : D ≤ D')
     (hD : IsGoodFiniteLayer K M D) (hD' : IsGoodFiniteLayer K M D') :
-    letI : Algebra (finiteLayerPullback K M D) (finiteLayerPullback K M D') :=
-      (IntermediateField.inclusion (finiteLayerPullback_mono K M h)).toRingHom.toAlgebra
+    letI : Algebra (FiniteIntermediateField.pullback K M D) (FiniteIntermediateField.pullback K M
+        D') :=
+      (IntermediateField.inclusion (FiniteIntermediateField.pullback_mono K M
+          h)).toRingHom.toAlgebra
     letI : Algebra D.val D'.val := (IntermediateField.inclusion h).toRingHom.toAlgebra
-    D.val ⊗[finiteLayerPullback K M D] (finiteLayerPullback K M D') ≃ₐ[D.val] D'.val := by
-  let C := finiteLayerPullback K M D
-  let C' := finiteLayerPullback K M D'
+    D.val ⊗[FiniteIntermediateField.pullback K M D] (FiniteIntermediateField.pullback K M D')
+        ≃ₐ[D.val] D'.val := by
+  let C := FiniteIntermediateField.pullback K M D
+  let C' := FiniteIntermediateField.pullback K M D'
   letI : Algebra C C' :=
-    (IntermediateField.inclusion (finiteLayerPullback_mono K M h)).toRingHom.toAlgebra
+    (IntermediateField.inclusion (FiniteIntermediateField.pullback_mono K M h)).toRingHom.toAlgebra
   letI : Algebra D.val D'.val := (IntermediateField.inclusion h).toRingHom.toAlgebra
   letI : Algebra C D'.val := ((IntermediateField.inclusion h).comp
-    (finiteLayerPullbackTo K M D)).toRingHom.toAlgebra
+    (FiniteIntermediateField.pullbackTo K M D)).toRingHom.toAlgebra
   have : IsScalarTower C D.val D'.val := IsScalarTower.of_algebraMap_eq' rfl
   have : IsScalarTower C C' M := IsScalarTower.of_algebraMap_eq' rfl
   have : IsScalarTower K C C' := IsScalarTower.of_algHom
-    (IntermediateField.inclusion (finiteLayerPullback_mono K M h))
+    (IntermediateField.inclusion (FiniteIntermediateField.pullback_mono K M h))
   have : IsScalarTower C C' N := IsScalarTower.of_algebraMap_eq' rfl
   have : IsScalarTower C C' D'.val := IsScalarTower.of_algebraMap_eq' rfl
   have : IsScalarTower K D.val D'.val := IsScalarTower.of_algHom (IntermediateField.inclusion h)
@@ -226,36 +232,40 @@ def goodFinitePairTensorEquiv (D D' : FiniteLayer K N) (h : D ≤ D')
 
 /-- The pair isomorphism is the original multiplication map on original elements. -/
 @[simp]
-theorem goodFinitePairTensorEquiv_tmul (D D' : FiniteLayer K N) (h : D ≤ D')
+theorem goodFinitePairTensorEquiv_tmul (D D' : FiniteIntermediateField K N) (h : D ≤ D')
     (hD : IsGoodFiniteLayer K M D) (hD' : IsGoodFiniteLayer K M D')
-    (d : D.val) (a : finiteLayerPullback K M D') :
-    letI : Algebra (finiteLayerPullback K M D) (finiteLayerPullback K M D') :=
-      (IntermediateField.inclusion (finiteLayerPullback_mono K M h)).toRingHom.toAlgebra
+    (d : D.val) (a : FiniteIntermediateField.pullback K M D') :
+    letI : Algebra (FiniteIntermediateField.pullback K M D) (FiniteIntermediateField.pullback K M
+        D') :=
+      (IntermediateField.inclusion (FiniteIntermediateField.pullback_mono K M
+          h)).toRingHom.toAlgebra
     letI : Algebra D.val D'.val := (IntermediateField.inclusion h).toRingHom.toAlgebra
     goodFinitePairTensorEquiv K M D D' h hD hD'
-      (d ⊗ₜ[finiteLayerPullback K M D] a) =
-      IntermediateField.inclusion h d * finiteLayerPullbackTo K M D' a := by
-  let : Algebra (finiteLayerPullback K M D) (finiteLayerPullback K M D') :=
-    (IntermediateField.inclusion (finiteLayerPullback_mono K M h)).toRingHom.toAlgebra
+      (d ⊗ₜ[FiniteIntermediateField.pullback K M D] a) =
+      IntermediateField.inclusion h d * FiniteIntermediateField.pullbackTo K M D' a := by
+  let : Algebra (FiniteIntermediateField.pullback K M D) (FiniteIntermediateField.pullback K M D')
+      :=
+    (IntermediateField.inclusion (FiniteIntermediateField.pullback_mono K M h)).toRingHom.toAlgebra
   let : Algebra D.val D'.val := (IntermediateField.inclusion h).toRingHom.toAlgebra
-  exact Algebra.smul_def d (finiteLayerPullbackTo K M D' a)
+  exact Algebra.smul_def d (FiniteIntermediateField.pullbackTo K M D' a)
 
 /-- The original finite-layer norms commute with the original inclusions
 on every inclusion of good finite fields. -/
-theorem goodFinitePair_norm (D D' : FiniteLayer K N) (h : D ≤ D')
+theorem goodFinitePair_norm (D D' : FiniteIntermediateField K N) (h : D ≤ D')
     (hD : IsGoodFiniteLayer K M D) (hD' : IsGoodFiniteLayer K M D')
-    (a : finiteLayerPullback K M D') :
-    FiniteLayer.norm D D' h (finiteLayerPullbackTo K M D' a) =
-      finiteLayerPullbackTo K M D
-        (FiniteLayer.norm (finiteLayerPullbackLayer K M D)
-          (finiteLayerPullbackLayer K M D') (finiteLayerPullback_mono K M h) a) := by
-  let C := finiteLayerPullback K M D
-  let C' := finiteLayerPullback K M D'
+    (a : FiniteIntermediateField.pullback K M D') :
+    FiniteIntermediateField.norm D D' h (FiniteIntermediateField.pullbackTo K M D' a) =
+      FiniteIntermediateField.pullbackTo K M D
+        (FiniteIntermediateField.norm (FiniteIntermediateField.pullbackLayer K M D)
+          (FiniteIntermediateField.pullbackLayer K M D') (FiniteIntermediateField.pullback_mono K M
+              h) a) := by
+  let C := FiniteIntermediateField.pullback K M D
+  let C' := FiniteIntermediateField.pullback K M D'
   let : Algebra C C' :=
-    (IntermediateField.inclusion (finiteLayerPullback_mono K M h)).toRingHom.toAlgebra
+    (IntermediateField.inclusion (FiniteIntermediateField.pullback_mono K M h)).toRingHom.toAlgebra
   let : Algebra D.val D'.val := (IntermediateField.inclusion h).toRingHom.toAlgebra
   let : IsScalarTower K C C' := IsScalarTower.of_algHom
-    (IntermediateField.inclusion (finiteLayerPullback_mono K M h))
+    (IntermediateField.inclusion (FiniteIntermediateField.pullback_mono K M h))
   let : Module.Finite C C' := Module.Finite.of_restrictScalars_finite K C C'
   have hn := norm_eq_of_tensorEquiv C D.val C'
     (goodFinitePairTensorEquiv K M D D' h hD hD') a
@@ -264,30 +274,35 @@ theorem goodFinitePair_norm (D D' : FiniteLayer K N) (h : D ≤ D')
 
 /-- The lower finite field is linearly disjoint from the upper pullback
 over the lower pullback, under the actual original inclusions. -/
-theorem linearDisjoint_goodFinitePair (D D' : FiniteLayer K N) (h : D ≤ D')
+theorem linearDisjoint_goodFinitePair (D D' : FiniteIntermediateField K N) (h : D ≤ D')
     (hD : IsGoodFiniteLayer K M D) :
-    letI : Algebra (finiteLayerPullback K M D) (finiteLayerPullback K M D') :=
-      (IntermediateField.inclusion (finiteLayerPullback_mono K M h)).toRingHom.toAlgebra
-    letI : IsScalarTower (finiteLayerPullback K M D) (finiteLayerPullback K M D') N :=
+    letI : Algebra (FiniteIntermediateField.pullback K M D) (FiniteIntermediateField.pullback K M
+        D') :=
+      (IntermediateField.inclusion (FiniteIntermediateField.pullback_mono K M
+          h)).toRingHom.toAlgebra
+    letI : IsScalarTower (FiniteIntermediateField.pullback K M D) (FiniteIntermediateField.pullback
+        K M D') N :=
       IsScalarTower.of_algebraMap_eq' rfl
-    (finiteLayerOverPullback K M D).LinearDisjoint (finiteLayerPullback K M D') := by
-  let C := finiteLayerPullback K M D
-  let C' := finiteLayerPullback K M D'
+    (FiniteIntermediateField.overPullback K M D).LinearDisjoint (FiniteIntermediateField.pullback K
+        M D') := by
+  let C := FiniteIntermediateField.pullback K M D
+  let C' := FiniteIntermediateField.pullback K M D'
   let : Algebra C C' :=
-    (IntermediateField.inclusion (finiteLayerPullback_mono K M h)).toRingHom.toAlgebra
+    (IntermediateField.inclusion (FiniteIntermediateField.pullback_mono K M h)).toRingHom.toAlgebra
   let : IsScalarTower C C' M := IsScalarTower.of_algebraMap_eq' rfl
   let : IsScalarTower C C' N := IsScalarTower.of_algebraMap_eq' rfl
   exact (linearDisjoint_goodFiniteLayer K M D hD).of_le_right' C'
 
 /-- The actual upper good finite field is precisely the original compositum
 of the lower finite field with the upper pullback. -/
-theorem goodFinitePair_sup_eq (D D' : FiniteLayer K N) (h : D ≤ D')
+theorem goodFinitePair_sup_eq (D D' : FiniteIntermediateField K N) (h : D ≤ D')
     (hD : IsGoodFiniteLayer K M D) (hD' : IsGoodFiniteLayer K M D') :
-    D.val ⊔ (finiteLayerPullback K M D').map (IsScalarTower.toAlgHom K M N) = D'.val := by
-  let C := finiteLayerPullback K M D
-  let C' := finiteLayerPullback K M D'
+    D.val ⊔ (FiniteIntermediateField.pullback K M D').map (IsScalarTower.toAlgHom K M N) = D'.val
+        := by
+  let C := FiniteIntermediateField.pullback K M D
+  let C' := FiniteIntermediateField.pullback K M D'
   let : Algebra C C' :=
-    (IntermediateField.inclusion (finiteLayerPullback_mono K M h)).toRingHom.toAlgebra
+    (IntermediateField.inclusion (FiniteIntermediateField.pullback_mono K M h)).toRingHom.toAlgebra
   let : Algebra D.val D'.val := (IntermediateField.inclusion h).toRingHom.toAlgebra
   let A := D.val
   let B := C'.map (IsScalarTower.toAlgHom K M N)
@@ -312,15 +327,17 @@ theorem goodFinitePair_sup_eq (D D' : FiniteLayer K N) (h : D ≤ D')
 
 /-- The pullback inclusion is the original inclusion on actual ambient elements. -/
 @[simp]
-theorem finiteLayerPullbackTo_coe (D : FiniteLayer K N) (a : finiteLayerPullback K M D) :
-    (finiteLayerPullbackTo K M D a : N) = algebraMap M N (a : M) := rfl
+theorem FiniteIntermediateField.pullbackTo_coe (D : FiniteIntermediateField K N) (a :
+    FiniteIntermediateField.pullback K M D) :
+    (FiniteIntermediateField.pullbackTo K M D a : N) = algebraMap M N (a : M) := rfl
 
 /-- The two original inclusion squares commute on each original element. -/
 @[simp]
-theorem finiteLayerPullbackTo_inclusion {D D' : FiniteLayer K N} (h : D ≤ D')
-    (a : finiteLayerPullback K M D) :
-    finiteLayerPullbackTo K M D'
-        (IntermediateField.inclusion (finiteLayerPullback_mono K M h) a) =
-      IntermediateField.inclusion h (finiteLayerPullbackTo K M D a) := rfl
+theorem FiniteIntermediateField.pullbackTo_inclusion {D D' : FiniteIntermediateField K N} (h : D ≤
+    D')
+    (a : FiniteIntermediateField.pullback K M D) :
+    FiniteIntermediateField.pullbackTo K M D'
+        (IntermediateField.inclusion (FiniteIntermediateField.pullback_mono K M h) a) =
+      IntermediateField.inclusion h (FiniteIntermediateField.pullbackTo K M D a) := rfl
 
 end FontaineWintenberger
