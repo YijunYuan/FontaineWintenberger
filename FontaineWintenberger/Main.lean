@@ -35,10 +35,11 @@ extension.
 4. **Theorem 3.1.2 and Corollary 3.2.3.** The field of norms is fully faithful on finite
    separable extensions of `L` (`FieldOfNorms.homEquiv`), and
    `G_L ≃ G_{X_K(L)}` as topological groups (`FieldOfNorms.absoluteGaloisGroupEquiv`).
-5. **Remark 3.2.4.** For `L/K` Galois, `Gal(L/K)` acts on `X_K(L)` (`FieldOfNorms.aut`), and
-   `G_K` acts on `X_K(L)^sep` extending this action, identifying `G_K` with the subgroup of
-   automorphisms of `X_K(L)^sep` that normalize `X_K(L)` through this action
-   (`RelFieldOfNorms.absoluteGaloisGroupEquiv`).
+5. **Remark 3.2.4.** For `L/K` Galois inside a separable closure `Ω`, `Gal(L/K)` acts on
+   `X_K(L)` (`FieldOfNorms.aut`), and `Gal(Ω/K)` acts on `X_{L/K}(Ω) = X_K(L)^sep` extending this
+   action, identifying `Gal(Ω/K)` with the subgroup of automorphisms of `X_K(L)^sep` that
+   normalize `X_K(L)` through this action (`RelFieldOfNorms.ambientGaloisEquiv`); for
+   `Ω = SeparableClosure K` this is `G_K` (`RelFieldOfNorms.absoluteGaloisGroupEquiv`).
 
 ## References
 
@@ -152,24 +153,40 @@ end Functoriality
 section GaloisAction
 
 variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
-variable (L : IntermediateField K (SeparableClosure K)) [Normal K L]
-variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
+variable {Ω : Type*} [Field Ω] [Algebra K Ω] [IsSepClosure K Ω]
+variable (L : IntermediateField K Ω) [Normal K L] [IsAPF K L] [Fact (¬ Module.Finite K L)]
 
 /-- **Remark 3.2.4 (i).** For `L/K` Galois, `Gal(L/K)` acts on `X_K(L)` by field automorphisms. -/
 example : (L ≃ₐ[K] L) →* (FieldOfNorms K L ≃+* FieldOfNorms K L) := FieldOfNorms.aut K L
 
-/-- **Remark 3.2.4 (ii).** The absolute Galois group `G_K` acts on
-`X_{L/K}(K^sep) = X_K(L)^sep`, extending the action of `Gal(L/K)` on `X_K(L)`. -/
+/-- **Remark 3.2.4 (ii).** For any separable closure `Ω` of `K` containing `L`, `Gal(Ω/K)` acts
+on `X_{L/K}(Ω) = X_K(L)^sep`, extending the action of `Gal(L/K)` on `X_K(L)`. -/
+example : (Ω ≃ₐ[K] Ω) →* RingAut (RelFieldOfNorms K L Ω) := RelFieldOfNorms.absoluteAut K L
+
+/-- **Remark 3.2.4 (iii).** This action identifies `Gal(Ω/K)` with the group of automorphisms of
+`X_K(L)^sep` that restrict to `X_K(L)` through the action of some element of `Gal(L/K)`. -/
+example : (Ω ≃ₐ[K] Ω) ≃* RelFieldOfNorms.galoisSubgroup K L :=
+  RelFieldOfNorms.ambientGaloisEquiv K L
+
+end GaloisAction
+
+section AbsoluteGaloisAction
+
+variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
+variable (L : IntermediateField K (SeparableClosure K)) [Normal K L]
+variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
+
+/-- **Remark 3.2.4 (ii)**, for the absolute Galois group `G_K = Field.absoluteGaloisGroup K`
+acting through `Ω = SeparableClosure K`. -/
 def RelFieldOfNorms.absoluteGaloisGroupAction :
     Field.absoluteGaloisGroup K →* RingAut (RelFieldOfNorms K L (SeparableClosure K)) :=
   (RelFieldOfNorms.absoluteAut K L).comp (sepEquiv K).toMonoidHom
 
-/-- **Remark 3.2.4 (iii).** This action identifies `G_K` with the group of automorphisms of
-`X_K(L)^sep` that restrict to `X_K(L)` through the action of some element of `Gal(L/K)`. -/
+/-- **Remark 3.2.4 (iii)**, for the absolute Galois group `G_K`. -/
 def RelFieldOfNorms.absoluteGaloisGroupEquiv :
     Field.absoluteGaloisGroup K ≃* RelFieldOfNorms.galoisSubgroup K L :=
   (sepEquiv K).toMulEquiv.trans (RelFieldOfNorms.ambientGaloisEquiv K L)
 
-end GaloisAction
+end AbsoluteGaloisAction
 
 end FontaineWintenberger

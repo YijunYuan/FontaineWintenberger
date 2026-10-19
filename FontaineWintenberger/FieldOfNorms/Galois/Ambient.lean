@@ -97,10 +97,10 @@ namespace FontaineWintenberger
 variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
 
 local notation "p" => residueChar K
-variable (L : IntermediateField K (SeparableClosure K))
+variable {Ω : Type*} [Field Ω] [Algebra K Ω] [IsSepClosure K Ω]
+variable (L : IntermediateField K Ω)
 variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 
-local notation "Ω" => SeparableClosure K
 local notation "X" => FieldOfNorms K L
 local notation "U" => RelFieldOfNorms K L Ω
 local notation "ι" => RelFieldOfNorms.baseHom K L Ω
@@ -190,10 +190,10 @@ namespace FontaineWintenberger
 variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
 
 local notation "p" => residueChar K
-variable (L : IntermediateField K (SeparableClosure K))
+variable {Ω : Type*} [Field Ω] [Algebra K Ω] [IsSepClosure K Ω]
+variable (L : IntermediateField K Ω)
 variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 
-local notation "Ω" => SeparableClosure K
 local notation "X" => FieldOfNorms K L
 local notation "U" => RelFieldOfNorms K L Ω
 local notation "ι" => RelFieldOfNorms.baseHom K L Ω
@@ -224,10 +224,10 @@ namespace FontaineWintenberger
 variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
 
 local notation "p" => residueChar K
-variable (L : IntermediateField K (SeparableClosure K))
+variable {Ω : Type*} [Field Ω] [Algebra K Ω] [IsSepClosure K Ω]
+variable (L : IntermediateField K Ω)
 variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 
-local notation "Ω" => SeparableClosure K
 local notation "X" => FieldOfNorms K L
 local notation "U" => RelFieldOfNorms K L Ω
 local notation "ι" => RelFieldOfNorms.baseHom K L Ω
@@ -306,10 +306,10 @@ namespace FontaineWintenberger
 variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
 
 local notation "p" => residueChar K
-variable (L : IntermediateField K (SeparableClosure K))
+variable {Ω : Type*} [Field Ω] [Algebra K Ω] [IsSepClosure K Ω]
+variable (L : IntermediateField K Ω)
 variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 
-local notation "Ω" => SeparableClosure K
 local notation "X" => FieldOfNorms K L
 local notation "U" => RelFieldOfNorms K L Ω
 local notation "ι" => RelFieldOfNorms.baseHom K L Ω
@@ -387,27 +387,15 @@ theorem RelFieldOfNorms.galoisRelativeKernelEquiv_apply :
 /-- The relative Galois group identifies with that same kernel. -/
 def RelFieldOfNorms.galoisKernelEquiv :=
   letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
-  letI : Semiring Ω :=
-    @CommSemiring.toSemiring Ω
-      (@Semifield.toCommSemiring Ω
-        (@Field.toSemifield Ω (separableClosure K (AlgebraicClosure K)).toField))
   (RelFieldOfNorms.autEquiv K L Ω).trans
     (RelFieldOfNorms.galoisRelativeKernelEquiv K L)
 
 /-- The relative-kernel equivalence is the union map on every element. -/
 theorem RelFieldOfNorms.galoisKernelEquiv_apply :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
-    letI : Semiring Ω :=
-      @CommSemiring.toSemiring Ω
-        (@Semifield.toCommSemiring Ω
-          (@Field.toSemifield Ω (separableClosure K (AlgebraicClosure K)).toField))
     ∀ σ z, (RelFieldOfNorms.galoisKernelEquiv K L σ).val.val z =
       RelFieldOfNorms.mapEquiv K L Ω Ω σ.toAlgHom z := by
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
-  let : Semiring Ω :=
-    @CommSemiring.toSemiring Ω
-      (@Semifield.toCommSemiring Ω
-        (@Field.toSemifield Ω (separableClosure K (AlgebraicClosure K)).toField))
   intro σ z
   have h := RelFieldOfNorms.galoisRelativeKernelEquiv_apply K L
     (RelFieldOfNorms.autEquiv K L Ω σ)
@@ -423,10 +411,10 @@ namespace FontaineWintenberger
 variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
 
 local notation "p" => residueChar K
-variable (L : IntermediateField K (SeparableClosure K)) [Normal K L]
+variable {Ω : Type*} [Field Ω] [Algebra K Ω] [IsSepClosure K Ω]
+variable (L : IntermediateField K Ω) [Normal K L]
 variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 
-local notation "Ω" => SeparableClosure K
 local notation "X" => FieldOfNorms K L
 local notation "U" => RelFieldOfNorms K L Ω
 local notation "ι" => RelFieldOfNorms.baseHom K L Ω
@@ -473,10 +461,6 @@ theorem RelFieldOfNorms.ambientGaloisHom_restriction :
 theorem RelFieldOfNorms.ambientGaloisHom_relative :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
     ∀ (τ :
-      letI : Semiring Ω :=
-        @CommSemiring.toSemiring Ω
-          (@Semifield.toCommSemiring Ω
-            (@Field.toSemifield Ω (separableClosure K (AlgebraicClosure K)).toField))
       Ω ≃ₐ[L] Ω),
       Φ (τ.restrictScalars K) = (κ τ).val := by
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω

@@ -217,44 +217,45 @@ namespace FontaineWintenberger
 variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
 
 local notation "p" => residueChar K
-variable (L : IntermediateField K (SeparableClosure K)) [Normal K L]
+variable {Ω : Type*} [Field Ω] [Algebra K Ω] [IsSepClosure K Ω]
+variable (L : IntermediateField K Ω) [Normal K L]
 variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 
 /-- The absolute Galois group acts on the norm field through
 its ordinary restriction to the given normal APF extension. -/
 def FieldOfNorms.absoluteAut :
-    (SeparableClosure K ≃ₐ[K] SeparableClosure K) →*
+    (Ω ≃ₐ[K] Ω) →*
       (FieldOfNorms K L ≃+* FieldOfNorms K L) := by
   exact (FieldOfNorms.aut K L).comp (AlgEquiv.restrictNormalHom L)
 
 /-- The absolute base action factors through the Galois restriction. -/
 @[simp]
-theorem FieldOfNorms.absoluteAut_apply (σ : SeparableClosure K ≃ₐ[K] SeparableClosure K)
+theorem FieldOfNorms.absoluteAut_apply (σ : Ω ≃ₐ[K] Ω)
     (x : FieldOfNorms K L) :
     FieldOfNorms.absoluteAut K L σ x =
       FieldOfNorms.aut K L (AlgEquiv.restrictNormalHom L σ) x := rfl
 
 /-- The coordinate formula, viewed in the same separable closure. -/
 theorem FieldOfNorms.coe_coord_absoluteAut
-    (σ : SeparableClosure K ≃ₐ[K] SeparableClosure K)
+    (σ : Ω ≃ₐ[K] Ω)
     (x : FieldOfNorms K L) (E : FiniteIntermediateField K L) :
     ((FieldOfNorms.coord K L E (FieldOfNorms.absoluteAut K L σ x) : L) :
-        SeparableClosure K) =
+        Ω) =
       σ ((FieldOfNorms.coord K L
         (FiniteIntermediateField.map (AlgEquiv.restrictNormalHom L σ).symm.toAlgHom E) x : L) :
-          SeparableClosure K) := by
+          Ω) := by
   let τ := AlgEquiv.restrictNormalHom L σ
-  change ((FieldOfNorms.coord K L E (FieldOfNorms.mapEquiv τ x) : L) : SeparableClosure K) = _
+  change ((FieldOfNorms.coord K L E (FieldOfNorms.mapEquiv τ x) : L) : Ω) = _
   calc
     _ = ((τ (FieldOfNorms.coord K L (FiniteIntermediateField.map τ.symm.toAlgHom E) x) : L) :
-        SeparableClosure K) :=
-      congrArg (fun y : L => (y : SeparableClosure K))
+        Ω) :=
+      congrArg (fun y : L => (y : Ω))
         (FieldOfNorms.coe_coord_mapEquiv τ x E)
     _ = _ := AlgEquiv.restrictNormalHom_apply L σ _
 
 /-- Absolute Galois transport preserves the normalized valuation. -/
 theorem FieldOfNorms.absoluteAut_valuation
-    (σ : SeparableClosure K ≃ₐ[K] SeparableClosure K) (x : FieldOfNorms K L) :
+    (σ : Ω ≃ₐ[K] Ω) (x : FieldOfNorms K L) :
     FieldOfNorms.valuation K L (FieldOfNorms.absoluteAut K L σ x) =
       FieldOfNorms.valuation K L x :=
   FieldOfNorms.aut_valuation K (AlgEquiv.restrictNormalHom L σ) x
@@ -263,7 +264,7 @@ theorem FieldOfNorms.absoluteAut_valuation
 norm-field valuation topologies. -/
 theorem FieldOfNorms.continuous_absoluteAut_apply :
     ∀ x : FieldOfNorms K L,
-      Continuous (fun σ : SeparableClosure K ≃ₐ[K] SeparableClosure K =>
+      Continuous (fun σ : Ω ≃ₐ[K] Ω =>
         FieldOfNorms.absoluteAut K L σ x) := by
   intro x
   exact (FieldOfNorms.continuous_aut_apply K L x).comp
@@ -294,7 +295,7 @@ theorem FieldOfNorms.absoluteAut_range :
     exact ⟨AlgEquiv.restrictNormalHom L σ, rfl⟩
   · rintro ⟨τ, rfl⟩
     obtain ⟨σ, hσ⟩ := AlgEquiv.restrictNormalHom_surjective
-      (F := K) (K₁ := L) (SeparableClosure K) τ
+      (F := K) (K₁ := L) (Ω) τ
     exact ⟨σ, congrArg (FieldOfNorms.aut K L) hσ⟩
 
 end FontaineWintenberger

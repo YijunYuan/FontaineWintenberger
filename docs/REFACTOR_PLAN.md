@@ -577,6 +577,13 @@ FontaineWintenberger/
 - **CI**：`scripts/check_aggregates.py`（聚合覆盖 + 分层 import 顺序）加入 `lean_action_ci.yml` 的 build job。
 - 未做：`isSepClosure` 泛化（C 阶段遗留，不影响编译时间）；`absoluteUpperRamificationGroup`/`apfSubgroup` 改到 `G_K` 上（F6 遗留）。
 
+### C-泛化（分支 `refactor`，2026-10-20）：Galois 作用层改用 `[IsSepClosure K Ω]`
+- `FieldOfNorms/Galois/{Action, RelAction, Ambient}.lean` 原先写死 `L : IntermediateField K (SeparableClosure K)`，现改为 `{Ω : Type*} [Field Ω] [Algebra K Ω] [IsSepClosure K Ω]`，`L : IntermediateField K Ω`（`Ω` 隐式，由 `L` 的类型决定，调用处不变）。`FieldOfNorms.absoluteAut`、`RelFieldOfNorms.absoluteAut`、`galoisSubgroup`、`ambientGaloisEquiv` 等全部对任意可分闭包成立。所用的 Mathlib 接口（`AlgEquiv.restrictNormalHom`、`restrictNormalHom_surjective`、`InfiniteGalois.restrictNormalHom_continuous`、`IntermediateField.restrictNormalHom_ker`）只要求 `IsGalois K Ω`，由 `IsSepClosure.isGalois` 实例给出。
+- 顺带删除了 6 处 `letI : Semiring (SeparableClosure K) := @CommSemiring.toSemiring … (separableClosure K (AlgebraicClosure K)).toField` 的实例 pin（具体类型展开到 `AlgebraicClosure` 时的遗留）。
+- `Main.lean` Remark 3.2.4：(i)–(iii) 对任意 `Ω` 用 `Gal(Ω/K)` 陈述；`G_K` 版本（`absoluteGaloisGroupAction`/`absoluteGaloisGroupEquiv`）在 `Ω = SeparableClosure K` 下保留。
+- 不泛化的部分：`IsAPF` 的定义层（`APF/Defs`、`APF/Index`、`APF/BaseChange/*`、`Ramification/Embedding`、`Ramification/Infinite`）仍以 `SeparableClosure K` 为基准；`IsAPF` 已证明与嵌入无关，这里不需要 `Ω`。
+- 划掉：把 `absoluteUpperRamificationGroup`/`apfSubgroup` 改到 `G_K` 上——对外接口已经经由 `sepEquiv` 使用 `G_K`，内部改动不提高易用性。
+
 ### F5 设计细化（原计划，供对照）
 1. **`FieldOfNorms K L`**：`def FieldOfNorms := WithZero (normCompatibleUnits K L)`；`instance : CommGroupWithZero := inferInstanceAs …`（无条件）；`instance : Nontrivial`、`Inhabited`。`coord E : FieldOfNorms K L →*₀ E` 替代 `normLimitEval`。
 2. **加法与域**：`normLimitAdd` 的定义只依赖 `[IsAPF K L]`（`p` 仅被线程传递，`Convergence.lean` 中唯一实质使用是 `p ∈ 𝔪^n` 的发散性，来自 `PrimeValuation`）。目标：

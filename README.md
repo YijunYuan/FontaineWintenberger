@@ -17,7 +17,7 @@ characteristic `p` (`IsPerfectResidueLocalField K`) and `L/K` is a separable ext
 | 2. The field of norms (2.1.1) | `FieldOfNorms K L` with instances `Field`, `Valued _ ℤᵐ⁰`, `CharP _ p` |
 | 3. Theorem 2.1.3 | `FieldOfNorms.charP`, `FieldOfNorms.completeSpace`, `FieldOfNorms.isDiscreteValuationRing`, `FieldOfNorms.residueFieldEquiv : 𝓀[L] ≃+* 𝓀[X_K(L)]` |
 | 4. Theorem 3.1.2 and Corollary 3.2.3 | `FieldOfNorms.homEquiv : (M →ₐ[L] N) ≃ (X_K(M) →ₐ[X_K(L)] X_K(N))`, `FieldOfNorms.absoluteGaloisGroupEquiv : G_L ≃ₜ* G_{X_K(L)}` |
-| 5. Remark 3.2.4 | `FieldOfNorms.aut`, `RelFieldOfNorms.absoluteGaloisGroupAction`, `RelFieldOfNorms.absoluteGaloisGroupEquiv` |
+| 5. Remark 3.2.4 | `FieldOfNorms.aut`; for any separable closure `Ω` of `K`: `RelFieldOfNorms.absoluteAut : Gal(Ω/K) →* RingAut (X_{L/K}(Ω))`, `RelFieldOfNorms.ambientGaloisEquiv`; for `Ω = K^sep`: `RelFieldOfNorms.absoluteGaloisGroupAction`, `RelFieldOfNorms.absoluteGaloisGroupEquiv` on `G_K` |
 
 ## Layout
 

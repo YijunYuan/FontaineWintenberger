@@ -66,7 +66,10 @@ variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L] [IsAPF K 
   `LocalField/Spectral/Instances.lean`; their integer ring is `𝒪[L]`.
 - The absolute Galois group is `Gal(SeparableClosure K/K)` internally (Mathlib's `Gal(·/·)`
   notation) and `Field.absoluteGaloisGroup K` in public statements (K may be imperfect, so
-  `K^alg/K` is not Galois and Mathlib's infinite Galois theory needs `K^sep`).
+  `K^alg/K` is not Galois and Mathlib's infinite Galois theory needs `K^sep`). The Galois
+  action on the field of norms (`FieldOfNorms/Galois/`) is stated for an arbitrary separable
+  closure `{Ω : Type*} [Field Ω] [Algebra K Ω] [IsSepClosure K Ω]` with
+  `L : IntermediateField K Ω`; only the definition of `IsAPF` (`APF/`) fixes `SeparableClosure K`.
 - `IsAPF`, `IsStrictlyAPF` are classes. `FieldOfNorms K L`, `RelFieldOfNorms K L M` are `def`s
   with genuine instances (`Field`, `Valued _ ℤᵐ⁰`, `CharP`, `CompleteSpace`, …). Never install
   these with `letI`; if an instance is missing, add it where the type is defined.
