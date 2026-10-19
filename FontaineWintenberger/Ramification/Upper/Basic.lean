@@ -11,7 +11,7 @@ public import FontaineWintenberger.Ramification.Upper.Quotient
 /-!
 # Finite upper ramification groups and quotient compatibility
 
-Upper groups reindex the canonical actual real lower groups by the proved
+Upper groups reindex the canonical real lower groups by the proved
 inverse Herbrand function. Normal restriction preserves this numbering.
 -/
 
@@ -24,7 +24,7 @@ section GroupAction
 variable (G : Type*) {R : Type*} [Group G] [CommRing R] [IsDomain R]
     [IsDiscreteValuationRing R] [MulSemiringAction G R] [Finite G]
 
-/-- Upper numbering of the actual ideal-inertia lower groups. -/
+/-- Upper numbering of the ideal-inertia lower groups. -/
 noncomputable def upperRamificationGroup (u : ℝ) : Subgroup G :=
   lowerRamificationGroupReal G (IsLocalRing.maximalIdeal R)
     (inverseHerbrandFunction (R := R) G u)
@@ -83,7 +83,7 @@ local notation "B₀" => spectralIntegerRing K L
 local notation "D₀" => ValuationSubring.decompositionSubgroup K A₀
 local notation "ρ" => fixedFieldDecompositionRestriction K L H
 
-/-- Herbrand's upper quotient theorem for the actual fixed-field restriction map. -/
+/-- Herbrand's upper quotient theorem for the fixed-field restriction map. -/
 theorem fixedField_map_upperRamificationGroup (u : ℝ) (hu : -1 ≤ u) :
     letI := intermediate_spectral_isDiscreteValuationRing K L F₀
     (upperRamificationGroup (R := B₀) G₀ u).map ρ =
@@ -95,7 +95,7 @@ theorem fixedField_map_upperRamificationGroup (u : ℝ) (hu : -1 ≤ u) :
     fixedField_inverseHerbrandFunction_transitivity K L H u hu,
     herbrandFunction_inverseHerbrandFunction H (inverseHerbrandFunction_mem_Ici D₀ u)]
 
-/-- Upper quotient compatibility through the canonical actual Galois quotient equivalence. -/
+/-- Upper quotient compatibility through the canonical Galois quotient equivalence. -/
 theorem fixedField_quotient_upperRamificationGroup (u : ℝ) (hu : -1 ≤ u) :
     letI := intermediate_spectral_isDiscreteValuationRing K L F₀
     ((upperRamificationGroup (R := B₀) G₀ u).map (QuotientGroup.mk' H)).map

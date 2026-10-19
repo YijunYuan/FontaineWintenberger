@@ -16,22 +16,22 @@ public import Mathlib.FieldTheory.IntermediateField.Adjoin.Algebra
 /-!
 # The essential image of the field of norms functor
 
-## Actual finite subfields of the canonical relative field of norms
+## Finite subfields of the canonical relative field of norms
 
-Finite basis images lie in an original finite stage. A finite original Galois
-overfield and its actual fixed fields then reconstruct the original finite
+Finite basis images lie in a finite stage. A finite Galois
+overfield and its fixed fields then reconstruct the finite
 subfield, without requiring the target union to be separably closed.
 
-## Actual finite essential image of the norm-field functor
+## Finite essential image of the norm-field functor
 
-The proved separable closure of the original norm field and reconstruction
-of its actual finite subfields realize every finite separable target as an
-original finite norm field.
+The proved separable closure of the norm field and reconstruction
+of its finite subfields realize every finite separable target as an
+finite norm field.
 
-## Actual algebraic essential image of the original relative field of norms
+## Algebraic essential image of the relative field of norms
 
-Unique reconstruction of finite original subfields gives a directed family.
-Its original intermediate-field supremum has precisely the prescribed image
+Unique reconstruction of finite subfields gives a directed family.
+Its intermediate-field supremum has precisely the prescribed image
 under the same canonical relative field of norms embedding.
 -/
 
@@ -47,8 +47,8 @@ variable (K L P : Type*) [Field K] [Field L] [Field P]
     [Algebra K L] [Algebra K P] [Algebra L P] [IsScalarTower K L P]
     [FiniteDimensional L P] [IsGalois L P] [Algebra.IsAlgebraic K P]
 
-/-- The original fixed-family descent applies to every subgroup of the
-original finite Galois group, with its literal restricted action. -/
+/-- The fixed-family descent applies to every subgroup of the
+finite Galois group, with its restricted action. -/
 theorem mem_range_finiteFieldOfNormsMap_fixedField_iff
     (H : Subgroup (P ≃ₐ[L] P)) (β : FieldOfNorms K P) :
     letI : IsScalarTower K (IntermediateField.fixedField H) P :=
@@ -88,8 +88,8 @@ local notation "p" => residueChar K
 variable [IsAPF K L] [IsAPF K P]
     [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K P)]
 
-/-- Every actual subfield of an original finite Galois norm field is the
-literal image of the original field fixed by its genuine subgroup. -/
+/-- Every subfield of a finite Galois norm field is the
+image of the field fixed by its subgroup. -/
 theorem exists_fixedField_finiteFieldOfNorms_range :
     letI := (FieldOfNorms.finiteRingHom K L P).toAlgebra
     ∀ D : IntermediateField (FieldOfNorms K L) (FieldOfNorms K P),
@@ -134,8 +134,8 @@ local notation "p" => residueChar K
 
 variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 
-/-- Transporting an actual finite subfield of an actual original stage into
-the ambient extension gives exactly its original relative field of norms image. -/
+/-- Transporting a finite subfield of a stage into
+the ambient extension gives exactly its relative field of norms image. -/
 theorem RelFieldOfNorms.of_map_subfield (P : FiniteIntermediateField L Ω)
     (Q : FiniteIntermediateField L P.val) (α : FieldOfNorms K Q.val) :
     letI : IsScalarTower K Q.val P.val := IsScalarTower.of_algebraMap_eq' rfl
@@ -178,15 +178,15 @@ theorem RelFieldOfNorms.of_map_subfield (P : FiniteIntermediateField L Ω)
 
 variable [IsSepClosure L Ω]
 
-/-- Every actual finite subfield of the relative field of norms is the canonical
-image of a genuine finite original intermediate field. -/
-theorem RelFieldOfNorms._exists_finite_subfield_preimage :
+/-- Every finite subfield of the relative field of norms is the canonical
+image of a finite intermediate field. -/
+theorem RelFieldOfNorms.exists_finite_subfield_preimage :
     ∀ (D : IntermediateField (FieldOfNorms K L) (RelFieldOfNorms K L Ω))
       [FiniteDimensional (FieldOfNorms K L) D],
       ∃ N : FiniteIntermediateField L Ω,
         (RelFieldOfNorms.ofAlgHom K L Ω N).fieldRange = D := by
   intro D _
-  obtain ⟨Q, g, hg⟩ := RelFieldOfNorms._exists_algHom_factor K L Ω D.val
+  obtain ⟨Q, g, hg⟩ := RelFieldOfNorms.exists_algHom_factor K L Ω D.val
   let P : FiniteIntermediateField L Ω := ⟨IntermediateField.normalClosure L Q.val Ω, inferInstance⟩
   have hQP : Q ≤ P := IntermediateField.le_normalClosure Q.val
   have : IsGalois L P.val := ⟨⟩
@@ -229,8 +229,8 @@ theorem RelFieldOfNorms._exists_finite_subfield_preimage :
     exact (RelFieldOfNorms.of_map_subfield K L Ω P M α).trans
       ((congrArg (RelFieldOfNorms.of K L Ω P) hα).trans hj)
 
-/-- Actual finite original images preserve and reflect inclusion. Reflection
-uses their genuine finite fixers and only the original Galois correspondence. -/
+/-- Finite images preserve and reflect inclusion. Reflection
+uses their finite fixers and only the Galois correspondence. -/
 theorem RelFieldOfNorms.finiteImage_le_iff (Q R : FiniteIntermediateField L Ω) :
     RelFieldOfNorms.finiteImage K L Ω Q ≤
       RelFieldOfNorms.finiteImage K L Ω R ↔ Q ≤ R := by
@@ -250,7 +250,7 @@ theorem RelFieldOfNorms.finiteImage_le_iff (Q R : FiniteIntermediateField L Ω) 
       ⟨RelFieldOfNorms.transition K L Ω Q R h α,
         RelFieldOfNorms.of_transition K L Ω Q R h α⟩
 
-/-- Equal canonical images determine equal actual original finite fields. -/
+/-- Equal canonical images determine equal finite fields. -/
 theorem RelFieldOfNorms.finiteImage_injective :
     Function.Injective (RelFieldOfNorms.finiteImage K L Ω) := by
   intro Q R h
@@ -258,15 +258,15 @@ theorem RelFieldOfNorms.finiteImage_injective :
     ((RelFieldOfNorms.finiteImage_le_iff K L Ω Q R).mp h.le)
     ((RelFieldOfNorms.finiteImage_le_iff K L Ω R Q).mp h.ge)
 
-/-- Reconstruction gives a unique actual finite original subfield, and its
-image is the literal canonical original image inside the same union. -/
-theorem RelFieldOfNorms._existsUnique_finite_subfield_preimage :
+/-- Reconstruction gives an unique finite subfield, and its
+image is the canonical image inside the same union. -/
+theorem RelFieldOfNorms.existsUnique_finite_subfield_preimage :
     ∀ (D : IntermediateField (FieldOfNorms K L) (RelFieldOfNorms K L Ω))
       [FiniteDimensional (FieldOfNorms K L) D],
       ∃! N : FiniteIntermediateField L Ω,
         RelFieldOfNorms.finiteImage K L Ω N = D := by
   intro D _
-  obtain ⟨N, hN⟩ := RelFieldOfNorms._exists_finite_subfield_preimage K L Ω D
+  obtain ⟨N, hN⟩ := RelFieldOfNorms.exists_finite_subfield_preimage K L Ω D
   refine ⟨N, hN, fun R hR => ?_⟩
   exact RelFieldOfNorms.finiteImage_injective K L Ω (hR.trans hN.symm)
 
@@ -287,9 +287,9 @@ local notation "p" => residueChar K
 
 variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 
-/-- Every actual finite separable extension of the original norm field is
-isomorphic over that same field to an original finite norm-field stage in
-the prescribed original separable closure. -/
+/-- Every finite separable extension of the norm field is
+isomorphic over that same field to a finite norm-field stage in
+the prescribed separable closure. -/
 theorem exists_finite_fieldOfNorms_algEquiv_of_separableClosure :
     ∀ (F : Type*) [Field F] [Algebra (FieldOfNorms K L) F]
       [Module.Finite (FieldOfNorms K L) F] [Algebra.IsSeparable (FieldOfNorms K L) F],
@@ -299,18 +299,18 @@ theorem exists_finite_fieldOfNorms_algEquiv_of_separableClosure :
   let : IsSepClosure K Ω :=
     ⟨IsSepClosure.sep_closed L, Algebra.IsSeparable.trans K L Ω⟩
   let : IsSepClosed (RelFieldOfNorms K L Ω) :=
-    RelFieldOfNorms._isSepClosed K L Ω
+    RelFieldOfNorms.isSepClosed K L Ω
   let t : F →ₐ[FieldOfNorms K L] RelFieldOfNorms K L Ω := IsSepClosed.lift
   let : Module.Finite (FieldOfNorms K L) t.fieldRange :=
     Module.Finite.equiv t.equivFieldRange.toLinearEquiv
-  obtain ⟨N, hN, _⟩ := RelFieldOfNorms._existsUnique_finite_subfield_preimage
+  obtain ⟨N, hN, _⟩ := RelFieldOfNorms.existsUnique_finite_subfield_preimage
     K L Ω t.fieldRange
   let i := RelFieldOfNorms.ofAlgHom K L Ω N
   refine ⟨N, ⟨i.equivFieldRange.trans ((IntermediateField.equivOfEq hN).trans
     t.equivFieldRange.symm)⟩⟩
 
-/-- Without prescribing an original separable closure, every finite
-separable target is still an actual original finite norm-field stage. -/
+/-- Without prescribing a separable closure, every finite
+separable target is still a finite norm-field stage. -/
 theorem exists_finite_fieldOfNorms_algEquiv :
     ∀ (F : Type*) [Field F] [Algebra (FieldOfNorms K L) F]
       [Module.Finite (FieldOfNorms K L) F] [Algebra.IsSeparable (FieldOfNorms K L) F],
@@ -330,7 +330,7 @@ section DirectedFields
 
 variable {L Ω : Type*} [Field L] [Field Ω] [Algebra L Ω]
 
-/-- Every finite original subfield of a directed union lies in a single
+/-- Every finite subfield of a directed union lies in a single
 member, by the compactness of its finitely generated intermediate field. -/
 theorem FiniteIntermediateField.exists_le_of_le_directed_iSup {ι : Type*} [Nonempty ι]
     (A : ι → IntermediateField L Ω) (hA : Directed (· ≤ ·) A)
@@ -346,7 +346,7 @@ theorem FiniteIntermediateField.exists_le_of_le_directed_iSup {ι : Type*} [None
 
 end DirectedFields
 
-section OriginalImages
+section Images
 
 variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
     (L Ω : Type*) [Field L] [Field Ω]
@@ -357,9 +357,9 @@ local notation "p" => residueChar K
 
 variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 
-/-- A finite original subfield contained in an original intermediate field
+/-- A finite subfield contained in an intermediate field
 has its entire canonical norm-field image in that intermediate union's
-original inclusion map. -/
+inclusion map. -/
 theorem RelFieldOfNorms.finiteImage_le_fieldRange_of_le
     (M : IntermediateField L Ω) (N : FiniteIntermediateField L Ω) (hNM : N.val ≤ M) :
     RelFieldOfNorms.finiteImage K L Ω N ≤
@@ -398,7 +398,7 @@ theorem RelFieldOfNorms.finiteImage_le_fieldRange_of_le
     (e.restrictScalars K) hmap (fun _ => rfl) b
   exact h.trans (congrArg (RelFieldOfNorms.of K L Ω N) hb)
 
-end OriginalImages
+end Images
 
 section Reconstruction
 
@@ -411,22 +411,22 @@ local notation "p" => residueChar K
 
 variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 
-/-- Every actual intermediate field of the same canonical closure union
-is the literal image of the relative field of norms of an original intermediate
-field. The original field is the directed supremum of the unique finite
-original preimages, with inclusion supplied by finite reconstruction. -/
-theorem RelFieldOfNorms._exists_subfield_preimage :
+/-- Every intermediate field of the same canonical closure union
+is the image of the relative field of norms of an intermediate
+field. The field is the directed supremum of the unique finite
+preimages, with inclusion supplied by finite reconstruction. -/
+theorem RelFieldOfNorms.exists_subfield_preimage :
     ∀ D : IntermediateField (FieldOfNorms K L) (RelFieldOfNorms K L Ω),
       ∃ M : IntermediateField L Ω,
         (RelFieldOfNorms.algMap K L M Ω M.val).fieldRange = D := by
   classical
   let : Algebra.IsSeparable (FieldOfNorms K L) (RelFieldOfNorms K L Ω) :=
-    RelFieldOfNorms._isSeparable K L Ω
+    RelFieldOfNorms.isSeparable K L Ω
   intro D
   have hpre (P : FiniteIntermediateField (FieldOfNorms K L) D) :
       ∃ N : FiniteIntermediateField L Ω, RelFieldOfNorms.finiteImage K L Ω N =
         (FiniteIntermediateField.map D.val P).val := by
-    exact (RelFieldOfNorms._existsUnique_finite_subfield_preimage
+    exact (RelFieldOfNorms.existsUnique_finite_subfield_preimage
       K L Ω (FiniteIntermediateField.map D.val P).val).exists
   choose A hA using hpre
   have hmono : Monotone A := by
@@ -444,7 +444,7 @@ theorem RelFieldOfNorms._exists_subfield_preimage :
   ext z
   constructor
   · rintro ⟨x, rfl⟩
-    obtain ⟨Q, a, rfl⟩ := RelFieldOfNorms._exists_stage K L M x
+    obtain ⟨Q, a, rfl⟩ := RelFieldOfNorms.exists_stage K L M x
     let Q' := FiniteIntermediateField.map M.val Q
     have hQ' : Q'.val ≤ M := by
       rintro b ⟨c, hc, rfl⟩
@@ -470,9 +470,9 @@ theorem RelFieldOfNorms._exists_subfield_preimage :
     exact RelFieldOfNorms.finiteImage_le_fieldRange_of_le
       K L Ω M (A P) (le_iSup (fun P => (A P).val) P) hzA
 
-/-- Every actual separable algebraic target is the same relative field of norms
-of an actual original intermediate field in the prescribed separable
-closure. Both identifications are the actual canonical image maps. -/
+/-- Every separable algebraic target is the same relative field of norms
+of an intermediate field in the prescribed separable
+closure. Both identifications are the canonical image maps. -/
 theorem exists_relFieldOfNorms_algEquiv_of_separableClosure :
     ∀ (F : Type*) [Field F] [Algebra (FieldOfNorms K L) F]
       [Algebra.IsSeparable (FieldOfNorms K L) F],
@@ -482,16 +482,16 @@ theorem exists_relFieldOfNorms_algEquiv_of_separableClosure :
   let : IsSepClosure K Ω :=
     ⟨IsSepClosure.sep_closed L, Algebra.IsSeparable.trans K L Ω⟩
   let : IsSepClosed (RelFieldOfNorms K L Ω) :=
-    RelFieldOfNorms._isSepClosed K L Ω
+    RelFieldOfNorms.isSepClosed K L Ω
   let t : F →ₐ[FieldOfNorms K L] RelFieldOfNorms K L Ω := IsSepClosed.lift
-  obtain ⟨M, hM⟩ := RelFieldOfNorms._exists_subfield_preimage
+  obtain ⟨M, hM⟩ := RelFieldOfNorms.exists_subfield_preimage
     K L Ω t.fieldRange
   let j := RelFieldOfNorms.algMap K L M Ω M.val
   exact ⟨M, ⟨j.equivFieldRange.trans ((IntermediateField.equivOfEq hM).trans
     t.equivFieldRange.symm)⟩⟩
 
-/-- The actual algebraic essential image with no prescribed original
-closure: the standard original separable closure supplies that choice. -/
+/-- The algebraic essential image with no prescribed
+closure: the standard separable closure supplies that choice. -/
 abbrev exists_relFieldOfNorms_algEquiv :=
   exists_relFieldOfNorms_algEquiv_of_separableClosure
     K L (SeparableClosure L)

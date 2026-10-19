@@ -11,9 +11,9 @@ public import FontaineWintenberger.FieldOfNorms.Structure.Uniformizer
 public import FontaineWintenberger.Mathlib.Topology.ValuedCompleteness
 
 /-!
-# Completeness in the original field of norms valuation uniformity
+# Completeness in the field of norms valuation uniformity
 
-The exact original valuation kernels identify the inherited integral-ring uniformity
+The exact valuation kernels identify the inherited integral-ring uniformity
 with the canonical complete discrete-product inverse limit.
 -/
 
@@ -28,8 +28,8 @@ namespace Valued
 
 variable (F : Type*) [Field F] [hv : Valued F (WithZero (Multiplicative ℤ))]
 
-/-- A value-one element gives the integer closed-ball basis for the original
-canonical valuation topology; the radii are represented in its actual value group. -/
+/-- A value-one element gives the integer closed-ball basis for the
+canonical valuation topology; the radii are represented in its value group. -/
 theorem nhds_zero_hasBasis_integer_closedBall (π : F)
     (hπ : hv.v π = WithZero.exp (-1 : ℤ)) :
     (nhds (0 : F)).HasBasis (fun _ : ℕ => True)
@@ -84,7 +84,7 @@ variable [IsAPF K L] [Fact (¬ Module.Finite K L)] (D : FiniteIntermediateField 
 local notation "𝔅" => deepFiniteTowerQuotient K L D
 local notation "𝒜" => deepNormInverseLimit K L D
 
-/-- The inherited topology on the original valuation ring has exactly
+/-- The inherited topology on the valuation ring has exactly
 the integer closed-ball basis of the existing stable valuation. -/
 theorem FieldOfNorms.integral_nhds_zero_hasBasis :
     (nhds (0 : Valuation.valuationSubring (FieldOfNorms.fieldValuation K L))).HasBasis
@@ -97,7 +97,7 @@ theorem FieldOfNorms.integral_nhds_zero_hasBasis :
   rw [nhds_subtype]
   exact h.comap Subtype.val
 
-/-- The actual truncation isomorphism pulls back precisely the original
+/-- The truncation isomorphism pulls back precisely the
 valuation-ring neighborhoods, with the canonical discrete-product uniformity. -/
 theorem FieldOfNorms.truncationHom_comap_nhds_zero :
     letI : ∀ n, UniformSpace (𝔅 n) := fun _ => ⊥
@@ -118,7 +118,7 @@ theorem FieldOfNorms.truncationHom_comap_nhds_zero :
   simp only [heq] at h
   exact h.eq_of_same_basis (FieldOfNorms.integral_nhds_zero_hasBasis K L)
 
-/-- The exact original truncation map induces the original valuation-ring
+/-- The exact truncation map induces the valuation-ring
 uniformity from the same canonical discrete-product inverse limit. -/
 theorem FieldOfNorms.truncationHom_isUniformInducing :
     letI : ∀ n, UniformSpace (𝔅 n) := fun _ => ⊥
@@ -141,8 +141,8 @@ theorem FieldOfNorms.truncationHom_isUniformInducing :
   rw [heq, ← Filter.comap_comap, FieldOfNorms.truncationHom_comap_nhds_zero]
 
 include D in
-/-- The inherited original valuation ring is complete; its uniformity
-is identified with the actual complete truncated inverse limit. -/
+/-- The inherited valuation ring is complete; its uniformity
+is identified with the complete truncated inverse limit. -/
 theorem FieldOfNorms.integral_completeSpace :
     CompleteSpace (Valuation.valuationSubring (FieldOfNorms.fieldValuation K L)) := by
   let : ∀ n, UniformSpace (𝔅 n) := fun _ => ⊥
@@ -153,19 +153,19 @@ theorem FieldOfNorms.integral_completeSpace :
   exact (h.completeSpace_congr (FieldOfNorms.truncationEquiv K L D).surjective).mpr
     inferInstance
 
-/-- The original field of norms field is complete for precisely the already
+/-- The field of norms field is complete for precisely the already
 constructed canonical stable-valuation uniformity. -/
 instance FieldOfNorms.instCompleteSpace :
     CompleteSpace (FieldOfNorms K L) := by
   let := FieldOfNorms.integral_completeSpace K L (FiniteIntermediateField.bottom (K := K) (L := L))
   exact Valued.completeSpace_of_completeSpace_valuationSubring (FieldOfNorms K L)
 
-/-- The same original field has a Hausdorff valuation uniformity. -/
-theorem FieldOfNorms._t2Space :
+/-- The field has a Hausdorff valuation uniformity. -/
+theorem FieldOfNorms.t2Space :
     T2Space (FieldOfNorms K L) := by
   infer_instance
 
-/-- Its original valuation ring carries the inherited Hausdorff topology. -/
+/-- Its valuation ring carries the inherited Hausdorff topology. -/
 theorem FieldOfNorms.integral_t2Space :
     T2Space (Valuation.valuationSubring (FieldOfNorms.fieldValuation K L)) := by
   infer_instance

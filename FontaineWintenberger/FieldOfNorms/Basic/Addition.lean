@@ -16,28 +16,28 @@ public import FontaineWintenberger.FieldOfNorms.Estimates.FiniteLayer
 /-!
 # Addition on the field of norms
 
-## Addition on the original multiplicative field of norms
+## Addition on the multiplicative field of norms
 
-The actual norm-sum nets are indexed by all finite intermediate fields above
-a fixed original field. Uniform Herbrand control transfers their deep-tail
-norm defects to a Cauchy estimate in that original complete finite field.
+The norm-sum nets are indexed by all finite intermediate fields above
+a fixed field. Uniform Herbrand control transfers their deep-tail
+norm defects to a Cauchy estimate in that complete finite field.
 
-## Convergence of the original norm-sum nets
+## Convergence of the norm-sum nets
 
-Actual deep finite-layer estimates and the intrinsic Herbrand modulus prove
-the Cauchy property in each original complete finite field.
+Deep finite-layer estimates and the intrinsic Herbrand modulus prove
+the Cauchy property in each complete finite field.
 
-## The actual field of norms addition operation
+## The field of norms addition operation
 
 Multiplicative scaling of the proved integral convergence constructs addition
-on the same original multiplicative carrier.
+on the multiplicative carrier.
 
-## Asymptotic coordinate approximation of the original field of norms addition
+## Asymptotic coordinate approximation of the field of norms addition
 
 The existing normalized valuations control multiplicative scaling of integral
-coordinate errors on the original fields.
+coordinate errors on the fields.
 
-## Separation of the original norm families by deep coordinate precision
+## Separation of the norm families by deep coordinate precision
 
 Actual Herbrand continuity transports deep coordinate errors to a fixed finite
 base before its Hausdorff separation is used.
@@ -54,7 +54,7 @@ open Filter
 section FiniteIntermediateFieldNets
 
 variable (K L : Type*) [Field K] [Field L] [Algebra K L]
-/-- The original norm-sum net over all actual finite fields containing E. -/
+/-- The norm-sum net over all finite fields containing E. -/
 def normSumNet (E : FiniteIntermediateField K L) (α β : FieldOfNorms K L) (F : Set.Ici E) : E.val :=
   FiniteIntermediateField.norm E F.val F.property
     (FieldOfNorms.coord K L F.val α + FieldOfNorms.coord K L F.val β)
@@ -72,7 +72,7 @@ theorem normSumNet_zero_right (E : FiniteIntermediateField K L) (α : FieldOfNor
     normSumNet K L E α 0 F = FieldOfNorms.coord K L E α := by
   simp only [normSumNet, map_zero, add_zero]
   exact FieldOfNorms.coord_norm K L E F.val F.property α
-/-- Actual norm transitivity compares the same norm-sum net at two fixed bases. -/
+/-- Norm transitivity compares the same norm-sum net at two fixed bases. -/
 theorem norm_normSumNet (E F : FiniteIntermediateField K L) (hEF : E ≤ F)
     (α β : FieldOfNorms K L) (G : Set.Ici F) :
     FiniteIntermediateField.norm E F hEF (normSumNet K L F α β G) =
@@ -86,7 +86,7 @@ section NormSumLimits
 variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
-/-- A limit at a larger original finite base descends by its continuous norm,
+/-- A limit at a larger finite base descends by its continuous norm,
 because the corresponding index is an entire tail of the smaller-base net. -/
 theorem tendsto_normSumNet_of_upper (E F : FiniteIntermediateField K L) (hEF : E ≤ F)
     (α β : FieldOfNorms K L) (z : F.val) :
@@ -103,8 +103,8 @@ theorem tendsto_normSumNet_of_upper (E F : FiniteIntermediateField K L) (hEF : E
   rw [← FiniteIntermediateField.map_Ici_inclusion_atTop K L E F hEF, map_map]
   simpa only [Tendsto, Function.comp_def, norm_normSumNet] using hc
 
-/-- Uniqueness in the original Hausdorff finite fields makes the actual
-norm-sum limits compatible under every original finite-layer norm. -/
+/-- Uniqueness in the Hausdorff finite fields makes the
+norm-sum limits compatible under every finite-layer norm. -/
 theorem norm_of_normSumNet_tendsto (E F : FiniteIntermediateField K L) (hEF : E ≤ F)
     (α β : FieldOfNorms K L) (x : E.val) (y : F.val) :
     let := spectralNorm.nontriviallyNormedField K E.val
@@ -118,8 +118,8 @@ theorem norm_of_normSumNet_tendsto (E F : FiniteIntermediateField K L) (hEF : E 
   intro hx hy
   exact tendsto_nhds_unique (tendsto_normSumNet_of_upper K L E F hEF α β y hy) hx
 
-/-- Convergence above one actual finite intermediate field gives convergence at every
-original finite base by descent from its compositum with that layer. -/
+/-- Convergence above one finite intermediate field gives convergence at every
+finite base by descent from its compositum with that layer. -/
 theorem exists_tendsto_normSumNet_of_upper_tail (T : FiniteIntermediateField K L)
     (α β : FieldOfNorms K L)
     (h : ∀ F : FiniteIntermediateField K L, T ≤ F → ∃ z : F.val,
@@ -135,7 +135,7 @@ theorem exists_tendsto_normSumNet_of_upper_tail (T : FiniteIntermediateField K L
   exact ⟨FiniteIntermediateField.norm E F hEF z,
     tendsto_normSumNet_of_upper K L E F hEF α β z hz⟩
 
-/-- When the actual original norm-sum nets converge, their unique limits
+/-- When the norm-sum nets converge, their unique limits
 are represented by the same zero-adjoined unit field of norms. -/
 theorem existsUnique_fieldOfNorms_of_normSumNet_tendsto (α β : FieldOfNorms K L)
     (h : ∀ E : FiniteIntermediateField K L, ∃ z : E.val,
@@ -165,7 +165,7 @@ variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
 /-- The proved stable coordinate valuation makes integral norm families
-integral on one actual finite tail, simultaneously for every family. -/
+integral on one finite tail, simultaneously for every family. -/
 theorem IsAPF.exists_finiteIntermediateField_fieldOfNormsEval_mem_of_le_one [IsAPF K L] :
     ∃ T : FiniteIntermediateField K L, ∀ E : FiniteIntermediateField K L, T ≤ E → ∀ x :
         FieldOfNorms K L,
@@ -180,8 +180,8 @@ theorem IsAPF.exists_finiteIntermediateField_fieldOfNormsEval_mem_of_le_one [IsA
   rw [ValuationSubring.normalizedValuation_valuationSubring] at hx
   exact hx
 
-/-- Every original coordinate is integral if the same stable field of norms
-valuation is integral: actual integral norms descend from a common tail. -/
+/-- Every coordinate is integral if the same stable field of norms
+valuation is integral: integral norms descend from a common tail. -/
 theorem FieldOfNorms.coord_mem_of_valuation_le_one [IsAPF K L] (x : FieldOfNorms K L)
     (hx : FieldOfNorms.valuation K L x ≤ 1) (E : FiniteIntermediateField K L) :
     FieldOfNorms.coord K L E x ∈ spectralIntegerRing K E.val := by
@@ -198,7 +198,7 @@ theorem FieldOfNorms.coord_mem_of_valuation_le_one [IsAPF K L] (x : FieldOfNorms
   exact h
 
 /-- The integral part of the stable valuation is exactly the families
-with integral coordinates in every original finite field. -/
+with integral coordinates in every finite field. -/
 theorem FieldOfNorms.valuation_le_one_iff [IsAPF K L] (x : FieldOfNorms K L) :
     FieldOfNorms.valuation K L x ≤ 1 ↔
       ∀ E : FiniteIntermediateField K L, FieldOfNorms.coord K L E x ∈ spectralIntegerRing K E.val
@@ -214,7 +214,7 @@ theorem FieldOfNorms.valuation_le_one_iff [IsAPF K L] (x : FieldOfNorms K L) :
     exact hx T
 
 /-- Every term of an integral-family norm-sum net is an integer of the
-original fixed finite field. -/
+fixed finite field. -/
 theorem normSumNet_mem_of_valuation_le_one [IsAPF K L] (α β : FieldOfNorms K L)
     (hα : FieldOfNorms.valuation K L α ≤ 1) (hβ : FieldOfNorms.valuation K L β ≤ 1)
     (E : FiniteIntermediateField K L) (F : Set.Ici E) :
@@ -228,7 +228,7 @@ theorem normSumNet_mem_of_valuation_le_one [IsAPF K L] (α β : FieldOfNorms K L
   exact h
 
 /-- A convergent integral-family norm-sum net has an integral limit, in
-the same original finite field and its actual closed integer ring. -/
+the finite field and its closed integer ring. -/
 theorem normSumNet_limit_mem_of_valuation_le_one [IsAPF K L] (α β : FieldOfNorms K L)
     (hα : FieldOfNorms.valuation K L α ≤ 1) (hβ : FieldOfNorms.valuation K L β ≤ 1)
     (E : FiniteIntermediateField K L) (z : E.val) :
@@ -252,8 +252,8 @@ variable (E : Type*) [NontriviallyNormedField E] [IsUltrametricDist E]
 local notation "R" => Valuation.valuationSubring (NormedField.valuation (K := E))
 variable {ι : Type*} [Preorder ι] [Nonempty ι] [IsDirectedOrder ι]
 
-/-- Actual ideal-power control on pairs of an original net proves the
-Cauchy condition for its original field uniformity. -/
+/-- Ideal-power control on pairs of a net proves the
+Cauchy condition for its field uniformity. -/
 theorem cauchy_map_of_eventually_sub_mem_maximalIdeal_pow (f : ι → E)
     (h : ∀ n : ℕ, ∃ a : ι, ∀ b, a ≤ b → ∀ c, a ≤ c →
       f b - f c ∈ (fun x : R => (x : E)) ''
@@ -266,7 +266,7 @@ theorem cauchy_map_of_eventually_sub_mem_maximalIdeal_pow (f : ι → E)
   filter_upwards [(eventually_ge_atTop a).prod_mk (eventually_ge_atTop a)] with x hx
   exact ha x.1 hx.1 x.2 hx.2
 
-/-- Completeness gives an original-field limit from the actual ideal-power
+/-- Completeness gives an original-field limit from the ideal-power
 Cauchy estimates. -/
 theorem exists_tendsto_of_eventually_sub_mem_maximalIdeal_pow [CompleteSpace E]
     (f : ι → E)
@@ -294,8 +294,8 @@ variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
 local notation "p" => residueChar K
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
-/-- Every requested integral precision is attained by the actual additive
-norm defect on an entire original finite-layer tail. -/
+/-- Every requested integral precision is attained by the additive
+norm defect on an entire finite-layer tail. -/
 theorem IsAPF.exists_finiteIntermediateField_integerNorm_add_congruence
     [IsAPF K L] (s : ℕ) :
     ∃ T : FiniteIntermediateField K L, ∀ E F : FiniteIntermediateField K L, T ≤ E → ∀ hEF : E ≤ F,
@@ -329,7 +329,7 @@ theorem IsAPF.exists_finiteIntermediateField_integerNorm_add_congruence
     field_simp
   simpa only [hc, Nat.ceil_natCast] using h
 
-/-- The actual norm-sum term differs from the two original integral
+/-- The norm-sum term differs from the two integral
 coordinates by any requested precision on one entire finite-layer tail. -/
 theorem IsAPF.exists_finiteIntermediateField_normSumNet_sub_mem [IsAPF K L] (s : ℕ) :
     ∃ T : FiniteIntermediateField K L, ∀ E : FiniteIntermediateField K L, T ≤ E →
@@ -361,8 +361,8 @@ theorem IsAPF.exists_finiteIntermediateField_normSumNet_sub_mem [IsAPF K L] (s :
   rw [FieldOfNorms.coord_norm K L E F.val F.property α,
     FieldOfNorms.coord_norm K L E F.val F.property β]
 
-/-- On an actual wild tail, every integral-family norm-sum net is Cauchy
-in its original fixed finite field. All finite precision estimates are proved. -/
+/-- On a wild tail, every integral-family norm-sum net is Cauchy
+in its fixed finite field. All finite precision estimates are proved. -/
 theorem IsAPF.exists_finiteIntermediateField_normSumNet_cauchy [IsAPF K L] :
     ∃ T : FiniteIntermediateField K L, ∀ E : FiniteIntermediateField K L, T ≤ E →
       ∀ α β : FieldOfNorms K L,
@@ -444,7 +444,7 @@ theorem IsAPF.exists_finiteIntermediateField_normSumNet_cauchy [IsAPF K L] :
   change (zC : E.val) - (zB : E.val) = _
   linear_combination heqC - heqB
 
-/-- Actual integral-family norm-sum nets converge at every original finite
+/-- Integral-family norm-sum nets converge at every finite
 base, including bases below or incomparable with the wild tail. -/
 theorem exists_tendsto_normSumNet_of_valuation_le_one [IsAPF K L]
     (α β : FieldOfNorms K L) (hα : FieldOfNorms.valuation K L α ≤ 1)
@@ -459,8 +459,8 @@ theorem exists_tendsto_normSumNet_of_valuation_le_one [IsAPF K L]
   let := spectralNorm.completeSpace K E.val
   exact cauchy_map_iff_exists_tendsto.mp (hT E hE α β hα hβ)
 
-/-- The same original field of norms contains the unique integral sum family.
-Its finite-coordinate approximation is proved by closed actual ideal powers. -/
+/-- The field of norms contains the unique integral sum family.
+Its finite-coordinate approximation is proved by closed ideal powers. -/
 theorem existsUnique_fieldOfNorms_integral_add [IsAPF K L]
     (α β : FieldOfNorms K L) (hα : FieldOfNorms.valuation K L α ≤ 1)
     (hβ : FieldOfNorms.valuation K L β ≤ 1) :
@@ -499,7 +499,7 @@ section ScalarCovariance
 
 variable (K L : Type*) [Field K] [Field L] [Algebra K L]
 
-/-- Multiplicative scaling is an exact identity on the original norm-sum
+/-- Multiplicative scaling is an exact identity on the norm-sum
 nets, before any limits or additive structure are chosen on the carrier. -/
 theorem normSumNet_mul_left (E : FiniteIntermediateField K L) (δ α β : FieldOfNorms K L)
     (F : Set.Ici E) :
@@ -515,7 +515,7 @@ variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
 local notation "p" => residueChar K
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
-/-- Every pair of actual norm-compatible families has convergent original
+/-- Every pair of norm-compatible families has convergent
 norm-sum nets; existing nonzero families themselves provide the scaling. -/
 theorem exists_tendsto_normSumNet [IsAPF K L] (α β : FieldOfNorms K L) :
     ∀ E : FiniteIntermediateField K L, ∃ z : E.val,
@@ -565,8 +565,8 @@ theorem exists_tendsto_normSumNet [IsAPF K L] (α β : FieldOfNorms K L) :
   simpa only [← normSumNet_mul_left, hδα, hδβ] using
     hz.const_mul (FieldOfNorms.coord K L E δ)
 
-/-- The actual original field of norms contains the unique sum family of any
-pair of its elements, characterized by the original norm-sum limits. -/
+/-- The field of norms contains the unique sum family of any
+pair of its elements, characterized by the norm-sum limits. -/
 theorem existsUnique_fieldOfNorms_add [IsAPF K L] (α β : FieldOfNorms K L) :
     ∃! γ : FieldOfNorms K L, ∀ E : FiniteIntermediateField K L,
       letI := spectralNorm.nontriviallyNormedField K E.val
@@ -574,12 +574,12 @@ theorem existsUnique_fieldOfNorms_add [IsAPF K L] (α β : FieldOfNorms K L) :
   existsUnique_fieldOfNorms_of_normSumNet_tendsto K L α β
     (exists_tendsto_normSumNet K L α β)
 
-/-- Addition on the same original multiplicative field of norms carrier,
-characterized by the actual norm-sum limits at every finite base. -/
+/-- Addition on the multiplicative field of norms carrier,
+characterized by the norm-sum limits at every finite base. -/
 def FieldOfNorms.add [IsAPF K L] (α β : FieldOfNorms K L) : FieldOfNorms K L :=
   (existsUnique_fieldOfNorms_add K L α β).choose
 
-/-- Every original coordinate of the actual sum is its original norm-sum limit. -/
+/-- Every coordinate of the sum is its norm-sum limit. -/
 theorem tendsto_normSumNet_fieldOfNormsAdd [IsAPF K L] (α β : FieldOfNorms K L)
     (E : FiniteIntermediateField K L) :
     letI := spectralNorm.nontriviallyNormedField K E.val
@@ -587,7 +587,7 @@ theorem tendsto_normSumNet_fieldOfNormsAdd [IsAPF K L] (α β : FieldOfNorms K L
       (nhds (FieldOfNorms.coord K L E (FieldOfNorms.add K L α β))) :=
   (existsUnique_fieldOfNorms_add K L α β).choose_spec.1 E
 
-/-- The original norm-sum limits uniquely characterize the same sum operation. -/
+/-- The norm-sum limits uniquely characterize the same sum operation. -/
 theorem eq_fieldOfNormsAdd_of_tendsto [IsAPF K L] (α β γ : FieldOfNorms K L)
     (hγ : ∀ E : FiniteIntermediateField K L,
       letI := spectralNorm.nontriviallyNormedField K E.val
@@ -608,7 +608,7 @@ theorem FieldOfNorms.add_comm [IsAPF K L] (α β : FieldOfNorms K L) :
   rw [heq]
   exact tendsto_normSumNet_fieldOfNormsAdd K L β α E
 
-/-- The original zero is the left identity for the actual field of norms addition. -/
+/-- The zero is the left identity for the field of norms addition. -/
 theorem FieldOfNorms.add_zero_left [IsAPF K L] (α : FieldOfNorms K L) :
     FieldOfNorms.add K L 0 α = α := by
   symm
@@ -620,13 +620,13 @@ theorem FieldOfNorms.add_zero_left [IsAPF K L] (α : FieldOfNorms K L) :
   rw [heq]
   exact tendsto_const_nhds
 
-/-- The original zero is the right identity for the actual field of norms addition. -/
+/-- The zero is the right identity for the field of norms addition. -/
 theorem FieldOfNorms.add_zero_right [IsAPF K L] (α : FieldOfNorms K L) :
     FieldOfNorms.add K L α 0 = α := by
   rw [FieldOfNorms.add_comm, FieldOfNorms.add_zero_left]
 
-/-- Exact norm multiplicativity gives distributivity of the original
-multiplication over the actual field of norms addition. -/
+/-- Exact norm multiplicativity gives distributivity of the
+multiplication over the field of norms addition. -/
 theorem mul_fieldOfNormsAdd [IsAPF K L] (δ α β : FieldOfNorms K L) :
     δ * FieldOfNorms.add K L α β =
       FieldOfNorms.add K L (δ * α) (δ * β) := by
@@ -637,7 +637,7 @@ theorem mul_fieldOfNormsAdd [IsAPF K L] (δ α β : FieldOfNorms K L) :
   simpa only [← normSumNet_mul_left] using
     (tendsto_normSumNet_fieldOfNormsAdd K L α β E).const_mul (FieldOfNorms.coord K L E δ)
 
-/-- Integral inputs have an integral actual sum, on the same stable valuation. -/
+/-- Integral inputs have an integral sum, on the same stable valuation. -/
 theorem FieldOfNorms.valuation_fieldOfNormsAdd_le_one [IsAPF K L] (α β : FieldOfNorms K L)
     (hα : FieldOfNorms.valuation K L α ≤ 1) (hβ : FieldOfNorms.valuation K L β ≤ 1) :
     FieldOfNorms.valuation K L (FieldOfNorms.add K L α β) ≤ 1 := by
@@ -646,7 +646,7 @@ theorem FieldOfNorms.valuation_fieldOfNormsAdd_le_one [IsAPF K L] (α β : Field
   exact normSumNet_limit_mem_of_valuation_le_one K L α β hα hβ E _
     (tendsto_normSumNet_fieldOfNormsAdd K L α β E)
 
-/-- The actual sum of integral inputs has the proved eventual coordinate
+/-- The sum of integral inputs has the proved eventual coordinate
 approximation at every finite precision. -/
 theorem FieldOfNorms.add_sub_mem_of_valuation_le_one [IsAPF K L] (α β : FieldOfNorms K L)
     (hα : FieldOfNorms.valuation K L α ≤ 1) (hβ : FieldOfNorms.valuation K L β ≤ 1) :
@@ -696,7 +696,7 @@ variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
 local notation "p" => residueChar K
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
-/-- The actual sum of arbitrary original norm families agrees with coordinate
+/-- The sum of arbitrary norm families agrees with coordinate
 addition to every eventual ideal-power precision. -/
 theorem FieldOfNorms.add_sub_mem [IsAPF K L] (α β : FieldOfNorms K L) :
     ∀ n : ℕ, ∃ T : FiniteIntermediateField K L, ∀ E : FiniteIntermediateField K L, T ≤ E →
@@ -785,8 +785,8 @@ local notation "p" => residueChar K
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
 /-- Deep ideal-power agreement of integral families gives equality by
-transporting every precision to one fixed original finite base. -/
-theorem FieldOfNorms._ext_of_integral_eventually_sub_mem [IsAPF K L]
+transporting every precision to one fixed finite base. -/
+theorem FieldOfNorms.ext_of_integral_eventually_sub_mem [IsAPF K L]
     (α β : FieldOfNorms K L) (hα : FieldOfNorms.valuation K L α ≤ 1)
     (hβ : FieldOfNorms.valuation K L β ≤ 1)
     (h : ∀ n : ℕ, ∃ T : FiniteIntermediateField K L, ∀ F : FiniteIntermediateField K L, T ≤ F →
@@ -853,9 +853,9 @@ theorem FieldOfNorms._ext_of_integral_eventually_sub_mem [IsAPF K L]
   have hnorm := congrArg (FiniteIntermediateField.norm D B hDB) hB
   simpa only [FieldOfNorms.coord_norm] using hnorm
 
-/-- Asymptotic ideal-power agreement separates arbitrary original norm
+/-- Asymptotic ideal-power agreement separates arbitrary norm
 families. An existing maximal-valued family makes all normalization integral. -/
-theorem FieldOfNorms._ext_of_eventually_sub_mem [IsAPF K L]
+theorem FieldOfNorms.ext_of_eventually_sub_mem [IsAPF K L]
     (α β : FieldOfNorms K L)
     (h : ∀ n : ℕ, ∃ T : FiniteIntermediateField K L, ∀ F : FiniteIntermediateField K L, T ≤ F →
       FieldOfNorms.coord K L F α - FieldOfNorms.coord K L F β ∈
@@ -882,7 +882,7 @@ theorem FieldOfNorms._ext_of_eventually_sub_mem [IsAPF K L]
   have hi : w δ⁻¹ ≤ 1 := by
     rw [map_inv₀]
     exact inv_le_one_of_one_le₀ hone
-  have heq := FieldOfNorms._ext_of_integral_eventually_sub_mem K L
+  have heq := FieldOfNorms.ext_of_integral_eventually_sub_mem K L
     (α / δ) (β / δ) ha hb (fun n => ?_)
   · simpa [div_eq_mul_inv, mul_assoc, hδ] using
       congrArg (fun x : FieldOfNorms K L => x * δ) heq

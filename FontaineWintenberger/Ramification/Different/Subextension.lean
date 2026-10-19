@@ -15,7 +15,7 @@ public import FontaineWintenberger.Ramification.Lower.FixedField
 /-!
 # The different and upper orbits of arbitrary subextensions
 
-The order of the actual different in a tower is additive with the canonical
+The order of the different in a tower is additive with the canonical
 ramification-index weight. Hilbert's formula and the subgroup Herbrand
 identity compute the upper orbit index without assuming a normal subfield
 or a totally ramified Galois closure.
@@ -55,7 +55,7 @@ theorem maximalIdeal_emultiplicity_ne_top {I : Ideal B} (hI : I ≠ ⊥) :
 variable (C : Type*) [CommRing C] [IsDomain C] [IsDiscreteValuationRing C]
     [Algebra B C] [FaithfulSMul B C] [IsLocalHom (algebraMap B C)]
 
-/-- Extending an actual DVR ideal multiplies its canonical order by the
+/-- Extending a DVR ideal multiplies its canonical order by the
 canonical ramification index. -/
 theorem maximalIdeal_emultiplicity_map (I : Ideal B) :
     emultiplicity (IsLocalRing.maximalIdeal C) (I.map (algebraMap B C)) =
@@ -80,7 +80,7 @@ variable (A B C : Type*) [CommRing A] [IsDomain A] [IsDiscreteValuationRing A]
     [FaithfulSMul B C] [IsLocalHom (algebraMap B C)]
     [Algebra.IsSeparable (FractionRing A) (FractionRing C)]
 
-/-- The actual different-order transitivity formula, with its inertia-order
+/-- The different-order transitivity formula, with its inertia-order
 weight rather than the full relative Galois degree. -/
 theorem differentIdeal_order_tower :
     emultiplicity (IsLocalRing.maximalIdeal C) (differentIdeal A C) =
@@ -90,7 +90,7 @@ theorem differentIdeal_order_tower :
   rw [differentIdeal_eq_differentIdeal_mul_differentIdeal (A := A) (B := B) C,
     maximalIdeal_emultiplicity_mul, maximalIdeal_emultiplicity_map]
 
-/-- All three actual differents are nonzero in a finite separable tower, so
+/-- All three differents are nonzero in a finite separable tower, so
 the order-transitivity equality also holds in the natural numbers. -/
 theorem differentIdeal_order_toNat_tower :
     (emultiplicity (IsLocalRing.maximalIdeal C) (differentIdeal A C)).toNat =
@@ -119,7 +119,7 @@ variable (G : Type*) {R : Type*} [Group G] [CommRing R] [IsDomain R]
 
 local notation "I₀" => lowerRamificationGroup G (IsLocalRing.maximalIdeal R) 0
 
-/-- At an integer, the actual Herbrand integral is the finite sum of the
+/-- At an integer, the Herbrand integral is the finite sum of the
 positive lower-group cardinalities divided by the inertia order. -/
 theorem herbrandFunction_nat_mul_card (N : ℕ) :
     herbrandFunction (R := R) G N * (Nat.card I₀ : ℝ) =
@@ -142,13 +142,13 @@ variable (H : Subgroup G)
 local notation "H₀" => (H ⊓ I₀ : Subgroup G)
 local notation "U" => upperRamificationGroup (R := R) G
 
-/-- Upper orbits never outnumber the original embedding cosets. -/
+/-- Upper orbits never outnumber the embedding cosets. -/
 theorem upperOrbitIndex_le_fixingIndex (u : ℝ) : (H ⊔ U u).index ≤ H.index :=
   Nat.le_of_dvd (show 0 < H.index from Nat.card_pos)
     (Subgroup.index_dvd_of_le (show H ≤ H ⊔ U u from le_sup_left))
 
 /-- The subgroup Herbrand identity gives the finite-cutoff integral of the
-inertia-relative orbit deficit, for the actual subgroup action. -/
+inertia-relative orbit deficit, for the subgroup action. -/
 theorem subgroup_upperRelIndex_deficit_integral [FaithfulSMul G R] (N : ℕ) :
     (Nat.card H₀ : ℝ) *
         (∫ u in (0 : ℝ)..(herbrandFunction (R := R) G N),
@@ -196,7 +196,7 @@ local notation "I₀" => lowerRamificationGroup G (IsLocalRing.maximalIdeal R) 0
 local notation "H₀" => (H ⊓ I₀ : Subgroup G)
 local notation "U" => upperRamificationGroup (R := R) G
 
-/-- An actual integer lower cutoff gives a genuine upper cutoff through
+/-- An integer lower cutoff gives an upper cutoff through
 the Herbrand function. -/
 theorem upperRamificationGroup_eq_bot_of_herbrand_cutoff {N : ℕ}
     (hN : lowerRamificationGroup G (IsLocalRing.maximalIdeal R) N = ⊥)
@@ -211,7 +211,7 @@ theorem upperRamificationGroup_eq_bot_of_herbrand_cutoff {N : ℕ}
   rw [upperRamificationGroup_herbrandFunction G hN', he, hN] at hle
   exact bot_unique hle
 
-/-- The actual upper orbit deficit vanishes beyond every transported
+/-- The upper orbit deficit vanishes beyond every transported
 integer lower cutoff. -/
 theorem upperOrbitDeficit_eq_zero_of_herbrand_cutoff {N : ℕ}
     (hN : lowerRamificationGroup G (IsLocalRing.maximalIdeal R) N = ⊥)
@@ -219,7 +219,7 @@ theorem upperOrbitDeficit_eq_zero_of_herbrand_cutoff {N : ℕ}
     (H.index : ℝ) - (H ⊔ U u).index = 0 := by
   rw [upperRamificationGroup_eq_bot_of_herbrand_cutoff G hN hu, sup_bot_eq, sub_self]
 
-/-- The actual absolute orbit index increases with the upper parameter. -/
+/-- The absolute orbit index increases with the upper parameter. -/
 theorem upperOrbitIndex_monotoneOn :
     MonotoneOn (fun u : ℝ => (H ⊔ U u).index) (Set.Ici (0 : ℝ)) := by
   intro u hu v hv huv
@@ -337,7 +337,7 @@ variable (A C : Type*) [CommRing A] [IsDomain A] [IsDiscreteValuationRing A]
 variable (G : Type*) [Group G] [Finite G]
     [MulSemiringAction G C] [IsGaloisGroup G A C]
 
-/-- Hilbert's formula at any actual lower cutoff, on canonical integer rings
+/-- Hilbert's formula at any lower cutoff, on canonical integer rings
 with their fraction fields and no chosen different-order certificate. -/
 theorem differentIdeal_order_eq_sum_lower_card_of_cutoff {N : ℕ}
     (hN : lowerRamificationGroup G (IsLocalRing.maximalIdeal C) N = ⊥) :
@@ -366,7 +366,7 @@ theorem differentIdeal_order_eq_sum_lower_card_of_cutoff {N : ℕ}
   exact_mod_cast (show k ≤ N by omega)
 
 /-- The finite real Hilbert formula retains the canonical ideal order and
-the actual lower-group cardinalities. -/
+the lower-group cardinalities. -/
 theorem differentIdeal_order_toReal_eq_sum_lower_card_of_cutoff {N : ℕ}
     (hN : lowerRamificationGroup G (IsLocalRing.maximalIdeal C) N = ⊥) :
     ((emultiplicity (IsLocalRing.maximalIdeal C) (differentIdeal A C)).toNat : ℝ) =
@@ -415,7 +415,7 @@ local notation "I₀" => lowerRamificationGroup G (IsLocalRing.maximalIdeal C) 0
 local notation "H₀" => (H ⊓ I₀ : Subgroup G)
 local notation "U" => upperRamificationGroup (R := C) G
 
-/-- Subtraction of the two actual Hilbert formulas computes the different
+/-- Subtraction of the two Hilbert formulas computes the different
 of an arbitrary intermediate extension. The subgroup need not be normal. -/
 theorem subextension_different_order_mul_inertia_eq_lower_sum {N : ℕ}
     (hN : lowerRamificationGroup G (IsLocalRing.maximalIdeal C) N = ⊥) :
@@ -465,8 +465,8 @@ theorem subextension_different_order_mul_inertia_eq_lower_sum {N : ℕ}
   rw [hs, ← hAC, ← hBC]
   linarith
 
-/-- The actual different order is the inertia-relative index deficit
-integral up to any integer lower cutoff transported by the actual Herbrand
+/-- The different order is the inertia-relative index deficit
+integral up to any integer lower cutoff transported by the Herbrand
 function. This allows an arbitrary nonnormal intermediate extension. -/
 theorem subextension_different_order_eq_upperRelIndex_integral [FaithfulSMul G C]
     {N : ℕ} (hN : lowerRamificationGroup G (IsLocalRing.maximalIdeal C) N = ⊥) :
@@ -506,7 +506,7 @@ theorem subextension_different_order_eq_upperRelIndex_integral [FaithfulSMul G C
 
 omit [Module.Finite A B] [FaithfulSMul A B]
     [Algebra.IsSeparable (FractionRing A) (FractionRing C)] in
-/-- The inertia-order ratio is the actual ramification index of the
+/-- The inertia-order ratio is the ramification index of the
 intermediate extension, even when the full ambient extension has a residue
 extension and the intermediate extension is nonnormal. -/
 theorem card_inertia_div_card_subgroup_inertia :
@@ -523,7 +523,7 @@ theorem card_inertia_div_card_subgroup_inertia :
   exact mul_div_cancel_right₀ _ (Nat.cast_ne_zero.mpr (local_ramificationIdx_pos B C).ne')
 
 /-- The intrinsic finite-cutoff different formula, expressed entirely with
-the actual different, canonical ramification index, and actual upper groups. -/
+the different, canonical ramification index, and upper groups. -/
 theorem subextension_different_order_eq_ramificationIdx_integral [FaithfulSMul G C]
     {N : ℕ} (hN : lowerRamificationGroup G (IsLocalRing.maximalIdeal C) N = ⊥) :
     ((emultiplicity (IsLocalRing.maximalIdeal B) (differentIdeal A B)).toNat : ℝ) =
@@ -536,7 +536,7 @@ theorem subextension_different_order_eq_ramificationIdx_integral [FaithfulSMul G
   simpa only [card_inertia_div_card_subgroup_inertia A B C G H] using
     subextension_different_order_eq_upperRelIndex_integral A B C G H hN
 
-/-- The different as an integral of actual absolute upper orbit indices.
+/-- The different as an integral of absolute upper orbit indices.
 The zero orbit index is the residue-degree factor in a finite field
 extension. No normality of the intermediate fixing subgroup is assumed. -/
 theorem subextension_different_order_eq_upperOrbitIndex_integral [FaithfulSMul G C]
@@ -576,7 +576,7 @@ theorem subextension_different_order_eq_upperOrbitIndex_integral [FaithfulSMul G
   nlinarith
 
 /-- A totally ramified prime-degree subextension has one finite upper
-orbit break, and its actual different determines that break. The subextension may be
+orbit break, and its different determines that break. The subextension may be
 nonnormal, and its Galois closure may have a nontrivial residue extension. -/
 theorem subextension_prime_degree_different_profile [FaithfulSMul G C]
     (hp : H.index.Prime)
@@ -673,8 +673,8 @@ local notation "H" => M.fixingSubgroup
 local notation "I₀" => lowerRamificationGroup G (IsLocalRing.maximalIdeal C) 0
 local notation "U" => upperRamificationGroup (R := C) G
 
-/-- The actual integers of an arbitrary intermediate field are the
-invariants of its actual fixing subgroup. No normality is required. -/
+/-- The integers of an arbitrary intermediate field are the
+invariants of its fixing subgroup. No normality is required. -/
 theorem intermediate_spectral_integer_isGaloisGroup : IsGaloisGroup H B C := by
   have := intermediate_spectral_isDiscreteValuationRing K L M
   have : IsGaloisGroup H M L := IsGaloisGroup.intermediateField G K L M
@@ -688,7 +688,7 @@ theorem intermediate_spectral_integer_isGaloisGroup : IsGaloisGroup H B C := by
 variable [PerfectField (IsLocalRing.ResidueField
   (Valuation.valuationSubring (NormedField.valuation (K := K))))]
 
-/-- The zero orbit index is exactly the actual residue-field degree of
+/-- The zero orbit index is exactly the residue-field degree of
 the intermediate extension. -/
 theorem intermediate_spectral_zeroOrbitIndex_eq_residueDegree :
     letI := intermediate_spectral_isDiscreteValuationRing K L M
@@ -713,8 +713,8 @@ theorem intermediate_spectral_zeroOrbitIndex_eq_residueDegree :
     nlinarith [hd, hn]
   exact_mod_cast hf
 
-/-- The upper-orbit different formula on the actual intermediate integer
-and residue fields, with their original algebra maps. -/
+/-- The upper-orbit different formula on the intermediate integer
+and residue fields, with their algebra maps. -/
 theorem intermediate_spectral_different_order_eq_upperOrbitIndex_integral {N : ℕ}
     (hN : lowerRamificationGroup G (IsLocalRing.maximalIdeal C) N = ⊥) :
     letI := intermediate_spectral_isDiscreteValuationRing K L M
@@ -738,7 +738,7 @@ theorem intermediate_spectral_different_order_eq_upperOrbitIndex_integral {N : �
     (IntermediateField.finrank_eq_fixingSubgroup_index L M).symm] using h
 
 /-- A concrete prime-degree totally ramified intermediate extension has
-the expected one-break profile and actual different formula. The finite
+the expected one-break profile and different formula. The finite
 Galois closure may have a nontrivial residue extension. -/
 theorem intermediate_spectral_prime_degree_different_profile
     (hp : (Module.finrank K M).Prime)

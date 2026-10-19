@@ -8,11 +8,11 @@ module
 public import Mathlib.FieldTheory.Normal.Closure
 
 /-!
-# Finite original subfields stable under every original automorphism
+# Finite subfields stable under every automorphism
 
-Mathlib's actual compositum of all embedding images is finite for a finite
-source field, without normality of the ambient field. We prove its invariance
-under ambient automorphisms and retain their original restrictions.
+Mathlib's compositum of all embedding images is finite for a finite
+field, without normality of the ambient field. We prove its invariance
+under ambient automorphisms and retain their restrictions.
 -/
 
 @[expose] public section
@@ -23,7 +23,7 @@ namespace IntermediateField
 
 variable {K L : Type*} [Field K] [Field L] [Algebra K L]
 
-/-- All embedding images remain in their actual compositum after any ambient embedding. -/
+/-- All embedding images remain in their compositum after any ambient embedding. -/
 theorem map_normalClosure_le (D : IntermediateField K L) (σ : L →ₐ[K] L) :
     (normalClosure K D L).map σ ≤ normalClosure K D L := by
   rw [normalClosure_def, map_iSup]
@@ -32,7 +32,7 @@ theorem map_normalClosure_le (D : IntermediateField K L) (σ : L →ₐ[K] L) :
   rw [AlgHom.map_fieldRange]
   exact (σ.comp f).fieldRange_le_normalClosure
 
-/-- The actual finite-image compositum is stable under every original automorphism,
+/-- The finite-image compositum is stable under every automorphism,
 with no normality hypothesis on the ambient field. -/
 theorem map_normalClosure_eq (D : IntermediateField K L) (σ : L ≃ₐ[K] L) :
     (normalClosure K D L).map σ.toAlgHom = normalClosure K D L := by
@@ -40,7 +40,7 @@ theorem map_normalClosure_eq (D : IntermediateField K L) (σ : L ≃ₐ[K] L) :
   have h := map_mono σ.toAlgHom (map_normalClosure_le D σ.symm.toAlgHom)
   simpa only [map_map, AlgEquiv.comp_symm, map_id] using h
 
-/-- Restriction of the original ambient automorphism to the actual image compositum. -/
+/-- Restriction of the ambient automorphism to the image compositum. -/
 def normalClosureRestrict (D : IntermediateField K L) (σ : L ≃ₐ[K] L) :
     normalClosure K D L ≃ₐ[K] normalClosure K D L :=
   (equivMap (normalClosure K D L) σ.toAlgHom).trans
@@ -51,8 +51,8 @@ theorem coe_normalClosureRestrict (D : IntermediateField K L) (σ : L ≃ₐ[K] 
     (x : normalClosure K D L) :
     (normalClosureRestrict D σ x : L) = σ (x : L) := rfl
 
-/-- An actual finite field is contained in an actual finite field stable under
-all original automorphisms; finiteness comes from the canonical existing construction. -/
+/-- A finite field is contained in a finite field stable under
+all automorphisms; finiteness comes from the canonical existing construction. -/
 theorem exists_finite_aut_stable (D : IntermediateField K L) [FiniteDimensional K D] :
     ∃ E : IntermediateField K L, FiniteDimensional K E ∧ D ≤ E ∧
       ∀ σ : L ≃ₐ[K] L, E.map σ.toAlgHom = E :=

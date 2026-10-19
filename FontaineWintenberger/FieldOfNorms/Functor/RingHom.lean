@@ -13,16 +13,16 @@ public import FontaineWintenberger.Ramification.Embedding.Basic
 /-!
 # Finite embeddings of fields of norms
 
-## Finite embeddings of the original norm fields
+## Finite embeddings of the norm fields
 
-Good finite target fields and their original pullbacks preserve the actual
+Good finite target fields and their pullbacks preserve the
 norm-sum limits. The resulting map is an injective field map, with positive
-integral scaling of the same stable valuation and its original topology.
+integral scaling of the same stable valuation and its topology.
 
-## Arbitrary finite embeddings of the original norm fields
+## Arbitrary finite embeddings of the norm fields
 
-A finite separable embedding factors through its actual field range.
-The original range isomorphism and finite-inclusion maps give the same
+A finite separable embedding factors through its field range.
+The range isomorphism and finite-inclusion maps give the same
 norm-family map, now as an injective continuous field homomorphism.
 -/
 
@@ -39,7 +39,7 @@ variable (K M N : Type*) [Field K] [Field M] [Field N]
     [Algebra.IsAlgebraic K M] [Module.Finite M N] [Algebra.IsSeparable M N]
 
 /-- Good target fields can simultaneously dominate a target field and the
-actual image of any prescribed finite source field. -/
+image of any prescribed finite field. -/
 theorem exists_goodFiniteLayer_ge_pullback (D : FiniteIntermediateField K N)
     (C : FiniteIntermediateField K M) :
     ∃ F : FiniteIntermediateField K N, D ≤ F ∧ IsGoodFiniteLayer K M F ∧
@@ -51,8 +51,8 @@ theorem exists_goodFiniteLayer_ge_pullback (D : FiniteIntermediateField K N)
   intro x hx
   exact hF (FiniteIntermediateField.le_sup_right D _ ⟨x, hx, rfl⟩)
 
-/-- On an actual good pair, the target norm-sum term is literally the image
-of the corresponding original source term. -/
+/-- On a good pair, the target norm-sum term is the image
+of the corresponding source term. -/
 theorem normSumNet_finiteFieldOfNormsMap (D F : FiniteIntermediateField K N) (hDF : D ≤ F)
     (hD : IsGoodFiniteLayer K M D) (hF : IsGoodFiniteLayer K M F)
     (x y : FieldOfNorms K M) :
@@ -87,8 +87,8 @@ variable {E F : Type*} [Field E] [Field F] [Algebra K E] [Algebra K F]
     [FiniteDimensional K E] [FiniteDimensional K F]
     [Algebra.IsSeparable K E] [Algebra.IsSeparable K F]
 
-/-- The actual finite-field embedding scales normalized valuations by its
-actual positive local ramification index, for every field element. -/
+/-- The finite-field embedding scales normalized valuations by its
+positive local ramification index, for every field element. -/
 theorem spectral_normalizedValuation_algHom (i : E →ₐ[K] F) (x : E) :
     (IsDiscreteValuationRing.maximalIdeal (spectralIntegerRing K F)).valuation F (i x) =
       ((IsDiscreteValuationRing.maximalIdeal (spectralIntegerRing K E)).valuation E x) ^
@@ -122,8 +122,8 @@ variable (M N : Type*) [Field M] [Field N] [Algebra K M] [Algebra K N]
     [Algebra M N] [IsScalarTower K M N] [Algebra.IsSeparable K M]
     [Algebra.IsSeparable K N] [Module.Finite M N] [Algebra.IsSeparable M N]
 
-/-- The two original sum limits agree at every good finite target coordinate,
-by comparison on the same genuinely directed cofinal set. -/
+/-- The two sum limits agree at every good finite target coordinate,
+by comparison on the same directed cofinal set. -/
 theorem FieldOfNorms.finiteMap_add_coordinate [IsAPF K M] [IsAPF K N]
     (D : FiniteIntermediateField K N) (hD : IsGoodFiniteLayer K M D) (x y : FieldOfNorms K M) :
     FieldOfNorms.coord K N D (FieldOfNorms.finiteMap K M N (FieldOfNorms.add K M x y)) =
@@ -170,7 +170,7 @@ theorem FieldOfNorms.finiteMap_add_coordinate [IsAPF K M] [IsAPF K N]
   exact (FieldOfNorms.coord_finiteFieldOfNormsMap K M N D hD _).trans
     (tendsto_nhds_unique hsource htarget)
 
-/-- The literal finite-inclusion map preserves the actual field of norms addition. -/
+/-- The finite-inclusion map preserves the field of norms addition. -/
 theorem FieldOfNorms.finiteMap_add [IsAPF K M] [IsAPF K N]
     (x y : FieldOfNorms K M) :
     FieldOfNorms.finiteMap K M N (FieldOfNorms.add K M x y) =
@@ -179,7 +179,7 @@ theorem FieldOfNorms.finiteMap_add [IsAPF K M] [IsAPF K N]
   intro D hD
   exact FieldOfNorms.finiteMap_add_coordinate K M N D hD x y
 
-/-- The actual finite-inclusion map is a field homomorphism on the original
+/-- The finite-inclusion map is a field homomorphism on the
 field of norms carriers and their already constructed field structures. -/
 def FieldOfNorms.finiteRingHom [IsAPF K M] [IsAPF K N]
     [Fact (¬ Module.Finite K M)] [Fact (¬ Module.Finite K N)] :
@@ -194,14 +194,14 @@ theorem FieldOfNorms.finiteRingHom_apply [IsAPF K M] [IsAPF K N]
     FieldOfNorms.finiteRingHom K M N x =
       FieldOfNorms.finiteMap K M N x := rfl
 
-/-- Unitality and the actual original field structures give injectivity. -/
+/-- Unitality and the field structures give injectivity. -/
 theorem FieldOfNorms.finiteMap_injective [IsAPF K M] [IsAPF K N]
     [Fact (¬ Module.Finite K M)] [Fact (¬ Module.Finite K N)] :
     Function.Injective (FieldOfNorms.finiteMap K M N) := by
   exact (FieldOfNorms.finiteRingHom K M N).injective
 
-/-- An actual good field on both stable tails computes one fixed positive
-finite valuation exponent for every original norm family, including zero. -/
+/-- A good field on both stable tails computes one fixed positive
+finite valuation exponent for every norm family, including zero. -/
 theorem exists_goodFiniteLayer_finiteFieldOfNormsMap_valuation
     [IsAPF K M] [IsAPF K N] :
     ∃ D : FiniteIntermediateField K N, IsGoodFiniteLayer K M D ∧
@@ -234,7 +234,7 @@ theorem exists_goodFiniteLayer_finiteFieldOfNormsMap_valuation
       congrArg (fun z => z ^ embeddingRamificationIdx K (FiniteIntermediateField.pullbackTo K M D))
         (hC₀ C hC₀D x).symm
 
-/-- Positive integral scaling is produced from an actual original finite
+/-- Positive integral scaling is produced from a finite
 integer-ring inclusion, rather than supplied as an additional hypothesis. -/
 theorem exists_finiteFieldOfNormsMap_valuation_scaling [IsAPF K M] [IsAPF K N] :
     ∃ e : ℕ, 0 < e ∧ ∀ x : FieldOfNorms K M,
@@ -243,7 +243,7 @@ theorem exists_finiteFieldOfNormsMap_valuation_scaling [IsAPF K M] [IsAPF K N] :
   obtain ⟨D, _, he, hv⟩ := exists_goodFiniteLayer_finiteFieldOfNormsMap_valuation K M N
   exact ⟨embeddingRamificationIdx K (FiniteIntermediateField.pullbackTo K M D), he, hv⟩
 
-/-- The actual finite-inclusion map is uniformly continuous for the existing
+/-- The finite-inclusion map is uniformly continuous for the existing
 valuation uniformities, by its proved positive integral scaling. -/
 theorem uniformContinuous_finiteFieldOfNormsMap [IsAPF K M] [IsAPF K N]
     [Fact (¬ Module.Finite K M)] [Fact (¬ Module.Finite K N)] :
@@ -272,7 +272,7 @@ theorem uniformContinuous_finiteFieldOfNormsMap [IsAPF K M] [IsAPF K N]
     nlinarith
   exact (pow_le_pow_left₀ zero_le hx e).trans hpow
 
-/-- Continuity uses the original valuation topology on each original norm field. -/
+/-- Continuity uses the valuation topology on each norm field. -/
 theorem continuous_finiteFieldOfNormsMap [IsAPF K M] [IsAPF K N]
     [Fact (¬ Module.Finite K M)] [Fact (¬ Module.Finite K N)] :
     Continuous (FieldOfNorms.finiteMap K M N) := by
@@ -290,7 +290,7 @@ section Infinity
 
 variable {K L M : Type*} [Field K] [Field L] [Field M] [Algebra K L] [Algebra K M]
 
-/-- The original range of an infinite algebra embedding has the same
+/-- The range of an infinite algebra embedding has the same
 infinite dimension; no infinity hypothesis on the range is supplied. -/
 theorem not_finite_fieldRange (τ : L →ₐ[K] M) [Fact (¬ Module.Finite K L)] :
     ¬ Module.Finite K τ.fieldRange := by
@@ -306,8 +306,8 @@ local notation "p" => residueChar K
 variable {L M : Type*} [Field L] [Field M] [Algebra K L] [Algebra K M]
     [Algebra.IsSeparable K L] [Algebra.IsSeparable K M]
 
-/-- The arbitrary original finite-embedding map is a ring homomorphism
-between the already constructed original norm fields. -/
+/-- The arbitrary finite-embedding map is a ring homomorphism
+between the already constructed norm fields. -/
 def FieldOfNorms.finiteEmbeddingRingHom (τ : L →ₐ[K] M)
     [Module.Finite τ.fieldRange M] [Algebra.IsSeparable τ.fieldRange M]
     [IsAPF K L] [IsAPF K M]
@@ -318,7 +318,7 @@ def FieldOfNorms.finiteEmbeddingRingHom (τ : L →ₐ[K] M)
   exact (FieldOfNorms.finiteRingHom K τ.fieldRange M).comp
     (FieldOfNorms.ringEquiv K τ.equivFieldRange).toRingHom
 
-/-- Its underlying map is literally the previously constructed original
+/-- Its underlying map is the previously constructed
 multiplicative finite-embedding map. -/
 @[simp]
 theorem FieldOfNorms.finiteEmbeddingRingHom_apply (τ : L →ₐ[K] M)
@@ -329,8 +329,8 @@ theorem FieldOfNorms.finiteEmbeddingRingHom_apply (τ : L →ₐ[K] M)
     FieldOfNorms.finiteEmbeddingRingHom K τ x =
       FieldOfNorms.finiteEmbeddingMap K τ x := rfl
 
-/-- Unitality on the actual original norm fields gives injectivity of the
-same original finite-embedding map. -/
+/-- Unitality on the norm fields gives injectivity of the
+same finite-embedding map. -/
 theorem FieldOfNorms.finiteEmbeddingMap_injective (τ : L →ₐ[K] M)
     [Module.Finite τ.fieldRange M] [Algebra.IsSeparable τ.fieldRange M]
     [IsAPF K L] [IsAPF K M]
@@ -338,8 +338,8 @@ theorem FieldOfNorms.finiteEmbeddingMap_injective (τ : L →ₐ[K] M)
     Function.Injective (FieldOfNorms.finiteEmbeddingMap K τ) := by
   exact (FieldOfNorms.finiteEmbeddingRingHom K τ).injective
 
-/-- The ring-homomorphism coordinates are precisely the original embedding
-applied to the original preimage coordinates at every good target field. -/
+/-- The ring-homomorphism coordinates are precisely the embedding
+applied to the preimage coordinates at every good target field. -/
 theorem coe_fieldOfNormsEval_finiteFieldOfNormsEmbeddingRingHom (τ : L →ₐ[K] M)
     [Module.Finite τ.fieldRange M] [Algebra.IsSeparable τ.fieldRange M]
     [IsAPF K L] [IsAPF K M]
@@ -352,8 +352,8 @@ theorem coe_fieldOfNormsEval_finiteFieldOfNormsEmbeddingRingHom (τ : L →ₐ[K
         (FiniteIntermediateField.pullbackLayer K τ.fieldRange D)) x : L) := by
   exact coe_fieldOfNormsEval_finiteFieldOfNormsEmbeddingMap K τ D hD x
 
-/-- One actual good target field gives the positive finite ramification
-exponent for every original source norm family, including zero. -/
+/-- One good target field gives the positive finite ramification
+exponent for every norm family, including zero. -/
 theorem exists_goodFiniteLayer_finiteFieldOfNormsEmbeddingMap_valuation (τ : L →ₐ[K] M)
     [Module.Finite τ.fieldRange M] [Algebra.IsSeparable τ.fieldRange M]
     [IsAPF K L] [IsAPF K M] :
@@ -371,7 +371,7 @@ theorem exists_goodFiniteLayer_finiteFieldOfNormsEmbeddingMap_valuation (τ : L 
     (FieldOfNorms.finiteMap K τ.fieldRange M (FieldOfNorms.map τ.equivFieldRange x)) = _
   rw [hv, FieldOfNorms.valuation_fieldOfNormsMap K τ.equivFieldRange]
 
-/-- The original map has a proved fixed positive integral valuation exponent. -/
+/-- The map has a proved fixed positive integral valuation exponent. -/
 theorem exists_finiteFieldOfNormsEmbeddingMap_valuation_scaling (τ : L →ₐ[K] M)
     [Module.Finite τ.fieldRange M] [Algebra.IsSeparable τ.fieldRange M]
     [IsAPF K L] [IsAPF K M] :
@@ -382,8 +382,8 @@ theorem exists_finiteFieldOfNormsEmbeddingMap_valuation_scaling (τ : L →ₐ[K
     exists_goodFiniteLayer_finiteFieldOfNormsEmbeddingMap_valuation K τ
   exact ⟨embeddingRamificationIdx K (FiniteIntermediateField.pullbackTo K τ.fieldRange D), he, hv⟩
 
-/-- The arbitrary original embedding is uniformly continuous for the same
-already constructed valuation uniformities on the original norm fields. -/
+/-- The arbitrary embedding is uniformly continuous for the same
+already constructed valuation uniformities on the norm fields. -/
 theorem uniformContinuous_finiteFieldOfNormsEmbeddingMap (τ : L →ₐ[K] M)
     [Module.Finite τ.fieldRange M] [Algebra.IsSeparable τ.fieldRange M]
     [IsAPF K L] [IsAPF K M]
@@ -395,7 +395,7 @@ theorem uniformContinuous_finiteFieldOfNormsEmbeddingMap (τ : L →ₐ[K] M)
     (FieldOfNorms.uniformEquiv K
         τ.equivFieldRange).uniformContinuous_toFun
 
-/-- Continuity is for the original valuation topologies on the original fields. -/
+/-- Continuity is for the valuation topologies on the fields. -/
 theorem continuous_finiteFieldOfNormsEmbeddingMap (τ : L →ₐ[K] M)
     [Module.Finite τ.fieldRange M] [Algebra.IsSeparable τ.fieldRange M]
     [IsAPF K L] [IsAPF K M]

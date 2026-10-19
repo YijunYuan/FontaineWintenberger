@@ -12,9 +12,9 @@ public import Mathlib.MeasureTheory.Integral.DominatedConvergence
 /-!
 # The intrinsic APF Herbrand functions
 
-The positive finite inertia indices define the source integral. Extending its
-slope by one below zero gives a primitive on the real line; its actual order
-isomorphism supplies the inverse. On the source half-line both functions have
+The positive finite inertia indices define the integral. Extending its
+slope by one below zero gives a primitive on the real line; its order
+isomorphism supplies the inverse. On the half-line both functions have
 the prescribed normalization.
 -/
 
@@ -50,7 +50,7 @@ theorem IsAPF.intervalIntegrable_apfHerbrandSlope [IsAPF K L] (a b : ℝ) :
     IntervalIntegrable (apfHerbrandSlope K L) volume a b :=
   (IsAPF.monotone_apfHerbrandSlope K L).intervalIntegrable
 
-/-- The source inverse Herbrand integral, with its identity continuation below zero. -/
+/-- The inverse Herbrand integral, with its identity continuation below zero. -/
 noncomputable def apfPsi (u : ℝ) : ℝ :=
   ∫ v in (0 : ℝ)..u, apfHerbrandSlope K L v
 
@@ -106,7 +106,7 @@ theorem IsAPF.surjective_apfPsi [IsAPF K L] : Function.Surjective (apfPsi K L) :
     exact min_le_left u 0
   · exact (le_max_left u 0).trans (IsAPF.le_apfPsi K L (max u 0))
 
-/-- The order isomorphism is obtained from strict monotonicity and actual surjectivity. -/
+/-- The order isomorphism is obtained from strict monotonicity and surjectivity. -/
 noncomputable def apfHerbrandOrderIso [IsAPF K L] : ℝ ≃o ℝ :=
   StrictMono.orderIsoOfSurjective (apfPsi K L) (IsAPF.strictMono_apfPsi K L)
     (IsAPF.surjective_apfPsi K L)
@@ -115,7 +115,7 @@ noncomputable def apfHerbrandOrderIso [IsAPF K L] : ℝ ≃o ℝ :=
 theorem apfHerbrandOrderIso_apply [IsAPF K L] (u : ℝ) :
     apfHerbrandOrderIso K L u = apfPsi K L u := rfl
 
-/-- The actual inverse of the APF Herbrand integral. -/
+/-- The inverse of the APF Herbrand integral. -/
 noncomputable def apfPhi [IsAPF K L] (u : ℝ) : ℝ :=
   (apfHerbrandOrderIso K L).symm u
 

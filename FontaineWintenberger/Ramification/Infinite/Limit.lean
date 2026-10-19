@@ -13,14 +13,14 @@ public import Mathlib.FieldTheory.IsSepClosed
 /-!
 # The absolute upper ramification groups
 
-## The canonical inverse limit of actual finite upper ramification groups
+## The canonical inverse limit of finite upper ramification groups
 
-The objects are actual finite upper subgroups with their inherited Krull
+The objects are finite upper subgroups with their inherited Krull
 topology. The limit is mathlib's `ProfiniteGrp.limit`.
 
-## Absolute upper ramification and its actual Galois images
+## Absolute upper ramification and its Galois images
 
-The absolute group uses mathlib's actual separable closure. Finite and
+The absolute group uses mathlib's separable closure. Finite and
 infinite restriction are the existing ordinary algebra-automorphism maps.
 -/
 
@@ -35,7 +35,7 @@ variable (K Ω : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedFie
 variable [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
 
-/-- Ordinary finite restriction, restricted to the actual upper subgroups. -/
+/-- Ordinary finite restriction, restricted to the upper subgroups. -/
 noncomputable def finiteUpperRamificationGroupMap
     {A B : (FiniteGaloisIntermediateField K Ω)ᵒᵖ} (f : A ⟶ B)
     (u : ℝ) (hu : -1 ≤ u) :
@@ -81,7 +81,7 @@ theorem finiteUpperRamificationGroupMap_comp
   rw [finGaloisGroupMap.map_comp]
   rfl
 
-/-- The actual finite upper groups and their ordinary restriction maps. -/
+/-- The finite upper groups and their ordinary restriction maps. -/
 noncomputable def finiteUpperRamificationGroupFunctor (u : ℝ) (hu : -1 ≤ u) :
     (FiniteGaloisIntermediateField K Ω)ᵒᵖ ⥤ ProfiniteGrp where
   obj E := ProfiniteGrp.of
@@ -90,7 +90,7 @@ noncomputable def finiteUpperRamificationGroupFunctor (u : ℝ) (hu : -1 ≤ u) 
   map_id E := ProfiniteGrp.Hom.ext (finiteUpperRamificationGroupMap_id K Ω E u hu)
   map_comp f g := ProfiniteGrp.Hom.ext (finiteUpperRamificationGroupMap_comp K Ω f g u hu)
 
-/-- The canonical map from actual infinite upper automorphisms to the actual upper inverse limit. -/
+/-- The canonical map from infinite upper automorphisms to the upper inverse limit. -/
 noncomputable def upperRamificationToLimit (u : ℝ) (hu : -1 ≤ u) :
     upperRamificationGroupInfinite K Ω u →*
       ProfiniteGrp.limit (finiteUpperRamificationGroupFunctor K Ω u hu) where
@@ -160,7 +160,7 @@ theorem upperRamificationToLimit_bijective (u : ℝ) (hu : -1 ≤ u) :
     apply Subtype.ext
     exact hgE E.unop
 
-/-- The actual upper group is canonically the existing inverse limit of its actual finite groups. -/
+/-- The upper group is canonically the existing inverse limit of its finite groups. -/
 noncomputable def upperRamificationEquivToLimit (u : ℝ) (hu : -1 ≤ u) :
     upperRamificationGroupInfinite K Ω u ≃ₜ*
       ProfiniteGrp.limit (finiteUpperRamificationGroupFunctor K Ω u hu) := by
@@ -187,7 +187,7 @@ namespace FontaineWintenberger
 
 variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
 
-/-- Absolute upper numbering inside the actual automorphism group of the separable closure. -/
+/-- Absolute upper numbering inside the automorphism group of the separable closure. -/
 noncomputable abbrev absoluteUpperRamificationGroup (u : ℝ) :
     Subgroup (SeparableClosure K ≃ₐ[K] SeparableClosure K) :=
   upperRamificationGroupInfinite K (SeparableClosure K) u
@@ -195,21 +195,21 @@ noncomputable abbrev absoluteUpperRamificationGroup (u : ℝ) :
 variable [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
 
-/-- Absolute upper projection onto every actual finite Galois subextension. -/
+/-- Absolute upper projection onto every finite Galois subextension. -/
 theorem absolute_map_upperRamificationGroup
     (E : FiniteGaloisIntermediateField K (SeparableClosure K)) (u : ℝ) (hu : -1 ≤ u) :
     (absoluteUpperRamificationGroup K u).map (AlgEquiv.restrictNormalHom E) =
       upperRamificationGroup (R := spectralIntegerRing K E) (E ≃ₐ[K] E) u :=
   map_upperRamificationGroupInfinite K (SeparableClosure K) E u hu
 
-/-- Absolute upper projection onto every actual algebraic Galois subextension. -/
+/-- Absolute upper projection onto every algebraic Galois subextension. -/
 theorem absolute_restrict_map_upperRamificationGroupInfinite
     (L : IntermediateField K (SeparableClosure K)) [IsGalois K L] (u : ℝ) (hu : -1 ≤ u) :
     (absoluteUpperRamificationGroup K u).map (AlgEquiv.restrictNormalHom L) =
       upperRamificationGroupInfinite K L u :=
   restrictNormalHom_map_upperRamificationGroupInfinite K (SeparableClosure K) L u hu
 
-/-- The actual absolute upper image is canonically the inverse limit of the finite upper groups. -/
+/-- The absolute upper image is canonically the inverse limit of the finite upper groups. -/
 noncomputable def absoluteUpperImageEquivToLimit
     (L : IntermediateField K (SeparableClosure K)) [IsGalois K L] (u : ℝ) (hu : -1 ≤ u) :
     (absoluteUpperRamificationGroup K u).map (AlgEquiv.restrictNormalHom L) ≃ₜ*

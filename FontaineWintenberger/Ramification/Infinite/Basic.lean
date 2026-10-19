@@ -11,12 +11,12 @@ public import FontaineWintenberger.Ramification.Upper.Transport
 /-!
 # Upper ramification groups of infinite Galois extensions
 
-## Infinite upper ramification inside actual Galois groups
+## Infinite upper ramification inside Galois groups
 
-The upper groups are intersections of preimages of the actual finite
+The upper groups are intersections of preimages of the finite
 upper groups under ordinary restriction, with the existing Krull topology.
 
-## Testing actual infinite upper groups on cofinal finite intermediate fields
+## Testing infinite upper groups on cofinal finite intermediate fields
 -/
 
 @[expose] public section
@@ -26,7 +26,7 @@ namespace FontaineWintenberger
 variable (K Ω : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [Field Ω] [Algebra K Ω]
 
-/-- Infinite upper numbering in the actual Galois group, using ordinary finite restrictions. -/
+/-- Infinite upper numbering in the Galois group, using ordinary finite restrictions. -/
 noncomputable def upperRamificationGroupInfinite (u : ℝ) : Subgroup (Ω ≃ₐ[K] Ω) :=
   ⨅ E : FiniteGaloisIntermediateField K Ω,
     (upperRamificationGroup (R := spectralIntegerRing K E) (E ≃ₐ[K] E) u).comap
@@ -115,7 +115,7 @@ theorem exists_lift_finite_upper_conditions (E : FiniteGaloisIntermediateField K
   rw [← finGaloisGroupMap_map_upperRamificationGroup K Ω fMD u hu]
   exact Subgroup.mem_map.mpr ⟨r, hr, hresD⟩
 
-/-- Compactness lifts every actual finite upper automorphism through all finite upper conditions. -/
+/-- Compactness lifts every finite upper automorphism through all finite upper conditions. -/
 theorem exists_lift_upperRamificationGroupInfinite (E : FiniteGaloisIntermediateField K Ω)
     (u : ℝ) (hu : -1 ≤ u) (q : E ≃ₐ[K] E)
     (hq : q ∈ upperRamificationGroup (R := spectralIntegerRing K E) (E ≃ₐ[K] E) u) :
@@ -139,7 +139,7 @@ theorem exists_lift_upperRamificationGroupInfinite (E : FiniteGaloisIntermediate
   refine ⟨s, (mem_upperRamificationGroupInfinite K Ω u s).mpr ?_, hsC⟩
   exact Set.mem_iInter.mp hsT
 
-/-- Every actual finite upper group is the image of the actual infinite upper group. -/
+/-- Every finite upper group is the image of the infinite upper group. -/
 theorem map_upperRamificationGroupInfinite (E : FiniteGaloisIntermediateField K Ω)
     (u : ℝ) (hu : -1 ≤ u) :
     (upperRamificationGroupInfinite K Ω u).map (AlgEquiv.restrictNormalHom E) =
@@ -158,7 +158,7 @@ variable (K Ω : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedFie
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
 
-/-- A cofinal family of actual finite intermediate fields tests all infinite upper conditions. -/
+/-- A cofinal family of finite intermediate fields tests all infinite upper conditions. -/
 theorem mem_upperRamificationGroupInfinite_iff_cofinal
     {ι : Type*} (E : ι → FiniteGaloisIntermediateField K Ω)
     (hE : ∀ D : FiniteGaloisIntermediateField K Ω, ∃ j, D ≤ E j)

@@ -14,10 +14,10 @@ public import FontaineWintenberger.FieldOfNorms.Estimates.Herbrand
 public import FontaineWintenberger.APF.Tower.Stages
 
 /-!
-# Ramification transfer on the original norm field
+# Ramification transfer on the norm field
 
-Finite embedding comparisons retain their original valuation rings and finite
-ambient fields, including original fields not stable under the automorphism.
+Finite embedding comparisons retain their valuation rings and finite
+ambient fields, including fields not stable under the automorphism.
 -/
 
 @[expose] public section
@@ -28,14 +28,14 @@ namespace FontaineWintenberger
 
 open scoped ENNReal
 
-section OriginalAction
+section Action
 
 variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
 
 local notation "p" => residueChar K
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
-/-- The original norm-field automorphism restricts to its actual original
+/-- The norm-field automorphism restricts to its
 valuation ring, using its proved preservation of the same stable valuation. -/
 def FieldOfNorms.integerAut [IsAPF K L] [Fact (¬ Module.Finite K L)]
     (σ : L ≃ₐ[K] L) :
@@ -69,7 +69,7 @@ theorem coe_fieldOfNormsIntegerAut [IsAPF K L] [Fact (¬ Module.Finite K L)]
   intro x
   rfl
 
-/-- The actual signed intrinsic ramification number of the original action,
+/-- The signed intrinsic ramification number of the action,
 with infinity retained in the standard extended reals. -/
 def FieldOfNorms.ramificationNumber [IsAPF K L] [Fact (¬ Module.Finite K L)]
     (σ : L ≃ₐ[K] L) : EReal := by
@@ -77,8 +77,8 @@ def FieldOfNorms.ramificationNumber [IsAPF K L] [Fact (¬ Module.Finite K L)]
   exact ((ramificationOrder (R := O) (O ≃+* O)
     (FieldOfNorms.integerAut K L σ) : ℝ≥0∞) : EReal) - 1
 
-/-- Restricting the actual original action agrees with the general
-valuation-preserving restriction on the same original valuation ring. -/
+/-- Restricting the action agrees with the general
+valuation-preserving restriction on the valuation ring. -/
 theorem FieldOfNorms.integerAut_eq_valuationIntegerAut [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (σ : L ≃ₐ[K] L) :
     FieldOfNorms.integerAut K L σ =
@@ -89,8 +89,8 @@ theorem FieldOfNorms.integerAut_eq_valuationIntegerAut [IsAPF K L]
   intro x
   rfl
 
-/-- The generic intrinsic number specializes to the existing original
-norm-field number, with the same field, valuation and actual automorphism. -/
+/-- The generic intrinsic number specializes to the existing
+norm-field number, with the same field, valuation and automorphism. -/
 theorem FieldOfNorms.ramificationNumber_eq_valuedRamificationNumber [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (σ : L ≃ₐ[K] L) :
     FieldOfNorms.ramificationNumber K L σ =
@@ -101,8 +101,8 @@ theorem FieldOfNorms.ramificationNumber_eq_valuedRamificationNumber [IsAPF K L]
   rw [FieldOfNorms.integerAut_eq_valuationIntegerAut]
   rfl
 
-/-- Restriction to the actual original valuation ring retains the proved
-faithfulness of the original norm-field action. -/
+/-- Restriction to the valuation ring retains the proved
+faithfulness of the norm-field action. -/
 theorem FieldOfNorms.integerAut_eq_one_iff [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (σ : L ≃ₐ[K] L) :
     FieldOfNorms.integerAut K L σ = 1 ↔ σ = 1 := by
@@ -132,7 +132,7 @@ theorem neg_one_le_fieldOfNormsRamificationNumber [IsAPF K L]
     EReal.sub_le_sub (EReal.coe_ennreal_nonneg _)
       (show (1 : EReal) ≤ 1 from le_rfl)
 
-/-- Infinity occurs precisely at the actual identity original automorphism. -/
+/-- Infinity occurs precisely at the identity automorphism. -/
 theorem FieldOfNorms.ramificationNumber_eq_top_iff [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (σ : L ≃ₐ[K] L) :
     FieldOfNorms.ramificationNumber K L σ = ⊤ ↔ σ = 1 := by
@@ -150,7 +150,7 @@ theorem FieldOfNorms.ramificationNumber_one [IsAPF K L]
     FieldOfNorms.ramificationNumber K L 1 = ⊤ :=
   (FieldOfNorms.ramificationNumber_eq_top_iff K L 1).mpr rfl
 
-/-- Every nonidentity original automorphism has an actual finite real
+/-- Every nonidentity automorphism has a finite real
 ramification number; no stabilizing finite-layer order is assumed. -/
 theorem FieldOfNorms.ramificationNumber_exists_real [IsAPF K L]
     [Fact (¬ Module.Finite K L)] {σ : L ≃ₐ[K] L} (hσ : σ ≠ 1) :
@@ -162,8 +162,8 @@ theorem FieldOfNorms.ramificationNumber_exists_real [IsAPF K L]
       (neg_one_le_fieldOfNormsRamificationNumber K L σ)
   exact ⟨_, (EReal.coe_toReal ht hb).symm⟩
 
-/-- The canonical residue automorphism induced by the same original action
-on its actual valuation ring. -/
+/-- The canonical residue automorphism induced by the action
+on its valuation ring. -/
 def FieldOfNorms.residueAut [IsAPF K L] [Fact (¬ Module.Finite K L)]
     (σ : L ≃ₐ[K] L) :
     IsLocalRing.ResidueField (FieldOfNorms.fieldValuation K L).valuationSubring ≃+*
@@ -179,8 +179,8 @@ theorem FieldOfNorms.residueAut_residue [IsAPF K L] [Fact (¬ Module.Finite K L)
   intro a
   rfl
 
-/-- Triviality of the actual residue action is precisely congruence of all
-actual integral elements modulo the actual maximal ideal. -/
+/-- Triviality of the residue action is precisely congruence of all
+integral elements modulo the maximal ideal. -/
 theorem FieldOfNorms.residueAut_eq_refl_iff [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (σ : L ≃ₐ[K] L) :
     FieldOfNorms.residueAut K L σ = RingEquiv.refl _ ↔
@@ -197,7 +197,7 @@ theorem FieldOfNorms.residueAut_eq_refl_iff [IsAPF K L]
     obtain ⟨b, rfl⟩ := IsLocalRing.residue_surjective (R := O) a
     exact Ideal.Quotient.eq.mpr (h b)
 
-/-- For an inertial original action, every actual uniformizer computes its
+/-- For an inertial action, every uniformizer computes its
 intrinsic ramification number; this includes the identity and infinity. -/
 theorem FieldOfNorms.ramificationNumber_eq_uniformizer [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (σ : L ≃ₐ[K] L) :
@@ -216,7 +216,7 @@ theorem FieldOfNorms.ramificationNumber_eq_uniformizer [IsAPF K L]
     (FieldOfNorms.integerAut K L σ) hres hπ
 
 /-- The general valued-field uniformizer ratio computes the existing
-intrinsic original norm-field number on its same original field. -/
+intrinsic norm-field number on its same field. -/
 theorem FieldOfNorms.ramificationNumber_eq_uniformizer_ratio [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (σ : L ≃ₐ[K] L) :
     ∀ (_hres : FieldOfNorms.residueAut K L σ = RingEquiv.refl _)
@@ -241,7 +241,7 @@ theorem FieldOfNorms.ramificationNumber_eq_uniformizer_ratio [IsAPF K L]
     (FieldOfNorms.aut K L σ) (FieldOfNorms.aut_valuation K σ)
     p hres hπ
 
-/-- Noninertia is detected on the actual residue field and has signed
+/-- Noninertia is detected on the residue field and has signed
 ramification number minus one. -/
 theorem FieldOfNorms.ramificationNumber_eq_neg_one_of_residue_ne [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (σ : L ≃ₐ[K] L) :
@@ -262,7 +262,7 @@ theorem FieldOfNorms.ramificationNumber_eq_neg_one_of_residue_ne [IsAPF K L]
   rw [hzero]
   simp
 
-/-- A nonidentity original action has a genuine finite integer number,
+/-- A nonidentity action has a finite integer number,
 namely a natural integral displacement order minus one. -/
 theorem FieldOfNorms.ramificationNumber_eq_nat_sub_one [IsAPF K L]
     [Fact (¬ Module.Finite K L)] {σ : L ≃ₐ[K] L} (hσ : σ ≠ 1) :
@@ -277,8 +277,8 @@ theorem FieldOfNorms.ramificationNumber_eq_nat_sub_one [IsAPF K L]
   rw [← ENat.natCast_toNat hfin, ENat.toENNReal_coe]
   norm_cast
 
-/-- The original automorphism acts on the intrinsic residue field through
-its actual map on the integral closure of the original base integers. -/
+/-- The automorphism acts on the intrinsic residue field through
+its map on the integral closure of the base integers. -/
 def algebraicResidueAut (σ : L ≃ₐ[K] L) :
     IsLocalRing.ResidueField
       (integralClosure (NormedField.valuation (K := K)).valuationSubring L) ≃+*
@@ -296,8 +296,8 @@ theorem algebraicResidueAut_residue (σ : L ≃ₐ[K] L)
         ((σ.restrictScalars (NormedField.valuation (K := K)).valuationSubring).mapIntegralClosure a)
             := rfl
 
-/-- Ordinary finite residue inclusions commute with the actual intrinsic
-residue inclusion of the original algebraic extension. -/
+/-- Ordinary finite residue inclusions commute with the intrinsic
+residue inclusion of the algebraic extension. -/
 theorem integralClosureResidueFromLayer_inclusion (E F : FiniteIntermediateField K L) (hEF : E ≤ F)
     (a : IsLocalRing.ResidueField (spectralIntegerRing K E.val)) :
     integralClosureResidueFromLayer K L F
@@ -309,7 +309,7 @@ theorem integralClosureResidueFromLayer_inclusion (E F : FiniteIntermediateField
   rw [← AlgHom.comp_apply, ← spectralResidueInclusion_comp]
   rfl
 
-/-- An actual finite restriction and the original infinite automorphism
+/-- A finite restriction and the infinite automorphism
 induce the same maps on the same intrinsic residue field. -/
 theorem algebraicResidueAut_fromLayer (σ : L ≃ₐ[K] L) (E : FiniteIntermediateField K L)
     (s : E.val ≃ₐ[K] E.val) (hs : ∀ a : E.val, (s a : L) = σ (a : L))
@@ -327,27 +327,27 @@ theorem algebraicResidueAut_fromLayer (σ : L ≃ₐ[K] L) (E : FiniteIntermedia
   simp only [coe_integralClosureSpectralEquiv_symm, coe_spectralIntegerInclusion]
   exact (hs (x : E.val)).symm
 
-/-- The actual source-coordinate residue has exactly the genuine inverse
-Frobenius normalization after inclusion into the intrinsic original residue field. -/
-theorem sourceResidueCoordinateEquiv_pow [IsAPF K L]
+/-- The source-coordinate residue has exactly the inverse
+Frobenius normalization after inclusion into the intrinsic residue field. -/
+theorem residueCoordinateEquiv_pow [IsAPF K L]
     (E : FiniteIntermediateField K L) (hE : apfMaximalTame K L ≤ E)
     (a : IsLocalRing.ResidueField
       (integralClosure (NormedField.valuation (K := K)).valuationSubring L)) :
-    integralClosureResidueFromLayer K L E (sourceResidueCoordinateEquiv K L E hE a) ^
-      p ^ sourceResidueDegree K L E hE = a := by
-  rw [sourceResidueCoordinateEquiv_apply, residue_sourceResidueIntegralCoordinate,
+    integralClosureResidueFromLayer K L E (residueCoordinateEquiv K L E hE a) ^
+      p ^ residueDegree K L E hE = a := by
+  rw [residueCoordinateEquiv_apply, residue_residueIntegralCoordinate,
     integralClosureResidueFromLayer_inclusion]
-  exact sourceResidueRoot_pow K L E hE a
+  exact residueRoot_pow K L E hE a
 
-/-- On a genuine stable finite restriction, the prescribed inverse
-Frobenius residue root commutes with the actual original residue action. -/
-theorem sourceResidueCoordinateEquiv_aut [IsAPF K L]
+/-- On a stable finite restriction, the prescribed inverse
+Frobenius residue root commutes with the residue action. -/
+theorem residueCoordinateEquiv_aut [IsAPF K L]
     (σ : L ≃ₐ[K] L) (E : FiniteIntermediateField K L) (hE : apfMaximalTame K L ≤ E)
     (s : E.val ≃ₐ[K] E.val) (hs : ∀ a : E.val, (s a : L) = σ (a : L))
     (a : IsLocalRing.ResidueField
       (integralClosure (NormedField.valuation (K := K)).valuationSubring L)) :
-    spectralResidueInclusion K s.toAlgHom (sourceResidueCoordinateEquiv K L E hE a) =
-      sourceResidueCoordinateEquiv K L E hE (algebraicResidueAut K L σ a) := by
+    spectralResidueInclusion K s.toAlgHom (residueCoordinateEquiv K L E hE a) =
+      residueCoordinateEquiv K L E hE (algebraicResidueAut K L σ a) := by
   let κ := IsLocalRing.ResidueField
     (integralClosure (NormedField.valuation (K := K)).valuationSubring L)
   let : PerfectField κ := IsAPF.perfectField_integralClosureResidue K L
@@ -355,39 +355,39 @@ theorem sourceResidueCoordinateEquiv_aut [IsAPF K L]
     (algebraMap (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring) κ).injective p
   apply (integralClosureResidueFromLayer K L E).injective
-  apply (iterateFrobeniusEquiv κ p (sourceResidueDegree K L E hE)).injective
+  apply (iterateFrobeniusEquiv κ p (residueDegree K L E hE)).injective
   change integralClosureResidueFromLayer K L E
       (spectralResidueInclusion K s.toAlgHom
-        (sourceResidueCoordinateEquiv K L E hE a)) ^
-        p ^ sourceResidueDegree K L E hE =
+        (residueCoordinateEquiv K L E hE a)) ^
+        p ^ residueDegree K L E hE =
       integralClosureResidueFromLayer K L E
-        (sourceResidueCoordinateEquiv K L E hE (algebraicResidueAut K L σ a)) ^
-          p ^ sourceResidueDegree K L E hE
+        (residueCoordinateEquiv K L E hE (algebraicResidueAut K L σ a)) ^
+          p ^ residueDegree K L E hE
   rw [← algebraicResidueAut_fromLayer K L σ E s hs, ← map_pow,
-    sourceResidueCoordinateEquiv_pow, sourceResidueCoordinateEquiv_pow]
+    residueCoordinateEquiv_pow, residueCoordinateEquiv_pow]
 
-/-- Actual finite Teichmüller naturality transports the full original
-source coordinate, not only its residue class. -/
-theorem sourceResidueIntegralCoordinate_aut [IsAPF K L]
+/-- Finite Teichmüller naturality transports the full
+coordinate, not only its residue class. -/
+theorem residueIntegralCoordinate_aut [IsAPF K L]
     (σ : L ≃ₐ[K] L) (E : FiniteIntermediateField K L) (hE : apfMaximalTame K L ≤ E)
     (s : E.val ≃ₐ[K] E.val) (hs : ∀ a : E.val, (s a : L) = σ (a : L))
     (a : IsLocalRing.ResidueField
       (integralClosure (NormedField.valuation (K := K)).valuationSubring L)) :
-    spectralIntegerInclusion K s.toAlgHom (sourceResidueIntegralCoordinate K L E hE a) =
-      sourceResidueIntegralCoordinate K L E hE (algebraicResidueAut K L σ a) := by
-  rw [sourceResidueIntegralCoordinate_eq_spectralTeichmuller,
-    spectralTeichmuller_naturality, sourceResidueCoordinateEquiv_aut K L σ E hE s hs,
-    ← sourceResidueIntegralCoordinate_eq_spectralTeichmuller]
+    spectralIntegerInclusion K s.toAlgHom (residueIntegralCoordinate K L E hE a) =
+      residueIntegralCoordinate K L E hE (algebraicResidueAut K L σ a) := by
+  rw [residueIntegralCoordinate_eq_spectralTeichmuller,
+    spectralTeichmuller_naturality, residueCoordinateEquiv_aut K L σ E hE s hs,
+    ← residueIntegralCoordinate_eq_spectralTeichmuller]
 
-/-- Original coordinate covariance on the actual cofinal stable fields
-proves equivariance of the same source-normalized constants in the original
+/-- Coordinate covariance on the cofinal stable fields
+proves equivariance of the same source-normalized constants in the
 multiplicative field of norms. No normality of the ambient extension is used. -/
-theorem FieldOfNorms.map_sourceResidueConstants [IsAPF K L]
+theorem FieldOfNorms.map_residueConstants [IsAPF K L]
     (σ : L ≃ₐ[K] L)
     (a : IsLocalRing.ResidueField
       (integralClosure (NormedField.valuation (K := K)).valuationSubring L)) :
-    FieldOfNorms.map σ (sourceResidueConstants K L a) =
-      sourceResidueConstants K L (algebraicResidueAut K L σ a) := by
+    FieldOfNorms.map σ (residueConstants K L a) =
+      residueConstants K L (algebraicResidueAut K L σ a) := by
   apply FieldOfNorms.ext
   intro T
   let D := FiniteIntermediateField.sup T (apfMaximalTame K L)
@@ -401,65 +401,65 @@ theorem FieldOfNorms.map_sourceResidueConstants [IsAPF K L]
       (IntermediateField.le_normalClosure D.val)
   have hEinv : FiniteIntermediateField.map σ.symm.toAlgHom E = E :=
     Subtype.ext (IntermediateField.map_normalClosure_eq D.val σ.symm)
-  have hcoord : FieldOfNorms.coord K L E (FieldOfNorms.map σ (sourceResidueConstants K L a)) =
+  have hcoord : FieldOfNorms.coord K L E (FieldOfNorms.map σ (residueConstants K L a)) =
       FieldOfNorms.coord K L E
-        (sourceResidueConstants K L (algebraicResidueAut K L σ a)) := by
+        (residueConstants K L (algebraicResidueAut K L σ a)) := by
     apply Subtype.val_injective
     rw [coe_fieldOfNormsEval_fieldOfNormsMap, hEinv,
-      FieldOfNorms.coord_sourceResidueConstants K L E hE,
-      FieldOfNorms.coord_sourceResidueConstants K L E hE]
-    have h := sourceResidueIntegralCoordinate_aut K L σ E hE s (fun _ => rfl) a
+      FieldOfNorms.coord_residueConstants K L E hE,
+      FieldOfNorms.coord_residueConstants K L E hE]
+    have h := residueIntegralCoordinate_aut K L σ E hE s (fun _ => rfl) a
     exact congrArg (fun z : spectralIntegerRing K E.val => ((z : E.val) : L)) h
   have h := congrArg (FiniteIntermediateField.norm T E hTE) hcoord
   simpa only [FieldOfNorms.coord_norm] using h
 
-/-- The same exact source-constant covariance holds inside the original
+/-- The same exact source-constant covariance holds inside the
 norm-field valuation ring. -/
-theorem FieldOfNorms.integerAut_sourceResidueConstantsInteger [IsAPF K L]
+theorem FieldOfNorms.integerAut_residueConstantsInteger [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (σ : L ≃ₐ[K] L) :
     ∀ a, FieldOfNorms.integerAut K L σ
-      (sourceResidueConstantsInteger K L a) =
-        sourceResidueConstantsInteger K L (algebraicResidueAut K L σ a) := by
+      (residueConstantsInteger K L a) =
+        residueConstantsInteger K L (algebraicResidueAut K L σ a) := by
   intro a
   apply Subtype.ext
-  change FieldOfNorms.map σ (sourceResidueConstants K L a) =
-    sourceResidueConstants K L (algebraicResidueAut K L σ a)
-  exact FieldOfNorms.map_sourceResidueConstants K L σ a
+  change FieldOfNorms.map σ (residueConstants K L a) =
+    residueConstants K L (algebraicResidueAut K L σ a)
+  exact FieldOfNorms.map_residueConstants K L σ a
 
-/-- The actual residue isomorphism induced by the same source constants
-intertwines the two actual original residue actions. -/
-theorem FieldOfNorms.residueAut_sourceResidueConstantsResidueEquiv [IsAPF K L]
+/-- The residue isomorphism induced by the same constants
+intertwines the two residue actions. -/
+theorem FieldOfNorms.residueAut_residueConstantsResidueEquiv [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (σ : L ≃ₐ[K] L) :
     ∀ a, FieldOfNorms.residueAut K L σ
-      (sourceResidueConstantsResidueEquiv K L a) =
-        sourceResidueConstantsResidueEquiv K L (algebraicResidueAut K L σ a) := by
+      (residueConstantsResidueEquiv K L a) =
+        residueConstantsResidueEquiv K L (algebraicResidueAut K L σ a) := by
   intro a
-  rw [sourceResidueConstantsResidueEquiv_apply, FieldOfNorms.residueAut_residue,
-    FieldOfNorms.integerAut_sourceResidueConstantsInteger,
-    ← sourceResidueConstantsResidueEquiv_apply]
+  rw [residueConstantsResidueEquiv_apply, FieldOfNorms.residueAut_residue,
+    FieldOfNorms.integerAut_residueConstantsInteger,
+    ← residueConstantsResidueEquiv_apply]
 
-/-- Original inertia is exactly inertia on the actual original norm field. -/
+/-- Inertia is exactly inertia on the norm field. -/
 theorem FieldOfNorms.residueAut_eq_refl_iff_algebraicResidueAut [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (σ : L ≃ₐ[K] L) :
     FieldOfNorms.residueAut K L σ = RingEquiv.refl _ ↔
       algebraicResidueAut K L σ = RingEquiv.refl _ := by
-  let e := sourceResidueConstantsResidueEquiv K L
+  let e := residueConstantsResidueEquiv K L
   constructor
   · intro h
     apply RingEquiv.ext
     intro a
     apply e.injective
-    have hc := FieldOfNorms.residueAut_sourceResidueConstantsResidueEquiv K L σ a
+    have hc := FieldOfNorms.residueAut_residueConstantsResidueEquiv K L σ a
     simpa only [h, RingEquiv.refl_apply] using hc.symm
   · intro h
     apply RingEquiv.ext
     intro b
     obtain ⟨a, rfl⟩ := e.surjective b
-    have hc := FieldOfNorms.residueAut_sourceResidueConstantsResidueEquiv K L σ a
+    have hc := FieldOfNorms.residueAut_residueConstantsResidueEquiv K L σ a
     simpa only [h, RingEquiv.refl_apply] using hc
 
-/-- The actual residue of an original moved finite embedding is the
-original residue action composed with its original residue inclusion. -/
+/-- The residue of a moved finite embedding is the
+residue action composed with its residue inclusion. -/
 theorem algebraicResidueAut_fromLayer_embedding (σ : L ≃ₐ[K] L) (E : FiniteIntermediateField K L)
     (a : IsLocalRing.ResidueField (spectralIntegerRing K E.val)) :
     algebraicResidueAut K L σ (integralClosureResidueFromLayer K L E a) =
@@ -477,8 +477,8 @@ theorem algebraicResidueAut_fromLayer_embedding (σ : L ≃ₐ[K] L) (E : Finite
     coe_spectralIntegerInclusion]
   rfl
 
-/-- Every original finite field above the actual tame part detects inertia,
-including fields not preserved by the original automorphism. -/
+/-- Every finite field above the tame part detects inertia,
+including fields not preserved by the automorphism. -/
 theorem FiniteIntermediateField.residue_eq_iff_algebraicResidueAut [IsAPF K L]
     (σ : L ≃ₐ[K] L) (E : FiniteIntermediateField K L) (hE : apfMaximalTame K L ≤ E) :
     spectralResidueInclusion K (σ.toAlgHom.comp E.val.val) =
@@ -500,19 +500,19 @@ theorem FiniteIntermediateField.residue_eq_iff_algebraicResidueAut [IsAPF K L]
     rw [h] at hc
     exact hc.symm
 
-/-- The actual finite compositum of an original layer and its moved image
-inside the original abstract extension. -/
+/-- The finite compositum of a layer and its moved image
+inside the abstract extension. -/
 def FiniteIntermediateField.autPairField (σ : L ≃ₐ[K] L) (E : FiniteIntermediateField K L) :
     FiniteIntermediateField K L :=
   FiniteIntermediateField.sup E (FiniteIntermediateField.map σ.toAlgHom E)
 
-/-- The original inclusion of the finite intermediate field into its actual pair field. -/
+/-- The inclusion of the finite intermediate field into its pair field. -/
 def FiniteIntermediateField.autPairLeft (σ : L ≃ₐ[K] L) (E : FiniteIntermediateField K L) :
     E.val →ₐ[K] (FiniteIntermediateField.autPairField K L σ E).val :=
   IntermediateField.inclusion (FiniteIntermediateField.le_sup_left E (FiniteIntermediateField.map
       σ.toAlgHom E))
 
-/-- The original moved embedding into the same actual finite compositum. -/
+/-- The moved embedding into the same finite compositum. -/
 def FiniteIntermediateField.autPairRight (σ : L ≃ₐ[K] L) (E : FiniteIntermediateField K L) :
     E.val →ₐ[K] (FiniteIntermediateField.autPairField K L σ E).val :=
   (IntermediateField.inclusion (FiniteIntermediateField.le_sup_right E (FiniteIntermediateField.map
@@ -531,15 +531,15 @@ theorem coe_finiteIntermediateFieldAutPairRight (σ : L ≃ₐ[K] L) (E : Finite
     (x : E.val) :
     (FiniteIntermediateField.autPairRight K L σ E x : L) = σ (x : L) := rfl
 
-/-- The intrinsic signed number of the original finite restriction, computed
-in the actual finite image compositum, even when the layer is not stable. -/
+/-- The intrinsic signed number of the finite restriction, computed
+in the finite image compositum, even when the layer is not stable. -/
 def FiniteIntermediateField.ramificationNumber (σ : L ≃ₐ[K] L) (E : FiniteIntermediateField K L) :
     EReal :=
   embeddingRamificationNumber K (FiniteIntermediateField.autPairRight K L σ E)
       (FiniteIntermediateField.autPairLeft K L σ E)
 
-/-- The actual intrinsic finite number is infinite precisely when the
-original automorphism fixes every element of that original finite intermediate field. -/
+/-- The intrinsic finite number is infinite precisely when the
+automorphism fixes every element of that finite intermediate field. -/
 theorem FiniteIntermediateField.ramificationNumber_eq_top_iff (σ : L ≃ₐ[K] L) (E :
     FiniteIntermediateField K L) :
     FiniteIntermediateField.ramificationNumber K L σ E = ⊤ ↔ σ.toAlgHom.comp E.val.val = E.val.val
@@ -558,8 +558,8 @@ theorem FiniteIntermediateField.ramificationNumber_one (E : FiniteIntermediateFi
     FiniteIntermediateField.ramificationNumber K L 1 E = ⊤ :=
   (FiniteIntermediateField.ramificationNumber_eq_top_iff K L 1 E).mpr (by ext x; rfl)
 
-/-- Comparing residues in the actual finite pair field is equivalent to
-comparing the same original embeddings in the original algebraic extension. -/
+/-- Comparing residues in the finite pair field is equivalent to
+comparing the embeddings in the algebraic extension. -/
 theorem FiniteIntermediateField.autPair_residue_eq_iff (σ : L ≃ₐ[K] L) (E : FiniteIntermediateField
     K L) :
     spectralResidueInclusion K (FiniteIntermediateField.autPairRight K L σ E) =
@@ -587,8 +587,8 @@ theorem FiniteIntermediateField.autPair_residue_eq_iff (σ : L ≃ₐ[K] L) (E :
     rw [← hr, ← hl] at hc
     exact hc
 
-/-- Above the actual tame part, the original noninertial automorphism has
-number minus one at every original finite intermediate field, including nonstable layers. -/
+/-- Above the tame part, the noninertial automorphism has
+number minus one at every finite intermediate field, including nonstable layers. -/
 theorem FiniteIntermediateField.ramificationNumber_eq_neg_one_of_residue_ne [IsAPF K L]
     (σ : L ≃ₐ[K] L) (E : FiniteIntermediateField K L) (hE : apfMaximalTame K L ≤ E)
     (hres : algebraicResidueAut K L σ ≠ RingEquiv.refl _) :
@@ -599,8 +599,8 @@ theorem FiniteIntermediateField.ramificationNumber_eq_neg_one_of_residue_ne [IsA
   exact (FiniteIntermediateField.residue_eq_iff_algebraicResidueAut K L σ E hE).mp
     ((FiniteIntermediateField.autPair_residue_eq_iff K L σ E).mp h)
 
-/-- The same original noninertial automorphism has number minus one on the
-actual original norm field. -/
+/-- The noninertial automorphism has number minus one on the
+norm field. -/
 theorem FieldOfNorms.ramificationNumber_eq_neg_one_of_algebraicResidue_ne [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (σ : L ≃ₐ[K] L)
     (hres : algebraicResidueAut K L σ ≠ RingEquiv.refl _) :
@@ -609,8 +609,8 @@ theorem FieldOfNorms.ramificationNumber_eq_neg_one_of_algebraicResidue_ne [IsAPF
   exact fun h => hres
     ((FieldOfNorms.residueAut_eq_refl_iff_algebraicResidueAut K L σ).mp h)
 
-/-- Embedding the original extension in its actual separable closure does
-not change the intrinsic number of any original finite restriction. -/
+/-- Embedding the extension in its separable closure does
+not change the intrinsic number of any finite restriction. -/
 theorem FiniteIntermediateField.ramificationNumber_eq_closure (σ : L ≃ₐ[K] L)
     (E : FiniteIntermediateField K L) (j : L →ₐ[K] SeparableClosure K) :
     FiniteIntermediateField.ramificationNumber K L σ E =
@@ -620,8 +620,8 @@ theorem FiniteIntermediateField.ramificationNumber_eq_closure (σ : L ≃ₐ[K] 
         σ E).val.val)
   exact h.symm
 
-/-- An actual stable finite restriction computes the same intrinsic number
-as the original moved-image pair; no stability of other layers is required. -/
+/-- A stable finite restriction computes the same intrinsic number
+as the moved-image pair; no stability of other layers is required. -/
 theorem FiniteIntermediateField.ramificationNumber_eq_aut (σ : L ≃ₐ[K] L) (E :
     FiniteIntermediateField K L)
     (s : E.val ≃ₐ[K] E.val) (hs : ∀ a : E.val, (s a : L) = σ (a : L)) :
@@ -637,8 +637,8 @@ theorem FiniteIntermediateField.ramificationNumber_eq_aut (σ : L ≃ₐ[K] L) (
   rw [he] at h
   exact h.trans (embeddingRamificationNumber_aut K s)
 
-/-- Triviality on the intrinsic original residue field forces genuine
-residue triviality on each actual stable finite restriction. -/
+/-- Triviality on the intrinsic residue field forces
+residue triviality on each stable finite restriction. -/
 theorem spectralResidueInclusion_eq_id_of_algebraicResidueAut_eq_refl
     (σ : L ≃ₐ[K] L) (E : FiniteIntermediateField K L) (s : E.val ≃ₐ[K] E.val)
     (hs : ∀ a : E.val, (s a : L) = σ (a : L))
@@ -651,7 +651,7 @@ theorem spectralResidueInclusion_eq_id_of_algebraicResidueAut_eq_refl
   rw [← algebraicResidueAut_fromLayer K L σ E s hs, hres]
   rfl
 
-/-- Every actual uniformizer computes the number of an inertial stable
+/-- Every uniformizer computes the number of an inertial stable
 finite restriction, including the identity with its infinite number. -/
 theorem FiniteIntermediateField.ramificationNumber_eq_uniformizer (σ : L ≃ₐ[K] L)
     (E : FiniteIntermediateField K L) (s : E.val ≃ₐ[K] E.val)
@@ -673,7 +673,7 @@ theorem FiniteIntermediateField.ramificationNumber_eq_uniformizer (σ : L ≃ₐ
     rfl
   · exact hπ
 
-/-- The intrinsic original inertia action has nonnegative number on every
+/-- The intrinsic inertia action has nonnegative number on every
 finite intermediate field, whether or not that layer is stable. -/
 theorem FiniteIntermediateField.ramificationNumber_nonneg (σ : L ≃ₐ[K] L)
     (hres : algebraicResidueAut K L σ = RingEquiv.refl _) (E : FiniteIntermediateField K L) :
@@ -688,10 +688,10 @@ theorem FiniteIntermediateField.ramificationNumber_nonneg (σ : L ≃ₐ[K] L)
   rw [← algebraicResidueAut_fromLayer_embedding K L σ E a, hres]
   rfl
 
-/-- Every original finite restriction has an actual finite Galois ambient
-presentation, simultaneously for all of its original subfields. The normal
-closure is taken only after embedding the actual image compositum in the
-separable closure, so the original extension need not be normal. -/
+/-- Every finite restriction has a finite Galois ambient
+presentation, simultaneously for all of its subfields. The normal
+closure is taken only after embedding the image compositum in the
+separable closure, so the extension need not be normal. -/
 theorem exists_finiteGalois_embedding_restrictions (σ : L ≃ₐ[K] L)
     (F : FiniteIntermediateField K L) :
     ∃ (Ω : FiniteGaloisIntermediateField K (SeparableClosure K))
@@ -733,7 +733,7 @@ theorem exists_finiteGalois_embedding_restrictions (σ : L ≃ₐ[K] L)
   rw [hr] at h ⊢
   exact h
 
-/-- The actual finite image inclusion has exactly the original local index. -/
+/-- The finite image inclusion has exactly the local index. -/
 theorem FiniteIntermediateField.fieldRange_ramificationIdx
     {Ω : Type*} [Field Ω] [Algebra K Ω] [FiniteDimensional K Ω]
     [Algebra.IsSeparable K Ω] (E F : FiniteIntermediateField K L) (hEF : E ≤ F)
@@ -764,7 +764,7 @@ theorem FiniteIntermediateField.fieldRange_ramificationIdx
   exact ha.symm.trans hb
 
 omit [IsPerfectResidueLocalField K] in
-/-- The relative degree of the actual finite image step is the original degree. -/
+/-- The relative degree of the finite image step is the degree. -/
 theorem FiniteIntermediateField.fieldRange_finrank
     {Ω : Type*} [Field Ω] [Algebra K Ω] [FiniteDimensional K Ω]
     [Algebra.IsSeparable K Ω] (E F : FiniteIntermediateField K L) (hEF : E ≤ F)
@@ -799,9 +799,9 @@ theorem FiniteIntermediateField.fieldRange_finrank
   rw [← hE, ← hF] at ht'
   nlinarith [ht, ht', hpos]
 
-/-- On every original finite step above the actual tame part, strictness
-below the original relative first bound forces equality of the intrinsic
-embedding numbers. Neither original layer is required to be stable. -/
+/-- On every finite step above the tame part, strictness
+below the relative first bound forces equality of the intrinsic
+embedding numbers. Neither layer is required to be stable. -/
 theorem FiniteIntermediateField.ramificationNumber_eq_of_lt_relativeFirstBound
     [IsAPF K L] (σ : L ≃ₐ[K] L) (E F : FiniteIntermediateField K L)
     (hE : apfMaximalTame K L ≤ E) (hEF : E ≤ F)
@@ -856,13 +856,13 @@ theorem FiniteIntermediateField.ramificationNumber_eq_of_lt_relativeFirstBound
       iE.fieldRange.val < apfRamificationBound E.val F.val := by
     rw [← hEnum]
     exact hsmall
-  have h := embeddingNumber_eq_restriction_of_lt_originalBound K E.val
+  have h := embeddingNumber_eq_restriction_of_lt_bound K E.val
     iE.fieldRange i.fieldRange hmap i.equivFieldRange hM htotal' s hs hsmall'
   exact hFnum.trans (h.trans hEnum.symm)
 
-/-- A finite nonzero displacement on the original norm field is computed
-by the ordinary difference of its actual coordinates at every sufficiently
-deep original finite field, with no stability assumption on those fields. -/
+/-- A finite nonzero displacement on the norm field is computed
+by the ordinary difference of its coordinates at every sufficiently
+deep finite field, with no stability assumption on those fields. -/
 theorem FieldOfNorms.valuation_sub_eventually_coordinate [IsAPF K L]
     [Fact (¬ Module.Finite K L)] :
     ∀ (α β : FieldOfNorms K L) (n : ℤ),
@@ -898,8 +898,8 @@ theorem FieldOfNorms.valuation_sub_eventually_coordinate [IsAPF K L]
     exact hbound.trans_lt hlt
   exact (v.map_eq_of_sub_lt hclose).trans hval
 
-/-- On a genuine finite tail, every original stable finite restriction has
-exactly the ramification number of the same original norm-field action. -/
+/-- On a finite tail, every stable finite restriction has
+exactly the ramification number of the norm-field action. -/
 theorem exists_finiteIntermediateField_stableRamificationNumber_eq [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (σ : L ≃ₐ[K] L) (hσ : σ ≠ 1)
     (hres : algebraicResidueAut K L σ = RingEquiv.refl _) :
@@ -994,9 +994,9 @@ theorem exists_finiteIntermediateField_stableRamificationNumber_eq [IsAPF K L]
   rw [hδENat]
   norm_cast
 
-/-- The actual original inertia action has a finite constant number on
-EVERY original finite field above one actual stable field. The constant is
-the number of the same original norm-field action. -/
+/-- The inertia action has a finite constant number on
+EVERY finite field above one stable field. The constant is
+the number of the norm-field action. -/
 theorem exists_finiteIntermediateField_inertial_ramificationNumber_eq [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (σ : L ≃ₐ[K] L) (hσ : σ ≠ 1)
     (hres : algebraicResidueAut K L σ = RingEquiv.refl _) :
@@ -1051,9 +1051,9 @@ theorem exists_finiteIntermediateField_inertial_ramificationNumber_eq [IsAPF K L
   exact (FiniteIntermediateField.ramificationNumber_eq_of_lt_relativeFirstBound K L σ E F
     hK₁ hEF hσE hsmall).trans hEnum
 
-/-- Wintenberger's ramification transfer on the original norm field:
-one actual finite field controls EVERY upper original finite field,
-including those moved by the original automorphism. -/
+/-- Wintenberger's ramification transfer on the norm field:
+one finite field controls EVERY upper finite field,
+including those moved by the automorphism. -/
 theorem exists_finiteIntermediateField_ramificationNumber_eq [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (σ : L ≃ₐ[K] L) :
     ∃ E : FiniteIntermediateField K L, ∀ F : FiniteIntermediateField K L, E ≤ F →
@@ -1071,6 +1071,6 @@ theorem exists_finiteIntermediateField_ramificationNumber_eq [IsAPF K L]
     rw [FiniteIntermediateField.ramificationNumber_eq_neg_one_of_residue_ne K L σ F hF hres,
       FieldOfNorms.ramificationNumber_eq_neg_one_of_algebraicResidue_ne K L σ hres]
 
-end OriginalAction
+end Action
 
 end FontaineWintenberger

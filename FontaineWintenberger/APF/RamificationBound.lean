@@ -12,9 +12,9 @@ public import Mathlib.Data.EReal.Basic
 /-!
 # The extended ramification bound
 
-The source supremum lives in the extended reals. Its defining set contains
+The supremum lives in the extended reals. Its defining set contains
 `-1`, and for the trivial extension it is unbounded, giving positive infinity.
-Actual conjugacy makes the bound independent of the separable embedding.
+Conjugacy makes the bound independent of the separable embedding.
 -/
 
 @[expose] public section
@@ -38,7 +38,7 @@ theorem apfSubgroup_fieldRange_eq_top_iff (i j : L →ₐ[K] SeparableClosure K)
   rw [← Subgroup.index_eq_one, ← Subgroup.index_eq_one,
     apfSubgroup_fieldRange_index_eq K L i j u]
 
-/-- The source supremum, including positive infinity for an unbounded set. -/
+/-- The supremum, including positive infinity for an unbounded set. -/
 noncomputable def apfRamificationBound : EReal :=
   sSup {x : EReal | ∃ u : ℝ, -1 ≤ u ∧
     apfSubgroup K (IsSepClosed.lift : L →ₐ[K] SeparableClosure K).fieldRange u = ⊤ ∧

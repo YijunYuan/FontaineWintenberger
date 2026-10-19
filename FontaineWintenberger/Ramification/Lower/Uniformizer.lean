@@ -13,7 +13,7 @@ public import Mathlib.Algebra.Polynomial.Taylor
 # The uniformizer criterion over an arbitrary perfect residue field
 
 Perfect-residue Frobenius lifts reduce every element to a prime power plus
-a uniformizer multiple. The polynomial Taylor identity then upgrades one
+an uniformizer multiple. The polynomial Taylor identity then upgrades one
 lower congruence depth from the corresponding uniformizer congruence.
 -/
 
@@ -28,7 +28,7 @@ variable (p : ℕ) [Fact p.Prime] [CharP (IsLocalRing.ResidueField B) p]
 
 include p in
 /-- Over a perfect residue field, the next uniformizer congruence raises
-the actual lower depth of the whole ring action. -/
+the lower depth of the whole ring action. -/
 theorem mem_lowerRamificationGroup_succ_of_uniformizer {π : B} (hπ : Irreducible π)
     {n : ℕ} {g : G}
     (hg : g ∈ lowerRamificationGroup G (IsLocalRing.maximalIdeal B) n)

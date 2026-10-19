@@ -12,8 +12,8 @@ public import FontaineWintenberger.Mathlib.FieldTheory.SeparableEmbeddings
 /-!
 # Tate averages over distinct restriction fibers
 
-The indexing type consists of actual finite-field embeddings with the prescribed
-restriction. Genuine fixing-group torsors remove repeated coset representatives.
+The indexing type consists of finite-field embeddings with the prescribed
+restriction. Fixing-group torsors remove repeated coset representatives.
 No normality or stability of either intermediate field is required.
 -/
 
@@ -29,7 +29,7 @@ section RestrictionFibers
 
 variable {K Ω : Type*} [Field K] [Field Ω] [Algebra K Ω]
 
-/-- The actual embeddings of the upper field with a prescribed actual
+/-- The embeddings of the upper field with a prescribed
 restriction to the lower field. -/
 def embeddingRestrictionFiber {E F : IntermediateField K Ω} (hEF : E ≤ F)
     (f : E →ₐ[K] Ω) :=
@@ -42,8 +42,8 @@ instance embeddingRestrictionFiber_finite {E F : IntermediateField K Ω}
 
 variable [FiniteDimensional K Ω] [Normal K Ω]
 
-/-- Right multiplication by the lower fixing group gives the original
-restriction fiber; this is an actual map of embeddings, not a quotient model. -/
+/-- Right multiplication by the lower fixing group gives the
+restriction fiber; this is a map of embeddings, not a quotient model. -/
 def fixingRestrictionMap {E F : IntermediateField K Ω} (hEF : E ≤ F)
     (s : Ω ≃ₐ[K] Ω) (d : E.fixingSubgroup) :
     embeddingRestrictionFiber hEF (s.toAlgHom.comp E.val) :=
@@ -53,8 +53,8 @@ def fixingRestrictionMap {E F : IntermediateField K Ω} (hEF : E ≤ F)
     exact congrArg s ((IntermediateField.mem_fixingSubgroup_iff _ _).mp d.2 x x.2)⟩
 
 omit [FiniteDimensional K Ω] in
-/-- Every actual upper embedding with the given lower restriction has an
-actual ambient automorphism representative in the required fixing coset. -/
+/-- Every upper embedding with the given lower restriction has an
+ambient automorphism representative in the required fixing coset. -/
 theorem fixingRestrictionMap_surjective {E F : IntermediateField K Ω} (hEF : E ≤ F)
     (s : Ω ≃ₐ[K] Ω) : Function.Surjective (fixingRestrictionMap hEF s) := by
   intro τ
@@ -72,8 +72,8 @@ theorem fixingRestrictionMap_surjective {E F : IntermediateField K Ω} (hEF : E 
   exact hr x
 
 omit [FiniteDimensional K Ω] in
-/-- Each genuine restriction fiber is a right torsor for the upper
-fixing subgroup, so all multiplicities are proved equal to its actual size. -/
+/-- Each restriction fiber is a right torsor for the upper
+fixing subgroup, so all multiplicities are proved equal to its size. -/
 theorem fixingRestrictionMap_fiber_card {E F : IntermediateField K Ω} (hEF : E ≤ F)
     (s : Ω ≃ₐ[K] Ω) (τ : embeddingRestrictionFiber hEF (s.toAlgHom.comp E.val)) :
     Nat.card {d : E.fixingSubgroup // fixingRestrictionMap hEF s d = τ} =
@@ -159,7 +159,7 @@ theorem sum_embeddingOrder_fixing_restrictions
     (fun t : G => (ramificationOrder (R := O) G t : ℝ≥0∞)) s]
   simp only [nsmul_eq_mul, Nat.card_eq_fintype_card]
 
-/-- Tate's exact average over distinct actual restriction embeddings in an
+/-- Tate's exact average over distinct restriction embeddings in an
 arbitrary finite separable tower. Neither field need be stable under `s`. -/
 theorem embeddingOrder_eq_sum_restrictionFiber
     (E F : IntermediateField K Ω) (hEF : E ≤ F) (s : G) :
@@ -195,8 +195,8 @@ theorem embeddingOrder_eq_sum_restrictionFiber
   rw [ENNReal.mul_inv (Or.inr (ENNReal.natCast_ne_top _))
     (Or.inl (ENNReal.natCast_ne_top _)), mul_comm]
 
-/-- The distinct-fiber formula applies to any original finite embedding,
-by its genuine extension to the finite normal ambient field. -/
+/-- The distinct-fiber formula applies to any finite embedding,
+by its extension to the finite normal ambient field. -/
 theorem embeddingOrder_restriction_eq_sum
     (E F : IntermediateField K Ω) (hEF : E ≤ F) (σ : F →ₐ[K] Ω) :
     letI := Fintype.ofFinite
@@ -222,8 +222,8 @@ variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
     [Algebra.IsSeparable K E] [Algebra.IsSeparable K E']
     [Algebra.IsSeparable K F] [Algebra.IsSeparable K F']
 
-/-- The actual local ramification index is unchanged by a commuting
-square of genuine source and target field isomorphisms. -/
+/-- The local ramification index is unchanged by a commuting
+square of source and target field isomorphisms. -/
 theorem embeddingRamificationIdx_isomorphic_square
     (eE : E ≃ₐ[K] E') (eF : F ≃ₐ[K] F') (u : E' →ₐ[K] F') (v : E →ₐ[K] F)
     (hcomm : u.comp eE.toAlgHom = eF.toAlgHom.comp v) :
@@ -249,14 +249,14 @@ local notation "F₀" => IntermediateField.restrict hFΩ
 local notation "eE" => IntermediateField.restrictAlgEquiv hEΩ
 local notation "eF" => IntermediateField.restrictAlgEquiv hFΩ
 
-/-- Restricting two original nested fields to their actual finite normal
-closure preserves their actual inclusion. -/
+/-- Restricting two nested fields to their finite normal
+closure preserves their inclusion. -/
 theorem normalClosureRestriction_le : E₀ ≤ F₀ := fun x hx =>
   (IntermediateField.mem_restrict hFΩ x).mpr
     (hEF ((IntermediateField.mem_restrict hEΩ x).mp hx))
 
-/-- The canonical original-field equivalences commute with the original
-inclusion, on the actual carriers. -/
+/-- The canonical original-field equivalences commute with the
+inclusion, on the carriers. -/
 theorem normalClosureRestriction_inclusion :
     (IntermediateField.inclusion (normalClosureRestriction_le K E F hEF)).comp (eE).toAlgHom =
       (eF).toAlgHom.comp (IntermediateField.inclusion hEF) := by
@@ -265,7 +265,7 @@ theorem normalClosureRestriction_inclusion :
   rfl
 
 omit E hEF in
-/-- Every original closure embedding lands in the actual finite normal
+/-- Every closure embedding lands in the finite normal
 closure; this is supplied by the canonical normal-closure construction. -/
 def restrictedNormalClosureEmbedding (τ : F →ₐ[K] SeparableClosure K) : F₀ →ₐ[K] Ω :=
   (τ.codRestrict (Ω).toIntermediateField.toSubalgebra
@@ -277,7 +277,7 @@ theorem coe_restrictedNormalClosureEmbedding (τ : F →ₐ[K] SeparableClosure 
     (restrictedNormalClosureEmbedding K F τ x : SeparableClosure K) = τ ((eF).symm x) := rfl
 
 /-- The finite ambient and intrinsic closure fibers are canonically
-bijective through the actual original field equivalences. -/
+bijective through the field equivalences. -/
 def normalClosureRestrictionFiberEquiv (σ : F →ₐ[K] SeparableClosure K) :
     embeddingRestrictionFiber (normalClosureRestriction_le K E F hEF)
       ((restrictedNormalClosureEmbedding K F σ).comp
@@ -331,7 +331,7 @@ theorem normalClosureRestrictionFiberEquiv_apply (σ : F →ₐ[K] SeparableClos
     (normalClosureRestrictionFiberEquiv K E F hEF σ τ).1 =
       (Ω).toIntermediateField.val.comp (τ.1.comp (eF).toAlgHom) := rfl
 
-/-- Factoring through the actual finite normal closure retains the original
+/-- Factoring through the finite normal closure retains the
 lower restriction, rather than replacing it by an unrelated embedding. -/
 theorem restrictedNormalClosureEmbedding_inclusion (σ : F →ₐ[K] SeparableClosure K) :
     (Ω).toIntermediateField.val.comp
@@ -365,16 +365,16 @@ local notation "eE" => IntermediateField.restrictAlgEquiv hEΩ
 local notation "eF" => IntermediateField.restrictAlgEquiv hFΩ
 local notation "h₀" => normalClosureRestriction_le K E F hEF
 
-/-- The original ramification index is preserved by the actual normal
-closure presentation, by two genuine source isomorphisms and the index tower. -/
+/-- The ramification index is preserved by the normal
+closure presentation, by two source isomorphisms and the index tower. -/
 theorem embeddingRamificationIdx_normalClosureRestriction :
     embeddingRamificationIdx K (IntermediateField.inclusion h₀) =
       embeddingRamificationIdx K (IntermediateField.inclusion hEF) := by
   exact embeddingRamificationIdx_isomorphic_square K eE eF _ _
     (normalClosureRestriction_inclusion K E F hEF)
 
-/-- The full distinct-fiber Tate formula in the actual separable closure.
-Its contract retains all original embeddings and has no finite-ambient choice. -/
+/-- The full distinct-fiber Tate formula in the separable closure.
+Its contract retains all embeddings and has no finite-ambient choice. -/
 theorem closureEmbeddingOrder_restriction_eq_sum
     (σ : F →ₐ[K] SeparableClosure K) :
     letI := Fintype.ofFinite
@@ -409,7 +409,7 @@ theorem closureEmbeddingOrder_restriction_eq_sum
   rw [hsum, hbase, ← embeddingRamificationIdx_normalClosureRestriction K E F hEF]
   exact embeddingOrder_restriction_eq_sum K Ω E₀ F₀ h₀ σ₀
 
-/-- The signed distinct-fiber identity, with its positive original index
+/-- The signed distinct-fiber identity, with its positive index
 cleared. All terms are nonnegative shifted numbers, so infinity is retained. -/
 theorem closureEmbeddingNumber_restriction_mul_index_eq_sum
     (σ : F →ₐ[K] SeparableClosure K) :

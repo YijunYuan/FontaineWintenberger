@@ -13,11 +13,11 @@ public import FontaineWintenberger.APF.Subextension
 public import FontaineWintenberger.APF.RamificationBound
 
 /-!
-# Disjoint root adjunction at an actual full upper stage
+# Disjoint root adjunction at a full upper stage
 
-The original full upper product makes the original conjugates of a root
-remain conjugate over the original APF field. Its actual minimal polynomial
-therefore keeps its degree, giving the original tensor isomorphism. The same
+The full upper product makes the conjugates of a root
+remain conjugate over the APF field. Its minimal polynomial
+therefore keeps its degree, giving the tensor isomorphism. The same
 subgroup product, restricted to the root field, gives the finite-base first
 ramification bound.
 -/
@@ -35,8 +35,8 @@ variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField 
 
 local notation "OK" => Valuation.valuationSubring (NormedField.valuation (K := K))
 
-/-- Every original conjugate of a root is attained by an automorphism fixing
-the original field when its actual upper product is full. -/
+/-- Every conjugate of a root is attained by an automorphism fixing
+the field when its upper product is full. -/
 theorem exists_fixing_aut_root_of_fullUpper
     (L : IntermediateField K (SeparableClosure K))
     (f : OK[X]) (hf : f.Monic) (hsep : (f.map (algebraMap OK K)).Separable)
@@ -61,8 +61,8 @@ theorem exists_fixing_aut_root_of_fullUpper
     _ = g x := by rw [← hmul]; rfl
     _ = y := hg
 
-/-- The original minimal polynomial keeps its degree under root adjunction
-to a field with full actual upper product. -/
+/-- The minimal polynomial keeps its degree under root adjunction
+to a field with full upper product. -/
 theorem minpoly_natDegree_eq_of_fullUpper
     (L : IntermediateField K (SeparableClosure K))
     (f : OK[X]) (hf : f.Monic) (hsep : (f.map (algebraMap OK K)).Separable)
@@ -95,7 +95,7 @@ theorem minpoly_natDegree_eq_of_fullUpper
     ((minpoly.monic (Algebra.IsIntegral.isIntegral (R := K) x)).map (algebraMap K L)).ne_zero
   simpa only [natDegree_map] using hd
 
-/-- The literal mapped minimal polynomial equals the original minimal
+/-- The mapped minimal polynomial equals the minimal
 polynomial over the APF field, by the proved degree equality. -/
 theorem minpoly_map_eq_of_fullUpper
     (L : IntermediateField K (SeparableClosure K))
@@ -111,7 +111,7 @@ theorem minpoly_map_eq_of_fullUpper
     (minpoly.dvd_map_of_isScalarTower K L x)
   rw [natDegree_map, minpoly_natDegree_eq_of_fullUpper K L f hf hsep hb htop x hx]
 
-/-- The original finite root field is linearly disjoint from the original
+/-- The finite root field is linearly disjoint from the
 APF field, with no normality hypothesis on either field. -/
 theorem linearDisjoint_root_of_fullUpper
     (L : IntermediateField K (SeparableClosure K))
@@ -124,7 +124,7 @@ theorem linearDisjoint_root_of_fullUpper
   linearDisjoint_adjoin_of_minpoly_lifts x (Algebra.IsIntegral.isIntegral (R := K) x)
     ⟨minpoly K x, minpoly_map_eq_of_fullUpper K L f hf hsep hb htop x hx⟩
 
-/-- The actual simple compositum has exactly the original root-field degree. -/
+/-- The simple compositum has exactly the root-field degree. -/
 theorem finrank_root_adjunction_eq_of_fullUpper
     (L : IntermediateField K (SeparableClosure K))
     (f : OK[X]) (hf : f.Monic) (hsep : (f.map (algebraMap OK K)).Separable)
@@ -138,7 +138,7 @@ theorem finrank_root_adjunction_eq_of_fullUpper
     IntermediateField.adjoin.finrank (Algebra.IsIntegral.isIntegral (R := K) x)]
   exact minpoly_natDegree_eq_of_fullUpper K L f hf hsep hb htop x hx
 
-/-- The actual original root field has degree at most the original polynomial. -/
+/-- The root field has degree at most the polynomial. -/
 theorem finrank_root_adjunction_le_polynomial_degree
     {Ω : Type*} [Field Ω] [Algebra K Ω]
     (f : OK[X]) (hf : f.Monic) (x : Ω) (hx : aeval x f = 0) :
@@ -151,7 +151,7 @@ theorem finrank_root_adjunction_le_polynomial_degree
 
 open scoped TensorProduct
 
-/-- Inclusion of the original root field into the original simple compositum;
+/-- Inclusion of the root field into the simple compositum;
 the map sends every element to that very same element. -/
 def rootFieldToCompositum {Ω : Type*} [Field Ω] [Algebra K Ω]
     (L : IntermediateField K Ω) (x : Ω) :
@@ -169,15 +169,15 @@ def rootFieldToCompositum {Ω : Type*} [Field Ω] [Algebra K Ω]
       map_mul' := fun _ _ => Subtype.ext rfl
       commutes' := fun r => Subtype.ext (IsScalarTower.algebraMap_apply K L Ω r).symm }
 
-/-- The original multiplication map on the original two fields. -/
+/-- The multiplication map on the two fields. -/
 def rootAdjunctionTensorMap {Ω : Type*} [Field Ω] [Algebra K Ω]
     (L : IntermediateField K Ω) (x : Ω) :
     L ⊗[K] (IntermediateField.adjoin K {x}) →ₐ[L] IntermediateField.adjoin L {x} :=
   AlgHom.liftEquiv K L (IntermediateField.adjoin K {x}) (IntermediateField.adjoin L {x})
     (rootFieldToCompositum K L x)
 
-/-- The actual canonical multiplication map is bijective, using the proved
-minimal-polynomial descent and the original primitive root. -/
+/-- The canonical multiplication map is bijective, using the proved
+minimal-polynomial descent and the primitive root. -/
 theorem rootAdjunctionTensorMap_bijective_of_fullUpper
     (L : IntermediateField K (SeparableClosure K))
     (f : OK[X]) (hf : f.Monic) (hsep : (f.map (algebraMap OK K)).Separable)
@@ -210,7 +210,7 @@ theorem rootAdjunctionTensorMap_bijective_of_fullUpper
     intro y
     exact htopφ trivial
 
-/-- The original multiplication isomorphism, with all conclusions proved
+/-- The multiplication isomorphism, with all conclusions proved
 from the full upper stage rather than supplied as certificates. -/
 def rootAdjunctionTensorEquivOfFullUpper
     (L : IntermediateField K (SeparableClosure K))
@@ -237,7 +237,7 @@ theorem rootAdjunctionTensorEquivOfFullUpper_tmul
   change (l : SeparableClosure K) * d = (l : SeparableClosure K) * d
   rfl
 
-/-- The actual absolute upper group fixes the whole original root field. -/
+/-- The absolute upper group fixes the whole root field. -/
 theorem absoluteUpper_le_root_fixingSubgroup
     (f : OK[X]) (hf : f.Monic) (hsep : (f.map (algebraMap OK K)).Separable)
     {b : ℝ} (hb : (f.natDegree.factorial : ℝ) *
@@ -251,7 +251,7 @@ theorem absoluteUpper_le_root_fixingSubgroup
     g.val g.property x hx
 
 /-- Restricting the full product to the root-field fixing group gives the
-actual compositum product, on the original ambient automorphisms. -/
+compositum product, on the ambient automorphisms. -/
 theorem apfSubgroup_root_compositum_eq_fixingSubgroup
     (L : IntermediateField K (SeparableClosure K))
     (f : OK[X]) (hf : f.Monic) (hsep : (f.map (algebraMap OK K)).Separable)
@@ -343,15 +343,15 @@ local notation "M" => IntermediateField.adjoin L (Singleton.singleton x : Set (S
 
 omit [PerfectField (IsLocalRing.ResidueField
     (NormedField.valuation (K := K)).valuationSubring)] in
-/-- The actual finite separable root adjunction remains APF over the original base. -/
+/-- The finite separable root adjunction remains APF over the base. -/
 theorem isAPF_rootAdjunction [IsAPF K L] : IsAPF K M :=
   (isAPF_finite_extension_iff K M L).mpr ‹_›
 
 omit [IsCompleteDiscreteValuedField K] [PerfectField (IsLocalRing.ResidueField
     (NormedField.valuation (K := K)).valuationSubring)]
       in
-/-- The original infinite field embeds in its actual simple compositum,
-so that compositum still has infinite degree over the original base. -/
+/-- The infinite field embeds in its simple compositum,
+so that compositum still has infinite degree over the base. -/
 theorem rootAdjunction_not_finite [Fact (¬ Module.Finite K L)] : ¬ Module.Finite K M := by
   intro hM
   let : Module.Finite K M := hM
@@ -359,8 +359,8 @@ theorem rootAdjunction_not_finite [Fact (¬ Module.Finite K L)] : ¬ Module.Fini
     (Module.Finite.of_injective (IsScalarTower.toAlgHom K L M).toLinearMap
     (IsScalarTower.toAlgHom K L M).injective)
 
-/-- The original compositum has full relative upper product over the original
-root field at the original finite-base Herbrand parameter. -/
+/-- The compositum has full relative upper product over the
+root field at the finite-base Herbrand parameter. -/
 theorem rootAdjunction_fullUpper
     (f : OK[X]) (hf : f.Monic) (hsep : (f.map (algebraMap OK K)).Separable)
     {b : ℝ} (hb : (f.natDegree.factorial : ℝ) *
@@ -398,8 +398,8 @@ theorem rootAdjunction_fullUpper
     exact ⟨g, rfl⟩
   exact (apfSubgroup_fieldRange_eq_top_iff D M i IsSepClosed.lift (apfPsi K D b)).mp hi
 
-/-- The same original relative upper product gives the actual extended
-first-bound estimate, including a trivial original root field. -/
+/-- The relative upper product gives the extended
+first-bound estimate, including a trivial root field. -/
 theorem apfPsi_le_rootAdjunction_firstBound
     (f : OK[X]) (hf : f.Monic) (hsep : (f.map (algebraMap OK K)).Separable)
     {b : ℝ} (hb : (f.natDegree.factorial : ℝ) *
@@ -411,7 +411,7 @@ theorem apfPsi_le_rootAdjunction_firstBound
     (IsAPF.apfPsi_mem_Ici K D (by linarith))
     (rootAdjunction_fullUpper K x L f hf hsep hb htop hx)
 
-/-- The actual new-base first bound is at least the original full-product
+/-- The new-base first bound is at least the full-product
 parameter, by the proved finite-base Herbrand lower bound. -/
 theorem le_rootAdjunction_firstBound
     (f : OK[X]) (hf : f.Monic) (hsep : (f.map (algebraMap OK K)).Separable)
@@ -428,8 +428,8 @@ section CommonClosure
 
 variable {Ω : Type*} [Field Ω] [Algebra K Ω]
 
-/-- The original full product in any chosen common closure pulls back to
-the actual full product in the canonical separable closure. -/
+/-- The full product in any chosen common closure pulls back to
+the full product in the canonical separable closure. -/
 theorem apfSubgroup_comap_closureEquiv_eq_top
     (e : SeparableClosure K ≃ₐ[K] Ω) (L : IntermediateField K Ω)
     {b : ℝ} (hb : -1 ≤ b)
@@ -450,8 +450,8 @@ theorem apfSubgroup_comap_closureEquiv_eq_top
 
 variable [IsSepClosure K Ω]
 
-/-- Disjoint root adjunction retains the same original fields and root in
-any chosen separable closure, through the proved actual closure isomorphism. -/
+/-- Disjoint root adjunction retains the fields and root in
+any chosen separable closure, through the proved closure isomorphism. -/
 theorem linearDisjoint_root_of_fullUpper_commonClosure
     (L : IntermediateField K Ω)
     (f : OK[X]) (hf : f.Monic) (hsep : (f.map (algebraMap OK K)).Separable)
@@ -480,8 +480,8 @@ theorem linearDisjoint_root_of_fullUpper_commonClosure
   exact hld
 
 omit [IsCompleteDiscreteValuedField K] in
-/-- The original primitive root makes the canonical multiplication map onto
-the original simple compositum, in any common ambient field. -/
+/-- The primitive root makes the canonical multiplication map onto
+the simple compositum, in any common ambient field. -/
 theorem rootAdjunctionTensorMap_surjective_commonClosure
     (L : IntermediateField K Ω) (x : Ω) :
     Function.Surjective (rootAdjunctionTensorMap K L x) := by
@@ -499,8 +499,8 @@ theorem rootAdjunctionTensorMap_surjective_commonClosure
   intro y
   exact htopφ trivial
 
-/-- The original canonical tensor map is bijective in every chosen common
-separable closure; the carrier is the actual simple compositum there. -/
+/-- The canonical tensor map is bijective in every chosen common
+separable closure; the carrier is the simple compositum there. -/
 theorem rootAdjunctionTensorMap_bijective_commonClosure
     (L : IntermediateField K Ω)
     (f : OK[X]) (hf : f.Monic) (hsep : (f.map (algebraMap OK K)).Separable)
@@ -524,8 +524,8 @@ theorem rootAdjunctionTensorMap_bijective_commonClosure
   rw [← hcomp]
   exact congrArg M.val huv
 
-/-- Canonical multiplication identifies the tensor of the same original
-fields with their same original simple compositum in the chosen closure. -/
+/-- Canonical multiplication identifies the tensor of the same
+fields with their same simple compositum in the chosen closure. -/
 def rootAdjunctionTensorEquivCommonClosure
     (L : IntermediateField K Ω)
     (f : OK[X]) (hf : f.Monic) (hsep : (f.map (algebraMap OK K)).Separable)
@@ -548,7 +548,7 @@ theorem rootAdjunctionTensorEquivCommonClosure_tmul
     (rootAdjunctionTensorEquivCommonClosure K L f hf hsep hb htop x hx (l ⊗ₜ[K] d) : Ω) =
       (l : Ω) * d := rfl
 
-/-- The source degree equality holds on the same original fields in any
+/-- The degree equality holds on the fields in any
 chosen common separable closure. -/
 theorem finrank_root_adjunction_eq_commonClosure
     (L : IntermediateField K Ω)
@@ -563,8 +563,8 @@ theorem finrank_root_adjunction_eq_commonClosure
       hx).toLinearEquiv.finrank_eq
   simpa only [Module.finrank_tensorProduct, Module.finrank_self, one_mul] using he.symm
 
-/-- The original upper group in the chosen common closure fixes the whole
-original root field there. -/
+/-- The upper group in the chosen common closure fixes the whole
+root field there. -/
 theorem upper_le_root_fixingSubgroup_commonClosure
     (f : OK[X]) (hf : f.Monic) (hsep : (f.map (algebraMap OK K)).Separable)
     {b : ℝ} (hb : (f.natDegree.factorial : ℝ) *
@@ -588,8 +588,8 @@ theorem upper_le_root_fixingSubgroup_commonClosure
     fixingSubgroup_map_autCongr, IntermediateField.adjoin_map, Set.image_singleton, hxy] at hle
   exact hle
 
-/-- The actual compositum upper product is the root-field fixing subgroup,
-on the same original automorphisms in the chosen common closure. -/
+/-- The compositum upper product is the root-field fixing subgroup,
+on the automorphisms in the chosen common closure. -/
 theorem upperProduct_root_compositum_eq_commonClosure
     (L : IntermediateField K Ω)
     (f : OK[X]) (hf : f.Monic) (hsep : (f.map (algebraMap OK K)).Separable)
@@ -627,14 +627,14 @@ local notation "M" => IntermediateField.adjoin L (Singleton.singleton x : Set Ω
 
 omit [PerfectField (IsLocalRing.ResidueField
     (NormedField.valuation (K := K)).valuationSubring)] in
-/-- The same original root compositum in the chosen common closure remains APF. -/
+/-- The root compositum in the chosen common closure remains APF. -/
 theorem isAPF_rootAdjunction_commonClosure [IsAPF K L] : IsAPF K M :=
   (isAPF_finite_extension_iff K M L).mpr ‹_›
 
 omit [IsCompleteDiscreteValuedField K] [PerfectField (IsLocalRing.ResidueField
     (NormedField.valuation (K := K)).valuationSubring)]
       [IsSepClosure K Ω] in
-/-- Infinite degree is retained by the same original root compositum in the
+/-- Infinite degree is retained by the root compositum in the
 chosen common closure. -/
 theorem rootAdjunction_not_finite_commonClosure [Fact (¬ Module.Finite K L)] :
     ¬ Module.Finite K M := by
@@ -644,8 +644,8 @@ theorem rootAdjunction_not_finite_commonClosure [Fact (¬ Module.Finite K L)] :
     (Module.Finite.of_injective (IsScalarTower.toAlgHom K L M).toLinearMap
     (IsScalarTower.toAlgHom K L M).injective)
 
-/-- The full relative upper product over the actual root field in the
-chosen common closure. All field carriers remain the original carriers. -/
+/-- The full relative upper product over the root field in the
+chosen common closure. All field carriers remain the carriers. -/
 theorem rootAdjunction_fullUpper_commonClosure
     (f : OK[X]) (hf : f.Monic) (hsep : (f.map (algebraMap OK K)).Separable)
     {b : ℝ} (hb : (f.natDegree.factorial : ℝ) *
@@ -701,8 +701,8 @@ theorem rootAdjunction_fullUpper_commonClosure
     exact ⟨g, rfl⟩
   exact (apfSubgroup_fieldRange_eq_top_iff D M i IsSepClosed.lift (apfPsi K D b)).mp hi
 
-/-- The actual relative first bound in the chosen common closure dominates
-the original finite-base Herbrand parameter. -/
+/-- The relative first bound in the chosen common closure dominates
+the finite-base Herbrand parameter. -/
 theorem apfPsi_le_rootAdjunction_firstBound_commonClosure
     (f : OK[X]) (hf : f.Monic) (hsep : (f.map (algebraMap OK K)).Separable)
     {b : ℝ} (hb : (f.natDegree.factorial : ℝ) *
@@ -715,8 +715,8 @@ theorem apfPsi_le_rootAdjunction_firstBound_commonClosure
     (IsAPF.apfPsi_mem_Ici K D (by linarith))
     (rootAdjunction_fullUpper_commonClosure K x L f hf hsep hb htop hx)
 
-/-- The same original new-base first bound also dominates the original
-parameter, since the actual finite-base inverse Herbrand function does. -/
+/-- The new-base first bound also dominates the
+parameter, since the finite-base inverse Herbrand function does. -/
 theorem le_rootAdjunction_firstBound_commonClosure
     (f : OK[X]) (hf : f.Monic) (hsep : (f.map (algebraMap OK K)).Separable)
     {b : ℝ} (hb : (f.natDegree.factorial : ℝ) *

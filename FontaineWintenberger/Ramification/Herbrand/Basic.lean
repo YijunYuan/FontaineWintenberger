@@ -16,13 +16,13 @@ public import Mathlib.Analysis.Calculus.Deriv.Mul
 ## Herbrand functions and finite truncations of intrinsic ramification order
 
 Extended orders are capped before conversion to real numbers. In particular
-the identity contributes the full finite cap. The source Herbrand function is
-defined by its integral of the actual real lower-group cardinalities.
+the identity contributes the full finite cap. The Herbrand function is
+defined by its integral of the real lower-group cardinalities.
 
 ## The Herbrand order isomorphism and its inverse
 
-The actual integral-defined function is strictly increasing and onto its
-source half-line. Its inverse is obtained from this proved order isomorphism.
+The integral-defined function is strictly increasing and onto its
+half-line. Its inverse is obtained from this proved order isomorphism.
 -/
 
 @[expose] public section
@@ -162,7 +162,7 @@ theorem intervalIntegrable_card_lowerRamificationGroupReal (a b : ℝ) :
       (Nat.card (lowerRamificationGroupReal G (IsLocalRing.maximalIdeal R) t) : ℝ)) volume a b :=
   (antitone_card_lowerRamificationGroupReal (R := R) G).intervalIntegrable
 
-/-- The source Herbrand function, integrating actual real lower-group cardinalities. -/
+/-- The Herbrand function, integrating real lower-group cardinalities. -/
 noncomputable def herbrandFunction (t : ℝ) : ℝ :=
   if t ≤ 0 then t else
     ∫ s in (0 : ℝ)..t,
@@ -196,7 +196,7 @@ theorem continuous_herbrandSum : Continuous (herbrandSum (R := R) G) := by
         continuous_const
 
 open scoped Classical in
-/-- The finite sum has the actual lower-cardinality ratio as derivative away from breaks. -/
+/-- The finite sum has the lower-cardinality ratio as derivative away from breaks. -/
 theorem hasDerivAt_herbrandSum {t : ℝ} (ht : -1 < t)
     (hbreak : ∀ n : ℕ, t + 1 ≠ n) :
     HasDerivAt (herbrandSum (R := R) G)
@@ -260,7 +260,7 @@ theorem herbrandSum_of_nonpos {t : ℝ} (ht : -1 ≤ t) (ht' : t ≤ 0) :
   field_simp
   ring
 
-/-- The finite sum is proved equal to the source integral on its entire domain. -/
+/-- The finite sum is proved equal to the integral on its entire domain. -/
 theorem herbrandFunction_eq_sum {t : ℝ} (ht : -1 ≤ t) :
     herbrandFunction (R := R) G t = herbrandSum (R := R) G t := by
   by_cases ht0 : t ≤ 0
@@ -273,7 +273,7 @@ theorem continuousOn_herbrandFunction :
   (continuous_herbrandSum (R := R) G).continuousOn.congr
     (fun _ ht => herbrandFunction_eq_sum G ht)
 
-/-- The actual integral-defined Herbrand function has the source cardinality-ratio derivative. -/
+/-- The integral-defined Herbrand function has the cardinality-ratio derivative. -/
 theorem hasDerivAt_herbrandFunction {t : ℝ} (ht : -1 < t)
     (hbreak : ∀ n : ℕ, t + 1 ≠ n) :
     HasDerivAt (herbrandFunction (R := R) G)
@@ -354,7 +354,7 @@ theorem surjOn_herbrandFunction :
     ⟨by simpa only [herbrandFunction_neg_one] using hu, hbound⟩
   exact ⟨t, ht.1, htu⟩
 
-/-- The actual Herbrand integral induces an order isomorphism of the source half-line. -/
+/-- The Herbrand integral induces an order isomorphism of the half-line. -/
 noncomputable def herbrandOrderIso : Set.Ici (-1 : ℝ) ≃o Set.Ici (-1 : ℝ) where
   toEquiv := Equiv.ofBijective
     (fun t => ⟨herbrandFunction (R := R) G t, herbrandFunction_mem_Ici G t.property⟩)
@@ -371,7 +371,7 @@ noncomputable def herbrandOrderIso : Set.Ici (-1 : ℝ) ≃o Set.Ici (-1 : ℝ) 
 theorem herbrandOrderIso_apply (t : Set.Ici (-1 : ℝ)) :
     (herbrandOrderIso (R := R) G t : ℝ) = herbrandFunction (R := R) G t := rfl
 
-/-- Inverse Herbrand function; outside the source domain the argument is clamped to `-1`. -/
+/-- Inverse Herbrand function; outside the domain the argument is clamped to `-1`. -/
 noncomputable def inverseHerbrandFunction (u : ℝ) : ℝ :=
   ((herbrandOrderIso (R := R) G).symm ⟨max u (-1), le_max_right _ _⟩ : ℝ)
 

@@ -12,10 +12,10 @@ public import FontaineWintenberger.Ramification.Lower.BaseChange
 public import FontaineWintenberger.Ramification.Upper.Transport
 
 /-!
-# Prime-step congruences for the original finite-layer integral norms
+# Prime-step congruences for the finite-layer integral norms
 
-The actual spectral integer rings agree with the own-ring constructions.
-Their norm maps agree through the original field norm, so the proved cyclic
+The spectral integer rings agree with the own-ring constructions.
+Their norm maps agree through the field norm, so the proved cyclic
 prime congruence applies to the same finite-layer maps used in the norm chain.
 -/
 
@@ -43,8 +43,8 @@ local instance primeNorm_perfectField (E : FiniteIntermediateField K Ω) : Perfe
     (NormedField.valuation (K := K)).valuationSubring)
 
 
-/-- Actual prime-step congruence for the same finite-layer integral norm,
-with the same intrinsic first bound and the original spectral integers. -/
+/-- Prime-step congruence for the same finite-layer integral norm,
+with the same intrinsic first bound and the spectral integers. -/
 theorem integerNorm_prime_add_congruence_of_bound
     (E F : FiniteIntermediateField K Ω) (hEF : E ≤ F) (p : ℕ) [Fact p.Prime] :
     let F' := IntermediateField.extendScalars hEF

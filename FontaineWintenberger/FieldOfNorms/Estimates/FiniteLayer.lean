@@ -9,11 +9,11 @@ public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.FieldOfNorms.Estimates.Nonnormal
 
 /-!
-# Estimates for the original finite-layer integral norms
+# Estimates for the finite-layer integral norms
 
-The canonical spectral norms on the two original finite fields identify
+The canonical spectral norms on the two finite fields identify
 their integer rings with the integer rings used over the relative base.
-The commuting identity on field elements transports the actual norms,
+The commuting identity on field elements transports the norms,
 ramification indices and ideal-power estimates without a norm on the
 ambient separable extension.
 -/
@@ -80,7 +80,7 @@ variable {K L : Type*} [NontriviallyNormedField K] [IsPerfectResidueLocalField K
 
 local notation "p" => residueChar K
 
-/-- The actual original finite-layer norm has the intrinsic relative
+/-- The finite-layer norm has the intrinsic relative
 Herbrand modulus on every totally ramified prime-power step, including
 the identity step. No norm on the ambient separable extension is chosen. -/
 theorem integerNorm_sub_congruence_of_totallyRamified
@@ -163,8 +163,8 @@ theorem integerNorm_sub_congruence_of_totallyRamified
   exact sub_mem_pow_of_norm_commutes f g (integerNorm E F hEF)
     (Algebra.intNorm R' S') hnorm _ x y hc
 
-/-- The actual original additive norm defect has the precision given by
-the actual first bound of a nontrivial totally ramified prime-power step. -/
+/-- The additive norm defect has the precision given by
+the first bound of a nontrivial totally ramified prime-power step. -/
 theorem exists_integerNorm_add_congruence_of_totallyRamified
     (E F : FiniteIntermediateField K L) (hEF : E ≤ F) :
     letI : Algebra E.val F.val := (IntermediateField.inclusion hEF).toRingHom.toAlgebra
@@ -243,8 +243,8 @@ theorem exists_integerNorm_add_congruence_of_totallyRamified
   exact add_sub_mem_pow_of_norm_commutes f g (integerNorm E F hEF)
     (Algebra.intNorm R' S') hnorm _ x y (hadd (g x) (g y))
 
-/-- A degree-one inclusion is an equality of the actual finite intermediate fields,
-so its actual norm has exactly zero additive defect. -/
+/-- A degree-one inclusion is an equality of the finite intermediate fields,
+so its norm has exactly zero additive defect. -/
 theorem integerNorm_add_sub_eq_zero_of_finrank_eq_one
     (E F : FiniteIntermediateField K L) (hEF : E ≤ F)
     (hd : Module.finrank E.val (IntermediateField.extendScalars hEF) = 1)
@@ -262,8 +262,8 @@ theorem integerNorm_add_sub_eq_zero_of_finrank_eq_one
   subst F
   simp only [integerNorm_self, add_sub_cancel_left, sub_self]
 
-/-- Every finite real lower bound for the actual first bound controls the
-original additive norm defect. The identity step has infinite first bound
+/-- Every finite real lower bound for the first bound controls the
+additive norm defect. The identity step has infinite first bound
 and zero defect, so all finite precisions are covered uniformly. -/
 theorem integerNorm_add_congruence_of_le_apfRamificationBound
     (E F : FiniteIntermediateField K L) (hEF : E ≤ F) :

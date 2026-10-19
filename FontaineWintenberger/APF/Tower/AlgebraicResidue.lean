@@ -11,9 +11,9 @@ public import FontaineWintenberger.APF.Tower.Residue
 /-!
 # The intrinsic residue field of an algebraic APF extension
 
-The canonical integral closure of the original base integer ring in the
-original algebraic field is a valuation ring. Its finite residue inclusions
-become isomorphisms on the actual APF residue-stable tail.
+The canonical integral closure of the base integer ring in the
+algebraic field is a valuation ring. Its finite residue inclusions
+become isomorphisms on the APF residue-stable tail.
 
 The finite-layer representative argument generalizes the diagonal-layer
 argument in `FalseTateExtension.Padic.FiniteGaloisStructure`.
@@ -33,8 +33,8 @@ section Algebraic
 
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsAlgebraic K L]
 
-/-- The canonical integral closure and the original spectral integer ring
-are identified by the identity in the original algebraic field. -/
+/-- The canonical integral closure and the spectral integer ring
+are identified by the identity in the algebraic field. -/
 def integralClosureSpectralEquiv :
     integralClosure R₀ L ≃ₐ[R₀] spectralIntegerRing K L :=
   IsIntegralClosure.equiv R₀ (integralClosure R₀ L) L (spectralIntegerRing K L)
@@ -51,20 +51,20 @@ theorem coe_integralClosureSpectralEquiv_symm (x : spectralIntegerRing K L) :
   simpa only [AlgEquiv.apply_symm_apply] using
     (coe_integralClosureSpectralEquiv K L ((integralClosureSpectralEquiv K L).symm x)).symm
 
-/-- The actual canonical integral closure in the original algebraic field
+/-- The canonical integral closure in the algebraic field
 is a valuation ring, without a finiteness assumption on the extension. -/
 instance integralClosure_valuationRing : ValuationRing (integralClosure R₀ L) :=
   Function.Surjective.valuationRing (integralClosureSpectralEquiv K L).symm.toRingHom
     (integralClosureSpectralEquiv K L).symm.surjective
 
-/-- For every original field element, it or its inverse is integral. -/
+/-- For every field element, it or its inverse is integral. -/
 theorem mem_or_inv_mem_integralClosure (x : L) :
     x ∈ integralClosure R₀ L ∨ x⁻¹ ∈ integralClosure R₀ L := by
   change IsIntegral R₀ x ∨ IsIntegral R₀ x⁻¹
   have h := (spectralIntegerRing K L).mem_or_inv_mem x
   simpa only [mem_spectralIntegerRing, ← isIntegral_iff_spectralNorm_le_one] using h
 
-/-- The canonical inclusion of the original base integers is local. -/
+/-- The canonical inclusion of the base integers is local. -/
 instance integralClosure_algebraMap_isLocalHom :
     IsLocalHom (algebraMap R₀ (integralClosure R₀ L)) where
   map_nonunit x hx := by
@@ -80,7 +80,7 @@ section Inclusions
 variable {E L : Type*} [Field E] [Field L] [Algebra K E] [Algebra K L]
     [Algebra.IsAlgebraic K E] [Algebra.IsAlgebraic K L]
 
-/-- The actual original field embedding on canonical integral closures. -/
+/-- The field embedding on canonical integral closures. -/
 def integralClosureInclusion (i : E →ₐ[K] L) :
     integralClosure R₀ E →ₐ[R₀] integralClosure R₀ L :=
   (i.restrictScalars R₀).mapIntegralClosure
@@ -91,22 +91,22 @@ theorem coe_integralClosureInclusion (i : E →ₐ[K] L) (x : integralClosure R�
     (integralClosureInclusion K i x : L) = i (x : E) := rfl
 
 omit [Algebra.IsAlgebraic K E] [Algebra.IsAlgebraic K L] in
-/-- Pulling back the canonical integral closure gives exactly the original
-source integral closure, without normality or finiteness assumptions. -/
+/-- Pulling back the canonical integral closure gives exactly the
+integral closure, without normality or finiteness assumptions. -/
 theorem mem_integralClosure_inclusion_iff (i : E →ₐ[K] L) (x : E) :
     i x ∈ integralClosure R₀ L ↔ x ∈ integralClosure R₀ E :=
   isIntegral_algHom_iff (i.restrictScalars R₀) i.injective
 
 omit [Algebra.IsAlgebraic K L] in
-/-- The intersection with an original embedded algebraic subfield is
-exactly its original spectral integer ring, including every finite intermediate field. -/
+/-- The intersection with an embedded algebraic subfield is
+exactly its spectral integer ring, including every finite intermediate field. -/
 theorem mem_integralClosure_embedding_iff_spectral (i : E →ₐ[K] L) (x : E) :
     i x ∈ integralClosure R₀ L ↔ x ∈ spectralIntegerRing K E := by
   exact (mem_integralClosure_inclusion_iff K i x).trans
     (isIntegral_iff_spectralNorm_le_one K x)
 
 /-- Canonical closure inclusions and spectral integer inclusions form the
-actual commuting square inside the original fields. -/
+commuting square inside the fields. -/
 theorem integralClosureSpectralEquiv_inclusion (i : E →ₐ[K] L)
     (x : integralClosure R₀ E) :
     integralClosureSpectralEquiv K L (integralClosureInclusion K i x) =
@@ -115,7 +115,7 @@ theorem integralClosureSpectralEquiv_inclusion (i : E →ₐ[K] L)
   simp only [coe_integralClosureSpectralEquiv, coe_integralClosureInclusion,
     coe_spectralIntegerInclusion]
 
-/-- The canonical closure map is local for the original maximal ideals. -/
+/-- The canonical closure map is local for the maximal ideals. -/
 instance integralClosureInclusion_isLocalHom (i : E →ₐ[K] L) :
     IsLocalHom (integralClosureInclusion K i) := by
   let := spectralIntegerInclusion_isLocalHom K i
@@ -130,8 +130,8 @@ instance integralClosureInclusion_isLocalHom (i : E →ₐ[K] L) :
     h'.map (integralClosureSpectralEquiv K E).symm.toMonoidHom
   simpa only [AlgEquiv.symm_apply_apply] using h''
 
-/-- The original maximal ideal contracts to exactly the source maximal
-ideal along each actual field embedding. -/
+/-- The maximal ideal contracts to exactly the maximal
+ideal along each field embedding. -/
 theorem integralClosureInclusion_maximalIdeal_comap (i : E →ₐ[K] L) :
     Ideal.comap (integralClosureInclusion K i).toRingHom
         (IsLocalRing.maximalIdeal (integralClosure R₀ L)) =
@@ -140,7 +140,7 @@ theorem integralClosureInclusion_maximalIdeal_comap (i : E →ₐ[K] L) :
   change ¬ IsUnit (integralClosureInclusion K i x) ↔ ¬ IsUnit x
   exact not_congr (isUnit_map_iff (integralClosureInclusion K i) x)
 
-/-- The actual residue map on canonical original integral closures. -/
+/-- The residue map on canonical integral closures. -/
 def integralClosureResidueInclusion (i : E →ₐ[K] L) :
     IsLocalRing.ResidueField (integralClosure R₀ E) →ₐ[IsLocalRing.ResidueField R₀]
       IsLocalRing.ResidueField (integralClosure R₀ L) :=
@@ -153,7 +153,7 @@ theorem integralClosureResidueInclusion_residue (i : E →ₐ[K] L)
       IsLocalRing.residue _ (integralClosureInclusion K i x) := rfl
 
 /-- The canonical closure and spectral integer descriptions induce the
-same intrinsic residue field over the original base residue field. -/
+same intrinsic residue field over the base residue field. -/
 def integralClosureSpectralResidueEquiv :
     IsLocalRing.ResidueField (integralClosure R₀ L) ≃ₐ[IsLocalRing.ResidueField R₀]
       IsLocalRing.ResidueField (spectralIntegerRing K L) :=
@@ -164,7 +164,7 @@ theorem integralClosureSpectralResidueEquiv_residue (x : integralClosure R₀ L)
     integralClosureSpectralResidueEquiv K (L := L) (IsLocalRing.residue _ x) =
       IsLocalRing.residue _ (integralClosureSpectralEquiv K L x) := rfl
 
-/-- The actual residue inclusions commute with the identity-valued
+/-- The residue inclusions commute with the identity-valued
 canonical identifications of integer rings. -/
 theorem integralClosureSpectralResidueEquiv_inclusion (i : E →ₐ[K] L)
     (z : IsLocalRing.ResidueField (integralClosure R₀ E)) :
@@ -183,8 +183,8 @@ section FiniteRepresentatives
 
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsAlgebraic K L]
 
-/-- Every actual infinite residue class is represented in an actual finite
-subfield of the original algebraic extension. -/
+/-- Every infinite residue class is represented in a finite
+subfield of the algebraic extension. -/
 theorem exists_finiteIntermediateField_spectralResidue_preimage
     (z : IsLocalRing.ResidueField (spectralIntegerRing K L)) :
     ∃ E : FiniteIntermediateField K L,
@@ -212,8 +212,8 @@ variable [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
-/-- Every sufficiently large original finite intermediate field maps bijectively onto
-the residue field of the original algebraic extension. -/
+/-- Every sufficiently large finite intermediate field maps bijectively onto
+the residue field of the algebraic extension. -/
 theorem IsAPF.exists_finiteIntermediateField_spectralResidueInclusion_bijective [IsAPF K L] :
     ∃ T : FiniteIntermediateField K L, ∀ E : FiniteIntermediateField K L, T ≤ E →
       Function.Bijective (spectralResidueInclusion K E.val.val) := by
@@ -244,8 +244,8 @@ theorem IsAPF.exists_finiteIntermediateField_spectralResidueInclusion_bijective 
     _ = spectralResidueInclusion K F.val.val y := congrArg (fun f => f y) hj
     _ = z := hy
 
-/-- The actual finite spectral residue inclusion into the canonical
-integral-closure residue field of the original extension. -/
+/-- The finite spectral residue inclusion into the canonical
+integral-closure residue field of the extension. -/
 def integralClosureResidueFromLayer (E : FiniteIntermediateField K L) :
     IsLocalRing.ResidueField (spectralIntegerRing K E.val) →ₐ[IsLocalRing.ResidueField R₀]
       IsLocalRing.ResidueField (integralClosure R₀ L) :=
@@ -262,7 +262,7 @@ theorem integralClosureResidueFromLayer_residue (E : FiniteIntermediateField K L
         (spectralIntegerInclusion K E.val.val x)) := rfl
 
 /-- Actual APF residue stabilization identifies the intrinsic canonical
-residue field with that of every sufficiently large original finite intermediate field. -/
+residue field with that of every sufficiently large finite intermediate field. -/
 theorem IsAPF.exists_finiteIntermediateField_integralClosureResidue_bijective [IsAPF K L] :
     ∃ T : FiniteIntermediateField K L, ∀ E : FiniteIntermediateField K L, T ≤ E →
       Function.Bijective (integralClosureResidueFromLayer K L E) := by
@@ -270,11 +270,11 @@ theorem IsAPF.exists_finiteIntermediateField_integralClosureResidue_bijective [I
   exact ⟨T, fun E hE =>
     (integralClosureSpectralResidueEquiv K (L := L)).symm.bijective.comp (hT E hE)⟩
 
-/-- The actual residue-stable finite intermediate field supplied by the proved APF theorem. -/
+/-- The residue-stable finite intermediate field supplied by the proved APF theorem. -/
 def apfResidueLayer [IsAPF K L] : FiniteIntermediateField K L :=
   (IsAPF.exists_finiteIntermediateField_integralClosureResidue_bijective K L).choose
 
-/-- The original finite inclusion is the residue-field isomorphism; no
+/-- The finite inclusion is the residue-field isomorphism; no
 residue-field equivalence is assumed. -/
 def integralClosureResidueEquiv [IsAPF K L] (E : FiniteIntermediateField K L)
     (hE : apfResidueLayer K L ≤ E) :
@@ -283,14 +283,14 @@ def integralClosureResidueEquiv [IsAPF K L] (E : FiniteIntermediateField K L)
   AlgEquiv.ofBijective (integralClosureResidueFromLayer K L E)
     ((IsAPF.exists_finiteIntermediateField_integralClosureResidue_bijective K L).choose_spec E hE)
 
-/-- The residue isomorphism acts by the original finite residue inclusion. -/
+/-- The residue isomorphism acts by the finite residue inclusion. -/
 @[simp]
 theorem integralClosureResidueEquiv_apply [IsAPF K L] (E : FiniteIntermediateField K L)
     (hE : apfResidueLayer K L ≤ E)
     (z : IsLocalRing.ResidueField (spectralIntegerRing K E.val)) :
     integralClosureResidueEquiv K L E hE z = integralClosureResidueFromLayer K L E z := rfl
 
-/-- The intrinsic residue field of the original APF algebraic extension is
+/-- The intrinsic residue field of the APF algebraic extension is
 perfect, without a finiteness assumption on its cardinality. -/
 theorem IsAPF.perfectField_integralClosureResidue [IsAPF K L] :
     PerfectField (IsLocalRing.ResidueField (integralClosure R₀ L)) := by

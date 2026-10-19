@@ -12,7 +12,7 @@ public import Mathlib.RingTheory.RamificationInertia.Basic
 public import Mathlib.LinearAlgebra.Dimension.Localization
 
 /-!
-# Degree and total ramification for actual DVR extensions
+# Degree and total ramification for DVR extensions
 
 The finite-flat degree identity has a single term for a finite local DVR
 extension. Its residue-degree-one consequence makes every uniformizer an
@@ -33,7 +33,7 @@ local notation "mR" => IsLocalRing.maximalIdeal R
 local notation "mS" => IsLocalRing.maximalIdeal S
 
 omit [FaithfulSMul R S] [Module.Finite R S] in
-/-- Canonical local inertia degree is the actual residue-field degree. -/
+/-- Canonical local inertia degree is the residue-field degree. -/
 theorem local_inertiaDeg_eq_finrank_residueField :
     (mS).inertiaDeg R =
       Module.finrank (IsLocalRing.ResidueField R) (IsLocalRing.ResidueField S) :=
@@ -64,7 +64,7 @@ theorem local_ramificationIdx_mul_finrank_residueField :
   rw [← local_inertiaDeg_eq_finrank_residueField R S]
   exact local_ramificationIdx_mul_inertiaDeg R S
 
-/-- Total ramification by degree is equivalent to surjectivity of the actual residue map. -/
+/-- Total ramification by degree is equivalent to surjectivity of the residue map. -/
 theorem ramificationIdx_eq_finrank_iff_residue_surjective :
     (mS).ramificationIdx R = Module.finrank R S ↔
       Function.Surjective (algebraMap (IsLocalRing.ResidueField R)
@@ -95,7 +95,7 @@ variable (K L : Type*) [Field K] [Field L] [Algebra K L]
     [Algebra R K] [IsFractionRing R K] [Algebra R L] [IsScalarTower R K L]
     [Algebra S L] [IsFractionRing S L] [IsScalarTower R S L]
 
-/-- The local fundamental degree identity on the actual fraction fields. -/
+/-- The local fundamental degree identity on the fraction fields. -/
 theorem local_ramificationIdx_mul_residueDegree_eq_finrank :
     (mS).ramificationIdx R *
       Module.finrank (IsLocalRing.ResidueField R) (IsLocalRing.ResidueField S) =
@@ -123,7 +123,7 @@ variable [(NormedField.valuation (K := K)).HasExtension w]
 local notation "OK" => Valuation.valuationSubring (NormedField.valuation (K := K))
 local notation "OL" => Valuation.valuationSubring w
 
-/-- The actual chosen extension valuation ring satisfies the fundamental degree identity. -/
+/-- The chosen extension valuation ring satisfies the fundamental degree identity. -/
 theorem extensionValuationSubring_ramificationIdx_mul_residueDegree :
     (IsLocalRing.maximalIdeal OL).ramificationIdx OK *
       Module.finrank (IsLocalRing.ResidueField OK) (IsLocalRing.ResidueField OL) =
@@ -131,7 +131,7 @@ theorem extensionValuationSubring_ramificationIdx_mul_residueDegree :
   have := extensionValuationSubring_isDiscreteValuationRing K L w
   exact local_ramificationIdx_mul_residueDegree_eq_finrank OK OL K L
 
-/-- Any uniformizer of a totally ramified chosen finite extension generates its actual integers. -/
+/-- Any uniformizer of a totally ramified chosen finite extension generates its integers. -/
 theorem extensionValuationSubring_adjoin_uniformizer_eq_top
     (he : (IsLocalRing.maximalIdeal OL).ramificationIdx OK = Module.finrank K L)
     {π : OL} (hπ : Irreducible π) : Algebra.adjoin OK {π} = ⊤ := by
@@ -140,7 +140,7 @@ theorem extensionValuationSubring_adjoin_uniformizer_eq_top
 
 end ChosenExtension
 
-section SourceValued
+section Valued
 
 variable (K : Type*) [Field K] (ΓK : Type*) [LinearOrderedCommGroupWithZero ΓK]
 variable [val : Valued K ΓK] [Valuation.IsRankOneDiscrete val.v] [CompleteSpace K]
@@ -162,7 +162,7 @@ local instance : IsUltrametricDist K :=
 local notation "R" => Valuation.valuationSubring val.v
 local notation "S" => Valuation.valuationSubring w
 
-/-- Finiteness over the original source valuation ring, with its canonical inclusion. -/
+/-- Finiteness over the valuation ring, with its canonical inclusion. -/
 theorem discreteValued_extension_moduleFinite : Module.Finite R S := by
   have := discreteValued_norm_hasExtension K ΓK L w
   have := discreteValued_isCompleteDiscreteValuedField K ΓK
@@ -174,7 +174,7 @@ theorem discreteValued_extension_moduleFinite : Module.Finite R S := by
   ext r
   rfl
 
-/-- The field degree identity over the original source valuation ring. -/
+/-- The field degree identity over the valuation ring. -/
 theorem discreteValued_extension_ramificationIdx_mul_residueDegree :
     (IsLocalRing.maximalIdeal S).ramificationIdx R *
       Module.finrank (IsLocalRing.ResidueField R) (IsLocalRing.ResidueField S) =
@@ -191,6 +191,6 @@ theorem discreteValued_extension_adjoin_uniformizer_eq_top
   have := discreteValued_extension_moduleFinite K ΓK L w
   exact adjoin_uniformizer_eq_top_of_ramificationIdx_eq_field_finrank R S K L he hπ
 
-end SourceValued
+end Valued
 
 end FontaineWintenberger

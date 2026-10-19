@@ -13,7 +13,7 @@ public import FontaineWintenberger.Ramification.Lower.Inertia
 # Counting the lower groups in the different formula
 
 The intrinsic sum over nonidentity automorphisms equals the finite sum of
-lower-group cardinalities minus one. The bound is obtained from the actual
+lower-group cardinalities minus one. The bound is obtained from the
 eventual triviality theorem for a finite faithful action.
 -/
 
@@ -40,7 +40,7 @@ private theorem enat_eq_sum_range_indicator {a : ℕ∞} {N : ℕ} (ha : a ≤ N
 variable {B : Type*} [CommRing B] [IsDomain B] [IsDiscreteValuationRing B]
 variable (G : Type*) [Group G] [Fintype G] [DecidableEq G] [MulSemiringAction G B]
 
-/-- Double-counting the actual nonidentity lower-group elements, for any
+/-- Double-counting the nonidentity lower-group elements, for any
 bound on the intrinsic nonidentity orders. -/
 theorem sum_ramificationOrder_eq_sum_lower_card {N : ℕ}
     (hN : ∀ g : G, g ≠ 1 → ramificationOrder (R := B) G g ≤ N) :
@@ -74,7 +74,7 @@ theorem sum_ramificationOrder_eq_sum_lower_card {N : ℕ}
       rw [hfilter, Finset.card_erase_of_mem (by simp)]
       simp [Nat.card_eq_fintype_card, Fintype.card_subtype]
 
-/-- Eventual triviality supplies an actual cutoff for the cardinal sum. -/
+/-- Eventual triviality supplies a cutoff for the cardinal sum. -/
 theorem exists_sum_ramificationOrder_eq_sum_lower_card [FaithfulSMul G B] :
     ∃ N : ℕ,
       (∀ n : ℕ, N ≤ n → lowerRamificationGroup G (maximalIdeal B) n = ⊥) ∧
@@ -107,7 +107,7 @@ local notation "OK" => Valuation.valuationSubring (NormedField.valuation (K := K
 local notation "OL" => spectralIntegerRing K L
 local notation "G₀" => L ≃ₐ[K] L
 
-/-- Hilbert's nonidentity-order formula for the actual different and full
+/-- Hilbert's nonidentity-order formula for the different and full
 Galois group; the integral generator is proved to exist. -/
 theorem spectralIntegerRing_different_order_eq_sum_ramificationOrder [DecidableEq G₀] :
     emultiplicity (IsLocalRing.maximalIdeal OL) (differentIdeal OK OL) =
@@ -116,8 +116,8 @@ theorem spectralIntegerRing_different_order_eq_sum_ramificationOrder [DecidableE
   obtain ⟨θ, hθ⟩ := spectralIntegerRing_exists_generator K L
   exact differentIdeal_order_eq_sum_ramificationOrder OK OL K L G₀ hθ
 
-/-- Hilbert's cardinal formula with a genuine finite cutoff, beyond which all
-actual lower groups are trivial. -/
+/-- Hilbert's cardinal formula with a finite cutoff, beyond which all
+lower groups are trivial. -/
 theorem spectralIntegerRing_different_order_eq_sum_lower_card :
     ∃ N : ℕ,
       (∀ n : ℕ, N ≤ n → lowerRamificationGroup G₀ (IsLocalRing.maximalIdeal OL) n = ⊥) ∧

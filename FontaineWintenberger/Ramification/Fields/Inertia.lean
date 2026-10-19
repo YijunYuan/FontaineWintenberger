@@ -9,10 +9,10 @@ public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.Fields.Nonnormal
 
 /-!
-# The original field fixed by inertia
+# The field fixed by inertia
 
-The actual inertia fixed field is unramified over the base, and its
-original residue inclusion into the top field is an isomorphism.
+The inertia fixed field is unramified over the base, and its
+residue inclusion into the top field is an isomorphism.
 -/
 
 @[expose] public section
@@ -34,22 +34,22 @@ local notation "U" => IntermediateField.fixedField I
 local notation "A" => Valuation.valuationSubring
   (Valuation.comap (algebraMap U L) (spectralValuation K L))
 
-/-- The actual field fixed by the original zero lower group has ramification
-index one over the original base. -/
+/-- The field fixed by the zero lower group has ramification
+index one over the base. -/
 theorem inertia_fixedField_ramificationIdx :
     (IsLocalRing.maximalIdeal A).ramificationIdx R = 1 := by
   rw [fixedField_ramificationIdx_eq_relIndex K L I]
   simp
 
-/-- The restricted inertia action has every original inertia element,
-and hence its actual order is the top relative ramification index. -/
+/-- The restricted inertia action has every inertia element,
+and hence its order is the top relative ramification index. -/
 theorem inertia_fixedField_top_ramificationIdx :
     (IsLocalRing.maximalIdeal B).ramificationIdx A = Nat.card I := by
   rw [← fixedField_card_inertia K L I,
     card_lowerRamificationGroup_zero_subgroup]
   simp
 
-/-- The original integer ring is totally ramified over the actual
+/-- The integer ring is totally ramified over the
 inertia fixed-field integers. -/
 theorem inertia_fixedField_top_ramificationIdx_eq_finrank :
     (IsLocalRing.maximalIdeal B).ramificationIdx A = Module.finrank A B := by
@@ -57,13 +57,13 @@ theorem inertia_fixedField_top_ramificationIdx_eq_finrank :
   rw [inertia_fixedField_top_ramificationIdx K L]
   exact IsGaloisGroup.card_eq_finrank' I A B
 
-/-- The same relative index is the degree of the original field extension. -/
+/-- The same relative index is the degree of the field extension. -/
 theorem inertia_fixedField_top_ramificationIdx_eq_field_finrank :
     (IsLocalRing.maximalIdeal B).ramificationIdx A = Module.finrank U L := by
   rw [inertia_fixedField_top_ramificationIdx K L]
   exact IsGaloisGroup.card_eq_finrank I U L
 
-/-- The actual residue inclusion from the actual inertia fixed field is onto. -/
+/-- The residue inclusion from the inertia fixed field is onto. -/
 theorem inertia_fixedField_residue_surjective :
     Function.Surjective
       (algebraMap (IsLocalRing.ResidueField A) (IsLocalRing.ResidueField B)) := by
@@ -72,9 +72,9 @@ theorem inertia_fixedField_residue_surjective :
   exact (ramificationIdx_eq_finrank_iff_residue_surjective A B).mp
     (inertia_fixedField_top_ramificationIdx_eq_finrank K L)
 
-/-- The canonical residue map of the original inertia fixed field is an
-actual residue-field isomorphism over the original base residue field. -/
-def inertia_fixedField_residueEquiv :
+/-- The canonical residue map of the inertia fixed field is an
+residue-field isomorphism over the base residue field. -/
+def inertiaFixedFieldResidueEquiv :
     IsLocalRing.ResidueField A ≃ₐ[IsLocalRing.ResidueField R]
       IsLocalRing.ResidueField B :=
   AlgEquiv.ofBijective (IsScalarTower.toAlgHom (IsLocalRing.ResidueField R)
@@ -84,7 +84,7 @@ def inertia_fixedField_residueEquiv :
 
 @[simp]
 theorem inertia_fixedField_residueEquiv_apply (x : IsLocalRing.ResidueField A) :
-    inertia_fixedField_residueEquiv K L x =
+    inertiaFixedFieldResidueEquiv K L x =
       algebraMap (IsLocalRing.ResidueField A) (IsLocalRing.ResidueField B) x := rfl
 
 end FontaineWintenberger

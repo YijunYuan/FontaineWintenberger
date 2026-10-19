@@ -12,7 +12,7 @@ public import Mathlib.GroupTheory.SpecificGroups.Cyclic.Subgroup
 /-!
 # Ramification of prime-order Galois groups
 
-Every subgroup of a prime-order Galois group is trivial or full. The actual
+Every subgroup of a prime-order Galois group is trivial or full. The
 lower groups consequently give the same order to every nonidentity element.
 -/
 
@@ -26,7 +26,7 @@ variable (G : Type*) [Group G] [Finite G] [MulSemiringAction G B]
 
 omit [Finite G] in
 /-- Prime group order makes all nonidentity intrinsic ramification orders
-equal, directly through the actual ideal-inertia subgroups. -/
+equal, directly through the ideal-inertia subgroups. -/
 theorem ramificationOrder_eq_of_prime_card {g h : G} (hg : g ≠ 1) (hh : h ≠ 1) :
     ramificationOrder (R := B) G g = ramificationOrder (R := B) G h := by
   apply ENat.eq_of_forall_natCast_le_iff
@@ -46,7 +46,7 @@ theorem ramificationOrder_eq_of_prime_card {g h : G} (hg : g ≠ 1) (hh : h ≠ 
       · simp [ht]
     simpa only [Nat.cast_add, Nat.cast_one] using (hmem g).symm.trans (heq.trans (hmem h))
 
-/-- A finite faithful prime-order action supplies an actual finite common
+/-- A finite faithful prime-order action supplies a finite common
 order, rather than an order certificate assumed from the caller. -/
 theorem exists_common_ramificationOrder_of_prime_card [FaithfulSMul G B] :
     ∃ m : ℕ, ∀ g : G, g ≠ 1 → ramificationOrder (R := B) G g = m := by
@@ -58,7 +58,7 @@ theorem exists_common_ramificationOrder_of_prime_card [FaithfulSMul G B] :
   refine ⟨m, fun h hh => ?_⟩
   exact (ramificationOrder_eq_of_prime_card G hh hg).trans hm.symm
 
-/-- A full zero lower group makes the actual common order a positive integer. -/
+/-- A full zero lower group makes the common order a positive integer. -/
 theorem exists_common_ramificationOrder_succ_of_prime_card [FaithfulSMul G B]
     (hzero : lowerRamificationGroup G (IsLocalRing.maximalIdeal B) 0 = ⊤) :
     ∃ t : ℕ, ∀ g : G, g ≠ 1 → ramificationOrder (R := B) G g = (t + 1 : ℕ) := by
@@ -76,7 +76,7 @@ theorem exists_common_ramificationOrder_succ_of_prime_card [FaithfulSMul G B]
   simpa only [Nat.sub_add_cancel hmpos] using hm h hh
 
 omit [Finite G] [Fact (Nat.card G).Prime] in
-/-- A common nonidentity order computes every actual nonnegative lower group. -/
+/-- A common nonidentity order computes every nonnegative lower group. -/
 theorem lowerRamificationGroup_nat_of_common_order {m : ℕ}
     (hm : ∀ g : G, g ≠ 1 → ramificationOrder (R := B) G g = m) (n : ℕ) :
     lowerRamificationGroup G (IsLocalRing.maximalIdeal B) n =
@@ -93,7 +93,7 @@ theorem lowerRamificationGroup_nat_of_common_order {m : ℕ}
     split_ifs <;> simp_all
 
 omit [Finite G] [Fact (Nat.card G).Prime] in
-/-- Real lower numbering keeps the weak endpoint at the actual common break. -/
+/-- Real lower numbering keeps the weak endpoint at the common break. -/
 theorem lowerRamificationGroupReal_of_common_order {m : ℕ}
     (hm : ∀ g : G, g ≠ 1 → ramificationOrder (R := B) G g = m) (s : ℝ) :
     lowerRamificationGroupReal G (IsLocalRing.maximalIdeal B) s =
@@ -112,7 +112,7 @@ theorem lowerRamificationGroupReal_of_common_order {m : ℕ}
     split_ifs <;> simp_all
 
 omit [Fact (Nat.card G).Prime] in
-/-- At a nonnegative common break the actual Herbrand function fixes the break. -/
+/-- At a nonnegative common break the Herbrand function fixes the break. -/
 theorem herbrandFunction_common_break {t : ℕ}
     (ht : ∀ g : G, g ≠ 1 → ramificationOrder (R := B) G g = (t + 1 : ℕ)) :
     herbrandFunction (R := B) G t = t := by
@@ -151,7 +151,7 @@ theorem upperRamificationGroup_of_common_order {t : ℕ}
   simp only [Nat.cast_add, Nat.cast_one, add_sub_cancel_right, hle]
 
 omit [Finite G] [Fact (Nat.card G).Prime] in
-/-- Summing the actual common nonidentity orders uses precisely `card G - 1` terms. -/
+/-- Summing the common nonidentity orders uses precisely `card G - 1` terms. -/
 theorem sum_ramificationOrder_of_common_order [Fintype G] [DecidableEq G] {m : ℕ}
     (hm : ∀ g : G, g ≠ 1 → ramificationOrder (R := B) G g = m) :
     (∑ g ∈ Finset.univ.erase (1 : G), ramificationOrder (R := B) G g) =

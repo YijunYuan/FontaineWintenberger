@@ -10,8 +10,8 @@ public import FontaineWintenberger.Ramification.Lower.Teichmuller
 /-!
 # Canonical coefficients in perfect truncated local rings
 
-In characteristic `p`, nilpotence of the actual maximal ideal makes the
-canonical Teichmüller section a unital ring homomorphism.
+In characteristic `p`, nilpotence of the maximal ideal makes the
+canonical Teichmüller section an unital ring homomorphism.
 -/
 
 @[expose] public section
@@ -21,7 +21,7 @@ noncomputable section
 namespace FontaineWintenberger
 
 /-- A nilpotent ideal gives the discrete, hence complete, adic filtration.
-This uses the original ring and does not introduce a completion carrier. -/
+This uses the ring and does not introduce a completion carrier. -/
 theorem isAdicComplete_of_isNilpotent_ideal {R : Type*} [CommRing R]
     (I : Ideal R) (hI : IsNilpotent I) : IsAdicComplete I R := by
   obtain ⟨h, hh⟩ := hI
@@ -100,7 +100,7 @@ variable (p : ℕ) [Fact p.Prime] [CharP R p]
     [CharP (IsLocalRing.ResidueField R) p]
     [PerfectField (IsLocalRing.ResidueField R)]
 
-/-- The canonical unital coefficient section in the original truncated
+/-- The canonical unital coefficient section in the truncated
 local ring. Its underlying multiplicative map is the existing Teichmüller
 section; nilpotence supplies completeness and characteristic `p` supplies
 additivity. -/
@@ -117,7 +117,7 @@ theorem truncatedResidueCoefficients_eq_residueTeichmuller
     (hI : IsNilpotent (IsLocalRing.maximalIdeal R)) :
     (truncatedResidueCoefficients R p hI).toMonoidWithZeroHom = residueTeichmuller R p := rfl
 
-/-- The coefficient section is an actual section of the original residue map. -/
+/-- The coefficient section is a section of the residue map. -/
 @[simp]
 theorem residue_truncatedResidueCoefficients
     (hI : IsNilpotent (IsLocalRing.maximalIdeal R)) (x : IsLocalRing.ResidueField R) :
@@ -126,7 +126,7 @@ theorem residue_truncatedResidueCoefficients
   exact residue_residueTeichmuller R p x
 
 /-- Equality of maps, rather than only equality of values, for the splitting
-of the actual quotient. -/
+of the quotient. -/
 theorem residue_comp_truncatedResidueCoefficients
     (hI : IsNilpotent (IsLocalRing.maximalIdeal R)) :
     (IsLocalRing.residue R).comp (truncatedResidueCoefficients R p hI) = RingHom.id _ :=
@@ -172,8 +172,8 @@ theorem truncated_residue_pow_independent
 variable (S : Type*) [CommRing S] [IsLocalRing S] [CharP S p]
     [CharP (IsLocalRing.ResidueField S) p] [PerfectField (IsLocalRing.ResidueField S)]
 
-/-- Canonical coefficients commute with the actual local unital ring map
-and its actual residue-field map. No compatibility of chosen lifts is assumed. -/
+/-- Canonical coefficients commute with the local unital ring map
+and its residue-field map. No compatibility of chosen lifts is assumed. -/
 theorem truncatedResidueCoefficients_naturality
     (hR : IsNilpotent (IsLocalRing.maximalIdeal R))
     (hS : IsNilpotent (IsLocalRing.maximalIdeal S)) (f : R →+* S) [IsLocalHom f]
@@ -184,7 +184,7 @@ theorem truncatedResidueCoefficients_naturality
   let := isAdicComplete_of_isNilpotent_ideal (IsLocalRing.maximalIdeal S) hS
   exact residueTeichmuller_naturality R p S f x
 
-/-- The naturality square as an equality of original ring homomorphisms. -/
+/-- The naturality square as an equality of ring homomorphisms. -/
 theorem truncatedResidueCoefficients_naturality_comp
     (hR : IsNilpotent (IsLocalRing.maximalIdeal R))
     (hS : IsNilpotent (IsLocalRing.maximalIdeal S)) (f : R →+* S) [IsLocalHom f] :

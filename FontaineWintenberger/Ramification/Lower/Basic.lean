@@ -41,7 +41,7 @@ infinity and negative indices.
 ## The normalized field valuation of a discrete valuation subring
 
 We use mathlib's canonical adic valuation of the maximal ideal. Its valuation
-ring is the original intrinsic valuation subring. The lower groups therefore
+ring is the intrinsic valuation subring. The lower groups therefore
 agree with the normalized valuation bounds on the ambient field.
 -/
 
@@ -477,7 +477,7 @@ variable {L : Type*} [Field L] (A : ValuationSubring L) [IsDiscreteValuationRing
 local notation "w" => IsDedekindDomain.HeightOneSpectrum.valuation L
   (IsDiscreteValuationRing.maximalIdeal A)
 
-/-- The canonical normalized field valuation has the original valuation ring. -/
+/-- The canonical normalized field valuation has the valuation ring. -/
 theorem normalizedValuation_valuationSubring : (w).valuationSubring = A := by
   ext x
   constructor

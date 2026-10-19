@@ -13,41 +13,41 @@ public import FontaineWintenberger.FieldOfNorms.Galois.RelAction
 /-!
 # The ambient Galois group of the relative field of norms
 
-## The ambient Galois group and the original norm-union automorphism subgroup
+## The ambient Galois group and the norm-union automorphism subgroup
 
-The target is the actual subgroup of ring automorphisms of the same union
-whose restriction to the actual base image is an original norm-field action.
-Faithfulness gives a unique original base restriction; its kernel consists
-of the actual base-algebra automorphisms.
-
-Reference: Wintenberger, Remark 3.2.4.
-
-## The original base automorphism selected by a norm-union automorphism
-
-The checked subgroup membership theorem supplies an actual original base
-automorphism and its exact square on the original norm field.
+The target is the subgroup of ring automorphisms of the same union
+whose restriction to the base image is a norm-field action.
+Faithfulness gives an unique base restriction; its kernel consists
+of the base-algebra automorphisms.
 
 Reference: Wintenberger, Remark 3.2.4.
 
-## The original base automorphism selected by a norm-union automorphism
+## The base automorphism selected by a norm-union automorphism
 
-The checked subgroup membership theorem supplies an actual original base
-automorphism and its exact square on the original norm field.
+The checked subgroup membership theorem supplies a base
+automorphism and its exact square on the norm field.
 
 Reference: Wintenberger, Remark 3.2.4.
 
-## Relative automorphisms of the original norm union
+## The base automorphism selected by a norm-union automorphism
 
-Forgetting the base algebra gives a canonical homomorphism into the original
+The checked subgroup membership theorem supplies a base
+automorphism and its exact square on the norm field.
+
+Reference: Wintenberger, Remark 3.2.4.
+
+## Relative automorphisms of the norm union
+
+Forgetting the base algebra gives a canonical homomorphism into the
 norm-union target subgroup.
 
 Reference: Wintenberger, Remark 3.2.4.
 
-## The original ambient Galois group of the relative field of norms
+## The ambient Galois group of the relative field of norms
 
-The actual same-union action identifies the original absolute Galois group
-with the actual subgroup whose base restriction is an original norm-field action.
-The restriction square and relative kernel comparison are retained literally.
+The same-union action identifies the absolute Galois group
+with the subgroup whose base restriction is a norm-field action.
+The restriction square and relative kernel comparison are retained.
 
 Reference: Wintenberger, Remark 3.2.4.
 -/
@@ -70,7 +70,7 @@ local notation "U" => RelFieldOfNorms K L Ω
 local notation "ι" => RelFieldOfNorms.baseHom K L Ω
 local notation "ρ" => FieldOfNorms.aut K L
 
-/-- The literal source target, inside ring automorphisms of the same union. -/
+/-- The target, inside ring automorphisms of the same union. -/
 def RelFieldOfNorms.galoisSubgroup :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
     Subgroup (RingAut U) := by
@@ -100,7 +100,7 @@ def RelFieldOfNorms.galoisSubgroup :
         change ι x = ι ((ρ σ) ((ρ σ).symm x))
         rw [RingEquiv.apply_symm_apply] }
 
-/-- Membership means an actual commuting square with an original automorphism. -/
+/-- Membership means a commuting square with an automorphism. -/
 theorem mem_relFieldOfNormsGaloisSubgroup :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
     ∀ β : RingAut U, β ∈ RelFieldOfNorms.galoisSubgroup K L ↔
@@ -109,7 +109,7 @@ theorem mem_relFieldOfNormsGaloisSubgroup :
   intro β
   rfl
 
-/-- The base square determines its original automorphism uniquely. -/
+/-- The base square determines its automorphism uniquely. -/
 theorem RelFieldOfNorms.galoisSubgroup_base_unique :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
     ∀ (β : RingAut U) (σ τ : L ≃ₐ[K] L),
@@ -123,8 +123,8 @@ theorem RelFieldOfNorms.galoisSubgroup_base_unique :
   apply (ι).injective
   exact (hσ x).symm.trans (hτ x)
 
-/-- The existential square is exactly preservation of the actual base image
-and membership of its transported restriction in the actual action image. -/
+/-- The existential square is exactly preservation of the base image
+and membership of its transported restriction in the action image. -/
 theorem mem_relFieldOfNormsGaloisSubgroup_iff_stable_image :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
     ∀ β : RingAut U, β ∈ RelFieldOfNorms.galoisSubgroup K L ↔
@@ -165,11 +165,11 @@ local notation "ρ" => FieldOfNorms.aut K L
 
 local notation "S" => RelFieldOfNorms.galoisSubgroup K L
 
-/-- The original automorphism supplied by the actual subgroup membership theorem. -/
+/-- The automorphism supplied by the subgroup membership theorem. -/
 def RelFieldOfNorms.galoisRestrictionFun (β : S) : L ≃ₐ[K] L :=
   Classical.choose ((mem_relFieldOfNormsGaloisSubgroup K L β.val).mp β.property)
 
-/-- The chosen original automorphism has the actual base square on every element. -/
+/-- The chosen automorphism has the base square on every element. -/
 theorem RelFieldOfNorms.galoisRestrictionFun_base :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
     ∀ (β : S) (x : X), β.val (ι x) =
@@ -201,7 +201,7 @@ local notation "S" => RelFieldOfNorms.galoisSubgroup K L
 
 local notation "f" => RelFieldOfNorms.galoisRestrictionFun K L
 
-/-- The actual restriction preserves multiplication in the canonical
+/-- The restriction preserves multiplication in the canonical
 homomorphism domain structure. -/
 theorem RelFieldOfNorms.galoisRestrictionFun_mul :
     let : Mul S := (inferInstance : MulOne S).toMul
@@ -224,13 +224,13 @@ theorem RelFieldOfNorms.galoisRestrictionFun_mul :
       rw [(ρ).map_mul]
       rfl
 
-/-- The actual original base restriction, as a group homomorphism. -/
+/-- The base restriction, as a group homomorphism. -/
 def RelFieldOfNorms.galoisRestriction : S →* (L ≃ₐ[K] L) :=
   MonoidHom.mk' f (RelFieldOfNorms.galoisRestrictionFun_mul K L)
 
 local notation "r" => RelFieldOfNorms.galoisRestriction K L
 
-/-- The restriction retains the actual base square on every element. -/
+/-- The restriction retains the base square on every element. -/
 theorem RelFieldOfNorms.galoisRestriction_base :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
     ∀ (β : S) (x : X), β.val (ι x) = ι (ρ (r β) x) := by
@@ -238,7 +238,7 @@ theorem RelFieldOfNorms.galoisRestriction_base :
   intro β x
   exact RelFieldOfNorms.galoisRestrictionFun_base K L β x
 
-/-- The original automorphism is determined by its genuine base square. -/
+/-- The automorphism is determined by its base square. -/
 theorem RelFieldOfNorms.galoisRestriction_eq_iff :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
     ∀ (β : S) (σ : L ≃ₐ[K] L), r β = σ ↔
@@ -252,7 +252,7 @@ theorem RelFieldOfNorms.galoisRestriction_eq_iff :
     exact RelFieldOfNorms.galoisSubgroup_base_unique K L β.val (r β) σ
       (RelFieldOfNorms.galoisRestriction_base K L β) hσ
 
-/-- The kernel consists exactly of automorphisms fixing the actual base pointwise. -/
+/-- The kernel consists exactly of automorphisms fixing the base pointwise. -/
 theorem mem_relFieldOfNormsGaloisRestriction_ker_iff :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
     ∀ β : S, β ∈ (r).ker ↔ ∀ x : X, β.val (ι x) = ι x := by
@@ -283,7 +283,7 @@ local notation "S" => RelFieldOfNorms.galoisSubgroup K L
 
 local notation "r" => RelFieldOfNorms.galoisRestriction K L
 
-/-- Forgetting the base algebra gives an actual member of the source target. -/
+/-- Forgetting the base algebra gives a member of the target. -/
 def RelFieldOfNorms.galoisRelativeHom :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
     (U ≃ₐ[X] U) →* S := by
@@ -297,13 +297,13 @@ def RelFieldOfNorms.galoisRelativeHom :
       rw [(ρ).map_one]
       exact β.commutes x
 
-/-- The canonical forgetful map is injective, retaining the actual ring automorphism. -/
+/-- The canonical forgetful map is injective, retaining the ring automorphism. -/
 theorem RelFieldOfNorms.galoisRelativeHom_injective :
     Function.Injective (RelFieldOfNorms.galoisRelativeHom K L) := by
   intro β γ h
   exact DFunLike.ext β γ fun z => congrArg (fun η : S => η.val z) h
 
-/-- Actual base-algebra automorphisms have trivial original base restriction. -/
+/-- Base-algebra automorphisms have trivial base restriction. -/
 theorem RelFieldOfNorms.galoisRelativeHom_mem_ker :
     ∀ β, RelFieldOfNorms.galoisRelativeHom K L β ∈ (r).ker := by
   intro β
@@ -311,7 +311,7 @@ theorem RelFieldOfNorms.galoisRelativeHom_mem_ker :
   cases β
   assumption
 
-/-- Every genuine kernel element is induced by a base-algebra automorphism. -/
+/-- Every kernel element is induced by a base-algebra automorphism. -/
 theorem RelFieldOfNorms.galoisRelativeHom_surjective_ker :
     Function.Surjective
       ((RelFieldOfNorms.galoisRelativeHom K L).codRestrict (r).ker
@@ -327,7 +327,7 @@ theorem RelFieldOfNorms.galoisRelativeHom_surjective_ker :
   intro z
   rfl
 
-/-- The relative algebra automorphism group is precisely the genuine kernel. -/
+/-- The relative algebra automorphism group is precisely the kernel. -/
 def RelFieldOfNorms.galoisRelativeKernelEquiv :=
   MulEquiv.ofBijective
     ((RelFieldOfNorms.galoisRelativeHom K L).codRestrict (r).ker
@@ -348,7 +348,7 @@ theorem RelFieldOfNorms.galoisRelativeKernelEquiv_apply :
   intro z
   rfl
 
-/-- The original relative Galois group identifies with that same actual kernel. -/
+/-- The relative Galois group identifies with that same kernel. -/
 def RelFieldOfNorms.galoisKernelEquiv :=
   letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
   letI : Semiring Ω :=
@@ -358,7 +358,7 @@ def RelFieldOfNorms.galoisKernelEquiv :=
   (RelFieldOfNorms.autEquiv K L Ω).trans
     (RelFieldOfNorms.galoisRelativeKernelEquiv K L)
 
-/-- The relative-kernel equivalence is the original union map on every element. -/
+/-- The relative-kernel equivalence is the union map on every element. -/
 theorem RelFieldOfNorms.galoisKernelEquiv_apply :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
     letI : Semiring Ω :=
@@ -400,7 +400,7 @@ local notation "A" => RelFieldOfNorms.absoluteAut K L
 local notation "r" => RelFieldOfNorms.galoisRestriction K L
 local notation "κ" => RelFieldOfNorms.galoisKernelEquiv K L
 
-/-- The actual ambient action takes values in the original semilinear subgroup. -/
+/-- The ambient action takes values in the semilinear subgroup. -/
 def RelFieldOfNorms.ambientGaloisHom :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
     (Ω ≃ₐ[K] Ω) →* S := by
@@ -415,14 +415,14 @@ def RelFieldOfNorms.ambientGaloisHom :
 
 local notation "Φ" => RelFieldOfNorms.ambientGaloisHom K L
 
-/-- The subgroup-valued homomorphism retains the original action on every union element. -/
+/-- The subgroup-valued homomorphism retains the action on every union element. -/
 theorem RelFieldOfNorms.ambientGaloisHom_apply :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
     ∀ (σ : Ω ≃ₐ[K] Ω) (z : U), (Φ σ).val z = A σ z := by
   intro σ z
   rfl
 
-/-- Its actual base restriction is ordinary Galois restriction. -/
+/-- Its base restriction is ordinary Galois restriction. -/
 theorem RelFieldOfNorms.ambientGaloisHom_restriction :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
     ∀ σ : Ω ≃ₐ[K] Ω, r (Φ σ) = AlgEquiv.restrictNormalHom L σ := by
@@ -433,7 +433,7 @@ theorem RelFieldOfNorms.ambientGaloisHom_restriction :
   change A σ (ι x) = ι (FieldOfNorms.absoluteAut K L σ x)
   exact RelFieldOfNorms.absoluteAut_base K L σ x
 
-/-- On the original relative Galois subgroup it is exactly the proved kernel correspondence. -/
+/-- On the relative Galois subgroup it is exactly the proved kernel correspondence. -/
 theorem RelFieldOfNorms.ambientGaloisHom_relative :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
     ∀ (τ :
@@ -452,7 +452,7 @@ theorem RelFieldOfNorms.ambientGaloisHom_relative :
   exact (RelFieldOfNorms.absoluteAut_restrictScalars K L τ z).trans
     (RelFieldOfNorms.galoisKernelEquiv_apply K L τ z).symm
 
-/-- The actual ambient action is faithful on the same union. -/
+/-- The ambient action is faithful on the same union. -/
 theorem RelFieldOfNorms.ambientGaloisHom_injective :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
     Function.Injective (Φ) := by
@@ -479,7 +479,7 @@ theorem RelFieldOfNorms.ambientGaloisHom_injective :
     rfl
   exact ht.symm.trans hτK
 
-/-- Every automorphism with original base restriction is an actual ambient Galois action. -/
+/-- Every automorphism with base restriction is an ambient Galois action. -/
 theorem RelFieldOfNorms.ambientGaloisHom_surjective :
     Function.Surjective (RelFieldOfNorms.ambientGaloisHom K L) := by
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
@@ -500,7 +500,7 @@ theorem RelFieldOfNorms.ambientGaloisHom_surjective :
   exact ((Φ).map_mul (τ.restrictScalars K) σ).trans
     ((congrArg (fun z : S => z * Φ σ) hrel).trans (inv_mul_cancel_right β (Φ σ)))
 
-/-- Wintenberger’s actual ambient Galois group isomorphism for the original union. -/
+/-- Wintenberger’s ambient Galois group isomorphism for the union. -/
 def RelFieldOfNorms.ambientGaloisEquiv :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
     (Ω ≃ₐ[K] Ω) ≃* S := by
@@ -509,7 +509,7 @@ def RelFieldOfNorms.ambientGaloisEquiv :
     ⟨RelFieldOfNorms.ambientGaloisHom_injective K L,
       RelFieldOfNorms.ambientGaloisHom_surjective K L⟩
 
-/-- The final group isomorphism is the literal original same-union action. -/
+/-- The final group isomorphism is the same-union action. -/
 theorem RelFieldOfNorms.ambientGaloisEquiv_apply :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
     ∀ (σ : Ω ≃ₐ[K] Ω) (z : U),

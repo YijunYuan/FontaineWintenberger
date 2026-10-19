@@ -12,8 +12,8 @@ public import FontaineWintenberger.Ramification.Norm.Valuation
 /-!
 # Finite-precision norm congruences in towers
 
-The actual normalized norm valuation preserves every nonnegative precision.
-An actual addition congruence consequently respects input congruence and
+The normalized norm valuation preserves every nonnegative precision.
+An addition congruence consequently respects input congruence and
 composes through a finite tower by transitivity of integral norms.
 -/
 
@@ -30,7 +30,7 @@ variable (R S : Type*) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
     [FaithfulSMul R S] [IsLocalHom (algebraMap R S)] [Module.Finite R S]
     [Algebra.IsSeparable (FractionRing R) (FractionRing S)]
 
-/-- Actual integral norms preserve any fixed nonnegative ideal-power precision. -/
+/-- Integral norms preserve any fixed nonnegative ideal-power precision. -/
 theorem intNorm_mem_maximalIdeal_pow {r : ℕ} {x : S}
     (hx : x ∈ IsLocalRing.maximalIdeal S ^ r) :
     Algebra.intNorm R S x ∈ IsLocalRing.maximalIdeal R ^ r := by
@@ -44,7 +44,7 @@ theorem intNorm_mem_maximalIdeal_pow {r : ℕ} {x : S}
     _ ≤ ((IsLocalRing.maximalIdeal S).inertiaDeg R : ℕ∞) *
       IsDiscreteValuationRing.addVal S x := by gcongr
 
-/-- A proved addition congruence for the actual norm makes it respect
+/-- A proved addition congruence for the norm makes it respect
 the same input precision. -/
 theorem intNorm_sub_mem_maximalIdeal_pow_of_add_congruence {r : ℕ}
     (hadd : ∀ x y : S,
@@ -64,7 +64,7 @@ variable (T : Type*) [CommRing T] [IsDomain T] [IsDiscreteValuationRing T]
     [FaithfulSMul S T] [IsLocalHom (algebraMap S T)] [Module.Finite S T]
 
 omit [IsLocalHom (algebraMap S T)] in
-/-- The source tower step composes genuine norm addition congruences at a
+/-- The tower step composes norm addition congruences at a
 common precision; the conclusions for the steps are supplied by their producers. -/
 theorem intNorm_add_congruence_tower {r : ℕ}
     (hRS : ∀ x y : S,

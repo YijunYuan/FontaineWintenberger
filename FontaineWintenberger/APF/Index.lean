@@ -14,17 +14,17 @@ public import FontaineWintenberger.Mathlib.GroupTheory.Index
 
 ## The finite positive indices in the APF Herbrand integrand
 
-The denominator subgroup is the actual product inside absolute inertia.
+The denominator subgroup is the product inside absolute inertia.
 Arithmetic profiniteness proves that its relative index is finite and
 positive; the resulting natural-number function is nondecreasing.
 
 ## The intrinsic inertia index of a separable extension
 
 Conjugation preserves both the inertia subgroup and the APF subgroup, hence
-their actual relative index. An embedding into the separable closure therefore
+their relative index. An embedding into the separable closure therefore
 defines an index for an abstract extension, independent of that embedding.
 
-## Actual relative index factors in nested APF extensions
+## Relative index factors in nested APF extensions
 -/
 
 @[expose] public section
@@ -33,12 +33,12 @@ namespace FontaineWintenberger
 
 variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
 
-/-- The actual subgroup in the APF inertia-relative index. -/
+/-- The subgroup in the APF inertia-relative index. -/
 noncomputable def apfInertiaSubgroup (L : IntermediateField K (SeparableClosure K)) (u : ℝ) :
     Subgroup (SeparableClosure K ≃ₐ[K] SeparableClosure K) :=
   (L.fixingSubgroup ⊓ absoluteUpperRamificationGroup K 0) ⊔ absoluteUpperRamificationGroup K u
 
-/-- The actual inertia-relative index; positivity for APF extensions is proved below. -/
+/-- The inertia-relative index; positivity for APF extensions is proved below. -/
 noncomputable def apfInertiaIndex (L : IntermediateField K (SeparableClosure K)) (u : ℝ) : ℕ :=
   (apfInertiaSubgroup K L u).relIndex (absoluteUpperRamificationGroup K 0)
 
@@ -144,7 +144,7 @@ theorem apfInertiaIndex_fieldRange_eq (i j : L →ₐ[K] SeparableClosure K) (u 
     rw [AlgHom.map_fieldRange, hσ]
   rw [← hr, apfInertiaIndex_map]
 
-/-- The actual inertia-relative index, independent of the separable embedding. -/
+/-- The inertia-relative index, independent of the separable embedding. -/
 noncomputable def apfIndex (u : ℝ) : ℕ :=
   apfInertiaIndex K (IsSepClosed.lift : L →ₐ[K] SeparableClosure K).fieldRange u
 
@@ -186,7 +186,7 @@ variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField 
 
 variable (M N : IntermediateField K (SeparableClosure K))
 
-/-- The actual relative index between the two inertia-product subgroups. -/
+/-- The relative index between the two inertia-product subgroups. -/
 noncomputable def apfTowerIndexFactor (u : ℝ) : ℕ :=
   (apfInertiaSubgroup K N u).relIndex (apfInertiaSubgroup K M u)
 
@@ -194,12 +194,12 @@ noncomputable def apfTowerIndexFactor (u : ℝ) : ℕ :=
 theorem apfTowerIndexFactor_zero : apfTowerIndexFactor K M N 0 = 1 := by
   simp [apfTowerIndexFactor, apfInertiaSubgroup]
 
-/-- The larger extension has the smaller actual inertia-product subgroup. -/
+/-- The larger extension has the smaller inertia-product subgroup. -/
 theorem apfInertiaSubgroup_antitone_extension (hMN : M ≤ N) (u : ℝ) :
     apfInertiaSubgroup K N u ≤ apfInertiaSubgroup K M u :=
   sup_le_sup_right (inf_le_inf_right _ (IntermediateField.fixingSubgroup_le hMN)) _
 
-/-- Multiplication of the actual relative indices gives the APF index factorization. -/
+/-- Multiplication of the relative indices gives the APF index factorization. -/
 theorem apfInertiaIndex_eq_mul_towerIndexFactor (hMN : M ≤ N) {u : ℝ} (hu : 0 ≤ u) :
     apfInertiaIndex K N u = apfInertiaIndex K M u * apfTowerIndexFactor K M N u := by
   have h := Subgroup.relIndex_mul_relIndex (apfInertiaSubgroup K N u)
@@ -218,7 +218,7 @@ theorem apfTowerIndexFactor_eq_inertiaRelIndex (hMN : M ≤ N) (u : ℝ) :
   Subgroup.relIndex_sup_sup_eq_inf _ _ _
     (inf_le_inf_right _ (IntermediateField.fixingSubgroup_le hMN))
 
-/-- APF gives genuine positive finite factors, including a nonnormal intermediate extension. -/
+/-- APF gives positive finite factors, including a nonnormal intermediate extension. -/
 theorem IsAPFSubextension.towerIndexFactor_pos [IsAPFSubextension K N]
     {u : ℝ} (hu : 0 ≤ u) : 0 < apfTowerIndexFactor K M N u := by
   apply Nat.pos_of_ne_zero
@@ -242,7 +242,7 @@ theorem IsAPFSubextension.towerIndexFactor_monotoneOn [IsAPFSubextension K N]
       (upperRamificationGroupInfinite_antitoneOn K (SeparableClosure K)
         (by linarith : -1 ≤ u) (by linarith : -1 ≤ v) huv)) _) hdv
 
-/-- The public intrinsic APF indices retain the actual tower factorization. -/
+/-- The public intrinsic APF indices retain the tower factorization. -/
 theorem apfIndex_eq_mul_towerIndexFactor (hMN : M ≤ N) {u : ℝ} (hu : 0 ≤ u) :
     apfIndex K N u = apfIndex K M u * apfTowerIndexFactor K M N u := by
   rw [apfIndex_eq_embedding K N N.val, apfIndex_eq_embedding K M M.val]

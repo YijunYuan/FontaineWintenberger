@@ -16,15 +16,15 @@ public import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
 /-!
 # Finite separable extensions of the field of norms
 
-## Finite separable extensions of the original norm fields
+## Finite separable extensions of the norm fields
 
-Actual finite normal closures and the original inclusion maps give degree
-preservation and separability without normality over the original base.
+Finite normal closures and the inclusion maps give degree
+preservation and separability without normality over the base.
 
 ## Galois groups for arbitrary finite embeddings
 
-The original range factorization transports the actual relative Galois
-extension and its actual action to every finite embedding.
+The range factorization transports the relative Galois
+extension and its action to every finite embedding.
 -/
 
 @[expose] public section
@@ -46,8 +46,8 @@ variable (K M N P : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalFie
 
 local notation "p" => residueChar K
 
-/-- The three original finite-inclusion field homomorphisms form a genuine
-scalar tower, by composition on the original norm-compatible families. -/
+/-- The three finite-inclusion field homomorphisms form a
+scalar tower, by composition on the norm-compatible families. -/
 theorem FieldOfNorms.finiteRingHom_isScalarTower
     [IsAPF K M] [IsAPF K N] [IsAPF K P]
     [Fact (¬ Module.Finite K M)] [Fact (¬ Module.Finite K N)]
@@ -78,8 +78,8 @@ variable (K M N : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField
 
 local notation "p" => residueChar K
 
-/-- A genuine finite normal closure proves finiteness, separability and
-preservation of the full original degree for the actual inclusion field map. -/
+/-- A finite normal closure proves finiteness, separability and
+preservation of the full degree for the inclusion field map. -/
 theorem FieldOfNorms.finite_finite_separable_degree
     [IsAPF K M] [IsAPF K N]
     [Fact (¬ Module.Finite K M)] [Fact (¬ Module.Finite K N)] :
@@ -128,7 +128,7 @@ theorem FieldOfNorms.finite_finite_separable_degree
     ← Module.finrank_mul_finrank M N P] at hmul
   exact Nat.eq_of_mul_eq_mul_right (Module.finrank_pos (R := N) (M := P)) hmul
 
-/-- The actual finite-inclusion norm-field extension is finite-dimensional. -/
+/-- The finite-inclusion norm-field extension is finite-dimensional. -/
 theorem finiteDimensional_finiteFieldOfNorms
     [IsAPF K M] [IsAPF K N]
     [Fact (¬ Module.Finite K M)] [Fact (¬ Module.Finite K N)] :
@@ -137,7 +137,7 @@ theorem finiteDimensional_finiteFieldOfNorms
     FiniteDimensional (FieldOfNorms K M) (FieldOfNorms K N) :=
   (FieldOfNorms.finite_finite_separable_degree K M N).1
 
-/-- The actual finite-inclusion norm-field extension is separable. -/
+/-- The finite-inclusion norm-field extension is separable. -/
 theorem isSeparable_finiteFieldOfNorms
     [IsAPF K M] [IsAPF K N]
     [Fact (¬ Module.Finite K M)] [Fact (¬ Module.Finite K N)] :
@@ -146,7 +146,7 @@ theorem isSeparable_finiteFieldOfNorms
     Algebra.IsSeparable (FieldOfNorms K M) (FieldOfNorms K N) :=
   (FieldOfNorms.finite_finite_separable_degree K M N).2.1
 
-/-- The actual finite-inclusion norm-field extension has the full original degree. -/
+/-- The finite-inclusion norm-field extension has the full degree. -/
 theorem finrank_finiteFieldOfNorms
     [IsAPF K M] [IsAPF K N]
     [Fact (¬ Module.Finite K M)] [Fact (¬ Module.Finite K N)] :
@@ -165,8 +165,8 @@ local notation "p" => residueChar K
 variable {L M : Type*} [Field L] [Field M] [Algebra K L] [Algebra K M]
     [Algebra.IsSeparable K L] [Algebra.IsSeparable K M]
 
-/-- The actual range factorization transports finite dimension, separability
-and the full degree to every original finite separable algebra embedding. -/
+/-- The range factorization transports finite dimension, separability
+and the full degree to every finite separable algebra embedding. -/
 theorem FieldOfNorms.finiteEmbedding_finite_separable_degree (τ : L →ₐ[K] M)
     [Module.Finite τ.fieldRange M] [Algebra.IsSeparable τ.fieldRange M]
     [IsAPF K L] [IsAPF K M]
@@ -210,8 +210,8 @@ local notation "p" => residueChar K
 variable {L M : Type*} [Field L] [Field M] [Algebra K L] [Algebra K M]
     [Algebra.IsSeparable K L] [Algebra.IsSeparable K M]
 
-/-- A finite Galois original range extension gives a Galois extension for
-exactly the original arbitrary-embedding norm-field homomorphism. -/
+/-- A finite Galois range extension gives a Galois extension for
+exactly the arbitrary-embedding norm-field homomorphism. -/
 theorem isGalois_finiteFieldOfNormsEmbedding (τ : L →ₐ[K] M)
     [Module.Finite τ.fieldRange M] [IsGalois τ.fieldRange M]
     [IsAPF K L] [IsAPF K M]
@@ -233,8 +233,8 @@ theorem isGalois_finiteFieldOfNormsEmbedding (τ : L →ₐ[K] M)
       x
   rw [e.apply_symm_apply]
 
-/-- The actual original relative action identifies the Galois groups for
-an arbitrary finite embedding, by its original source-to-range isomorphism. -/
+/-- The relative action identifies the Galois groups for
+an arbitrary finite embedding, by its source-to-range isomorphism. -/
 def FieldOfNorms.finiteEmbeddingGaloisEquiv (τ : L →ₐ[K] M)
     [Module.Finite τ.fieldRange M] [IsGalois τ.fieldRange M]
     [IsAPF K L] [IsAPF K M]

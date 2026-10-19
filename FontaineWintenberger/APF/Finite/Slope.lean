@@ -15,13 +15,13 @@ public import Mathlib.Order.SuccPred.Archimedean
 /-!
 # Eventual slopes of finite APF extensions
 
-## Finite APF indices stabilize and their actual integral is eventually affine
+## Finite APF indices stabilize and their integral is eventually affine
 
-## The actual eventual ramification slope of a finite extension
+## The eventual ramification slope of a finite extension
 
-The eventual intrinsic inertia index is the ramification index of the original
+The eventual intrinsic inertia index is the ramification index of the
 field. This is valid for finite separable extensions without normality or total
-ramification, and also for their original compatible normed integer rings.
+ramification, and also for their compatible normed integer rings.
 -/
 
 @[expose] public section
@@ -34,7 +34,7 @@ variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField 
 
 variable (M : IntermediateField K (SeparableClosure K)) [FiniteDimensional K M]
 
-/-- Actual inertia has positive finite index relative to the finite-base fixing subgroup. -/
+/-- Inertia has positive finite index relative to the finite-base fixing subgroup. -/
 theorem fixingSubgroup_inertiaRelIndex_pos :
     0 < M.fixingSubgroup.relIndex (absoluteUpperRamificationGroup K 0) := by
   have hindex : M.fixingSubgroup.index ≠ 0 := by
@@ -46,7 +46,7 @@ theorem fixingSubgroup_inertiaRelIndex_pos :
     (show absoluteUpperRamificationGroup K 0 ≤ ⊤ from le_top) hzero
   exact hindex (by simpa only [Subgroup.relIndex_top_right] using h)
 
-/-- The actual finite-base inertia fixing index bounds every nonnegative APF index. -/
+/-- The finite-base inertia fixing index bounds every nonnegative APF index. -/
 theorem apfIndex_le_fixingSubgroup_inertiaRelIndex (u : ℝ) :
     apfIndex K M u ≤ M.fixingSubgroup.relIndex (absoluteUpperRamificationGroup K 0) := by
   rw [apfIndex_eq_embedding K M M.val, IntermediateField.fieldRange_val, apfInertiaIndex]
@@ -63,7 +63,7 @@ theorem apfIndex_le_fixingSubgroup_inertiaRelIndex (u : ℝ) :
   have h := Subgroup.relIndex_le_of_le_left hle hnonzero
   simpa only [Subgroup.inf_relIndex_right] using h
 
-/-- Monotonicity and a genuine finite upper bound force the finite-base index to stabilize. -/
+/-- Monotonicity and a finite upper bound force the finite-base index to stabilize. -/
 theorem exists_apfIndex_finite_constant :
     ∃ C : ℕ, 0 < C ∧ ∃ b : ℝ, 0 ≤ b ∧ ∀ u : ℝ, b ≤ u → apfIndex K M u = C := by
   let f : ℝ → ℕ := fun u => apfIndex K M (max u 0)
@@ -84,7 +84,7 @@ theorem exists_apfIndex_finite_constant :
     · rw [← ha]
       exact IsAPF.apfIndex_monotoneOn K M (le_max_right a 0) hu0 hu
 
-/-- The actual finite-base Herbrand integral is affine on a genuine eventual constant-index tail. -/
+/-- The finite-base Herbrand integral is affine on an eventual constant-index tail. -/
 theorem exists_apfPsi_finite_affine :
     ∃ C : ℕ, 0 < C ∧ ∃ b : ℝ, 0 ≤ b ∧
       (∀ u : ℝ, b ≤ u → apfIndex K M u = C) ∧
@@ -128,7 +128,7 @@ local notation "B" => spectralIntegerRing K L
 local notation "I" => lowerRamificationGroup (L ≃ₐ[K] L) (IsLocalRing.maximalIdeal B) 0
 
 /-- The own spectral ramification index of a nonnormal intermediate field
-is the actual inertia-relative fixing-subgroup index. -/
+is the inertia-relative fixing-subgroup index. -/
 theorem intermediate_spectral_ramificationIdx_eq_relIndex :
     (IsLocalRing.maximalIdeal (spectralIntegerRing K M)).ramificationIdx OK =
       M.fixingSubgroup.relIndex I := by
@@ -146,8 +146,8 @@ theorem intermediate_spectral_ramificationIdx_eq_relIndex :
   rw [extensionValuationSubring_ramificationIdx_eq_spectral K M w] at h'
   exact h'
 
-/-- The intrinsic APF index of an actual intermediate field eventually
-equals its actual own-ring ramification index. -/
+/-- The intrinsic APF index of an intermediate field eventually
+equals its own-ring ramification index. -/
 theorem exists_intermediate_apfIndex_eq_ramificationIdx :
     ∃ U : ℝ, 0 ≤ U ∧ ∀ u : ℝ, U ≤ u →
       apfIndex K M u =
@@ -170,7 +170,7 @@ local notation "OK" => Valuation.valuationSubring (NormedField.valuation (K := K
 local notation "O" => spectralIntegerRing K M
 
 /-- Every finite separable extension has intrinsic inertia index equal to
-its original spectral ramification index throughout a genuine eventual tail. -/
+its spectral ramification index throughout an eventual tail. -/
 theorem exists_apfIndex_eq_spectral_ramificationIdx :
     ∃ U : ℝ, 0 ≤ U ∧ ∀ u : ℝ, U ≤ u →
       apfIndex K M u = (IsLocalRing.maximalIdeal O).ramificationIdx OK := by
@@ -187,8 +187,8 @@ theorem exists_apfIndex_eq_spectral_ramificationIdx :
 
 open MeasureTheory
 
-/-- Integrating the actual eventual index gives the actual finite-extension
-Herbrand tail with its original spectral ramification index as slope. -/
+/-- Integrating the eventual index gives the finite-extension
+Herbrand tail with its spectral ramification index as slope. -/
 theorem exists_apfPsi_spectral_ramificationIdx_affine :
     ∃ U : ℝ, 0 ≤ U ∧
       (∀ u : ℝ, U ≤ u →
@@ -214,8 +214,8 @@ theorem exists_apfPsi_spectral_ramificationIdx_affine :
   rw [hi] at hadd
   exact hadd.symm.trans (by ring)
 
-/-- Every nonnegative shift in the actual finite-extension tail changes the
-intrinsic Herbrand parameter by the actual spectral ramification index times that shift. -/
+/-- Every nonnegative shift in the finite-extension tail changes the
+intrinsic Herbrand parameter by the spectral ramification index times that shift. -/
 theorem exists_apfPsi_spectral_ramificationIdx_shift :
     ∃ U : ℝ, 0 ≤ U ∧ ∀ u : ℝ, U ≤ u → ∀ h : ℝ, 0 ≤ h →
       apfPsi K M (u + h) = apfPsi K M u +
@@ -227,7 +227,7 @@ theorem exists_apfPsi_spectral_ramificationIdx_shift :
 
 end AbstractField
 
-section OriginalNorm
+section Norm
 
 variable (M : Type*) [NormedField M] [IsUltrametricDist M]
     [NormedAlgebra K M] [FiniteDimensional K M] [Algebra.IsSeparable K M]
@@ -237,8 +237,8 @@ local notation "OM" => Valuation.valuationSubring (NormedField.valuation (K := M
 
 omit [PerfectField (IsLocalRing.ResidueField
     (NormedField.valuation (K := K)).valuationSubring)] in
-/-- The original normed unit ball and the actual spectral integer ring
-have the same ramification index under the original scalar map. -/
+/-- The normed unit ball and the spectral integer ring
+have the same ramification index under the scalar map. -/
 theorem normed_ramificationIdx_eq_spectral :
     letI := normedAlgebra_unitBall_isDiscreteValuationRing K M
     (IsLocalRing.maximalIdeal OM).ramificationIdx OK =
@@ -247,7 +247,7 @@ theorem normed_ramificationIdx_eq_spectral :
     (NormedField.valuation (K := M))
 
 /-- The eventual intrinsic APF index equals the ramification index on the
-original compatible normed field's original unit ball. -/
+compatible normed field's unit ball. -/
 theorem exists_apfIndex_eq_normed_ramificationIdx :
     letI := normedAlgebra_unitBall_isDiscreteValuationRing K M
     ∃ U : ℝ, 0 ≤ U ∧ ∀ u : ℝ, U ≤ u →
@@ -256,8 +256,8 @@ theorem exists_apfIndex_eq_normed_ramificationIdx :
   rw [normed_ramificationIdx_eq_spectral K M]
   exact exists_apfIndex_eq_spectral_ramificationIdx K M
 
-/-- The actual original normed integer-ring ramification index is the
-actual affine slope of the intrinsic finite-extension Herbrand tail. -/
+/-- The normed integer-ring ramification index is the
+affine slope of the intrinsic finite-extension Herbrand tail. -/
 theorem exists_apfPsi_normed_ramificationIdx_affine :
     letI := normedAlgebra_unitBall_isDiscreteValuationRing K M
     ∃ U : ℝ, 0 ≤ U ∧
@@ -268,8 +268,8 @@ theorem exists_apfPsi_normed_ramificationIdx_affine :
   rw [normed_ramificationIdx_eq_spectral K M]
   exact exists_apfPsi_spectral_ramificationIdx_affine K M
 
-/-- Actual nonnegative parameter shifts in the original normed finite-base
-tail have the original unit-ball ramification index as their exact multiplier. -/
+/-- Nonnegative parameter shifts in the normed finite-base
+tail have the unit-ball ramification index as their exact multiplier. -/
 theorem exists_apfPsi_normed_ramificationIdx_shift :
     letI := normedAlgebra_unitBall_isDiscreteValuationRing K M
     ∃ U : ℝ, 0 ≤ U ∧ ∀ u : ℝ, U ≤ u → ∀ h : ℝ, 0 ≤ h →
@@ -279,6 +279,6 @@ theorem exists_apfPsi_normed_ramificationIdx_shift :
   rw [normed_ramificationIdx_eq_spectral K M]
   exact exists_apfPsi_spectral_ramificationIdx_shift K M
 
-end OriginalNorm
+end Norm
 
 end FontaineWintenberger

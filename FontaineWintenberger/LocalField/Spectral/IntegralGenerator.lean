@@ -16,7 +16,7 @@ public import Mathlib.RingTheory.Nakayama
 /-!
 # Integral generators of finite extensions of complete discrete valuation fields
 
-The argument lifts a primitive residue element by Hensel, adds a uniformizer,
+The argument lifts a primitive residue element by Hensel, adds an uniformizer,
 and uses Nakayama to pass from residue generation to the entire integer ring.
 -/
 
@@ -104,7 +104,7 @@ theorem exists_monic_root_of_residue [Module.Finite R S]
     simpa only [g, Polynomial.derivative_map, Polynomial.eval_map_algebraMap] using hu
 
 omit [IsDomain R] [IsDiscreteValuationRing R] in
-/-- Adding a uniformizer to a simple root makes its polynomial value a uniformizer. -/
+/-- Adding an uniformizer to a simple root makes its polynomial value an uniformizer. -/
 theorem irreducible_aeval_add_of_isRoot {f : Polynomial R} {a z : S}
     (ha : Polynomial.aeval a f = 0) (hder : IsUnit (Polynomial.aeval a f.derivative))
     (hz : Irreducible z) : Irreducible (Polynomial.aeval (a + z) f) := by
@@ -166,7 +166,7 @@ variable [PerfectField (ResidueField (NormedField.valuation (K := K)).valuationS
 variable (L : Type*) [Field L] [Algebra K L] [FiniteDimensional K L]
 variable [Algebra.IsSeparable K L]
 
-/-- The actual spectral integer ring of a finite separable extension is monogenic. -/
+/-- The spectral integer ring of a finite separable extension is monogenic. -/
 theorem spectralIntegerRing_exists_generator :
     ∃ x : spectralIntegerRing K L,
       Algebra.adjoin (NormedField.valuation (K := K)).valuationSubring {x} = ⊤ :=

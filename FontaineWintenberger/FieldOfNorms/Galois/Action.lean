@@ -15,19 +15,19 @@ public import Mathlib.FieldTheory.Galois.Profinite
 /-!
 # The absolute Galois action on the field of norms
 
-## Continuity of the original Krull action on the norm field
+## Continuity of the Krull action on the norm field
 
-Original finite-field fixers give uniform precision on every integral norm
-family through the actual truncated-coordinate ring homomorphism. Therefore
-all original automorphism orbits are continuous for the same valuation topology.
+Finite-field fixers give uniform precision on every integral norm
+family through the truncated-coordinate ring homomorphism. Therefore
+all automorphism orbits are continuous for the same valuation topology.
 
 Reference: the continuity used in Yuan, Lemma 5.3, page 12.
 
-## The absolute base action on the original norm field
+## The absolute base action on the norm field
 
-For a normal intermediate field of the actual separable closure, compose
-ordinary Galois restriction with the existing original norm-field action.
-The action preserves the original coordinates and valuation, has continuous
+For a normal intermediate field of the separable closure, compose
+ordinary Galois restriction with the existing norm-field action.
+The action preserves the coordinates and valuation, has continuous
 orbits, and has exactly the pointwise fixer of the intermediate field as kernel.
 
 This is the restriction to the base norm field in Wintenberger, Remark 3.2.4.
@@ -46,8 +46,8 @@ section Fields
 
 variable (K L : Type*) [Field K] [Field L] [Algebra K L]
 
-/-- An original finite-field fixer fixes that finite coordinate of every
-original norm-compatible family, without a normality hypothesis. -/
+/-- A finite-field fixer fixes that finite coordinate of every
+norm-compatible family, without a normality hypothesis. -/
 theorem FieldOfNorms.coord_fieldOfNormsMap_of_mem_fixingSubgroup
     (E : FiniteIntermediateField K L) (σ : L ≃ₐ[K] L) (hσ : σ ∈ E.val.fixingSubgroup)
     (x : FieldOfNorms K L) :
@@ -80,8 +80,8 @@ variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
 variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 
-/-- Fixing an actual deep finite field gives its prescribed original
-valuation precision, uniformly for all integral original norm families. -/
+/-- Fixing a deep finite field gives its prescribed
+valuation precision, uniformly for all integral norm families. -/
 theorem FieldOfNorms.valuation_sub_le_of_mem_deep_fixingSubgroup (n : ℕ)
     (σ : L ≃ₐ[K] L)
     (hσ : σ ∈ (deepFiniteTower K L (FiniteIntermediateField.bottom) n).val.fixingSubgroup) :
@@ -104,8 +104,8 @@ theorem FieldOfNorms.valuation_sub_le_of_mem_deep_fixingSubgroup (n : ℕ)
   exact (FieldOfNorms.truncation_eq_zero_iff K L (FiniteIntermediateField.bottom) n
     (b - a)).mp hz
 
-/-- Every integral original family has a continuous orbit under the
-original Krull topology, with its inherited original valuation topology. -/
+/-- Every integral family has a continuous orbit under the
+Krull topology, with its inherited valuation topology. -/
 theorem continuous_fieldOfNormsAut_apply_of_integral :
     ∀ (x : FieldOfNorms K L), FieldOfNorms.valuation K L x ≤ 1 →
       Continuous (fun σ : L ≃ₐ[K] L => FieldOfNorms.aut K L σ x) := by
@@ -151,8 +151,8 @@ theorem continuous_fieldOfNormsAut_apply_of_integral :
   simpa only [sub_add_cancel, zero_add] using
     hz.add_const (FieldOfNorms.aut K L σ₀ x)
 
-/-- Every original norm-field family has a continuous orbit under the
-original Krull topology and the same original valuation topology. -/
+/-- Every norm-field family has a continuous orbit under the
+Krull topology and the valuation topology. -/
 theorem continuous_fieldOfNormsAut_apply :
     ∀ x : FieldOfNorms K L,
       Continuous (fun σ : L ≃ₐ[K] L => FieldOfNorms.aut K L σ x) := by
@@ -191,21 +191,21 @@ local notation "p" => residueChar K
 variable (L : IntermediateField K (SeparableClosure K)) [Normal K L]
 variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 
-/-- The actual absolute Galois group acts on the original norm field through
+/-- The absolute Galois group acts on the norm field through
 its ordinary restriction to the given normal APF extension. -/
 def FieldOfNorms.absoluteAut :
     (SeparableClosure K ≃ₐ[K] SeparableClosure K) →*
       (FieldOfNorms K L ≃+* FieldOfNorms K L) := by
   exact (FieldOfNorms.aut K L).comp (AlgEquiv.restrictNormalHom L)
 
-/-- The absolute base action factors through the actual Galois restriction. -/
+/-- The absolute base action factors through the Galois restriction. -/
 @[simp]
 theorem FieldOfNorms.absoluteAut_apply (σ : SeparableClosure K ≃ₐ[K] SeparableClosure K)
     (x : FieldOfNorms K L) :
     FieldOfNorms.absoluteAut K L σ x =
       FieldOfNorms.aut K L (AlgEquiv.restrictNormalHom L σ) x := rfl
 
-/-- The original coordinate formula, viewed in the same actual separable closure. -/
+/-- The coordinate formula, viewed in the same separable closure. -/
 theorem coe_fieldOfNormsEval_fieldOfNormsAbsoluteAut
     (σ : SeparableClosure K ≃ₐ[K] SeparableClosure K)
     (x : FieldOfNorms K L) (E : FiniteIntermediateField K L) :
@@ -223,14 +223,14 @@ theorem coe_fieldOfNormsEval_fieldOfNormsAbsoluteAut
         (coe_fieldOfNormsEval_fieldOfNormsMap τ x E)
     _ = _ := AlgEquiv.restrictNormalHom_apply L σ _
 
-/-- Absolute Galois transport preserves the original normalized valuation. -/
+/-- Absolute Galois transport preserves the normalized valuation. -/
 theorem FieldOfNorms.absoluteAut_valuation
     (σ : SeparableClosure K ≃ₐ[K] SeparableClosure K) (x : FieldOfNorms K L) :
     FieldOfNorms.valuation K L (FieldOfNorms.absoluteAut K L σ x) =
       FieldOfNorms.valuation K L x :=
   FieldOfNorms.aut_valuation K (AlgEquiv.restrictNormalHom L σ) x
 
-/-- Every absolute Galois orbit is continuous for the original Krull and
+/-- Every absolute Galois orbit is continuous for the Krull and
 norm-field valuation topologies. -/
 theorem continuous_fieldOfNormsAbsoluteAut_apply :
     ∀ x : FieldOfNorms K L,
@@ -240,7 +240,7 @@ theorem continuous_fieldOfNormsAbsoluteAut_apply :
   exact (continuous_fieldOfNormsAut_apply K L x).comp
     (InfiniteGalois.restrictNormalHom_continuous L)
 
-/-- The kernel is exactly the original pointwise fixer of the actual field `L`. -/
+/-- The kernel is exactly the pointwise fixer of the field `L`. -/
 theorem FieldOfNorms.absoluteAut_ker :
     (FieldOfNorms.absoluteAut K L).ker = L.fixingSubgroup := by
   rw [← L.restrictNormalHom_ker]
@@ -254,7 +254,7 @@ theorem FieldOfNorms.absoluteAut_ker :
   · intro h
     rw [h, _root_.map_one]
 
-/-- Extension of actual normal-field automorphisms to the same separable
+/-- Extension of normal-field automorphisms to the same separable
 closure shows that restricting the absolute action does not change its image. -/
 theorem FieldOfNorms.absoluteAut_range :
     (FieldOfNorms.absoluteAut K L).range =

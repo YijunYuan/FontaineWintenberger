@@ -17,17 +17,17 @@ public import Mathlib.Order.LiminfLimsup
 
 The lower limit and infimum use nonnegative extended reals. In particular the
 empty tail at an infinite ramification bound has infimum infinity. This case
-is proved directly from the actual upper groups and their intrinsic indices.
+is proved directly from the upper groups and their intrinsic indices.
 
 ## Positivity of the intrinsic APF strictness constant
 
 A positive finite first bound controls every bounded interval, because the
-actual APF index is positive and monotone. A positive lower limit controls
+APF index is positive and monotone. A positive lower limit controls
 the remaining tail. The infinite first bound uses its proved empty-infimum case.
 
 ## Bounded growth of the intrinsic APF index
 
-A positive interval of the actual Herbrand integral gives a uniform lower
+A positive interval of the Herbrand integral gives an uniform lower
 bound for the strictness ratio whenever the intrinsic index has bounded
 growth across intervals of a fixed positive length. This implements
 blueprint `fw:apf-bounded-index-growth` for an abstract separable extension.
@@ -77,11 +77,11 @@ theorem apfPhi_eq_self_of_bound_eq_top (h : apfRamificationBound K L = ⊤)
     [IsAPF K L] (u : ℝ) : apfPhi K L u = u := by
   simpa only [apfPsi_eq_self_of_bound_eq_top K L h] using apfPhi_apfPsi K L u
 
-/-- The source ratio, embedded in the nonnegative extended reals. -/
+/-- The ratio, embedded in the nonnegative extended reals. -/
 noncomputable def apfStrictnessRatio (u : ℝ) : ℝ≥0∞ :=
   ENNReal.ofReal (apfPsi K L u / (apfIndex K L u : ℝ))
 
-/-- The source strictness constant, with the empty infimum equal to infinity. -/
+/-- The strictness constant, with the empty infimum equal to infinity. -/
 noncomputable def apfStrictnessConstant : ℝ≥0∞ :=
   ⨅ u : ℝ, ⨅ (_ : apfRamificationBound K L ≤ (u : EReal)), apfStrictnessRatio K L u
 
@@ -195,7 +195,7 @@ theorem IsStrictlyAPF.constant_pos_of_bound_eq_coe [IsStrictlyAPF K L]
     exact (min_le_right _ _).trans (ENNReal.ofReal_le_ofReal hbound)
   · exact (min_le_left _ _).trans (hT₀ u ((le_max_left T₀ b).trans (le_of_not_ge huT))).le
 
-/-- The source positivity criterion, including the infinite first-bound endpoint. -/
+/-- The positivity criterion, including the infinite first-bound endpoint. -/
 theorem isStrictlyAPF_iff_constant_pos [IsAPF K L]
     (hi : (0 : EReal) < apfRamificationBound K L) :
     IsStrictlyAPF K L ↔ 0 < apfStrictnessConstant K L := by
@@ -220,7 +220,7 @@ open scoped ENNReal
 variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
-/-- A nonnegative interval of the actual Herbrand integral controls its
+/-- A nonnegative interval of the Herbrand integral controls its
 endpoint by the intrinsic index at the interval's left endpoint. -/
 theorem IsAPF.window_mul_index_le_apfPsi [IsAPF K L]
     {s t : ℝ} (hs : 0 ≤ s) (hst : s ≤ t) :
@@ -240,7 +240,7 @@ theorem IsAPF.window_mul_index_le_apfPsi [IsAPF K L]
   linarith [IsAPF.le_apfPsi K L s]
 
 /-- Bounded growth across an interval of fixed positive length gives the
-actual strictness-ratio lower bound after an explicit finite cutoff. -/
+strictness-ratio lower bound after an explicit finite cutoff. -/
 theorem IsAPF.apfPsi_div_index_ge_of_boundedGrowth [IsAPF K L]
     {ℓ C U v : ℝ} (hℓ : 0 < ℓ) (hC : 0 < C)
     (hgrowth : ∀ u : ℝ, U ≤ u →
@@ -264,8 +264,8 @@ theorem IsAPF.apfPsi_div_index_ge_of_boundedGrowth [IsAPF K L]
     _ = (ℓ * (apfIndex K L (v - ℓ) : ℝ)) * C := by ring
     _ ≤ apfPsi K L v * C := mul_le_mul_of_nonneg_right hwindow hC.le
 
-/-- The source ratio has a positive constant eventual lower bound under
-bounded growth of the actual intrinsic index. -/
+/-- The ratio has a positive constant eventual lower bound under
+bounded growth of the intrinsic index. -/
 theorem IsAPF.eventually_le_apfStrictnessRatio_of_boundedGrowth [IsAPF K L]
     {ℓ C U : ℝ} (hℓ : 0 < ℓ) (hC : 0 < C)
     (hgrowth : ∀ u : ℝ, U ≤ u →
@@ -276,7 +276,7 @@ theorem IsAPF.eventually_le_apfStrictnessRatio_of_boundedGrowth [IsAPF K L]
   exact ENNReal.ofReal_le_ofReal
     (IsAPF.apfPsi_div_index_ge_of_boundedGrowth K L hℓ hC hgrowth hv)
 
-/-- Eventual bounded growth of the actual APF index implies strict APF for
+/-- Eventual bounded growth of the APF index implies strict APF for
 an abstract separable extension, without any residue-field hypothesis. -/
 theorem isStrictlyAPF_of_apfIndex_boundedGrowth [IsAPF K L]
     {ℓ C U : ℝ} (hℓ : 0 < ℓ) (hC : 0 < C)

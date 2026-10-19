@@ -11,9 +11,9 @@ public import FontaineWintenberger.Ramification.Lower.SpectralMaps
 public import FontaineWintenberger.Ramification.Norm.Tower
 
 /-!
-# Actual integral norms on all finite intermediate fields
+# Integral norms on all finite intermediate fields
 
-The canonical field norms restrict to the actual spectral integer rings.
+The canonical field norms restrict to the spectral integer rings.
 Their original-field computation proves identity and composition without
 introducing another inverse-limit carrier.
 -/
@@ -31,7 +31,7 @@ variable {K Ω : Type*} [NontriviallyNormedField K] [IsCompleteDiscreteValuedFie
 
 local notation "R₀" => Valuation.valuationSubring (NormedField.valuation (K := K))
 
-/-- The actual integral norm for an actual inclusion of finite intermediate fields. -/
+/-- The integral norm for an inclusion of finite intermediate fields. -/
 def integerNorm (E F : FiniteIntermediateField K Ω) (hEF : E ≤ F) :
     spectralIntegerRing K F.val →* spectralIntegerRing K E.val := by
   let : Algebra E.val F.val := (IntermediateField.inclusion hEF).toRingHom.toAlgebra
@@ -44,7 +44,7 @@ def integerNorm (E F : FiniteIntermediateField K Ω) (hEF : E ≤ F) :
     Module.Finite.of_restrictScalars_finite R₀ _ _
   exact Algebra.intNorm (spectralIntegerRing K E.val) (spectralIntegerRing K F.val)
 
-/-- The integral norm is literally the original field norm under inclusion. -/
+/-- The integral norm is the field norm under inclusion. -/
 @[simp]
 theorem coe_integerNorm (E F : FiniteIntermediateField K Ω) (hEF : E ≤ F)
     (x : spectralIntegerRing K F.val) :
@@ -66,14 +66,14 @@ theorem coe_integerNorm (E F : FiniteIntermediateField K Ω) (hEF : E ≤ F)
   exact Algebra.algebraMap_intNorm (A := spectralIntegerRing K E.val)
     (B := spectralIntegerRing K F.val) (K := E.val) (L := F.val) x
 
-/-- The actual integral norm of the identity field inclusion is the identity. -/
+/-- The integral norm of the identity field inclusion is the identity. -/
 @[simp]
 theorem integerNorm_self (E : FiniteIntermediateField K Ω) (x : spectralIntegerRing K E.val) :
     integerNorm E E le_rfl x = x := by
   apply Subtype.ext
   rw [coe_integerNorm, norm_self]
 
-/-- Integral norms compose because their original field norms compose. -/
+/-- Integral norms compose because their field norms compose. -/
 theorem integerNorm_integerNorm (E F G : FiniteIntermediateField K Ω)
     (hEF : E ≤ F) (hFG : F ≤ G) (x : spectralIntegerRing K G.val) :
     integerNorm E F hEF (integerNorm F G hFG x) = integerNorm E G (hEF.trans hFG) x := by
@@ -81,7 +81,7 @@ theorem integerNorm_integerNorm (E F G : FiniteIntermediateField K Ω)
   simp only [coe_integerNorm]
   exact norm_norm E F G hEF hFG (x : G.val)
 
-/-- The actual integral norm preserves every nonnegative maximal-ideal
+/-- The integral norm preserves every nonnegative maximal-ideal
 precision, on all finite separable layers including nonnormal ones. -/
 theorem integerNorm_mem_maximalIdeal_pow (E F : FiniteIntermediateField K Ω) (hEF : E ≤ F)
     {r : ℕ} {x : spectralIntegerRing K F.val}
@@ -115,7 +115,7 @@ theorem integerNorm_mem_maximalIdeal_pow (E F : FiniteIntermediateField K Ω) (h
   exact intNorm_mem_maximalIdeal_pow
     (spectralIntegerRing K E.val) (spectralIntegerRing K F.val) hx
 
-/-- The actual integral norm addition congruence composes in a finite-layer
+/-- The integral norm addition congruence composes in a finite-layer
 triple, consuming the proved integral-norm tower theorem. -/
 theorem integerNorm_add_congruence_tower (E F G : FiniteIntermediateField K Ω)
     (hEF : E ≤ F) (hFG : F ≤ G) {r : ℕ}
@@ -171,7 +171,7 @@ theorem integerNorm_add_congruence_tower (E F G : FiniteIntermediateField K Ω)
   exact intNorm_add_congruence_tower (spectralIntegerRing K E.val)
     (spectralIntegerRing K F.val) (spectralIntegerRing K G.val) hE hF x y
 
-/-- Actual norm congruences at a common precision compose along an actual
+/-- Norm congruences at a common precision compose along an
 finite chain of intermediate fields. -/
 theorem integerNorm_add_congruence_of_chain (r : ℕ) (E F : FiniteIntermediateField K Ω)
     (hchain : Relation.ReflTransGen

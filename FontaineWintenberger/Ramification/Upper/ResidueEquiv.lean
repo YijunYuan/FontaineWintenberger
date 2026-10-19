@@ -9,10 +9,10 @@ public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.Upper.Transport
 
 /-!
-# Invariance of the actual finite residue degree
+# Invariance of the finite residue degree
 
-Mathlib's local residue algebra equivalence applies to the actual canonical
-integer-ring equivalences, preserving the original base residue field.
+Mathlib's local residue algebra equivalence applies to the canonical
+integer-ring equivalences, preserving the base residue field.
 -/
 
 @[expose] public section
@@ -29,7 +29,7 @@ variable (L : Type*) [Field L] [Algebra K L] [FiniteDimensional K L]
 local notation "R" => Valuation.valuationSubring (NormedField.valuation (K := K))
 
 omit [FiniteDimensional K L] in
-/-- An original field isomorphism preserves the actual canonical residue degree. -/
+/-- A field isomorphism preserves the canonical residue degree. -/
 theorem spectral_residueDegree_algEquiv {M : Type*} [Field M] [Algebra K M]
     [Algebra.IsSeparable K M] (e : L ≃ₐ[K] M) :
     Module.finrank (IsLocalRing.ResidueField R)
@@ -39,8 +39,8 @@ theorem spectral_residueDegree_algEquiv {M : Type*} [Field M] [Algebra K M]
   (IsLocalRing.ResidueField.mapAlgEquiv' (spectralIntegerRingEquiv K
       e)).toLinearEquiv.finrank_eq.symm
 
-/-- Any compatible actual extension valuation has the same residue degree
-as the spectral valuation on the same original finite separable field. -/
+/-- Any compatible extension valuation has the same residue degree
+as the spectral valuation on the finite separable field. -/
 theorem extensionValuationSubring_residueDegree_eq_spectral
     {Γ : Type*} [LinearOrderedCommGroupWithZero Γ] (w : Valuation L Γ)
     [(NormedField.valuation (K := K)).HasExtension w] :

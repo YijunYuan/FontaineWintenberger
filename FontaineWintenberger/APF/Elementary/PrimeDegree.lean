@@ -20,24 +20,24 @@ public import FontaineWintenberger.Ramification.Norm.Congruence
 
 ## The common intrinsic order in prime degree
 
-Every subgroup of a prime-order Galois group is trivial or full. The actual
+Every subgroup of a prime-order Galois group is trivial or full. The
 lower groups consequently give the same order to every nonidentity element.
 
 ## Intrinsic ramification of prime-degree extensions
 
-The actual different and total ramification determine the unique finite
+The different and total ramification determine the unique finite
 upper break of an arbitrary separable prime-degree extension.
 
 ## Intrinsic APF indices of prime-degree nonnormal extensions
 
-The finite upper orbit index equals the actual intrinsic APF inertia index
-with its residue-degree factor. The actual different therefore determines
+The finite upper orbit index equals the intrinsic APF inertia index
+with its residue-degree factor. The different therefore determines
 the full intrinsic profile of a totally ramified prime-degree subextension.
 
 ## Norm congruence in prime degree
 
 The middle subsets in the product expansion form free orbits under left
-translation. Each orbit contributes an actual trace of an integral element.
+translation. Each orbit contributes a trace of an integral element.
 -/
 
 @[expose] public section
@@ -55,7 +55,7 @@ local notation "OK" => Valuation.valuationSubring (NormedField.valuation (K := K
 local notation "OL" => spectralIntegerRing K L
 local notation "GL" => L ≃ₐ[K] L
 
-/-- Total ramification makes the actual full Galois action inertial. -/
+/-- Total ramification makes the full Galois action inertial. -/
 theorem spectralIntegerRing_lower_zero_eq_top_of_totallyRamified
     (he : (IsLocalRing.maximalIdeal OL).ramificationIdx OK = Module.finrank K L) :
     lowerRamificationGroup GL (IsLocalRing.maximalIdeal OL) 0 = ⊤ := by
@@ -71,7 +71,7 @@ theorem spectralIntegerRing_exists_common_break_of_prime_degree
   exact exists_common_ramificationOrder_succ_of_prime_card GL
     (spectralIntegerRing_lower_zero_eq_top_of_totallyRamified K L he)
 
-/-- Hilbert's actual different formula specializes to the common-order formula. -/
+/-- Hilbert's different formula specializes to the common-order formula. -/
 theorem spectralIntegerRing_different_order_of_common_order {m : ℕ}
     (hm : ∀ g : GL, g ≠ 1 → ramificationOrder (R := OL) GL g = m) :
     emultiplicity (IsLocalRing.maximalIdeal OL) (differentIdeal OK OL) =
@@ -80,7 +80,7 @@ theorem spectralIntegerRing_different_order_of_common_order {m : ℕ}
   rw [spectralIntegerRing_different_order_eq_sum_ramificationOrder K L,
     sum_ramificationOrder_of_common_order GL hm, IsGalois.card_aut_eq_finrank K L]
 
-/-- The actual public extended APF bound is the common upper break. -/
+/-- The public extended APF bound is the common upper break. -/
 theorem apfRamificationBound_eq_common_break [Nontrivial GL] {t : ℕ}
     (ht : ∀ g : GL, g ≠ 1 → ramificationOrder (R := OL) GL g = (t + 1 : ℕ)) :
     apfRamificationBound K L = ((t : ℝ) : EReal) := by
@@ -98,7 +98,7 @@ theorem apfRamificationBound_eq_common_break [Nontrivial GL] {t : ℕ}
     exact ⟨t, ht0, by rw [upperRamificationGroup_of_common_order GL ht ht0, ite_eq_left le_rfl],
         rfl⟩
 
-/-- The actual trace ideal at a common break, with its exact floor exponent. -/
+/-- The trace ideal at a common break, with its exact floor exponent. -/
 theorem spectralIntegerRing_intTraceIdeal_of_common_break {t : ℕ}
     (ht : ∀ g : GL, g ≠ 1 → ramificationOrder (R := OL) GL g = (t + 1 : ℕ))
     (he : (IsLocalRing.maximalIdeal OL).ramificationIdx OK = Module.finrank K L) :
@@ -137,7 +137,7 @@ theorem spectralIntegerRing_intTrace_order_bound {t : ℕ}
         (((Module.finrank K L - 1) * (t + 1) / Module.finrank K L : ℕ) : ℕ∞) by
       exact_mod_cast harith).trans (by gcongr)
 
-/-- Prime degree and total ramification produce the actual break, public APF
+/-- Prime degree and total ramification produce the break, public APF
 bound, different, trace ideal, and trace valuation estimate together. -/
 theorem spectralIntegerRing_prime_degree_ramification
     (hp : (Module.finrank K L).Prime)
@@ -182,7 +182,7 @@ local notation "A" => Valuation.valuationSubring (NormedField.valuation (K := K)
 local notation "B" => spectralIntegerRing K L
 local notation "C" => spectralIntegerRing K M
 
-/-- Field isomorphisms preserve the actual canonical ramification index. -/
+/-- Field isomorphisms preserve the canonical ramification index. -/
 theorem spectral_ramificationIdx_algEquiv (e : L ≃ₐ[K] M) :
     (IsLocalRing.maximalIdeal C).ramificationIdx A =
       (IsLocalRing.maximalIdeal B).ramificationIdx A := by
@@ -195,7 +195,7 @@ theorem spectral_ramificationIdx_algEquiv (e : L ≃ₐ[K] M) :
 variable [PerfectField (IsLocalRing.ResidueField
     (NormedField.valuation (K := K)).valuationSubring)]
 
-/-- Field isomorphisms preserve the order of the actual different ideal. -/
+/-- Field isomorphisms preserve the order of the different ideal. -/
 theorem spectral_different_order_algEquiv (e : L ≃ₐ[K] M) :
     emultiplicity (IsLocalRing.maximalIdeal C) (differentIdeal A C) =
       emultiplicity (IsLocalRing.maximalIdeal B) (differentIdeal A B) := by
@@ -233,8 +233,8 @@ variable {Γ : Type*} [LinearOrderedCommGroupWithZero Γ] (w : Valuation L Γ)
 local notation "A" => Valuation.valuationSubring (NormedField.valuation (K := K))
 local notation "B" => spectralIntegerRing K L
 
-/-- Replacing the spectral valuation by any compatible actual valuation
-preserves the canonical ramification index on the same original field. -/
+/-- Replacing the spectral valuation by any compatible valuation
+preserves the canonical ramification index on the field. -/
 theorem extensionValuationSubring_ramificationIdx_eq_spectral :
     letI := extensionValuationSubring_isDiscreteValuationRing K L w
     (IsLocalRing.maximalIdeal w.valuationSubring).ramificationIdx A =
@@ -250,8 +250,8 @@ theorem extensionValuationSubring_ramificationIdx_eq_spectral :
 variable [PerfectField (IsLocalRing.ResidueField
     (NormedField.valuation (K := K)).valuationSubring)]
 
-/-- The order of the actual different is independent of the chosen
-compatible valuation on the same original finite separable extension. -/
+/-- The order of the different is independent of the chosen
+compatible valuation on the finite separable extension. -/
 theorem extensionValuationSubring_different_order_eq_spectral :
     letI := extensionValuationSubring_isDiscreteValuationRing K L w
     emultiplicity (IsLocalRing.maximalIdeal w.valuationSubring)
@@ -288,7 +288,7 @@ local notation "A" => Valuation.valuationSubring (NormedField.valuation (K := K)
 local notation "B" => spectralIntegerRing K M
 local notation "C" => spectralIntegerRing K L
 
-/-- The intrinsic APF index and actual different of any totally ramified
+/-- The intrinsic APF index and different of any totally ramified
 prime-degree intermediate field have the same single finite break. -/
 theorem intermediate_apfIndex_prime_degree_different_profile
     (hp : (Module.finrank K M).Prime)
@@ -339,8 +339,8 @@ local notation "A" => Valuation.valuationSubring (NormedField.valuation (K := K)
 local notation "B" => spectralIntegerRing K L
 
 /-- An arbitrary finite separable, totally ramified extension of prime
-degree has one intrinsic APF break, determined by its actual different.
-The original extension need not be normal. -/
+degree has one intrinsic APF break, determined by its different.
+The extension need not be normal. -/
 theorem apfIndex_prime_degree_different_profile
     (hp : (Module.finrank K L).Prime)
     (he : (IsLocalRing.maximalIdeal B).ramificationIdx A = Module.finrank K L) :
@@ -378,7 +378,7 @@ variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField 
 variable (L : Type*) [Field L] [Algebra K L] [FiniteDimensional K L]
     [Algebra.IsSeparable K L]
 
-/-- Integrating an actual one-break APF index gives its affine formulas
+/-- Integrating an one-break APF index gives its affine formulas
 on both sides of the break, including the prescribed negative continuation. -/
 theorem apfPsi_eq_of_index_profile {b : ℝ} (hb : 0 ≤ b)
     (hprofile : ∀ u : ℝ, 0 ≤ u →
@@ -416,7 +416,7 @@ theorem apfPsi_eq_of_index_profile {b : ℝ} (hb : 0 ≤ b)
     rw [hlow b le_rfl, hint] at hadd
     rw [ite_eq_right hu, ← hadd, mul_comm]
 
-/-- Inverting the actual one-break Herbrand function gives the intrinsic
+/-- Inverting the one-break Herbrand function gives the intrinsic
 forward change of parameter, for every real argument. -/
 theorem apfPhi_eq_of_index_profile {b : ℝ} (hb : 0 ≤ b)
     (hprofile : ∀ u : ℝ, 0 ≤ u →
@@ -450,7 +450,7 @@ variable (L : Type*) [Field L] [Algebra K L] [FiniteDimensional K L]
 local notation "A" => Valuation.valuationSubring (NormedField.valuation (K := K))
 local notation "B" => spectralIntegerRing K L
 
-/-- The actual different determines the full intrinsic one-break APF
+/-- The different determines the full intrinsic one-break APF
 profile of an arbitrary totally ramified separable prime-degree extension. -/
 theorem apf_prime_degree_different_profile
     (hp : (Module.finrank K L).Prime)
@@ -467,8 +467,8 @@ theorem apf_prime_degree_different_profile
   exact ⟨b, hb, hprofile, apfPsi_eq_of_index_profile K L hb hprofile,
     apfPhi_eq_of_index_profile K L hb hprofile, hd⟩
 
-/-- An explicit break read directly from the actual different gives
-the actual intrinsic APF index, including the right endpoint. -/
+/-- An explicit break read directly from the different gives
+the intrinsic APF index, including the right endpoint. -/
 theorem apfIndex_prime_degree_eq_different
     (hp : (Module.finrank K L).Prime)
     (he : (IsLocalRing.maximalIdeal B).ramificationIdx A = Module.finrank K L) :
@@ -502,7 +502,7 @@ variable (M : IntermediateField K E)
 local notation "H" => M.fixingSubgroup
 local notation "U" => upperRamificationGroup (R := spectralIntegerRing K E) (E ≃ₐ[K] E)
 
-/-- The actual finite upper orbit index retains the zero-index residue factor. -/
+/-- The finite upper orbit index retains the zero-index residue factor. -/
 theorem finite_upperOrbitIndex_eq_zeroIndex_mul_apfIndex {u : ℝ} (hu : 0 ≤ u) :
     (H ⊔ U u).index = (H ⊔ U 0).index * apfIndex K M u := by
   rw [apfIndex_eq_subgroupRelIndex K E M hu]
@@ -514,7 +514,7 @@ local notation "A" => Valuation.valuationSubring (NormedField.valuation (K := K)
 local notation "B" => Valuation.valuationSubring (Valuation.comap (algebraMap M E)
     (spectralValuation K E))
 
-/-- The actual different determines the intrinsic APF profile of every
+/-- The different determines the intrinsic APF profile of every
 prime-degree totally ramified intermediate field; normality is not required. -/
 theorem apfIndex_prime_degree_different_profile_of_finiteGaloisIntermediateField
     (hp : (Module.finrank K M).Prime)
@@ -558,7 +558,7 @@ local notation "GL" => L ≃ₐ[K] L
 variable [PerfectField (IsLocalRing.ResidueField
   (NormedField.valuation (K := K)).valuationSubring)]
 
-/-- The source prime-degree norm estimate with the actual public APF bound;
+/-- The prime-degree norm estimate with the public APF bound;
 the positive denominator is cleared to retain infinite valuations faithfully. -/
 theorem spectralIntegerRing_prime_degree_norm_estimate
     (hp : (Module.finrank K L).Prime)

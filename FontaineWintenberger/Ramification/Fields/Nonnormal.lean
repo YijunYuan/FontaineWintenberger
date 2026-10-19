@@ -14,9 +14,9 @@ public import FontaineWintenberger.Mathlib.FieldTheory.RelIndex
 public import Mathlib.FieldTheory.LinearDisjoint
 
 /-!
-# Actual inertia indices for nonnormal subextensions
+# Inertia indices for nonnormal subextensions
 
-The actual relative inertia cardinality and ramification-index tower give
+The relative inertia cardinality and ramification-index tower give
 the ramification index of any fixed field, without normality of its fixing
 subgroup. Coprimality then supplies the wild compositum reduction.
 -/
@@ -105,7 +105,7 @@ local notation "R" => Valuation.valuationSubring (NormedField.valuation (K := K)
 local notation "B" => spectralIntegerRing K L
 local notation "D" => lowerRamificationGroup G (IsLocalRing.maximalIdeal B) 0
 
-/-- The actual ramification index of any fixed field is its actual
+/-- The ramification index of any fixed field is its
 inertia-relative fixing-group index. The subgroup need not be normal. -/
 theorem fixedField_ramificationIdx_eq_relIndex (H : Subgroup G) :
     (IsLocalRing.maximalIdeal
@@ -121,8 +121,8 @@ theorem fixedField_ramificationIdx_eq_relIndex (H : Subgroup G) :
   apply Nat.mul_right_cancel (Nat.card_pos (α := ↥(H ⊓ D)))
   exact ht.symm.trans (H.relIndex_mul_card D).symm
 
-/-- Total ramification of the actual nonnormal fixed field makes inertia
-transitive on its actual embeddings. -/
+/-- Total ramification of the nonnormal fixed field makes inertia
+transitive on its embeddings. -/
 theorem fixedField_sup_inertia_eq_top (H : Subgroup G)
     (he : (IsLocalRing.maximalIdeal
       ((spectralValuation K L).comap
@@ -133,8 +133,8 @@ theorem fixedField_sup_inertia_eq_top (H : Subgroup G)
     IntermediateField.finrank_eq_fixingSubgroup_index,
     IntermediateField.fixingSubgroup_fixedField]
 
-/-- Total ramification of the actual fixed field is exactly transitivity
-of the actual inertia action, without a normality hypothesis. -/
+/-- Total ramification of the fixed field is exactly transitivity
+of the inertia action, without a normality hypothesis. -/
 theorem fixedField_ramificationIdx_eq_finrank_iff (H : Subgroup G) :
     (IsLocalRing.maximalIdeal
       ((spectralValuation K L).comap
@@ -147,7 +147,7 @@ theorem fixedField_ramificationIdx_eq_finrank_iff (H : Subgroup G) :
 
 local notation "P" => lowerRamificationGroup G (IsLocalRing.maximalIdeal B) 1
 
-/-- Actual wild inertia is transitive on the embeddings of an actual totally
+/-- Wild inertia is transitive on the embeddings of a totally
 ramified p-power-degree fixed field, including nonnormal fixed fields. -/
 theorem fixedField_sup_wild_eq_top (p : ℕ) [Fact p.Prime]
     [CharP (IsLocalRing.ResidueField B) p] (H : Subgroup G)
@@ -167,7 +167,7 @@ theorem fixedField_sup_wild_eq_top (p : ℕ) [Fact p.Prime]
   rw [hdegree, ← wild_fixedField_ramificationIdx_eq_relIndex K L]
   exact (wild_fixedField_ramificationIdx_coprime K L p).pow_left n
 
-/-- The genuine tame fixed field is linearly disjoint from every actual
+/-- The tame fixed field is linearly disjoint from every
 totally ramified p-power-degree fixed field. -/
 theorem fixedField_wild_linearDisjoint (p : ℕ) [Fact p.Prime]
     [CharP (IsLocalRing.ResidueField B) p] (H : Subgroup G)
@@ -192,8 +192,8 @@ theorem fixedField_wild_linearDisjoint (p : ℕ) [Fact p.Prime]
     exact sup_le hh hp
   exact fun g => ht (Subgroup.mem_top g)
 
-/-- The actual compositum over the tame fixed field retains the full degree
-of the original nonnormal wild field. -/
+/-- The compositum over the tame fixed field retains the full degree
+of the nonnormal wild field. -/
 theorem fixedField_wild_compositum_finrank (p : ℕ) [Fact p.Prime]
     [CharP (IsLocalRing.ResidueField B) p] (H : Subgroup G)
     (he : (IsLocalRing.maximalIdeal
@@ -213,8 +213,8 @@ theorem fixedField_wild_compositum_finrank (p : ℕ) [Fact p.Prime]
     relIndex_eq_index_of_sup_eq_top H P (fixedField_sup_wild_eq_top K L p H he n hd),
     IntermediateField.finrank_eq_fixingSubgroup_index, IntermediateField.fixingSubgroup_fixedField]
 
-/-- The actual norm from the actual tame compositum is the original norm
-under the original base inclusion. This consumes genuine linear disjointness. -/
+/-- The norm from the tame compositum is the norm
+under the base inclusion. This consumes linear disjointness. -/
 theorem fixedField_wild_norm_baseChange (p : ℕ) [Fact p.Prime]
     [CharP (IsLocalRing.ResidueField B) p] (H : Subgroup G)
     (he : (IsLocalRing.maximalIdeal

@@ -14,11 +14,11 @@ public import Mathlib.Algebra.GroupWithZero.WithZero
 ## The multiplicative field of norms over all finite intermediate fields
 
 No normality or APF assumption is needed for this multiplicative construction.
-The transition maps are actual field norms on genuinely finite extensions.
+The transition maps are field norms on finite extensions.
 
-## Extension from original cofinal norm coordinates
+## Extension from cofinal norm coordinates
 
-Any genuinely cofinal set of original finite fields determines and constructs
+Any cofinal set of finite fields determines and constructs
 the same zero-adjoined unit field of norms. This supplies the covariant finite
 functor before its additive and topological properties.
 -/
@@ -30,7 +30,7 @@ namespace FontaineWintenberger
 noncomputable section
 
 variable (K L : Type*) [Field K] [Field L] [Algebra K L]
-/-- The actual subgroup of norm-compatible families of units over all finite intermediate fields. -/
+/-- The subgroup of norm-compatible families of units over all finite intermediate fields. -/
 def FieldOfNorms.normCompatibleUnits : Subgroup (∀ E : FiniteIntermediateField K L, E.valˣ) where
   carrier := {x | ∀ (E F : FiniteIntermediateField K L) (h : E ≤ F),
       FiniteIntermediateField.normUnits E F h (x F) = x E}
@@ -44,7 +44,7 @@ def FieldOfNorms.normCompatibleUnits : Subgroup (∀ E : FiniteIntermediateField
     change FiniteIntermediateField.normUnits E F h ((x F)⁻¹) = (x E)⁻¹
     rw [map_inv, hx E F h]
 
-/-- The single multiplicative carrier for the field of norms: its actual unit
+/-- The single multiplicative carrier for the field of norms: its unit
 limit with an absorbing zero adjoined.
 
 This is a `def`, not an `abbrev`: every algebraic structure on it (the group with zero here,
@@ -103,7 +103,7 @@ protected def recZeroCoe {motive : FieldOfNorms K L → Sort*} (zero : motive 0)
 
 end FieldOfNorms
 
-/-- Evaluation at an actual finite intermediate field, extended by zero. -/
+/-- Evaluation at a finite intermediate field, extended by zero. -/
 def FieldOfNorms.coord (E : FiniteIntermediateField K L) : FieldOfNorms K L →*₀ E.val :=
   WithZero.lift'
     { toFun := fun x => (x.val E : E.val)
@@ -144,7 +144,7 @@ theorem FieldOfNorms.ext {x y : FieldOfNorms K L}
           funext E
           exact Units.ext (h E)
 
-/-- The actual coordinates satisfy the actual finite-layer norm equations. -/
+/-- The coordinates satisfy the finite-layer norm equations. -/
 theorem FieldOfNorms.coord_norm (E F : FiniteIntermediateField K L) (h : E ≤ F) (x : FieldOfNorms K
     L) :
     FiniteIntermediateField.norm E F h (FieldOfNorms.coord K L F x) = FieldOfNorms.coord K L E x :=
@@ -155,7 +155,7 @@ theorem FieldOfNorms.coord_norm (E F : FiniteIntermediateField K L) (h : E ≤ F
   | coe x =>
       exact congrArg Units.val (x.property E F h)
 
-/-- Every actual compatible field family is represented uniquely by the single
+/-- Every compatible field family is represented uniquely by the single
 zero-adjoined unit limit. No additional family carrier is introduced. -/
 theorem existsUnique_fieldOfNorms_of_compatible (f : ∀ E : FiniteIntermediateField K L, E.val)
     (hf : ∀ (E F : FiniteIntermediateField K L) (h : E ≤ F), FiniteIntermediateField.norm E F h (f
@@ -189,8 +189,8 @@ namespace FontaineWintenberger
 
 variable (K L : Type*) [Field K] [Field L] [Algebra K L]
 
-/-- Original evaluations on any genuinely cofinal set already distinguish
-elements of the original zero-adjoined unit limit. -/
+/-- Evaluations on any cofinal set already distinguish
+elements of the zero-adjoined unit limit. -/
 theorem FieldOfNorms.ext_cofinal (P : FiniteIntermediateField K L → Prop)
     (hP : ∀ E, ∃ F, P F ∧ E ≤ F) {α β : FieldOfNorms K L}
     (h : ∀ E, P E → FieldOfNorms.coord K L E α = FieldOfNorms.coord K L E β) : α = β := by
@@ -200,8 +200,8 @@ theorem FieldOfNorms.ext_cofinal (P : FiniteIntermediateField K L → Prop)
   rw [← FieldOfNorms.coord_norm K L E F hEF α,
     ← FieldOfNorms.coord_norm K L E F hEF β, h F hF]
 
-/-- Any actual compatible cofinal coordinate family extends uniquely to the
-same original field of norms, using original finite field norms. -/
+/-- Any compatible cofinal coordinate family extends uniquely to the
+same field of norms, using finite field norms. -/
 theorem existsUnique_fieldOfNorms_of_compatible_cofinal (P : FiniteIntermediateField K L → Prop)
     (hP : ∀ E, ∃ F, P F ∧ E ≤ F)
     (x : ∀ E, P E → E.val)
@@ -231,7 +231,7 @@ theorem existsUnique_fieldOfNorms_of_compatible_cofinal (P : FiniteIntermediateF
   intro E hE
   exact (hβ E hE).trans (hαP E hE).symm
 
-/-- The canonical extension of actual compatible cofinal coordinates. -/
+/-- The canonical extension of compatible cofinal coordinates. -/
 def FieldOfNorms.ofCofinal (P : FiniteIntermediateField K L → Prop)
     (hP : ∀ E, ∃ F, P F ∧ E ≤ F)
     (x : ∀ E, P E → E.val)
@@ -239,7 +239,7 @@ def FieldOfNorms.ofCofinal (P : FiniteIntermediateField K L → Prop)
       FiniteIntermediateField.norm E F hEF (x F hF) = x E hE) : FieldOfNorms K L :=
   (existsUnique_fieldOfNorms_of_compatible_cofinal K L P hP x hx).choose
 
-/-- Every original prescribed cofinal coordinate is retained exactly. -/
+/-- Every prescribed cofinal coordinate is retained exactly. -/
 @[simp]
 theorem FieldOfNorms.coord_fieldOfNormsOfCofinal (P : FiniteIntermediateField K L → Prop)
     (hP : ∀ E, ∃ F, P F ∧ E ≤ F)
@@ -250,8 +250,8 @@ theorem FieldOfNorms.coord_fieldOfNormsOfCofinal (P : FiniteIntermediateField K 
     FieldOfNorms.coord K L E (FieldOfNorms.ofCofinal K L P hP x hx) = x E hE :=
   (existsUnique_fieldOfNorms_of_compatible_cofinal K L P hP x hx).choose_spec.1 E hE
 
-/-- Any original finite field is computed from any prescribed cofinal upper
-field by its actual original norm, independently of the choice. -/
+/-- Any finite field is computed from any prescribed cofinal upper
+field by its norm, independently of the choice. -/
 theorem FieldOfNorms.coord_fieldOfNormsOfCofinal_any (P : FiniteIntermediateField K L → Prop)
     (hP : ∀ E, ∃ F, P F ∧ E ≤ F)
     (x : ∀ E, P E → E.val)

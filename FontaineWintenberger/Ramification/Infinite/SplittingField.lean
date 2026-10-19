@@ -12,11 +12,11 @@ public import FontaineWintenberger.Ramification.Norm.Valuation
 public import Mathlib.FieldTheory.PolynomialGaloisGroup
 
 /-!
-# Splitting degrees and discriminant cutoffs for actual upper groups
+# Splitting degrees and discriminant cutoffs for upper groups
 
-The faithful action on the original root set bounds the actual splitting
+The faithful action on the root set bounds the splitting
 degree by the degree factorial. Integral root separation then bounds the
-upper ramification groups of the actual splitting field.
+upper ramification groups of the splitting field.
 -/
 
 @[expose] public section
@@ -27,8 +27,8 @@ namespace FontaineWintenberger
 
 open Polynomial
 
-/-- The actual splitting degree is at most the degree factorial, by the
-faithful permutation action on the original root set. -/
+/-- The splitting degree is at most the degree factorial, by the
+faithful permutation action on the root set. -/
 theorem finrank_splittingField_le_factorial {E : Type*} [Field E]
     (f : E[X]) (hsep : f.Separable) :
     Module.finrank E f.SplittingField ≤ f.natDegree.factorial := by
@@ -42,8 +42,8 @@ theorem finrank_splittingField_le_factorial {E : Type*} [Field E]
       rw [Nat.card_perm, Nat.card_eq_fintype_card,
         card_rootSet_eq_natDegree hsep (SplittingField.splits f)]
 
-/-- The factorial bound applies to every actual splitting field, with its
-original base-field algebra. -/
+/-- The factorial bound applies to every splitting field, with its
+base-field algebra. -/
 theorem finrank_le_factorial_of_isSplittingField {E P : Type*} [Field E] [Field P]
     [Algebra E P] (f : E[X]) [IsSplittingField E P f] (hsep : f.Separable) :
     Module.finrank E P ≤ f.natDegree.factorial := by
@@ -55,7 +55,7 @@ section HerbrandBound
 variable (G : Type*) {R : Type*} [Group G] [CommRing R] [IsDomain R]
     [IsDiscreteValuationRing R] [MulSemiringAction G R] [Finite G]
 
-/-- Every actual lower-cardinality ratio is at most one, so the original
+/-- Every lower-cardinality ratio is at most one, so the
 Herbrand integral lies below its argument. -/
 theorem herbrandFunction_le_self (t : ℝ) : herbrandFunction (R := R) G t ≤ t := by
   by_cases ht : t ≤ 0
@@ -72,7 +72,7 @@ theorem herbrandFunction_le_self (t : ℝ) : herbrandFunction (R := R) G t ≤ t
           antitone_card_lowerRamificationGroupReal (R := R) G hs.1))
     simpa using hi
 
-/-- The inverse of the actual Herbrand integral lies above every source index. -/
+/-- The inverse of the Herbrand integral lies above every index. -/
 theorem le_inverseHerbrandFunction {u : ℝ} (hu : -1 ≤ u) :
     u ≤ inverseHerbrandFunction (R := R) G u := by
   simpa only [herbrandFunction_inverseHerbrandFunction G hu] using
@@ -90,13 +90,13 @@ variable (P : Type*) [Field P] [Algebra K P] [FiniteDimensional K P]
 local notation "OK" => Valuation.valuationSubring (NormedField.valuation (K := K))
 local notation "OP" => spectralIntegerRing K P
 
-/-- The canonical ramification index is at most the actual extension degree. -/
+/-- The canonical ramification index is at most the extension degree. -/
 theorem spectral_ramificationIdx_le_finrank :
     (IsLocalRing.maximalIdeal OP).ramificationIdx OK ≤ Module.finrank K P := by
   rw [← local_ramificationIdx_mul_residueDegree_eq_finrank OK OP K P]
   exact Nat.le_mul_of_pos_right _ Module.finrank_pos
 
-/-- A separable monic integral polynomial has finite original DVR
+/-- A separable monic integral polynomial has finite DVR
 discriminant value. -/
 theorem addVal_discr_ne_top (f : OK[X]) (hf : f.Monic)
     (hsep : (f.map (algebraMap OK K)).Separable) :
@@ -104,11 +104,11 @@ theorem addVal_discr_ne_top (f : OK[X]) (hf : f.Monic)
   apply IsDiscreteValuationRing.addVal_eq_top_iff.not.mpr
   intro hz
   have hd := (monic_discr_ne_zero_iff _ (hf.map (algebraMap OK K))).mpr hsep
-  rw [monic_discr_map f hf (algebraMap OK K), hz, map_zero] at hd
+  rw [Polynomial.Monic.discr_map f hf (algebraMap OK K), hz, map_zero] at hd
   exact hd rfl
 
-/-- At an index above the original discriminant value times the actual
-ramification index, every actual upper automorphism fixes every original root.
+/-- At an index above the discriminant value times the
+ramification index, every upper automorphism fixes every root.
 Root integrality and the lower displacement bound are derived internally. -/
 theorem upperRamificationGroup_fixes_integral_polynomial_root
     (f : OK[X]) (hf : f.Monic) (hsep : (f.map (algebraMap OK K)).Separable)
@@ -152,8 +152,8 @@ theorem upperRamificationGroup_fixes_integral_polynomial_root
   by_contra hga
   have hne : g • a₀ ≠ a₀ := fun h => hga (congrArg Subtype.val h)
   have hpair := IsDiscreteValuationRing.addVal_le_iff_dvd.mpr
-    (sq_sub_dvd_discr fP (hf.map _) (g • a₀) a₀ hgaP haP hne)
-  rw [IsDiscreteValuationRing.addVal_pow, nsmul_eq_mul, monic_discr_map f hf,
+    (Polynomial.sq_sub_dvd_discr fP (hf.map _) (g • a₀) a₀ hgaP haP hne)
+  rw [IsDiscreteValuationRing.addVal_pow, nsmul_eq_mul, Polynomial.Monic.discr_map f hf,
     addVal_algebraMap OK OP, hd] at hpair
   have hlower : (n : ℕ∞) ≤ IsDiscreteValuationRing.addVal OP (g • a₀ - a₀) := by
     exact (mem_lowerRamificationGroup_iff_addVal (P ≃ₐ[K] P) ⌈t⌉ g).mp hg a₀
@@ -178,9 +178,9 @@ variable (P : Type*) [Field P] [Algebra K P]
 
 local notation "OK" => Valuation.valuationSubring (NormedField.valuation (K := K))
 
-/-- The actual splitting field has trivial upper group above the degree
-factorial times the original normalized discriminant value. Finiteness and
-separability of this actual field are consequences of its splitting property. -/
+/-- The splitting field has trivial upper group above the degree
+factorial times the normalized discriminant value. Finiteness and
+separability of this field are consequences of its splitting property. -/
 theorem upperRamificationGroup_splittingField_eq_bot
     (f : OK[X]) (hf : f.Monic) (hsep : (f.map (algebraMap OK K)).Separable)
     [IsSplittingField K P (f.map (algebraMap OK K))]
@@ -228,8 +228,8 @@ variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField 
 
 local notation "OK" => Valuation.valuationSubring (NormedField.valuation (K := K))
 
-/-- Above the factorial-discriminant cutoff, the original absolute upper
-group fixes every original root in the actual separable closure. The finite
+/-- Above the factorial-discriminant cutoff, the absolute upper
+group fixes every root in the separable closure. The finite
 Galois stage is the field generated by these same roots. -/
 theorem absoluteUpperRamificationGroup_fixes_integral_polynomial_root
     (f : OK[X]) (hf : f.Monic) (hsep : (f.map (algebraMap OK K)).Separable)

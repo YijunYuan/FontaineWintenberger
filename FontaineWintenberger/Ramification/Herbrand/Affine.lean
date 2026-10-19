@@ -8,9 +8,9 @@ module
 public import FontaineWintenberger.Ramification.Herbrand.Basic
 
 /-!
-# Explicit affine pieces of the actual Herbrand function
+# Explicit affine pieces of the Herbrand function
 
-The slopes on integer intervals count the actual next lower group. Eventual
+The slopes on integer intervals count the next lower group. Eventual
 triviality gives a final affine ray, hence a finite partition for a finite
 faithful action.
 -/
@@ -175,7 +175,7 @@ theorem exists_herbrand_affine_tails [FaithfulSMul G R] :
   field_simp at h
   nlinarith
 
-/-- A finite family of explicit affine pieces covers the whole source half-line. -/
+/-- A finite family of explicit affine pieces covers the whole half-line. -/
 theorem herbrandFunction_finite_affine_partition [FaithfulSMul G R] :
     ∃ N : ℕ, ∀ t : ℝ, -1 ≤ t →
       (t ≤ 0 ∧ herbrandFunction (R := R) G t = t) ∨
@@ -244,7 +244,7 @@ theorem inverseHerbrandFunction_finite_affine_partition [FaithfulSMul G R] :
             (by linarith : -1 ≤ (n : ℝ) + 1) hle
       exact Or.inl ⟨⟨n, hnN⟩, hlo, hhi, inverseHerbrandFunction_affine G n hlo hhi⟩
 
-/-- Only finitely many positive indices can fail the actual lower-cardinality derivative formula. -/
+/-- Only finitely many positive indices can fail the lower-cardinality derivative formula. -/
 theorem exists_herbrandFunction_finite_derivative_breaks [FaithfulSMul G R] :
     ∃ S : Finset ℝ, ∀ t : ℝ, 0 < t → t ∉ S →
       HasDerivAt (herbrandFunction (R := R) G)

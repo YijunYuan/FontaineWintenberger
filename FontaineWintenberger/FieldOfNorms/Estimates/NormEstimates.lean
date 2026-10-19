@@ -10,10 +10,10 @@ public import FontaineWintenberger.FieldOfNorms.Estimates.Tame
 public import FontaineWintenberger.APF.Elementary.PrimeDegree
 
 /-!
-# Norm estimates for the original arbitrary finite separable extension
+# Norm estimates for the arbitrary finite separable extension
 
-A genuine finite Galois closure supplies the tame reduction; canonical
-integer-ring equivalences transport its proved estimate to the original
+A finite Galois closure supplies the tame reduction; canonical
+integer-ring equivalences transport its proved estimate to the
 field. Finite perfect-residue digits then supply norm approximation.
 -/
 
@@ -30,8 +30,8 @@ variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
 local notation "p" => residueChar K
 local notation "R" => Valuation.valuationSubring (NormedField.valuation (K := K))
 
-/-- The actual intermediate field may be nonnormal; its own integer-ring
-total ramification supplies the genuine tame norm estimate. -/
+/-- The intermediate field may be nonnormal; its own integer-ring
+total ramification supplies the tame norm estimate. -/
 theorem exists_intNorm_add_congruence_of_totallyRamified_intermediateField
     (Ω : Type*) [NontriviallyNormedField Ω] [NormedAlgebra K Ω] [IsUltrametricDist Ω]
     [FiniteDimensional K Ω] [IsGalois K Ω]
@@ -65,8 +65,8 @@ variable (L : Type*) [Field L] [Algebra K L] [FiniteDimensional K L]
 
 local notation "S" => spectralIntegerRing K L
 
-/-- The original arbitrary totally ramified p-power extension has the
-actual quantitative norm addition estimate. Normality is not required. -/
+/-- The arbitrary totally ramified p-power extension has the
+quantitative norm addition estimate. Normality is not required. -/
 theorem exists_intNorm_add_congruence_of_totallyRamified
     (he : (IsLocalRing.maximalIdeal S).ramificationIdx R = Module.finrank K L)
     (n : ℕ) (hd : Module.finrank K L = p ^ n) (hdegree : 1 < Module.finrank K L) :
@@ -103,7 +103,7 @@ theorem exists_intNorm_add_congruence_of_totallyRamified
     have h := hadd (f x) (f y)
     simpa only [← map_add f, Algebra.intNorm_map_algEquiv] using h
 
-/-- Both actual norm estimates for every nontrivial finite separable totally
+/-- Both norm estimates for every nontrivial finite separable totally
 ramified p-power extension, with arbitrary perfect residue field. -/
 theorem exists_intNorm_estimates_of_totallyRamified
     (he : (IsLocalRing.maximalIdeal S).ramificationIdx R = Module.finrank K L)

@@ -10,10 +10,10 @@ public import FontaineWintenberger.FieldOfNorms.Relative.SeparablyClosed
 public import FontaineWintenberger.FieldOfNorms.Relative.Krull
 
 /-!
-# The absolute Galois equivalence of the original norm field
+# The absolute Galois equivalence of the norm field
 
-The same canonical relative field of norms is a genuine separable closure. Its
-original Krull equivalence, followed by actual separable-closure comparisons,
+The same canonical relative field of norms is a separable closure. Its
+Krull equivalence, followed by separable-closure comparisons,
 therefore identifies the absolute Galois groups with their Krull topologies.
 -/
 
@@ -28,8 +28,8 @@ section KrullConjugacy
 variable {F A B : Type*} [Field F] [Field A] [Field B]
     [Algebra F A] [Algebra F B]
 
-/-- Conjugation by an actual field isomorphism pulls back a finite-field
-fixer to the fixer of its actual inverse image. -/
+/-- Conjugation by a field isomorphism pulls back a finite-field
+fixer to the fixer of its inverse image. -/
 theorem autCongr_mem_fixingSubgroup_iff (e : A ≃ₐ[F] B)
     (D : IntermediateField F B) (σ : A ≃ₐ[F] A) :
     e.autCongr σ ∈ D.fixingSubgroup ↔
@@ -51,7 +51,7 @@ theorem autCongr_mem_fixingSubgroup_iff (e : A ≃ₐ[F] B)
 
 open scoped Topology in
 /-- The existing algebraic automorphism conjugacy is continuous for the
-actual Krull topologies, without a normality assumption. -/
+Krull topologies, without a normality assumption. -/
 theorem continuous_autCongr_krull (e : A ≃ₐ[F] B) :
     Continuous e.autCongr := by
   apply continuous_of_continuousAt_one e.autCongr
@@ -69,7 +69,7 @@ theorem continuous_autCongr_krull (e : A ≃ₐ[F] B) :
   intro σ hσ
   exact hDs ((autCongr_mem_fixingSubgroup_iff e D σ).mpr hσ)
 
-/-- The existing automorphism conjugacy as a genuine Krull homeomorphism. -/
+/-- The existing automorphism conjugacy as a Krull homeomorphism. -/
 def krullAutCongr (e : A ≃ₐ[F] B) : (A ≃ₐ[F] A) ≃ₜ* (B ≃ₐ[F] B) :=
   { e.autCongr with
     continuous_toFun := continuous_autCongr_krull e
@@ -80,33 +80,33 @@ def krullAutCongr (e : A ≃ₐ[F] B) : (A ≃ₐ[F] A) ≃ₜ* (B ≃ₐ[F] B) 
 theorem krullAutCongr_toMulEquiv (e : A ≃ₐ[F] B) :
     (krullAutCongr e).toMulEquiv = e.autCongr := rfl
 
-/-- The same actual conjugation formula holds on every field element. -/
+/-- The same conjugation formula holds on every field element. -/
 @[simp]
 theorem krullAutCongr_apply (e : A ≃ₐ[F] B) (σ : A ≃ₐ[F] A) (x : B) :
     krullAutCongr e σ x = e (σ (e.symm x)) := rfl
 
 end KrullConjugacy
 
-section OriginalClosures
+section Closures
 
 variable (K L Ω : Type*) [Field K] [Field L] [Field Ω]
     [Algebra K L] [Algebra K Ω] [Algebra L Ω] [IsScalarTower K L Ω]
     [IsSepClosure K Ω]
 
 include K in
-/-- An original separable closure containing the original extension is a
-genuine separable closure of that extension too. -/
-theorem originalClosure_isSepClosure : IsSepClosure L Ω := by
+/-- A separable closure containing the extension is a
+separable closure of that extension too. -/
+theorem closure_isSepClosure : IsSepClosure L Ω := by
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
   exact isSepClosure_iff.mpr ⟨IsSepClosure.sep_closed K, inferInstance⟩
 
 include K in
-/-- The actual original closure comparison, chosen over the original base. -/
-def originalSeparableClosureEquiv : SeparableClosure L ≃ₐ[L] Ω := by
-  let := originalClosure_isSepClosure K L Ω
+/-- The closure comparison, chosen over the base. -/
+def separableClosureEquiv : SeparableClosure L ≃ₐ[L] Ω := by
+  let := closure_isSepClosure K L Ω
   exact IsSepClosure.equiv L (SeparableClosure L) Ω
 
-end OriginalClosures
+end Closures
 
 section NormField
 
@@ -121,24 +121,24 @@ variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 local notation "X" => FieldOfNorms K L
 local notation "U" => RelFieldOfNorms K L Ω
 
-/-- The same original relative field of norms is compared to the canonical
+/-- The relative field of norms is compared to the canonical
 separable closure using its proved separable-closure structure. -/
 def RelFieldOfNorms.separableClosureEquiv :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
     U ≃ₐ[X] SeparableClosure X := by
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
-  let := RelFieldOfNorms._isSepClosure K L Ω
+  let := RelFieldOfNorms.isSepClosure K L Ω
   exact IsSepClosure.equiv X U (SeparableClosure X)
 
-/-- The source corollary for the actual original closure and the canonical
-separable closure of the same original norm field. -/
+/-- The corollary for the closure and the canonical
+separable closure of the norm field. -/
 def RelFieldOfNorms.absoluteGaloisEquiv :
     (Ω ≃ₐ[L] Ω) ≃ₜ* (SeparableClosure X ≃ₐ[X] SeparableClosure X) := by
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
   exact (RelFieldOfNorms.krullEquiv K L Ω).trans
     (krullAutCongr (RelFieldOfNorms.separableClosureEquiv K L Ω))
 
-/-- The source comparison agrees on the same union with the original
+/-- The comparison agrees on the same union with the
 norm-field automorphism, rather than an independently constructed action. -/
 theorem RelFieldOfNorms.absoluteGaloisEquiv_apply (σ : Ω ≃ₐ[L] Ω)
     (z : letI : Algebra.IsSeparable L Ω :=
@@ -155,16 +155,16 @@ theorem RelFieldOfNorms.absoluteGaloisEquiv_apply (σ : Ω ≃ₐ[L] Ω)
         (RelFieldOfNorms.separableClosureEquiv K L Ω z))) = _
   rw [AlgEquiv.symm_apply_apply, RelFieldOfNorms.krullEquiv_apply]
 
-/-- The actual absolute Galois equivalence on the project's canonical
+/-- The absolute Galois equivalence on the project's canonical
 separable-closure automorphism groups, with their existing Krull topologies. -/
 def FieldOfNorms.absoluteGaloisEquiv :
     (SeparableClosure L ≃ₐ[L] SeparableClosure L) ≃ₜ*
       (SeparableClosure X ≃ₐ[X] SeparableClosure X) := by
-  exact (krullAutCongr (originalSeparableClosureEquiv K L Ω)).trans
+  exact (krullAutCongr (separableClosureEquiv K L Ω)).trans
     (RelFieldOfNorms.absoluteGaloisEquiv K L Ω)
 
 /-- The canonical absolute-group equivalence retains precisely the
-original union map after conjugating the original closure. -/
+union map after conjugating the closure. -/
 theorem FieldOfNorms.absoluteGaloisEquiv_apply
     (σ : SeparableClosure L ≃ₐ[L] SeparableClosure L)
     (z : letI : Algebra.IsSeparable L Ω :=
@@ -174,14 +174,14 @@ theorem FieldOfNorms.absoluteGaloisEquiv_apply
       (RelFieldOfNorms.separableClosureEquiv K L Ω z) =
       RelFieldOfNorms.separableClosureEquiv K L Ω
         (RelFieldOfNorms.map K L Ω Ω
-          ((originalSeparableClosureEquiv K L Ω).autCongr σ).toAlgHom z) := by
+          ((separableClosureEquiv K L Ω).autCongr σ).toAlgHom z) := by
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
   exact RelFieldOfNorms.absoluteGaloisEquiv_apply K L Ω
-    ((originalSeparableClosureEquiv K L Ω).autCongr σ) z
+    ((separableClosureEquiv K L Ω).autCongr σ) z
 
 /-- The absolute Galois equivalence with no supplied closure or embedding
-data: the canonical separable closure of the original field is itself a
-separable closure of the original base via the actual composite algebra. -/
+data: the canonical separable closure of the field is itself a
+separable closure of the base via the composite algebra. -/
 def fieldOfNormsAbsoluteGaloisEquiv :
     (SeparableClosure L ≃ₐ[L] SeparableClosure L) ≃ₜ*
       (SeparableClosure X ≃ₐ[X] SeparableClosure X) := by

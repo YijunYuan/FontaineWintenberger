@@ -9,11 +9,11 @@ public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.APF.Tower.Wild
 
 /-!
-# Unbounded actual finite ramification and the residue prime
+# Unbounded finite ramification and the residue prime
 
 An infinite algebraic extension has arbitrarily large finite subextension
-degrees. On the actual APF wild tail these degrees are ramification indices,
-so the original residue prime belongs to every fixed ideal power eventually.
+degrees. On the APF wild tail these degrees are ramification indices,
+so the residue prime belongs to every fixed ideal power eventually.
 -/
 
 @[expose] public section
@@ -27,8 +27,8 @@ section FiniteDegrees
 variable (K L : Type*) [Field K] [Field L] [Algebra K L]
     [Algebra.IsAlgebraic K L]
 
-/-- The relative degrees above any original finite intermediate field tend to infinity
-when the original algebraic extension is infinite. -/
+/-- The relative degrees above any finite intermediate field tend to infinity
+when the algebraic extension is infinite. -/
 theorem FiniteIntermediateField.exists_tail_finrank_ge [Fact (¬ Module.Finite K L)]
     (D : FiniteIntermediateField K L) (n : ℕ) :
     ∃ T : FiniteIntermediateField K L, ∃ hDT : D ≤ T, ∀ E : FiniteIntermediateField K L, ∀ hTE : T
@@ -57,8 +57,8 @@ variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
 local notation "p" => residueChar K
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
-/-- On an actual APF wild tail, the canonical ramification indices above
-every fixed original finite intermediate field tend to infinity. -/
+/-- On an APF wild tail, the canonical ramification indices above
+every fixed finite intermediate field tend to infinity. -/
 theorem IsAPF.exists_finiteIntermediateField_ramificationIdx_unbounded [IsAPF K L]
     [Fact (¬ Module.Finite K L)] :
     ∃ W : FiniteIntermediateField K L, ∀ D : FiniteIntermediateField K L, W ≤ D → ∀ n : ℕ,
@@ -81,8 +81,8 @@ theorem IsAPF.exists_finiteIntermediateField_ramificationIdx_unbounded [IsAPF K 
   rw [(hW D E hWD (hDT.trans hTE)).2.2]
   exact hT E hTE
 
-/-- The residue prime belongs to every fixed power of the actual maximal
-ideal on a sufficiently large original finite-layer tail. The proof also
+/-- The residue prime belongs to every fixed power of the maximal
+ideal on a sufficiently large finite-layer tail. The proof also
 covers equal characteristic, where the prime is already zero. -/
 theorem IsAPF.exists_finiteIntermediateField_natCast_mem_maximalIdeal_pow [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (n : ℕ) :
@@ -111,8 +111,8 @@ theorem IsAPF.exists_finiteIntermediateField_natCast_mem_maximalIdeal_pow [IsAPF
   rw [map_maximalIdeal_eq_pow_ramificationIdx, map_natCast] at hmap
   exact Ideal.pow_le_pow_right (hT E hTE) hmap
 
-/-- The image of the original residue prime in each original finite field
-is eventually in the image of every actual maximal-ideal power. -/
+/-- The image of the residue prime in each finite field
+is eventually in the image of every maximal-ideal power. -/
 theorem IsAPF.exists_finiteIntermediateField_natCast_mem_image_maximalIdeal_pow [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (n : ℕ) :
     ∃ T : FiniteIntermediateField K L, ∀ E : FiniteIntermediateField K L, T ≤ E →

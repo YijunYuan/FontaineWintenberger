@@ -13,7 +13,7 @@ public import FontaineWintenberger.Mathlib.FieldTheory.FiniteIntermediateField
 /-!
 # Uniform Herbrand precision below an abstract APF extension
 
-Actual embedding invariance transports the existing inertia-index comparison.
+Embedding invariance transports the existing inertia-index comparison.
 The inverse comparison gives one input precision for every finite subextension.
 -/
 
@@ -29,7 +29,7 @@ variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
 variable {M : Type*} [Field M] [Algebra K M] [Algebra.IsSeparable K M]
 
-/-- The intrinsic Herbrand integral increases along every actual embedding
+/-- The intrinsic Herbrand integral increases along every embedding
 into an abstract APF extension. -/
 theorem apfPsi_le_of_algHom [IsAPF K L] (f : M →ₐ[K] L)
     {u : ℝ} (hu : 0 ≤ u) : apfPsi K M u ≤ apfPsi K L u := by
@@ -42,7 +42,7 @@ theorem apfPsi_le_of_algHom [IsAPF K L] (f : M →ₐ[K] L)
   have := (isAPF_algEquiv K j.equivFieldRange).mp ‹_›
   exact apfPsi_mono_extension K i.fieldRange j.fieldRange hij hu
 
-/-- Inverting the actual integral comparison reverses the extension-field
+/-- Inverting the integral comparison reverses the extension-field
 inequality for nonnegative parameters. -/
 theorem apfPhi_le_of_algHom [IsAPF K L] (f : M →ₐ[K] L)
     {u : ℝ} (hu : 0 ≤ u) :
@@ -75,8 +75,8 @@ theorem le_ceil_apfPhi_of_apfPsi_le [IsAPF K L] (f : M →ₐ[K] L)
 variable [PerfectField (IsLocalRing.ResidueField
   (NormedField.valuation (K := K)).valuationSubring)]
 
-/-- Uniform precision for the actual relative finite fields, with the
-canonical spectral norm on their original finite base. -/
+/-- Uniform precision for the relative finite fields, with the
+canonical spectral norm on their finite base. -/
 theorem FiniteIntermediateField.le_ceil_apfPhi_of_apfPsi_le [IsAPF K L]
     (E F : FiniteIntermediateField K L) (hEF : E ≤ F) :
     letI := spectralNorm.nontriviallyNormedField K E.val

@@ -9,11 +9,11 @@ public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.Different.Hilbert
 
 /-!
-# Trace ideals and the actual codifferent
+# Trace ideals and the codifferent
 
-The trace-containment test uses the canonical different and the actual trace
+The trace-containment test uses the canonical different and the trace
 map. Scaling by a nonzero base-field element converts containment in a
-principal fractional ideal to containment in the actual codifferent.
+principal fractional ideal to containment in the codifferent.
 -/
 
 @[expose] public section
@@ -32,7 +32,7 @@ variable (A B K L : Type*) [CommRing A] [IsDomain A] [IsIntegrallyClosed A]
     [FiniteDimensional K L] [Algebra.IsSeparable K L] [IsIntegralClosure B A L]
 
 /-- A fractional ideal has integral traces exactly when it is contained in
-the actual inverse different. Its ideal property supplies all products in
+the inverse different. Its ideal property supplies all products in
 the trace pairing. -/
 theorem trace_integral_iff_le_codifferent (I : FractionalIdeal B⁰ L) :
     (∀ x ∈ I, Algebra.trace K L x ∈ (1 : Submodule A K)) ↔
@@ -53,8 +53,8 @@ private theorem mem_principal_iff_inv_mul {a x : K} (ha : a ≠ 0) :
   · intro hx
     exact ⟨a⁻¹ * x, hx, by simp [ha]⟩
 
-/-- Trace containment in an actual principal base fractional ideal is
-equivalent to containment in that ideal times the actual codifferent. -/
+/-- Trace containment in a principal base fractional ideal is
+equivalent to containment in that ideal times the codifferent. -/
 theorem trace_principal_iff_le_mul_codifferent (I : FractionalIdeal B⁰ L)
     {a : K} (ha : a ≠ 0) :
     (∀ x ∈ I, Algebra.trace K L x ∈ FractionalIdeal.spanSingleton A⁰ a) ↔
@@ -92,7 +92,7 @@ theorem trace_principal_iff_le_mul_codifferent (I : FractionalIdeal B⁰ L)
     rw [← hxy]
     simpa [hα] using hy
 
-/-- Multiplying by the actual different clears the codifferent in the
+/-- Multiplying by the different clears the codifferent in the
 trace-containment test. -/
 theorem trace_principal_iff_mul_different_le (I : FractionalIdeal B⁰ L)
     {a : K} (ha : a ≠ 0) :
@@ -109,8 +109,8 @@ theorem trace_principal_iff_mul_different_le (I : FractionalIdeal B⁰ L)
 variable [Module.Finite A B]
 
 include K L in
-/-- The actual integral trace sends an integral ideal into a principal base
-ideal exactly when its product with the actual different is contained in
+/-- The integral trace sends an integral ideal into a principal base
+ideal exactly when its product with the different is contained in
 the extended base ideal. -/
 theorem intTrace_mem_principal_iff_mul_different_le (I : Ideal B)
     {a : A} (ha : a ≠ 0) :
@@ -155,7 +155,7 @@ variable (A B : Type*) [CommRing A] [IsDomain A] [IsDiscreteValuationRing A]
     [CommRing B] [IsDomain B] [IsDiscreteValuationRing B] [Algebra A B]
     [FaithfulSMul A B] [IsLocalHom (algebraMap A B)] [Module.Finite A B]
 
-/-- The trace ideal is the actual image of the given ideal under integral
+/-- The trace ideal is the image of the given ideal under integral
 trace, with its canonical base-module structure. -/
 noncomputable def intTraceIdeal (I : Ideal B) : Ideal A :=
   (I.restrictScalars A).map (Algebra.intTrace A B)
@@ -178,7 +178,7 @@ private theorem maximalIdeal_pow_le_pow_iff (m n : ℕ) :
     exact_mod_cast hv
   · exact Ideal.pow_le_pow_right
 
-/-- A nonzero DVR ideal is the power given by its actual canonical maximal
+/-- A nonzero DVR ideal is the power given by its canonical maximal
 ideal multiplicity. -/
 theorem ideal_eq_pow_emultiplicity (I : Ideal B) (hI : I ≠ ⊥) :
     I = IsLocalRing.maximalIdeal B ^ (emultiplicity (IsLocalRing.maximalIdeal B) I).toNat := by
@@ -198,7 +198,7 @@ variable (K L : Type*) [Field K] [Field L]
 
 include K L in
 /-- The exact power-containment criterion for the trace image, using the
-canonical ramification index and actual different multiplicity. -/
+canonical ramification index and different multiplicity. -/
 theorem intTraceIdeal_pow_le_pow_iff (n s : ℕ) :
     intTraceIdeal A B (IsLocalRing.maximalIdeal B ^ n) ≤ IsLocalRing.maximalIdeal A ^ s ↔
       (IsLocalRing.maximalIdeal B).ramificationIdx A * s ≤
@@ -220,7 +220,7 @@ theorem intTraceIdeal_pow_le_pow_iff (n s : ℕ) :
     maximalIdeal_pow_le_pow_iff, Nat.add_comm]
 
 include K L in
-/-- The actual trace ideal of every nonnegative maximal-ideal power, with
+/-- The trace ideal of every nonnegative maximal-ideal power, with
 the exact floor exponent and no residue-field finiteness or Galois hypothesis. -/
 theorem intTraceIdeal_pow (n : ℕ) :
     intTraceIdeal A B (IsLocalRing.maximalIdeal B ^ n) =
@@ -260,7 +260,7 @@ variable {Γ : Type*} [LinearOrderedCommGroupWithZero Γ] (w : Valuation L Γ)
 local notation "OK" => Valuation.valuationSubring (NormedField.valuation (K := K))
 local notation "OL" => Valuation.valuationSubring w
 
-/-- The exact trace-ideal formula on every compatible actual extension
+/-- The exact trace-ideal formula on every compatible extension
 valuation ring, over an arbitrary residue field. -/
 theorem extensionValuationSubring_intTraceIdeal_pow (n : ℕ) :
     letI := extensionValuationSubring_isDiscreteValuationRing K L w

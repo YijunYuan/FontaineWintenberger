@@ -10,9 +10,9 @@ public import FontaineWintenberger.FieldOfNorms.Structure.Reconstruction
 public import FontaineWintenberger.FieldOfNorms.Basic.Ring
 
 /-!
-# The actual integral field of norms and its truncated coordinates
+# The integral field of norms and its truncated coordinates
 
-The original valuation ring is identified with the actual deep truncated inverse limit.
+The valuation ring is identified with the deep truncated inverse limit.
 -/
 
 @[expose] public section
@@ -34,7 +34,7 @@ local notation "𝔈" => deepFiniteTower K L D
 local notation "𝔅" => deepFiniteTowerQuotient K L D
 local notation "𝒜" => deepNormInverseLimit K L D
 
-/-- The actual sum is additive at each selected deep stage's own precision. -/
+/-- The sum is additive at each selected deep stage's own precision. -/
 theorem FieldOfNorms.add_deep_sub_mem (α β : FieldOfNorms K L)
     (hα : FieldOfNorms.valuation K L α ≤ 1)
     (hβ : FieldOfNorms.valuation K L β ≤ 1) (n : ℕ) :
@@ -66,7 +66,7 @@ theorem FieldOfNorms.add_deep_sub_mem (α β : FieldOfNorms K L)
   rw [FieldOfNorms.coord_norm, FieldOfNorms.coord_norm]
   rfl
 
-/-- Integral evaluation uses each original finite intermediate field's original integer ring. -/
+/-- Integral evaluation uses each finite intermediate field's integer ring. -/
 def FieldOfNorms.integralCoordinate :
     Valuation.valuationSubring (FieldOfNorms.fieldValuation K L) →
       (n : ℕ) → spectralIntegerRing K (𝔈 n).val := by
@@ -74,7 +74,7 @@ def FieldOfNorms.integralCoordinate :
   exact ⟨FieldOfNorms.coord K L (𝔈 n) α.val,
     FieldOfNorms.coord_mem_of_valuation_le_one K L α.val α.property (𝔈 n)⟩
 
-/-- The actual original integral family has a ring-valued coordinate
+/-- The integral family has a ring-valued coordinate
 at the deep stage's specified precision. -/
 def FieldOfNorms.truncation (n : ℕ) :
     Valuation.valuationSubring (FieldOfNorms.fieldValuation K L) →+* 𝔅 n := by
@@ -102,7 +102,7 @@ def FieldOfNorms.truncation (n : ℕ) :
       rw [sub_add_eq_sub_sub, heq]
       exact hd }
 
-/-- The ring coordinate is exactly the original finite-field quotient class. -/
+/-- The ring coordinate is exactly the finite-field quotient class. -/
 @[simp]
 theorem FieldOfNorms.truncation_apply (n : ℕ) :
     ∀ α : Valuation.valuationSubring (FieldOfNorms.fieldValuation K L),
@@ -111,7 +111,7 @@ theorem FieldOfNorms.truncation_apply (n : ℕ) :
   intro α
   rfl
 
-/-- The quotient coordinates obey the actual original norm transitions. -/
+/-- The quotient coordinates obey the norm transitions. -/
 theorem FieldOfNorms.truncation_compatible (n m : ℕ) (hnm : n ≤ m) :
     ∀ α : Valuation.valuationSubring (FieldOfNorms.fieldValuation K L),
     deepFiniteTowerTransition K L D n m hnm
@@ -125,8 +125,8 @@ theorem FieldOfNorms.truncation_compatible (n m : ℕ) (hnm : n ≤ m) :
   exact FieldOfNorms.coord_norm K L (𝔈 n) (𝔈 m)
     (deepFiniteTower_monotone K L D hnm) α.val
 
-/-- Actual quotient coordinates define the ring map on the original
-valuation ring into the actual compatible truncated-family subring. -/
+/-- Quotient coordinates define the ring map on the
+valuation ring into the compatible truncated-family subring. -/
 def FieldOfNorms.truncationHom :
     Valuation.valuationSubring (FieldOfNorms.fieldValuation K L) →+* 𝒜 := by
   exact {
@@ -143,14 +143,14 @@ def FieldOfNorms.truncationHom :
     map_mul' := fun α β => Subtype.ext (funext fun n => _root_.map_mul
       (FieldOfNorms.truncation K L D n) α β) }
 
-/-- The actual original reconstruction, with its proved integrality,
-is an element of the original canonical valuation ring. -/
+/-- The reconstruction, with its proved integrality,
+is an element of the canonical valuation ring. -/
 def deepIntegralReconstruction :
     𝒜 → Valuation.valuationSubring (FieldOfNorms.fieldValuation K L) := by
   exact fun a => ⟨deepNormReconstruction K L D a,
     deepNormReconstruction_valuation_le_one K L D a⟩
 
-/-- Truncating the actual reconstructed original family retains all
+/-- Truncating the reconstructed family retains all
 the originally prescribed quotient coordinates. -/
 theorem FieldOfNorms.truncationHom_deepIntegralReconstruction (a : 𝒜) :
     FieldOfNorms.truncationHom K L D
@@ -170,7 +170,7 @@ theorem FieldOfNorms.truncationHom_deepIntegralReconstruction (a : 𝒜) :
   rw [heq]
   exact hd
 
-/-- Reconstructing the actual quotient coordinates returns the same original
+/-- Reconstructing the quotient coordinates returns the same
 integral family, rather than a new model of its field. -/
 theorem deepIntegralReconstruction_fieldOfNormsTruncationHom :
     ∀ α : Valuation.valuationSubring (FieldOfNorms.fieldValuation K L),
@@ -206,8 +206,8 @@ theorem deepIntegralReconstruction_fieldOfNormsTruncationHom :
       (FieldOfNorms.truncationHom K L D α)).val,
     ← FieldOfNorms.coord_norm K L F (𝔈 j) hFj α.val, hj]
 
-/-- The actual integral field of norms is the actual complete truncated
-inverse-limit ring, with the original norm reconstruction as inverse. -/
+/-- The integral field of norms is the complete truncated
+inverse-limit ring, with the norm reconstruction as inverse. -/
 def FieldOfNorms.truncationEquiv :
     Valuation.valuationSubring (FieldOfNorms.fieldValuation K L) ≃+* 𝒜 := by
   exact { FieldOfNorms.truncationHom K L D with
@@ -215,7 +215,7 @@ def FieldOfNorms.truncationEquiv :
     left_inv := deepIntegralReconstruction_fieldOfNormsTruncationHom K L D
     right_inv := FieldOfNorms.truncationHom_deepIntegralReconstruction K L D }
 
-/-- The exact quotient kernel is the same original valuation ball. -/
+/-- The exact quotient kernel is the valuation ball. -/
 theorem FieldOfNorms.truncation_eq_zero_iff (n : ℕ) :
     ∀ α : Valuation.valuationSubring (FieldOfNorms.fieldValuation K L),
     FieldOfNorms.truncation K L D n α = 0 ↔

@@ -10,7 +10,7 @@ public import Mathlib.Topology.Algebra.Valued.ValuedField
 /-!
 # Uniform continuity of valuation-preserving field equivalences
 
-The original valued-field uniformities are preserved without a surjectivity
+The valued-field uniformities are preserved without a surjectivity
 assumption on the ambient value group.
 -/
 
@@ -18,7 +18,7 @@ assumption on the ambient value group.
 
 namespace FontaineWintenberger
 
-/-- A ring equivalence preserving the actual valuations preserves the
+/-- A ring equivalence preserving the valuations preserves the
 existing valuation uniformities, even without surjectivity onto the ambient value group. -/
 theorem valuedRingEquiv_uniformContinuous {R S Γ₀ : Type*} [Field R] [Field S]
     [LinearOrderedCommGroupWithZero Γ₀] [Valued R Γ₀] [Valued S Γ₀]

@@ -16,27 +16,27 @@ public import FontaineWintenberger.Ramification.Infinite.Restriction
 /-!
 # Upper ramification groups after finite base change
 
-## Actual upper ramification groups after finite base change
+## Upper ramification groups after finite base change
 
-The two spectral constructions give the same actual integer subring. The
-fixing-subgroup equivalence acts by the original field automorphisms, so the
-subgroup change of parameter transports to the actual group over the new base.
+The two spectral constructions give the same integer subring. The
+fixing-subgroup equivalence acts by the field automorphisms, so the
+subgroup change of parameter transports to the group over the new base.
 
-## Actual upper ramification groups after finite base change
+## Upper ramification groups after finite base change
 
-The two spectral constructions give the same actual integer subring. The
-fixing-subgroup equivalence acts by the original field automorphisms, so the
-subgroup change of parameter transports to the actual group over the new base.
+The two spectral constructions give the same integer subring. The
+fixing-subgroup equivalence acts by the field automorphisms, so the
+subgroup change of parameter transports to the group over the new base.
 
 ## Finite upper base change for an abstract embedded base
 
-The scalar tower and its actual field image are identified by the canonical
+The scalar tower and its field image are identified by the canonical
 surjective scalar-change equivalence. The own-ring actions are preserved.
 
 ## Absolute upper ramification after finite base change
 
 Finite upper conditions are tested on the cofinal old-base normal overfields.
-Every finite comparison uses the actual scalar-tower and integer-ring actions.
+Every finite comparison uses the scalar-tower and integer-ring actions.
 -/
 
 @[expose] public section
@@ -59,7 +59,7 @@ local instance finiteOverfieldBase_discreteValuationRing : IsCompleteDiscreteVal
 variable [PerfectField (IsLocalRing.ResidueField
     (NormedField.valuation (K := K)).valuationSubring)]
 
-/-- Finite base change for the actual own-ring upper groups, with no normality of the base. -/
+/-- Finite base change for the own-ring upper groups, with no normality of the base. -/
 theorem finiteBase_upperRamificationGroup_of_finiteGalois {u : ℝ} (hu : -1 ≤ u) :
     upperRamificationGroup (R := spectralIntegerRing M E) (E ≃ₐ[M] E)
         (apfPsi K M u) =
@@ -102,7 +102,7 @@ local instance : IsCompleteDiscreteValuedField M :=
 variable [PerfectField (IsLocalRing.ResidueField
     (NormedField.valuation (K := K)).valuationSubring)]
 
-/-- Finite base change for the actual own-ring upper groups, with no normality of the base. -/
+/-- Finite base change for the own-ring upper groups, with no normality of the base. -/
 theorem finiteBase_upperRamificationGroup {u : ℝ} (hu : -1 ≤ u) :
     upperRamificationGroup (R := spectralIntegerRing M E) (E ≃ₐ[M] E)
         (apfPsi K M u) =
@@ -148,8 +148,8 @@ noncomputable local instance :
     MulSemiringAction (E ≃ₐ[S₀] E) (spectralIntegerRing S₀ E) :=
   spectralIntegerRing_galoisAction S₀ E
 
-/-- Changing from the abstract scalar field to its actual image preserves automorphisms. -/
-noncomputable def finiteTower_autEquivImage : (E ≃ₐ[M] E) ≃* (E ≃ₐ[S₀] E) :=
+/-- Changing from the abstract scalar field to its image preserves automorphisms. -/
+noncomputable def finiteTowerAutEquivImage : (E ≃ₐ[M] E) ≃* (E ≃ₐ[S₀] E) :=
   AlgEquiv.extendScalarsHomOfSurjective (R := M) (S := S₀) (A := E) (e₀).surjective
 
 /-- The own spectral constructions over an embedded field and its image agree as subrings. -/
@@ -158,17 +158,17 @@ theorem finiteTower_spectralIntegerRing_eq :
   (spectralIntegerRing_eq_normedUnitBall M E).trans
     (spectralIntegerRing_eq_normedUnitBall S₀ E).symm
 
-/-- The actual field identity gives the integer-ring equivalence for scalar change. -/
+/-- The field identity gives the integer-ring equivalence for scalar change. -/
 noncomputable def finiteTower_spectralIntegerRingEquiv :
     spectralIntegerRing M E ≃+* spectralIntegerRing S₀ E :=
   RingEquiv.subringCongr
     (congrArg ValuationSubring.toSubring (finiteTower_spectralIntegerRing_eq K E M))
 
-/-- Scalar change and integer-ring identification preserve the actual field action. -/
+/-- Scalar change and integer-ring identification preserve the field action. -/
 theorem finiteTower_spectralIntegerRingEquiv_smul (g : E ≃ₐ[M] E)
     (x : spectralIntegerRing M E) :
     finiteTower_spectralIntegerRingEquiv K E M (g • x) =
-      finiteTower_autEquivImage K E M g • finiteTower_spectralIntegerRingEquiv K E M x := by
+      finiteTowerAutEquivImage K E M g • finiteTower_spectralIntegerRingEquiv K E M x := by
   apply Subtype.ext
   rfl
 
@@ -183,37 +183,37 @@ local instance : IsDiscreteValuationRing (spectralIntegerRing S₀ E) := by
     ← spectralIntegerRing_eq_normedUnitBall K E]
   infer_instance
 
-/-- Scalar change transports the actual own-ring upper group to the image-base upper group. -/
+/-- Scalar change transports the own-ring upper group to the image-base upper group. -/
 theorem finiteTower_upper_map_autEquivImage {v : ℝ} (hv : -1 ≤ v) :
     (upperRamificationGroup (R := spectralIntegerRing M E) (E ≃ₐ[M] E) v).map
-        (finiteTower_autEquivImage K E M).toMonoidHom =
+        (finiteTowerAutEquivImage K E M).toMonoidHom =
       upperRamificationGroup (R := spectralIntegerRing S₀ E) (E ≃ₐ[S₀] E) v :=
   upperRamificationGroup_map_equivariant
-    (finiteTower_spectralIntegerRingEquiv K E M) (finiteTower_autEquivImage K E M)
+    (finiteTower_spectralIntegerRingEquiv K E M) (finiteTowerAutEquivImage K E M)
     (finiteTower_spectralIntegerRingEquiv_smul K E M) hv
 
 omit [IsCompleteDiscreteValuedField K] [IsUltrametricDist M] [CompleteSpace M]
      in
-/-- The canonical image-base automorphism equivalence restricts to the original field map. -/
+/-- The canonical image-base automorphism equivalence restricts to the field map. -/
 theorem finiteTower_fixingSubtype_comp :
     (S₀).fixingSubgroup.subtype.comp
         ((S₀).fixingSubgroupEquiv.symm.toMonoidHom.comp
-          (finiteTower_autEquivImage K E M).toMonoidHom) =
+          (finiteTowerAutEquivImage K E M).toMonoidHom) =
       AlgEquiv.restrictScalarsHom K (S := M) (A := E) := by
   ext g x
   rfl
 
 omit [IsCompleteDiscreteValuedField K] [IsUltrametricDist M] [CompleteSpace M]
      in
-/-- The restriction-of-scalars image is the actual subgroup fixing the embedded scalar field. -/
+/-- The restriction-of-scalars image is the subgroup fixing the embedded scalar field. -/
 theorem finiteTower_range_restrictScalarsHom :
     (AlgEquiv.restrictScalarsHom K (S := M) (A := E)).range = (S₀).fixingSubgroup := by
   rw [← finiteTower_fixingSubtype_comp K E M, MonoidHom.range_comp]
   have hs : Function.Surjective
       ((S₀).fixingSubgroupEquiv.symm.toMonoidHom.comp
-        (finiteTower_autEquivImage K E M).toMonoidHom) :=
+        (finiteTowerAutEquivImage K E M).toMonoidHom) :=
     (S₀).fixingSubgroupEquiv.symm.surjective.comp
-      (finiteTower_autEquivImage K E M).surjective
+      (finiteTowerAutEquivImage K E M).surjective
   rw [MonoidHom.range_eq_top.mpr hs, Subgroup.map_top, Subgroup.range_subtype]
 
 variable [FiniteDimensional K M] [Algebra.IsSeparable K M]
@@ -221,7 +221,7 @@ variable [FiniteDimensional K M] [Algebra.IsSeparable K M]
 variable [PerfectField (IsLocalRing.ResidueField
     (NormedField.valuation (K := K)).valuationSubring)]
 
-/-- Finite base change for the abstract embedded base, mapped to its actual fixing subgroup. -/
+/-- Finite base change for the abstract embedded base, mapped to its fixing subgroup. -/
 theorem finiteTower_upper_map_restrictScalars {u : ℝ} (hu : -1 ≤ u) :
     (upperRamificationGroup (R := spectralIntegerRing M E) (E ≃ₐ[M] E)
       (apfPsi K M u)).map (AlgEquiv.restrictScalarsHom K) =
@@ -240,7 +240,7 @@ theorem finiteTower_upper_map_restrictScalars {u : ℝ} (hu : -1 ≤ u) :
     rfl
   rw [Subgroup.map_map, hc, Subgroup.subgroupOf_map_subtype]
 
-/-- The upper-group image is the intersection with the actual restriction-of-scalars range. -/
+/-- The upper-group image is the intersection with the restriction-of-scalars range. -/
 theorem finiteTower_upper_map_restrictScalars_range {u : ℝ} (hu : -1 ≤ u) :
     (upperRamificationGroup (R := spectralIntegerRing M E) (E ≃ₐ[M] E)
       (apfPsi K M u)).map (AlgEquiv.restrictScalarsHom K) =
@@ -249,7 +249,7 @@ theorem finiteTower_upper_map_restrictScalars_range {u : ℝ} (hu : -1 ≤ u) :
   rw [finiteTower_range_restrictScalarsHom K E M,
     finiteTower_upper_map_restrictScalars K E M hu, inf_comm]
 
-/-- Membership in an own-ring upper group is detected by the actual scalar restriction. -/
+/-- Membership in an own-ring upper group is detected by the scalar restriction. -/
 theorem finiteTower_mem_upper_iff_restrictScalars {u : ℝ} (hu : -1 ≤ u)
     (g : E ≃ₐ[M] E) :
     g ∈ upperRamificationGroup (R := spectralIntegerRing M E) (E ≃ₐ[M] E)
@@ -338,7 +338,7 @@ theorem mem_upperRamificationGroupInfinite_containing_base_iff
   rw [mem_upperRamificationGroupInfinite_iff_cofinal K (SeparableClosure K) F hF hu g]
   exact ⟨fun h E hME => h ⟨E, hME⟩, fun h j => h j.1 j.2⟩
 
-/-- Finite restrictions compare the two actual own-ring upper conditions. -/
+/-- Finite restrictions compare the two own-ring upper conditions. -/
 theorem finiteBase_restriction_mem_upper_iff
     (E : FiniteGaloisIntermediateField K (SeparableClosure K))
     (hME : M ≤ E.toIntermediateField) {u : ℝ} (hu : -1 ≤ u)
@@ -368,7 +368,7 @@ theorem finiteBase_restriction_mem_upper_iff
     (apfPsi K M u) ↔ _
   rw [finiteTower_mem_upper_iff_restrictScalars K E M hu q, hq]
 
-/-- Changing the finite base changes the parameter in the actual common-closure upper group. -/
+/-- Changing the finite base changes the parameter in the common-closure upper group. -/
 theorem mem_upperRamificationGroupInfinite_finiteBase_iff
     {u : ℝ} (hu : -1 ≤ u) (g : SeparableClosure K ≃ₐ[M] SeparableClosure K) :
     g ∈ upperRamificationGroupInfinite M (SeparableClosure K) (apfPsi K M u) ↔
@@ -379,7 +379,7 @@ theorem mem_upperRamificationGroupInfinite_finiteBase_iff
   exact forall_congr' fun E => forall_congr' fun hME =>
     finiteBase_restriction_mem_upper_iff K M E hME hu g
 
-/-- The actual separable-closure identification preserves the finite-base parameter change. -/
+/-- The separable-closure identification preserves the finite-base parameter change. -/
 theorem absoluteGaloisBaseChange_mem_upper_iff
     {u : ℝ} (hu : -1 ≤ u) (g : SeparableClosure M ≃ₐ[M] SeparableClosure M) :
     g ∈ upperRamificationGroupInfinite M (SeparableClosure M) (apfPsi K M u) ↔
@@ -391,7 +391,7 @@ theorem absoluteGaloisBaseChange_mem_upper_iff
       (mem_upperRamificationGroupInfinite_finiteBase_iff K M hu
         ((separableClosureBaseChangeEquiv K M).autCongr g))
 
-/-- The actual absolute new-base upper group maps onto the old upper group's fixing intersection. -/
+/-- The absolute new-base upper group maps onto the old upper group's fixing intersection. -/
 theorem absoluteGaloisBaseChange_map_upper {u : ℝ} (hu : -1 ≤ u) :
     (upperRamificationGroupInfinite M (SeparableClosure M) (apfPsi K M u)).map
         (M.fixingSubgroup.subtype.comp (absoluteGaloisBaseChangeEquiv K M).toMonoidHom) =

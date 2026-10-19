@@ -13,8 +13,8 @@ public import FontaineWintenberger.Ramification.Herbrand.Affine
 # The largest intrinsic ramification order in a restriction coset
 
 The strict product rule identifies a maximal coset representative's
-displacements with truncated subgroup orders. Tate's actual fixed-field
-average then gives the source Herbrand value, including maximum zero.
+displacements with truncated subgroup orders. Tate's fixed-field
+average then gives the Herbrand value, including maximum zero.
 -/
 
 @[expose] public section
@@ -91,7 +91,7 @@ theorem exists_fixedField_ramificationOrder_max (τ : D₀) (hτ : τ ≠ 1) :
 variable [PerfectField (IsLocalRing.ResidueField
   (NormedField.valuation (K := K)).valuationSubring)]
 
-/-- Tate's average at a maximal representative is the actual integral Herbrand value. -/
+/-- Tate's average at a maximal representative is the integral Herbrand value. -/
 theorem fixedField_order_sub_one_eq_herbrand (s : G₀) (hs : ρ s ≠ 1)
     (hmax : ∀ h : H, ramificationOrder (R := B₀) G₀ (s * h.1) ≤
       ramificationOrder (R := B₀) G₀ s) :
@@ -125,7 +125,7 @@ theorem fixedField_order_sub_one_eq_herbrand (s : G₀) (hs : ρ s ≠ 1)
   · intro h _
     exact ENat.toENNReal_ne_top.mpr (ne_top_of_le_ne_top hsfinite (hmax h))
 
-/-- The source coset-maximum formula on every actual nonidentity restriction fiber. -/
+/-- The coset-maximum formula on every nonidentity restriction fiber. -/
 theorem exists_fixedField_order_eq_herbrand (τ : D₀) (hτ : τ ≠ 1) :
     letI := intermediate_spectral_isDiscreteValuationRing K L F₀
     ∃ s : G₀, ρ s = τ ∧ ramificationOrder (R := B₀) G₀ s ≠ ⊤ ∧

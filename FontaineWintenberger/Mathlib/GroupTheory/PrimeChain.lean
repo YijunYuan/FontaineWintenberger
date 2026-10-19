@@ -10,11 +10,11 @@ public import Mathlib.GroupTheory.Nilpotent
 public import Mathlib.Order.Atoms.Finite
 
 /-!
-# Actual relative prime-step chains in finite p-groups
+# Relative prime-step chains in finite p-groups
 
 Each proper subgroup is contained in a maximal subgroup, which is normal
 of index `p`. Recursion in the finite subgroup lattice gives a finite chain
-of actual inclusions, represented by the canonical reflexive transitive closure.
+of inclusions, represented by the canonical reflexive transitive closure.
 -/
 
 @[expose] public section
@@ -24,7 +24,7 @@ namespace FontaineWintenberger
 variable {G : Type*} [Group G] [Finite G] {p : ℕ} [Fact p.Prime]
 
 /-- A maximal subgroup containing a given proper subgroup of a finite p-group
-is an actual normal subgroup of index `p`. -/
+is a normal subgroup of index `p`. -/
 theorem exists_normal_index_prime_le (hG : IsPGroup p G) (H : Subgroup G) (hH : H ≠ ⊤) :
     ∃ M : Subgroup G, H ≤ M ∧ M < ⊤ ∧ M.Normal ∧ M.index = p := by
   let : Group.IsNilpotent G := hG.isNilpotent
@@ -33,7 +33,7 @@ theorem exists_normal_index_prime_le (hG : IsPGroup p G) (H : Subgroup G) (hH : 
     Subgroup.NormalizerCondition.normal_of_coatom M Group.normalizerCondition_of_isNilpotent hM,
     hG.isCoatom_iff_index_eq_prime.mp hM⟩
 
-/-- A finite p-group has actual normal index-prime steps between any two
+/-- A finite p-group has normal index-prime steps between any two
 of its subgroups. The reflexive case is the length-zero chain. -/
 theorem subgroup_prime_chain_of_isPGroup (K H : Subgroup G) (hK : IsPGroup p K) (hHK : H ≤ K) :
     Relation.ReflTransGen

@@ -16,18 +16,18 @@ public import Mathlib.CategoryTheory.Equivalence
 /-!
 # Equivalence of separable extension categories
 
-## The actual functor on separable algebraic field extensions
+## The functor on separable algebraic field extensions
 
-The canonical category of separable field algebras receives the original
-norm-union object and morphism maps. Their original identity/composition laws
-and the genuine full Hom correspondence give a fully faithful functor.
+The canonical category of separable field algebras receives the
+norm-union object and morphism maps. Their identity/composition laws
+and the full Hom correspondence give a fully faithful functor.
 
 Reference: Wintenberger, Theorem 3.2.2(ii).
 
 ## Equivalence of the canonical separable extension categories
 
-The actual original norm-union functor is essentially surjective by the
-reconstructed original intermediate fields. Combining this producer with
+The norm-union functor is essentially surjective by the
+reconstructed intermediate fields. Combining this producer with
 its full Hom correspondence gives the categorical field-of-norms equivalence.
 
 Reference: Wintenberger, Theorem 3.2.2.
@@ -50,18 +50,18 @@ local notation "p" => residueChar K
 
 variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 
-/-- Bundle the original norm union of an actual separable field algebra. -/
+/-- Bundle the norm union of a separable field algebra. -/
 def RelFieldOfNorms.objectOf (M : Type (max u v w)) [Field M]
     [Algebra K M] [Algebra L M] [IsScalarTower K L M]
     [Algebra.IsSeparable L M] :
     SeparableExtensionCat.{v, max u v w} (FieldOfNorms K L) := by
   letI : Algebra.IsSeparable (FieldOfNorms K L)
       (RelFieldOfNorms K L M) :=
-    RelFieldOfNorms._isSeparable K L M
+    RelFieldOfNorms.isSeparable K L M
   exact SeparableExtensionCat.of (R := FieldOfNorms K L)
     (RelFieldOfNorms K L M)
 
-/-- Bundle the original union embedding of actual field algebras. -/
+/-- Bundle the union embedding of field algebras. -/
 def RelFieldOfNorms.objectMapOf
     (M N : Type (max u v w)) [Field M] [Field N]
     [Algebra K M] [Algebra L M] [IsScalarTower K L M]
@@ -74,7 +74,7 @@ def RelFieldOfNorms.objectMapOf
   exact ObjectProperty.homMk
     (CommAlgCat.ofHom (RelFieldOfNorms.algMap K L M N t))
 
-/-- The actual separable relative field of norms, as an object of the canonical category. -/
+/-- The separable relative field of norms, as an object of the canonical category. -/
 abbrev RelFieldOfNorms.obj (A : SeparableExtensionCat.{v, max u v w} L) :
     SeparableExtensionCat.{v, max u v w} (FieldOfNorms K L) := by
   letI : Field A.obj := { A.property.1.toField with toCommRing := A.obj.commRing }
@@ -83,7 +83,7 @@ abbrev RelFieldOfNorms.obj (A : SeparableExtensionCat.{v, max u v w} L) :
   letI : Algebra.IsSeparable L A.obj := A.property.2
   exact RelFieldOfNorms.objectOf.{u, v, w} K L A.obj
 
-/-- The categorical morphism is exactly the original induced algebra embedding. -/
+/-- The categorical morphism is exactly the induced algebra embedding. -/
 def RelFieldOfNorms.objMap
     {A B : SeparableExtensionCat.{v, max u v w} L} (f : A ⟶ B) :
     RelFieldOfNorms.obj.{u, v, w} K L A ⟶
@@ -98,7 +98,7 @@ def RelFieldOfNorms.objMap
   letI : Algebra.IsSeparable L B.obj := B.property.2
   exact RelFieldOfNorms.objectMapOf.{u, v, w} K L A.obj B.obj f.hom.hom
 
-section OriginalFields
+section Fields
 
 variable (M N P : Type (max u v w)) [Field M] [Field N] [Field P]
     [Algebra K M] [Algebra L M] [IsScalarTower K L M]
@@ -106,7 +106,7 @@ variable (M N P : Type (max u v w)) [Field M] [Field N] [Field P]
     [Algebra K P] [Algebra L P] [IsScalarTower K L P]
     [Algebra.IsSeparable L M] [Algebra.IsSeparable L N] [Algebra.IsSeparable L P]
 
-/-- The bundled original union map preserves identities. -/
+/-- The bundled union map preserves identities. -/
 theorem RelFieldOfNorms.objectMapOf_id :
     RelFieldOfNorms.objectMapOf.{u, v, w} K L M M (AlgHom.id L M) =
       𝟙 (RelFieldOfNorms.objectOf.{u, v, w} K L M) := by
@@ -117,7 +117,7 @@ theorem RelFieldOfNorms.objectMapOf_id :
   intro x
   exact congrArg (fun f => f x) (RelFieldOfNorms.map_id K L M)
 
-/-- The bundled original union map preserves composition. -/
+/-- The bundled union map preserves composition. -/
 theorem RelFieldOfNorms.objectMapOf_comp (t : M →ₐ[L] N) (s : N →ₐ[L] P) :
     RelFieldOfNorms.objectMapOf.{u, v, w} K L M P (s.comp t) =
       RelFieldOfNorms.objectMapOf.{u, v, w} K L M N t ≫
@@ -130,7 +130,7 @@ theorem RelFieldOfNorms.objectMapOf_comp (t : M →ₐ[L] N) (s : N →ₐ[L] P)
   exact (congrArg (fun f => f x)
     (RelFieldOfNorms.map_comp K L M N t P s)).symm
 
-/-- The actual full Hom correspondence remains bijective after canonical bundling. -/
+/-- The full Hom correspondence remains bijective after canonical bundling. -/
 theorem RelFieldOfNorms.objectMapOf_bijective :
     Function.Bijective (RelFieldOfNorms.objectMapOf.{u, v, w}
       K L M N) := by
@@ -138,13 +138,13 @@ theorem RelFieldOfNorms.objectMapOf_bijective :
   exact (SeparableExtensionCat.homEquiv _ _).symm.bijective.comp
     (RelFieldOfNorms.algMap_bijective K L N M)
 
-/-- Canonical categorical bundling leaves the original union embedding unchanged. -/
+/-- Canonical categorical bundling leaves the union embedding unchanged. -/
 theorem RelFieldOfNorms.objectMapOf_apply (t : M →ₐ[L] N)
     (x : RelFieldOfNorms K L M) :
     (RelFieldOfNorms.objectMapOf.{u, v, w} K L M N t).hom.hom x =
       RelFieldOfNorms.map K L M N t x := rfl
 
-/-- The original compatible rational valuations are preserved by the categorical map. -/
+/-- The compatible rational valuations are preserved by the categorical map. -/
 theorem RelFieldOfNorms.objectMapOf_valuation (t : M →ₐ[L] N)
     (x : RelFieldOfNorms K L M) :
     RelFieldOfNorms.valuation K L N
@@ -152,30 +152,30 @@ theorem RelFieldOfNorms.objectMapOf_valuation (t : M →ₐ[L] N)
       RelFieldOfNorms.valuation K L M x :=
   RelFieldOfNorms.map_valuation K L M N t x
 
-/-- The value on a finite original field is its canonical terminal norm field. -/
+/-- The value on a finite field is its canonical terminal norm field. -/
 def RelFieldOfNorms.objectFiniteAlgEquiv [Module.Finite L M] :
     letI : Algebra.IsSeparable K M := Algebra.IsSeparable.trans K L M
     letI : IsAPF K M := (isAPF_finite_extension_iff K M L).mpr ‹_›
-    letI : Fact (¬ Module.Finite K M) := ⟨RelFieldOfNorms._ambient_infinite K L M⟩
+    letI : Fact (¬ Module.Finite K M) := ⟨RelFieldOfNorms.ambient_infinite K L M⟩
     letI : IsAPF K M := (isAPF_finite_extension_iff K M L).mpr ‹_›
-    letI : Fact (¬ Module.Finite K M) := ⟨RelFieldOfNorms._ambient_infinite K L M⟩
+    letI : Fact (¬ Module.Finite K M) := ⟨RelFieldOfNorms.ambient_infinite K L M⟩
     letI := (FieldOfNorms.finiteRingHom K L M
 ).toAlgebra
     (RelFieldOfNorms.objectOf.{u, v, w} K L M).obj ≃ₐ[FieldOfNorms K L]
       FieldOfNorms K M := by
   letI : Algebra.IsSeparable K M := Algebra.IsSeparable.trans K L M
   letI : IsAPF K M := (isAPF_finite_extension_iff K M L).mpr ‹_›
-  letI : Fact (¬ Module.Finite K M) := ⟨RelFieldOfNorms._ambient_infinite K L M⟩
+  letI : Fact (¬ Module.Finite K M) := ⟨RelFieldOfNorms.ambient_infinite K L M⟩
   letI : IsAPF K M := (isAPF_finite_extension_iff K M L).mpr ‹_›
-  letI : Fact (¬ Module.Finite K M) := ⟨RelFieldOfNorms._ambient_infinite K L M⟩
+  letI : Fact (¬ Module.Finite K M) := ⟨RelFieldOfNorms.ambient_infinite K L M⟩
   letI := (FieldOfNorms.finiteRingHom K L M
 ).toAlgebra
   dsimp only [RelFieldOfNorms.objectOf]
   exact RelFieldOfNorms.finiteAlgEquiv K L M
 
-end OriginalFields
+end Fields
 
-/-- The categorical map on each original pair of field algebras is bijective. -/
+/-- The categorical map on each pair of field algebras is bijective. -/
 theorem RelFieldOfNorms.objMap_bijective
     (A B : SeparableExtensionCat.{v, max u v w} L) :
     Function.Bijective (RelFieldOfNorms.objMap.{u, v, w}
@@ -200,7 +200,7 @@ theorem RelFieldOfNorms.objMap_bijective
     refine ⟨ObjectProperty.homMk (CommAlgCat.ofHom t), ?_⟩
     exact ht
 
-/-- The original norm-union construction is a functor on the canonical categories. -/
+/-- The norm-union construction is a functor on the canonical categories. -/
 def RelFieldOfNorms.functor :
     SeparableExtensionCat.{v, max u v w} L ⥤
       SeparableExtensionCat.{v, max u v w} (FieldOfNorms K L) := by
@@ -230,7 +230,7 @@ def RelFieldOfNorms.functor :
     exact RelFieldOfNorms.objectMapOf_comp.{u, v, w} K L
       A.obj B.obj C.obj f.hom.hom g.hom.hom
 
-/-- Full faithfulness uses the proved original Hom correspondence. -/
+/-- Full faithfulness uses the proved Hom correspondence. -/
 def RelFieldOfNorms.functorFullyFaithful :
     (RelFieldOfNorms.functor.{u, v, w} K L).FullyFaithful := by
   exact Classical.choice ((Functor.FullyFaithful.nonempty_iff_map_bijective
@@ -253,7 +253,7 @@ local notation "p" => residueChar K
 
 variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 
-/-- An actual original-union algebra isomorphism gives the same canonical categorical
+/-- An original-union algebra isomorphism gives the same canonical categorical
 isomorphism. -/
 def RelFieldOfNorms.objectIso
     (M : Type (max u v w)) [Field M]
@@ -266,8 +266,8 @@ def RelFieldOfNorms.objectIso
   dsimp only [RelFieldOfNorms.objectOf]
   exact (separableFieldProperty (FieldOfNorms K L)).isoMk (CommAlgCat.isoMk e)
 
-/-- An actual union isomorphism remains in the same functor's essential image
-when the original field is replaced by a universe-lifted isomorphic copy. -/
+/-- An union isomorphism remains in the same functor's essential image
+when the field is replaced by an universe-lifted isomorphic copy. -/
 theorem RelFieldOfNorms.functor_mem_essImage_of_algEquiv
     {M : Type v} [Field M] [Algebra K M] [Algebra L M] [IsScalarTower K L M]
     [Algebra.IsSeparable L M]
@@ -296,7 +296,7 @@ theorem RelFieldOfNorms.functor_mem_essImage_of_algEquiv
   dsimp only [RelFieldOfNorms.functor, RelFieldOfNorms.obj]
   exact ⟨i⟩
 
-/-- Every canonical separable target object is the value of an actual original extension. -/
+/-- Every canonical separable target object is the value of an extension. -/
 theorem RelFieldOfNorms.functorEssSurj :
     (RelFieldOfNorms.functor.{u, v, w} K L).EssSurj := by
   constructor
@@ -307,21 +307,21 @@ theorem RelFieldOfNorms.functorEssSurj :
   exact RelFieldOfNorms.functor_mem_essImage_of_algEquiv.{u, v, w}
     K L B e
 
-/-- Full faithfulness and the constructed original essential image prove equivalence. -/
+/-- Full faithfulness and the constructed essential image prove equivalence. -/
 theorem RelFieldOfNorms.functorIsEquivalence :
     (RelFieldOfNorms.functor.{u, v, w} K L).IsEquivalence := by
   let ff := RelFieldOfNorms.functorFullyFaithful.{u, v, w} K L
   exact ⟨ff.faithful, ff.full,
     RelFieldOfNorms.functorEssSurj.{u, v, w} K L⟩
 
-/-- The field-of-norms equivalence has exactly the original relative field of norms functor. -/
+/-- The field-of-norms equivalence has exactly the relative field of norms functor. -/
 def RelFieldOfNorms.equivalence :
     SeparableExtensionCat.{v, max u v w} L ≌
       SeparableExtensionCat.{v, max u v w} (FieldOfNorms K L) := by
   letI := RelFieldOfNorms.functorIsEquivalence.{u, v, w} K L
   exact (RelFieldOfNorms.functor.{u, v, w} K L).asEquivalence
 
-/-- The equivalence retains the literal original induced maps. -/
+/-- The equivalence retains the induced maps. -/
 @[simp]
 theorem RelFieldOfNorms.equivalence_functor :
     (RelFieldOfNorms.equivalence.{u, v, w} K L).functor =

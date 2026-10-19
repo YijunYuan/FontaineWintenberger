@@ -11,9 +11,9 @@ public import Mathlib.FieldTheory.Galois.Basic
 public import Mathlib.FieldTheory.PrimitiveElement
 
 /-!
-# Original good finite fields for finite Galois extensions
+# Good finite fields for finite Galois extensions
 
-Actual finite image composita give cofinal stable fields. Their original
+Finite image composita give cofinal stable fields. Their
 relative automorphisms and fixed fields determine the canonical tensor map.
 -/
 
@@ -28,8 +28,8 @@ open scoped TensorProduct
 variable (K M N : Type*) [Field K] [Field M] [Field N]
     [Algebra K M] [Algebra K N] [Algebra M N] [IsScalarTower K M N]
 
-/-- Restriction of the original relative Galois group to an actual stable
-finite field, over its original pullback to the source. -/
+/-- Restriction of the relative Galois group to a stable
+finite field, over its pullback to the source. -/
 def galoisFiniteLayerRestrict (D : FiniteIntermediateField K N)
     (hD : ∀ σ : N ≃ₐ[M] N, D.val.map (σ.restrictScalars K).toAlgHom = D.val) :
     (N ≃ₐ[M] N) →* (D.val ≃ₐ[FiniteIntermediateField.pullback K M D] D.val) where
@@ -54,7 +54,7 @@ theorem coe_galoisFiniteLayerRestrict (D : FiniteIntermediateField K N)
 
 variable [Module.Finite M N] [IsGalois M N]
 
-/-- The fixed field of the actual restriction range is exactly the original
+/-- The fixed field of the restriction range is exactly the
 pullback, represented as the bottom field over that very pullback. -/
 theorem galoisFiniteLayerRestrict_fixedField (D : FiniteIntermediateField K N)
     (hD : ∀ σ : N ≃ₐ[M] N, D.val.map (σ.restrictScalars K).toAlgHom = D.val) :
@@ -73,7 +73,7 @@ theorem galoisFiniteLayerRestrict_fixedField (D : FiniteIntermediateField K N)
   exact Subtype.ext hm
 
 omit [Module.Finite M N] in
-/-- A genuine original primitive element makes the restriction faithful. -/
+/-- A primitive element makes the restriction faithful. -/
 theorem galoisFiniteLayerRestrict_injective (D : FiniteIntermediateField K N)
     (hD : ∀ σ : N ≃ₐ[M] N, D.val.map (σ.restrictScalars K).toAlgHom = D.val)
     (α : N) (hα : IntermediateField.adjoin M {α} = ⊤) (hαD : α ∈ D.val) :
@@ -91,7 +91,7 @@ theorem galoisFiniteLayerRestrict_injective (D : FiniteIntermediateField K N)
       (s ⟨α, hαD⟩ : N)) hστ
   exact AlgEquiv.ext (fun x => AlgHom.congr_fun he x)
 
-/-- Finite Artin theory computes the actual degree over the original pullback. -/
+/-- Finite Artin theory computes the degree over the pullback. -/
 theorem finrank_galois_stableFiniteLayer (D : FiniteIntermediateField K N)
     (hD : ∀ σ : N ≃ₐ[M] N, D.val.map (σ.restrictScalars K).toAlgHom = D.val)
     (α : N) (hα : IntermediateField.adjoin M {α} = ⊤) (hαD : α ∈ D.val) :
@@ -103,8 +103,8 @@ theorem finrank_galois_stableFiniteLayer (D : FiniteIntermediateField K N)
     (galoisFiniteLayerRestrict_injective K M N D hD α hα hαD)).toEquiv).symm.trans
       (IsGalois.card_aut_eq_finrank M N))
 
-/-- Stability and a genuine primitive element prove goodness of the canonical
-original tensor map, rather than assuming a descent presentation. -/
+/-- Stability and a primitive element prove goodness of the canonical
+tensor map, rather than assuming a descent presentation. -/
 theorem isGoodFiniteLayer_of_galois_stable (D : FiniteIntermediateField K N)
     (hD : ∀ σ : N ≃ₐ[M] N, D.val.map (σ.restrictScalars K).toAlgHom = D.val)
     (α : N) (hα : IntermediateField.adjoin M {α} = ⊤) (hαD : α ∈ D.val) :
@@ -132,8 +132,8 @@ theorem isGoodFiniteLayer_of_galois_stable (D : FiniteIntermediateField K N)
 
 variable [Algebra.IsAlgebraic K N]
 
-/-- Actual finite image composita containing a genuine primitive element
-give cofinal original Galois-stable good fields, without normality over K. -/
+/-- Finite image composita containing a primitive element
+give cofinal Galois-stable good fields, without normality over K. -/
 theorem exists_galois_stable_goodFiniteLayer_ge (E : FiniteIntermediateField K N) :
     ∃ D : FiniteIntermediateField K N, E ≤ D ∧ IsGoodFiniteLayer K M D ∧
       (∀ σ : N ≃ₐ[M] N, D.val.map (σ.restrictScalars K).toAlgHom = D.val) ∧
@@ -150,7 +150,7 @@ theorem exists_galois_stable_goodFiniteLayer_ge (E : FiniteIntermediateField K N
   exact ⟨D, (FiniteIntermediateField.le_sup_left E A).trans hD₀D,
     isGoodFiniteLayer_of_galois_stable K M N D hD α hα hαD, hD, α, hαD, hα⟩
 
-/-- Two original finite fields have a common actual stable good upper field. -/
+/-- Two finite fields have a common stable good upper field. -/
 theorem exists_galois_stable_goodFiniteLayer_ge_pair (E F : FiniteIntermediateField K N) :
     ∃ D : FiniteIntermediateField K N, E ≤ D ∧ F ≤ D ∧ IsGoodFiniteLayer K M D ∧
       ∀ σ : N ≃ₐ[M] N, D.val.map (σ.restrictScalars K).toAlgHom = D.val := by

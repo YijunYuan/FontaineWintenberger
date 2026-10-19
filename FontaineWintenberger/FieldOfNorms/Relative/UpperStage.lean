@@ -13,17 +13,17 @@ public import FontaineWintenberger.Mathlib.RingTheory.PolynomialDiscriminant
 /-!
 # Coordinates at full upper stages
 
-## Original coordinates at arbitrary high-break stages
+## Coordinates at arbitrary high-break stages
 
-The relative full upper product is compared with the actual absolute APF stage.
+The relative full upper product is compared with the absolute APF stage.
 The resulting wild finite norms descend the existing deep integral projection
-to the original finite field and its original maximal-ideal quotient.
+to the finite field and its maximal-ideal quotient.
 
-## Discriminants of the original finite-coordinate polynomials
+## Discriminants of the finite-coordinate polynomials
 
-The actual integral coordinates need not be additive. Their polynomial is
+The integral coordinates need not be additive. Their polynomial is
 formed coefficient by coefficient; only its reduction is compared using the
-proved high-break ring homomorphism. The original normalized discriminant
+proved high-break ring homomorphism. The normalized discriminant
 value is then stable as soon as the precision exceeds that value.
 -/
 
@@ -60,20 +60,20 @@ local instance FiniteIntermediateField.instIsSeparable (E : FiniteIntermediateFi
     Algebra.IsSeparable E.val L :=
   Algebra.isSeparable_tower_top_of_isSeparable K E.val L
 
-/-- The source high-break condition is the actual full relative upper product,
-on the canonical separable embedding of the original extension over `E`. -/
+/-- The high-break condition is the full relative upper product,
+on the canonical separable embedding of the extension over `E`. -/
 def FiniteIntermediateField.HasFullUpper (E : FiniteIntermediateField K L) (b : ℝ) : Prop :=
   apfSubgroup E.val (IsSepClosed.lift : L →ₐ[E.val] SeparableClosure E.val).fieldRange b = ⊤
 
-/-- The high-break condition is unchanged for every actual choice of separable
-embedding over the original finite field. -/
+/-- The high-break condition is unchanged for every choice of separable
+embedding over the finite field. -/
 theorem FiniteIntermediateField.hasFullUpper_iff_embedding (E : FiniteIntermediateField K L)
     (i : L →ₐ[E.val] SeparableClosure E.val) (b : ℝ) :
     E.HasFullUpper K L b ↔ apfSubgroup E.val i.fieldRange b = ⊤ :=
   apfSubgroup_fieldRange_eq_top_iff E.val L _ i b
 
-/-- At the original finite-base Herbrand parameter, the full relative product
-is exactly containment of the actual absolute APF stage in the original field. -/
+/-- At the finite-base Herbrand parameter, the full relative product
+is exactly containment of the absolute APF stage in the field. -/
 theorem FiniteIntermediateField.hasFullUpper_apfPsi_iff (E : FiniteIntermediateField K L)
     (j : L →ₐ[K] SeparableClosure K) {u : ℝ} (hu : 0 ≤ u) :
     E.HasFullUpper K L (apfPsi K E.val u) ↔
@@ -121,8 +121,8 @@ theorem FiniteIntermediateField.hasFullUpper_apfPsi_iff (E : FiniteIntermediateF
     intro g _
     exact hfix ⟨g, rfl⟩
 
-/-- A positive relative upper parameter corresponds to the actual positive
-absolute stage through the original finite-base inverse Herbrand function. -/
+/-- A positive relative upper parameter corresponds to the positive
+absolute stage through the finite-base inverse Herbrand function. -/
 theorem FiniteIntermediateField.hasFullUpper_iff_stage_le (E : FiniteIntermediateField K L)
     (j : L →ₐ[K] SeparableClosure K) {b : ℝ} (hb : 0 ≤ b) :
     E.HasFullUpper K L b ↔ apfFiniteStage K j.fieldRange
@@ -134,7 +134,7 @@ theorem FiniteIntermediateField.hasFullUpper_iff_stage_le (E : FiniteIntermediat
 
 section PositiveWild
 
-/-- At every positive actual upper stage, all original finite oversteps
+/-- At every positive upper stage, all finite oversteps
 have p-power degree. This extends the upper-one wild-tail argument without
 requiring either intermediate field to be normal. -/
 theorem finrank_eq_prime_pow_of_apfFiniteStage_pos_le
@@ -211,7 +211,7 @@ theorem finrank_eq_prime_pow_of_apfFiniteStage_pos_le
 
 end PositiveWild
 
-/-- Decreasing a nonnegative upper parameter preserves the actual full product. -/
+/-- Decreasing a nonnegative upper parameter preserves the full product. -/
 theorem FiniteIntermediateField.HasFullUpper.of_le {E : FiniteIntermediateField K L} {b c : ℝ}
     (h : E.HasFullUpper K L b) (hc : 0 ≤ c) (hcb : c ≤ b) :
     E.HasFullUpper K L c := by
@@ -221,7 +221,7 @@ theorem FiniteIntermediateField.HasFullUpper.of_le {E : FiniteIntermediateField 
     (by linarith : -1 ≤ c) (by linarith : -1 ≤ b) hcb
   exact h ▸ hm
 
-/-- Actual full relative upper products become arbitrarily deep on an original
+/-- Full relative upper products become arbitrarily deep on an
 finite-field tail; this retains the product, rather than only its first bound. -/
 theorem IsAPF.exists_finiteIntermediateField_fullUpper_tail [IsAPF K L] (b : ℝ) (hb : 0 ≤ b) :
     ∃ T : FiniteIntermediateField K L, ∀ E : FiniteIntermediateField K L, T ≤ E → E.HasFullUpper K
@@ -236,8 +236,8 @@ theorem IsAPF.exists_finiteIntermediateField_fullUpper_tail [IsAPF K L] (b : ℝ
   have h := (E.hasFullUpper_apfPsi_iff K L j hb).mpr hstage
   exact h.of_le K L hb (IsAPF.le_apfPsi K E.val b)
 
-/-- A positive full relative product forces every original finite overstep
-to have surjective original residue inclusion. -/
+/-- A positive full relative product forces every finite overstep
+to have surjective residue inclusion. -/
 theorem FiniteIntermediateField.HasFullUpper.residue_surjective
     [IsAPF K L] {E : FiniteIntermediateField K L} {b : ℝ} (hb : 0 < b)
     (h : E.HasFullUpper K L b) (F : FiniteIntermediateField K L) (hEF : E ≤ F) :
@@ -269,7 +269,7 @@ theorem FiniteIntermediateField.HasFullUpper.residue_surjective
       (spectralResidueInclusion K (IntermediateField.inclusion hEF)).injective
 
 /-- Every finite overstep above a positive full relative product has p-power
-degree, on the original finite carriers. -/
+degree, on the finite carriers. -/
 theorem FiniteIntermediateField.HasFullUpper.finrank_eq_prime_pow
     {E : FiniteIntermediateField K L} {b : ℝ} (hb : 0 < b) (h : E.HasFullUpper K L b)
     (F : FiniteIntermediateField K L) (hEF : E ≤ F) :
@@ -294,7 +294,7 @@ theorem FiniteIntermediateField.HasFullUpper.finrank_eq_prime_pow
     IntermediateField.relfinrank_eq_finrank_of_le hEF] at hn
   exact hn
 
-/-- The actual relative first bound of every finite overstep is at least the
+/-- The relative first bound of every finite overstep is at least the
 specified full relative upper parameter, including the identity step. -/
 theorem FiniteIntermediateField.HasFullUpper.le_relativeFirstBound
     {E : FiniteIntermediateField K L} {b : ℝ} (hb : 0 ≤ b) (h : E.HasFullUpper K L b)
@@ -309,8 +309,8 @@ theorem FiniteIntermediateField.HasFullUpper.le_relativeFirstBound
   have ht := apfPsi_le_relativeFirstBound_of_apfFiniteStage_le K L E F hEF j hu hstage
   simpa only [u, apfPsi_apfPhi] using ht
 
-/-- At a positive full relative upper product the original E-coordinate
-computes the normalized valuation of every original norm family, including
+/-- At a positive full relative upper product the E-coordinate
+computes the normalized valuation of every norm family, including
 zero and nonintegral families. -/
 theorem FieldOfNorms.valuation_eq_coordinate_of_fullUpper
     [IsAPF K L] {E : FiniteIntermediateField K L} {b : ℝ} (hb : 0 < b)
@@ -326,7 +326,7 @@ theorem FieldOfNorms.valuation_eq_coordinate_of_fullUpper
   exact hv.symm
 
 /-- Any prescribed nonnegative depths are attained by an increasing cofinal
-sequence of original finite subfields, each with its actual full upper product.
+sequence of finite subfields, each with its full upper product.
 No growth assumption on the depths is needed for this stronger statement. -/
 theorem IsAPF.exists_monotone_cofinal_fullUpper_stages [IsAPF K L]
     (b : ℕ → ℝ) (hb : ∀ n, 0 ≤ b n) :
@@ -345,9 +345,9 @@ section Projections
 variable [IsAPF K L]
 variable {E : FiniteIntermediateField K L} {b : ℝ} (hb : 0 < b) (h : E.HasFullUpper K L b)
 
-/-- The original finite norm on original integer quotients, whose wildness,
-total ramification and first-bound hypotheses follow from the actual full
-upper product of the original infinite extension. -/
+/-- The finite norm on integer quotients, whose wildness,
+total ramification and first-bound hypotheses follow from the full
+upper product of the infinite extension. -/
 def FiniteIntermediateField.HasFullUpper.truncatedNorm (F : FiniteIntermediateField K L) (hEF : E ≤
     F)
     (r s : ℕ) (hrs : r ≤ s) (hrb : r ≤ ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊) :
@@ -359,7 +359,7 @@ def FiniteIntermediateField.HasFullUpper.truncatedNorm (F : FiniteIntermediateFi
       (h.residue_surjective K L hb F hEF)) hd.choose_spec
     (h.le_relativeFirstBound K L hb.le F hEF) r s hrs hrb
 
-/-- The finite quotient map is the class of the original integer norm. -/
+/-- The finite quotient map is the class of the integer norm. -/
 @[simp]
 theorem FiniteIntermediateField.HasFullUpper.truncatedNorm_mk (F : FiniteIntermediateField K L)
     (hEF : E ≤ F)
@@ -368,7 +368,7 @@ theorem FiniteIntermediateField.HasFullUpper.truncatedNorm_mk (F : FiniteInterme
     h.truncatedNorm K L hb F hEF r s hrs hrb (Ideal.Quotient.mk _ x) =
       Ideal.Quotient.mk _ (FiniteIntermediateField.integerNorm E F hEF x) := rfl
 
-/-- Surjectivity is supplied by the actual finite wild norm digit argument. -/
+/-- Surjectivity is supplied by the finite wild norm digit argument. -/
 theorem FiniteIntermediateField.HasFullUpper.truncatedNorm_surjective
     (F : FiniteIntermediateField K L) (hEF : E ≤ F)
     (r s : ℕ) (hrs : r ≤ s) (hrb : r ≤ ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊) :
@@ -381,15 +381,15 @@ theorem FiniteIntermediateField.HasFullUpper.truncatedNorm_surjective
 
 variable [Fact (¬ Module.Finite K L)]
 
-/-- Integral evaluation in any original finite intermediate field, with no chosen model. -/
+/-- Integral evaluation in any finite intermediate field, with no chosen model. -/
 def FieldOfNorms.integralCoordinateAt (E : FiniteIntermediateField K L) :
     (FieldOfNorms.fieldValuation K L).valuationSubring → spectralIntegerRing K E.val :=
         by
   exact fun α ↦ ⟨FieldOfNorms.coord K L E α.val,
     FieldOfNorms.coord_mem_of_valuation_le_one K L α.val α.property E⟩
 
-/-- The original high-break coordinate ring map. Its construction composes the
-proved deep projection with the actual finite truncated norm back to E. -/
+/-- The high-break coordinate ring map. Its construction composes the
+proved deep projection with the finite truncated norm back to E. -/
 def FieldOfNorms.highBreakProjection (r : ℕ) (hrb : r ≤ ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊) :
     (FieldOfNorms.fieldValuation K L).valuationSubring →+*
       spectralIntegerRing K E.val ⧸ IsLocalRing.maximalIdeal (spectralIntegerRing K E.val) ^ r := by
@@ -397,8 +397,8 @@ def FieldOfNorms.highBreakProjection (r : ℕ) (hrb : r ≤ ⌈((p - 1 : ℕ) : 
     (le_deepFiniteTower K L E r) r (r + 2) (by omega) hrb).comp
       (FieldOfNorms.truncation K L E r)
 
-/-- The constructed ring homomorphism is precisely reduction of the original
-E-coordinate, by the original norm-family compatibility. -/
+/-- The constructed ring homomorphism is precisely reduction of the
+E-coordinate, by the norm-family compatibility. -/
 @[simp]
 theorem FieldOfNorms.highBreakProjection_apply
     (r : ℕ) (hrb : r ≤ ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊) :
@@ -415,8 +415,8 @@ theorem FieldOfNorms.highBreakProjection_apply
   exact FieldOfNorms.coord_norm K L E (deepFiniteTower K L E r)
     (le_deepFiniteTower K L E r) α.val
 
-/-- Every class of the original integer quotient occurs as an actual original
-norm-family coordinate. Both surjections are proved on their actual carriers. -/
+/-- Every class of the integer quotient occurs as an
+norm-family coordinate. Both surjections are proved on their carriers. -/
 theorem FieldOfNorms.highBreakProjection_surjective
     (r : ℕ) (hrb : r ≤ ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊) :
     Function.Surjective (FieldOfNorms.highBreakProjection K L hb h r hrb) := by
@@ -425,7 +425,7 @@ theorem FieldOfNorms.highBreakProjection_surjective
     (le_deepFiniteTower K L E r) r (r + 2) (by omega) hrb).comp
       (FieldOfNorms.truncation_surjective K L E r)
 
-/-- The exact kernel is the original normalized valuation ball of depth r. -/
+/-- The exact kernel is the normalized valuation ball of depth r. -/
 theorem FieldOfNorms.highBreakProjection_eq_zero_iff
     (r : ℕ) (hrb : r ≤ ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊) :
     ∀ α : (FieldOfNorms.fieldValuation K L).valuationSubring,
@@ -437,7 +437,7 @@ theorem FieldOfNorms.highBreakProjection_eq_zero_iff
     FieldOfNorms.valuation_eq_coordinate_of_fullUpper K L hb h]
   rfl
 
-/-- Equality of original quotient coordinates is measured by the same original
+/-- Equality of quotient coordinates is measured by the same
 valuation, at the exact requested precision. -/
 theorem FieldOfNorms.highBreakProjection_eq_iff
     (r : ℕ) (hrb : r ≤ ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊) :
@@ -449,7 +449,7 @@ theorem FieldOfNorms.highBreakProjection_eq_iff
   rw [← sub_eq_zero, ← map_sub, FieldOfNorms.highBreakProjection_eq_zero_iff]
   rfl
 
-/-- The kernel ideal is exactly the r-th maximal-ideal power in the original
+/-- The kernel ideal is exactly the r-th maximal-ideal power in the
 field of norms valuation ring, with its proved normalized valuation. -/
 theorem ker_fieldOfNormsHighBreakProjection
     (r : ℕ) (hrb : r ≤ ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊) :
@@ -480,19 +480,19 @@ variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 
 local notation "Oₓ" => Valuation.valuationSubring (FieldOfNorms.fieldValuation K L)
 
-/-- Actual integral coordinate evaluation preserves zero. -/
+/-- Integral coordinate evaluation preserves zero. -/
 @[simp]
 theorem FieldOfNorms.integralCoordinateAt_zero (E : FiniteIntermediateField K L) :
     FieldOfNorms.integralCoordinateAt K L E 0 = 0 := by
   exact Subtype.ext (_root_.map_zero (FieldOfNorms.coord K L E))
 
-/-- Actual integral coordinate evaluation preserves one. -/
+/-- Integral coordinate evaluation preserves one. -/
 @[simp]
 theorem FieldOfNorms.integralCoordinateAt_one (E : FiniteIntermediateField K L) :
     FieldOfNorms.integralCoordinateAt K L E 1 = 1 := by
   exact Subtype.ext (_root_.map_one (FieldOfNorms.coord K L E))
 
-/-- The polynomial of actual original coordinates, formed by its finite
+/-- The polynomial of coordinates, formed by its finite
 coefficient expansion. No additive coordinate homomorphism is presumed. -/
 def FieldOfNorms.coordinatePolynomial (E : FiniteIntermediateField K L) :
     Oₓ[X] → (spectralIntegerRing K E.val)[X] := by
@@ -500,8 +500,8 @@ def FieldOfNorms.coordinatePolynomial (E : FiniteIntermediateField K L) :
   exact ∑ i ∈ f.support,
     monomial i (FieldOfNorms.integralCoordinateAt K L E (f.coeff i))
 
-/-- Every coefficient is the original finite coordinate of that same
-coefficient of the original polynomial. -/
+/-- Every coefficient is the finite coordinate of that same
+coefficient of the polynomial. -/
 @[simp]
 theorem coeff_fieldOfNormsCoordinatePolynomial (E : FiniteIntermediateField K L) :
     ∀ (f : Oₓ[X]) (i : ℕ),
@@ -513,7 +513,7 @@ theorem coeff_fieldOfNormsCoordinatePolynomial (E : FiniteIntermediateField K L)
   · simp [FieldOfNorms.coordinatePolynomial, coeff_monomial, mem_support_iff, hi]
   · simp [FieldOfNorms.coordinatePolynomial, coeff_monomial, mem_support_iff, hi]
 
-/-- The original coordinate polynomial has exactly the original monic degree. -/
+/-- The coordinate polynomial has exactly the monic degree. -/
 theorem natDegree_fieldOfNormsCoordinatePolynomial (E : FiniteIntermediateField K L) :
     ∀ f : Oₓ[X], f.Monic →
       (FieldOfNorms.coordinatePolynomial K L E f).natDegree = f.natDegree := by
@@ -527,7 +527,7 @@ theorem natDegree_fieldOfNormsCoordinatePolynomial (E : FiniteIntermediateField 
       FieldOfNorms.integralCoordinateAt_one]
     exact one_ne_zero
 
-/-- The same actual coordinate polynomial is monic in the original integers. -/
+/-- The same coordinate polynomial is monic in the integers. -/
 theorem monic_fieldOfNormsCoordinatePolynomial (E : FiniteIntermediateField K L) :
     ∀ f : Oₓ[X], f.Monic →
       (FieldOfNorms.coordinatePolynomial K L E f).Monic := by
@@ -538,7 +538,7 @@ theorem monic_fieldOfNormsCoordinatePolynomial (E : FiniteIntermediateField K L)
     coeff_fieldOfNormsCoordinatePolynomial, hf.coeff_natDegree,
         FieldOfNorms.integralCoordinateAt_one]
 
-/-- Passing the actual integral coefficient polynomial into its actual finite
+/-- Passing the integral coefficient polynomial into its finite
 field preserves monicity. -/
 theorem monic_map_fieldOfNormsCoordinatePolynomial (E : FiniteIntermediateField K L) :
     ∀ f : Oₓ[X], f.Monic →
@@ -547,7 +547,7 @@ theorem monic_map_fieldOfNormsCoordinatePolynomial (E : FiniteIntermediateField 
   intro f hf
   exact (monic_fieldOfNormsCoordinatePolynomial K L E f hf).map _
 
-/-- The actual finite-field polynomial also has precisely the original degree. -/
+/-- The finite-field polynomial also has precisely the degree. -/
 theorem natDegree_map_fieldOfNormsCoordinatePolynomial (E : FiniteIntermediateField K L) :
     ∀ f : Oₓ[X], f.Monic →
       ((FieldOfNorms.coordinatePolynomial K L E f).map
@@ -558,8 +558,8 @@ theorem natDegree_map_fieldOfNormsCoordinatePolynomial (E : FiniteIntermediateFi
 
 variable (E : FiniteIntermediateField K L) {b : ℝ} (hb : 0 < b) (h : E.HasFullUpper K L b)
 
-/-- Reduction of the actual coefficient polynomial agrees with mapping the
-original polynomial by the actual high-break quotient ring homomorphism. -/
+/-- Reduction of the coefficient polynomial agrees with mapping the
+polynomial by the high-break quotient ring homomorphism. -/
 theorem map_fieldOfNormsCoordinatePolynomial
     (r : ℕ) (hrb : r ≤ ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊) :
     ∀ f : Oₓ[X],
@@ -582,13 +582,13 @@ theorem FieldOfNorms.highBreakProjection_discr
   intro f hf
   have hd := congrArg Polynomial.discr
     (map_fieldOfNormsCoordinatePolynomial K L E hb h r hrb f)
-  rw [monic_discr_map _ (monic_fieldOfNormsCoordinatePolynomial K L E f hf),
-    monic_discr_map f hf] at hd
+  rw [Polynomial.Monic.discr_map _ (monic_fieldOfNormsCoordinatePolynomial K L E f hf),
+    Polynomial.Monic.discr_map f hf] at hd
   exact hd.symm
 
 include hb h in
-/-- The actual coordinate of the original discriminant and the discriminant
-of the actual coordinate polynomial differ by the proved ideal precision. -/
+/-- The coordinate of the discriminant and the discriminant
+of the coordinate polynomial differ by the proved ideal precision. -/
 theorem FieldOfNorms.coordinatePolynomial_discr_sub_mem
     (r : ℕ) (hrb : r ≤ ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊) :
     ∀ f : Oₓ[X], f.Monic →
@@ -601,8 +601,8 @@ theorem FieldOfNorms.coordinatePolynomial_discr_sub_mem
   exact FieldOfNorms.highBreakProjection_discr K L E hb h r hrb f hf
 
 include hb h in
-/-- Above the actual discriminant precision, the original finite-coordinate
-discriminant has exactly the original stable normalized valuation. -/
+/-- Above the discriminant precision, the finite-coordinate
+discriminant has exactly the stable normalized valuation. -/
 theorem FieldOfNorms.coordinatePolynomial_discr_valuation
     (r : ℕ) (hrb : r ≤ ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊) :
     ∀ (f : Oₓ[X]), f.Monic →
@@ -626,8 +626,8 @@ theorem FieldOfNorms.coordinatePolynomial_discr_valuation
   exact (v.map_eq_of_sub_lt (hv.trans_lt (hr.trans_eq hc.symm))).trans hc
 
 include hb h in
-/-- The equality is also literally equality of the associated normalized
-additive valuations on the two original fields. -/
+/-- The equality is also equality of the associated normalized
+additive valuations on the two fields. -/
 theorem FieldOfNorms.coordinatePolynomial_discr_additiveValuation
     (r : ℕ) (hrb : r ≤ ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊) :
     ∀ (f : Oₓ[X]), f.Monic →
@@ -642,8 +642,8 @@ theorem FieldOfNorms.coordinatePolynomial_discr_additiveValuation
     (FieldOfNorms.coordinatePolynomial_discr_valuation K L E hb h r hrb f hf hr)
 
 include hb h in
-/-- At the same proved precision the actual finite-field coordinate polynomial
-is separable, because its original discriminant has nonzero valuation. -/
+/-- At the same proved precision the finite-field coordinate polynomial
+is separable, because its discriminant has nonzero valuation. -/
 theorem separable_fieldOfNormsCoordinatePolynomial
     (r : ℕ) (hrb : r ≤ ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊) :
     ∀ (f : Oₓ[X]), f.Monic →
@@ -654,22 +654,22 @@ theorem separable_fieldOfNormsCoordinatePolynomial
   have hfE := monic_fieldOfNormsCoordinatePolynomial K L E f hf
   apply (monic_discr_ne_zero_iff _ (hfE.map
     (algebraMap (spectralIntegerRing K E.val) E.val))).mp
-  rw [monic_discr_map _ hfE]
+  rw [Polynomial.Monic.discr_map _ hfE]
   intro hz
   change ((FieldOfNorms.coordinatePolynomial K L E f).discr : E.val) = 0 at hz
   have hv := FieldOfNorms.coordinatePolynomial_discr_valuation K L E hb h r hrb f hf hr
   rw [hz, map_zero] at hv
   exact (not_lt_of_ge zero_le) (hr.trans_eq hv.symm)
 
-/-- Actual separability supplies a finite precision strictly beyond the
-original nonzero discriminant value. -/
+/-- Separability supplies a finite precision strictly beyond the
+nonzero discriminant value. -/
 theorem exists_fieldOfNorms_discr_precision :
     ∀ (f : Oₓ[X]), f.Monic → (f.map (algebraMap Oₓ (FieldOfNorms K L))).Separable →
       ∃ r : ℕ, WithZero.exp (-(r : ℤ)) <
         FieldOfNorms.valuation K L (f.discr : FieldOfNorms K L) := by
   intro f hf hsep
   have hd := (monic_discr_ne_zero_iff _ (hf.map (algebraMap Oₓ (FieldOfNorms K L)))).mpr hsep
-  rw [monic_discr_map f hf] at hd
+  rw [Polynomial.Monic.discr_map f hf] at hd
   change (f.discr : FieldOfNorms K L) ≠ 0 at hd
   let w := FieldOfNorms.valuation K L (f.discr : FieldOfNorms K L)
   have hw : w ≠ 0 := fun hz ↦ hd ((FieldOfNorms.valuation_eq_zero_iff K L _).mp hz)
@@ -678,9 +678,9 @@ theorem exists_fieldOfNorms_discr_precision :
   dsimp [r]
   omega
 
-/-- Along every original finite-coordinate sequence with actual full products
-at depths tending to infinity, the original discriminant value is eventually
-constant and the actual coordinate polynomials are separable. -/
+/-- Along every finite-coordinate sequence with full products
+at depths tending to infinity, the discriminant value is eventually
+constant and the coordinate polynomials are separable. -/
 theorem eventually_fieldOfNormsCoordinatePolynomial_discr_stable
     (F : ℕ → FiniteIntermediateField K L) (c : ℕ → ℝ) (hc : ∀ n, 0 < c n)
     (hF : ∀ n, (F n).HasFullUpper K L (c n))
@@ -708,9 +708,9 @@ theorem eventually_fieldOfNormsCoordinatePolynomial_discr_stable
     separable_fieldOfNormsCoordinatePolynomial K L (F n)
       (hc n) (hF n) r hrb f hf hr⟩
 
-/-- A genuine increasing cofinal sequence of original finite fields has full
-upper depths tending to infinity and stabilizes every original monic separable
-polynomial's discriminant, with actual eventual finite-field separability. -/
+/-- An increasing cofinal sequence of finite fields has full
+upper depths tending to infinity and stabilizes every monic separable
+polynomial's discriminant, with eventual finite-field separability. -/
 theorem exists_cofinal_fieldOfNormsCoordinatePolynomial_discr_stable :
     ∃ F : ℕ → FiniteIntermediateField K L, Monotone F ∧
       (∀ n, (F n).HasFullUpper K L ((n : ℝ) + 1)) ∧

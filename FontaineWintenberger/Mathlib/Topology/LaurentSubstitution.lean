@@ -12,7 +12,7 @@ public import Mathlib.Topology.Algebra.Valued.WithZeroMulInt
 /-!
 # Continuous Laurent maps and ordinary power-series substitution
 
-The topology on Laurent series is its original valuation topology.
+The topology on Laurent series is its valuation topology.
 -/
 
 @[expose] public section
@@ -30,7 +30,7 @@ section DiscreteCoefficients
 
 variable [UniformSpace k] [DiscreteUniformity k]
 
-/-- The usual inclusion is continuous into the original Laurent valuation topology. -/
+/-- The usual inclusion is continuous into the Laurent valuation topology. -/
 theorem continuous_ofPowerSeries_valued :
     Continuous (HahnSeries.ofPowerSeries ℤ k : PowerSeries k → LaurentSeries k) := by
   apply continuous_of_tendsto_nhds_zero (HahnSeries.ofPowerSeries ℤ k).toAddMonoidHom
@@ -109,7 +109,7 @@ theorem map_ofPowerSeries_eq_subst
   simpa only [RingHom.comp_apply, j, s, AlgHom.toRingHom_eq_coe, RingHom.coe_coe,
     PowerSeries.coe_substAlgHom] using congr_fun heq A
 
-/-- Composition of the original Laurent maps reverses the order of their parameter
+/-- Composition of the Laurent maps reverses the order of their parameter
 power series: the parameter of `F.comp G` is the series of `G` substituted at that of `F`. -/
 theorem comp_apply_parameter
     (F : LaurentSeries k →+* LaurentSeries k) (hF : Continuous F)
@@ -123,7 +123,7 @@ theorem comp_apply_parameter
   rw [RingHom.comp_apply, hG]
   exact map_ofPowerSeries_eq_subst F hF hC g hg hX h
 
-/-- Ordinary function iteration of the actual Laurent map restricts to ordinary
+/-- Ordinary function iteration of the Laurent map restricts to ordinary
 function iteration of the usual power-series substitution. -/
 theorem iterate_ofPowerSeries_eq_subst_iterate
     (F : LaurentSeries k →+* LaurentSeries k) (hF : Continuous F)
@@ -140,7 +140,7 @@ theorem iterate_ofPowerSeries_eq_subst_iterate
     rw [Function.iterate_succ_apply', ih, map_ofPowerSeries_eq_subst F hF hC g hg hX,
       Function.iterate_succ_apply']
 
-/-- The parameter image of every actual iterate uses the same canonical substitution. -/
+/-- The parameter image of every iterate uses the same canonical substitution. -/
 theorem iterate_apply_parameter_eq_subst_iterate
     (F : LaurentSeries k →+* LaurentSeries k) (hF : Continuous F)
     (hC : ∀ a, F (HahnSeries.C a) = HahnSeries.C a)

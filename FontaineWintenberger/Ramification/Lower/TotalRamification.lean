@@ -9,9 +9,9 @@ public import FontaineWintenberger.Ramification.Lower.Degree
 public import FontaineWintenberger.Ramification.Lower.Tower
 
 /-!
-# Total ramification in actual local towers
+# Total ramification in local towers
 
-The actual residue map factors through the actual intermediate residue
+The residue map factors through the intermediate residue
 field. Its surjectivity is equivalent to surjectivity of both factors,
 which gives total ramification of every step of a totally ramified tower.
 -/
@@ -28,8 +28,8 @@ variable (R S T : Type*) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
     [IsLocalHom (algebraMap R S)] [IsLocalHom (algebraMap S T)]
     [IsLocalHom (algebraMap R T)] [Module.Finite R S] [Module.Finite S T]
 
-/-- Total ramification of an actual local DVR tower is equivalent to total
-ramification of both actual steps. -/
+/-- Total ramification of a local DVR tower is equivalent to total
+ramification of both steps. -/
 theorem ramificationIdx_eq_finrank_tower_iff :
     (IsLocalRing.maximalIdeal T).ramificationIdx R = Module.finrank R T ↔
       (IsLocalRing.maximalIdeal S).ramificationIdx R = Module.finrank R S ∧

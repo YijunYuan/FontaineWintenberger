@@ -12,10 +12,10 @@ public import FontaineWintenberger.Mathlib.FieldTheory.RelIndex
 public import Mathlib.FieldTheory.Relrank
 
 /-!
-# Actual wild tails of separable APF extensions
+# Wild tails of separable APF extensions
 
-An actual finite APF stage supplies a tail of the original finite intermediate fields
-whose original residue maps are surjective and whose degrees are powers of
+A finite APF stage supplies a tail of the finite intermediate fields
+whose residue maps are surjective and whose degrees are powers of
 the residue characteristic. No normality of the infinite extension or its
 finite intermediate fields is assumed.
 -/
@@ -30,7 +30,7 @@ section FiniteGroups
 
 variable {G : Type*} [Group G] [Finite G]
 
-/-- The actual coset index in a product with a normal subgroup is its
+/-- The coset index in a product with a normal subgroup is its
 intersection index inside that subgroup; the other factor need not be normal. -/
 theorem relIndex_sup_eq_relIndex_of_normal_right (A U : Subgroup G) [U.Normal] :
     A.relIndex (A ⊔ U) = A.relIndex U := by
@@ -43,7 +43,7 @@ theorem relIndex_sup_eq_relIndex_of_normal_right (A U : Subgroup G) [U.Normal] :
     exact Subgroup.index_ne_zero_of_finite
   exact mul_left_cancel₀ hn (h₂.trans (h₁.symm.trans (Nat.mul_comm _ _)))
 
-/-- Every actual intermediate index in a finite normal p-group product
+/-- Every intermediate index in a finite normal p-group product
 is a power of p, without normality of the three intervening subgroups. -/
 theorem relIndex_eq_prime_pow_of_le_sup
     (q : ℕ) [Fact q.Prime] (A B C U : Subgroup G) [U.Normal]
@@ -72,9 +72,9 @@ variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
 
 local notation "p" => residueChar K
 
-/-- Above the genuine upper-one stage, every actual finite subextension
+/-- Above the upper-one stage, every finite subextension
 step has p-power degree. The larger field and the infinite extension may
-both be nonnormal over the original base. -/
+both be nonnormal over the base. -/
 theorem finrank_eq_prime_pow_of_apfFiniteStage_one_le
     (L E F : IntermediateField K (SeparableClosure K)) [FiniteDimensional K F]
     (hFL : F ≤ L) (hEF : E ≤ F) (hstage : apfFiniteStage K L 1 ≤ E) :
@@ -155,8 +155,8 @@ variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
 local notation "p" => residueChar K
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
-/-- Surjectivity of the actual residue inclusion makes the actual finite
-step totally ramified, using its original spectral integer-ring map. -/
+/-- Surjectivity of the residue inclusion makes the finite
+step totally ramified, using its spectral integer-ring map. -/
 theorem FiniteIntermediateField.ramificationIdx_eq_finrank_of_residueInclusion_surjective
     (E F : FiniteIntermediateField K L) (hEF : E ≤ F)
     (hs : Function.Surjective
@@ -191,8 +191,8 @@ theorem FiniteIntermediateField.ramificationIdx_eq_finrank_of_residueInclusion_s
   rw [hf, mul_one] at h
   exact h
 
-/-- An actual finite intermediate field in the original abstract APF extension gives
-surjective residue maps and p-power degrees on every original finite step
+/-- A finite intermediate field in the abstract APF extension gives
+surjective residue maps and p-power degrees on every finite step
 above it, including nonnormal steps. -/
 theorem IsAPF.exists_finiteIntermediateField_residue_surjective_and_degree_prime_pow
     [IsAPF K L] :
@@ -223,9 +223,9 @@ theorem IsAPF.exists_finiteIntermediateField_residue_surjective_and_degree_prime
     IntermediateField.relfinrank_eq_finrank_of_le hEF] at hn
   exact hn
 
-/-- Every original separable APF extension has an actual finite wild tail:
-all original residue inclusions are onto, all degrees are powers of the
-residue characteristic, and every step is totally ramified on its actual
+/-- Every separable APF extension has a finite wild tail:
+all residue inclusions are onto, all degrees are powers of the
+residue characteristic, and every step is totally ramified on its
 spectral integer rings. -/
 theorem IsAPF.exists_finiteIntermediateField_wild_tail [IsAPF K L] :
     ∃ T : FiniteIntermediateField K L, ∀ E F : FiniteIntermediateField K L, T ≤ E → ∀ hEF : E ≤ F,

@@ -9,9 +9,9 @@ public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.LocalField.Spectral.Tower
 
 /-!
-# Residue fields of actual finite normed extensions
+# Residue fields of finite normed extensions
 
-The compatible norm valuation gives the local map of actual unit balls.
+The compatible norm valuation gives the local map of unit balls.
 Their finite module extension descends to the residue fields.
 -/
 
@@ -24,7 +24,7 @@ variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField 
 variable (M : Type*) [NormedField M] [IsUltrametricDist M] [NormedAlgebra K M]
     [FiniteDimensional K M] [Algebra.IsSeparable K M]
 
-/-- The actual residue extension of a finite compatible normed extension is finite. -/
+/-- The residue extension of a finite compatible normed extension is finite. -/
 theorem normedAlgebra_residueField_finiteDimensional :
     FiniteDimensional
       (IsLocalRing.ResidueField (NormedField.valuation (K := K)).valuationSubring)
@@ -32,7 +32,7 @@ theorem normedAlgebra_residueField_finiteDimensional :
   have := extensionValuationSubring_moduleFinite K M (NormedField.valuation (K := M))
   infer_instance
 
-/-- Perfectness propagates to the actual residue field; its cardinality is unrestricted. -/
+/-- Perfectness propagates to the residue field; its cardinality is unrestricted. -/
 theorem normedAlgebra_residueField_perfectField [PerfectField
     (IsLocalRing.ResidueField (NormedField.valuation (K := K)).valuationSubring)] :
     PerfectField (IsLocalRing.ResidueField

@@ -13,9 +13,9 @@ public import FontaineWintenberger.Ramification.Herbrand.Inverse
 public import FontaineWintenberger.Ramification.Upper.FixedField
 
 /-!
-# The actual field fixed by wild inertia
+# The field fixed by wild inertia
 
-Positive upper groups lie in the first lower group. Its actual fixed field
+Positive upper groups lie in the first lower group. Its fixed field
 has trivial positive upper groups and prime-to-p ramification index.
 -/
 
@@ -28,7 +28,7 @@ section Groups
 variable (G : Type*) {B : Type*} [Group G] [CommRing B] [IsDomain B]
     [IsDiscreteValuationRing B] [MulSemiringAction G B] [Finite G]
 
-/-- Every positive actual upper group lies in the actual first lower group. -/
+/-- Every positive upper group lies in the first lower group. -/
 theorem upperRamificationGroup_le_lower_one {u : ℝ} (hu : 0 < u) :
     upperRamificationGroup (R := B) G u ≤
       lowerRamificationGroup G (IsLocalRing.maximalIdeal B) 1 := by
@@ -40,7 +40,7 @@ theorem upperRamificationGroup_le_lower_one {u : ℝ} (hu : 0 < u) :
     (Int.one_le_ceil_iff.mpr hpos)
 
 omit [Finite G] in
-/-- Restricting the actual inertia action to any subgroup of inertia gives
+/-- Restricting the inertia action to any subgroup of inertia gives
 full inertia for that restricted action. -/
 theorem lowerRamificationGroup_subgroup_zero_eq_top
     (H : Subgroup G) (hH : H ≤ lowerRamificationGroup G (IsLocalRing.maximalIdeal B) 0) :
@@ -48,7 +48,7 @@ theorem lowerRamificationGroup_subgroup_zero_eq_top
   rw [← lowerRamificationGroup_subgroupOf, Subgroup.subgroupOf_eq_top]
   exact hH
 
-/-- Trivial actual positive upper groups give the actual linear inverse
+/-- Trivial positive upper groups give the linear inverse
 Herbrand function, by its proved integral formula. -/
 theorem inverseHerbrandFunction_eq_card_inertia_mul [FaithfulSMul G B]
     (hU : ∀ u : ℝ, 0 < u → upperRamificationGroup (R := B) G u = ⊥)
@@ -80,8 +80,8 @@ local notation "D" => lowerRamificationGroup G (IsLocalRing.maximalIdeal B) 0
 local notation "P" => lowerRamificationGroup G (IsLocalRing.maximalIdeal B) 1
 local notation "F₁" => IntermediateField.fixedField P
 
-/-- The actual restricted integers witness total ramification above the wild
-fixed field; the relative field degree is the genuine fixed-field degree. -/
+/-- The restricted integers witness total ramification above the wild
+fixed field; the relative field degree is the fixed-field degree. -/
 theorem wild_fixedField_top_ramificationIdx_eq_finrank :
     (IsLocalRing.maximalIdeal B).ramificationIdx
       ((spectralValuation K L).comap (algebraMap F₁ L)).valuationSubring =
@@ -91,7 +91,7 @@ theorem wild_fixedField_top_ramificationIdx_eq_finrank :
       (lowerRamificationGroup_antitone G (IsLocalRing.maximalIdeal B) (by norm_num : (0 : ℤ) ≤ 1)),
     Subgroup.card_top, IntermediateField.finrank_fixedField_eq_card]
 
-/-- The actual wild fixed field has trivial positive upper groups. -/
+/-- The wild fixed field has trivial positive upper groups. -/
 theorem wild_fixedField_upper_eq_bot {u : ℝ} (hu : 0 < u) :
     upperRamificationGroup (R := spectralIntegerRing K F₁) (F₁ ≃ₐ[K] F₁) u = ⊥ := by
   rw [← restrictNormalHom_map_upperRamificationGroup_tower K F₁ L u (by linarith)]
@@ -99,7 +99,7 @@ theorem wild_fixedField_upper_eq_bot {u : ℝ} (hu : 0 < u) :
     IntermediateField.fixingSubgroup_fixedField]
   exact upperRamificationGroup_le_lower_one G hu
 
-/-- Its actual ramification index is the index of wild inertia in inertia. -/
+/-- Its ramification index is the index of wild inertia in inertia. -/
 theorem wild_fixedField_ramificationIdx_eq_relIndex :
     (IsLocalRing.maximalIdeal (spectralIntegerRing K F₁)).ramificationIdx
       (NormedField.valuation (K := K)).valuationSubring = (P).relIndex D := by
@@ -114,8 +114,8 @@ theorem wild_fixedField_ramificationIdx_eq_relIndex :
       restrictNormalHom_map_upperRamificationGroup_tower K F₁ L 0 (by norm_num)
   rw [← spectralIntegerRing_card_lower_zero K F₁, ← hmap, ← Subgroup.relIndex_ker, hker]
 
-/-- The inverse Herbrand function of the actual tame field is multiplication
-by its actual ramification index on the nonnegative half-line. -/
+/-- The inverse Herbrand function of the tame field is multiplication
+by its ramification index on the nonnegative half-line. -/
 theorem wild_fixedField_inverseHerbrandFunction {u : ℝ} (hu : 0 ≤ u) :
     inverseHerbrandFunction (R := spectralIntegerRing K F₁) (F₁ ≃ₐ[K] F₁) u =
       ((IsLocalRing.maximalIdeal (spectralIntegerRing K F₁)).ramificationIdx
@@ -124,7 +124,7 @@ theorem wild_fixedField_inverseHerbrandFunction {u : ℝ} (hu : 0 ≤ u) :
     (fun _ hu => wild_fixedField_upper_eq_bot K L hu) hu,
     spectralIntegerRing_card_lower_zero K F₁]
 
-/-- The actual tame field has prime-to-p ramification index even when its
+/-- The tame field has prime-to-p ramification index even when its
 unramified degree has a p-part. -/
 theorem wild_fixedField_ramificationIdx_coprime (p : ℕ) [Fact p.Prime]
     [CharP (IsLocalRing.ResidueField B) p] :
@@ -141,7 +141,7 @@ theorem wild_fixedField_ramificationIdx_coprime (p : ℕ) [Fact p.Prime]
 
 omit [PerfectField (IsLocalRing.ResidueField
   (NormedField.valuation (K := K)).valuationSubring)] in
-/-- The actual Galois group above the actual wild fixed field is a p-group. -/
+/-- The Galois group above the wild fixed field is a p-group. -/
 theorem wild_fixedField_isPGroup (p : ℕ) [Fact p.Prime]
     [CharP (IsLocalRing.ResidueField B) p] : IsPGroup p (L ≃ₐ[F₁] L) := by
   let e : (P) ≃* (L ≃ₐ[F₁] L) :=

@@ -12,9 +12,9 @@ public import FontaineWintenberger.Ramification.Lower.GaloisGroup
 public import FontaineWintenberger.LocalField.Spectral.FiniteExtension
 
 /-!
-# Actual cyclic prime-degree intermediate-field towers
+# Cyclic prime-degree intermediate-field towers
 
-Normal prime-index steps in the actual fixing groups become genuine cyclic
+Normal prime-index steps in the fixing groups become cyclic
 prime-degree field extensions through Galois correspondence.
 -/
 
@@ -28,7 +28,7 @@ variable (K L : Type*) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
 
 omit [FiniteDimensional K L] in
-/-- Relative normality of the actual fixing groups makes the actual
+/-- Relative normality of the fixing groups makes the
 intermediate-field extension Galois. -/
 theorem isGalois_extendScalars_of_fixing_normal (M N : IntermediateField K L) (hMN : M ≤ N)
     (hn : (N.fixingSubgroup.subgroupOf M.fixingSubgroup).Normal) :
@@ -43,8 +43,8 @@ theorem isGalois_extendScalars_of_fixing_normal (M N : IntermediateField K L) (h
   let := hn
   infer_instance
 
-/-- A normal prime-index fixing-group step supplies the actual Galois and
-cyclic field step with its actual relative degree. -/
+/-- A normal prime-index fixing-group step supplies the Galois and
+cyclic field step with its relative degree. -/
 theorem cyclic_prime_extendScalars_of_fixing_step (p : ℕ) [Fact p.Prime]
     (M N : IntermediateField K L) (hMN : M ≤ N)
     (hn : (N.fixingSubgroup.subgroupOf M.fixingSubgroup).Normal)
@@ -62,8 +62,8 @@ theorem cyclic_prime_extendScalars_of_fixing_step (p : ℕ) [Fact p.Prime]
   apply isCyclic_of_card_dvd_prime (p := p)
   rw [IsGalois.card_aut_eq_finrank, hd]
 
-/-- The actual intermediate fields over a p-group fixing field have a finite
-tower whose actual relative extensions are cyclic Galois of prime degree. -/
+/-- The intermediate fields over a p-group fixing field have a finite
+tower whose relative extensions are cyclic Galois of prime degree. -/
 theorem relative_prime_field_chain (p : ℕ) [Fact p.Prime]
     (E M : IntermediateField K L) (hEM : E ≤ M) (hE : IsPGroup p E.fixingSubgroup) :
     Relation.ReflTransGen
@@ -108,8 +108,8 @@ variable (K L : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedFiel
 local notation "W" => lowerRamificationGroup (L ≃ₐ[K] L)
   (IsLocalRing.maximalIdeal (spectralIntegerRing K L)) 1
 
-/-- The actual wild fixed field has a cyclic prime-degree tower to every
-actual intermediate field containing it. No total-ramification or finite-residue
+/-- The wild fixed field has a cyclic prime-degree tower to every
+intermediate field containing it. No total-ramification or finite-residue
 hypothesis is added to this producer. -/
 theorem wild_relative_prime_field_chain (p : ℕ) [Fact p.Prime]
     [CharP (IsLocalRing.ResidueField (spectralIntegerRing K L)) p]

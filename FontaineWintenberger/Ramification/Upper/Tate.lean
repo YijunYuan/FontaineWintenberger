@@ -22,11 +22,11 @@ coset average, before specializing the polynomial to a product of conjugates.
 
 ## Conjugates of an integral Galois generator
 
-The invariant orbit polynomial descends to the actual fixed ring. Its degree
+The invariant orbit polynomial descends to the fixed ring. Its degree
 agrees with the degree of the monic minimal polynomial by the integral power
 basis and the Galois degree theorem, so no factorization certificate is assumed.
 
-## Tate's scaled identity on actual integral rings
+## Tate's scaled identity on integral rings
 
 The twisted minimal polynomial is proved to be the product over subgroup
 conjugates. Its valuation sum is compared with the intrinsic order using the
@@ -121,7 +121,7 @@ variable {A B : Type*} [CommRing A] [IsDomain A] [IsIntegrallyClosed A]
     [CommRing B] [IsDomain B] [Algebra A B] [FaithfulSMul A B]
 variable (H : Type*) [Group H] [Fintype H] [MulSemiringAction H B] [IsGaloisGroup H A B]
 
-/-- The actual ring minimal polynomial of a Galois generator is its conjugate product. -/
+/-- The ring minimal polynomial of a Galois generator is its conjugate product. -/
 theorem map_minpoly_eq_prod_conjugates {x : B} (hx : Algebra.adjoin A {x} = ⊤) :
     (minpoly A x).map (algebraMap A B) = ∏ h : H, (X - C (h • x)) := by
   classical
@@ -169,7 +169,7 @@ section Twisting
 variable [IsDomain A] [IsIntegrallyClosed A] [IsDomain B] [FaithfulSMul A B]
 variable (H : Type*) [Group H] [Fintype H] [MulSemiringAction H B] [IsGaloisGroup H A B]
 
-/-- Compatibility with a lifted automorphism twists the actual conjugate product. -/
+/-- Compatibility with a lifted automorphism twists the conjugate product. -/
 theorem map_minpoly_eq_prod_twisted (τ : A ≃ₐ[R] A) (σ : B ≃ₐ[R] B)
     (hστ : ∀ a : A, algebraMap A B (τ a) = σ (algebraMap A B a))
     {x : B} (hx : Algebra.adjoin R {x} = ⊤) :
@@ -183,7 +183,7 @@ theorem map_minpoly_eq_prod_twisted (τ : A ≃ₐ[R] A) (σ : B ≃ₐ[R] B)
   simp only [Polynomial.map_prod, Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C]
   rfl
 
-/-- The actual twisted minimal-polynomial value is the product of the coset displacements. -/
+/-- The twisted minimal-polynomial value is the product of the coset displacements. -/
 theorem aeval_map_minpoly_eq_prod_displacements (τ : A ≃ₐ[R] A) (σ : B ≃ₐ[R] B)
     (hστ : ∀ a : A, algebraMap A B (τ a) = σ (algebraMap A B a))
     {x : B} (hx : Algebra.adjoin R {x} = ⊤) :
@@ -192,7 +192,7 @@ theorem aeval_map_minpoly_eq_prod_displacements (τ : A ≃ₐ[R] A) (σ : B ≃
   rw [← eval_map, map_minpoly_eq_prod_twisted H τ σ hστ hx]
   simp only [eval_prod, eval_sub, eval_X, eval_C]
 
-/-- Multiplicativity turns the actual twisted product into the sum of displacement values. -/
+/-- Multiplicativity turns the twisted product into the sum of displacement values. -/
 theorem addVal_aeval_map_minpoly_eq_sum [IsDiscreteValuationRing B]
     (τ : A ≃ₐ[R] A) (σ : B ≃ₐ[R] B)
     (hστ : ∀ a : A, algebraMap A B (τ a) = σ (algebraMap A B a))
@@ -215,7 +215,7 @@ variable [IsDomain A] [IsDiscreteValuationRing A] [IsDomain B] [IsDiscreteValuat
 variable (G : Type*) [Group G] [MulSemiringAction G B] [SMulCommClass G R B]
 variable (H : Subgroup G) [Fintype H] [IsGaloisGroup H A B]
 
-/-- Tate's scaled average of intrinsic orders, with the actual canonical ramification index. -/
+/-- Tate's scaled average of intrinsic orders, with the canonical ramification index. -/
 theorem ramificationIdx_mul_order_eq_sum_coset (τ : A ≃ₐ[R] A) (σ : G)
     (hστ : ∀ a : A, algebraMap A B (τ a) = σ • algebraMap A B a)
     {x : B} {y : A} (hx : Algebra.adjoin R {x} = ⊤) (hy : Algebra.adjoin R {y} = ⊤) :

@@ -87,7 +87,7 @@ variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField 
 variable (L : Type*) [Field L] [Algebra K L] [FiniteDimensional K L]
 variable [Algebra.IsSeparable K L]
 
-/-- The actual valuation ring in a finite separable extension is Henselian. -/
+/-- The valuation ring in a finite separable extension is Henselian. -/
 instance spectralIntegerRing_henselianLocalRing :
     HenselianLocalRing (spectralIntegerRing K L) := by
   let : NormedField L := spectralNorm.normedField K L

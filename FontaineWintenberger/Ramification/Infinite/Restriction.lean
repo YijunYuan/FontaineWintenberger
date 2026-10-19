@@ -13,13 +13,13 @@ public import FontaineWintenberger.Ramification.Infinite.Basic
 
 ## Upper ramification under infinite Galois restriction
 
-Finite subfields of an intermediate field are transported by their actual
-inclusions. Compactness of the actual infinite upper group then supplies a
+Finite subfields of an intermediate field are transported by their
+inclusions. Compactness of the infinite upper group then supplies a
 lift satisfying every finite restriction condition.
 
 ## Intrinsic infinite upper groups under field isomorphisms
 
-The image of a finite Galois subextension is an actual finite Galois
+The image of a finite Galois subextension is a finite Galois
 subextension. Ordinary restrictions commute with the restricted field
 isomorphism, so the finite own-ring transport identifies every upper condition.
 -/
@@ -32,7 +32,7 @@ section Lift
 
 variable {K Ω : Type*} [Field K] [Field Ω] [Algebra K Ω]
 
-/-- The actual image in the ambient field of a finite Galois subfield of an intermediate field. -/
+/-- The image in the ambient field of a finite Galois subfield of an intermediate field. -/
 noncomputable def finiteGaloisLift (L : IntermediateField K Ω)
     (E : FiniteGaloisIntermediateField K L) : FiniteGaloisIntermediateField K Ω :=
   let e := IntermediateField.liftAlgEquiv E.toIntermediateField
@@ -40,7 +40,7 @@ noncomputable def finiteGaloisLift (L : IntermediateField K Ω)
   letI := IsGalois.of_algEquiv e
   .mk (IntermediateField.lift E.toIntermediateField)
 
-/-- The canonical inclusion isomorphism onto the actual lifted subfield. -/
+/-- The canonical inclusion isomorphism onto the lifted subfield. -/
 noncomputable def finiteGaloisLiftEquiv (L : IntermediateField K Ω)
     (E : FiniteGaloisIntermediateField K L) : E ≃ₐ[K] finiteGaloisLift L E :=
   IntermediateField.liftAlgEquiv E.toIntermediateField
@@ -88,7 +88,7 @@ variable [IsGalois K Ω]
 variable [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
 
-/-- A finite list of prescribed subextension restrictions is realized inside the actual upper
+/-- A finite list of prescribed subextension restrictions is realized inside the upper
 group. -/
 theorem exists_lift_finite_infinite_upper_restrictions
     (S : Finset (FiniteGaloisIntermediateField K L)) (u : ℝ) (hu : -1 ≤ u)
@@ -119,7 +119,7 @@ theorem exists_lift_finite_infinite_upper_restrictions
   change (finGaloisGroupMap f).hom.hom (q.restrictNormal E₀) = q.restrictNormal E at hQ
   exact hS.symm.trans ((congrArg (finGaloisGroupMap f).hom.hom h₀).trans hQ)
 
-/-- Every upper automorphism of an arbitrary Galois subextension has an actual upper lift. -/
+/-- Every upper automorphism of an arbitrary Galois subextension has an upper lift. -/
 theorem exists_lift_infinite_upper_restriction (u : ℝ) (hu : -1 ≤ u)
     (q : L ≃ₐ[K] L) (hq : q ∈ upperRamificationGroupInfinite K L u) :
     ∃ s ∈ upperRamificationGroupInfinite K Ω u, s.restrictNormal L = q := by
@@ -144,7 +144,7 @@ theorem exists_lift_infinite_upper_restriction (u : ℝ) (hu : -1 ≤ u)
   funext E
   exact Set.mem_iInter.mp hST E.unop
 
-/-- Ordinary infinite Galois restriction maps actual upper groups onto actual upper groups. -/
+/-- Ordinary infinite Galois restriction maps upper groups onto upper groups. -/
 theorem restrictNormalHom_map_upperRamificationGroupInfinite (u : ℝ) (hu : -1 ≤ u) :
     (upperRamificationGroupInfinite K Ω u).map (AlgEquiv.restrictNormalHom L) =
       upperRamificationGroupInfinite K L u := by
@@ -164,7 +164,7 @@ section Fields
 variable (K : Type*) [Field K]
 variable {L M : Type*} [Field L] [Field M] [Algebra K L] [Algebra K M]
 
-/-- The actual image of a finite Galois intermediate field. -/
+/-- The image of a finite Galois intermediate field. -/
 noncomputable def finiteGaloisMap (f : L →ₐ[K] M) (D : FiniteGaloisIntermediateField K L) :
     FiniteGaloisIntermediateField K M := by
   let : FiniteDimensional K (D.toIntermediateField.map f) :=
@@ -173,7 +173,7 @@ noncomputable def finiteGaloisMap (f : L →ₐ[K] M) (D : FiniteGaloisIntermedi
     IsGalois.of_algEquiv (D.toIntermediateField.equivMap f)
   exact ⟨D.toIntermediateField.map f⟩
 
-/-- The canonical isomorphism onto this actual image. -/
+/-- The canonical isomorphism onto this image. -/
 noncomputable def finiteGaloisMapEquiv (f : L →ₐ[K] M)
     (D : FiniteGaloisIntermediateField K L) : D ≃ₐ[K] finiteGaloisMap K f D :=
   D.toIntermediateField.equivMap f
@@ -183,7 +183,7 @@ theorem coe_finiteGaloisMapEquiv (f : L →ₐ[K] M)
     (D : FiniteGaloisIntermediateField K L) (x : D) :
     ((finiteGaloisMapEquiv K f D x : finiteGaloisMap K f D) : M) = f (x : L) := rfl
 
-/-- Conjugation commutes with ordinary restriction to the actual finite image. -/
+/-- Conjugation commutes with ordinary restriction to the finite image. -/
 theorem restrictNormal_finiteGaloisMap (f : L ≃ₐ[K] M)
     (D : FiniteGaloisIntermediateField K L) (s : L ≃ₐ[K] L) :
     (f.autCongr s).restrictNormal (finiteGaloisMap K f.toAlgHom D) =

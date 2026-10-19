@@ -11,11 +11,11 @@ public import FontaineWintenberger.APF.Elementary.TameCompositum
 public import FontaineWintenberger.Ramification.Norm.Approximation
 
 /-!
-# Descent of the actual wild-field norm estimate
+# Descent of the wild-field norm estimate
 
-The genuine tame compositum preserves the original nonnormal field norm.
+The tame compositum preserves the nonnormal field norm.
 The proved first-bound scaling and normalized valuation restriction cancel
-the same actual ramification index in the precision estimate.
+the same ramification index in the precision estimate.
 -/
 
 @[expose] public section
@@ -26,7 +26,7 @@ namespace FontaineWintenberger
 
 open IsDiscreteValuationRing
 
-/-- Integer ceiling precision descends through a genuine local DVR map,
+/-- Integer ceiling precision descends through a local DVR map,
 using its canonical ramification index, including zero elements. -/
 theorem mem_maximalIdeal_pow_of_algebraMap_mem_ceil
     (R S : Type*) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
@@ -91,8 +91,8 @@ local notation "A" => IntermediateField.fixedField P
 local notation "T" => spectralIntegerRing K A
 local notation "e" => Ideal.ramificationIdx (IsLocalRing.maximalIdeal T) R
 
-/-- The original nonnormal p-power norm satisfies the quantitative addition
-estimate. The actual tame compositum, its scaled first bound and its field
+/-- The nonnormal p-power norm satisfies the quantitative addition
+estimate. The tame compositum, its scaled first bound and its field
 norm base-change identity are all supplied by proved producers. -/
 theorem exists_intNorm_add_congruence_of_totallyRamified_fixedField
     (he : (IsLocalRing.maximalIdeal (Valuation.valuationSubring

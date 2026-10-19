@@ -44,7 +44,7 @@ variable [(NormedField.valuation (K := K)).HasExtension w]
 
 local notation "OK" => Valuation.valuationSubring (NormedField.valuation (K := K))
 
-/-- The actual integral-closure construction equals any compatible chosen valuation ring. -/
+/-- The integral-closure construction equals any compatible chosen valuation ring. -/
 theorem spectralIntegerRing_eq_extension_valuationSubring :
     spectralIntegerRing K L = w.valuationSubring := by
   apply ValuationSubring.eq_of_le_of_ne_top
@@ -68,7 +68,7 @@ theorem spectralIntegerRing_eq_extension_valuationSubring :
     let := hfield.toField
     exact hmem (isUnit_iff_ne_zero.mpr hne)
 
-/-- Any compatible chosen valuation ring is the actual base integral closure in `L`. -/
+/-- Any compatible chosen valuation ring is the base integral closure in `L`. -/
 instance extensionValuationSubring_isIntegralClosure :
     IsIntegralClosure w.valuationSubring OK L where
   algebraMap_injective := Subtype.val_injective

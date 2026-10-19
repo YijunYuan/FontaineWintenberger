@@ -13,11 +13,11 @@ public import FontaineWintenberger.Ramification.Upper.ResidueEquiv
 public import FontaineWintenberger.Ramification.Lower.SpectralMaps
 
 /-!
-# Actual residue degrees of APF finite stages
+# Residue degrees of APF finite stages
 
-The full zero-level APF index is the actual residue degree, retaining the
-residue factor omitted from the inertia-relative APF index. The actual zero
-stage therefore stabilizes residue degrees in the original extension.
+The full zero-level APF index is the residue degree, retaining the
+residue factor omitted from the inertia-relative APF index. The zero
+stage therefore stabilizes residue degrees in the extension.
 -/
 
 @[expose] public section
@@ -32,8 +32,8 @@ variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField 
 
 local notation "R" => Valuation.valuationSubring (NormedField.valuation (K := K))
 
-/-- The full zero index in an actual finite Galois overfield equals the
-actual residue degree of the original intermediate field. -/
+/-- The full zero index in a finite Galois overfield equals the
+residue degree of the intermediate field. -/
 theorem apfSubgroup_index_zero_eq_residueDegree_of_finiteGalois
     (Ω : Type*) [Field Ω] [Algebra K Ω] [FiniteDimensional K Ω] [IsGalois K Ω]
     (M : IntermediateField K Ω) (j : Ω →ₐ[K] SeparableClosure K) :
@@ -47,7 +47,7 @@ theorem apfSubgroup_index_zero_eq_residueDegree_of_finiteGalois
     ((spectralValuation K Ω).comap (algebraMap M Ω))
 
 /-- The full zero APF index of any specified separable embedding is the
-actual residue degree of the original finite separable extension. -/
+residue degree of the finite separable extension. -/
 theorem apfSubgroup_index_zero_eq_residueDegree
     (M : Type*) [Field M] [Algebra K M] [FiniteDimensional K M]
     [Algebra.IsSeparable K M] (j : M →ₐ[K] SeparableClosure K) :
@@ -73,7 +73,7 @@ theorem apfSubgroup_index_zero_eq_residueDegree
 
 omit [PerfectField (IsLocalRing.ResidueField
     (NormedField.valuation (K := K)).valuationSubring)] in
-/-- Beyond the actual zero stage, the zero APF product is unchanged. -/
+/-- Beyond the zero stage, the zero APF product is unchanged. -/
 theorem apfSubgroup_zero_eq_of_apfFiniteStage_le
     (L E : IntermediateField K (SeparableClosure K))
     (hEL : E ≤ L) (hstage : apfFiniteStage K L 0 ≤ E) :
@@ -84,7 +84,7 @@ theorem apfSubgroup_zero_eq_of_apfFiniteStage_le
         (fixingSubgroup_apfFiniteStage K L 0)) le_sup_right
   · exact sup_le ((IntermediateField.fixingSubgroup_le hEL).trans le_sup_left) le_sup_right
 
-/-- The actual residue degree over K is constant beyond the genuine finite
+/-- The residue degree over K is constant beyond the finite
 zero stage of an APF extension. -/
 theorem residueDegree_eq_zeroStage_of_apfFiniteStage_le
     (L : IntermediateField K (SeparableClosure K)) [IsAPFSubextension K L]
@@ -103,8 +103,8 @@ theorem residueDegree_eq_zeroStage_of_apfFiniteStage_le
     apfSubgroup_zero_eq_of_apfFiniteStage_le K L (apfFiniteStage K L 0)
       (apfFiniteStage_le K L 0) le_rfl]
 
-/-- The actual residue inclusion from the zero stage onto a finite stage
-above it is surjective. The tower uses its original residue map. -/
+/-- The residue inclusion from the zero stage onto a finite stage
+above it is surjective. The tower uses its residue map. -/
 theorem spectralResidueInclusion_zeroStage_surjective
     (L : IntermediateField K (SeparableClosure K)) [IsAPFSubextension K L]
     (E : IntermediateField K (SeparableClosure K)) [FiniteDimensional K E]
@@ -116,7 +116,7 @@ theorem spectralResidueInclusion_zeroStage_surjective
     (f := (spectralResidueInclusion K (IntermediateField.inclusion hstage)).toLinearMap)).mp
       (spectralResidueInclusion K (IntermediateField.inclusion hstage)).injective
 
-/-- Actual finite inclusions beyond the zero stage induce surjective
+/-- Finite inclusions beyond the zero stage induce surjective
 residue maps, without normality of either field. -/
 theorem spectralResidueInclusion_surjective_of_zeroStage_le
     (L : IntermediateField K (SeparableClosure K)) [IsAPFSubextension K L]
@@ -133,8 +133,8 @@ theorem spectralResidueInclusion_surjective_of_zeroStage_le
 
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
-/-- In the original abstract APF extension, residue degrees stabilize above
-an actual finite intermediate field pulled back from its genuine zero stage. -/
+/-- In the abstract APF extension, residue degrees stabilize above
+a finite intermediate field pulled back from its zero stage. -/
 theorem IsAPF.exists_finiteIntermediateField_residueDegree_stable [IsAPF K L] :
     ∃ E₀ : FiniteIntermediateField K L, ∀ F : FiniteIntermediateField K L, E₀ ≤ F →
       Module.finrank (IsLocalRing.ResidueField R)
@@ -159,8 +159,8 @@ theorem IsAPF.exists_finiteIntermediateField_residueDegree_stable [IsAPF K L] :
     spectral_residueDegree_algEquiv K E₀.val (IntermediateField.equivMap E₀.val j)] at hd
   exact hd
 
-/-- The original abstract APF extension has an actual finite residue-stable
-tail: every inclusion on that tail induces a surjection on actual residues. -/
+/-- The abstract APF extension has a finite residue-stable
+tail: every inclusion on that tail induces a surjection on residues. -/
 theorem IsAPF.exists_finiteIntermediateField_residueInclusion_surjective [IsAPF K L] :
     ∃ E₀ : FiniteIntermediateField K L, ∀ E F : FiniteIntermediateField K L, E₀ ≤ E → ∀ hEF : E ≤ F,
       Function.Surjective

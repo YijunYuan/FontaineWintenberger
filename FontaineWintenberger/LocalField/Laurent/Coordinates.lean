@@ -11,10 +11,10 @@ public import Mathlib.RingTheory.LaurentSeries
 public import Mathlib.Topology.Algebra.Valued.WithZeroMulInt
 
 /-!
-# Laurent coordinates from an actual coefficient section and a uniformizer
+# Laurent coordinates from a coefficient section and an uniformizer
 
-Evaluation in the original valuation ring is bijective by residue-digit
-recursion. Its fraction-field extension preserves the original valuation.
+Evaluation in the valuation ring is bijective by residue-digit
+recursion. Its fraction-field extension preserves the valuation.
 -/
 
 @[expose] public section
@@ -33,12 +33,12 @@ variable (c : k →+* R) (e : k ≃+* IsLocalRing.ResidueField R)
     (hc : ∀ a, IsLocalRing.residue R (c a) = e a)
 variable (π : R) (hπ : Irreducible π)
 
-/-- The residue digit in the actual coefficient section. -/
+/-- The residue digit in the coefficient section. -/
 def residueDigit (x : R) : k := e.symm (IsLocalRing.residue R x)
 
 include hc hπ in
-/-- Subtracting the actual residue digit leaves a multiple of the original
-uniformizer in the original integer ring. -/
+/-- Subtracting the residue digit leaves a multiple of the
+uniformizer in the integer ring. -/
 theorem exists_residue_quotient (x : R) :
     ∃ q : R, x - c (residueDigit e x) = π * q := by
   have hm : x - c (residueDigit e x) ∈ IsLocalRing.maximalIdeal R := by
@@ -49,25 +49,25 @@ theorem exists_residue_quotient (x : R) :
   rw [hπ.maximalIdeal_eq, Ideal.mem_span_singleton] at hm
   exact hm
 
-/-- The quotient after subtracting the actual residue digit. -/
+/-- The quotient after subtracting the residue digit. -/
 def residueQuotient (x : R) : R :=
   (exists_residue_quotient c e hc π hπ x).choose
 
-/-- The digit and quotient satisfy the actual subtraction identity. -/
+/-- The digit and quotient satisfy the subtraction identity. -/
 theorem residueQuotient_spec (x : R) :
     x - c (residueDigit e x) = π * residueQuotient c e hc π hπ x :=
   (exists_residue_quotient c e hc π hπ x).choose_spec
 
-/-- Repeated actual subtraction and division by the uniformizer. -/
+/-- Repeated subtraction and division by the uniformizer. -/
 def residueRemainder (x : R) : ℕ → R
   | 0 => x
   | n + 1 => residueQuotient c e hc π hπ (residueRemainder x n)
 
-/-- The power series obtained from the actual residue-digit recursion. -/
+/-- The power series obtained from the residue-digit recursion. -/
 def residueExpansion (x : R) : PowerSeries k :=
   PowerSeries.mk (fun n => residueDigit e (residueRemainder c e hc π hπ x n))
 
-/-- The finite residue-digit expansion has exactly the original integral
+/-- The finite residue-digit expansion has exactly the integral
 remainder multiplied by the corresponding power of the uniformizer. -/
 theorem residueExpansion_remainder (x : R) (n : ℕ) :
     x - ∑ j ∈ Finset.range n, c ((residueExpansion c e hc π hπ x).coeff j) * π ^ j =
@@ -89,7 +89,7 @@ omit [IsDomain R] [IsDiscreteValuationRing R] [IsUniformAddGroup R]
     [IsTopologicalRing R] [CompleteSpace R] [T2Space R] in
 include hπtop in
 /-- Multiplication by arbitrary elements of the integer ring does not
-spoil convergence of uniformizer powers in its actual linear topology. -/
+spoil convergence of uniformizer powers in its linear topology. -/
 theorem tendsto_uniformizer_pow_mul (q : ℕ → R) :
     Tendsto (fun n : ℕ => π ^ n * q n) atTop (𝓝 0) := by
   rw [(IsLinearTopology.hasBasis_submodule R).tendsto_right_iff]
@@ -101,8 +101,8 @@ theorem tendsto_uniformizer_pow_mul (q : ℕ → R) :
 omit [UniformSpace k] [DiscreteUniformity k] [IsUniformAddGroup R]
     [CompleteSpace R] [T2Space R] in
 include hπtop in
-/-- The actual partial sums of the residue expansion converge to the
-original element of the original complete ring. -/
+/-- The partial sums of the residue expansion converge to the
+element of the complete ring. -/
 theorem tendsto_residueExpansion_partialSums (x : R) :
     Tendsto (fun n : ℕ =>
       ∑ j ∈ Finset.range n, c ((residueExpansion c e hc π hπ x).coeff j) * π ^ j)
@@ -113,7 +113,7 @@ theorem tendsto_residueExpansion_partialSums (x : R) :
   simpa only [← residueExpansion_remainder c e hc π hπ x, sub_sub_cancel, sub_zero] using hs
 
 include hπtop in
-/-- Evaluation of the actual residue expansion is the original element. -/
+/-- Evaluation of the residue expansion is the element. -/
 theorem eval₂_residueExpansion (x : R) :
     PowerSeries.eval₂ c π (residueExpansion c e hc π hπ x) = x := by
   exact tendsto_nhds_unique
@@ -123,14 +123,14 @@ theorem eval₂_residueExpansion (x : R) :
 
 include e hc hπ hπtop in
 /-- Every integral element is represented by the power series produced by
-actual residue-digit recursion, without assuming an expansion certificate. -/
+residue-digit recursion, without assuming an expansion certificate. -/
 theorem powerSeries_eval₂_surjective : Function.Surjective (PowerSeries.eval₂ c π) :=
   fun x => ⟨residueExpansion c e hc π hπ x,
     eval₂_residueExpansion c e hc π hπ hπtop x⟩
 
 include hπ hπtop in
-/-- The first nonzero coefficient factors out a uniformizer power and leaves
-a unit, so evaluation cannot annihilate a nonzero power series. -/
+/-- The first nonzero coefficient factors out an uniformizer power and leaves
+an unit, so evaluation cannot annihilate a nonzero power series. -/
 theorem powerSeries_eval₂_ne_zero (f : PowerSeries k) (hf : f ≠ 0) :
     PowerSeries.eval₂ c π f ≠ 0 := by
   let φ := PowerSeries.eval₂Hom (continuous_of_discreteTopology : Continuous c) hπtop
@@ -146,7 +146,7 @@ theorem powerSeries_eval₂_ne_zero (f : PowerSeries k) (hf : f ≠ 0) :
   exact mul_ne_zero (pow_ne_zero _ hπ.ne_zero) hu.ne_zero
 
 include hπ hπtop in
-/-- Evaluation is injective by the actual first-nonzero-coefficient factorization. -/
+/-- Evaluation is injective by the first-nonzero-coefficient factorization. -/
 theorem powerSeries_eval₂_injective : Function.Injective (PowerSeries.eval₂ c π) := by
   let φ := PowerSeries.eval₂Hom (continuous_of_discreteTopology : Continuous c) hπtop
   intro f g hfg
@@ -158,8 +158,8 @@ theorem powerSeries_eval₂_injective : Function.Injective (PowerSeries.eval₂ 
   rw [← heval] at hn hfg
   exact hn (by rw [map_sub, hfg, sub_self])
 
-/-- The actual residue-digit evaluation isomorphism for the given
-coefficient section and original uniformizer. -/
+/-- The residue-digit evaluation isomorphism for the given
+coefficient section and uniformizer. -/
 def powerSeriesUniformizerEquiv : PowerSeries k ≃+* R :=
   RingEquiv.ofBijective
     (PowerSeries.eval₂Hom (continuous_of_discreteTopology : Continuous c) hπtop)
@@ -168,27 +168,27 @@ def powerSeriesUniformizerEquiv : PowerSeries k ≃+* R :=
         And.intro (powerSeries_eval₂_injective c π hπ hπtop)
           (powerSeries_eval₂_surjective c e hc π hπ hπtop))
 
-/-- The isomorphism is the original convergent evaluation. -/
+/-- The isomorphism is the convergent evaluation. -/
 theorem powerSeriesUniformizerEquiv_apply (f : PowerSeries k) :
     powerSeriesUniformizerEquiv c e hc π hπ hπtop f = PowerSeries.eval₂ c π f :=
   congrFun (PowerSeries.coe_eval₂Hom
     (continuous_of_discreteTopology : Continuous c) hπtop) f
 
-/-- Constants are the prescribed original coefficient representatives. -/
+/-- Constants are the prescribed coefficient representatives. -/
 @[simp]
 theorem powerSeriesUniformizerEquiv_C (a : k) :
     powerSeriesUniformizerEquiv c e hc π hπ hπtop (PowerSeries.C a) = c a :=
   (powerSeriesUniformizerEquiv_apply c e hc π hπ hπtop _).trans
     (PowerSeries.eval₂_C c π a)
 
-/-- The parameter is sent to the chosen original uniformizer. -/
+/-- The parameter is sent to the chosen uniformizer. -/
 @[simp]
 theorem powerSeriesUniformizerEquiv_X :
     powerSeriesUniformizerEquiv c e hc π hπ hπtop PowerSeries.X = π :=
   (powerSeriesUniformizerEquiv_apply c e hc π hπ hπtop _).trans
     (PowerSeries.eval₂_X c π)
 
-/-- Evaluation uses the inherited topology of the original integer ring. -/
+/-- Evaluation uses the inherited topology of the integer ring. -/
 theorem continuous_powerSeriesUniformizerEquiv :
     Continuous (powerSeriesUniformizerEquiv c e hc π hπ hπtop) := by
   have heval : (powerSeriesUniformizerEquiv c e hc π hπ hπtop : PowerSeries k → R) =
@@ -197,7 +197,7 @@ theorem continuous_powerSeriesUniformizerEquiv :
   exact PowerSeries.continuous_eval₂ (continuous_of_discreteTopology : Continuous c) hπtop
 
 /-- Polynomial density characterizes evaluation among continuous ring maps
-with the same actual constants and parameter. -/
+with the same constants and parameter. -/
 theorem powerSeriesUniformizerEquiv_unique (f : PowerSeries k →+* R)
     (hf : Continuous f) (hC : ∀ a, f (PowerSeries.C a) = c a)
     (hX : f PowerSeries.X = π) :
@@ -217,20 +217,20 @@ theorem powerSeriesUniformizerEquiv_unique (f : PowerSeries k →+* R)
 
 end CompleteIntegerRing
 
-section OriginalValuationRing
+section ValuationRing
 
 variable (F : Type*) [Field F] [hv : Valued F ℤᵐ⁰]
 
-/-- The actual valuation ring inherits the original topological ring structure. -/
+/-- The valuation ring inherits the topological ring structure. -/
 instance valuationSubring_isTopologicalRing : IsTopologicalRing hv.v.valuationSubring :=
   inferInstanceAs (IsTopologicalRing hv.v.integer)
 
-/-- The inherited additive uniformity on the actual valuation ring. -/
+/-- The inherited additive uniformity on the valuation ring. -/
 instance valuationSubring_isUniformAddGroup : IsUniformAddGroup hv.v.valuationSubring :=
   IsUniformAddGroup.comap hv.v.valuationSubring.subtype.toAddMonoidHom
 
-/-- The original valuation-ring topology has a basis of actual ideals,
-obtained by restricting the original field valuation balls. -/
+/-- The valuation-ring topology has a basis of ideals,
+obtained by restricting the field valuation balls. -/
 instance valuationSubring_isLinearTopology :
     IsLinearTopology hv.v.valuationSubring hv.v.valuationSubring := by
   let O := hv.v.valuationSubring
@@ -245,12 +245,12 @@ instance valuationSubring_isLinearTopology :
     exact (Valuation.restrict_lt_iff_lt_embedding hv.v).symm
   exact IsLinearTopology.mk_of_hasBasis O hbi
 
-/-- Completeness is inherited from the actual closed valuation ring. -/
+/-- Completeness is inherited from the closed valuation ring. -/
 instance valuationSubring_completeSpace [CompleteSpace F] :
     CompleteSpace hv.v.valuationSubring :=
   (Valued.isClosed_valuationSubring F).completeSpace_coe
 
-/-- A normalized original uniformizer is topologically nilpotent in the
+/-- A normalized uniformizer is topologically nilpotent in the
 inherited valuation-ring topology. -/
 theorem hasEval_of_valuation_exp_neg_one (π : hv.v.valuationSubring)
     (hπ : hv.v (π : F) = WithZero.exp (-1 : ℤ)) : PowerSeries.HasEval π := by
@@ -265,7 +265,7 @@ theorem intValue_le_exp_neg_one {z : ℤᵐ⁰} (hz : z < 1) : z ≤ exp (-1 : �
   · have hlog : log z < 0 := (log_lt_iff_lt_exp hzero).mpr (by simpa using hz)
     exact (log_le_iff_le_exp hzero).mp (by omega)
 
-/-- A value `exp (-1)` generates the actual maximal ideal of the original
+/-- A value `exp (-1)` generates the maximal ideal of the
 valuation ring. -/
 theorem maximalIdeal_eq_span_of_valuation_exp_neg_one (π : hv.v.valuationSubring)
     (hπ : hv.v (π : F) = exp (-1 : ℤ)) :
@@ -285,8 +285,8 @@ theorem maximalIdeal_eq_span_of_valuation_exp_neg_one (π : hv.v.valuationSubrin
     rw [hπ]
     simp
 
-/-- A normalized uniformizer makes the actual integer-valued valuation
-nontrivial, so its original valuation ring is a DVR. -/
+/-- A normalized uniformizer makes the integer-valued valuation
+nontrivial, so its valuation ring is a DVR. -/
 theorem valuationSubring_isDiscreteValuationRing_of_uniformizer
     (π : hv.v.valuationSubring) (hπ : hv.v (π : F) = exp (-1 : ℤ)) :
     IsDiscreteValuationRing hv.v.valuationSubring := by
@@ -304,7 +304,7 @@ theorem valuationSubring_isDiscreteValuationRing_of_uniformizer
       simp at he
   exact @Valuation.valuationSubring_isDiscreteValuationRing _ _ _ _ hv.v inferInstance hG
 
-/-- Every normalized original uniformizer is irreducible in its actual DVR. -/
+/-- Every normalized uniformizer is irreducible in its DVR. -/
 theorem irreducible_of_valuation_exp_neg_one
     [IsDiscreteValuationRing hv.v.valuationSubring] (π : hv.v.valuationSubring)
     (hπ : hv.v (π : F) = exp (-1 : ℤ)) : Irreducible π :=
@@ -318,7 +318,7 @@ variable (c : k →+* hv.v.valuationSubring)
     (hc : ∀ a, IsLocalRing.residue hv.v.valuationSubring (c a) = e a)
 variable (π : hv.v.valuationSubring) (hπ : hv.v (π : F) = exp (-1 : ℤ))
 
-/-- Coordinates in the actual inherited valuation ring for every normalized
+/-- Coordinates in the inherited valuation ring for every normalized
 uniformizer, with precisely the prescribed coefficient section. -/
 def valuedPowerSeriesEquiv : PowerSeries k ≃+* hv.v.valuationSubring := by
   letI := valuationSubring_isDiscreteValuationRing_of_uniformizer F π hπ
@@ -337,8 +337,8 @@ theorem valuedPowerSeriesEquiv_X : valuedPowerSeriesEquiv F c e hc π hπ PowerS
   let := valuationSubring_isDiscreteValuationRing_of_uniformizer F π hπ
   exact powerSeriesUniformizerEquiv_X c e hc π _ _
 
-/-- The exact original valuation is determined by the first nonzero power
-series coefficient; the remaining factor is an actual ring unit. -/
+/-- The exact valuation is determined by the first nonzero power
+series coefficient; the remaining factor is a ring unit. -/
 theorem valuation_valuedPowerSeriesEquiv (f : PowerSeries k) (hf : f ≠ 0) :
     hv.v (valuedPowerSeriesEquiv F c e hc π hπ f : F) = exp (-(f.order.toNat : ℤ)) := by
   let φ := valuedPowerSeriesEquiv F c e hc π hπ
@@ -355,20 +355,20 @@ theorem valuation_valuedPowerSeriesEquiv (f : PowerSeries k) (hf : f ≠ 0) :
   congr 1
   simp
 
-/-- Canonical extension of the actual power-series coordinate isomorphism
-to the existing Laurent-series field and original field of fractions. -/
+/-- Canonical extension of the power-series coordinate isomorphism
+to the existing Laurent-series field and field of fractions. -/
 def laurentUniformizerEquiv : LaurentSeries k ≃+* F :=
   IsFractionRing.ringEquivOfRingEquiv (valuedPowerSeriesEquiv F c e hc π hπ)
 
-/-- The field map extends the original integral evaluation. -/
+/-- The field map extends the integral evaluation. -/
 theorem laurentUniformizerEquiv_powerSeries (f : PowerSeries k) :
     laurentUniformizerEquiv F c e hc π hπ (algebraMap (PowerSeries k) (LaurentSeries k) f) =
       (valuedPowerSeriesEquiv F c e hc π hπ f : F) :=
   IsFractionRing.ringEquivOfRingEquiv_algebraMap _ f
 
 omit [UniformSpace k] [DiscreteUniformity k] in
-/-- The standard original Laurent valuation of an integral series is its
-first nonzero coefficient order, obtained from its actual unit factor. -/
+/-- The standard Laurent valuation of an integral series is its
+first nonzero coefficient order, obtained from its unit factor. -/
 theorem laurent_valuation_powerSeries_order (f : PowerSeries k) (hf : f ≠ 0) :
     (Valued.v (algebraMap (PowerSeries k) (LaurentSeries k) f) : ℤᵐ⁰) =
       exp (-(f.order.toNat : ℤ)) := by
@@ -382,7 +382,7 @@ theorem laurent_valuation_powerSeries_order (f : PowerSeries k) (hf : f ≠ 0) :
   rw [heq, map_mul, hu, mul_one]
   exact LaurentSeries.valuation_X_pow k f.order.toNat
 
-/-- The canonical fraction-field extension preserves the actual original
+/-- The canonical fraction-field extension preserves the
 valuations on every Laurent series, including zero and negative orders. -/
 theorem valuation_laurentUniformizerEquiv (f : LaurentSeries k) :
     hv.v (laurentUniformizerEquiv F c e hc π hπ f) = Valued.v f := by
@@ -396,8 +396,8 @@ theorem valuation_laurentUniformizerEquiv (f : LaurentSeries k) :
       valuation_valuedPowerSeriesEquiv F c e hc π hπ b hb0,
       laurent_valuation_powerSeries_order a ha, laurent_valuation_powerSeries_order b hb0]
 
-/-- Constants remain the original prescribed coefficient embedding in the
-actual fraction-field extension. -/
+/-- Constants remain the prescribed coefficient embedding in the
+fraction-field extension. -/
 @[simp]
 theorem laurentUniformizerEquiv_C (a : k) :
     laurentUniformizerEquiv F c e hc π hπ (algebraMap k (LaurentSeries k) a) = (c a : F) := by
@@ -408,19 +408,19 @@ theorem laurentUniformizerEquiv_C (a : k) :
   exact congrArg (fun z : hv.v.valuationSubring => (z : F))
     (valuedPowerSeriesEquiv_C F c e hc π hπ a)
 
-/-- The original Laurent parameter is the chosen original field uniformizer. -/
+/-- The Laurent parameter is the chosen field uniformizer. -/
 @[simp]
 theorem laurentUniformizerEquiv_X :
     laurentUniformizerEquiv F c e hc π hπ
       (algebraMap (PowerSeries k) (LaurentSeries k) PowerSeries.X) = (π : F) := by
   rw [laurentUniformizerEquiv_powerSeries, valuedPowerSeriesEquiv_X]
 
-/-- The field coordinates preserve the existing original valuation uniformities. -/
+/-- The field coordinates preserve the existing valuation uniformities. -/
 theorem uniformContinuous_laurentUniformizerEquiv :
     UniformContinuous (laurentUniformizerEquiv F c e hc π hπ) :=
   valuedRingEquiv_uniformContinuous _ (valuation_laurentUniformizerEquiv F c e hc π hπ)
 
-/-- The inverse map preserves precisely the same original uniformities. -/
+/-- The inverse map preserves precisely the uniformities. -/
 theorem uniformContinuous_laurentUniformizerEquiv_symm :
     UniformContinuous (laurentUniformizerEquiv F c e hc π hπ).symm := by
   apply valuedRingEquiv_uniformContinuous
@@ -430,17 +430,17 @@ theorem uniformContinuous_laurentUniformizerEquiv_symm :
       (congrArg hv.v ((laurentUniformizerEquiv F c e hc π hπ).apply_symm_apply x))
 
 /-- The Laurent coordinates and their inverse are continuous for the
-original valuation topologies. -/
+valuation topologies. -/
 theorem continuous_laurentUniformizerEquiv :
     Continuous (laurentUniformizerEquiv F c e hc π hπ) :=
   (uniformContinuous_laurentUniformizerEquiv F c e hc π hπ).continuous
 
-/-- Continuity of the actual inverse coordinate expansion. -/
+/-- Continuity of the inverse coordinate expansion. -/
 theorem continuous_laurentUniformizerEquiv_symm :
     Continuous (laurentUniformizerEquiv F c e hc π hπ).symm :=
   (uniformContinuous_laurentUniformizerEquiv_symm F c e hc π hπ).continuous
 
-/-- The extension is uniquely determined by its values on the actual
+/-- The extension is uniquely determined by its values on the
 integral power-series subring. -/
 theorem laurentUniformizerEquiv_unique_of_powerSeries (f : LaurentSeries k →+* F)
     (hf : ∀ A : PowerSeries k,
@@ -452,7 +452,7 @@ theorem laurentUniformizerEquiv_unique_of_powerSeries (f : LaurentSeries k →+*
   exact (hf A).trans (laurentUniformizerEquiv_powerSeries F c e hc π hπ A).symm
 
 /-- Among continuous field maps, constants and the Laurent parameter
-uniquely determine the actual coordinate map. -/
+uniquely determine the coordinate map. -/
 theorem laurentUniformizerEquiv_unique (f : LaurentSeries k →+* F) (hf : Continuous f)
     (hC : ∀ a, f (algebraMap k (LaurentSeries k) a) = (c a : F))
     (hX : f (algebraMap (PowerSeries k) (LaurentSeries k) PowerSeries.X) = (π : F)) :
@@ -484,6 +484,6 @@ theorem laurentUniformizerEquiv_unique (f : LaurentSeries k →+* F) (hf : Conti
       (funext fun a => DFunLike.congr_fun hrat a)
   exact RingHom.ext (congrFun heq)
 
-end OriginalValuationRing
+end ValuationRing
 
 end FontaineWintenberger

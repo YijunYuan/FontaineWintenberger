@@ -9,7 +9,7 @@ public import FontaineWintenberger.Mathlib.Analysis.SpectralIntegers
 public import FontaineWintenberger.Ramification.Lower.Basic
 
 /-!
-# The full automorphism action on the actual spectral integer ring
+# The full automorphism action on the spectral integer ring
 
 The proved equality of the decomposition group with the full automorphism
 group transports the intrinsic action, lower groups and order without changing

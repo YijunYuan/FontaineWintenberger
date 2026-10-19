@@ -12,12 +12,12 @@ public import FontaineWintenberger.FieldOfNorms.Basic.Valuation
 public import FontaineWintenberger.FieldOfNorms.Estimates.Truncated
 
 /-!
-# Actual deep cofinal finite towers
+# Deep cofinal finite towers
 
-The original abstract APF extension supplies an increasing cofinal sequence
-of actual finite subfields with growing norm precision. Every stage contains
-the actual wild and stable-valuation witnesses and the residue prime lies in
-the required original maximal-ideal power.
+The abstract APF extension supplies an increasing cofinal sequence
+of finite subfields with growing norm precision. Every stage contains
+the wild and stable-valuation witnesses and the residue prime lies in
+the required maximal-ideal power.
 -/
 
 @[expose] public section
@@ -32,8 +32,8 @@ local notation "p" => residueChar K
 
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
-/-- Actual finite composita enlarge any prescribed sequence of finite intermediate fields
-inside a monotone cofinal sequence of the original APF extension. -/
+/-- Finite composita enlarge any prescribed sequence of finite intermediate fields
+inside a monotone cofinal sequence of the APF extension. -/
 theorem IsAPF.exists_monotone_cofinal_finiteIntermediateFields_ge [IsAPF K L]
     (A : ℕ → FiniteIntermediateField K L) :
     ∃ E : ℕ → FiniteIntermediateField K L, Monotone E ∧ (∀ n, A n ≤ E n) ∧
@@ -52,7 +52,7 @@ theorem IsAPF.exists_monotone_cofinal_finiteIntermediateFields_ge [IsAPF K L]
   · obtain ⟨n, hn⟩ := hC D
     exact ⟨n, hn.trans ((FiniteIntermediateField.le_sup_right (A n) (C n)).trans (hBE n))⟩
 
-/-- The actual deep first-bound parameter at the growing integer precision. -/
+/-- The deep first-bound parameter at the growing integer precision. -/
 def deepFiniteTowerBound (n : ℕ) : ℝ :=
   (p : ℝ) / ((p - 1 : ℕ) : ℝ) * (n + 2)
 
@@ -69,9 +69,9 @@ theorem ceil_deepFiniteTowerBound (n : ℕ) :
     field_simp
   rw [hc, Nat.ceil_natCast]
 
-/-- An infinite original abstract APF extension has an actual increasing
-cofinal tower with growing precision, the original stable valuation, an
-entire wild tail, and all later actual relative first bounds. -/
+/-- An infinite abstract APF extension has an increasing
+cofinal tower with growing precision, the stable valuation, an
+entire wild tail, and all later relative first bounds. -/
 theorem IsAPF.exists_deep_finiteTower [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (D : FiniteIntermediateField K L) :
     ∃ E : ℕ → FiniteIntermediateField K L, Monotone E ∧ (∀ n, D ≤ E n) ∧
@@ -131,7 +131,7 @@ theorem IsAPF.exists_deep_finiteTower [IsAPF K L]
     fun A B hEA hAB => hW A B ((hWn 0).trans hEA) hAB,
     fun n F hEF => hT n (E n) F (hTn n) hEF⟩
 
-/-- A choice of the proved actual deep finite tower, with no tower hypothesis. -/
+/-- A choice of the proved deep finite tower, with no tower hypothesis. -/
 def deepFiniteTower [IsAPF K L] [Fact (¬ Module.Finite K L)]
     (D : FiniteIntermediateField K L) : ℕ → FiniteIntermediateField K L :=
   (IsAPF.exists_deep_finiteTower K L D).choose
@@ -140,30 +140,30 @@ variable [IsAPF K L] [Fact (¬ Module.Finite K L)] (D : FiniteIntermediateField 
 
 local notation "𝔈" => deepFiniteTower K L D
 
-/-- The actual selected deep tower is increasing. -/
+/-- The selected deep tower is increasing. -/
 theorem deepFiniteTower_monotone : Monotone 𝔈 :=
   (IsAPF.exists_deep_finiteTower K L D).choose_spec.1
 
-/-- Every actual selected stage contains the specified original finite intermediate field. -/
+/-- Every selected stage contains the specified finite intermediate field. -/
 theorem le_deepFiniteTower (n : ℕ) : D ≤ 𝔈 n :=
   (IsAPF.exists_deep_finiteTower K L D).choose_spec.2.1 n
 
-/-- The actual selected tower is cofinal among all original finite subfields. -/
+/-- The selected tower is cofinal among all finite subfields. -/
 theorem deepFiniteTower_cofinal (F : FiniteIntermediateField K L) : ∃ n, F ≤ 𝔈 n :=
   (IsAPF.exists_deep_finiteTower K L D).choose_spec.2.2.1 F
 
-/-- Every selected original finite coordinate computes the same original stable valuation. -/
+/-- Every selected finite coordinate computes the stable valuation. -/
 theorem FieldOfNorms.valuation_eq_deepFiniteTower (n : ℕ) (α : FieldOfNorms K L) :
     FieldOfNorms.valuation K L α = FieldOfNorms.coordinateValuation K L (𝔈 n) α :=
   (IsAPF.exists_deep_finiteTower K L D).choose_spec.2.2.2.1 n α
 
-/-- The residue prime is in the required original ideal power at every selected stage. -/
+/-- The residue prime is in the required ideal power at every selected stage. -/
 theorem natCast_mem_deepFiniteTower_maximalIdeal_pow (n : ℕ) :
     (p : spectralIntegerRing K (𝔈 n).val) ∈
       IsLocalRing.maximalIdeal (spectralIntegerRing K (𝔈 n).val) ^ (n + 2) :=
   (IsAPF.exists_deep_finiteTower K L D).choose_spec.2.2.2.2.1 n
 
-/-- The first selected original finite stage begins an entire actual wild tail. -/
+/-- The first selected finite stage begins an entire wild tail. -/
 theorem deepFiniteTower_wild_tail (A B : FiniteIntermediateField K L) (hEA : 𝔈 0 ≤ A) (hAB : A ≤ B)
     :
     Function.Surjective (spectralResidueInclusion K (IntermediateField.inclusion hAB)) ∧
@@ -176,7 +176,7 @@ theorem deepFiniteTower_wild_tail (A B : FiniteIntermediateField K L) (hEA : �
           Module.finrank A.val (IntermediateField.extendScalars hAB) :=
   (IsAPF.exists_deep_finiteTower K L D).choose_spec.2.2.2.2.2.1 A B hEA hAB
 
-/-- Every later original finite extension has the requested actual first bound. -/
+/-- Every later finite extension has the requested first bound. -/
 theorem deepFiniteTower_relativeFirstBound_ge (n : ℕ) (F : FiniteIntermediateField K L) (hEF : 𝔈 n
     ≤ F) :
     letI := spectralNorm.nontriviallyNormedField K (𝔈 n).val
@@ -189,7 +189,7 @@ theorem deepFiniteTower_relativeFirstBound_ge (n : ℕ) (F : FiniteIntermediateF
       apfRamificationBound (𝔈 n).val (IntermediateField.extendScalars hEF) :=
   (IsAPF.exists_deep_finiteTower K L D).choose_spec.2.2.2.2.2.2 n F hEF
 
-/-- The actual integer-ring quotient at the stage's growing precision. -/
+/-- The integer-ring quotient at the stage's growing precision. -/
 abbrev deepFiniteTowerQuotient (n : ℕ) :=
   spectralIntegerRing K (𝔈 n).val ⧸
     IsLocalRing.maximalIdeal (spectralIntegerRing K (𝔈 n).val) ^ (n + 2)
@@ -210,27 +210,27 @@ instance deepFiniteTowerQuotient_charP (n : ℕ) :
   rw [← map_natCast (Ideal.Quotient.mk _), Ideal.Quotient.eq_zero_iff_mem]
   exact natCast_mem_deepFiniteTower_maximalIdeal_pow K L D n
 
-/-- The actual quotient's maximal ideal vanishes to its stated precision. -/
+/-- The quotient's maximal ideal vanishes to its stated precision. -/
 theorem deepFiniteTowerQuotient_maximalIdeal_pow (n : ℕ) :
     IsLocalRing.maximalIdeal (deepFiniteTowerQuotient K L D n) ^ (n + 2) = ⊥ := by
   rw [← IsLocalRing.map_maximalIdeal_of_surjective
     (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective, ← Ideal.map_pow,
     Ideal.map_quotient_self]
 
-/-- The actual exponent of the finite relative degree, chosen from the proved wild tail. -/
+/-- The exponent of the finite relative degree, chosen from the proved wild tail. -/
 def deepFiniteTowerRelativeDegree (n : ℕ) (F : FiniteIntermediateField K L) (hEF : 𝔈 n ≤ F) : ℕ :=
   (deepFiniteTower_wild_tail K L D (𝔈 n) F
     (deepFiniteTower_monotone K L D (Nat.zero_le n)) hEF).2.1.choose
 
-/-- The selected degree exponent computes the original finite field degree. -/
+/-- The selected degree exponent computes the finite field degree. -/
 theorem deepFiniteTower_finrank (n : ℕ) (F : FiniteIntermediateField K L) (hEF : 𝔈 n ≤ F) :
     Module.finrank (𝔈 n).val (IntermediateField.extendScalars hEF) =
       p ^ deepFiniteTowerRelativeDegree K L D n F hEF :=
   (deepFiniteTower_wild_tail K L D (𝔈 n) F
     (deepFiniteTower_monotone K L D (Nat.zero_le n)) hEF).2.1.choose_spec
 
-/-- Every later original finite intermediate field has an actual quotient norm at this
-stage's precision; the map is induced by the original integer norm. -/
+/-- Every later finite intermediate field has a quotient norm at this
+stage's precision; the map is induced by the integer norm. -/
 def deepFiniteTowerNorm (n : ℕ) (F : FiniteIntermediateField K L) (hEF : 𝔈 n ≤ F)
     (s : ℕ) (hs : n + 2 ≤ s) :
     (spectralIntegerRing K F.val ⧸ IsLocalRing.maximalIdeal (spectralIntegerRing K F.val) ^ s) →+*
@@ -250,7 +250,7 @@ theorem deepFiniteTowerNorm_mk (n : ℕ) (F : FiniteIntermediateField K L) (hEF 
     deepFiniteTowerNorm K L D n F hEF s hs (Ideal.Quotient.mk _ x) =
       Ideal.Quotient.mk _ (FiniteIntermediateField.integerNorm (𝔈 n) F hEF x) := rfl
 
-/-- Actual perfect-residue norm digits prove surjectivity from every later finite intermediate
+/-- Perfect-residue norm digits prove surjectivity from every later finite intermediate
     field. -/
 theorem deepFiniteTowerNorm_surjective (n : ℕ) (F : FiniteIntermediateField K L) (hEF : 𝔈 n ≤ F)
     (s : ℕ) (hs : n + 2 ≤ s) :
@@ -264,7 +264,7 @@ theorem deepFiniteTowerNorm_surjective (n : ℕ) (F : FiniteIntermediateField K 
     (deepFiniteTower_relativeFirstBound_ge K L D n F hEF)
     (n + 2) s hs (by rw [ceil_deepFiniteTowerBound])
 
-/-- Every later original finite norm is additive to the tower stage's precision. -/
+/-- Every later finite norm is additive to the tower stage's precision. -/
 theorem deepFiniteTower_integerNorm_add_congruence (n : ℕ) (F : FiniteIntermediateField K L)
     (hEF : 𝔈 n ≤ F) (x y : spectralIntegerRing K F.val) :
     FiniteIntermediateField.integerNorm (𝔈 n) F hEF (x + y) -
@@ -280,7 +280,7 @@ theorem deepFiniteTower_integerNorm_add_congruence (n : ℕ) (F : FiniteIntermed
   simp only [map_sub]
   linear_combination h
 
-/-- The original norms induce the actual ring transition maps between tower stages. -/
+/-- The norms induce the ring transition maps between tower stages. -/
 def deepFiniteTowerTransition (n m : ℕ) (hnm : n ≤ m) :
     deepFiniteTowerQuotient K L D m →+*
       deepFiniteTowerQuotient K L D n :=
@@ -294,13 +294,13 @@ theorem deepFiniteTowerTransition_mk (n m : ℕ) (hnm : n ≤ m)
       Ideal.Quotient.mk _ (FiniteIntermediateField.integerNorm (𝔈 n) (𝔈 m)
         (deepFiniteTower_monotone K L D hnm) x) := rfl
 
-/-- Every actual transition in the constructed tower is surjective. -/
+/-- Every transition in the constructed tower is surjective. -/
 theorem deepFiniteTowerTransition_surjective (n m : ℕ) (hnm : n ≤ m) :
     Function.Surjective (deepFiniteTowerTransition K L D n m hnm) :=
   deepFiniteTowerNorm_surjective K L D n (𝔈 m)
     (deepFiniteTower_monotone K L D hnm) (m + 2) (by omega)
 
-/-- Actual norm transitivity gives the exact quotient transition tower law. -/
+/-- Norm transitivity gives the exact quotient transition tower law. -/
 theorem deepFiniteTowerTransition_comp (i n m : ℕ) (hin : i ≤ n) (hnm : n ≤ m) :
     (deepFiniteTowerTransition K L D i n hin).comp
         (deepFiniteTowerTransition K L D n m hnm) =
@@ -310,7 +310,7 @@ theorem deepFiniteTowerTransition_comp (i n m : ℕ) (hin : i ≤ n) (hnm : n �
   simp only [RingHom.comp_apply, deepFiniteTowerTransition_mk]
   rw [FiniteIntermediateField.integerNorm_integerNorm]
 
-/-- The actual identity step induces the identity map at the same precision. -/
+/-- The identity step induces the identity map at the same precision. -/
 @[simp]
 theorem deepFiniteTowerTransition_self (n : ℕ) :
     deepFiniteTowerTransition K L D n n le_rfl =
@@ -320,7 +320,7 @@ theorem deepFiniteTowerTransition_self (n : ℕ) :
   simp only [RingHom.comp_apply, deepFiniteTowerTransition_mk,
     FiniteIntermediateField.integerNorm_self, RingHom.id_apply]
 
-/-- The actual quotient transitions preserve normalized valuation truncated
+/-- The quotient transitions preserve normalized valuation truncated
 at the target precision, including zero and the identity step. -/
 theorem deepFiniteTowerTransition_truncatedAddVal (n m : ℕ) (hnm : n ≤ m)
     (x : deepFiniteTowerQuotient K L D m) :

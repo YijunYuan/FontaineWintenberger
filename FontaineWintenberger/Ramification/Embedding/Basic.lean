@@ -21,8 +21,8 @@ public import Mathlib.Data.EReal.Operations
 /-!
 # Ramification orders of pairs of finite-field embeddings
 
-The raw order uses the original integer-ring maps. Dividing by their actual
-ramification index normalizes it in the source field, independently of the
+The raw order uses the integer-ring maps. Dividing by their
+ramification index normalizes it in the field, independently of the
 finite ambient field. No normality or finite-residue assumption is used.
 -/
 
@@ -40,7 +40,7 @@ section Integral
 variable {S T : Type*} [CommRing S] [CommRing T] [IsDomain T]
     [IsDiscreteValuationRing T]
 
-/-- The displacement infimum for two actual maps into a DVR. -/
+/-- The displacement infimum for two maps into a DVR. -/
 def integralEmbeddingOrder (f g : S →+* T) : ℕ∞ :=
   ⨅ x : S, addVal T (f x - g x)
 
@@ -90,7 +90,7 @@ theorem forall_sub_mem_iff_generator (f g : S →ₐ[R] T)
     | mul y z hy hz ihy ihz =>
       simpa only [map_mul] using I.mul_sub_mul_mem ihy ihz
 
-/-- An actual integral algebra generator attains the displacement infimum. -/
+/-- An integral algebra generator attains the displacement infimum. -/
 theorem integralEmbeddingOrder_eq_generator (f g : S →ₐ[R] T)
     {x : S} (hx : Algebra.adjoin R {x} = ⊤) :
     integralEmbeddingOrder f.toRingHom g.toRingHom = addVal T (f x - g x) := by
@@ -110,7 +110,7 @@ variable (f g : S →+* T) [IsLocalHom g]
 variable (p : ℕ) [Fact p.Prime] [CharP (ResidueField S) p]
     [PerfectField (ResidueField S)]
 
-/-- Equal residue maps and a uniformizer congruence control every integral element. -/
+/-- Equal residue maps and an uniformizer congruence control every integral element. -/
 theorem forall_sub_mem_pow_iff_uniformizer
     (hp : (p : T) ∈ IsLocalRing.maximalIdeal T)
     (hres : ∀ a : S, f a - g a ∈ IsLocalRing.maximalIdeal T)
@@ -171,17 +171,17 @@ local notation "OK" => Valuation.valuationSubring (NormedField.valuation (K := K
 local notation "OE" => spectralIntegerRing K E
 local notation "ON" => spectralIntegerRing K N
 
-/-- The canonical local-length index of the original integer map of an embedding. -/
+/-- The canonical local-length index of the integer map of an embedding. -/
 def embeddingRamificationIdx (σ : E →ₐ[K] N) : ℕ :=
   letI : Algebra OE ON := (spectralIntegerInclusion K σ).toRingHom.toAlgebra
   (IsLocalRing.maximalIdeal ON).ramificationIdx OE
 
-/-- The raw order is computed on the original spectral integer rings. -/
+/-- The raw order is computed on the spectral integer rings. -/
 def embeddingIntegralOrder (σ τ : E →ₐ[K] N) : ℕ∞ :=
   integralEmbeddingOrder (spectralIntegerInclusion K σ).toRingHom
     (spectralIntegerInclusion K τ).toRingHom
 
-/-- The pair order normalized in the source field, including infinity. -/
+/-- The pair order normalized in the field, including infinity. -/
 def embeddingRamificationOrder (σ τ : E →ₐ[K] N) : ℝ≥0∞ :=
   (embeddingIntegralOrder K σ τ : ℝ≥0∞) / embeddingRamificationIdx K σ
 
@@ -196,7 +196,7 @@ theorem embeddingRamificationIdx_pos (σ : E →ₐ[K] N) :
     ⟨(spectralIntegerInclusion_isLocalHom K σ).map_nonunit⟩
   exact local_ramificationIdx_pos OE ON
 
-/-- Normalized integral values restrict by the actual relative index. -/
+/-- Normalized integral values restrict by the relative index. -/
 theorem addVal_spectralIntegerInclusion (σ : E →ₐ[K] N) (x : OE) :
     addVal ON (spectralIntegerInclusion K σ x) =
       (embeddingRamificationIdx K σ : ℕ∞) * addVal OE x := by
@@ -255,7 +255,7 @@ variable {M : Type*} [Field M] [Algebra K M] [FiniteDimensional K M]
     [Algebra.IsSeparable K M]
 
 omit [FiniteDimensional K E] in
-/-- The actual relative index multiplies under composition of original embeddings. -/
+/-- The relative index multiplies under composition of embeddings. -/
 theorem embeddingRamificationIdx_comp (σ : E →ₐ[K] N) (u : N →ₐ[K] M) :
     embeddingRamificationIdx K (u.comp σ) =
       embeddingRamificationIdx K σ * embeddingRamificationIdx K u := by
@@ -320,7 +320,7 @@ theorem embeddingRamificationIdx_aut (s : E ≃ₐ[K] E) :
     nlinarith
   exact (embeddingRamificationIdx_eq K s.toAlgHom (AlgHom.id K E)).trans hi
 
-/-- The general embedding order retains the original full automorphism order. -/
+/-- The general embedding order retains the full automorphism order. -/
 theorem embeddingRamificationOrder_aut (s : E ≃ₐ[K] E) :
     embeddingRamificationOrder K s.toAlgHom (AlgHom.id K E) =
       (ramificationOrder (R := OE) (E ≃ₐ[K] E) s : ℝ≥0∞) := by
@@ -328,7 +328,7 @@ theorem embeddingRamificationOrder_aut (s : E ≃ₐ[K] E) :
     Nat.cast_one, div_one, embeddingIntegralOrder_aut]
 
 omit [FiniteDimensional K E] in
-/-- Inertia for a pair means equality of its actual residue embeddings. -/
+/-- Inertia for a pair means equality of its residue embeddings. -/
 theorem one_le_embeddingIntegralOrder_iff (σ τ : E →ₐ[K] N) :
     1 ≤ embeddingIntegralOrder K σ τ ↔
       spectralResidueInclusion K σ = spectralResidueInclusion K τ := by
@@ -387,7 +387,7 @@ theorem embeddingRamificationOrder_eq_generator (σ τ : E →ₐ[K] N)
         embeddingRamificationIdx K σ := by
   rw [embeddingRamificationOrder, embeddingIntegralOrder_eq_generator K σ τ hx]
 
-/-- Actual integral generation supplies one element computing every embedding pair. -/
+/-- Integral generation supplies one element computing every embedding pair. -/
 theorem exists_embeddingIntegralOrder_generator :
     ∃ x : OE, Algebra.adjoin OK {x} = ⊤ ∧ ∀ σ τ : E →ₐ[K] N,
       embeddingIntegralOrder K σ τ =
@@ -395,7 +395,7 @@ theorem exists_embeddingIntegralOrder_generator :
   obtain ⟨x, hx⟩ := spectralIntegerRing_exists_generator K E
   exact ⟨x, hx, fun σ τ => embeddingIntegralOrder_eq_generator K σ τ hx⟩
 
-/-- The normalized finite-pair definition is the infimum of the actual normalized
+/-- The normalized finite-pair definition is the infimum of the normalized
 integral displacements; attainment proves this also for identical embeddings. -/
 theorem embeddingRamificationOrder_eq_iInf (σ τ : E →ₐ[K] N) :
     embeddingRamificationOrder K σ τ =
@@ -413,7 +413,7 @@ theorem embeddingRamificationOrder_eq_iInf (σ τ : E →ₐ[K] N) :
     rw [embeddingRamificationOrder_eq_generator K σ τ hx]
     exact iInf_le _ x
 
-/-- Ambient enlargement scales the raw order by its actual relative index. -/
+/-- Ambient enlargement scales the raw order by its relative index. -/
 theorem embeddingIntegralOrder_comp (σ τ : E →ₐ[K] N) (u : N →ₐ[K] M) :
     embeddingIntegralOrder K (u.comp σ) (u.comp τ) =
       (embeddingRamificationIdx K u : ℕ∞) * embeddingIntegralOrder K σ τ := by
@@ -425,7 +425,7 @@ theorem embeddingIntegralOrder_comp (σ τ : E →ₐ[K] N) (u : N →ₐ[K] M) 
   apply Subtype.ext
   exact (map_sub u (σ (x : E)) (τ (x : E))).symm
 
-/-- Normalization in the original source field removes all ambient scaling. -/
+/-- Normalization in the field removes all ambient scaling. -/
 theorem embeddingRamificationOrder_comp (σ τ : E →ₐ[K] N) (u : N →ₐ[K] M) :
     embeddingRamificationOrder K (u.comp σ) (u.comp τ) =
       embeddingRamificationOrder K σ τ := by
@@ -436,7 +436,7 @@ theorem embeddingRamificationOrder_comp (σ τ : E →ₐ[K] N) (u : N →ₐ[K]
     exact_mod_cast (embeddingRamificationIdx_pos K u).ne'
   exact ENNReal.mul_div_mul_left _ _ he (ENNReal.natCast_ne_top _)
 
-/-- Actual residue agreement makes every genuine source uniformizer compute the pair order. -/
+/-- Residue agreement makes every uniformizer compute the pair order. -/
 theorem embeddingIntegralOrder_eq_uniformizer (σ τ : E →ₐ[K] N)
     (hres : spectralResidueInclusion K σ = spectralResidueInclusion K τ)
     {π : OE} (hπ : Irreducible π) :
@@ -468,7 +468,7 @@ section PairField
 variable (K : Type*) [Field K]
 variable {E : Type*} [Field E] [Algebra K E]
 
-/-- The actual finite compositum of the two images in the separable closure. -/
+/-- The finite compositum of the two images in the separable closure. -/
 def embeddingPairField (σ τ : E →ₐ[K] SeparableClosure K) :
     IntermediateField K (SeparableClosure K) := σ.fieldRange ⊔ τ.fieldRange
 
@@ -479,13 +479,13 @@ instance embeddingPairField_finiteDimensional [FiniteDimensional K E]
   let : FiniteDimensional K τ.fieldRange := τ.toLinearMap.finiteDimensional_range
   exact IntermediateField.finiteDimensional_sup _ _
 
-/-- The first original embedding factored through the actual compositum. -/
+/-- The first embedding factored through the compositum. -/
 def embeddingPairLeft (σ τ : E →ₐ[K] SeparableClosure K) :
     E →ₐ[K] embeddingPairField K σ τ :=
   σ.codRestrict _ (fun x =>
     (le_sup_left : σ.fieldRange ≤ embeddingPairField K σ τ) ⟨x, rfl⟩)
 
-/-- The second original embedding factored through the actual compositum. -/
+/-- The second embedding factored through the compositum. -/
 def embeddingPairRight (σ τ : E →ₐ[K] SeparableClosure K) :
     E →ₐ[K] embeddingPairField K σ τ :=
   τ.codRestrict _ (fun x =>
@@ -509,7 +509,7 @@ local notation "p" => residueChar K
 variable {E : Type*} [Field E] [Algebra K E] [FiniteDimensional K E]
     [Algebra.IsSeparable K E]
 
-/-- Closure-pair order computed in its actual finite image compositum. -/
+/-- Closure-pair order computed in its finite image compositum. -/
 def closureEmbeddingOrder (σ τ : E →ₐ[K] SeparableClosure K) : ℝ≥0∞ :=
   embeddingRamificationOrder K (embeddingPairLeft K σ τ) (embeddingPairRight K σ τ)
 
@@ -529,7 +529,7 @@ theorem closureEmbeddingOrder_lt_top {σ τ : E →ₐ[K] SeparableClosure K} (h
     closureEmbeddingOrder K σ τ < ⊤ :=
   lt_top_iff_ne_top.mpr (fun ht => h ((closureEmbeddingOrder_eq_top_iff K σ τ).mp ht))
 
-/-- The closure formulation uses the same integral elements and actual finite-ambient
+/-- The closure formulation uses the same integral elements and finite-ambient
 normalized valuation, with no valuation or norm instance added on the closure. -/
 theorem closureEmbeddingOrder_eq_iInf (σ τ : E →ₐ[K] SeparableClosure K) :
     closureEmbeddingOrder K σ τ =
@@ -540,7 +540,7 @@ theorem closureEmbeddingOrder_eq_iInf (σ τ : E →ₐ[K] SeparableClosure K) :
           embeddingRamificationIdx K (embeddingPairLeft K σ τ) :=
   embeddingRamificationOrder_eq_iInf K _ _
 
-/-- Any original finite ambient subfield computes the same closure order. -/
+/-- Any finite ambient subfield computes the same closure order. -/
 theorem closureEmbeddingOrder_eq_finite (F : IntermediateField K (SeparableClosure K))
     [FiniteDimensional K F] (σ τ : E →ₐ[K] F) :
     closureEmbeddingOrder K (F.val.comp σ) (F.val.comp τ) =
@@ -564,8 +564,8 @@ theorem closureEmbeddingOrder_eq_finite (F : IntermediateField K (SeparableClosu
   rw [hσ, hτ] at h
   exact h.symm
 
-/-- The finite-ambient comparison applies to any original finite field and embedding
-into the closure, using its actual field range rather than a replacement model. -/
+/-- The finite-ambient comparison applies to any finite field and embedding
+into the closure, using its field range rather than a replacement model. -/
 theorem closureEmbeddingOrder_comp {N : Type*} [Field N] [Algebra K N]
     [FiniteDimensional K N] [Algebra.IsSeparable K N]
     (σ τ : E →ₐ[K] N) (u : N →ₐ[K] SeparableClosure K) :
@@ -592,7 +592,7 @@ theorem closureEmbeddingOrder_comm (σ τ : E →ₐ[K] SeparableClosure K) :
   change closureEmbeddingOrder K τ σ = _ at h
   exact (embeddingRamificationOrder_comm K _ _).trans h.symm
 
-/-- The original automorphism order agrees with its closure-valued embedding formulation. -/
+/-- The automorphism order agrees with its closure-valued embedding formulation. -/
 theorem closureEmbeddingOrder_aut (s : E ≃ₐ[K] E)
     (u : E →ₐ[K] SeparableClosure K) :
     closureEmbeddingOrder K (u.comp s.toAlgHom) u =
@@ -612,7 +612,7 @@ variable {E N : Type*} [Field E] [Field N] [Algebra K E] [Algebra K N]
     [FiniteDimensional K E] [FiniteDimensional K N]
     [Algebra.IsSeparable K E] [Algebra.IsSeparable K N]
 
-/-- Wintenberger's signed number: the actual normalized order minus one,
+/-- Wintenberger's signed number: the normalized order minus one,
 using standard extended reals so that zero order gives minus one. -/
 def embeddingRamificationNumber (σ τ : E →ₐ[K] N) : EReal :=
   (embeddingRamificationOrder K σ τ : EReal) - 1
@@ -665,7 +665,7 @@ theorem embeddingRamificationNumber_aut (s : E ≃ₐ[K] E) :
       ((ramificationOrder (R := spectralIntegerRing K E) (E ≃ₐ[K] E) s : ℝ≥0∞) : EReal) - 1 := by
   rw [embeddingRamificationNumber, embeddingRamificationOrder_aut]
 
-/-- Signed closure order on the original finite image compositum. -/
+/-- Signed closure order on the finite image compositum. -/
 def closureEmbeddingNumber (σ τ : E →ₐ[K] SeparableClosure K) : EReal :=
   embeddingRamificationNumber K (embeddingPairLeft K σ τ) (embeddingPairRight K σ τ)
 

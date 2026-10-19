@@ -9,10 +9,10 @@ public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.Upper.Quotient
 
 /-!
-# Quotients by an actual lower ramification group
+# Quotients by a lower ramification group
 
 The relative Herbrand function is the identity up to the defining lower
-index. Herbrand's actual fixed-field quotient theorem therefore gives
+index. Herbrand's fixed-field quotient theorem therefore gives
 unchanged lower numbering there, and the quotient has a trivial tail.
 
 Reference: Serre, *Local Fields*, Chapter IV, §1, corollary to Proposition 3.
@@ -89,8 +89,8 @@ local notation "A" => Valuation.valuationSubring
 local notation "D" => ValuationSubring.decompositionSubgroup K A
 local notation "ρ" => fixedFieldDecompositionRestriction K L H
 
-/-- Original restriction preserves lower numbering up to the index of the
-actual lower subgroup by which one takes the quotient. -/
+/-- Restriction preserves lower numbering up to the index of the
+lower subgroup by which one takes the quotient. -/
 theorem lowerFixedField_map_lowerRamificationGroupReal (hr : 0 ≤ r)
     {t : ℝ} (ht : -1 ≤ t) (htr : t ≤ r) :
     letI := intermediate_spectral_isDiscreteValuationRing K L F
@@ -101,7 +101,7 @@ theorem lowerFixedField_map_lowerRamificationGroupReal (hr : 0 ≤ r)
     herbrandFunction_eq_self_of_subgroup_le_lower G H hr le_rfl ht htr
   simpa only [hφ] using fixedField_map_lowerRamificationGroupReal K L H t ht
 
-/-- The actual fixed-field lower filtration is trivial from the defining
+/-- The fixed-field lower filtration is trivial from the defining
 integer index onward, including that index and the case zero. -/
 theorem lowerFixedField_lowerRamificationGroupReal_eq_bot (hr : 0 ≤ r)
     {t : ℝ} (hrt : (r : ℝ) ≤ t) :
@@ -116,8 +116,8 @@ theorem lowerFixedField_lowerRamificationGroupReal_eq_bot (hr : 0 ≤ r)
   exact bot_unique ((lowerRamificationGroupReal_antitone D
     (IsLocalRing.maximalIdeal A) hrt).trans_eq hzero)
 
-/-- With a lower group as kernel, unchanged numbering describes the actual
-restriction image at every real index in the source domain. -/
+/-- With a lower group as kernel, unchanged numbering describes the
+restriction image at every real index in the domain. -/
 theorem lowerFixedField_map_lowerRamificationGroupReal_all (hr : 0 ≤ r)
     {t : ℝ} (ht : -1 ≤ t) :
     letI := intermediate_spectral_isDiscreteValuationRing K L F
@@ -132,8 +132,8 @@ theorem lowerFixedField_map_lowerRamificationGroupReal_all (hr : 0 ≤ r)
     simpa only [lowerRamificationGroupReal_intCast] using
       lowerRamificationGroupReal_antitone G (IsLocalRing.maximalIdeal B) hrt
 
-/-- The literal canonical Galois quotient equivalence identifies the actual
-image in `G/H` with the same-index original fixed-field lower group. -/
+/-- The canonical Galois quotient equivalence identifies the
+image in `G/H` with the same-index fixed-field lower group. -/
 theorem lowerFixedField_quotient_lowerRamificationGroupReal (hr : 0 ≤ r)
     {t : ℝ} (ht : -1 ≤ t) :
     letI := intermediate_spectral_isDiscreteValuationRing K L F
@@ -148,8 +148,8 @@ theorem lowerFixedField_quotient_lowerRamificationGroupReal (hr : 0 ≤ r)
     rfl
   rw [hcomp, lowerFixedField_map_lowerRamificationGroupReal_all K L r hr ht]
 
-/-- In particular the original integer lower groups have exactly the
-same-index images under actual fixed-field restriction. -/
+/-- In particular the integer lower groups have exactly the
+same-index images under fixed-field restriction. -/
 theorem lowerFixedField_map_lowerRamificationGroup (hr : 0 ≤ r)
     {n : ℤ} (hn : -1 ≤ n) :
     letI := intermediate_spectral_isDiscreteValuationRing K L F
@@ -160,7 +160,7 @@ theorem lowerFixedField_map_lowerRamificationGroup (hr : 0 ≤ r)
     lowerFixedField_map_lowerRamificationGroupReal_all K L r hr
       (t := (n : ℝ)) (by exact_mod_cast hn)
 
-/-- The same original integer filtration is trivial from the defining
+/-- The integer filtration is trivial from the defining
 integer onward, with the endpoint included. -/
 theorem lowerFixedField_lowerRamificationGroup_eq_bot (hr : 0 ≤ r)
     {n : ℤ} (hrn : r ≤ n) :

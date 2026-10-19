@@ -15,12 +15,12 @@ public import Mathlib.Order.Filter.AtTopBot.Map
 /-!
 # Strict APF under finite base change
 
-## Strict APF under actual finite base change
+## Strict APF under finite base change
 
-## Finite base change with the original abstract normed scalar field
+## Finite base change with the abstract normed scalar field
 
-All comparisons use the original norm and scalar maps on the finite new base.
-The chosen common separable closure serves only to identify actual restrictions.
+All comparisons use the norm and scalar maps on the finite new base.
+The chosen common separable closure serves only to identify restrictions.
 -/
 
 @[expose] public section
@@ -36,7 +36,7 @@ variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField 
 
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
-/-- The actual Herbrand order isomorphism preserves the source lower limit at infinity. -/
+/-- The Herbrand order isomorphism preserves the lower limit at infinity. -/
 theorem IsAPF.liminf_comp_apfPsi [IsAPF K L] (f : ℝ → ℝ≥0∞) :
     liminf (f ∘ apfPsi K L) atTop = liminf f atTop := by
   rw [Filter.liminf_comp]
@@ -71,7 +71,7 @@ variable (N : Type*) [Field N] [Algebra K N] [Algebra M N] [IsScalarTower K M N]
     [Algebra.IsSeparable K N]
 local instance : Algebra.IsSeparable M N := Algebra.isSeparable_tower_top_of_isSeparable K M N
 
-/-- Composition and actual inertia index factorization give the exact source ratio identity. -/
+/-- Composition and inertia index factorization give the exact ratio identity. -/
 theorem IsAPF.apfStrictnessRatio_finiteBase [IsAPF K N]
     {u : ℝ} (hu : 0 ≤ u) :
     apfStrictnessRatio M N (apfPsi K M u) =
@@ -93,7 +93,7 @@ theorem IsAPF.apfStrictnessRatio_finiteBase [IsAPF K N]
   rw [he]
   field_simp [ne_of_gt ha, ne_of_gt hb]
 
-/-- The actual finite-base strictness lower limits differ by a proved positive finite multiplier. -/
+/-- The finite-base strictness lower limits differ by a proved positive finite multiplier. -/
 theorem IsAPF.exists_liminf_finiteBase_mul [IsAPF K N] :
     ∃ C : ℕ, 0 < C ∧
       liminf (apfStrictnessRatio M N) atTop =
@@ -150,16 +150,16 @@ local instance : Algebra.IsSeparable M (SeparableClosure K) :=
   Algebra.isSeparable_tower_top_of_isSeparable K M (SeparableClosure K)
 
 omit [FiniteDimensional K M] [Algebra.IsSeparable K M] in
-/-- The actual old closure is also a separable closure of the abstract finite base. -/
+/-- The old closure is also a separable closure of the abstract finite base. -/
 theorem isSepClosure : IsSepClosure M (SeparableClosure K) :=
   isSepClosure_iff.mpr ⟨inferInstance, inferInstance⟩
 
-/-- The actual isomorphism of closures over the original abstract new base. -/
+/-- The isomorphism of closures over the abstract new base. -/
 noncomputable def closureEquiv : SeparableClosure M ≃ₐ[M] SeparableClosure K := by
   let := isSepClosure K M
   exact IsSepClosure.equiv M (SeparableClosure M) (SeparableClosure K)
 
-/-- Rebase an actual old-base finite Galois layer, without changing its carrier. -/
+/-- Rebase an old-base finite Galois layer, without changing its carrier. -/
 noncomputable def rebaseFiniteGaloisLayer
     (E : FiniteGaloisIntermediateField K (SeparableClosure K))
     (hME : S₀ ≤ E.toIntermediateField) :
@@ -191,7 +191,7 @@ theorem exists_layer (D : FiniteGaloisIntermediateField M (SeparableClosure K)) 
   exact ⟨E, hME, le_finiteGaloisNormalClosure K T⟩
 
 omit [FiniteDimensional K M] [Algebra.IsSeparable K M] in
-/-- Scalar restriction on the common closure has precisely the actual fixing subgroup as range. -/
+/-- Scalar restriction on the common closure has precisely the fixing subgroup as range. -/
 theorem range_restrictScalars :
     (AlgEquiv.restrictScalarsHom K (S := M) (A := SeparableClosure K)).range =
       (S₀).fixingSubgroup := by
@@ -232,7 +232,7 @@ local instance : FiniteDimensional K S₀ :=
 
 omit [IsCompleteDiscreteValuedField K] [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)] [Algebra.IsSeparable K M] in
-/-- All new-base upper conditions are tested on actual old-base normal overfields. -/
+/-- All new-base upper conditions are tested on old-base normal overfields. -/
 theorem mem_upper_iff_cofinal {v : ℝ} (hv : -1 ≤ v)
     (g : SeparableClosure K ≃ₐ[M] SeparableClosure K) :
     g ∈ upperRamificationGroupInfinite M (SeparableClosure K) v ↔
@@ -252,7 +252,7 @@ theorem mem_upper_iff_cofinal {v : ℝ} (hv : -1 ≤ v)
 
 omit [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := M)).valuationSubring)] in
-/-- A restriction to an actual finite intermediate field detects the upper condition over either
+/-- A restriction to a finite intermediate field detects the upper condition over either
     base. -/
 theorem finite_restriction_mem_upper_iff
     (E : FiniteGaloisIntermediateField K (SeparableClosure K))
@@ -281,7 +281,7 @@ theorem finite_restriction_mem_upper_iff
     (apfPsi K M u) ↔ _
   rw [finiteTower_mem_upper_iff_restrictScalars K E M hu q, hq]
 
-/-- Actual scalar restriction changes the infinite upper parameter by the intrinsic integral. -/
+/-- Scalar restriction changes the infinite upper parameter by the intrinsic integral. -/
 theorem mem_upper_finiteBase_iff {u : ℝ} (hu : -1 ≤ u)
     (g : SeparableClosure K ≃ₐ[M] SeparableClosure K) :
     g ∈ upperRamificationGroupInfinite M (SeparableClosure K) (apfPsi K M u) ↔
@@ -292,7 +292,7 @@ theorem mem_upper_finiteBase_iff {u : ℝ} (hu : -1 ≤ u)
   exact forall_congr' fun E => forall_congr' fun hME =>
     finite_restriction_mem_upper_iff K M E hME hu g
 
-/-- The actual common-closure homomorphism preserves original field automorphisms. -/
+/-- The common-closure homomorphism preserves field automorphisms. -/
 noncomputable def closureHom :
     (SeparableClosure M ≃ₐ[M] SeparableClosure M) →*
       (SeparableClosure K ≃ₐ[K] SeparableClosure K) :=
@@ -304,7 +304,7 @@ omit [IsCompleteDiscreteValuedField K] [IsCompleteDiscreteValuedField M] [Perfec
      [FiniteDimensional K M] [Algebra.IsSeparable K M]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := M)).valuationSubring)] in
-/-- The actual closure homomorphism commutes with the chosen closure isomorphism. -/
+/-- The closure homomorphism commutes with the chosen closure isomorphism. -/
 theorem closureHom_apply (g : SeparableClosure M ≃ₐ[M] SeparableClosure M)
     (x : SeparableClosure M) :
     closureHom K M g (closureEquiv K M x) = closureEquiv K M (g x) := by
@@ -317,7 +317,7 @@ omit [IsCompleteDiscreteValuedField K] [IsCompleteDiscreteValuedField M] [Perfec
      [FiniteDimensional K M] [Algebra.IsSeparable K M]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := M)).valuationSubring)] in
-/-- Its range is exactly the subgroup fixing the original embedded finite base. -/
+/-- Its range is exactly the subgroup fixing the embedded finite base. -/
 theorem closureHom_range : (closureHom K M).range = (S₀).fixingSubgroup := by
   rw [closureHom, MonoidHom.range_comp,
     MonoidHom.range_eq_top.mpr (closureEquiv K M).autCongr.surjective,
@@ -327,14 +327,14 @@ omit [IsCompleteDiscreteValuedField K] [IsCompleteDiscreteValuedField M] [Perfec
     (IsLocalRing.ResidueField (NormedField.valuation (K := K)).valuationSubring)]
      [Algebra.IsSeparable K M]
     [PerfectField (IsLocalRing.ResidueField (NormedField.valuation (K := M)).valuationSubring)] in
-/-- The actual finite-base closure homomorphism has finite-index range. -/
+/-- The finite-base closure homomorphism has finite-index range. -/
 theorem closureHom_range_finiteIndex : (closureHom K M).range.FiniteIndex := by
   rw [closureHom_range K M]
   let : Finite ((SeparableClosure K ≃ₐ[K] SeparableClosure K) ⧸ (S₀).fixingSubgroup) :=
     (S₀).fixingSubgroup.quotient_finite_of_isOpen (IntermediateField.fixingSubgroup_isOpen S₀)
   exact Subgroup.finiteIndex_of_finite_quotient
 
-/-- Absolute upper groups over the original normed new base are genuine preimages. -/
+/-- Absolute upper groups over the normed new base are preimages. -/
 theorem comap_upper {u : ℝ} (hu : -1 ≤ u) :
     (absoluteUpperRamificationGroup K u).comap (closureHom K M) =
       absoluteUpperRamificationGroup M (apfPsi K M u) := by
@@ -345,7 +345,7 @@ theorem comap_upper {u : ℝ} (hu : -1 ≤ u) :
 
 variable {N : Type*} [Field N] [Algebra K N] [Algebra M N] [IsScalarTower K M N]
 
-/-- The original old-base embedding induced from a new-base separable embedding. -/
+/-- The old-base embedding induced from a new-base separable embedding. -/
 noncomputable def embedding (i : N →ₐ[M] SeparableClosure M) : N →ₐ[K] SeparableClosure K :=
   ((closureEquiv K M).toAlgHom.comp i).restrictScalars K
 
@@ -355,7 +355,7 @@ omit [IsCompleteDiscreteValuedField K] [IsCompleteDiscreteValuedField M] [Perfec
      [FiniteDimensional K M] [Algebra.IsSeparable K M]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := M)).valuationSubring)] in
-/-- The induced old-base image contains the actual image of the finite new base. -/
+/-- The induced old-base image contains the image of the finite new base. -/
 theorem image_le_embedding (i : N →ₐ[M] SeparableClosure M) :
     S₀ ≤ (embedding K M i).fieldRange := by
   rintro x ⟨y, rfl⟩
@@ -367,7 +367,7 @@ omit [IsCompleteDiscreteValuedField K] [IsCompleteDiscreteValuedField M] [Perfec
     (IsLocalRing.ResidueField (NormedField.valuation (K := K)).valuationSubring)]
      [FiniteDimensional K M] [Algebra.IsSeparable K M]
     [PerfectField (IsLocalRing.ResidueField (NormedField.valuation (K := M)).valuationSubring)] in
-/-- Equivariance identifies the actual two fixing subgroups. -/
+/-- Equivariance identifies the two fixing subgroups. -/
 theorem comap_fixing (i : N →ₐ[M] SeparableClosure M) :
     (embedding K M i).fieldRange.fixingSubgroup.comap (closureHom K M) =
       i.fieldRange.fixingSubgroup := by
@@ -389,7 +389,7 @@ theorem comap_fixing (i : N →ₐ[M] SeparableClosure M) :
     rw [closureHom_apply]
     exact congrArg (closureEquiv K M) (h ⟨i y, AlgHom.mem_fieldRange.mpr ⟨y, rfl⟩⟩)
 
-/-- The actual APF normal product over the abstract base is the old product preimage. -/
+/-- The APF normal product over the abstract base is the old product preimage. -/
 theorem comap_apf (i : N →ₐ[M] SeparableClosure M) {u : ℝ} (hu : -1 ≤ u) :
     (apfSubgroup K (embedding K M i).fieldRange u).comap (closureHom K M) =
       apfSubgroup M i.fieldRange (apfPsi K M u) := by
@@ -403,7 +403,7 @@ theorem comap_apf (i : N →ₐ[M] SeparableClosure M) {u : ℝ} (hu : -1 ≤ u)
 variable [Algebra.IsSeparable K N]
 variable [Algebra.IsSeparable M N]
 
-/-- The abstract original normed base obeys finite-base APF invariance. -/
+/-- The abstract normed base obeys finite-base APF invariance. -/
 theorem isAPF_iff : IsAPF K N ↔ IsAPF M N := by
   obtain ⟨i⟩ := nonempty_separableClosure_embeddings M N
   rw [isAPF_iff_embedding K N (embedding K M i), isAPF_iff_embedding M N i,
@@ -425,7 +425,7 @@ theorem isAPF_iff : IsAPF K N ↔ IsAPF M N := by
     exact h (apfPsi K M u) (IsAPF.apfPsi_mem_Ici K M hu)
 
 omit [Algebra.IsSeparable K N] [Algebra.IsSeparable M N] in
-/-- The original inertia product over the abstract base is an actual preimage. -/
+/-- The inertia product over the abstract base is a preimage. -/
 theorem comap_inertia (i : N →ₐ[M] SeparableClosure M) {u : ℝ} (hu : 0 ≤ u) :
     (apfInertiaSubgroup K (embedding K M i).fieldRange u).comap (closureHom K M) =
       apfInertiaSubgroup M i.fieldRange (apfPsi K M u) := by
@@ -435,7 +435,7 @@ theorem comap_inertia (i : N →ₐ[M] SeparableClosure M) {u : ℝ} (hu : 0 ≤
     apfPsi_zero, ← apfInertiaSubgroup_eq_inf M _ _ hψ]
 
 omit [Algebra.IsSeparable K N] in
-/-- The abstract-base index is the actual relative inertia index factor. -/
+/-- The abstract-base index is the relative inertia index factor. -/
 theorem index_eq_factor (i : N →ₐ[M] SeparableClosure M) {u : ℝ} (hu : 0 ≤ u) :
     apfIndex M N (apfPsi K M u) =
       apfTowerIndexFactor K S₀ (embedding K M i).fieldRange u := by
@@ -450,7 +450,7 @@ theorem index_eq_factor (i : N →ₐ[M] SeparableClosure M) {u : ℝ} (hu : 0 �
       ((S₀).fixingSubgroup ⊓ absoluteUpperRamificationGroup K 0)
       (absoluteUpperRamificationGroup K u)).symm
 
-/-- Actual intrinsic indices factor over the abstract original normed base. -/
+/-- Intrinsic indices factor over the abstract normed base. -/
 theorem index_mul {u : ℝ} (hu : 0 ≤ u) :
     apfIndex K N u = apfIndex K M u * apfIndex M N (apfPsi K M u) := by
   obtain ⟨i⟩ := nonempty_separableClosure_embeddings M N
@@ -466,7 +466,7 @@ theorem index_mul {u : ℝ} (hu : 0 ≤ u) :
 open MeasureTheory Filter
 open scoped ENNReal
 
-/-- The derivative of the actual finite-base composite agrees off a countable set. -/
+/-- The derivative of the finite-base composite agrees off a countable set. -/
 theorem exists_comp_derivative [IsAPF K N] :
     ∃ S : Set ℝ, S.Countable ∧ ∀ u : ℝ, 0 < u → u ∉ S →
       HasDerivAt ((apfPsi M N) ∘ (apfPsi K M)) (apfHerbrandSlope K N u) u := by
@@ -487,7 +487,7 @@ theorem exists_comp_derivative [IsAPF K N] :
     simpa only [Nat.cast_mul, mul_comm] using he'.symm
   simpa only [apfHerbrandSlope, max_eq_left hu.le, max_eq_left hψ, he] using hd
 
-/-- Genuine Herbrand integrals compose over the original normed finite base on all real
+/-- Genuine Herbrand integrals compose over the normed finite base on all real
 parameters. -/
 theorem psi_comp [IsAPF K N] (u : ℝ) :
     apfPsi M N (apfPsi K M u) = apfPsi K N u := by
@@ -506,7 +506,7 @@ theorem psi_comp [IsAPF K N] (u : ℝ) :
   · rw [apfPsi_of_nonpos K M (le_of_not_ge hu),
       apfPsi_of_nonpos M N (le_of_not_ge hu), apfPsi_of_nonpos K N (le_of_not_ge hu)]
 
-/-- The actual strictness ratios satisfy the original finite-base identity. -/
+/-- The strictness ratios satisfy the finite-base identity. -/
 theorem ratio [IsAPF K N] {u : ℝ} (hu : 0 ≤ u) :
     apfStrictnessRatio M N (apfPsi K M u) =
       (apfIndex K M u : ℝ≥0∞) * apfStrictnessRatio K N u := by
@@ -531,7 +531,7 @@ omit [IsCompleteDiscreteValuedField M] [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)]
     [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := M)).valuationSubring)] in
-/-- Finite-base slope stabilization holds for the actual abstract base. -/
+/-- Finite-base slope stabilization holds for the abstract base. -/
 theorem exists_index_constant :
     ∃ C : ℕ, 0 < C ∧ ∃ b : ℝ, 0 ≤ b ∧ ∀ u : ℝ, b ≤ u → apfIndex K M u = C := by
   obtain ⟨C, hC, b, hb, hidx⟩ := exists_apfIndex_finite_constant K S₀
@@ -540,7 +540,7 @@ theorem exists_index_constant :
   rw [apfIndex_algEquiv K M (IsScalarTower.toAlgHom K M (SeparableClosure K)).equivFieldRange]
   exact hidx u hu
 
-/-- The actual strictness lower limits differ by a positive finite multiplier. -/
+/-- The strictness lower limits differ by a positive finite multiplier. -/
 theorem exists_liminf_mul [IsAPF K N] :
     ∃ C : ℕ, 0 < C ∧ liminf (apfStrictnessRatio M N) atTop =
       (C : ℝ≥0∞) * liminf (apfStrictnessRatio K N) atTop := by
@@ -555,7 +555,7 @@ theorem exists_liminf_mul [IsAPF K N] :
   exact (IsAPF.liminf_comp_apfPsi K M
     (apfStrictnessRatio M N)).symm.trans he
 
-/-- Strict APF is invariant over the original abstract compatible normed finite base. -/
+/-- Strict APF is invariant over the abstract compatible normed finite base. -/
 theorem isStrictlyAPF_iff : IsStrictlyAPF K N ↔ IsStrictlyAPF M N := by
   by_cases hN : IsAPF K N
   · have hNM := (isAPF_iff K M).mp ‹_›
@@ -585,7 +585,7 @@ variable (M : Type*) [NontriviallyNormedField M] [IsUltrametricDist M]
 variable (N : Type*) [Field N] [Algebra K N] [Algebra M N]
     [IsScalarTower K M N] [Algebra.IsSeparable K N]
 
-/-- APF is invariant under finite change to any abstract scalar field with its original compatible
+/-- APF is invariant under finite change to any abstract scalar field with its compatible
 norm. -/
 theorem isAPF_finiteBase_iff_of_normedAlgebra :
     letI := normedAlgebra_isCompleteDiscreteValuedField K M
@@ -599,7 +599,7 @@ theorem isAPF_finiteBase_iff_of_normedAlgebra :
   let : IsScalarTower K M (SeparableClosure K) := IsScalarTower.of_algHom i
   exact AbstractFiniteBase.isAPF_iff K M
 
-/-- Actual intrinsic inertia indices factor over any abstract finite compatible normed base. -/
+/-- Intrinsic inertia indices factor over any abstract finite compatible normed base. -/
 theorem apfIndex_eq_mul_finiteBase_of_normedAlgebra {u : ℝ} (hu : 0 ≤ u) :
     letI := normedAlgebra_isCompleteDiscreteValuedField K M
     letI := Algebra.isSeparable_tower_top_of_isSeparable K M N
@@ -625,7 +625,7 @@ theorem IsAPF.apfPsi_finiteBase_comp_of_normedAlgebra [IsAPF K N] (u : ℝ) :
   let : IsScalarTower K M (SeparableClosure K) := IsScalarTower.of_algHom i
   exact AbstractFiniteBase.psi_comp K M u
 
-/-- The actual strictness ratio is preserved with the genuine finite-base inertia factor. -/
+/-- The strictness ratio is preserved with the finite-base inertia factor. -/
 theorem IsAPF.apfStrictnessRatio_finiteBase_of_normedAlgebra
     [IsAPF K N] {u : ℝ} (hu : 0 ≤ u) :
     letI := normedAlgebra_isCompleteDiscreteValuedField K M
@@ -640,7 +640,7 @@ theorem IsAPF.apfStrictnessRatio_finiteBase_of_normedAlgebra
   let : IsScalarTower K M (SeparableClosure K) := IsScalarTower.of_algHom i
   exact AbstractFiniteBase.ratio K M hu
 
-/-- Strict APF is invariant under any abstract finite change of base with its original norm. -/
+/-- Strict APF is invariant under any abstract finite change of base with its norm. -/
 theorem isStrictlyAPF_finiteBase_iff_of_normedAlgebra :
     letI := normedAlgebra_isCompleteDiscreteValuedField K M
     letI := Algebra.isSeparable_tower_top_of_isSeparable K M N

@@ -12,8 +12,8 @@ public import FontaineWintenberger.Ramification.Infinite.Restriction
 /-!
 # The intrinsic Galois APF criterion
 
-Ordinary absolute restriction is onto, with the actual fixing subgroup as
-kernel. Its upper images identify both APF openness and the actual inertia
+Ordinary absolute restriction is onto, with the fixing subgroup as
+kernel. Its upper images identify both APF openness and the inertia
 index with those inside the abstract extension's own Galois group.
 -/
 
@@ -71,7 +71,7 @@ theorem isAPFSubextension_iff_upperInfinite_finiteIndex
 
 variable (L : Type*) [Field L] [Algebra K L] [IsGalois K L]
 
-/-- APF is finite index of every actual upper group inside the abstract Galois group. -/
+/-- APF is finite index of every upper group inside the abstract Galois group. -/
 theorem isAPF_iff_upperInfinite_finiteIndex :
     IsAPF K L ↔ ∀ u : ℝ, -1 ≤ u → (upperRamificationGroupInfinite K L u).FiniteIndex := by
   let i : L →ₐ[K] SeparableClosure K := IsSepClosed.lift
@@ -86,14 +86,14 @@ theorem isAPF_iff_upperInfinite_finiteIndex :
   exact Iff.of_eq (congrArg (fun n : ℕ ↦ n ≠ 0)
     (Subgroup.index_map_equiv (upperRamificationGroupInfinite K L u) i.equivFieldRange.autCongr))
 
-/-- The actual Krull-topological openness criterion for an abstract Galois extension. -/
+/-- The Krull-topological openness criterion for an abstract Galois extension. -/
 theorem isAPF_iff_upperInfinite_isOpen :
     IsAPF K L ↔ ∀ u : ℝ, -1 ≤ u →
       IsOpen (upperRamificationGroupInfinite K L u : Set (L ≃ₐ[K] L)) := by
   simp only [isAPF_iff_upperInfinite_finiteIndex,
     isOpen_upperRamificationGroupInfinite_iff_finiteIndex]
 
-/-- The intrinsic index agrees with the actual upper index, including infinite indices. -/
+/-- The intrinsic index agrees with the upper index, including infinite indices. -/
 theorem apfIndex_eq_upperInfiniteRelIndex {u : ℝ} (hu : 0 ≤ u) :
     apfIndex K L u =
       (upperRamificationGroupInfinite K L u).relIndex (upperRamificationGroupInfinite K L 0) := by

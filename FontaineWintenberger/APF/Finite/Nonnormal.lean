@@ -14,13 +14,13 @@ public import FontaineWintenberger.Ramification.Herbrand.Subgroup
 
 ## Finite non-Galois APF change of parameter
 
-Ordinary restriction to a finite Galois overfield identifies the actual
+Ordinary restriction to a finite Galois overfield identifies the
 fixing subgroup of an arbitrary intermediate field and its inertia coset index.
 
 ## Intrinsic APF functions in an arbitrary finite Galois overfield
 
-An embedding into the separable closure transports actual fixing subgroups
-and upper groups, so the finite nonnormal formulas apply to the original fields.
+An embedding into the separable closure transports fixing subgroups
+and upper groups, so the finite nonnormal formulas apply to the fields.
 -/
 
 @[expose] public section
@@ -37,7 +37,7 @@ local notation "ρ" => AlgEquiv.restrictNormalHom E
 local notation "H₀" => M.fixingSubgroup
 local notation "U₀" => upperRamificationGroup (R := spectralIntegerRing K E) (E ≃ₐ[K] E)
 
-/-- The actual APF product of a nonnormal finite intermediate field is a restriction preimage. -/
+/-- The APF product of a nonnormal finite intermediate field is a restriction preimage. -/
 theorem apfSubgroup_map_eq_comap_sup_upper {u : ℝ} (hu : -1 ≤ u) :
     apfSubgroup K (M.map E.toIntermediateField.val) u =
       (H₀ ⊔ U₀ u).comap ρ := by
@@ -100,7 +100,7 @@ theorem apfIndex_eq_subgroupRelIndex {u : ℝ} (hu : 0 ≤ u) :
   rw [hr]
   exact apfInertiaIndex_map_eq_subgroupRelIndex K E M hu
 
-/-- The actual non-Galois finite APF integral is the subgroup change of parameter. -/
+/-- The non-Galois finite APF integral is the subgroup change of parameter. -/
 theorem apfPsi_eq_subgroup_herbrand_comp_inverse {u : ℝ} (hu : -1 ≤ u) :
     apfPsi K M u = herbrandFunction (R := spectralIntegerRing K E) H₀
       (inverseHerbrandFunction (R := spectralIntegerRing K E) (E ≃ₐ[K] E) u) := by
@@ -116,7 +116,7 @@ theorem apfPsi_eq_subgroup_herbrand_comp_inverse {u : ℝ} (hu : -1 ≤ u) :
     rw [apfIndex_eq_subgroupRelIndex K E M hv.1, upperRamificationGroup_zero,
       lowerRamificationGroup_zero]
 
-/-- The inverse change of parameter uses the same actual finite overfield and subgroup. -/
+/-- The inverse change of parameter uses the same finite overfield and subgroup. -/
 theorem apfPhi_eq_herbrand_comp_subgroup_inverse {v : ℝ} (hv : -1 ≤ v) :
     apfPhi K M v =
       herbrandFunction (R := spectralIntegerRing K E) (E ≃ₐ[K] E)
@@ -137,7 +137,7 @@ section FixingSubgroup
 variable {K L N : Type*} [Field K] [Field L] [Field N]
     [Algebra K L] [Algebra K N]
 
-/-- Conjugation by a field isomorphism carries the actual fixing subgroup
+/-- Conjugation by a field isomorphism carries the fixing subgroup
 to that of the image intermediate field. -/
 theorem fixingSubgroup_map_autCongr (f : L ≃ₐ[K] N) (M : IntermediateField K L) :
     M.fixingSubgroup.map f.autCongr.toMonoidHom =
@@ -169,7 +169,7 @@ variable [PerfectField (IsLocalRing.ResidueField
 variable (L : Type*) [Field L] [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
 variable (M : IntermediateField K L)
 
-/-- The intrinsic index is computed in any actual finite Galois overfield,
+/-- The intrinsic index is computed in any finite Galois overfield,
 without normality of the intermediate field. -/
 theorem apfIndex_eq_subgroupRelIndex_of_finiteGalois {u : ℝ} (hu : 0 ≤ u) :
     apfIndex K M u =
@@ -191,7 +191,7 @@ theorem apfIndex_eq_subgroupRelIndex_of_finiteGalois {u : ℝ} (hu : 0 ≤ u) :
   exact Subgroup.relIndex_map_map_of_injective _ _ e.autCongr.injective
 
 /-- The intrinsic nonnormal change of parameter uses the subgroup of the
-original finite Galois overfield on its original spectral integer ring. -/
+finite Galois overfield on its spectral integer ring. -/
 theorem apfPsi_eq_subgroup_herbrand_comp_inverse_of_finiteGalois
     {u : ℝ} (hu : -1 ≤ u) :
     apfPsi K M u =
@@ -209,7 +209,7 @@ theorem apfPsi_eq_subgroup_herbrand_comp_inverse_of_finiteGalois
     rw [apfIndex_eq_subgroupRelIndex_of_finiteGalois K L M hv.1,
       upperRamificationGroup_zero, lowerRamificationGroup_zero]
 
-/-- The actual inverse change of parameter in any finite Galois overfield. -/
+/-- The inverse change of parameter in any finite Galois overfield. -/
 theorem apfPhi_eq_herbrand_comp_subgroup_inverse_of_finiteGalois
     {v : ℝ} (hv : -1 ≤ v) :
     apfPhi K M v =
@@ -244,8 +244,8 @@ theorem apfSubgroup_fieldRange_index_eq_fixingSubgroup_sup_upper_index
     ← upperRamificationGroup_map_autCongr K e hu, ← Subgroup.map_sup]
   exact Subgroup.index_map_equiv _ e.autCongr
 
-/-- The full-group condition in the source first bound is detected by the
-actual finite fixing subgroup and upper group. -/
+/-- The full-group condition in the first bound is detected by the
+finite fixing subgroup and upper group. -/
 theorem apfSubgroup_fieldRange_eq_top_iff_fixingSubgroup_sup_upper_eq_top
     (j : L →ₐ[K] SeparableClosure K) {u : ℝ} (hu : -1 ≤ u) :
     apfSubgroup K (j.comp M.val).fieldRange u = ⊤ ↔
@@ -254,7 +254,7 @@ theorem apfSubgroup_fieldRange_eq_top_iff_fixingSubgroup_sup_upper_eq_top
   rw [← Subgroup.index_eq_one, ← Subgroup.index_eq_one,
     apfSubgroup_fieldRange_index_eq_fixingSubgroup_sup_upper_index K L M j hu]
 
-/-- The actual extended first bound is the supremum where the finite
+/-- The extended first bound is the supremum where the finite
 fixing-subgroup product is full, including both infinite endpoints. -/
 theorem apfRamificationBound_eq_sSup_fixingSubgroup_sup_upper :
     apfRamificationBound K M = sSup {x : EReal | ∃ u : ℝ, -1 ≤ u ∧

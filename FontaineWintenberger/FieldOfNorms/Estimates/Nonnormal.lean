@@ -11,11 +11,11 @@ public import FontaineWintenberger.FieldOfNorms.Estimates.NormContinuity
 public import FontaineWintenberger.APF.Elementary.TameCompositum
 
 /-!
-# Herbrand continuity for the original nonnormal norm
+# Herbrand continuity for the nonnormal norm
 
-Actual tame base change scales both input precision and the Herbrand modulus
+Tame base change scales both input precision and the Herbrand modulus
 by the same ramification index. Descent therefore preserves the intrinsic
-modulus on the original integer rings, without a normality assumption.
+modulus on the integer rings, without a normality assumption.
 -/
 
 @[expose] public section
@@ -85,7 +85,7 @@ private theorem spectralIntegerInclusion_sub_mem_pow_of_normedTower
   exact sub_mem_pow_of_equiv_commutes g (fun z => algebraMap RF T (f z))
     J hcomm ((IsLocalRing.maximalIdeal T).ramificationIdx RF * r) x y ht
 
-section ActualCompositum
+section Compositum
 
 variable (K Ω : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
     [NontriviallyNormedField Ω] [NormedAlgebra K Ω] [IsUltrametricDist Ω]
@@ -108,7 +108,7 @@ local instance (E : IntermediateField K Ω) : PerfectField (IsLocalRing.ResidueF
     (NormedField.valuation (K := E)).valuationSubring) :=
   normedAlgebra_residueField_perfectField K E
 
-/-- Actual finite-layer integer inclusions multiply integral precision by
+/-- Finite-layer integer inclusions multiply integral precision by
 the ramification index of the same extension on its own integer rings. -/
 theorem spectralIntegerInclusion_sub_mem_pow_ramificationIdx
     (F M : IntermediateField K Ω) (hFM : F ≤ M)
@@ -131,8 +131,8 @@ theorem spectralIntegerInclusion_sub_mem_pow_ramificationIdx
     (IntermediateField.inclusion hFM) (fun _ => rfl) r x y hxy
   exact h
 
-/-- The actual inclusion into the tame compositum multiplies integral
-precision by the same actual ramification index used in Herbrand scaling. -/
+/-- The inclusion into the tame compositum multiplies integral
+precision by the same ramification index used in Herbrand scaling. -/
 theorem spectralIntegerInclusion_sub_mem_wild_compositum_pow
     (F : IntermediateField K Ω) (hFP : F.fixingSubgroup ⊔ P = ⊤)
     (r : ℕ) (x y : spectralIntegerRing K F)
@@ -149,8 +149,8 @@ theorem spectralIntegerInclusion_sub_mem_wild_compositum_pow
   rw [wild_compositum_ramificationIdx_eq K Ω F hFP] at h
   exact h
 
-/-- Tame base change and actual ceiling descent give the intrinsic Herbrand
-modulus for the original fixed field, including the trivial extension. -/
+/-- Tame base change and ceiling descent give the intrinsic Herbrand
+modulus for the fixed field, including the trivial extension. -/
 theorem intNorm_sub_congruence_of_totallyRamified_fixedField
     (p : ℕ) [Fact p.Prime]
     [CharP (IsLocalRing.ResidueField (spectralIntegerRing K Ω)) p]
@@ -202,16 +202,16 @@ theorem intNorm_sub_congruence_of_totallyRamified_fixedField
     (apfPhi K F (r : ℝ))
   simpa only [map_sub] using hdefect ▸ hc
 
-end ActualCompositum
+end Compositum
 
-section OriginalExtension
+section Extension
 
 variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
 
 local notation "R" => Valuation.valuationSubring (NormedField.valuation (K := K))
 
-/-- The original intermediate field need not be normal: its own total
-ramification and prime-power degree give the actual norm continuity modulus. -/
+/-- The intermediate field need not be normal: its own total
+ramification and prime-power degree give the norm continuity modulus. -/
 theorem intNorm_sub_congruence_of_totallyRamified_intermediateField
     (Ω : Type*) [NontriviallyNormedField Ω] [NormedAlgebra K Ω] [IsUltrametricDist Ω]
     [FiniteDimensional K Ω] [IsGalois K Ω]
@@ -266,7 +266,7 @@ private theorem intNorm_sub_congruence_of_algEquiv
   rw [← apfPhi_algEquiv K L e (r : ℝ)] at h
   simpa only [Algebra.intNorm_map_algEquiv] using h
 
-/-- Every original finite separable totally ramified prime-power extension
+/-- Every finite separable totally ramified prime-power extension
 has its intrinsic Herbrand norm modulus, over an arbitrary perfect residue
 field. The trivial extension and zero inputs are included. -/
 theorem intNorm_sub_congruence_of_totallyRamified
@@ -298,6 +298,6 @@ theorem intNorm_sub_congruence_of_totallyRamified
     (fun u v huv => intNorm_sub_congruence_of_totallyRamified_intermediateField
       K Ω p M heM n (hn.trans hd) r u v huv) x y hxy
 
-end OriginalExtension
+end Extension
 
 end FontaineWintenberger

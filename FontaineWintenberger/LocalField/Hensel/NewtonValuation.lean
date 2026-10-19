@@ -9,9 +9,9 @@ public import FontaineWintenberger.LocalField.Hensel.NewtonLifting
 public import FontaineWintenberger.LocalField.Spectral.CompatibleNorm
 
 /-!
-# Newton lifting for the original discrete valuation
+# Newton lifting for the discrete valuation
 
-The compatible norm preserves the original uniformity and the original
+The compatible norm preserves the uniformity and the
 valuation ring. Its comparison equivalence transports the proved Newton
 construction back to the supplied valuation, including the exact distance.
 -/
@@ -25,7 +25,7 @@ namespace FontaineWintenberger
 variable (K : Type*) [Field K] (Γ : Type*) [LinearOrderedCommGroupWithZero Γ]
 variable [val : Valued K Γ] [Valuation.IsRankOneDiscrete val.v] [CompleteSpace K]
 
-/-- Newton lifting for the supplied discrete valuation and its actual integer
+/-- Newton lifting for the supplied discrete valuation and its integer
 ring, without any unit-derivative or residue-field finiteness assumption. -/
 theorem discreteValued_hensel_nonunit (f : Polynomial val.v.valuationSubring)
     (z : val.v.valuationSubring)
@@ -67,7 +67,7 @@ theorem discreteValued_hensel_nonunit (f : Polynomial val.v.valuationSubring)
   · intro b hb hbz
     exact huniq b hb ((hlt _ _).mpr hbz)
 
-/-- The original associated additive valuation formulation: the residual
+/-- The associated additive valuation formulation: the residual
 value exceeds twice the derivative value, and the root has exactly their
 difference as its distance value. The zero-residual case is included. -/
 theorem discreteValued_hensel_nonunit_additive (f : Polynomial val.v.valuationSubring)
@@ -100,8 +100,8 @@ namespace FontaineWintenberger
 variable (K : Type*) [Field K] (Γ : Type*) [LinearOrderedCommGroupWithZero Γ]
 variable [val : Valued K Γ] [Valuation.IsRankOneDiscrete val.v] [CompleteSpace K]
 
-/-- The original Newton root is unique among all ambient field elements.
-Closeness forces any competing root into the original integer ring. -/
+/-- The Newton root is unique among all ambient field elements.
+Closeness forces any competing root into the integer ring. -/
 theorem discreteValued_hensel_nonunit_ambient (f : Polynomial val.v.valuationSubring)
     (z : val.v.valuationSubring)
     (hz : val.v (↑(f.eval z) : K) < val.v (↑(f.derivative.eval z) : K) ^ 2) :
@@ -137,8 +137,8 @@ theorem discreteValued_hensel_nonunit_ambient (f : Polynomial val.v.valuationSub
       exact hb
     exact congrArg (fun x : val.v.valuationSubring => (x : K)) (huniq b₀ hb₀ hbz)
 
-/-- Literal additive Newton statement with uniqueness over the entire
-original field, including exact distance and derivative-value preservation. -/
+/-- Additive Newton statement with uniqueness over the entire
+field, including exact distance and derivative-value preservation. -/
 theorem discreteValued_hensel_nonunit_ambient_additive (f : Polynomial val.v.valuationSubring)
     (z : val.v.valuationSubring)
     (hz : (2 : ℕ) • (Valuation.toAddValuation val.v) (↑(f.derivative.eval z) : K) <

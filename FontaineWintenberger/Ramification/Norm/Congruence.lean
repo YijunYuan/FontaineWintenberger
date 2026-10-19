@@ -17,7 +17,7 @@ public import Mathlib.RingTheory.Norm.Transitivity
 # Norm congruence in prime degree
 
 The middle subsets in the product expansion form free orbits under left
-translation. Each orbit contributes an actual trace of an integral element.
+translation. Each orbit contributes a trace of an integral element.
 -/
 
 @[expose] public section
@@ -159,7 +159,7 @@ private theorem prod_add_sub_eq_sum_middle (G B : Type*)
   linear_combination -hsum - hsum'
 
 /-- For a prime-order action, the defect of multiplicativity across addition
-is a genuine transfer of an element of the same ring. -/
+is a transfer of an element of the same ring. -/
 theorem exists_prod_add_sub_eq_sum_smul (G B : Type*)
     [Group G] [Fintype G] [Fact (Nat.card G).Prime]
     [CommRing B] [MulSemiringAction G B] (α β : B) :
@@ -172,7 +172,7 @@ theorem exists_prod_add_sub_eq_sum_smul (G B : Type*)
     (fun g s => subsetMonomial_smul G B α β g s.val) ⊤ (fun _ => trivial)
   exact ⟨z, (prod_add_sub_eq_sum_middle G B α β).trans hz⟩
 
-/-- The actual transfer representative stays in any stable ideal containing
+/-- The transfer representative stays in any stable ideal containing
 one input. This controls the precision of the prime norm defect. -/
 theorem exists_prod_add_sub_eq_sum_smul_mem (G B : Type*)
     [Group G] [Fintype G] [Fact (Nat.card G).Prime]
@@ -199,8 +199,8 @@ local notation "OK" => Valuation.valuationSubring (NormedField.valuation (K := K
 local notation "OL" => spectralIntegerRing K L
 local notation "GL" => L ≃ₐ[K] L
 
-/-- The integral norm on the original spectral integers is the product
-over the original full field Galois action. -/
+/-- The integral norm on the spectral integers is the product
+over the full field Galois action. -/
 theorem spectralIntegerRing_algebraMap_intNorm_eq_prod (x : OL) :
     algebraMap OK OL (Algebra.intNorm OK OL x) = ∏ g : GL, g • x := by
   apply FaithfulSMul.algebraMap_injective OL L
@@ -209,7 +209,7 @@ theorem spectralIntegerRing_algebraMap_intNorm_eq_prod (x : OL) :
     Algebra.norm_eq_prod_automorphisms, map_prod]
   rfl
 
-/-- The integral trace is the transfer under the same actual field action. -/
+/-- The integral trace is the transfer under the same field action. -/
 theorem spectralIntegerRing_algebraMap_intTrace_eq_sum (x : OL) :
     algebraMap OK OL (Algebra.intTrace OK OL x) = ∑ g : GL, g • x := by
   apply FaithfulSMul.algebraMap_injective OL L
@@ -218,7 +218,7 @@ theorem spectralIntegerRing_algebraMap_intTrace_eq_sum (x : OL) :
     trace_eq_sum_automorphisms, map_sum]
   rfl
 
-/-- The actual integral norm defect in prime degree is the actual trace
+/-- The integral norm defect in prime degree is the trace
 of an element of the same integral closure. -/
 theorem spectralIntegerRing_exists_intNorm_add_sub_eq_intTrace
     (hp : (Module.finrank K L).Prime) (α β : OL) :
@@ -231,7 +231,7 @@ theorem spectralIntegerRing_exists_intNorm_add_sub_eq_intTrace
   simpa only [map_sub, spectralIntegerRing_algebraMap_intNorm_eq_prod,
     spectralIntegerRing_algebraMap_intTrace_eq_sum] using hz
 
-/-- The actual prime-degree trace representative retains every prescribed
+/-- The prime-degree trace representative retains every prescribed
 maximal-ideal power of the first input. -/
 theorem spectralIntegerRing_exists_intNorm_add_sub_eq_intTrace_mem_pow
     (hp : (Module.finrank K L).Prime) (r : ℕ) (α β : OL)
@@ -251,7 +251,7 @@ theorem spectralIntegerRing_exists_intNorm_add_sub_eq_intTrace_mem_pow
   simpa only [map_sub, spectralIntegerRing_algebraMap_intNorm_eq_prod,
     spectralIntegerRing_algebraMap_intTrace_eq_sum] using hz
 
-/-- The difference of two actual integral norms has a controlled trace
+/-- The difference of two integral norms has a controlled trace
 error after the norm of their difference is removed. -/
 theorem spectralIntegerRing_intNorm_sub_sub_mem_intTraceIdeal_pow
     (hp : (Module.finrank K L).Prime) (r : ℕ) (α β : OL)
@@ -267,7 +267,7 @@ theorem spectralIntegerRing_intNorm_sub_sub_mem_intTraceIdeal_pow
   rw [he, intTraceIdeal, Submodule.mem_map]
   exact ⟨z, hzI, rfl⟩
 
-/-- The congruence uses the actual trace ideal, without a residue-field
+/-- The congruence uses the trace ideal, without a residue-field
 finiteness, total-ramification, or characteristic-zero assumption. -/
 theorem spectralIntegerRing_intNorm_add_sub_mem_intTraceIdeal
     (hp : (Module.finrank K L).Prime) (α β : OL) :

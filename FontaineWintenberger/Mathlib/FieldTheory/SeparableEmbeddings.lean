@@ -9,9 +9,9 @@ public import Mathlib.FieldTheory.Normal.Basic
 public import Mathlib.FieldTheory.IsSepClosed
 
 /-!
-# Extension of embeddings in the actual separable closure
+# Extension of embeddings in the separable closure
 
-The canonical normal-extension lifting theorem gives actual automorphisms
+The canonical normal-extension lifting theorem gives automorphisms
 extending embeddings of intermediate fields. Separably closed targets receive
 every separable algebraic extension through the existing lifting theorem.
 -/
@@ -22,8 +22,8 @@ noncomputable section
 
 namespace FontaineWintenberger
 
-/-- An embedding of an actual intermediate field extends to an actual
-automorphism of the original normal algebraic ambient field. -/
+/-- An embedding of an intermediate field extends to an
+automorphism of the normal algebraic ambient field. -/
 theorem exists_aut_extends_intermediate_embedding (K Ω : Type*) [Field K] [Field Ω]
     [Algebra K Ω] [Normal K Ω] (S : IntermediateField K Ω) (i : S →ₐ[K] Ω) :
     ∃ σ : Ω ≃ₐ[K] Ω, ∀ x : S, σ (x : Ω) = i x := by
@@ -40,7 +40,7 @@ theorem exists_aut_extends_separableClosure_embedding (K : Type*) [Field K]
   exists_aut_extends_intermediate_embedding K (SeparableClosure K) S i
 
 /-- Every separable algebraic extension embeds into any separably closed
-extension of its original base. -/
+extension of its base. -/
 theorem nonempty_separablyClosed_embeddings (K L Ω : Type*) [Field K] [Field L]
     [Field Ω] [Algebra K L] [Algebra K Ω] [Algebra.IsSeparable K L] [IsSepClosed Ω] :
     Nonempty (L →ₐ[K] Ω) := ⟨IsSepClosed.lift⟩

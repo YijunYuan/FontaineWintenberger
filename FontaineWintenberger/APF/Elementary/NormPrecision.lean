@@ -14,11 +14,11 @@ public import FontaineWintenberger.APF.Elementary.PrimeDegree
 
 ## Finite-precision norm congruences in towers
 
-The actual normalized norm valuation preserves every nonnegative precision.
-An actual addition congruence consequently respects input congruence and
+The normalized norm valuation preserves every nonnegative precision.
+An addition congruence consequently respects input congruence and
 composes through a finite tower by transitivity of integral norms.
 
-## The common integer precision of actual prime-degree norms
+## The common integer precision of prime-degree norms
 
 The integral break gives the exact trace-ideal precision. Euclidean division
 shows that this precision dominates the nonnegative ceiling of `(p-1)b/p`
@@ -41,7 +41,7 @@ variable [PerfectField (IsLocalRing.ResidueField
 local notation "OK" => Valuation.valuationSubring (NormedField.valuation (K := K))
 local notation "OL" => spectralIntegerRing K L
 
-/-- A genuine prime-degree producer supplies the ideal-power addition
+/-- A prime-degree producer supplies the ideal-power addition
 congruence used in the tower step, at the exact trace-ideal precision. -/
 theorem spectralIntegerRing_prime_degree_norm_add_congruence
     (hp : (Module.finrank K L).Prime)
@@ -104,7 +104,7 @@ variable (L : Type*) [Field L] [Algebra K L] [FiniteDimensional K L] [IsGalois K
 local notation "R" => Valuation.valuationSubring (NormedField.valuation (K := K))
 local notation "S" => spectralIntegerRing K L
 
-/-- Actual prime-degree norm congruence at every common intrinsic lower bound. -/
+/-- Prime-degree norm congruence at every common intrinsic lower bound. -/
 theorem spectralIntegerRing_prime_norm_add_congruence_of_bound
     (p : ℕ) [Fact p.Prime] (hd : Module.finrank K L = p)
     (he : (IsLocalRing.maximalIdeal S).ramificationIdx R = Module.finrank K L)

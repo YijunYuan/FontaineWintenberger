@@ -11,10 +11,10 @@ public import Mathlib.GroupTheory.Perm.Cycle.Type
 public import Mathlib.Algebra.CharP.Reduced
 
 /-!
-# The actual tame inertia homomorphism
+# The tame inertia homomorphism
 
-The unit ratio of an automorphism applied to a uniformizer gives a residue
-unit. On actual inertia this is multiplicative, and its kernel is the first
+The unit ratio of an automorphism applied to an uniformizer gives a residue
+unit. On inertia this is multiplicative, and its kernel is the first
 lower ramification group.
 -/
 
@@ -27,7 +27,7 @@ noncomputable section
 variable {B : Type*} [CommRing B] [IsDomain B] [IsDiscreteValuationRing B]
 variable (G : Type*) [Group G] [MulSemiringAction G B]
 
-/-- The actual unit by which a ring automorphism multiplies a uniformizer. -/
+/-- The unit by which a ring automorphism multiplies an uniformizer. -/
 def uniformizerRatio {π : B} (hπ : Irreducible π) (g : G) : Bˣ :=
   (IsDiscreteValuationRing.associated_of_irreducible B hπ
     (hπ.map (MulSemiringAction.toRingEquiv G B g))).choose
@@ -56,7 +56,7 @@ theorem coe_uniformizerRatio_mul {π : B} (hπ : Irreducible π) (g h : G) :
       exact map_mul (MulSemiringAction.toRingHom G B g) _ _
     _ = _ := by rw [← mul_uniformizerRatio G hπ g]; ring
 
-/-- Inertia fixes every actual residue class. -/
+/-- Inertia fixes every residue class. -/
 theorem residue_smul_eq_of_mem_lower_zero {g : G}
     (hg : g ∈ lowerRamificationGroup G (IsLocalRing.maximalIdeal B) 0) (x : B) :
     IsLocalRing.residue B (g • x) = IsLocalRing.residue B x := by
@@ -65,7 +65,7 @@ theorem residue_smul_eq_of_mem_lower_zero {g : G}
   rw [← map_sub]
   exact Ideal.Quotient.eq_zero_iff_mem.mpr (hg x)
 
-/-- The actual tame inertia homomorphism to units of the actual residue field. -/
+/-- The tame inertia homomorphism to units of the residue field. -/
 def tameInertiaHom {π : B} (hπ : Irreducible π) :
     lowerRamificationGroup G (IsLocalRing.maximalIdeal B) 0 →*
       (IsLocalRing.ResidueField B)ˣ where
@@ -111,7 +111,7 @@ theorem tameInertiaHom_coe {π : B} (hπ : Irreducible π)
     (tameInertiaHom G hπ g : IsLocalRing.ResidueField B) =
       IsLocalRing.residue B (uniformizerRatio G hπ g : B) := rfl
 
-/-- A uniformizer multiple has the next ideal-power order exactly when its
+/-- An uniformizer multiple has the next ideal-power order exactly when its
 remaining factor has the preceding order. -/
 private theorem uniformizer_mul_mem_pow_two {π x : B} (hπ : Irreducible π) :
     π * x ∈ IsLocalRing.maximalIdeal B ^ 2 ↔ x ∈ IsLocalRing.maximalIdeal B := by
@@ -128,7 +128,7 @@ variable (p : ℕ) [Fact p.Prime] [CharP (IsLocalRing.ResidueField B) p]
     [PerfectField (IsLocalRing.ResidueField B)]
 
 include p in
-/-- The actual residue-unit kernel is precisely the first lower group inside inertia. -/
+/-- The residue-unit kernel is precisely the first lower group inside inertia. -/
 theorem ker_tameInertiaHom {π : B} (hπ : Irreducible π) :
     (tameInertiaHom G hπ).ker =
       (lowerRamificationGroup G (IsLocalRing.maximalIdeal B) 1).subgroupOf
@@ -150,7 +150,7 @@ theorem ker_tameInertiaHom {π : B} (hπ : Irreducible π) :
     IsLocalRing.residue B ((uniformizerRatio G hπ g : B) - 1) = 0
   rw [map_sub, map_one, sub_eq_zero]
 
-/-- The actual tame quotient is the actual finite residue-unit image. -/
+/-- The tame quotient is the finite residue-unit image. -/
 def tameInertiaQuotientEquiv {π : B} (hπ : Irreducible π) :
     (lowerRamificationGroup G (IsLocalRing.maximalIdeal B) 0) ⧸
       (lowerRamificationGroup G (IsLocalRing.maximalIdeal B) 1).subgroupOf
@@ -173,7 +173,7 @@ theorem isCyclic_tameInertiaQuotient [Finite G] :
   exact isCyclic_of_injective e.toMonoidHom e.injective
 
 include p in
-/-- The order of the actual tame inertia quotient is prime to the residue characteristic. -/
+/-- The order of the tame inertia quotient is prime to the residue characteristic. -/
 theorem coprime_card_tameInertiaQuotient [Finite G] :
     Nat.Coprime p
       (Nat.card ((lowerRamificationGroup G (IsLocalRing.maximalIdeal B) 0) ⧸

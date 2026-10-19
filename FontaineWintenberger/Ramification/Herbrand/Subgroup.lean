@@ -13,12 +13,12 @@ public import Mathlib.Analysis.Calculus.Deriv.Comp
 
 ## Herbrand change of parameter for arbitrary subgroups
 
-The subgroup is allowed to be nonnormal. Its actual lower groups determine
+The subgroup is allowed to be nonnormal. Its lower groups determine
 its Herbrand function on the same valuation ring as the ambient action.
 
-## The first upper break of an actual finite fixing subgroup
+## The first upper break of a finite fixing subgroup
 
-The least integer lower failure and the actual Herbrand inverse supply a
+The least integer lower failure and the Herbrand inverse supply a
 finite, attained, nonnegative upper break, without prime degree or normality.
 -/
 
@@ -34,7 +34,7 @@ local notation "I₀" => lowerRamificationGroup G (IsLocalRing.maximalIdeal R) 0
 local notation "A₀" => (H ⊓ I₀ : Subgroup G)
 local notation "U₀" => upperRamificationGroup (R := R) G
 
-/-- The actual subgroup lower group has the cardinality of the ambient intersection. -/
+/-- The subgroup lower group has the cardinality of the ambient intersection. -/
 theorem card_lowerRamificationGroupReal_subgroup (t : ℝ) :
     Nat.card (lowerRamificationGroupReal H (IsLocalRing.maximalIdeal R) t) =
       Nat.card ↥(H ⊓ lowerRamificationGroupReal G (IsLocalRing.maximalIdeal R) t) := by
@@ -46,7 +46,7 @@ theorem card_lowerRamificationGroupReal_subgroup (t : ℝ) :
       right_inv := fun _ => rfl }
   exact Nat.card_congr e
 
-/-- The inertia group of the restricted action is the actual intersection. -/
+/-- The inertia group of the restricted action is the intersection. -/
 theorem card_lowerRamificationGroup_zero_subgroup :
     Nat.card (lowerRamificationGroup H (IsLocalRing.maximalIdeal R) 0) = Nat.card A₀ := by
   simpa only [lowerRamificationGroupReal_intCast] using
@@ -83,7 +83,7 @@ theorem subgroup_upperRelIndex_mul_card {u : ℝ} (hu : 0 ≤ u) :
         Nat.card ↥(H ⊓ U₀ u) := by ring
     _ = _ := by rw [hm, hcard']
 
-/-- The subgroup cardinalities give the actual chain-rule slope. -/
+/-- The subgroup cardinalities give the chain-rule slope. -/
 theorem subgroup_herbrand_slope_mul {u : ℝ} (hu : 0 ≤ u) :
     ((Nat.card (lowerRamificationGroupReal H (IsLocalRing.maximalIdeal R)
         (inverseHerbrandFunction (R := R) G u)) : ℝ) /
@@ -99,7 +99,7 @@ theorem subgroup_herbrand_slope_mul {u : ℝ} (hu : 0 ≤ u) :
   field_simp
   nlinarith
 
-/-- Indices of these actual subgroups are positive because the ambient group is finite. -/
+/-- Indices of these subgroups are positive because the ambient group is finite. -/
 theorem subgroup_upperRelIndex_pos (u : ℝ) : 0 < (A₀ ⊔ U₀ u).relIndex I₀ := by
   exact Nat.card_pos
 
@@ -120,7 +120,7 @@ theorem subgroup_upperRelIndex_monotoneOn :
   exact Nat.le_of_dvd (subgroup_upperRelIndex_pos (R := R) G H v)
     (dvd_of_mul_left_eq _ hmul)
 
-/-- The actual subgroup index is integrable on every nonnegative compact interval. -/
+/-- The subgroup index is integrable on every nonnegative compact interval. -/
 theorem intervalIntegrable_subgroup_upperRelIndex {u : ℝ} (hu : 0 ≤ u) :
     IntervalIntegrable (fun v : ℝ => ((A₀ ⊔ U₀ v).relIndex I₀ : ℝ))
       MeasureTheory.volume 0 u := by
@@ -131,7 +131,7 @@ theorem intervalIntegrable_subgroup_upperRelIndex {u : ℝ} (hu : 0 ≤ u) :
 
 variable [FaithfulSMul G R]
 
-/-- The nonnormal subgroup composite has the actual finite-index slope off finitely many points. -/
+/-- The nonnormal subgroup composite has the finite-index slope off finitely many points. -/
 theorem exists_subgroup_herbrand_comp_derivative_breaks :
     ∃ S : Finset ℝ, ∀ u : ℝ, 0 < u → u ∉ S →
       HasDerivAt
@@ -156,7 +156,7 @@ theorem exists_subgroup_herbrand_comp_derivative_breaks :
   rw [subgroup_herbrand_slope_mul G H hu.le] at hd
   exact hd
 
-/-- The finite Herbrand subgroup composite is the integral of actual coset indices. -/
+/-- The finite Herbrand subgroup composite is the integral of coset indices. -/
 theorem subgroup_herbrandFunction_comp_inverse_eq_integral {u : ℝ} (hu : 0 ≤ u) :
     herbrandFunction (R := R) H (inverseHerbrandFunction (R := R) G u) =
       ∫ v in (0 : ℝ)..u, ((A₀ ⊔ U₀ v).relIndex I₀ : ℝ) := by
@@ -194,7 +194,7 @@ variable (H : Subgroup G)
 local notation "I₀" => lowerRamificationGroup G (IsLocalRing.maximalIdeal R) 0
 local notation "U" => upperRamificationGroup (R := R) G
 
-/-- The actual first fixing-product failure has a finite nonnegative upper
+/-- The first fixing-product failure has a finite nonnegative upper
 endpoint, included by the canonical lower ceiling convention. -/
 theorem exists_first_upper_break_of_fixingSubgroup
     (hH : H ≠ ⊤) (hzero : H ⊔ I₀ = ⊤) :

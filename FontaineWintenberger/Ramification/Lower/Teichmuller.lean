@@ -14,7 +14,7 @@ public import Mathlib.RingTheory.Teichmuller
 # Multiplicative representatives of arbitrary perfect residue fields
 
 The canonical section is Mathlib's Teichmüller limit, applied to the
-perfection of the actual residue field. No finite residue field is assumed.
+perfection of the residue field. No finite residue field is assumed.
 -/
 
 @[expose] public section
@@ -30,7 +30,7 @@ variable (p : ℕ) [Fact p.Prime] [CharP (IsLocalRing.ResidueField R) p]
     [IsAdicComplete (IsLocalRing.maximalIdeal R) R]
 
 /-- Reduction is injective on multiplicative maps from a perfect monoid
-into the actual adically complete ring. This is the uniqueness in the
+into the adically complete ring. This is the uniqueness in the
 canonical Teichmüller limit, using Mathlib's perfection equivalence. -/
 theorem residue_comp_monoidHom_injective (A : Type*) [CommMonoid A] [PerfectRing A p] :
     Function.Injective (fun s : A →* R => (IsLocalRing.residue R).toMonoidHom.comp s) := by
@@ -49,7 +49,7 @@ theorem residue_comp_monoidHom_injective (A : Type*) [CommMonoid A] [PerfectRing
 
 variable [PerfectField (IsLocalRing.ResidueField R)]
 
-/-- The canonical multiplicative representatives of the actual perfect
+/-- The canonical multiplicative representatives of the perfect
 residue field, constructed by Mathlib's Teichmüller limit. -/
 def residueTeichmuller : IsLocalRing.ResidueField R →*₀ R := by
   letI : CharP (R ⧸ IsLocalRing.maximalIdeal R) p :=
@@ -57,7 +57,7 @@ def residueTeichmuller : IsLocalRing.ResidueField R →*₀ R := by
   exact (Perfection.teichmuller₀ p (IsLocalRing.maximalIdeal R)).comp
     (PerfectionMap.id p (IsLocalRing.ResidueField R)).equiv.toMonoidWithZeroHom
 
-/-- The canonical representatives reduce to the original residue class. -/
+/-- The canonical representatives reduce to the residue class. -/
 @[simp]
 theorem residue_residueTeichmuller (x : IsLocalRing.ResidueField R) :
     IsLocalRing.residue R (residueTeichmuller R p x) = x := by
@@ -69,7 +69,7 @@ theorem residue_residueTeichmuller (x : IsLocalRing.ResidueField R) :
     (show Perfection (R ⧸ IsLocalRing.maximalIdeal R) p from
       (PerfectionMap.id p (IsLocalRing.ResidueField R)).equiv x)).trans rfl
 
-/-- There is only one multiplicative section of the actual reduction. -/
+/-- There is only one multiplicative section of the reduction. -/
 theorem residueTeichmuller_unique (s : IsLocalRing.ResidueField R →*₀ R)
     (hs : ∀ x, IsLocalRing.residue R (s x) = x) : s = residueTeichmuller R p := by
   have h : s.toMonoidHom = (residueTeichmuller R p).toMonoidHom :=
@@ -83,7 +83,7 @@ theorem residueTeichmuller_pow (x : IsLocalRing.ResidueField R) (n : ℕ) :
     residueTeichmuller R p (x ^ n) = residueTeichmuller R p x ^ n :=
   map_pow (residueTeichmuller R p) x n
 
-/-- Zero and one are the actual zero and one representatives. -/
+/-- Zero and one are the zero and one representatives. -/
 @[simp]
 theorem residueTeichmuller_zero : residueTeichmuller R p 0 = 0 :=
   map_zero (residueTeichmuller R p)
@@ -98,7 +98,7 @@ theorem residueTeichmuller_frobenius (x : IsLocalRing.ResidueField R) :
   residueTeichmuller_pow R p x p
 
 /-- The canonical section is the same canonical limit of powers of arbitrary
-lifts of inverse Frobenius coordinates used in the source construction. -/
+lifts of inverse Frobenius coordinates used in the construction. -/
 theorem residueTeichmuller_sModEq (x : IsLocalRing.ResidueField R) (n : ℕ) (y : R)
     (hy : IsLocalRing.residue R y = Perfection.coeff (IsLocalRing.ResidueField R) p n
       ((PerfectionMap.id p (IsLocalRing.ResidueField R)).equiv x)) :
@@ -115,7 +115,7 @@ variable (S : Type*) [CommRing S] [IsLocalRing S]
     [CharP (IsLocalRing.ResidueField S) p] [PerfectField (IsLocalRing.ResidueField S)]
     [IsAdicComplete (IsLocalRing.maximalIdeal S) S]
 
-/-- Every original local ring map commutes with canonical multiplicative
+/-- Every local ring map commutes with canonical multiplicative
 representatives; continuity is supplied by adic uniqueness itself. -/
 theorem residueTeichmuller_naturality (f : R →+* S) [IsLocalHom f]
     (x : IsLocalRing.ResidueField R) :
@@ -144,7 +144,7 @@ local notation "p" => residueChar K
 variable (E : Type*) [Field E] [Algebra K E] [FiniteDimensional K E]
     [Algebra.IsSeparable K E]
 
-/-- The actual finite spectral integer ring is complete for its actual
+/-- The finite spectral integer ring is complete for its
 maximal ideal, by the already proved unit-ball adic completeness. -/
 instance spectralIntegerRing_isAdicComplete :
     IsAdicComplete (IsLocalRing.maximalIdeal (spectralIntegerRing K E))
@@ -162,31 +162,31 @@ instance spectralIntegerRing_isAdicComplete :
     exact spectralIntegerRing_isDiscreteValuationRing K E
   exact unitBall_isAdicComplete E
 
-/-- The actual finite spectral residue extension of a perfect base is perfect. -/
+/-- The finite spectral residue extension of a perfect base is perfect. -/
 instance spectralResidueField_perfectField :
     PerfectField (IsLocalRing.ResidueField (spectralIntegerRing K E)) :=
   Algebra.IsAlgebraic.perfectField
     (IsLocalRing.ResidueField (NormedField.valuation (K := K)).valuationSubring)
 
-/-- The actual finite residue inclusion preserves the residue characteristic. -/
+/-- The finite residue inclusion preserves the residue characteristic. -/
 instance spectralResidueField_charP :
     CharP (IsLocalRing.ResidueField (spectralIntegerRing K E)) p :=
   charP_of_injective_algebraMap
     (algebraMap (IsLocalRing.ResidueField (NormedField.valuation (K := K)).valuationSubring)
       (IsLocalRing.ResidueField (spectralIntegerRing K E))).injective p
 
-/-- The canonical multiplicative representatives in the actual finite
+/-- The canonical multiplicative representatives in the finite
 spectral integer ring, with arbitrary perfect residue field. -/
 def spectralTeichmuller : IsLocalRing.ResidueField (spectralIntegerRing K E) →*₀
     spectralIntegerRing K E := residueTeichmuller (spectralIntegerRing K E) p
 
-/-- The actual original finite representative has the specified residue. -/
+/-- The finite representative has the specified residue. -/
 @[simp]
 theorem residue_spectralTeichmuller (x : IsLocalRing.ResidueField (spectralIntegerRing K E)) :
     IsLocalRing.residue _ (spectralTeichmuller K E x) = x :=
   residue_residueTeichmuller (spectralIntegerRing K E) p x
 
-/-- The actual finite representatives are the unique multiplicative section. -/
+/-- The finite representatives are the unique multiplicative section. -/
 theorem spectralTeichmuller_unique
     (s : IsLocalRing.ResidueField (spectralIntegerRing K E) →*₀ spectralIntegerRing K E)
     (hs : ∀ x, IsLocalRing.residue _ (s x) = x) : s = spectralTeichmuller K E :=
@@ -195,8 +195,8 @@ theorem spectralTeichmuller_unique
 variable {F : Type*} [Field F] [Algebra K F] [FiniteDimensional K F]
     [Algebra.IsSeparable K F]
 
-/-- The canonical representatives commute with the actual original finite
-valued-field inclusions and their actual induced residue inclusions. -/
+/-- The canonical representatives commute with the finite
+valued-field inclusions and their induced residue inclusions. -/
 theorem spectralTeichmuller_naturality (i : E →ₐ[K] F)
     (x : IsLocalRing.ResidueField (spectralIntegerRing K E)) :
     spectralIntegerInclusion K i (spectralTeichmuller K E x) =
@@ -206,7 +206,7 @@ theorem spectralTeichmuller_naturality (i : E →ₐ[K] F)
   exact residueTeichmuller_naturality (spectralIntegerRing K E) p
     (spectralIntegerRing K F) (spectralIntegerInclusion K i).toRingHom x
 
-/-- The same naturality statement holds as an equality in the original field. -/
+/-- The same naturality statement holds as an equality in the field. -/
 theorem coe_spectralTeichmuller_naturality (i : E →ₐ[K] F)
     (x : IsLocalRing.ResidueField (spectralIntegerRing K E)) :
     i (spectralTeichmuller K E x : E) =

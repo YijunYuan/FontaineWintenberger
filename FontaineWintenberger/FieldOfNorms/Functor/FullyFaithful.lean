@@ -12,16 +12,16 @@ public import FontaineWintenberger.Mathlib.FieldTheory.SeparableEmbeddings
 /-!
 # Full faithfulness of the field of norms functor
 
-## Full faithfulness for original finite separable norm-field maps
+## Full faithfulness for finite separable norm-field maps
 
-The actual relative Galois equivalences and their original-family formulas
-reflect stabilizers. Extending actual embeddings to a common finite Galois
+The relative Galois equivalences and their original-family formulas
+reflect stabilizers. Extending embeddings to a common finite Galois
 overfield then gives the full finite Hom correspondence.
 
-## Full faithfulness of the original finite separable norm-field functor
+## Full faithfulness of the finite separable norm-field functor
 
-Finite relative embeddings commute with composition. Inside an actual common
-finite Galois overfield, the proved Galois Hom correspondence and original
+Finite relative embeddings commute with composition. Inside a common
+finite Galois overfield, the proved Galois Hom correspondence and
 fixed fields reflect factorization through each intermediate field.
 -/
 
@@ -37,8 +37,8 @@ variable (K L : Type*) {M N : Type*} [Field K] [Field L] [Field M] [Field N]
     [Algebra K L] [Algebra K M] [Algebra K N] [Algebra L M] [Algebra L N]
     [IsScalarTower K L M] [IsScalarTower K L N] [Module.Finite L N]
 
-/-- Finiteness of the original target over the common base produces
-finiteness over the actual image of every relative embedding. -/
+/-- Finiteness of the target over the common base produces
+finiteness over the image of every relative embedding. -/
 theorem moduleFinite_relativeEmbedding_fieldRange (φ : M →ₐ[L] N) :
     Module.Finite (φ.restrictScalars K).fieldRange N := by
   let τ := φ.restrictScalars K
@@ -52,8 +52,8 @@ theorem moduleFinite_relativeEmbedding_fieldRange (φ : M →ₐ[L] N) :
   exact moduleFinite_algebraMap_fieldRange K M N
 
 omit [Module.Finite L N] in
-/-- Separability of the original target produces separability over the
-same actual image of every relative embedding. -/
+/-- Separability of the target produces separability over the
+same image of every relative embedding. -/
 theorem isSeparable_relativeEmbedding_fieldRange [Algebra.IsSeparable K N]
     (φ : M →ₐ[L] N) : Algebra.IsSeparable (φ.restrictScalars K).fieldRange N := by
   let τ := φ.restrictScalars K
@@ -77,7 +77,7 @@ variable (K L M N : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalFie
 local notation "p" => residueChar K
 
 omit [IsScalarTower K L M] in
-/-- The original action reflects the actual intermediate-field stabilizer.
+/-- The action reflects the intermediate-field stabilizer.
 The reverse inclusion uses the full proved relative Galois equivalence. -/
 theorem FieldOfNorms.map_fixes_finiteFieldOfNormsMap_iff
     [IsAPF K M] [IsAPF K N]
@@ -113,8 +113,8 @@ theorem FieldOfNorms.map_fixes_finiteFieldOfNormsMap_iff
     exact FieldOfNorms.map_finiteFieldOfNormsMap_relative K M N τ
 
 omit [IsScalarTower K L M] in
-/-- Equality of the original norm-field restrictions reflects equality of
-restrictions on the original intermediate field. -/
+/-- Equality of the norm-field restrictions reflects equality of
+restrictions on the intermediate field. -/
 theorem FieldOfNorms.map_eq_on_finiteFieldOfNormsMap_iff
     [IsAPF K M] [IsAPF K N]
     [Fact (¬ Module.Finite K M)] [Fact (¬ Module.Finite K N)]
@@ -151,8 +151,8 @@ theorem FieldOfNorms.map_eq_on_finiteFieldOfNormsMap_iff
         (FieldOfNorms.map (τ.restrictScalars K) (FieldOfNorms.finiteMap K M N x))
     rw [FieldOfNorms.map_trans, ← he, h x, FieldOfNorms.map_symm_apply]
 
-/-- The actual map on relative finite embeddings is an algebra homomorphism
-for the original source norm field, by the original embedding composition law. -/
+/-- The map on relative finite embeddings is an algebra homomorphism
+for the norm field, by the embedding composition law. -/
 def FieldOfNorms.finiteAlgHom [Algebra.IsSeparable K L] [Module.Finite L M]
     [IsAPF K L] [IsAPF K M] [IsAPF K N]
     [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)]
@@ -194,8 +194,8 @@ def FieldOfNorms.finiteAlgHom [Algebra.IsSeparable K L] [Module.Finite L M]
       FieldOfNorms.finiteEmbeddingMap_congr K hc x
     _ = FieldOfNorms.finiteMap K L N x := FieldOfNorms.finiteEmbeddingMap_algebraMap K L N x
 
-/-- Extending a genuine original embedding to a Galois automorphism gives
-exactly the original map on norm families, rather than a separate Hom map. -/
+/-- Extending an embedding to a Galois automorphism gives
+exactly the map on norm families, rather than a separate Hom map. -/
 theorem FieldOfNorms.finiteAlgHom_eq_of_extend [Algebra.IsSeparable K L] [Module.Finite L M]
     [IsAPF K L] [IsAPF K M] [IsAPF K N]
     [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)]
@@ -236,7 +236,7 @@ theorem FieldOfNorms.finiteAlgHom_eq_of_extend [Algebra.IsSeparable K L] [Module
     _ = FieldOfNorms.map s (FieldOfNorms.finiteMap K M N x) := by
       rw [FieldOfNorms.finiteEmbeddingMap_algEquiv, FieldOfNorms.finiteEmbeddingMap_algebraMap]
 
-/-- The original finite Hom map is faithful inside a common finite Galois overfield. -/
+/-- The finite Hom map is faithful inside a common finite Galois overfield. -/
 theorem FieldOfNorms.finiteAlgHom_injective_of_isGalois
     [Algebra.IsSeparable K L] [Module.Finite L M]
     [IsAPF K L] [IsAPF K M] [IsAPF K N]
@@ -276,8 +276,8 @@ theorem FieldOfNorms.finiteAlgHom_injective_of_isGalois
     σ τ).mp hnorm
   exact AlgHom.ext (fun m => (hσ m).symm.trans ((horig m).trans (hτ m)))
 
-/-- Every norm-field embedding into the original Galois norm field comes
-from an original embedding, by extending to an actual norm-field automorphism. -/
+/-- Every norm-field embedding into the Galois norm field comes
+from an embedding, by extending to a norm-field automorphism. -/
 theorem FieldOfNorms.finiteAlgHom_surjective_of_isGalois
     [Algebra.IsSeparable K L] [Module.Finite L M]
     [IsAPF K L] [IsAPF K M] [IsAPF K N]
@@ -321,7 +321,7 @@ theorem FieldOfNorms.finiteAlgHom_surjective_of_isGalois
     f.liftNormal_commutes (FieldOfNorms K N) x
 
 omit [Algebra M N] [IsScalarTower K M N] [IsScalarTower L M N] [IsGalois L N] in
-/-- Original automorphisms act on the actual finite Hom map by composition. -/
+/-- Automorphisms act on the finite Hom map by composition. -/
 theorem FieldOfNorms.finiteAlgHom_postcomp_aut [Algebra.IsSeparable K L] [Module.Finite L M]
     [IsAPF K L] [IsAPF K M] [IsAPF K N]
     [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)]
@@ -361,7 +361,7 @@ theorem FieldOfNorms.finiteAlgHom_postcomp_aut [Algebra.IsSeparable K L] [Module
     _ = FieldOfNorms.map s (FieldOfNorms.finiteEmbeddingMap K τ x) :=
       FieldOfNorms.finiteEmbeddingMap_algEquiv K s _
 
-/-- The actual finite Hom correspondence inside a common finite Galois
+/-- The finite Hom correspondence inside a common finite Galois
 overfield is bijective. -/
 theorem FieldOfNorms.finiteAlgHom_bijective_of_isGalois
     [Algebra.IsSeparable K L] [Module.Finite L M]
@@ -385,7 +385,7 @@ noncomputable section
 
 namespace FontaineWintenberger
 
-/-- Original Galois fixed fields factor an embedding through the actual
+/-- Original Galois fixed fields factor an embedding through the
 intermediate field, using its canonical image equivalence. -/
 theorem exists_algHom_factor_of_fixed
     {F A B C : Type*} [Field F] [Field A] [Field B] [Field C]
@@ -402,7 +402,7 @@ theorem exists_algHom_factor_of_fixed
   refine ⟨ψ, AlgHom.ext (fun a => ?_)⟩
   exact congrArg Subtype.val (ι.equivFieldRange.apply_symm_apply (φ' a))
 
-/-- Two actual finite separable fields embed in one actual finite Galois
+/-- Two finite separable fields embed in one finite Galois
 subfield of their common canonical separable closure. -/
 theorem exists_common_finiteGalois_embeddings
     (F A B : Type*) [Field F] [Field A] [Field B] [Algebra F A] [Algebra F B]
@@ -437,8 +437,8 @@ variable (K L M N P : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalF
 
 local notation "p" => residueChar K
 
-/-- Composition on relative finite Hom sets is the original norm-family
-composition theorem with its actual image-field scalar structures. -/
+/-- Composition on relative finite Hom sets is the norm-family
+composition theorem with its image-field scalar structures. -/
 theorem FieldOfNorms.finiteAlgHom_comp
     [IsAPF K L] [IsAPF K M] [IsAPF K N] [IsAPF K P]
     [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)]
@@ -478,7 +478,7 @@ theorem FieldOfNorms.finiteAlgHom_comp
   exact (FieldOfNorms.finiteEmbeddingMap_congr K hc.symm x).trans
     (FieldOfNorms.finiteEmbeddingMap_trans K τ σ x).symm
 
-/-- On original inclusions the relative Hom map is the same original
+/-- On inclusions the relative Hom map is the same
 finite-inclusion norm-family map. -/
 theorem FieldOfNorms.finiteAlgHom_algebraMap
     [Algebra M N] [IsScalarTower K M N] [IsScalarTower L M N]
@@ -504,8 +504,8 @@ theorem FieldOfNorms.finiteAlgHom_algebraMap
   change FieldOfNorms.finiteEmbeddingMap K (IsScalarTower.toAlgHom K M N) x = _
   exact FieldOfNorms.finiteEmbeddingMap_algebraMap K M N x
 
-/-- The actual finite Hom map is injective for two original subextensions
-of one genuine finite Galois overfield. -/
+/-- The finite Hom map is injective for two subextensions
+of one finite Galois overfield. -/
 theorem FieldOfNorms.finiteAlgHom_injective_in_galoisOverfield
     [Algebra M P] [Algebra N P] [IsScalarTower K M P] [IsScalarTower K N P]
     [IsScalarTower L M P] [IsScalarTower L N P] [IsGalois L P]
@@ -539,8 +539,8 @@ theorem FieldOfNorms.finiteAlgHom_injective_in_galoisOverfield
   intro m
   exact (algebraMap N P).injective (AlgHom.congr_fun h m)
 
-/-- Galois fixed-field factorization gives fullness for two original
-subextensions of the same genuine finite Galois overfield. -/
+/-- Galois fixed-field factorization gives fullness for two
+subextensions of the same finite Galois overfield. -/
 theorem FieldOfNorms.finiteAlgHom_surjective_in_galoisOverfield
     [Algebra M P] [Algebra N P] [IsScalarTower K M P] [IsScalarTower K N P]
     [IsScalarTower L M P] [IsScalarTower L N P] [IsGalois L P]
@@ -601,8 +601,8 @@ theorem FieldOfNorms.finiteAlgHom_surjective_in_galoisOverfield
     FieldOfNorms.finiteAlgHom K L M P g x)
       hψ).trans (AlgHom.congr_fun hφ x))
 
-/-- Full faithfulness of the actual finite Hom map for arbitrary finite
-separable original extensions, with no normality assumption on either field. -/
+/-- Full faithfulness of the finite Hom map for arbitrary finite
+separable extensions, with no normality assumption on either field. -/
 theorem FieldOfNorms.finiteAlgHom_bijective
     [IsAPF K L] [IsAPF K M] [IsAPF K N]
     [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)]
@@ -642,7 +642,7 @@ theorem FieldOfNorms.finiteAlgHom_bijective
     FieldOfNorms.finiteAlgHom_surjective_in_galoisOverfield K L M N P
 ⟩
 
-/-- The canonical full finite Hom equivalence needs only the original
+/-- The canonical full finite Hom equivalence needs only the
 infinite APF base; all finite-extension APF and infinitude facts are produced. -/
 def FieldOfNorms.finiteHomEquiv [IsAPF K L] [Fact (¬ Module.Finite K L)] :
     let hM : IsAPF K M := (isAPF_finite_extension_iff K M L).mpr ‹_›

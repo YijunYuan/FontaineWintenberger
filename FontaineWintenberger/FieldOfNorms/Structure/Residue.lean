@@ -11,10 +11,10 @@ public import FontaineWintenberger.FieldOfNorms.Structure.Uniformizer
 public import FontaineWintenberger.APF.Tower.AlgebraicResidue
 
 /-!
-# The residue field of the original field of norms
+# The residue field of the field of norms
 
-Reduction of an original deep coordinate identifies the residue field of the
-actual field of norms valuation ring with that of the original algebraic extension.
+Reduction of a deep coordinate identifies the residue field of the
+field of norms valuation ring with that of the algebraic extension.
 -/
 
 @[expose] public section
@@ -33,7 +33,7 @@ local notation "𝔈" => deepFiniteTower K L D
 local notation "𝔅" => deepFiniteTowerQuotient K L D
 local notation "𝒜" => deepNormInverseLimit K L D
 
-/-- Each actual integral truncated coordinate is onto, by the actual
+/-- Each integral truncated coordinate is onto, by the
 surjective norm tower and the proved reconstruction equivalence. -/
 theorem FieldOfNorms.truncation_surjective (n : ℕ) :
     Function.Surjective (FieldOfNorms.truncation K L D n) := by
@@ -47,7 +47,7 @@ theorem FieldOfNorms.truncation_surjective (n : ℕ) :
   change a.val n = b at ha
   exact (congrArg (fun z : 𝒜 => z.val n) hα).trans ha
 
-/-- Reduction of the actual first original coordinate, factored through
+/-- Reduction of the first coordinate, factored through
 its checked quotient by the square of the maximal ideal. -/
 def FieldOfNorms.residueReduction :
     (FieldOfNorms.fieldValuation K L).valuationSubring →+*
@@ -55,7 +55,7 @@ def FieldOfNorms.residueReduction :
   exact (Ideal.Quotient.factor (Ideal.pow_le_self (by decide : (2 : ℕ) ≠ 0))).comp
     (FieldOfNorms.truncation K L D 0)
 
-/-- This reduction is the residue of the original finite-field coordinate. -/
+/-- This reduction is the residue of the finite-field coordinate. -/
 @[simp]
 theorem FieldOfNorms.residueReduction_apply :
     ∀ α : (FieldOfNorms.fieldValuation K L).valuationSubring,
@@ -64,7 +64,7 @@ theorem FieldOfNorms.residueReduction_apply :
   intro α
   rfl
 
-/-- Actual coordinate reduction is onto the original first-stage residue field. -/
+/-- Coordinate reduction is onto the first-stage residue field. -/
 theorem FieldOfNorms.residueReduction_surjective :
     Function.Surjective (FieldOfNorms.residueReduction K L D) := by
   intro z
@@ -77,7 +77,7 @@ theorem FieldOfNorms.residueReduction_surjective :
   rw [hα, Ideal.Quotient.factor_mk]
   exact hx
 
-/-- The kernel is exactly the maximal ideal of the same original field of norms
+/-- The kernel is exactly the maximal ideal of the field of norms
 valuation ring, by the proved equality of its normalized valuation. -/
 theorem FieldOfNorms.residueReduction_ker :
     RingHom.ker (FieldOfNorms.residueReduction K L D) =
@@ -95,8 +95,8 @@ theorem FieldOfNorms.residueReduction_ker :
   rw [FieldOfNorms.valuation_eq_deepFiniteTower K L D 0]
   rfl
 
-/-- The actual coordinate reduction descends through the original maximal
-ideal to the original first-stage residue field. -/
+/-- The coordinate reduction descends through the maximal
+ideal to the first-stage residue field. -/
 def FieldOfNorms.residueToLayer :
     IsLocalRing.ResidueField (FieldOfNorms.fieldValuation K L).valuationSubring →+*
       IsLocalRing.ResidueField (spectralIntegerRing K (𝔈 0).val) := by
@@ -106,7 +106,7 @@ def FieldOfNorms.residueToLayer :
       rw [FieldOfNorms.residueReduction_ker]
       exact hα)
 
-/-- The descended map acts on the actual residue of an original integral family. -/
+/-- The descended map acts on the residue of an integral family. -/
 @[simp]
 theorem FieldOfNorms.residueToLayer_residue :
     ∀ α : (FieldOfNorms.fieldValuation K L).valuationSubring,
@@ -115,8 +115,8 @@ theorem FieldOfNorms.residueToLayer_residue :
   intro α
   rfl
 
-/-- The original field of norms residue field is identified with the original
-deep stage's residue field by the actual coordinate-reduction map. -/
+/-- The field of norms residue field is identified with the
+deep stage's residue field by the coordinate-reduction map. -/
 def FieldOfNorms.residueLayerEquiv :
     IsLocalRing.ResidueField (FieldOfNorms.fieldValuation K L).valuationSubring ≃+*
       IsLocalRing.ResidueField (spectralIntegerRing K (𝔈 0).val) := by
@@ -126,7 +126,7 @@ def FieldOfNorms.residueLayerEquiv :
   obtain ⟨α, hα⟩ := FieldOfNorms.residueReduction_surjective K L D z
   exact ⟨IsLocalRing.residue _ α, hα⟩
 
-/-- The residue equivalence retains the actual original finite coordinate. -/
+/-- The residue equivalence retains the finite coordinate. -/
 @[simp]
 theorem FieldOfNorms.residueLayerEquiv_residue :
     ∀ α : (FieldOfNorms.fieldValuation K L).valuationSubring,
@@ -135,9 +135,9 @@ theorem FieldOfNorms.residueLayerEquiv_residue :
   intro α
   rfl
 
-/-- Above the proved APF residue-stable layer, actual coordinate reduction
-identifies the original field of norms residue field with the intrinsic residue
-field of the canonical integral closure in the original extension. -/
+/-- Above the proved APF residue-stable layer, coordinate reduction
+identifies the field of norms residue field with the intrinsic residue
+field of the canonical integral closure in the extension. -/
 def FieldOfNorms.residueEquiv :
     IsLocalRing.ResidueField (FieldOfNorms.fieldValuation K L).valuationSubring ≃+*
       IsLocalRing.ResidueField
@@ -148,8 +148,8 @@ def FieldOfNorms.residueEquiv :
     (integralClosureResidueEquiv K L E
       (le_deepFiniteTower K L T 0)).toRingEquiv
 
-/-- On residues of actual integral norm families, the intrinsic residue
-isomorphism is the original finite residue inclusion after coordinate reduction. -/
+/-- On residues of integral norm families, the intrinsic residue
+isomorphism is the finite residue inclusion after coordinate reduction. -/
 @[simp]
 theorem FieldOfNorms.residueEquiv_residue :
     ∀ α : (FieldOfNorms.fieldValuation K L).valuationSubring,
@@ -161,7 +161,7 @@ theorem FieldOfNorms.residueEquiv_residue :
   intro α
   rfl
 
-/-- The actual original field of norms residue field is perfect, with no finite
+/-- The field of norms residue field is perfect, with no finite
 residue-field hypothesis. -/
 instance FieldOfNorms.instPerfectFieldResidueField :
     PerfectField (IsLocalRing.ResidueField

@@ -10,10 +10,10 @@ public import FontaineWintenberger.APF.BaseChange.EmbeddingFiniteBase
 public import FontaineWintenberger.APF.BaseChange.EmbeddingFiber
 
 /-!
-# Restriction bounds over the original finite normed base
+# Restriction bounds over the finite normed base
 
 Finite-base composition identifies the relative Herbrand function using the
-original compatible norm on the smaller field. Actual field-range equivalences
+compatible norm on the smaller field. Field-range equivalences
 then transport the finite fixing-subgroup comparison.
 -/
 
@@ -23,22 +23,22 @@ noncomputable section
 
 namespace FontaineWintenberger
 
-section OriginalFieldImages
+section FieldImages
 
 variable (K M F Ω : Type*) [Field K] [Field M] [Field F] [Field Ω]
     [Algebra K M] [Algebra K F] [Algebra K Ω] [Algebra M F] [Algebra M Ω]
     [IsScalarTower K M F] [IsScalarTower K M Ω]
 
-/-- The original base image lies in the actual image of each original
+/-- The base image lies in the image of each
 base-linear embedding of the upper field. -/
 theorem fieldRange_base_le (i : F →ₐ[M] Ω) :
     (IsScalarTower.toAlgHom K M Ω).fieldRange ≤ (i.restrictScalars K).fieldRange := by
   rintro x ⟨m, rfl⟩
   exact ⟨algebraMap M F m, i.commutes m⟩
 
-end OriginalFieldImages
+end FieldImages
 
-section OriginalFiniteBase
+section FiniteBase
 
 variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
 variable (M : Type*) [NontriviallyNormedField M] [IsUltrametricDist M]
@@ -47,8 +47,8 @@ variable (M : Type*) [NontriviallyNormedField M] [IsUltrametricDist M]
 variable (F : Type*) [Field F] [Algebra K F] [Algebra M F] [IsScalarTower K M F]
     [FiniteDimensional K F] [Algebra.IsSeparable K F]
 
-/-- The intrinsic relative function over the actual original finite
-normed base is the absolute function composed with its actual inverse. -/
+/-- The intrinsic relative function over the finite
+normed base is the absolute function composed with its inverse. -/
 theorem apfPsi_eq_absolute_comp_apfPhi_of_normedAlgebra (u : ℝ) :
     letI := normedAlgebra_isCompleteDiscreteValuedField K M
     letI := Algebra.isSeparable_tower_top_of_isSeparable K M F
@@ -59,9 +59,9 @@ theorem apfPsi_eq_absolute_comp_apfPhi_of_normedAlgebra (u : ℝ) :
     (apfPhi K M u)
   rwa [apfPsi_apfPhi] at h
 
-end OriginalFiniteBase
+end FiniteBase
 
-section OriginalAmbientBase
+section AmbientBase
 
 variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
 variable (M : Type*) [NontriviallyNormedField M] [IsUltrametricDist M]
@@ -74,9 +74,9 @@ variable (F Ω : Type*) [Field F] [Field Ω] [Algebra K F] [Algebra K Ω]
 
 local notation "jM" => IsScalarTower.toAlgHom K M Ω
 
-/-- The fixing-subgroup change of parameter computes the actual original
+/-- The fixing-subgroup change of parameter computes the
 relative function, without changing the norm on the abstract smaller field. -/
-theorem apfPsi_originalBase_eq_fixing_herbrand (i : F →ₐ[M] Ω)
+theorem apfPsi_base_eq_fixing_herbrand (i : F →ₐ[M] Ω)
     {u : ℝ} (hu : -1 ≤ u) :
     letI := normedAlgebra_isCompleteDiscreteValuedField K M
     letI := Algebra.isSeparable_tower_top_of_isSeparable K M F
@@ -104,7 +104,7 @@ theorem apfPsi_originalBase_eq_fixing_herbrand (i : F →ₐ[M] Ω)
     apfPhi_eq_herbrand_comp_subgroup_inverse_of_finiteGalois K Ω (jM).fieldRange hu,
     inverseHerbrandFunction_herbrandFunction _ (inverseHerbrandFunction_mem_Ici _ u)]
 
-/-- The original smaller field, with its actual supplied compatible norm,
+/-- The smaller field, with its supplied compatible norm,
 gives the restriction inequality for arbitrary moved upper images. -/
 theorem embeddingNumber_restriction_le_apfPsi_of_normedAlgebra
     (i : F →ₐ[M] Ω) (s : Ω ≃ₐ[K] Ω)
@@ -139,17 +139,17 @@ theorem embeddingNumber_restriction_le_apfPsi_of_normedAlgebra
     (fieldRange_base_le K M F Ω i) s hsE
   rw [← hE, ← hF] at hbound
   exact hbound.trans_eq (congrArg (fun r : ℝ => (r : EReal))
-    (apfPsi_originalBase_eq_fixing_herbrand K M F Ω i hu).symm)
+    (apfPsi_base_eq_fixing_herbrand K M F Ω i hu).symm)
 
-end OriginalAmbientBase
+end AmbientBase
 
-section OriginalClosureLift
+section ClosureLift
 
 variable (K : Type*) [Field K] (F : IntermediateField K (SeparableClosure K))
     [FiniteDimensional K F]
 
-/-- The actual canonical finite normal closure contains a genuine lift
-of every original embedding of the upper field. -/
+/-- The canonical finite normal closure contains a lift
+of every embedding of the upper field. -/
 theorem exists_normalClosure_aut_lift (σ : F →ₐ[K] SeparableClosure K) :
     ∃ s : (finiteGaloisNormalClosure K F) ≃ₐ[K] (finiteGaloisNormalClosure K F),
       (finiteGaloisNormalClosure K F).toIntermediateField.val.comp
@@ -166,15 +166,15 @@ theorem exists_normalClosure_aut_lift (σ : F →ₐ[K] SeparableClosure K) :
   rw [eF.symm_apply_apply] at h
   exact h
 
-end OriginalClosureLift
+end ClosureLift
 
-section OriginalClosureBound
+section ClosureBound
 
 variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
     (E F : IntermediateField K (SeparableClosure K))
     [FiniteDimensional K E] [FiniteDimensional K F] (hEF : E ≤ F)
 
-/-- The original finite fields and their actual separable-closure embeddings
+/-- The finite fields and their separable-closure embeddings
 satisfy the full relative Herbrand restriction bound. -/
 theorem closureEmbeddingNumber_restriction_le_apfPsi
     (σ : F →ₐ[K] SeparableClosure K)
@@ -236,6 +236,6 @@ theorem closureEmbeddingNumber_restriction_le_apfPsi
   rw [← hnumE] at hbound
   exact hbound
 
-end OriginalClosureBound
+end ClosureBound
 
 end FontaineWintenberger

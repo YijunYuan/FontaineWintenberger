@@ -14,7 +14,7 @@ public import Mathlib.FieldTheory.Separable
 
 The category is the canonical full subcategory of commutative algebras whose
 underlying rings are fields and whose elements are separable over the base.
-Its morphisms are exactly the original algebra homomorphisms.
+Its morphisms are exactly the algebra homomorphisms.
 -/
 
 @[expose] public section
@@ -27,7 +27,7 @@ open CategoryTheory
 
 namespace FontaineWintenberger
 
-/-- Separable field algebras form a property of the original commutative algebra. -/
+/-- Separable field algebras form a property of the commutative algebra. -/
 def separableFieldProperty (R : Type u) [Field R] :
     ObjectProperty (CommAlgCat.{v} R) :=
   fun A => IsField A ∧ Algebra.IsSeparable R A
@@ -40,12 +40,12 @@ namespace SeparableExtensionCat
 
 variable {R : Type u} [Field R]
 
-/-- Regard an actual separable field extension as an object of its canonical category. -/
+/-- Regard a separable field extension as an object of its canonical category. -/
 abbrev of (E : Type v) [Field E] [Algebra R E] [Algebra.IsSeparable R E] :
     SeparableExtensionCat.{u, v} R :=
   ⟨CommAlgCat.of R E, Field.toIsField E, inferInstance⟩
 
-/-- The morphisms of the full subcategory are exactly the original algebra maps. -/
+/-- The morphisms of the full subcategory are exactly the algebra maps. -/
 def homEquiv (A B : SeparableExtensionCat.{u, v} R) :
     (A ⟶ B) ≃ (A.obj →ₐ[R] B.obj) where
   toFun f := f.hom.hom
@@ -53,7 +53,7 @@ def homEquiv (A B : SeparableExtensionCat.{u, v} R) :
   left_inv _ := rfl
   right_inv _ := rfl
 
-/-- An original algebra isomorphism gives the same categorical field isomorphism. -/
+/-- An algebra isomorphism gives the same categorical field isomorphism. -/
 def isoOfAlgEquiv {E F : Type v} [Field E] [Field F]
     [Algebra R E] [Algebra R F] [Algebra.IsSeparable R E] [Algebra.IsSeparable R F]
     (e : E ≃ₐ[R] F) : of (R := R) E ≅ of (R := R) F :=

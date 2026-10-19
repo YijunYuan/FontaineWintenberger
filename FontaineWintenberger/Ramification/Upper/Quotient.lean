@@ -14,8 +14,8 @@ public import Mathlib.Analysis.Calculus.Deriv.Comp
 
 ## Herbrand's lower quotient theorem
 
-Restriction sends the actual real lower groups onto the lower groups of
-the actual fixed-field integers at the relative Herbrand parameter.
+Restriction sends the real lower groups onto the lower groups of
+the fixed-field integers at the relative Herbrand parameter.
 
 ## Herbrand functions in a normal fixed-field tower
 
@@ -60,7 +60,7 @@ local notation "B₀" => spectralIntegerRing K L
 local notation "D₀" => ValuationSubring.decompositionSubgroup K A₀
 local notation "ρ" => fixedFieldDecompositionRestriction K L H
 
-/-- Herbrand's lower quotient formula, for actual normal fixed-field restriction. -/
+/-- Herbrand's lower quotient formula, for normal fixed-field restriction. -/
 theorem fixedField_map_lowerRamificationGroupReal (t : ℝ) (ht : -1 ≤ t) :
     letI := intermediate_spectral_isDiscreteValuationRing K L F₀
     (lowerRamificationGroupReal G₀ (IsLocalRing.maximalIdeal B₀) t).map ρ =
@@ -97,7 +97,7 @@ theorem fixedField_map_lowerRamificationGroupReal (t : ℝ) (ht : -1 ≤ t) :
   rw [hformula]
   exact ((strictMonoOn_herbrandFunction (R := B₀) H).le_iff_le ht hm).symm
 
-/-- The same lower quotient formula through the canonical actual Galois quotient equivalence. -/
+/-- The same lower quotient formula through the canonical Galois quotient equivalence. -/
 theorem fixedField_quotient_lowerRamificationGroupReal (t : ℝ) (ht : -1 ≤ t) :
     letI := intermediate_spectral_isDiscreteValuationRing K L F₀
     ((lowerRamificationGroupReal G₀ (IsLocalRing.maximalIdeal B₀) t).map
@@ -130,7 +130,7 @@ local notation "B₀" => spectralIntegerRing K L
 local notation "D₀" => ValuationSubring.decompositionSubgroup K A₀
 local notation "ρ" => fixedFieldDecompositionRestriction K L H
 
-/-- Exact cardinalities of actual lower groups under fixed-field restriction. -/
+/-- Exact cardinalities of lower groups under fixed-field restriction. -/
 theorem fixedField_card_lowerRamificationGroupReal (t : ℝ) (ht : -1 ≤ t) :
     letI := intermediate_spectral_isDiscreteValuationRing K L F₀
     Nat.card (lowerRamificationGroupReal G₀ (IsLocalRing.maximalIdeal B₀) t) =
@@ -154,7 +154,7 @@ theorem fixedField_card_lowerRamificationGroupReal (t : ℝ) (ht : -1 ≤ t) :
   rw [← Nat.card_congr e, mul_comm] at h
   exact h.symm
 
-/-- The inertia cardinalities in the actual normal fixed-field tower multiply. -/
+/-- The inertia cardinalities in the normal fixed-field tower multiply. -/
 theorem fixedField_card_lowerRamificationGroup_zero :
     letI := intermediate_spectral_isDiscreteValuationRing K L F₀
     Nat.card (lowerRamificationGroup G₀ (IsLocalRing.maximalIdeal B₀) 0) =
@@ -164,7 +164,7 @@ theorem fixedField_card_lowerRamificationGroup_zero :
   simpa [herbrandFunction, lowerRamificationGroupReal] using
     fixedField_card_lowerRamificationGroupReal K L H 0 (by norm_num)
 
-/-- The chain-rule slope is the actual ambient lower-group cardinality ratio. -/
+/-- The chain-rule slope is the ambient lower-group cardinality ratio. -/
 theorem fixedField_herbrand_slope_mul (t : ℝ) (ht : -1 ≤ t) :
     letI := intermediate_spectral_isDiscreteValuationRing K L F₀
     ((Nat.card (lowerRamificationGroupReal D₀ (IsLocalRing.maximalIdeal A₀)
@@ -181,7 +181,7 @@ theorem fixedField_herbrand_slope_mul (t : ℝ) (ht : -1 ≤ t) :
   simp only [div_eq_mul_inv, mul_inv_rev]
   ring
 
-/-- The actual composite has the ambient Herbrand slope outside finitely many points. -/
+/-- The composite has the ambient Herbrand slope outside finitely many points. -/
 theorem fixedField_exists_herbrand_comp_derivative_breaks :
     letI := intermediate_spectral_isDiscreteValuationRing K L F₀
     ∃ S : Finset ℝ, ∀ t : ℝ, 0 < t → t ∉ S →
@@ -210,7 +210,7 @@ theorem fixedField_exists_herbrand_comp_derivative_breaks :
   rw [fixedField_herbrand_slope_mul K L H t (by linarith)] at hderiv
   exact hderiv
 
-/-- Herbrand transitivity, also for the identity extension below the source half-line. -/
+/-- Herbrand transitivity, also for the identity extension below the half-line. -/
 theorem fixedField_herbrandFunction_transitivity (t : ℝ) :
     letI := intermediate_spectral_isDiscreteValuationRing K L F₀
     herbrandFunction (R := B₀) G₀ t =

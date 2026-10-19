@@ -15,12 +15,12 @@ public import Mathlib.Order.Filter.ENNReal
 /-!
 # APF and strict APF under finite extension
 
-## Strict APF descent through actual index factors
+## Strict APF descent through index factors
 
-## APF under actual finite extension
+## APF under finite extension
 
-The fixing-subgroup index is the actual field degree, even when the
-intermediate fields have infinite degree over the original base.
+The fixing-subgroup index is the field degree, even when the
+intermediate fields have infinite degree over the base.
 -/
 
 @[expose] public section
@@ -33,7 +33,7 @@ variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField 
 
 variable (M N : IntermediateField K (SeparableClosure K))
 
-/-- The monotone actual tower factor bounds the whole integral up to the endpoint. -/
+/-- The monotone tower factor bounds the whole integral up to the endpoint. -/
 theorem apfPsi_le_towerIndexFactor_mul [IsAPF K N] (hMN : M ≤ N)
     {u : ℝ} (hu : 0 ≤ u) :
     apfPsi K N u ≤ (apfTowerIndexFactor K M N u : ℝ) * apfPsi K M u := by
@@ -48,7 +48,7 @@ theorem apfPsi_le_towerIndexFactor_mul [IsAPF K N] (hMN : M ≤ N)
     rw [apfIndex_eq_mul_towerIndexFactor K M N hMN hv.1, Nat.cast_mul, mul_comm]
     exact mul_le_mul_of_nonneg_right (Nat.cast_le.mpr (hmono hv.1 hu hv.2)) (Nat.cast_nonneg _)
 
-/-- The source strictness ratio decreases when the extension field increases. -/
+/-- The strictness ratio decreases when the extension field increases. -/
 theorem apfStrictnessRatio_le_of_le [IsAPF K N] (hMN : M ≤ N)
     {u : ℝ} (hu : 0 ≤ u) :
     apfStrictnessRatio K N u ≤ apfStrictnessRatio K M u := by
@@ -69,7 +69,7 @@ theorem apfStrictnessRatio_le_of_le [IsAPF K N] (hMN : M ≤ N)
       mul_le_mul_of_nonneg_right hbound hapos.le
     _ = _ := by ring
 
-/-- Strict APF descends to every actual subextension, without a normality assumption. -/
+/-- Strict APF descends to every subextension, without a normality assumption. -/
 theorem IsStrictlyAPF.of_le [IsStrictlyAPF K N] (hMN : M ≤ N) :
     IsStrictlyAPF K M := by
   have := IsAPF.of_algHom K (IntermediateField.inclusion hMN)
@@ -167,7 +167,7 @@ variable (K : Type*) [Field K]
 variable {L P : Type*} [Field L] [Field P] [Algebra K L] [Algebra K P]
     [Algebra P L] [IsScalarTower K P L] [FiniteDimensional P L]
 
-/-- Actual embedding images preserve finiteness over the actual image of the scalar field. -/
+/-- Embedding images preserve finiteness over the image of the scalar field. -/
 theorem finiteDimensional_fieldRange_extendScalars (i : L →ₐ[K] SeparableClosure K) :
     FiniteDimensional (i.comp (IsScalarTower.toAlgHom K P L)).fieldRange
       (IntermediateField.extendScalars
@@ -195,7 +195,7 @@ variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField 
 
 variable (M N : IntermediateField K (SeparableClosure K))
 
-/-- APF is unchanged by an actual finite extension above an arbitrary intermediate field. -/
+/-- APF is unchanged by a finite extension above an arbitrary intermediate field. -/
 theorem isAPFSubextension_finiteExtension_iff (hMN : M ≤ N)
     [FiniteDimensional M (IntermediateField.extendScalars hMN)] :
     IsAPFSubextension K N ↔ IsAPFSubextension K M := by
@@ -215,7 +215,7 @@ theorem isAPFSubextension_finiteExtension_iff (hMN : M ≤ N)
     rw [← Subgroup.relIndex_mul_index hle]
     exact Nat.mul_ne_zero hprod hm
 
-/-- The actual intermediate inertia fixing index is positive for a finite extension. -/
+/-- The intermediate inertia fixing index is positive for a finite extension. -/
 theorem inertiaFixingRelIndex_pos (hMN : M ≤ N)
     [FiniteDimensional M (IntermediateField.extendScalars hMN)] :
     0 < (N.fixingSubgroup ⊓ absoluteUpperRamificationGroup K 0).relIndex
@@ -223,7 +223,7 @@ theorem inertiaFixingRelIndex_pos (hMN : M ≤ N)
   Nat.pos_of_ne_zero (Subgroup.relIndex_inter_ne_zero
     (Nat.ne_of_gt (fixingSubgroup_relIndex_pos K M N hMN)) _)
 
-/-- Finite extension gives a uniform finite upper bound for the actual tower factor. -/
+/-- Finite extension gives an uniform finite upper bound for the tower factor. -/
 theorem apfTowerIndexFactor_le_inertiaFixingRelIndex (hMN : M ≤ N)
     [FiniteDimensional M (IntermediateField.extendScalars hMN)] (u : ℝ) :
     apfTowerIndexFactor K M N u ≤
@@ -233,7 +233,7 @@ theorem apfTowerIndexFactor_le_inertiaFixingRelIndex (hMN : M ≤ N)
   exact Subgroup.relIndex_le_of_le_left le_sup_left
     (Nat.ne_of_gt (inertiaFixingRelIndex_pos K M N hMN))
 
-/-- Nested APF indices give monotonicity of the actual Herbrand integral. -/
+/-- Nested APF indices give monotonicity of the Herbrand integral. -/
 theorem apfPsi_mono_extension [IsAPF K N] (hMN : M ≤ N)
     {u : ℝ} (hu : 0 ≤ u) : apfPsi K M u ≤ apfPsi K N u := by
   have := IsAPF.of_algHom K (IntermediateField.inclusion hMN)
@@ -279,7 +279,7 @@ theorem apfStrictnessRatio_le_finiteExtension_mul (hMN : M ≤ N)
       mul_le_mul_of_nonneg_left hfac (hu.trans (IsAPF.le_apfPsi K N u))
     _ = _ := by ring
 
-/-- Strict APF is unchanged by an actual finite extension, including nonnormal ones. -/
+/-- Strict APF is unchanged by a finite extension, including nonnormal ones. -/
 theorem isStrictlyAPF_finiteExtension_iff (hMN : M ≤ N)
     [FiniteDimensional M (IntermediateField.extendScalars hMN)] :
     IsStrictlyAPF K N ↔ IsStrictlyAPF K M := by

@@ -15,9 +15,9 @@ public import Mathlib.Topology.MetricSpace.CauSeqFilter
 # Newton lifting with a nonunit derivative
 
 The Newton estimates generalize the proof in Mathlib's p-adic Hensel module
-to the original valuation unit ball of any complete nontrivially normed
+to the valuation unit ball of any complete nontrivially normed
 ultrametric field.
-Division is performed in the original ambient field. No unit condition on
+Division is performed in the ambient field. No unit condition on
 the derivative and no residue-field finiteness hypothesis are imposed.
 -/
 
@@ -39,7 +39,7 @@ local notation "O" => Valuation.valuationSubring (NormedField.valuation (K := K)
 private theorem newton_unitBall_norm_le_one (x : O) : ‖x‖ ≤ 1 := by
   exact_mod_cast x.property
 
-/-- Integral polynomial evaluation is nonexpanding on the actual valuation
+/-- Integral polynomial evaluation is nonexpanding on the valuation
 unit ball. The divided difference remains in that same integer ring. -/
 theorem unitBall_polynomial_norm_sub_le (F : Polynomial O) (x y : O) :
     ‖F.eval x - F.eval y‖ ≤ ‖x - y‖ := by
@@ -136,7 +136,7 @@ private theorem T_pow {n : ℕ} (hn : n ≠ 0) : T ^ n < 1 := pow_lt_one₀ T_no
 
 private theorem T_pow' (n : ℕ) : T ^ 2 ^ n < 1 := T_pow hnorm (pow_ne_zero _ two_ne_zero)
 
-/-- Newton approximations in the original valuation unit ball satisfy successive values of `ih`. -/
+/-- Newton approximations in the valuation unit ball satisfy successive values of `ih`. -/
 private def ih_gen (n : ℕ) (z : O) : Prop :=
   ‖F.derivative.eval z‖ = ‖F.derivative.eval a‖ ∧ ‖F.eval z‖ ≤
     ‖F.derivative.eval a‖ ^ 2 * T ^ 2 ^ n
@@ -224,7 +224,7 @@ private theorem newton_correction_norm {n : ℕ} {z : O} (hz : ih n z) :
   rw [norm_div]
   exact congrArg (fun t : ℝ => ‖F.eval z‖ / t) hz.1
 
-/-- The derivative norm is unchanged and the residual is squared at each actual Newton step. -/
+/-- The derivative norm is unchanged and the residual is squared at each Newton step. -/
 private def ih_n {n : ℕ} {z : O} (hz : ih n z) : { z' : O // ih (n + 1) z' } := by
   let z1 := newton_correction hnorm hz
   let z' := z - z1
@@ -323,7 +323,7 @@ private theorem newton_seq_is_cauchy : CauchySeq newton_seq := by
     rw [dist_eq_norm]
     exact (newton_seq_dist hnorm hn).trans_lt (hN N le_rfl)⟩
 
-/-- Newton--Hensel lifting in the original unit ball of a complete ultrametric
+/-- Newton--Hensel lifting in the unit ball of a complete ultrametric
 field. The derivative may be a nonunit. The root has the exact Newton distance
 from the initial approximation, and is unique in the derivative ball. -/
 theorem unitBall_hensel_nonunit [CompleteSpace K] :

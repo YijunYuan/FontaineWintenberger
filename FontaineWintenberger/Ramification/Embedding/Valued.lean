@@ -10,7 +10,7 @@ public import FontaineWintenberger.Ramification.Embedding.Basic
 /-!
 # Ramification of arbitrary valuation-preserving automorphisms
 
-The order is the infimum on the original valuation ring. Perfect residue
+The order is the infimum on the valuation ring. Perfect residue
 digits compute it on every uniformizer, without a completeness, finite residue
 field, or finite-order automorphism hypothesis.
 -/
@@ -27,7 +27,7 @@ section IntegerAutomorphism
 
 variable {R : Type*} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
 
-/-- The signed displacement order on the actual DVR. -/
+/-- The signed displacement order on the DVR. -/
 def integerRamificationNumber (g : R ≃+* R) : EReal :=
   ((ramificationOrder (R := R) (R ≃+* R) g : ℝ≥0∞) : EReal) - 1
 
@@ -59,7 +59,7 @@ theorem integerRamificationNumber_eq_nat_sub_one {g : R ≃+* R} (hg : g ≠ 1) 
   rw [← ENat.natCast_toNat hfin, ENat.toENNReal_coe]
   norm_cast
 
-/-- The actual residue automorphism is trivial precisely when every actual
+/-- The residue automorphism is trivial precisely when every
 integral displacement belongs to the maximal ideal. -/
 theorem residueAut_eq_refl_iff (g : R ≃+* R) :
     IsLocalRing.ResidueField.mapEquiv g = RingEquiv.refl _ ↔
@@ -90,7 +90,7 @@ variable (p : ℕ) [Fact p.Prime] [CharP (IsLocalRing.ResidueField R) p]
     [PerfectField (IsLocalRing.ResidueField R)]
 
 include p in
-/-- Inertia makes every genuine uniformizer compute the same intrinsic
+/-- Inertia makes every uniformizer compute the same intrinsic
 order. The necessary membership of the residue characteristic is derived. -/
 theorem integerRamificationNumber_eq_uniformizer (g : R ≃+* R)
     (hres : IsLocalRing.ResidueField.mapEquiv g = RingEquiv.refl _)
@@ -111,7 +111,7 @@ section ValuationRestriction
 variable {F Γ : Type*} [Field F] [LinearOrderedCommGroupWithZero Γ]
     (v : Valuation F Γ) (g : F ≃+* F) (hv : ∀ x : F, v (g x) = v x)
 
-/-- A valuation-preserving automorphism restricts to the same actual
+/-- A valuation-preserving automorphism restricts to the same
 valuation ring; its inverse preserves that ring by the same equality. -/
 def valuationIntegerAut : v.valuationSubring ≃+* v.valuationSubring where
   toFun x := ⟨g x, by change v (g x) ≤ 1; rw [hv]; exact x.2⟩
@@ -131,7 +131,7 @@ theorem coe_valuationIntegerAut (x : v.valuationSubring) :
     (valuationIntegerAut v g hv x : F) = g x := rfl
 
 /-- The same-field automorphism is determined by its restriction to the
-actual valuation ring, using its genuine field of fractions. -/
+valuation ring, using its field of fractions. -/
 theorem valuationIntegerAut_eq_one_iff : valuationIntegerAut v g hv = 1 ↔ g = 1 := by
   constructor
   · intro hg
@@ -145,7 +145,7 @@ theorem valuationIntegerAut_eq_one_iff : valuationIntegerAut v g hv = 1 ↔ g = 
 
 variable [IsDiscreteValuationRing v.valuationSubring]
 
-/-- The intrinsic signed ramification number of an arbitrary original
+/-- The intrinsic signed ramification number of an arbitrary
 valuation-preserving field automorphism. -/
 def valuedRamificationNumber : EReal :=
   integerRamificationNumber (valuationIntegerAut v g hv)
@@ -177,7 +177,7 @@ variable {F : Type*} [Field F] (A : ValuationSubring F) [IsDiscreteValuationRing
 local notation "w" => IsDedekindDomain.HeightOneSpectrum.valuation F
   (IsDiscreteValuationRing.maximalIdeal A)
 
-/-- The canonical normalized additive field valuation, with its genuine
+/-- The canonical normalized additive field valuation, with its
 infinite value at zero, written in the standard extended reals. -/
 def normalizedAdditiveValue (x : F) : EReal := by
   classical
@@ -188,7 +188,7 @@ theorem normalizedAdditiveValue_zero : normalizedAdditiveValue A 0 = ⊤ := by
   simp [normalizedAdditiveValue]
 
 /-- The canonical additive field value extends the canonical integral
-valuation of the same original ring. -/
+valuation of the ring. -/
 theorem normalizedAdditiveValue_coe (a : A) :
     normalizedAdditiveValue A (a : F) =
       ((IsDiscreteValuationRing.addVal A a : ℝ≥0∞) : EReal) := by
@@ -206,7 +206,7 @@ theorem normalizedAdditiveValue_coe (a : A) :
     ← ENat.natCast_toNat hfin, ENat.toENNReal_coe]
   norm_cast
 
-/-- Division by a nonzero original field element subtracts its normalized
+/-- Division by a nonzero field element subtracts its normalized
 additive value, also when the numerator vanishes. -/
 theorem normalizedAdditiveValue_div (x y : F) (hy : y ≠ 0) :
     normalizedAdditiveValue A (x / y) =
@@ -231,7 +231,7 @@ variable {F Γ : Type*} [Field F] [LinearOrderedCommGroupWithZero Γ]
     (v : Valuation F Γ) [IsDiscreteValuationRing v.valuationSubring]
     (g : F ≃+* F) (hv : ∀ x : F, v (g x) = v x)
 
-/-- The genuine field-valued infimum is the original integral displacement
+/-- The field-valued infimum is the integral displacement
 order, since the canonical normalized field value extends `addVal`. -/
 theorem ramificationOrder_eq_iInf_normalizedAdditiveValue :
     ((ramificationOrder (R := v.valuationSubring) (v.valuationSubring ≃+*
@@ -250,7 +250,7 @@ theorem ramificationOrder_eq_iInf_normalizedAdditiveValue :
     exact (iInf_le _ a).trans_eq (congrArg (fun n : ℕ∞ => ((n : ℝ≥0∞) : EReal)) ha)
 
 /-- The intrinsic signed number is exactly the normalized field infimum
-minus one, on the same original valuation ring and field. -/
+minus one, on the valuation ring and field. -/
 theorem valuedRamificationNumber_eq_iInf :
     valuedRamificationNumber v g hv =
       (⨅ a : v.valuationSubring,
@@ -269,8 +269,8 @@ variable {F Γ : Type*} [Field F] [LinearOrderedCommGroupWithZero Γ]
     [PerfectField (IsLocalRing.ResidueField v.valuationSubring)]
 
 include p in
-/-- Every genuine uniformizer computes the signed field number by the
-ratio displacement in the same original field. -/
+/-- Every uniformizer computes the signed field number by the
+ratio displacement in the field. -/
 theorem valuedRamificationNumber_eq_uniformizer_ratio
     (hres : IsLocalRing.ResidueField.mapEquiv (valuationIntegerAut v g hv) =
       RingEquiv.refl _) {π : v.valuationSubring} (hπ : Irreducible π) :
@@ -288,7 +288,7 @@ theorem valuedRamificationNumber_eq_uniformizer_ratio
     integerRamificationNumber_eq_uniformizer p _ hres hπ
 
 include p in
-/-- The field expression is independent of every choice of actual
+/-- The field expression is independent of every choice of
 uniformizer, including when the automorphism is the identity. -/
 theorem uniformizer_ratio_normalizedAdditiveValue_eq
     (hres : IsLocalRing.ResidueField.mapEquiv (valuationIntegerAut v g hv) =

@@ -10,10 +10,10 @@ public import FontaineWintenberger.FieldOfNorms.Estimates.FiniteLayer
 public import FontaineWintenberger.Ramification.Norm.Approximation
 
 /-!
-# Actual truncated wild norms
+# Truncated wild norms
 
-At the precision supplied by the actual finite ramification bound, the
-original integer norm descends to a ring homomorphism on the original
+At the precision supplied by the finite ramification bound, the
+integer norm descends to a ring homomorphism on the
 maximal-ideal quotients. Perfect-residue digits prove its surjectivity.
 -/
 
@@ -52,8 +52,8 @@ private theorem min_addVal_eq_of_sub_mem_pow (r : ℕ) (x y : R)
         IsDiscreteValuationRing.addVal_add
       _ = IsDiscreteValuationRing.addVal R x := congrArg _ (by ring)
 
-/-- The canonical normalized additive value, truncated at the actual quotient
-precision. It is well defined on the actual maximal-ideal quotient. -/
+/-- The canonical normalized additive value, truncated at the quotient
+precision. It is well defined on the maximal-ideal quotient. -/
 def truncatedAddVal (r : ℕ) : R ⧸ IsLocalRing.maximalIdeal R ^ r → ℕ∞ :=
   Quotient.lift (fun x => min (IsDiscreteValuationRing.addVal R x) (r : ℕ∞))
     (by
@@ -101,8 +101,8 @@ variable (hb :
     letI : FiniteDimensional E.val F' := Module.Finite.right K E.val F'
     (b : EReal) ≤ apfRamificationBound E.val F')
 
-/-- The original integer norm descends to the actual maximal-ideal quotients
-at every precision proved by the actual finite ramification bound. -/
+/-- The integer norm descends to the maximal-ideal quotients
+at every precision proved by the finite ramification bound. -/
 def truncatedNorm (r s : ℕ) (hrs : r ≤ s)
     (hrb : r ≤ ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊) :
     (spectralIntegerRing K F.val ⧸ IsLocalRing.maximalIdeal (spectralIntegerRing K F.val) ^ s) →+*
@@ -212,8 +212,8 @@ private theorem exists_integerNorm_sub_mem_of_add_congruence (r : ℕ)
   exact ⟨x, hx⟩
 
 include he hd hb in
-/-- Actual finite perfect-residue digits approximate every original integer
-by the original norm at the supplied actual ramification precision. -/
+/-- Finite perfect-residue digits approximate every integer
+by the norm at the supplied ramification precision. -/
 theorem exists_integerNorm_sub_mem_of_le_apfRamificationBound (r : ℕ)
     (hrb : r ≤ ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊)
     (a : spectralIntegerRing K E.val) :
@@ -233,8 +233,8 @@ theorem exists_integerNorm_sub_mem_of_le_apfRamificationBound (r : ℕ)
       (integerNorm_add_congruence_of_le_apfRamificationBound E F hEF
         he d hd b hb x y)) a
 
-/-- Actual finite perfect-residue digits supply a preimage of every class
-under the actual truncated norm. -/
+/-- Finite perfect-residue digits supply a preimage of every class
+under the truncated norm. -/
 theorem truncatedNorm_surjective (r s : ℕ) (hrs : r ≤ s)
     (hrb : r ≤ ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊) :
     Function.Surjective (truncatedNorm E F hEF d b he hd hb r s hrs hrb) := by
@@ -247,7 +247,7 @@ theorem truncatedNorm_surjective (r s : ℕ) (hrs : r ≤ s)
   exact Ideal.Quotient.eq.mpr hx
 
 include he in
-/-- Total ramification makes the original integer norm preserve the exact
+/-- Total ramification makes the integer norm preserve the exact
 canonical normalized additive valuation, including at zero. -/
 theorem addVal_integerNorm_of_totallyRamified (x : spectralIntegerRing K F.val) :
     IsDiscreteValuationRing.addVal (spectralIntegerRing K E.val) (integerNorm E F hEF x) =
@@ -292,7 +292,7 @@ theorem addVal_integerNorm_of_totallyRamified (x : spectralIntegerRing K F.val) 
   exact hv
 
 /-- The image of every integral representative has its exact truncated
-normalized valuation under the actual truncated norm. -/
+normalized valuation under the truncated norm. -/
 theorem truncatedNorm_truncatedAddVal_mk (r s : ℕ) (hrs : r ≤ s)
     (hrb : r ≤ ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊)
     (x : spectralIntegerRing K F.val) :
@@ -302,7 +302,7 @@ theorem truncatedNorm_truncatedAddVal_mk (r s : ℕ) (hrs : r ≤ s)
   rw [truncatedNorm_mk, truncatedAddVal_mk,
     addVal_integerNorm_of_totallyRamified E F hEF he]
 
-/-- Across the two actual precisions, the quotient norm preserves exactly
+/-- Across the two precisions, the quotient norm preserves exactly
 the normalized valuation truncated at the target precision. -/
 theorem truncatedNorm_truncatedAddVal (r s : ℕ) (hrs : r ≤ s)
     (hrb : r ≤ ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊)
@@ -314,7 +314,7 @@ theorem truncatedNorm_truncatedAddVal (r s : ℕ) (hrs : r ≤ s)
   rw [truncatedNorm_truncatedAddVal_mk, truncatedAddVal_mk, min_assoc]
   rw [min_eq_right (show (r : ℕ∞) ≤ s by exact_mod_cast hrs)]
 
-/-- Original norm transitivity gives exact composition of the actual
+/-- Norm transitivity gives exact composition of the
 truncated ring maps across every tower of the stated precisions. -/
 theorem truncatedNorm_comp (G : FiniteIntermediateField K L) (hFG : F ≤ G)
     (dFG dEG : ℕ) (bFG bEG : ℝ)
@@ -371,7 +371,7 @@ theorem truncatedNorm_comp (G : FiniteIntermediateField K L) (hFG : F ≤ G)
   simp only [RingHom.comp_apply, truncatedNorm_mk]
   rw [integerNorm_integerNorm]
 
-/-- For the original identity inclusion the actual quotient norm is the
+/-- For the identity inclusion the quotient norm is the
 ordinary canonical reduction of precision. -/
 theorem truncatedNorm_self
     (heSelf : letI : Algebra E.val E.val := (IntermediateField.inclusion le_rfl).toRingHom.toAlgebra

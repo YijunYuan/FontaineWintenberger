@@ -13,17 +13,17 @@ public import FontaineWintenberger.APF.BaseChange.Strict
 /-!
 # Norm continuity at Herbrand precision
 
-## Actual finite-layer norm continuity at Herbrand precision
+## Finite-layer norm continuity at Herbrand precision
 
-Prime norm continuity transports to the original finite-layer integer norms.
-The actual inverse Herbrand functions compose in the same original towers,
-so their proved moduli compose along the actual wild prime chains.
+Prime norm continuity transports to the finite-layer integer norms.
+The inverse Herbrand functions compose in the towers,
+so their proved moduli compose along the wild prime chains.
 
-## Herbrand norm continuity on the actual wild finite tower
+## Herbrand norm continuity on the wild finite tower
 
-The actual cyclic prime field chain supplies every step. Composing its
-proved norm moduli and actual Herbrand functions gives continuity for the
-original finite-layer norm, without a continuity hypothesis in the endpoint.
+The cyclic prime field chain supplies every step. Composing its
+proved norm moduli and Herbrand functions gives continuity for the
+finite-layer norm, without a continuity hypothesis in the endpoint.
 -/
 
 @[expose] public section
@@ -53,8 +53,8 @@ variable (M : Type*) [NontriviallyNormedField M] [IsUltrametricDist M]
 variable (N : Type*) [Field N] [Algebra K N] [Algebra M N]
     [IsScalarTower K M N] [FiniteDimensional K N] [Algebra.IsSeparable K N]
 
-/-- The actual Herbrand moduli compose on the original finite normed bases,
-in the reverse order to their actual inverse Herbrand functions. -/
+/-- The Herbrand moduli compose on the finite normed bases,
+in the reverse order to their inverse Herbrand functions. -/
 theorem apfPhi_finiteBase_comp_of_normedAlgebra (r : ℝ) :
     letI := normedAlgebra_isCompleteDiscreteValuedField K M
     letI := normedAlgebra_residueField_perfectField K M
@@ -95,8 +95,8 @@ local instance (E : FiniteIntermediateField K Ω) : PerfectField (IsLocalRing.Re
     (NormedField.valuation (K := E.val)).valuationSubring) :=
   normedAlgebra_residueField_perfectField K E.val
 
-/-- Prime Herbrand continuity applies to the same original finite-layer
-norm maps and integer rings used by the actual inverse system. -/
+/-- Prime Herbrand continuity applies to the finite-layer
+norm maps and integer rings used by the inverse system. -/
 theorem integerNorm_prime_sub_congruence
     (E F : FiniteIntermediateField K Ω) (hEF : E ≤ F) (p : ℕ) [Fact p.Prime] :
     let F' := IntermediateField.extendScalars hEF
@@ -150,7 +150,7 @@ theorem integerNorm_prime_sub_congruence
   exact norm_sub_mem_pow_of_commutes f (integerNorm E F hEF)
     (Algebra.intNorm (NormedField.valuation (K := E.val)).valuationSubring T) e hnorm s x y hc
 
-/-- Actual Herbrand moduli compose through the original inclusions of
+/-- Actual Herbrand moduli compose through the inclusions of
 three finite intermediate fields, with all relative scalar structures explicitly fixed. -/
 theorem apfPhi_tower (E F G : FiniteIntermediateField K Ω) (hEF : E ≤ F) (hFG : F ≤ G) (r : ℝ) :
     letI : Algebra E.val F.val := (IntermediateField.inclusion hEF).toRingHom.toAlgebra
@@ -213,8 +213,8 @@ local instance (E : FiniteIntermediateField K Ω) : PerfectField (IsLocalRing.Re
 
 omit [PerfectField (IsLocalRing.ResidueField
     (NormedField.valuation (K := K)).valuationSubring)] [IsUltrametricDist Ω] in
-/-- The same original integral norms compose arbitrary proved input and
-output precisions through an actual triple of finite fields. -/
+/-- The integral norms compose arbitrary proved input and
+output precisions through a triple of finite fields. -/
 theorem integerNorm_sub_congruence_tower (E F G : FiniteIntermediateField K Ω)
     (hEF : E ≤ F) (hFG : F ≤ G) (r s t : ℕ)
     (hE : ∀ x y : spectralIntegerRing K F.val,
@@ -285,9 +285,9 @@ variable [FiniteDimensional K Ω] [IsGalois K Ω]
 local notation "P" => lowerRamificationGroup (Ω ≃ₐ[K] Ω)
   (IsLocalRing.maximalIdeal (spectralIntegerRing K Ω)) 1
 
-/-- The original norm on every actual finite step above wild inertia has
+/-- The norm on every finite step above wild inertia has
 its intrinsic Herbrand modulus. Each cyclic prime step and its total
-ramification are produced by the actual field chain. -/
+ramification are produced by the field chain. -/
 theorem integerNorm_sub_congruence_of_wild_field (p : ℕ) [Fact p.Prime]
     [CharP (IsLocalRing.ResidueField (spectralIntegerRing K Ω)) p]
     (E F : FiniteIntermediateField K Ω) (hEF : E ≤ F)

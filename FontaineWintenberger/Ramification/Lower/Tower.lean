@@ -16,7 +16,7 @@ public import Mathlib.RingTheory.Valuation.Extension
 # Normalized field valuations and ramification indices in towers
 
 The normalized field formula specializes Mathlib's adic valuation theorem.
-It uses the actual maximal ideals and canonical local-length ramification index.
+It uses the maximal ideals and canonical local-length ramification index.
 -/
 
 @[expose] public section
@@ -85,14 +85,14 @@ variable [(NormedField.valuation (K := K)).HasExtension w]
 local notation "OK" => Valuation.valuationSubring (NormedField.valuation (K := K))
 local notation "OL" => Valuation.valuationSubring w
 
-/-- The index ideal identity for an actual chosen finite-extension valuation ring. -/
+/-- The index ideal identity for a chosen finite-extension valuation ring. -/
 theorem extensionValuationSubring_map_maximalIdeal :
     (IsLocalRing.maximalIdeal OK).map (algebraMap OK OL) =
       IsLocalRing.maximalIdeal OL ^ (IsLocalRing.maximalIdeal OL).ramificationIdx OK := by
   have := extensionValuationSubring_isDiscreteValuationRing K L w
   exact map_maximalIdeal_eq_pow_ramificationIdx OK OL
 
-/-- Normalized numerical scaling on the actual source and chosen extension fields. -/
+/-- Normalized numerical scaling on the and chosen extension fields. -/
 theorem extensionValuationSubring_normalizedValuation_algebraMap (x : K) :
     letI := extensionValuationSubring_isDiscreteValuationRing K L w
     (IsDiscreteValuationRing.maximalIdeal OL).valuation L (algebraMap K L x) =

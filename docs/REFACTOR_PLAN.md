@@ -540,6 +540,13 @@ FontaineWintenberger/
   - `LocalField/` 中 import Ramification 的 10 个文件（`FullGalois`、`FixedField`、`SpectralMaps`、`BaseChange`、`Teichmuller`、`TruncatedCoefficients`、`TotalRamification`、`ResidueEquiv`…）下沉到 `Ramification/Lower/`、`Ramification/Upper/`。
   - 合并时 `universe` 重复声明去重；`Lower/Basic` 合并后 `IsDiscreteValuationRing.maximalIdeal` 与 `IsLocalRing.maximalIdeal` 歧义，用 `open … hiding maximalIdeal`。
 
+### C5（分支 `refactor`，2026-10-20）
+- `scripts/c5_cleanup.py`：删除 52 个标识符里的 `source`/`original`（`sourceResidueConstants → residueConstants`、`galoisSourceCoordinate → galoisCoordinate`、`RelFieldOfNorms._exists_stage → RelFieldOfNorms.exists_stage` 等 74 处重命名）；`monic_discr_map → Polynomial.Monic.discr_map`、`sq_sub_dvd_discr → Polynomial.sq_sub_dvd_discr`（声明写 `_root_.Polynomial.…`，否则 `FontaineWintenberger.Polynomial` 命名空间会遮蔽类型 `Polynomial`）；`inertia_fixedField_residueEquiv → inertiaFixedFieldResidueEquiv`、`finiteTower_autEquivImage → finiteTowerAutEquivImage`；21 个 section 名去掉 `Original/Actual/Source`。
+- 文档与注释中约 3 100 处 "actual / original / genuine / literal / source" 删除（只处理 docstring 与 `--` 注释，反引号内不动，句首重新大写，冠词 a/an 修正）；剩余 12 处是 `original-coordinate`、`original-family` 这类连字复合词，保留。
+- 保留的 20 处 `[Fintype G]`：陈述本身对 `Finset.univ` 求和/求积（`∏ h : H`、`Fintype.card H`），与 Mathlib 的 `MulSemiringAction.charpoly` 一致，不改。
+- `exists_aut_extends_intermediate_embedding` 是 `AlgHom.liftNormal` 的三行推论，有 4 个调用方；保留在 `Mathlib/FieldTheory/SeparableEmbeddings`，上游化时内联。
+- **未做，归入 A5**：166 处 `OK`/`R`/`A`/`R₀`/`O`（全是 `(NormedField.valuation (K := K)).valuationSubring`）的局部记号统一——等 `𝒪[K]`（`Valued.integer`）切换一起做，避免改两次。
+
 ### F5 设计细化（原计划，供对照）
 1. **`FieldOfNorms K L`**：`def FieldOfNorms := WithZero (normCompatibleUnits K L)`；`instance : CommGroupWithZero := inferInstanceAs …`（无条件）；`instance : Nontrivial`、`Inhabited`。`coord E : FieldOfNorms K L →*₀ E` 替代 `normLimitEval`。
 2. **加法与域**：`normLimitAdd` 的定义只依赖 `[IsAPF K L]`（`p` 仅被线程传递，`Convergence.lean` 中唯一实质使用是 `p ∈ 𝔪^n` 的发散性，来自 `PrimeValuation`）。目标：

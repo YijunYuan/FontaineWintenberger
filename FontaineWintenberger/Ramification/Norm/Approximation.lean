@@ -10,11 +10,11 @@ public import FontaineWintenberger.Ramification.Lower.ResidueDigits
 public import FontaineWintenberger.Ramification.Norm.Valuation
 
 /-!
-# Finite-precision approximation by actual norms
+# Finite-precision approximation by norms
 
-An actual totally ramified p-power extension with a norm addition congruence
+A totally ramified p-power extension with a norm addition congruence
 at a stated precision has norms representing every base element to that
-precision. Finite perfect-residue digits supply the actual preimage.
+precision. Finite perfect-residue digits supply the preimage.
 -/
 
 @[expose] public section
@@ -33,8 +33,8 @@ variable (R S : Type*) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
     [FaithfulSMul R S] [IsLocalHom (algebraMap R S)] [Module.Finite R S]
     [Algebra.IsSeparable (FractionRing R) (FractionRing S)]
 
-/-- Residue degree one makes the actual norm of every integral uniformizer
-an actual base uniformizer. -/
+/-- Residue degree one makes the norm of every integral uniformizer
+a base uniformizer. -/
 theorem irreducible_intNorm_of_inertiaDeg_eq_one
     (hf : (IsLocalRing.maximalIdeal S).inertiaDeg R = 1) {π : S} (hπ : Irreducible π) :
     Irreducible (Algebra.intNorm R S π) := by
@@ -45,7 +45,7 @@ theorem irreducible_intNorm_of_inertiaDeg_eq_one
 
 omit [IsLocalHom (algebraMap R S)]
   [Algebra.IsSeparable (FractionRing R) (FractionRing S)] in
-/-- Repeated actual norm addition congruences give the same finite-sum congruence. -/
+/-- Repeated norm addition congruences give the same finite-sum congruence. -/
 theorem intNorm_sum_sub_sum_intNorm_mem_maximalIdeal_pow {r : ℕ}
     (hadd : ∀ x y : S,
       Algebra.intNorm R S (x + y) - Algebra.intNorm R S x - Algebra.intNorm R S y ∈
@@ -68,7 +68,7 @@ theorem intNorm_sum_sub_sum_intNorm_mem_maximalIdeal_pow {r : ℕ}
 variable (p : ℕ) [Fact p.Prime] [CharP (IsLocalRing.ResidueField R) p]
     [PerfectField (IsLocalRing.ResidueField R)]
 
-/-- Finite perfect-residue digits make actual norms surjective modulo any
+/-- Finite perfect-residue digits make norms surjective modulo any
 precision at which their addition congruence has been proved. -/
 theorem exists_intNorm_sub_mem_maximalIdeal_pow (n r : ℕ)
     (he : (IsLocalRing.maximalIdeal S).ramificationIdx R = Module.finrank R S)
@@ -116,8 +116,8 @@ variable {Γ : Type*} [LinearOrderedCommGroupWithZero Γ] (w : Valuation L Γ)
 local notation "R" => Valuation.valuationSubring (NormedField.valuation (K := K))
 local notation "S" => Valuation.valuationSubring w
 
-/-- Finite-precision norm approximation for the actual chosen extension
-integers, with total ramification and p-power degree on the original fields. -/
+/-- Finite-precision norm approximation for the chosen extension
+integers, with total ramification and p-power degree on the fields. -/
 theorem extensionValuationSubring_exists_intNorm_sub_mem_maximalIdeal_pow (n r : ℕ)
     (he : (IsLocalRing.maximalIdeal S).ramificationIdx R = Module.finrank K L)
     (hd : Module.finrank K L = p ^ n) :

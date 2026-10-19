@@ -12,11 +12,11 @@ public import FontaineWintenberger.Ramification.Fields.Wild
 public import FontaineWintenberger.APF.BaseChange.Bounds
 
 /-!
-# Norm congruences on actual fields above wild inertia
+# Norm congruences on fields above wild inertia
 
-The actual cyclic prime-degree chain, its proved total ramification and
-its actual common intrinsic first bound supply every prime-step congruence.
-Composition uses the same original finite-layer integral norm maps.
+The cyclic prime-degree chain, its proved total ramification and
+its common intrinsic first bound supply every prime-step congruence.
+Composition uses the finite-layer integral norm maps.
 -/
 
 @[expose] public section
@@ -45,7 +45,7 @@ local instance wildNorm_perfectField (E : FiniteIntermediateField K Ω) : Perfec
 local notation "P" => lowerRamificationGroup (Ω ≃ₐ[K] Ω)
   (IsLocalRing.maximalIdeal (spectralIntegerRing K Ω)) 1
 
-/-- The actual norm congruence above the wild fixed field. All prime-step
+/-- The norm congruence above the wild fixed field. All prime-step
 congruences, total ramification and the common first bound are proved. -/
 theorem integerNorm_add_congruence_of_wild_field (p : ℕ) [Fact p.Prime]
     [CharP (IsLocalRing.ResidueField (spectralIntegerRing K Ω)) p]

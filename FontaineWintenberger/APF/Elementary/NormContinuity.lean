@@ -10,10 +10,10 @@ public import FontaineWintenberger.Ramification.Norm.Tower
 public import FontaineWintenberger.APF.Elementary.PrimeDegree
 
 /-!
-# Norm differences at the actual Herbrand precision
+# Norm differences at the Herbrand precision
 
-Controlled trace representatives and the actual different compute the
-prime-step modulus of continuity of the original integral norm.
+Controlled trace representatives and the different compute the
+prime-step modulus of continuity of the integral norm.
 -/
 
 @[expose] public section
@@ -22,7 +22,7 @@ noncomputable section
 
 namespace FontaineWintenberger
 
-/-- Euclidean division bounds the actual prime-step Herbrand piece by the
+/-- Euclidean division bounds the prime-step Herbrand piece by the
 integer norm and trace precisions simultaneously. -/
 theorem ceil_prime_herbrand_piece_le_precision (p t r : ℕ) (hp : 0 < p) :
     ⌈if (r : ℝ) ≤ t then (r : ℝ) else (t : ℝ) + ((r : ℝ) - t) / p⌉₊ ≤
@@ -70,8 +70,8 @@ local notation "S" => spectralIntegerRing K L
 
 attribute [local instance] FractionRing.liftAlgebra
 
-/-- The actual prime-step norm-difference precision is the minimum of the
-actual norm precision and the trace ideal of the controlled error. -/
+/-- The prime-step norm-difference precision is the minimum of the
+norm precision and the trace ideal of the controlled error. -/
 theorem exists_spectralIntegerRing_prime_norm_sub_precision
     (hp : (Module.finrank K L).Prime)
     (he : (IsLocalRing.maximalIdeal S).ramificationIdx R = Module.finrank K L) :
@@ -103,8 +103,8 @@ theorem exists_spectralIntegerRing_prime_norm_sub_precision
   simpa only [sub_add_cancel] using (IsLocalRing.maximalIdeal R ^
     min r (((Module.finrank K L - 1) * (t + 1) + r) / Module.finrank K L)).add_mem ht' hn'
 
-/-- The original integral norm in a totally ramified Galois prime step
-has the actual intrinsic Herbrand modulus of continuity. -/
+/-- The integral norm in a totally ramified Galois prime step
+has the intrinsic Herbrand modulus of continuity. -/
 theorem spectralIntegerRing_prime_norm_sub_congruence
     (hp : (Module.finrank K L).Prime)
     (he : (IsLocalRing.maximalIdeal S).ramificationIdx R = Module.finrank K L)

@@ -11,7 +11,7 @@ public import FontaineWintenberger.FieldOfNorms.Layers.NormPairs
 # Canonical good finite fields in a separable tower
 
 The simultaneous tensor descent of Wintenberger, paragraph 3.1.1, gives
-cofinal simultaneous goodness for the original finite fields and their
+cofinal simultaneous goodness for the finite fields and their
 canonical pullbacks. These are the stages used for covariant composition.
 -/
 
@@ -28,9 +28,9 @@ section CanonicalTensor
 variable (K M : Type*) [Field K] [Field M] [Algebra K M]
     {N : Type*} [Field N] [Algebra K N] [Algebra M N] [IsScalarTower K M N]
 
-/-- An actual multiplication isomorphism over a field equal to the original
+/-- A multiplication isomorphism over a field equal to the
 pullback proves intrinsic goodness, independently of its scalar presentation. -/
-theorem isGoodFiniteLayer_of_original_tensor (E : FiniteIntermediateField K N)
+theorem isGoodFiniteLayer_of_tensor (E : FiniteIntermediateField K N)
     (C : IntermediateField K M) (hC : FiniteIntermediateField.pullback K M E = C)
     [aCE : Algebra C E.val]
     (ha : ∀ c : C, (algebraMap C E.val c : N) = algebraMap M N (c : M))
@@ -59,7 +59,7 @@ variable (K M N : Type*) [Field K] [Field M] [Field N]
     {P : Type*} [Field P] [Algebra K P] [Algebra M P] [Algebra N P]
     [IsScalarTower K M P] [IsScalarTower K N P] [IsScalarTower M N P]
 
-/-- Iterated original pullback is literally the original composite pullback. -/
+/-- Iterated pullback is the composite pullback. -/
 theorem FiniteIntermediateField.pullback_tower (D : FiniteIntermediateField K P) :
     FiniteIntermediateField.pullback K M (FiniteIntermediateField.pullbackLayer K N D) =
         FiniteIntermediateField.pullback K M D := by
@@ -67,14 +67,14 @@ theorem FiniteIntermediateField.pullback_tower (D : FiniteIntermediateField K P)
   change (algebraMap N P (algebraMap M N x) ∈ D.val) ↔ (algebraMap M P x ∈ D.val)
   rw [← IsScalarTower.algebraMap_apply M N P]
 
-/-- The finite-layer indices themselves agree under iterated original pullback. -/
+/-- The finite-layer indices themselves agree under iterated pullback. -/
 theorem FiniteIntermediateField.pullbackLayer_tower (D : FiniteIntermediateField K P) :
     FiniteIntermediateField.pullbackLayer K M (FiniteIntermediateField.pullbackLayer K N D) =
       FiniteIntermediateField.pullbackLayer K M D :=
   Subtype.ext (FiniteIntermediateField.pullback_tower K M N D)
 
-/-- Both routes around the actual original inclusion square agree on each
-original element; equality of pullbacks only changes its membership proof. -/
+/-- Both routes around the inclusion square agree on each
+element; equality of pullbacks only changes its membership proof. -/
 theorem FiniteIntermediateField.pullbackTo_tower (D : FiniteIntermediateField K P)
     (a : FiniteIntermediateField.pullback K M (FiniteIntermediateField.pullbackLayer K N D)) :
     FiniteIntermediateField.pullbackTo K N D
@@ -87,9 +87,9 @@ theorem FiniteIntermediateField.pullbackTo_tower (D : FiniteIntermediateField K 
         a) : M)
   exact (IsScalarTower.algebraMap_apply M N P (a : M)).symm
 
-/-- Simultaneous intrinsic good stages are cofinal in the original finite
+/-- Simultaneous intrinsic good stages are cofinal in the finite
 fields of a finite separable tower. All three goodness statements are
-constructed from the actual simultaneous tensor descent. -/
+constructed from the simultaneous tensor descent. -/
 theorem exists_goodFiniteLayer_tower_ge
     [Algebra.IsAlgebraic K M] [Module.Finite M N] [Module.Finite N P]
     [Algebra.IsSeparable M N] [Algebra.IsSeparable N P] (E : FiniteIntermediateField K P) :
@@ -113,15 +113,15 @@ theorem exists_goodFiniteLayer_tower_ge
   let : Algebra C.val D₀.val := D.algebra
   let : Algebra C.val B₀.val := B.algebra
   have hgoodM : IsGoodFiniteLayer K M D₀ :=
-    isGoodFiniteLayer_of_original_tensor K M D₀ C.val hC (fun _ => rfl) eMP heMP
+    isGoodFiniteLayer_of_tensor K M D₀ C.val hC (fun _ => rfl) eMP heMP
   have hgoodB : IsGoodFiniteLayer K M B₀ :=
-    isGoodFiniteLayer_of_original_tensor K M B₀ C.val hBC (fun _ => rfl) eMN heMN
+    isGoodFiniteLayer_of_tensor K M B₀ C.val hBC (fun _ => rfl) eMN heMN
   let : Algebra B₀.val D₀.val := finiteDescentIntersectionAlgebra (N := N) D
   have hgoodN : IsGoodFiniteLayer K N D₀ :=
-    isGoodFiniteLayer_of_original_tensor K N D₀ B₀.val hBD (fun _ => rfl) eNP heNP
+    isGoodFiniteLayer_of_tensor K N D₀ B₀.val hBD (fun _ => rfl) eNP heNP
   exact ⟨D₀, hE, hgoodN, hgoodM, hB₀.symm ▸ hgoodB⟩
 
-/-- Any two original finite fields admit a common upper simultaneous good stage. -/
+/-- Any two finite fields admit a common upper simultaneous good stage. -/
 theorem exists_goodFiniteLayer_tower_ge_pair
     [Algebra.IsAlgebraic K M] [Module.Finite M N] [Module.Finite N P]
     [Algebra.IsSeparable M N] [Algebra.IsSeparable N P] (E E' : FiniteIntermediateField K P) :

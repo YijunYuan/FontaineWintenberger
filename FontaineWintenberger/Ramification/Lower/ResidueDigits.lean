@@ -11,7 +11,7 @@ public import Mathlib.FieldTheory.Perfect
 /-!
 # Finite perfect-residue digits
 
-Iterated Frobenius in the actual perfect residue field and ordinary
+Iterated Frobenius in the perfect residue field and ordinary
 uniformizer division give finite power-digit expansions. No infinite
 choice of representatives, residue finiteness, or completeness is used.
 -/
@@ -24,7 +24,7 @@ variable {R : Type*} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
 variable (p : ℕ) [Fact p.Prime] [CharP (IsLocalRing.ResidueField R) p]
     [PerfectField (IsLocalRing.ResidueField R)]
 
-/-- A residue Frobenius root lifts to one actual uniformizer digit. -/
+/-- A residue Frobenius root lifts to one uniformizer digit. -/
 theorem exists_pow_digit_uniformizer {π : R} (hπ : Irreducible π) (n : ℕ) (a : R) :
     ∃ b c : R, a = b ^ (p ^ n) + π * c := by
   obtain ⟨x, hx⟩ := (iterateFrobeniusEquiv (IsLocalRing.ResidueField R) p n).surjective
@@ -40,7 +40,7 @@ theorem exists_pow_digit_uniformizer {π : R} (hπ : Irreducible π) (n : ℕ) (
     simpa only [hπ.maximalIdeal_eq, Ideal.mem_span_singleton] using hm
   exact ⟨b, c, by linear_combination hc⟩
 
-/-- Every finite precision has an actual finite power-digit expansion with
+/-- Every finite precision has a finite power-digit expansion with
 an explicit uniformizer-power remainder. -/
 theorem exists_pow_digits_uniformizer {π : R} (hπ : Irreducible π) (n r : ℕ) (a : R) :
     ∃ b : ℕ → R, ∃ c : R,
@@ -66,7 +66,7 @@ theorem exists_pow_digits_uniformizer {π : R} (hπ : Irreducible π) (n r : ℕ
     rw [hsum, ha, hc, pow_succ]
     ring
 
-/-- The finite power-digit sum approximates the actual input to the stated
+/-- The finite power-digit sum approximates the input to the stated
 maximal-ideal power, over an arbitrary perfect residue field. -/
 theorem exists_pow_digits_sub_mem_maximalIdeal_pow {π : R} (hπ : Irreducible π)
     (n r : ℕ) (a : R) : ∃ b : ℕ → R,

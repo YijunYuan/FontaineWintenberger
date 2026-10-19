@@ -9,10 +9,10 @@ public import FontaineWintenberger.LocalField.Spectral.Tower
 public import FontaineWintenberger.Ramification.Lower.GaloisGroup
 
 /-!
-# Actual spectral integers after changing a finite base
+# Spectral integers after changing a finite base
 
-Compatible norms identify both spectral constructions with the same actual
-unit ball. The identity intertwines the actual fixing-subgroup actions.
+Compatible norms identify both spectral constructions with the same
+unit ball. The identity intertwines the fixing-subgroup actions.
 -/
 
 @[expose] public section
@@ -25,7 +25,7 @@ variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [Complete
 variable (L : Type*) [NormedField L] [NormedAlgebra K L] [IsUltrametricDist L]
     [Algebra.IsAlgebraic K L]
 
-/-- The spectral integer subring is the actual unit ball of any compatible field norm. -/
+/-- The spectral integer subring is the unit ball of any compatible field norm. -/
 theorem spectralIntegerRing_eq_normedUnitBall :
     spectralIntegerRing K L = (NormedField.valuation (K := L)).valuationSubring := by
   ext x
@@ -41,13 +41,13 @@ variable (M : IntermediateField K E) [FiniteDimensional K M]
 
 local instance : CompleteSpace M := FiniteDimensional.complete K M
 
-/-- Both base fields construct the same actual integer subring of the top field. -/
+/-- Both base fields construct the same integer subring of the top field. -/
 theorem finiteBase_spectralIntegerRing_eq :
     spectralIntegerRing K E = spectralIntegerRing M E :=
   (spectralIntegerRing_eq_normedUnitBall K E).trans
     (spectralIntegerRing_eq_normedUnitBall M E).symm
 
-/-- The identity on field elements identifies the two actual integer rings. -/
+/-- The identity on field elements identifies the two integer rings. -/
 noncomputable def finiteBase_spectralIntegerRingEquiv :
     spectralIntegerRing K E ≃+* spectralIntegerRing M E :=
   RingEquiv.subringCongr

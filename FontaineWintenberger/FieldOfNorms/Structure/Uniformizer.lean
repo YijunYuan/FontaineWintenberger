@@ -10,11 +10,11 @@ public import FontaineWintenberger.FieldOfNorms.Structure.Reconstruction
 public import FontaineWintenberger.FieldOfNorms.Basic.Ring
 
 /-!
-# An actual norm-family uniformizer
+# A norm-family uniformizer
 
-A genuine uniformizer class in the first original finite quotient lifts
-through the actual surjective norm tower. Reconstruction supplies a family
-on the same original field of norms carrier with normalized value one.
+An uniformizer class in the first finite quotient lifts
+through the surjective norm tower. Reconstruction supplies a family
+on the field of norms carrier with normalized value one.
 -/
 
 @[expose] public section
@@ -28,8 +28,8 @@ variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
 local notation "p" => residueChar K
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
-/-- An actual compatible norm family has normalized value one. The family
-is reconstructed from a lifted genuine first-stage uniformizer class. -/
+/-- A compatible norm family has normalized value one. The family
+is reconstructed from a lifted first-stage uniformizer class. -/
 theorem exists_fieldOfNormsValuation_eq_exp_neg_one [IsAPF K L]
     [Fact (¬ Module.Finite K L)] :
     ∃ πX : FieldOfNorms K L, FieldOfNorms.valuation K L πX = WithZero.exp (-1 : ℤ) := by
@@ -72,7 +72,7 @@ theorem exists_fieldOfNormsValuation_eq_exp_neg_one [IsAPF K L]
     IsDiscreteValuationRing.intValuation_maximalIdeal, hzval]
   rfl
 
-/-- A chosen actual original norm-compatible family with normalized value one. -/
+/-- A chosen norm-compatible family with normalized value one. -/
 def FieldOfNorms.uniformizer [IsAPF K L] [Fact (¬ Module.Finite K L)] : FieldOfNorms K L :=
   (exists_fieldOfNormsValuation_eq_exp_neg_one K L).choose
 
@@ -83,7 +83,7 @@ theorem FieldOfNorms.valuation_fieldOfNormsUniformizer [IsAPF K L]
       WithZero.exp (-1 : ℤ) :=
   (exists_fieldOfNormsValuation_eq_exp_neg_one K L).choose_spec
 
-/-- The actual reconstructed uniformizer is a nonzero original norm family. -/
+/-- The reconstructed uniformizer is a nonzero norm family. -/
 theorem FieldOfNorms.uniformizer_ne_zero [IsAPF K L] [Fact (¬ Module.Finite K L)] :
     FieldOfNorms.uniformizer K L ≠ 0 := by
   intro h
@@ -91,7 +91,7 @@ theorem FieldOfNorms.uniformizer_ne_zero [IsAPF K L] [Fact (¬ Module.Finite K L
   rw [h, _root_.map_zero] at hv
   exact WithZero.exp_ne_zero hv.symm
 
-/-- All original integer powers have their exact original normalized values. -/
+/-- All integer powers have their exact normalized values. -/
 theorem FieldOfNorms.uniformizer_zpow_valuation [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (m : ℤ) :
     FieldOfNorms.valuation K L (FieldOfNorms.uniformizer K L ^ m) =
@@ -100,7 +100,7 @@ theorem FieldOfNorms.uniformizer_zpow_valuation [IsAPF K L]
   congr 1
   simp
 
-/-- The same original stable valuation attains every normalized integer value and zero. -/
+/-- The stable valuation attains every normalized integer value and zero. -/
 theorem FieldOfNorms.valuation_surjective [IsAPF K L] [Fact (¬ Module.Finite K L)] :
     Function.Surjective (FieldOfNorms.valuation K L) := by
   intro a
@@ -111,13 +111,13 @@ theorem FieldOfNorms.valuation_surjective [IsAPF K L] [Fact (¬ Module.Finite K 
       rw [FieldOfNorms.uniformizer_zpow_valuation, neg_neg]
       rfl
 
-/-- Bundling the same original map as a field valuation preserves its proved surjectivity. -/
+/-- Bundling the map as a field valuation preserves its proved surjectivity. -/
 theorem FieldOfNorms.fieldValuation_surjective [IsAPF K L]
     [Fact (¬ Module.Finite K L)] :
     Function.Surjective (FieldOfNorms.fieldValuation K L) := by
   exact FieldOfNorms.valuation_surjective K L
 
-/-- The value group of the actual original field valuation is the entire integer group. -/
+/-- The value group of the field valuation is the entire integer group. -/
 theorem FieldOfNorms.fieldValuation_valueGroup_eq_top [IsAPF K L]
     [Fact (¬ Module.Finite K L)] :
     (FieldOfNorms.fieldValuation K L).valueGroup = ⊤ := by
@@ -126,7 +126,7 @@ theorem FieldOfNorms.fieldValuation_valueGroup_eq_top [IsAPF K L]
   apply MonoidWithZeroHom.mem_valueGroup
   exact FieldOfNorms.valuation_surjective K L a.val
 
-/-- The original normalized field valuation is rank-one discrete by its actual value group. -/
+/-- The normalized field valuation is rank-one discrete by its value group. -/
 instance FieldOfNorms.fieldValuation_isRankOneDiscrete [IsAPF K L]
     [Fact (¬ Module.Finite K L)] :
     Valuation.IsRankOneDiscrete (FieldOfNorms.fieldValuation K L) := by
@@ -136,7 +136,7 @@ instance FieldOfNorms.fieldValuation_isRankOneDiscrete [IsAPF K L]
   exact @Valuation.IsRankOneDiscrete.mk' _ _ _ _
     (FieldOfNorms.fieldValuation K L) inferInstance hG
 
-/-- The actual valuation subring of the same original field is a discrete valuation ring. -/
+/-- The valuation subring of the field is a discrete valuation ring. -/
 instance FieldOfNorms.fieldValuation_isDiscreteValuationRing [IsAPF K L]
     [Fact (¬ Module.Finite K L)] :
     IsDiscreteValuationRing (FieldOfNorms.fieldValuation K L).valuationSubring := by
@@ -161,7 +161,7 @@ instance FieldOfNorms.instIsDiscreteValuationRing [IsAPF K L] [Fact (¬ Module.F
       (Valued.v : Valuation (FieldOfNorms K L) (WithZero (Multiplicative ℤ))).valuationSubring :=
   FieldOfNorms.fieldValuation_isDiscreteValuationRing K L
 
-/-- The reconstructed family as an element of its actual original valuation ring. -/
+/-- The reconstructed family as an element of its valuation ring. -/
 def FieldOfNorms.uniformizerInteger [IsAPF K L] [Fact (¬ Module.Finite K L)] :
     (FieldOfNorms.fieldValuation K L).valuationSubring := by
   refine ⟨FieldOfNorms.uniformizer K L, ?_⟩
@@ -175,7 +175,7 @@ theorem FieldOfNorms.uniformizerInteger_coe [IsAPF K L] [Fact (¬ Module.Finite 
     (FieldOfNorms.uniformizerInteger K L : FieldOfNorms K L) =
       FieldOfNorms.uniformizer K L := rfl
 
-/-- The original family is a uniformizer for the same actual field valuation. -/
+/-- The family is an uniformizer for the same field valuation. -/
 theorem FieldOfNorms.uniformizer_isUniformizer [IsAPF K L]
     [Fact (¬ Module.Finite K L)] :
     (FieldOfNorms.fieldValuation K L).IsUniformizer
@@ -185,7 +185,7 @@ theorem FieldOfNorms.uniformizer_isUniformizer [IsAPF K L]
       (FieldOfNorms.fieldValuation_surjective K L)]
   exact FieldOfNorms.valuation_fieldOfNormsUniformizer K L
 
-/-- The actual original maximal ideal is generated by the reconstructed uniformizer. -/
+/-- The maximal ideal is generated by the reconstructed uniformizer. -/
 theorem FieldOfNorms.uniformizer_maximalIdeal [IsAPF K L]
     [Fact (¬ Module.Finite K L)] :
     IsLocalRing.maximalIdeal (FieldOfNorms.fieldValuation K L).valuationSubring =
@@ -194,15 +194,15 @@ theorem FieldOfNorms.uniformizer_maximalIdeal [IsAPF K L]
     (π := FieldOfNorms.uniformizerInteger K L)
     (FieldOfNorms.uniformizer_isUniformizer K L)
 
-/-- The actual reconstructed valuation-ring element is irreducible in that same DVR. -/
+/-- The reconstructed valuation-ring element is irreducible in that same DVR. -/
 theorem FieldOfNorms.uniformizerInteger_irreducible [IsAPF K L]
     [Fact (¬ Module.Finite K L)] :
     Irreducible (FieldOfNorms.uniformizerInteger K L) := by
   exact (IsDiscreteValuationRing.irreducible_iff_uniformizer _).mpr
     (FieldOfNorms.uniformizer_maximalIdeal K L)
 
-/-- The canonical normalized valuation of the actual original valuation ring
-is exactly the existing stable field valuation on the same original carrier. -/
+/-- The canonical normalized valuation of the valuation ring
+is exactly the existing stable field valuation on the carrier. -/
 theorem FieldOfNorms.fieldValuation_eq_normalized [IsAPF K L]
     [Fact (¬ Module.Finite K L)] :
     (IsDiscreteValuationRing.maximalIdeal

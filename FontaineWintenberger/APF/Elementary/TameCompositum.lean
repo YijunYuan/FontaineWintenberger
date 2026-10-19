@@ -15,17 +15,17 @@ public import FontaineWintenberger.APF.Finite.Slope
 /-!
 # The tame compositum and its Herbrand scaling
 
-## First-bound scaling by the actual tame fixed field
+## First-bound scaling by the tame fixed field
 
-The same intrinsic first bound is compared before and after the genuine
-wild-fixed-field compositum. Positive upper groups and the actual subgroup
+The same intrinsic first bound is compared before and after the
+wild-fixed-field compositum. Positive upper groups and the subgroup
 product condition give the scaling, including a zero first break.
 
-## Herbrand scaling for the actual tame compositum
+## Herbrand scaling for the tame compositum
 
-The compositum of an intermediate field with the original wild fixed field
+The compositum of an intermediate field with the wild fixed field
 is the wild fixed field over that intermediate base. All fields, own integer
-rings, and Herbrand functions in these comparisons are the original ones.
+rings, and Herbrand functions in these comparisons are the ones.
 -/
 
 @[expose] public section
@@ -173,8 +173,8 @@ private theorem wild_compositum_upper_product_eq_top_iff (J : Subgroup G)
   exact sup_eq_top_iff_subgroupOf_sup_eq_top J P (U u)
       (upperRamificationGroup_le_lower_one G hu) hHP
 
-/-- The intrinsic first bounds before and after the actual tame compositum
-are finite and differ by the actual tame ramification index. -/
+/-- The intrinsic first bounds before and after the tame compositum
+are finite and differ by the tame ramification index. -/
 theorem exists_apfRamificationBound_wild_compositum (J : Subgroup G)
     (hJ : J ≠ ⊤) (hJP : J ⊔ P = ⊤) :
     letI := wildFirstBound_discreteValuationRing K L
@@ -229,7 +229,7 @@ theorem exists_apfRamificationBound_wild_compositum (J : Subgroup G)
   refine ⟨b, hb, hbound, ?_⟩
   rw [hbound', hscale]
 
-/-- A nontrivial actual totally ramified p-power subextension satisfies the
+/-- A nontrivial totally ramified p-power subextension satisfies the
 same intrinsic first-bound scaling, using proved wild-inertia transitivity. -/
 theorem exists_apfRamificationBound_wild_compositum_of_totallyRamified
     (p : ℕ) [Fact p.Prime]
@@ -312,7 +312,7 @@ local instance (E : IntermediateField K Ω) : IsGalois E Ω :=
 
 omit [PerfectField (IsLocalRing.ResidueField
   (NormedField.valuation (K := K)).valuationSubring)] in
-/-- The actual tame compositum, over any actual intermediate base, is its
+/-- The tame compositum, over any intermediate base, is its
 own wild fixed field. No normality of the intermediate base is needed. -/
 theorem wild_compositum_extendScalars_eq_fixedField (F : IntermediateField K Ω) :
     IntermediateField.extendScalars (show F ≤ A ⊔ F from le_sup_right) =
@@ -332,7 +332,7 @@ theorem wild_compositum_extendScalars_eq_fixedField (F : IntermediateField K Ω)
     exact h g hg
 
 omit [IsUltrametricDist Ω] in
-/-- The original tame fixed field has the actual linear APF integral. -/
+/-- The tame fixed field has the linear APF integral. -/
 theorem wild_fixedField_apfPsi {u : ℝ} (hu : 0 ≤ u) :
     apfPsi K A u =
       ((IsLocalRing.maximalIdeal (spectralIntegerRing K A)).ramificationIdx
@@ -340,7 +340,7 @@ theorem wild_fixedField_apfPsi {u : ℝ} (hu : 0 ≤ u) :
   rw [apfPsi_eq_inverseHerbrandFunction K A (by linarith),
     wild_fixedField_inverseHerbrandFunction K Ω hu]
 
-/-- Over the original right-hand base the compositum has its genuine tame
+/-- Over the right-hand base the compositum has its tame
 ramification index as its Herbrand slope. -/
 theorem wild_compositum_apfPsi_over_right (F : IntermediateField K Ω)
     {u : ℝ} (hu : 0 ≤ u) :
@@ -352,8 +352,8 @@ theorem wild_compositum_apfPsi_over_right (F : IntermediateField K Ω)
   rw [wild_compositum_extendScalars_eq_fixedField K Ω F]
   exact wild_fixedField_apfPsi F Ω hu
 
-/-- Wild-inertia transitivity identifies the actual tame ramification
-indices in the two original towers, with no normality assumption on `F`. -/
+/-- Wild-inertia transitivity identifies the tame ramification
+indices in the two towers, with no normality assumption on `F`. -/
 theorem wild_compositum_ramificationIdx_eq (F : IntermediateField K Ω)
     (hFP : F.fixingSubgroup ⊔ P = ⊤) :
     (IsLocalRing.maximalIdeal (spectralIntegerRing F
@@ -390,8 +390,8 @@ theorem wild_compositum_ramificationIdx_eq (F : IntermediateField K Ω)
     (lowerRamificationGroup_antitone G (IsLocalRing.maximalIdeal (spectralIntegerRing K Ω))
       (by norm_num : (0 : ℤ) ≤ 1)) hFP
 
-/-- Over the original right-hand base, the tame slope equals the actual
-ramification index of the original wild fixed field. -/
+/-- Over the right-hand base, the tame slope equals the
+ramification index of the wild fixed field. -/
 theorem wild_compositum_apfPsi_over_right_of_sup_eq_top (F : IntermediateField K Ω)
     (hFP : F.fixingSubgroup ⊔ P = ⊤) {u : ℝ} (hu : 0 ≤ u) :
     apfPsi F (IntermediateField.extendScalars
@@ -399,8 +399,8 @@ theorem wild_compositum_apfPsi_over_right_of_sup_eq_top (F : IntermediateField K
   rw [wild_compositum_apfPsi_over_right K Ω F hu,
     wild_compositum_ramificationIdx_eq K Ω F hFP]
 
-/-- The two actual finite-base compositions give the full inverse Herbrand
-scaling for the same compositum and original intermediate field. -/
+/-- The two finite-base compositions give the full inverse Herbrand
+scaling for the same compositum and intermediate field. -/
 theorem wild_compositum_apfPsi_scaling (F : IntermediateField K Ω)
     (hFP : F.fixingSubgroup ⊔ P = ⊤) {u : ℝ} (hu : 0 ≤ u) :
     apfPsi A (IntermediateField.extendScalars
@@ -433,8 +433,8 @@ theorem wild_compositum_apfPsi_scaling (F : IntermediateField K Ω)
     _ = _ := wild_compositum_apfPsi_over_right_of_sup_eq_top K Ω F hFP
       (hu.trans (IsAPF.le_apfPsi K F u))
 
-/-- Inverting the actual scaled Herbrand equality gives the same scaling
-for the original Herbrand moduli, including zero. -/
+/-- Inverting the scaled Herbrand equality gives the same scaling
+for the Herbrand moduli, including zero. -/
 theorem wild_compositum_apfPhi_scaling (F : IntermediateField K Ω)
     (hFP : F.fixingSubgroup ⊔ P = ⊤) {u : ℝ} (hu : 0 ≤ u) :
     apfPhi A (IntermediateField.extendScalars
@@ -454,9 +454,9 @@ theorem wild_compositum_apfPhi_scaling (F : IntermediateField K Ω)
       rw [apfPsi_apfPhi]
     _ = _ := (wild_compositum_apfPsi_scaling K Ω F hFP hv).symm
 
-/-- Actual total ramification and prime-power degree supply wild-inertia
-transitivity, and hence all three Herbrand scalings for the original fields.
-Trivial steps are included; the original intermediate field may be nonnormal. -/
+/-- Total ramification and prime-power degree supply wild-inertia
+transitivity, and hence all three Herbrand scalings for the fields.
+Trivial steps are included; the intermediate field may be nonnormal. -/
 theorem wild_compositum_herbrand_scaling_of_totallyRamified
     (p : ℕ) [Fact p.Prime]
     [CharP (IsLocalRing.ResidueField (spectralIntegerRing K Ω)) p]

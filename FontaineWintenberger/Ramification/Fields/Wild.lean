@@ -12,11 +12,11 @@ public import FontaineWintenberger.Ramification.Lower.TotalRamification
 public import FontaineWintenberger.Ramification.Lower.SpectralMaps
 
 /-!
-# Actual total ramification throughout the wild tower
+# Total ramification throughout the wild tower
 
 Every intermediate base above the wild fixed field has full inertia in its
-own actual integer ring. The ordinary inertia-cardinality theorem therefore
-gives its actual total-ramification degree.
+own integer ring. The ordinary inertia-cardinality theorem therefore
+gives its total-ramification degree.
 -/
 
 @[expose] public section
@@ -44,7 +44,7 @@ local instance : PerfectField (IsLocalRing.ResidueField
 
 omit [PerfectField (IsLocalRing.ResidueField
   (NormedField.valuation (K := K)).valuationSubring)] in
-/-- Every actual base above the wild fixed field has full own-ring inertia. -/
+/-- Every base above the wild fixed field has full own-ring inertia. -/
 theorem wildField_lower_zero_eq_top (hM : IntermediateField.fixedField P ≤ M) :
     lowerRamificationGroup (L ≃ₐ[M] L)
       (IsLocalRing.maximalIdeal (spectralIntegerRing M L)) 0 = ⊤ := by
@@ -55,16 +55,16 @@ theorem wildField_lower_zero_eq_top (hM : IntermediateField.fixedField P ≤ M) 
   exact hfix.trans (lowerRamificationGroup_antitone (L ≃ₐ[K] L)
     (IsLocalRing.maximalIdeal (spectralIntegerRing K L)) (by norm_num : (0 : ℤ) ≤ 1))
 
-/-- The ramification index over every actual intermediate base above the
-wild fixed field is its genuine relative field degree. -/
+/-- The ramification index over every intermediate base above the
+wild fixed field is its relative field degree. -/
 theorem wildField_top_ramificationIdx_eq_finrank (hM : IntermediateField.fixedField P ≤ M) :
     (IsLocalRing.maximalIdeal (spectralIntegerRing M L)).ramificationIdx
       (NormedField.valuation (K := M)).valuationSubring = Module.finrank M L := by
   rw [← spectralIntegerRing_card_lower_zero M L, wildField_lower_zero_eq_top K L M hM,
     Subgroup.card_top, IsGalois.card_aut_eq_finrank]
 
-/-- Every actual intermediate step above the wild fixed field is totally
-ramified on its own actual spectral integers and ordinary relative degree. -/
+/-- Every intermediate step above the wild fixed field is totally
+ramified on its own spectral integers and ordinary relative degree. -/
 theorem wildField_step_ramificationIdx_eq_finrank (N : IntermediateField K L)
     (hMN : M ≤ N) (hM : IntermediateField.fixedField P ≤ M) :
     let B := IntermediateField.extendScalars hMN

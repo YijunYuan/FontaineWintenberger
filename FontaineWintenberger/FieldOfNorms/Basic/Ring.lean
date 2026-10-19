@@ -13,36 +13,36 @@ public import Mathlib.Algebra.Ring.MinimalAxioms
 /-!
 # The field of norms as a valued field
 
-## Algebraic laws of the original field of norms addition
+## Algebraic laws of the field of norms addition
 
 Asymptotic coordinate approximation and fixed-base separation prove the laws
-of the operation already constructed from actual original norm-sum limits.
+of the operation already constructed from norm-sum limits.
 
-## Finite sums and their original coordinate approximations
+## Finite sums and their coordinate approximations
 
 The named additive structure uses precisely the sum operation constructed
-from original finite-field fields of norms.
+from finite-field fields of norms.
 
-## The original field of norms as a commutative semiring
+## The field of norms as a commutative semiring
 
-The named structure preserves its original multiplicative data and uses the
-addition already constructed from original fields of norms.
+The named structure preserves its multiplicative data and uses the
+addition already constructed from fields of norms.
 
-## The field structure on the same original field of norms carrier
+## The field structure on the field of norms carrier
 
-Actual ramification divergence kills the residue prime. The resulting
+Ramification divergence kills the residue prime. The resulting
 additive inverses complete the existing multiplication to a field.
 
-## The original stable norm valuation on the constructed field
+## The stable norm valuation on the constructed field
 
 The existing multiplicative valuation satisfies the ultrametric inequality
 for precisely the constructed addition on the same field of norms carrier.
 
-## Valuations of differences from original finite coordinates
+## Valuations of differences from finite coordinates
 
-Actual subtraction has arbitrarily precise finite-coordinate approximations.
+Subtraction has arbitrarily precise finite-coordinate approximations.
 Consequently cofinally many exact finite displacement valuations determine
-the valuation on the same original norm-field carrier.
+the valuation on the norm-field carrier.
 -/
 
 @[expose] public section
@@ -56,12 +56,12 @@ variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
 local notation "p" => residueChar K
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
-/-- Associativity of the actual field of norms addition follows from four
-coordinate approximations and separation at a fixed original finite base. -/
+/-- Associativity of the field of norms addition follows from four
+coordinate approximations and separation at a fixed finite base. -/
 theorem FieldOfNorms.add_assoc [IsAPF K L] (α β γ : FieldOfNorms K L) :
     FieldOfNorms.add K L (FieldOfNorms.add K L α β) γ =
       FieldOfNorms.add K L α (FieldOfNorms.add K L β γ) := by
-  apply FieldOfNorms._ext_of_eventually_sub_mem K L
+  apply FieldOfNorms.ext_of_eventually_sub_mem K L
   intro n
   obtain ⟨T₁, hT₁⟩ := FieldOfNorms.add_sub_mem K L (FieldOfNorms.add K L α β) γ n
   obtain ⟨T₂, hT₂⟩ := FieldOfNorms.add_sub_mem K L α β n
@@ -82,7 +82,7 @@ theorem FieldOfNorms.add_assoc [IsAPF K L] (α β γ : FieldOfNorms K L) :
   change (d₁ : E.val) + (d₂ : E.val) - (d₃ : E.val) - (d₄ : E.val) = _
   linear_combination heq₁ + heq₂ - heq₃ - heq₄
 
-/-- The original zero and the constructed addition form a commutative monoid
+/-- The zero and the constructed addition form a commutative monoid
 on the same carrier. Low priority: when `L/K` is infinite the `Field` instance supplies the
 same structure, and instance search should go through it so that all paths agree syntactically. -/
 instance (priority := low) FieldOfNorms.instAddCommMonoid [IsAPF K L] : AddCommMonoid (FieldOfNorms
@@ -106,7 +106,7 @@ variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
 local notation "p" => residueChar K
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
-/-- Finite sums of integral original families remain integral for the
+/-- Finite sums of integral families remain integral for the
 already constructed additive structure. -/
 theorem FieldOfNorms.valuation_sum_le_one [IsAPF K L] {ι : Type*}
     (s : Finset ι) (a : ι → FieldOfNorms K L)
@@ -120,8 +120,8 @@ theorem FieldOfNorms.valuation_sum_le_one [IsAPF K L] {ι : Type*}
     exact FieldOfNorms.valuation_fieldOfNormsAdd_le_one K L _ _
       (ha i (Finset.mem_insert_self i s)) (ih (fun j hj => ha j (Finset.mem_insert_of_mem hj)))
 
-/-- Every finite sum of original families approximates the ordinary sum
-of its coordinates on an actual finite tail at each prescribed precision. -/
+/-- Every finite sum of families approximates the ordinary sum
+of its coordinates on a finite tail at each prescribed precision. -/
 theorem FieldOfNorms.coord_sum_sub_mem [IsAPF K L] {ι : Type*}
     (s : Finset ι) (a : ι → FieldOfNorms K L) :
     ∀ n : ℕ, ∃ T : FiniteIntermediateField K L, ∀ E : FiniteIntermediateField K L, T ≤ E →
@@ -169,8 +169,8 @@ variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
 local notation "p" => residueChar K
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
-/-- The actual field of norms addition and original multiplication give a named
-commutative semiring, preserving the original multiplicative structure. -/
+/-- The field of norms addition and multiplication give a named
+commutative semiring, preserving the multiplicative structure. -/
 instance (priority := low) FieldOfNorms.instCommSemiring [IsAPF K L] : CommSemiring (FieldOfNorms K
     L) :=
   {
@@ -195,12 +195,12 @@ variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
 local notation "p" => residueChar K
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
-/-- The residue prime vanishes in the actual field of norms semiring, by
-coordinate approximation and actual ramification divergence. -/
-theorem FieldOfNorms._natCast_prime_eq_zero [IsAPF K L]
+/-- The residue prime vanishes in the field of norms semiring, by
+coordinate approximation and ramification divergence. -/
+theorem FieldOfNorms.natCast_prime_eq_zero [IsAPF K L]
     [Fact (¬ Module.Finite K L)] :
     (p : FieldOfNorms K L) = 0 := by
-  apply FieldOfNorms._ext_of_eventually_sub_mem K L
+  apply FieldOfNorms.ext_of_eventually_sub_mem K L
   intro n
   obtain ⟨T₁, hT₁⟩ := FieldOfNorms.coord_nsmul_sub_mem K L p 1 n
   obtain ⟨T₂, hT₂⟩ := IsAPF.exists_finiteIntermediateField_natCast_mem_image_maximalIdeal_pow
@@ -215,15 +215,15 @@ theorem FieldOfNorms._natCast_prime_eq_zero [IsAPF K L]
   change (d₁ : E.val) + (d₂ : E.val) = FieldOfNorms.coord K L E (p • (1 : FieldOfNorms K L))
   linear_combination heq₁ + heq₂
 
-/-- The actual (p-1)-fold sum is an additive inverse, including p=2. -/
-theorem FieldOfNorms._pred_nsmul_add_eq_zero [IsAPF K L]
+/-- The (p-1)-fold sum is an additive inverse, including p=2. -/
+theorem FieldOfNorms.pred_nsmul_add_eq_zero [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (α : FieldOfNorms K L) :
     (p - 1) • α + α = 0 := by
   rw [← AddMonoid.nsmul_succ, Nat.sub_add_cancel (Fact.out : Nat.Prime p).one_le]
-  rw [nsmul_eq_mul, FieldOfNorms._natCast_prime_eq_zero K L, zero_mul]
+  rw [nsmul_eq_mul, FieldOfNorms.natCast_prime_eq_zero K L, zero_mul]
 
-/-- The original multiplicative field of norms is a field under the actual
-addition. Every additive inverse is its actual (p-1)-fold sum. -/
+/-- The multiplicative field of norms is a field under the
+addition. Every additive inverse is its (p-1)-fold sum. -/
 instance FieldOfNorms.instNeg [IsAPF K L] [Fact (¬ Module.Finite K L)] : Neg (FieldOfNorms K L) :=
   ⟨fun α => (p - 1) • α⟩
 
@@ -231,7 +231,7 @@ instance FieldOfNorms.instField [IsAPF K L] [Fact (¬ Module.Finite K L)] :
     Field (FieldOfNorms K L) :=
   { FieldOfNorms.instCommSemiring K L, FieldOfNorms.instCommGroupWithZero K L, FieldOfNorms.instNeg
       K L with
-    neg_add_cancel := FieldOfNorms._pred_nsmul_add_eq_zero K L
+    neg_add_cancel := FieldOfNorms.pred_nsmul_add_eq_zero K L
     zsmul := zsmulRec
     nnqsmul := _
     qsmul := _ }
@@ -243,22 +243,22 @@ theorem FieldOfNorms.field_toCommSemiring [IsAPF K L] [Fact (¬ Module.Finite K 
         FieldOfNorms.instCommSemiring K L :=
   rfl
 
-/-- The actual field has residue characteristic p, with no finiteness
-assumption on the perfect residue field of the original base. -/
+/-- The field has residue characteristic p, with no finiteness
+assumption on the perfect residue field of the base. -/
 instance FieldOfNorms.instCharP [IsAPF K L] [Fact (¬ Module.Finite K L)] :
     CharP (FieldOfNorms K L) p := by
-  have h := FieldOfNorms._natCast_prime_eq_zero K L
+  have h := FieldOfNorms.natCast_prime_eq_zero K L
   change p • (1 : FieldOfNorms K L) = 0 at h
   exact (CharP.charP_iff_prime_eq_zero (R := FieldOfNorms K L) (Fact.out : Nat.Prime p)).mpr
     (by simpa only [nsmul_one] using h)
 
-/-- The field addition is definitionally the actual field of norms sum operation. -/
+/-- The field addition is definitionally the field of norms sum operation. -/
 @[simp]
 theorem FieldOfNorms.field_add [IsAPF K L] [Fact (¬ Module.Finite K L)]
     (α β : FieldOfNorms K L) :
     α + β = FieldOfNorms.add K L α β := rfl
 
-/-- The entire original commutative group with zero is retained definitionally
+/-- The entire commutative group with zero is retained definitionally
 by the field structure, including multiplication, inversion and division. -/
 theorem FieldOfNorms.field_toCommGroupWithZero [IsAPF K L]
     [Fact (¬ Module.Finite K L)] :
@@ -276,8 +276,8 @@ variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
 local notation "p" => residueChar K
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
-/-- The original stable multiplicative valuation is ultrametric for the
-actual field of norms addition, before any valuation topology is chosen. -/
+/-- The stable multiplicative valuation is ultrametric for the
+field of norms addition, before any valuation topology is chosen. -/
 theorem FieldOfNorms.valuation_add_le_max [IsAPF K L] (α β : FieldOfNorms K L) :
     FieldOfNorms.valuation K L (FieldOfNorms.add K L α β) ≤
       max (FieldOfNorms.valuation K L α) (FieldOfNorms.valuation K L β) := by
@@ -309,7 +309,7 @@ theorem FieldOfNorms.valuation_add_le_max [IsAPF K L] (α β : FieldOfNorms K L)
   rw [← heq, _root_.map_mul, ← hmax]
   simpa only [mul_one] using mul_le_mul' (le_refl (w δ)) hsum
 
-/-- The same stable map, now bundled as a field valuation for the actual
+/-- The same stable map, now bundled as a field valuation for the
 constructed field. No new map or alternate field carrier is introduced. -/
 def FieldOfNorms.fieldValuation [IsAPF K L] [Fact (¬ Module.Finite K L)] :
     Valuation (FieldOfNorms K L) (WithZero (Multiplicative ℤ)) :=
@@ -323,7 +323,7 @@ theorem FieldOfNorms.fieldValuation_apply [IsAPF K L]
     FieldOfNorms.fieldValuation K L α = FieldOfNorms.valuation K L α := rfl
 
 /-- The canonical valued-field structure uses exactly the existing stable
-map and its valuation uniformity on the same original field carrier. -/
+map and its valuation uniformity on the field carrier. -/
 instance FieldOfNorms.instValued [IsAPF K L] [Fact (¬ Module.Finite K L)] :
     Valued (FieldOfNorms K L) (WithZero (Multiplicative ℤ)) :=
   Valued.mk' (FieldOfNorms.fieldValuation K L)
@@ -339,8 +339,8 @@ variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
 local notation "p" => residueChar K
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
-/-- Actual norm-field subtraction agrees with ordinary coordinate subtraction
-to every ideal-power precision on an original finite tail. -/
+/-- Norm-field subtraction agrees with ordinary coordinate subtraction
+to every ideal-power precision on a finite tail. -/
 theorem FieldOfNorms.coord_sub_sub_mem [IsAPF K L]
     [Fact (¬ Module.Finite K L)] :
     ∀ (α β : FieldOfNorms K L) (n : ℕ),
@@ -360,8 +360,8 @@ theorem FieldOfNorms.coord_sub_sub_mem [IsAPF K L]
   change -(z : E.val) = _
   linear_combination -heq
 
-/-- Cofinal exact valuations of actual finite-coordinate differences compute
-the same original norm-field valuation, for every signed displacement order. -/
+/-- Cofinal exact valuations of finite-coordinate differences compute
+the norm-field valuation, for every signed displacement order. -/
 theorem FieldOfNorms.valuation_sub_eq_of_cofinal_coordinate [IsAPF K L]
     [Fact (¬ Module.Finite K L)] :
     ∀ (α β : FieldOfNorms K L) (n : ℤ),

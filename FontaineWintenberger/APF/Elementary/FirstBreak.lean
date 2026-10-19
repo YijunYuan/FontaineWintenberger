@@ -11,9 +11,9 @@ public import FontaineWintenberger.Ramification.Herbrand.Subgroup
 public import FontaineWintenberger.Ramification.Fields.Nonnormal
 
 /-!
-# The finite attained first bound of an actual totally ramified subextension
+# The finite attained first bound of a totally ramified subextension
 
-An actual proper fixing subgroup with full inertia product has a finite
+A proper fixing subgroup with full inertia product has a finite
 nonnegative first break. The intrinsic extended supremum equals that break.
 -/
 
@@ -33,7 +33,7 @@ local notation "U" => upperRamificationGroup (R := spectralIntegerRing K L) G
 local notation "D" => lowerRamificationGroup G
   (IsLocalRing.maximalIdeal (spectralIntegerRing K L)) 0
 
-/-- An actual proper fixing subgroup with full inertia product supplies a
+/-- A proper fixing subgroup with full inertia product supplies a
 finite attained intrinsic first bound, without normality of the subfield. -/
 theorem exists_apfRamificationBound_eq_coe_of_fixingSubgroup
     (hH : H ≠ ⊤) (hzero : H ⊔ D = ⊤) :
@@ -64,8 +64,8 @@ local notation "R" => Valuation.valuationSubring (NormedField.valuation (K := K)
 local notation "B" => Valuation.valuationSubring
   (Valuation.comap (algebraMap M L) (spectralValuation K L))
 
-/-- Every actual nontrivial totally ramified intermediate field has a finite
-nonnegative intrinsic first bound, attained in the actual upper filtration. -/
+/-- Every nontrivial totally ramified intermediate field has a finite
+nonnegative intrinsic first bound, attained in the upper filtration. -/
 theorem exists_apfRamificationBound_eq_coe_of_totallyRamified
     (hdegree : 1 < Module.finrank K M)
     (he : (IsLocalRing.maximalIdeal B).ramificationIdx R = Module.finrank K M) :

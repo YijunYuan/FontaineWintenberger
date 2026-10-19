@@ -11,9 +11,9 @@ public import Mathlib.Analysis.Calculus.Deriv.Inverse
 /-!
 # The inverse Herbrand integral
 
-The derivative of the proved inverse is the reciprocal of the actual
+The derivative of the proved inverse is the reciprocal of the
 lower-cardinality slope. Lagrange's formula identifies this ratio with
-the relative index of the actual upper groups.
+the relative index of the upper groups.
 -/
 
 @[expose] public section
@@ -25,7 +25,7 @@ open MeasureTheory
 variable (G : Type*) {R : Type*} [Group G] [CommRing R] [IsDomain R]
     [IsDiscreteValuationRing R] [MulSemiringAction G R] [Finite G]
 
-/-- The actual upper subgroup relative index is the source cardinality ratio. -/
+/-- The upper subgroup relative index is the cardinality ratio. -/
 theorem upperRamificationGroup_relIndex_eq_div {u : ℝ} (hu : 0 ≤ u) :
     ((upperRamificationGroup (R := R) G u).relIndex
       (upperRamificationGroup (R := R) G 0) : ℝ) =
@@ -53,7 +53,7 @@ theorem intervalIntegrable_inverseHerbrand_slope {u : ℝ} (hu : 0 ≤ u) :
     (by linarith [hv.1] : -1 ≤ v) (by linarith [hw.1] : -1 ≤ w) hvw
   exact Nat.card_le_card_of_injective (Set.inclusion hle) (Set.inclusion_injective hle)
 
-/-- Inverting the actual derivative leaves only finitely many exceptional upper parameters. -/
+/-- Inverting the derivative leaves only finitely many exceptional upper parameters. -/
 theorem exists_inverseHerbrandFunction_finite_derivative_breaks [FaithfulSMul G R] :
     ∃ S : Finset ℝ, ∀ u : ℝ, 0 < u → u ∉ S →
       HasDerivAt (inverseHerbrandFunction (R := R) G)
@@ -79,7 +79,7 @@ theorem exists_inverseHerbrandFunction_finite_derivative_breaks [FaithfulSMul G 
         exact herbrandFunction_inverseHerbrandFunction G hv.le)
   simpa only [inv_div, upperRamificationGroup] using hderiv
 
-/-- The inverse is the integral of the reciprocal actual lower-cardinality slope. -/
+/-- The inverse is the integral of the reciprocal lower-cardinality slope. -/
 theorem inverseHerbrandFunction_eq_integral_div [FaithfulSMul G R] {u : ℝ} (hu : 0 ≤ u) :
     inverseHerbrandFunction (R := R) G u =
       ∫ v in (0 : ℝ)..u,
@@ -92,7 +92,7 @@ theorem inverseHerbrandFunction_eq_integral_div [FaithfulSMul G R] {u : ℝ} (hu
     (fun v hv => hS v hv.1.1 hv.2) (intervalIntegrable_inverseHerbrand_slope G hu)
   simpa only [inverseHerbrandFunction_of_nonpos G (by norm_num) le_rfl, sub_zero] using h.symm
 
-/-- The source inverse integral uses the actual relative indices of upper subgroups. -/
+/-- The inverse integral uses the relative indices of upper subgroups. -/
 theorem inverseHerbrandFunction_eq_integral_relIndex [FaithfulSMul G R] {u : ℝ}
     (hu : 0 ≤ u) :
     inverseHerbrandFunction (R := R) G u =

@@ -10,11 +10,11 @@ public import FontaineWintenberger.FieldOfNorms.Relative.Hom
 public import Mathlib.FieldTheory.KrullTopology
 
 /-!
-# Krull topology on the original norm-field automorphism correspondence
+# Krull topology on the norm-field automorphism correspondence
 
-The original finite norm-field images are finite and cofinal among finite
+The finite norm-field images are finite and cofinal among finite
 subfields of the relative field of norms. Full faithfulness identifies their pointwise
-fixing subgroups, giving a homeomorphism for the actual Krull topologies.
+fixing subgroups, giving a homeomorphism for the Krull topologies.
 
 Reference: Wintenberger, Corollary 3.2.3, finite-fixer argument.
 -/
@@ -34,8 +34,8 @@ local notation "p" => residueChar K
 
 variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 
-/-- Equality of actual union maps on one original finite stage reflects and
-is reflected by equality of the original finite restrictions. -/
+/-- Equality of union maps on one finite stage reflects and
+is reflected by equality of the finite restrictions. -/
 theorem RelFieldOfNorms.map_eq_on_stage_iff (s t : M →ₐ[L] M)
     (Q : FiniteIntermediateField L M) :
     (∀ x : FieldOfNorms K Q.val,
@@ -66,19 +66,19 @@ theorem RelFieldOfNorms.map_eq_on_stage_iff (s t : M →ₐ[L] M)
     RelFieldOfNorms.algMap_of_factor K L M M t Q P ψ (fun _ => rfl) x
   constructor
   · intro h
-    exact RelFieldOfNorms._finiteHom_faithful K L M M Q P P φ ψ
+    exact RelFieldOfNorms.finiteHom_faithful K L M M Q P P φ ψ
       (fun x => (hs x).symm.trans ((h x).trans (ht x)))
   · intro h x
     rw [hs, ht]
     have he : φ = ψ := AlgHom.ext (fun a => Subtype.ext (h a))
     rw [he]
 
-/-- The actual finite original norm-field image inside the same relative field of norms. -/
+/-- The finite norm-field image inside the same relative field of norms. -/
 def RelFieldOfNorms.finiteImage (Q : FiniteIntermediateField L M) :
     IntermediateField (FieldOfNorms K L) (RelFieldOfNorms K L M) := by
   exact (RelFieldOfNorms.ofAlgHom K L M Q).fieldRange
 
-/-- Each actual finite original image is a finite extension of the base norm field. -/
+/-- Each finite image is a finite extension of the base norm field. -/
 theorem RelFieldOfNorms.finiteImage_finite (Q : FiniteIntermediateField L M) :
     Module.Finite (FieldOfNorms K L) (RelFieldOfNorms.finiteImage K L M Q) := by
   let : Module.Finite (FieldOfNorms K L) (FieldOfNorms K Q.val) :=
@@ -87,14 +87,14 @@ theorem RelFieldOfNorms.finiteImage_finite (Q : FiniteIntermediateField L M) :
   exact Module.Finite.equiv
     (RelFieldOfNorms.ofAlgHom K L M Q).equivFieldRange.toLinearEquiv
 
-/-- The actual image has exactly the original stage representatives as its elements. -/
+/-- The image has exactly the stage representatives as its elements. -/
 @[simp]
 theorem mem_relFieldOfNormsFiniteImage (Q : FiniteIntermediateField L M)
     (z : RelFieldOfNorms K L M) :
     z ∈ RelFieldOfNorms.finiteImage K L M Q ↔
       ∃ x : FieldOfNorms K Q.val, RelFieldOfNorms.of K L M Q x = z := Iff.rfl
 
-/-- Full faithfulness identifies the actual finite pointwise fixing subgroups. -/
+/-- Full faithfulness identifies the finite pointwise fixing subgroups. -/
 theorem RelFieldOfNorms.autEquiv_mem_fixingSubgroup_iff
     (Q : FiniteIntermediateField L M) (σ : M ≃ₐ[L] M) :
     RelFieldOfNorms.autEquiv K L M σ ∈
@@ -119,13 +119,13 @@ theorem RelFieldOfNorms.autEquiv_mem_fixingSubgroup_iff
     obtain ⟨x, rfl⟩ := (mem_relFieldOfNormsFiniteImage K L M Q z).mp hz
     exact hstage.mpr (fun a => h a a.property) x
 
-/-- Every actual finite target subfield lies in one actual original finite image. -/
-theorem RelFieldOfNorms._exists_finiteImage_ge :
+/-- Every finite target subfield lies in one finite image. -/
+theorem RelFieldOfNorms.exists_finiteImage_ge :
     ∀ (D : IntermediateField (FieldOfNorms K L) (RelFieldOfNorms K L M))
       [FiniteDimensional (FieldOfNorms K L) D],
       ∃ Q : FiniteIntermediateField L M, D ≤ RelFieldOfNorms.finiteImage K L M Q := by
   intro D _
-  obtain ⟨Q, x, hx⟩ := RelFieldOfNorms._exists_finiteStage K L M
+  obtain ⟨Q, x, hx⟩ := RelFieldOfNorms.exists_finiteStage K L M
     (fun i => ((Module.finBasis (FieldOfNorms K L) D i : D) :
       RelFieldOfNorms K L M))
   obtain ⟨g, hg⟩ := exists_algHom_factor_of_basis_mem_range D.val
@@ -136,7 +136,7 @@ theorem RelFieldOfNorms._exists_finiteImage_ge :
     ⟨g ⟨a, ha⟩, AlgHom.congr_fun hg ⟨a, ha⟩⟩
 
 open scoped Topology in
-/-- The original norm-union automorphism correspondence is Krull-continuous. -/
+/-- The norm-union automorphism correspondence is Krull-continuous. -/
 theorem continuous_relFieldOfNormsAutEquiv :
     Continuous (RelFieldOfNorms.autEquiv K L M) := by
   apply continuous_of_continuousAt_one
@@ -149,7 +149,7 @@ theorem continuous_relFieldOfNormsAutEquiv :
   obtain ⟨D, hD, hDs⟩ := (krullTopology_mem_nhds_one_iff (FieldOfNorms K L)
     (RelFieldOfNorms K L M) s).mp hs
   let : FiniteDimensional (FieldOfNorms K L) D := hD
-  obtain ⟨Q, hDQ⟩ := RelFieldOfNorms._exists_finiteImage_ge K L M D
+  obtain ⟨Q, hDQ⟩ := RelFieldOfNorms.exists_finiteImage_ge K L M D
   apply (krullTopology_mem_nhds_one_iff L M _).mpr
   refine ⟨Q.val, inferInstance, ?_⟩
   intro σ hσ
@@ -158,7 +158,7 @@ theorem continuous_relFieldOfNormsAutEquiv :
     ((RelFieldOfNorms.autEquiv_mem_fixingSubgroup_iff K L M Q σ).mpr hσ)
 
 open scoped Topology in
-/-- The inverse correspondence is continuous for the same actual Krull topologies. -/
+/-- The inverse correspondence is continuous for the same Krull topologies. -/
 theorem continuous_relFieldOfNormsAutEquiv_symm :
     Continuous (RelFieldOfNorms.autEquiv K L M).symm := by
   apply continuous_of_continuousAt_one
@@ -182,7 +182,7 @@ theorem continuous_relFieldOfNormsAutEquiv_symm :
     ((RelFieldOfNorms.autEquiv K L M).symm τ)).mp
   simpa only [B, SetLike.mem_coe, MulEquiv.apply_symm_apply] using hτ
 
-/-- The original automorphism correspondence as a Krull-topological group isomorphism. -/
+/-- The automorphism correspondence as a Krull-topological group isomorphism. -/
 def RelFieldOfNorms.krullEquiv :
     (M ≃ₐ[L] M) ≃ₜ* (RelFieldOfNorms K L M ≃ₐ[FieldOfNorms K L]
       RelFieldOfNorms K L M) := by
@@ -190,13 +190,13 @@ def RelFieldOfNorms.krullEquiv :
     continuous_toFun := continuous_relFieldOfNormsAutEquiv K L M
     continuous_invFun := continuous_relFieldOfNormsAutEquiv_symm K L M }
 
-/-- The topological comparison retains exactly the original algebraic correspondence. -/
+/-- The topological comparison retains exactly the algebraic correspondence. -/
 @[simp]
 theorem RelFieldOfNorms.krullEquiv_toMulEquiv :
     (RelFieldOfNorms.krullEquiv K L M).toMulEquiv =
       RelFieldOfNorms.autEquiv K L M := rfl
 
-/-- The Krull homeomorphism acts by the same original finite-family union map. -/
+/-- The Krull homeomorphism acts by the finite-family union map. -/
 @[simp]
 theorem RelFieldOfNorms.krullEquiv_apply (σ : M ≃ₐ[L] M)
     (z : RelFieldOfNorms K L M) :

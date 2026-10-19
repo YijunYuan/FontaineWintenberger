@@ -8,10 +8,10 @@ module
 public import FontaineWintenberger.Ramification.Lower.FixedField
 
 /-!
-# Spectral integer and residue maps along actual field embeddings
+# Spectral integer and residue maps along field embeddings
 
 The exact restriction of the spectral norm produces local maps on the
-actual spectral integer rings, retaining the original base residue algebra.
+spectral integer rings, retaining the base residue algebra.
 The construction applies to algebraic extensions of arbitrary degree.
 -/
 
@@ -37,8 +37,8 @@ theorem spectralValuation_hasExtension_tower [Algebra E L] [IsScalarTower K E L]
       spectralNorm K L (algebraMap E L x) ≤ spectralNorm K L (algebraMap E L y)
     rw [← spectralNorm.eq_of_tower x, ← spectralNorm.eq_of_tower y]
 
-/-- The original field embedding restricts to the actual spectral integer
-rings as an algebra map over the original base integer ring. -/
+/-- The field embedding restricts to the spectral integer
+rings as an algebra map over the base integer ring. -/
 def spectralIntegerInclusion (i : E →ₐ[K] L) :
     spectralIntegerRing K E →ₐ[(NormedField.valuation (K := K)).valuationSubring]
       spectralIntegerRing K L := by
@@ -53,7 +53,7 @@ def spectralIntegerInclusion (i : E →ₐ[K] L) :
 theorem coe_spectralIntegerInclusion (i : E →ₐ[K] L) (x : spectralIntegerRing K E) :
     (spectralIntegerInclusion K i x : L) = i (x : E) := rfl
 
-/-- The original integer-ring inclusion is local without any finiteness
+/-- The integer-ring inclusion is local without any finiteness
 or discreteness assumption on the ambient extension. -/
 theorem spectralIntegerInclusion_isLocalHom (i : E →ₐ[K] L) :
     IsLocalHom (spectralIntegerInclusion K i) := by
@@ -64,8 +64,8 @@ theorem spectralIntegerInclusion_isLocalHom (i : E →ₐ[K] L) :
   intro x hx
   exact (isUnit_map_iff (algebraMap (spectralIntegerRing K E) (spectralIntegerRing K L)) x).mp hx
 
-/-- The actual residue map induced by the original embedding retains the
-original base residue algebra. -/
+/-- The residue map induced by the embedding retains the
+base residue algebra. -/
 def spectralResidueInclusion (i : E →ₐ[K] L) :
     IsLocalRing.ResidueField (spectralIntegerRing K E) →ₐ[
       IsLocalRing.ResidueField (NormedField.valuation (K := K)).valuationSubring]
@@ -90,7 +90,7 @@ theorem spectralIntegerInclusion_comp (i : E →ₐ[K] L) (j : L →ₐ[K] M) :
   ext x
   rfl
 
-/-- Residue inclusions compose along the original field inclusions. -/
+/-- Residue inclusions compose along the field inclusions. -/
 theorem spectralResidueInclusion_comp (i : E →ₐ[K] L) (j : L →ₐ[K] M) :
     spectralResidueInclusion K (j.comp i) =
       (spectralResidueInclusion K j).comp (spectralResidueInclusion K i) := by

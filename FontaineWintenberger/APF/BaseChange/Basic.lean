@@ -15,12 +15,12 @@ public import Mathlib.Topology.Order.Monotone
 /-!
 # APF under finite base change
 
-## APF under actual finite base change
+## APF under finite base change
 
 The fixing subgroup of an abstract extension is transported through the
-actual closure isomorphism, together with the actual absolute upper group.
+closure isomorphism, together with the absolute upper group.
 
-## The actual finite-base APF inertia index identity
+## The finite-base APF inertia index identity
 
 ## Actual Herbrand integrals compose across finite base change
 -/
@@ -37,12 +37,12 @@ noncomputable local instance : Algebra M (SeparableClosure M) :=
 
 variable {N : Type*} [Field N] [Algebra K N] [Algebra M N] [IsScalarTower K M N]
 
-/-- The actual old-base embedding induced by a new-base separable-closure embedding. -/
+/-- The old-base embedding induced by a new-base separable-closure embedding. -/
 noncomputable def baseChangedSeparableEmbedding (i : N →ₐ[M] SeparableClosure M) :
     N →ₐ[K] SeparableClosure K :=
   ((separableClosureBaseChangeEquiv K M).toAlgHom.comp i).restrictScalars K
 
-/-- The induced embedding contains the actual new scalar field. -/
+/-- The induced embedding contains the new scalar field. -/
 theorem le_baseChangedSeparableEmbedding_fieldRange (i : N →ₐ[M] SeparableClosure M) :
     M ≤ (baseChangedSeparableEmbedding K M i).fieldRange := by
   intro x hx
@@ -51,7 +51,7 @@ theorem le_baseChangedSeparableEmbedding_fieldRange (i : N →ₐ[M] SeparableCl
   rw [i.commutes, (separableClosureBaseChangeEquiv K M).commutes]
   rfl
 
-/-- Actual closure base change identifies the two actual fixing subgroups. -/
+/-- Closure base change identifies the two fixing subgroups. -/
 theorem comap_fixingSubgroup_baseChangedEmbedding (i : N →ₐ[M] SeparableClosure M) :
     (baseChangedSeparableEmbedding K M i).fieldRange.fixingSubgroup.comap
         (M.fixingSubgroup.subtype.comp (absoluteGaloisBaseChangeEquiv K M).toMonoidHom) =
@@ -80,7 +80,7 @@ theorem comap_fixingSubgroup_baseChangedEmbedding (i : N →ₐ[M] SeparableClos
     exact congrArg (separableClosureBaseChangeEquiv K M)
       (h ⟨i y, AlgHom.mem_fieldRange.mpr ⟨y, rfl⟩⟩)
 
-/-- The actual closure homomorphism has exactly the subgroup fixing the new base as image. -/
+/-- The closure homomorphism has exactly the subgroup fixing the new base as image. -/
 theorem absoluteGaloisBaseChange_range :
     (M.fixingSubgroup.subtype.comp (absoluteGaloisBaseChangeEquiv K M).toMonoidHom).range =
       M.fixingSubgroup := by
@@ -115,14 +115,14 @@ local notation "ρ" =>
 
 omit [IsCompleteDiscreteValuedField K] [PerfectField (IsLocalRing.ResidueField
       (NormedField.valuation (K := K)).valuationSubring)] in
-/-- The actual absolute fixing subgroup has finite index for a finite new base. -/
+/-- The absolute fixing subgroup has finite index for a finite new base. -/
 theorem absoluteGaloisBaseChange_range_finiteIndex : (ρ).range.FiniteIndex := by
   rw [absoluteGaloisBaseChange_range K M]
   let : Finite ((SeparableClosure K ≃ₐ[K] SeparableClosure K) ⧸ M.fixingSubgroup) :=
     M.fixingSubgroup.quotient_finite_of_isOpen (IntermediateField.fixingSubgroup_isOpen M)
   exact Subgroup.finiteIndex_of_finite_quotient
 
-/-- The actual upper-group preimage under finite base change has the intrinsic new parameter. -/
+/-- The upper-group preimage under finite base change has the intrinsic new parameter. -/
 theorem comap_absoluteUpper_finiteBase {u : ℝ} (hu : -1 ≤ u) :
     (absoluteUpperRamificationGroup K u).comap ρ =
       absoluteUpperRamificationGroup M (apfPsi K M u) := by
@@ -131,7 +131,7 @@ theorem comap_absoluteUpper_finiteBase {u : ℝ} (hu : -1 ≤ u) :
 
 variable {N : Type*} [Field N] [Algebra K N] [Algebra M N] [IsScalarTower K M N]
 
-/-- The actual APF product over the new base is the preimage of the old-base product. -/
+/-- The APF product over the new base is the preimage of the old-base product. -/
 theorem comap_apfSubgroup_finiteBase (i : N →ₐ[M] SeparableClosure M)
     {u : ℝ} (hu : -1 ≤ u) :
     (apfSubgroup K (baseChangedSeparableEmbedding K M i).fieldRange u).comap ρ =
@@ -146,7 +146,7 @@ theorem comap_apfSubgroup_finiteBase (i : N →ₐ[M] SeparableClosure M)
 variable [Algebra.IsSeparable K N]
 local instance : Algebra.IsSeparable M N := Algebra.isSeparable_tower_top_of_isSeparable K M N
 
-/-- Public abstract APF is invariant under a finite change of the actual base. -/
+/-- Public abstract APF is invariant under a finite change of the base. -/
 theorem isAPF_finiteBase_iff : IsAPF K N ↔ IsAPF M N := by
   obtain ⟨i⟩ := nonempty_separableClosure_embeddings M N
   rw [isAPF_iff_embedding K N (baseChangedSeparableEmbedding K M i),
@@ -201,7 +201,7 @@ variable [Algebra.IsSeparable K N]
 local instance : Algebra.IsSeparable M N := Algebra.isSeparable_tower_top_of_isSeparable K M N
 
 omit [Algebra.IsSeparable K N] in
-/-- The actual inertia product over the new base is the old product preimage. -/
+/-- The inertia product over the new base is the old product preimage. -/
 theorem comap_apfInertiaSubgroup_finiteBase (i : N →ₐ[M] SeparableClosure M)
     {u : ℝ} (hu : 0 ≤ u) :
     (apfInertiaSubgroup K (baseChangedSeparableEmbedding K M i).fieldRange u).comap ρ =
@@ -212,7 +212,7 @@ theorem comap_apfInertiaSubgroup_finiteBase (i : N →ₐ[M] SeparableClosure M)
     comap_absoluteUpper_finiteBase K M (by norm_num : (-1 : ℝ) ≤ 0),
     apfPsi_zero, ← apfInertiaSubgroup_eq_inf M _ _ hψ]
 
-/-- The new-base index is exactly the actual old-base relative tower factor. -/
+/-- The new-base index is exactly the old-base relative tower factor. -/
 theorem apfIndex_finiteBase_eq_towerIndexFactor (i : N →ₐ[M] SeparableClosure M)
     {u : ℝ} (hu : 0 ≤ u) :
     apfIndex M N (apfPsi K M u) =
@@ -233,7 +233,7 @@ theorem apfIndex_finiteBase_eq_towerIndexFactor (i : N →ₐ[M] SeparableClosur
     (absoluteUpperRamificationGroup K u)).symm
 
 
-/-- The public intrinsic indices factor through the actual finite base, without APF on N. -/
+/-- The public intrinsic indices factor through the finite base, without APF on N. -/
 theorem apfIndex_eq_mul_finiteBase {u : ℝ} (hu : 0 ≤ u) :
     apfIndex K N u = apfIndex K M u * apfIndex M N (apfPsi K M u) := by
   obtain ⟨i⟩ := nonempty_separableClosure_embeddings M N
@@ -258,7 +258,7 @@ variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField 
 
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
-/-- At continuity points of the actual slope, its actual primitive has that derivative. -/
+/-- At continuity points of the slope, its primitive has that derivative. -/
 theorem IsAPF.hasDerivAt_apfPsi [IsAPF K L] {u : ℝ}
     (hc : ContinuousAt (apfHerbrandSlope K L) u) :
     HasDerivAt (apfPsi K L) (apfHerbrandSlope K L u) u := by
@@ -267,7 +267,7 @@ theorem IsAPF.hasDerivAt_apfPsi [IsAPF K L] {u : ℝ}
   exact (IsAPF.monotone_apfHerbrandSlope
     K L).measurable.stronglyMeasurable.stronglyMeasurableAtFilter
 
-/-- The actual APF primitive has its source derivative outside a countable set. -/
+/-- The APF primitive has its derivative outside a countable set. -/
 theorem IsAPF.exists_apfPsi_derivative_countable [IsAPF K L] :
     ∃ S : Set ℝ, S.Countable ∧ ∀ u : ℝ, u ∉ S →
       HasDerivAt (apfPsi K L) (apfHerbrandSlope K L u) u := by
@@ -302,7 +302,7 @@ variable (N : Type*) [Field N] [Algebra K N] [Algebra M N] [IsScalarTower K M N]
     [Algebra.IsSeparable K N]
 local instance : Algebra.IsSeparable M N := Algebra.isSeparable_tower_top_of_isSeparable K M N
 
-/-- The genuine finite-base composite has the old-base slope off a countable set. -/
+/-- The finite-base composite has the old-base slope off a countable set. -/
 theorem IsAPF.exists_finiteBase_comp_derivative_countable [IsAPF K N] :
     ∃ S : Set ℝ, S.Countable ∧ ∀ u : ℝ, 0 < u → u ∉ S →
       HasDerivAt ((apfPsi M N) ∘ (apfPsi K M)) (apfHerbrandSlope K N u) u := by
@@ -324,7 +324,7 @@ theorem IsAPF.exists_finiteBase_comp_derivative_countable [IsAPF K N] :
     simpa only [Nat.cast_mul, mul_comm] using he'.symm
   simpa only [apfHerbrandSlope, max_eq_left hu.le, max_eq_left hψ, he] using hd
 
-/-- The actual Herbrand integral composes across any finite, possibly nonnormal base. -/
+/-- The Herbrand integral composes across any finite, possibly nonnormal base. -/
 theorem IsAPF.apfPsi_finiteBase_comp [IsAPF K N] (u : ℝ) :
     apfPsi M N (apfPsi K M u) = apfPsi K N u := by
   have : IsAPF M N := (isAPF_finiteBase_iff K M).mp ‹_›

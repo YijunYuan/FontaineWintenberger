@@ -16,7 +16,7 @@ public import Mathlib.Topology.UniformSpace.Pi
 # Sequential inverse limits of truncated rings
 
 The inverse limit is the intersection of the canonical ring equalizers
-inside the original coefficient product. Surjective transition maps give
+inside the coefficient product. Surjective transition maps give
 surjective projections without any finiteness assumption on the rings.
 The discrete product uniformity supplies Hausdorffness and completeness.
 -/
@@ -34,8 +34,8 @@ universe u
 variable (B : ℕ → Type u) [∀ n, CommRing (B n)]
     (q : ∀ n, B (n + 1) →+* B n)
 
-/-- The actual compatible-family subring is the intersection of the
-canonical equalizer subrings in the original product. -/
+/-- The compatible-family subring is the intersection of the
+canonical equalizer subrings in the product. -/
 def subring : Subring (∀ n, B n) :=
   ⨅ n, RingHom.eqLocus ((q n).comp (Pi.evalRingHom B (n + 1))) (Pi.evalRingHom B n)
 
@@ -44,19 +44,19 @@ theorem mem_subring (a : ∀ n, B n) :
     a ∈ subring B q ↔ ∀ n, q n (a (n + 1)) = a n := by
   simp [subring]
 
-/-- Evaluation on the actual compatible-family subring. -/
+/-- Evaluation on the compatible-family subring. -/
 def projection (n : ℕ) : subring B q →+* B n :=
   (Pi.evalRingHom B n).comp (subring B q).subtype
 
 @[simp]
 theorem projection_apply (n : ℕ) (a : subring B q) : projection B q n a = a.val n := rfl
 
-/-- Adjacent compatibility holds on the same original family. -/
+/-- Adjacent compatibility holds on the family. -/
 theorem compatible (a : subring B q) (n : ℕ) :
     q n (projection B q (n + 1) a) = projection B q n a :=
   (mem_subring B q a.val).mp a.property n
 
-/-- The actual finite composite of the adjacent transition homomorphisms. -/
+/-- The finite composite of the adjacent transition homomorphisms. -/
 def transition (i j : ℕ) (hij : i ≤ j) : B j →+* B i :=
   Nat.leRecOn (C := fun j => B j →+* B i) hij
     (fun {j} f => f.comp (q j)) (RingHom.id (B i))
@@ -85,7 +85,7 @@ theorem transition_succ_left (i j : ℕ) (hij : i + 1 ≤ j) :
       rw [transition_succ B q (i + 1) j hj, ← RingHom.comp_assoc, ih,
         transition_succ B q i j ((Nat.le_succ i).trans hj)]
 
-/-- Every finite transition evaluates the same original compatible family. -/
+/-- Every finite transition evaluates the compatible family. -/
 theorem transition_projection (i j : ℕ) (hij : i ≤ j) (a : subring B q) :
     transition B q i j hij (projection B q j a) = projection B q i a := by
   induction j, hij using Nat.le_induction with
@@ -122,7 +122,7 @@ private theorem liftSequence_compatible (hs : ∀ n, Function.Surjective (q n))
     exact RingHom.congr_fun (transition_succ_left B q i n (by omega)) b
   · rw [liftSequence_succ, dite_eq_right hi, Function.surjInv_eq (hs i)]
 
-/-- Every projection is genuinely onto by recursive lifting along the
+/-- Every projection is onto by recursive lifting along the
 surjective adjacent maps. The coefficient rings need not be finite. -/
 theorem projection_surjective (hs : ∀ n, Function.Surjective (q n)) (n : ℕ) :
     Function.Surjective (projection B q n) := by
@@ -137,7 +137,7 @@ section Uniformity
 
 variable [∀ n, UniformSpace (B n)] [∀ n, DiscreteUniformity (B n)]
 
-/-- The actual compatible-family subring is closed in the product of
+/-- The compatible-family subring is closed in the product of
 the discrete coefficient rings. -/
 theorem isClosed_subring : IsClosed (subring B q : Set (∀ n, B n)) := by
   have hq (n : ℕ) : Continuous (q n) := continuous_of_discreteTopology
@@ -149,7 +149,7 @@ theorem isClosed_subring : IsClosed (subring B q : Set (∀ n, B n)) := by
     Function.comp_apply]
 
 /-- Completeness belongs to the inherited discrete-product uniformity
-on the actual subring, without a separate completion. -/
+on the subring, without a separate completion. -/
 theorem completeSpace : CompleteSpace (subring B q) :=
   (isClosed_subring B q).isComplete.completeSpace_coe
 
@@ -157,19 +157,19 @@ theorem completeSpace : CompleteSpace (subring B q) :=
 theorem t2Space : T2Space (subring B q) := inferInstance
 
 omit [∀ n, DiscreteUniformity (B n)] in
-/-- The original coordinate projections are continuous. -/
+/-- The coordinate projections are continuous. -/
 theorem continuous_projection (n : ℕ) : Continuous (projection B q n) :=
   (continuous_apply n).comp continuous_subtype_val
 
 omit [∀ n, DiscreteUniformity (B n)] in
-/-- The original coordinate projections are uniformly continuous for
+/-- The coordinate projections are uniformly continuous for
 the same product-induced uniformity. -/
 theorem uniformContinuous_projection (n : ℕ) : UniformContinuous (projection B q n) := by
   have h : UniformContinuous (fun a : ∀ i, B i => a n) :=
     uniformContinuous_pi.mp uniformContinuous_id n
   exact h.comp uniformContinuous_subtype_val
 
-/-- The kernels of the individual original projections are a cofinal
+/-- The kernels of the individual projections are a cofinal
 zero-neighborhood basis. Compatibility reduces finitely many coordinates
 to their largest index. -/
 theorem nhds_zero_hasBasis_ker_projection :

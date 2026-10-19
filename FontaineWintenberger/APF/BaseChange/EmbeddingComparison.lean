@@ -15,7 +15,7 @@ public import FontaineWintenberger.APF.BaseChange.Strict
 # Nonnormal finite embedding comparisons
 
 Tate averages, maximal fixing cosets, intrinsic Herbrand bounds and strict
-pair comparisons use the original finite spectral integer rings. Intermediate
+pair comparisons use the finite spectral integer rings. Intermediate
 fields need neither be normal nor be preserved by the chosen automorphism.
 -/
 
@@ -32,7 +32,7 @@ section PairTriangle
 variable {R S : Type*} [CommRing R] [CommRing S] [IsDomain S]
     [IsDiscreteValuationRing S]
 
-/-- Three actual ring maps satisfy the ultrametric inequality on their
+/-- Three ring maps satisfy the ultrametric inequality on their
 full integral displacement infima. -/
 theorem min_integralEmbeddingOrder_le (f g h : R →+* S) :
     min (integralEmbeddingOrder f g) (integralEmbeddingOrder g h) ≤
@@ -44,7 +44,7 @@ theorem min_integralEmbeddingOrder_le (f g h : R →+* S) :
   exact (min_le_min (integralEmbeddingOrder_le f g x)
     (integralEmbeddingOrder_le g h x)).trans (IsDiscreteValuationRing.addVal_add (R := S))
 
-/-- Distinct displacement orders force equality in the actual pair
+/-- Distinct displacement orders force equality in the pair
 ultrametric inequality, without automorphism or stability hypotheses. -/
 theorem integralEmbeddingOrder_eq_min_of_ne (f g h : R →+* S)
     (hne : integralEmbeddingOrder f g ≠ integralEmbeddingOrder g h) :
@@ -68,7 +68,7 @@ variable {R A B : Type*} [CommRing R] [CommRing A] [CommRing B]
 
 omit [Algebra A B] [IsScalarTower R A B] in
 /-- A generator controls displacements of two arbitrary algebra maps,
-including maps with different original images. -/
+including maps with different images. -/
 theorem generator_pair_sub_dvd (f g : A →ₐ[R] B) {y : A}
     (hy : Algebra.adjoin R {y} = ⊤) (c : A) : f y - g y ∣ f c - g c := by
   apply Ideal.mem_span_singleton.mp
@@ -76,7 +76,7 @@ theorem generator_pair_sub_dvd (f g : A →ₐ[R] B) {y : A}
     (Ideal.subset_span (by simp))) c
 
 /-- Coefficient displacements give the first divisibility of the
-arbitrary-embedding Tate identity in the actual ambient integer ring. -/
+arbitrary-embedding Tate identity in the ambient integer ring. -/
 theorem generator_pair_sub_dvd_eval_map (f : A →ₐ[R] B) {y : A}
     (hy : Algebra.adjoin R {y} = ⊤) (x : B) (P : A[X])
     (hP : aeval x P = 0) :
@@ -92,7 +92,7 @@ theorem generator_pair_sub_dvd_eval_map (f : A →ₐ[R] B) {y : A}
 
 variable [IsDomain A] [IsIntegrallyClosed A] [IsDomain B] [Module.IsTorsionFree A B]
 
-/-- Monic division proves the reverse Tate divisibility for an original
+/-- Monic division proves the reverse Tate divisibility for an
 embedding into the ambient ring; the intermediate field need not be stable. -/
 theorem eval_map_minpoly_dvd_generator_pair_sub (f : A →ₐ[R] B) {x : B}
     (hx : Algebra.adjoin R {x} = ⊤) (hint : IsIntegral A x) (y : A) :
@@ -115,7 +115,7 @@ theorem eval_map_minpoly_dvd_generator_pair_sub (f : A →ₐ[R] B) {x : B}
   have hd : ((minpoly A x).map f.toRingHom).eval x ∣ algebraMap A B y - f y := ⟨_, h⟩
   simpa only [neg_sub] using dvd_neg.mpr hd
 
-/-- Both actual arbitrary-embedding Tate displacements are associated,
+/-- Both arbitrary-embedding Tate displacements are associated,
 including the zero and identical-embedding cases. -/
 theorem associated_generator_pair_sub_eval_map_minpoly (f : A →ₐ[R] B)
     {x : B} {y : A} (hx : Algebra.adjoin R {x} = ⊤)
@@ -125,7 +125,7 @@ theorem associated_generator_pair_sub_eval_map_minpoly (f : A →ₐ[R] B)
     (generator_pair_sub_dvd_eval_map f hy x (minpoly A x) (minpoly.aeval A x))
     (eval_map_minpoly_dvd_generator_pair_sub f hx hint y)
 
-/-- Tate's actual arbitrary-map displacements have equal normalized
+/-- Tate's arbitrary-map displacements have equal normalized
 valuation; no extension-stability or automorphism premise is present. -/
 theorem addVal_generator_pair_sub_eq_eval_map_minpoly [IsDiscreteValuationRing B]
     (f : A →ₐ[R] B) {x : B} {y : A} (hx : Algebra.adjoin R {x} = ⊤)
@@ -136,7 +136,7 @@ theorem addVal_generator_pair_sub_eq_eval_map_minpoly [IsDiscreteValuationRing B
   exact le_antisymm (IsDiscreteValuationRing.addVal_le_iff_dvd.mpr h.dvd)
     (IsDiscreteValuationRing.addVal_le_iff_dvd.mpr h.symm.dvd)
 
-/-- The original Galois product can be twisted into the ambient ring by
+/-- The Galois product can be twisted into the ambient ring by
 an automorphism which need not preserve the intermediate field. -/
 theorem eval_map_minpoly_eq_prod_displacements_embedding
     (H : Type*) [Group H] [Fintype H] [MulSemiringAction H B] [IsGaloisGroup H A B]
@@ -149,7 +149,7 @@ theorem eval_map_minpoly_eq_prod_displacements_embedding
     eval_prod, eval_sub, eval_X, eval_C]
   rfl
 
-/-- The full raw pair infimum is the actual coset sum, including nonnormal
+/-- The full raw pair infimum is the coset sum, including nonnormal
 intermediate fields and intermediate fields not preserved by the chosen element. -/
 theorem integralEmbeddingOrder_eq_sum_coset [IsDiscreteValuationRing B]
     (G : Type*) [Group G] [MulSemiringAction G B] [SMulCommClass G R B]
@@ -199,7 +199,7 @@ local notation "R₀" => Valuation.valuationSubring (NormedField.valuation (K :=
 local notation "A₀" => spectralIntegerRing K F₀
 local notation "B₀" => spectralIntegerRing K Ω
 
-/-- Galois descent on the actual spectral integer rings of the actual
+/-- Galois descent on the spectral integer rings of the
 fixed field, without any normality hypothesis on the fixing subgroup. -/
 theorem fixedField_spectralInteger_isGaloisGroup :
     letI : Algebra A₀ B₀ := (spectralIntegerInclusion K (F₀).val).toRingHom.toAlgebra
@@ -217,8 +217,8 @@ theorem fixedField_spectralInteger_isGaloisGroup :
         exact map_mul (h : Ω ≃ₐ[K] Ω) (x : Ω) z }
   exact IsGaloisGroup.of_isFractionRing H A₀ B₀ F₀ Ω
 
-/-- The arbitrary-embedding coset identity on original finite spectral
-integers; in particular the original fixed field need not be preserved. -/
+/-- The arbitrary-embedding coset identity on finite spectral
+integers; in particular the fixed field need not be preserved. -/
 theorem embeddingIntegralOrder_fixedField_eq_sum (σ : Ω ≃ₐ[K] Ω) :
     letI := Fintype.ofFinite H
     embeddingIntegralOrder K (σ.toAlgHom.comp (F₀).val) (F₀).val =
@@ -245,7 +245,7 @@ theorem embeddingIntegralOrder_fixedField_eq_sum (σ : Ω ≃ₐ[K] Ω) :
   rw [embeddingIntegralOrder, hf, hg]
   exact integralEmbeddingOrder_eq_sum_coset (Ω ≃ₐ[K] Ω) H σ hx hy
 
-/-- The actual normalized arbitrary-embedding average has the original
+/-- The normalized arbitrary-embedding average has the
 relative ramification index as its positive finite denominator. -/
 theorem embeddingRamificationOrder_fixedField_eq_sum_div (σ : Ω ≃ₐ[K] Ω) :
     letI := Fintype.ofFinite H
@@ -258,7 +258,7 @@ theorem embeddingRamificationOrder_fixedField_eq_sum_div (σ : Ω ≃ₐ[K] Ω) 
   congr 1
   exact map_sum ENat.toENNRealRingHom _ _
 
-/-- The actual subgroup inertia has the same canonical index as the
+/-- The subgroup inertia has the same canonical index as the
 denominator of the normalized pair average, without subgroup normality. -/
 theorem fixedField_spectral_card_inertia :
     Nat.card (lowerRamificationGroup H (IsLocalRing.maximalIdeal B₀) 0) =
@@ -286,7 +286,7 @@ theorem mul_subgroup_fixedField_comp (s : Ω ≃ₐ[K] Ω) (h : H) :
   change s (h.1 (x : Ω)) = s (x : Ω)
   exact congrArg s (x.2 h)
 
-/-- Every nonidentity actual embedding coset has an attained finite maximum;
+/-- Every nonidentity embedding coset has an attained finite maximum;
 the subgroup is arbitrary and no restriction automorphism is postulated. -/
 theorem exists_embedding_coset_order_max (s : Ω ≃ₐ[K] Ω)
     (hs : s.toAlgHom.comp (F₀).val ≠ (F₀).val) :
@@ -308,7 +308,7 @@ theorem exists_embedding_coset_order_max (s : Ω ≃ₐ[K] Ω)
   · intro h'
     simpa only [Subgroup.coe_mul, mul_assoc] using hh (h * h') (Finset.mem_univ _)
 
-/-- A maximal representative computes the actual normalized pair order
+/-- A maximal representative computes the normalized pair order
 by the subgroup Herbrand function, even when it moves the fixed field. -/
 theorem embeddingOrder_toReal_sub_one_eq_herbrand (s : Ω ≃ₐ[K] Ω)
     (hs : s.toAlgHom.comp (F₀).val ≠ (F₀).val)
@@ -342,8 +342,8 @@ theorem embeddingOrder_toReal_sub_one_eq_herbrand (s : Ω ≃ₐ[K] Ω)
   · intro h _
     exact ENat.toENNReal_ne_top.mpr (ne_top_of_le_ne_top hsfinite (hmax h))
 
-/-- Signed nonnormal embedding numbers have the source coset-maximum
-Herbrand formula on the actual finite ambient field. -/
+/-- Signed nonnormal embedding numbers have the coset-maximum
+Herbrand formula on the finite ambient field. -/
 theorem embeddingNumber_fixedField_eq_herbrand (s : Ω ≃ₐ[K] Ω)
     (hs : s.toAlgHom.comp (F₀).val ≠ (F₀).val)
     (hmax : ∀ h : H, ramificationOrder (R := B₀) (Ω ≃ₐ[K] Ω) (s * h.1) ≤
@@ -356,7 +356,7 @@ theorem embeddingNumber_fixedField_eq_herbrand (s : Ω ≃ₐ[K] Ω)
     EReal.coe_ennreal_toReal (embeddingRamificationOrder_lt_top K hs).ne]
   rfl
 
-/-- Every nonidentity original finite embedding has an actual finite
+/-- Every nonidentity finite embedding has a finite
 maximal ambient representative and its exact signed Herbrand value. -/
 theorem exists_embeddingNumber_fixedField_eq_herbrand (s : Ω ≃ₐ[K] Ω)
     (hs : s.toAlgHom.comp (F₀).val ≠ (F₀).val) :
@@ -384,7 +384,7 @@ local notation "O₁" => spectralIntegerRing K Ω
 
 omit [IsPerfectResidueLocalField K]
   [IsGalois K Ω] in
-/-- Equality of original embeddings is exactly membership in the actual
+/-- Equality of embeddings is exactly membership in the
 right fixing coset, without normality of the intermediate field. -/
 theorem fixedField_comp_eq_iff_inv_mul_mem (H : Subgroup G₁) (r s : G₁) :
     s.toAlgHom.comp (IntermediateField.fixedField H).val =
@@ -404,7 +404,7 @@ theorem fixedField_comp_eq_iff_inv_mul_mem (H : Subgroup G₁) (r s : G₁) :
     change r⁻¹ (s (x : Ω)) = (x : Ω) at h
     exact (r.symm_apply_eq).mp h
 
-/-- A maximal fixing-coset representative bounds all original automorphisms
+/-- A maximal fixing-coset representative bounds all automorphisms
 with that same embedding, rather than only a postulated restriction group. -/
 theorem ramificationOrder_le_of_fixedField_comp_eq (H : Subgroup G₁) (r s : G₁)
     (hmax : ∀ h : H, ramificationOrder (R := O₁) G₁ (r * h.1) ≤
@@ -415,7 +415,7 @@ theorem ramificationOrder_le_of_fixedField_comp_eq (H : Subgroup G₁) (r s : G�
   have hm := (fixedField_comp_eq_iff_inv_mul_mem K Ω H r s).mp he
   simpa only [mul_inv_cancel_left] using hmax ⟨r⁻¹ * s, hm⟩
 
-/-- The exact coset formula applies to every actual intermediate field,
+/-- The exact coset formula applies to every intermediate field,
 including a field moved by the chosen ambient automorphism. -/
 theorem exists_embeddingNumber_intermediate_eq_herbrand (E : IntermediateField K Ω)
     (s : G₁) (hs : s.toAlgHom.comp E.val ≠ E.val) :
@@ -431,7 +431,7 @@ theorem exists_embeddingNumber_intermediate_eq_herbrand (E : IntermediateField K
   rw [IntermediateField.fixingSubgroup_fixedField]
   exact exists_embeddingNumber_fixedField_eq_herbrand K Ω H s hs
 
-/-- Arbitrary original restriction is bounded by the genuine fixing-subgroup
+/-- Arbitrary restriction is bounded by the fixing-subgroup
 change of parameter. Neither field must be preserved by the automorphism. -/
 theorem embeddingNumber_restriction_le_herbrand_composite
     (E F : IntermediateField K Ω) (hEF : E ≤ F) (s : G₁)
@@ -476,7 +476,7 @@ variable (K Ω : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField 
     [Field Ω] [Algebra K Ω] [FiniteDimensional K Ω] [IsGalois K Ω]
 
 /-- The fixing-subgroup composite is the intrinsic relative APF function
-on the actual scalar extension of the original finite intermediate field. -/
+on the scalar extension of the finite intermediate field. -/
 theorem apfPsi_extendScalars_eq_fixing_herbrand
     (E F : IntermediateField K Ω) (hEF : E ≤ F) {u : ℝ} (hu : -1 ≤ u) :
     letI := spectralNorm.nontriviallyNormedField K Ω
@@ -515,7 +515,7 @@ theorem apfPsi_extendScalars_eq_fixing_herbrand
       (herbrandFunction_mem_Ici _ (inverseHerbrandFunction_mem_Ici _ u)),
     inverseHerbrandFunction_herbrandFunction _ (inverseHerbrandFunction_mem_Ici _ u)]
 
-/-- The intrinsic relative Herbrand bound holds for every original finite
+/-- The intrinsic relative Herbrand bound holds for every finite
 restriction, including fields not preserved by the ambient automorphism. -/
 theorem embeddingNumber_restriction_le_apfPsi
     (E F : IntermediateField K Ω) (hEF : E ≤ F) (s : Ω ≃ₐ[K] Ω)
@@ -565,7 +565,7 @@ variable (K Ω : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField 
 local notation "G₂" => Ω ≃ₐ[K] Ω
 local notation "O₂" => spectralIntegerRing K Ω
 
-/-- Every original finite embedding is bounded below by the intrinsic first
+/-- Every finite embedding is bounded below by the intrinsic first
 ramification bound. The extension and its intermediate field may be nonnormal. -/
 theorem apfRamificationBound_le_embeddingNumber
     (F : IntermediateField K Ω) (s : G₂) :
@@ -617,7 +617,7 @@ end FirstEmbeddingBound
 
 section FiniteCosetAverages
 
-/-- Double counting actual right multiplication inside a finite subgroup.
+/-- Double counting right multiplication inside a finite subgroup.
 This retains arbitrary, possibly nonnormal, smaller subgroups. -/
 theorem sum_sum_right_mul_subgroup {G A : Type*} [Group G] [AddCommMonoid A]
     (D H : Subgroup G) [Fintype D] [Fintype H] (hHD : H ≤ D) (f : G → A) (s : G) :
@@ -635,7 +635,7 @@ theorem sum_sum_right_mul_subgroup {G A : Type*} [Group G] [AddCommMonoid A]
     _ = _ := by simp
 
 /-- A finite right-coset average has a representative at most the whole
-average when the actual inertia and group cardinalities have the total ratio. -/
+average when the inertia and group cardinalities have the total ratio. -/
 theorem exists_right_coset_average_le {G : Type*} [Group G]
     (D H : Subgroup G) [Fintype D] [Fintype H] (hHD : H ≤ D)
     (f : G → ℝ) (s : G) (eD eH : ℝ) (heD : 0 < eD) (heH : 0 < eH)
@@ -664,7 +664,7 @@ theorem exists_right_coset_average_le {G : Type*} [Group G]
 
 end FiniteCosetAverages
 
-section ActualFiniteAverages
+section FiniteAverages
 
 variable (K Ω : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
     [Field Ω] [Algebra K Ω] [FiniteDimensional K Ω] [IsGalois K Ω]
@@ -672,7 +672,7 @@ variable (K Ω : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField 
 local notation "G₃" => Ω ≃ₐ[K] Ω
 local notation "O₃" => spectralIntegerRing K Ω
 
-/-- The actual finite embedding average over its full fixing subgroup. -/
+/-- The finite embedding average over its full fixing subgroup. -/
 theorem embeddingOrder_intermediate_eq_sum_div
     (E : IntermediateField K Ω) (s : G₃) :
     letI := Fintype.ofFinite E.fixingSubgroup
@@ -684,7 +684,7 @@ theorem embeddingOrder_intermediate_eq_sum_div
   rw [IntermediateField.fixingSubgroup_fixedField]
   exact embeddingRamificationOrder_fixedField_eq_sum_div K Ω H s
 
-/-- A nonidentity restriction has its genuine finite real coset average. -/
+/-- A nonidentity restriction has its finite real coset average. -/
 theorem embeddingOrder_toReal_eq_coset_average
     (E : IntermediateField K Ω) (s : G₃) (hs : s.toAlgHom.comp E.val ≠ E.val) :
     letI := Fintype.ofFinite E.fixingSubgroup
@@ -705,8 +705,8 @@ theorem embeddingOrder_toReal_eq_coset_average
     rw [IsGalois.fixedField_fixingSubgroup E, he] at hc
     exact hc.symm
 
-/-- Ordinary total ramification gives an actual extension embedding whose
-number is at most the restricted number, by the genuine finite Tate average. -/
+/-- Ordinary total ramification gives an extension embedding whose
+number is at most the restricted number, by the finite Tate average. -/
 theorem exists_embedding_extension_number_le_of_totallyRamified
     (E F : IntermediateField K Ω) (hEF : E ≤ F)
     (htotal : embeddingRamificationIdx K (IntermediateField.inclusion hEF) =
@@ -768,7 +768,7 @@ theorem exists_embedding_extension_number_le_of_totallyRamified
     ← EReal.coe_ennreal_toReal (embeddingRamificationOrder_lt_top K hs).ne]
   exact EReal.sub_le_sub (EReal.coe_le_coe_iff.mpr havg) le_rfl
 
-end ActualFiniteAverages
+end FiniteAverages
 
 section StrictPairComparison
 
@@ -778,8 +778,8 @@ variable {E N : Type*} [Field E] [Field N] [Algebra K E] [Algebra K N]
     [FiniteDimensional K E] [FiniteDimensional K N]
     [Algebra.IsSeparable K E] [Algebra.IsSeparable K N]
 
-/-- Strict separation of two actual embeddings forces equal displacement
-from a third embedding, with the original normalized source-field index. -/
+/-- Strict separation of two embeddings forces equal displacement
+from a third embedding, with the normalized source-field index. -/
 theorem embeddingNumber_eq_of_lt_pair (α β ι : E →ₐ[K] N)
     (hlt : embeddingRamificationNumber K α ι < embeddingRamificationNumber K α β) :
     embeddingRamificationNumber K β ι = embeddingRamificationNumber K α ι := by
@@ -822,7 +822,7 @@ variable {R S R' S' : Type*}
     [FaithfulSMul R S] [IsLocalHom (algebraMap R S)]
     [FaithfulSMul R' S'] [IsLocalHom (algebraMap R' S')]
 
-/-- A genuine commuting isomorphism of local DVR maps preserves the
+/-- A commuting isomorphism of local DVR maps preserves the
 canonical local-length ramification index. -/
 theorem local_ramificationIdx_ringEquiv (r : R ≃+* R') (s : S ≃+* S')
     (hs : ∀ x : R, s (algebraMap R S x) = algebraMap R' S' (r x)) :
@@ -839,7 +839,7 @@ theorem local_ramificationIdx_ringEquiv (r : R ≃+* R') (s : S ≃+* S')
 
 end LocalIndexTransport
 
-section SourceEquivalence
+section Equivalence
 
 variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
 
@@ -848,7 +848,7 @@ variable {E F N : Type*} [Field E] [Field F] [Field N]
     [FiniteDimensional K E] [FiniteDimensional K F] [FiniteDimensional K N]
     [Algebra.IsSeparable K E] [Algebra.IsSeparable K F] [Algebra.IsSeparable K N]
 
-/-- An actual isomorphism between finite source fields has relative index one. -/
+/-- An isomorphism between finite fields has relative index one. -/
 theorem embeddingRamificationIdx_algEquiv (e : E ≃ₐ[K] F) :
     embeddingRamificationIdx K e.toAlgHom = 1 := by
   have h := embeddingRamificationIdx_comp K e.toAlgHom e.symm.toAlgHom
@@ -862,7 +862,7 @@ theorem embeddingRamificationIdx_algEquiv (e : E ≃ₐ[K] F) :
   exact Nat.dvd_one.mp ⟨embeddingRamificationIdx K e.symm.toAlgHom, h⟩
 
 omit [FiniteDimensional K E] [FiniteDimensional K F] in
-/-- Reparametrizing the original finite source field preserves its full
+/-- Reparametrizing the finite field preserves its full
 integral displacement infimum, including the identical pair. -/
 theorem embeddingIntegralOrder_precomp_algEquiv (e : E ≃ₐ[K] F)
     (α β : F →ₐ[K] N) :
@@ -880,7 +880,7 @@ theorem embeddingIntegralOrder_precomp_algEquiv (e : E ≃ₐ[K] F)
     change β (spectralIntegerRingEquiv K e x : F) = β (e (x : E))
     rw [coe_spectralIntegerRingEquiv]
 
-/-- Original finite-source isomorphisms preserve normalized embedding orders. -/
+/-- Finite-source isomorphisms preserve normalized embedding orders. -/
 theorem embeddingOrder_precomp_algEquiv (e : E ≃ₐ[K] F) (α β : F →ₐ[K] N) :
     embeddingRamificationOrder K (α.comp e.toAlgHom) (β.comp e.toAlgHom) =
       embeddingRamificationOrder K α β := by
@@ -888,7 +888,7 @@ theorem embeddingOrder_precomp_algEquiv (e : E ≃ₐ[K] F) (α β : F →ₐ[K]
     embeddingIntegralOrder_precomp_algEquiv, embeddingRamificationIdx_comp,
     embeddingRamificationIdx_algEquiv, one_mul]
 
-/-- Signed intrinsic numbers are invariant under actual finite-source
+/-- Signed intrinsic numbers are invariant under finite-source
 isomorphisms, without selecting a replacement valuation or field carrier. -/
 theorem embeddingNumber_precomp_algEquiv (e : E ≃ₐ[K] F) (α β : F →ₐ[K] N) :
     embeddingRamificationNumber K (α.comp e.toAlgHom) (β.comp e.toAlgHom) =
@@ -896,15 +896,15 @@ theorem embeddingNumber_precomp_algEquiv (e : E ≃ₐ[K] F) (α β : F →ₐ[K
   rw [embeddingRamificationNumber, embeddingRamificationNumber,
     embeddingOrder_precomp_algEquiv]
 
-end SourceEquivalence
+end Equivalence
 
 section FiniteBaseInvariance
 
 variable (K Ω : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
     [Field Ω] [Algebra K Ω] [FiniteDimensional K Ω] [IsGalois K Ω]
 
-/-- Changing to an actual finite intermediate base preserves the same intrinsic
-embedding number. Both integer rings are identified by their actual unit balls;
+/-- Changing to a finite intermediate base preserves the same intrinsic
+embedding number. Both integer rings are identified by their unit balls;
 the canonical local indices are proved equal through the commuting ring maps. -/
 theorem embeddingNumber_rebase
     (E F : IntermediateField K Ω) (hEF : E ≤ F) :
@@ -990,8 +990,8 @@ section RelativeEmbeddingBounds
 variable (K Ω : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
     [Field Ω] [Algebra K Ω] [FiniteDimensional K Ω] [IsGalois K Ω]
 
-/-- The actual relative first bound controls every actual base-fixing
-embedding, with its number computed on the original old-base integer rings. -/
+/-- The relative first bound controls every base-fixing
+embedding, with its number computed on the old-base integer rings. -/
 theorem apfRelativeBound_le_embeddingNumber
     (E F : IntermediateField K Ω) (hEF : E ≤ F) :
     letI := spectralNorm.nontriviallyNormedField K Ω
@@ -1025,8 +1025,8 @@ theorem apfRelativeBound_le_embeddingNumber
   rw [← embeddingNumber_rebase K Ω E F hEF (E.fixingSubgroupEquiv d)] at h
   exact h
 
-/-- Two original ambient maps with the same restriction to the smaller
-field are separated by at least the actual relative first bound. -/
+/-- Two ambient maps with the same restriction to the smaller
+field are separated by at least the relative first bound. -/
 theorem apfRelativeBound_le_pairNumber
     (E F : IntermediateField K Ω) (hEF : E ≤ F)
     (s t : Ω ≃ₐ[K] Ω) (hst : s.toAlgHom.comp E.val = t.toAlgHom.comp E.val) :
@@ -1066,7 +1066,7 @@ variable (K Ω : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField 
     [Field Ω] [Algebra K Ω] [FiniteDimensional K Ω] [IsGalois K Ω]
 
 /-- Under ordinary total ramification, the true average over all extensions
-of an actual nonidentity embedding is its original normalized order. -/
+of a nonidentity embedding is its normalized order. -/
 theorem sum_embedding_extension_order_of_totallyRamified
     (E F : IntermediateField K Ω) (hEF : E ≤ F)
     (htotal : embeddingRamificationIdx K (IntermediateField.inclusion hEF) =
@@ -1124,9 +1124,9 @@ theorem sum_embedding_extension_order_of_totallyRamified
     (embeddingRamificationIdx K E.val : ℝ) ≠ 0)]
   nlinarith [h]
 
-/-- Below the actual relative first bound, ordinary total ramification
+/-- Below the relative first bound, ordinary total ramification
 forces every extension embedding to retain the restricted number. Neither
-original intermediate field is required to be normal or stable. -/
+intermediate field is required to be normal or stable. -/
 theorem embeddingNumber_eq_restriction_of_lt_relativeBound
     (E F : IntermediateField K Ω) (hEF : E ≤ F)
     (htotal : embeddingRamificationIdx K (IntermediateField.inclusion hEF) =

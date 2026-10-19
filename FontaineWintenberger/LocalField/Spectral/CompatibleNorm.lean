@@ -9,10 +9,10 @@ public import FontaineWintenberger.LocalField.Spectral.Uniqueness
 public import Mathlib.RingTheory.Valuation.Discrete.RankOne
 
 /-!
-# Norm compatibility for a source discrete valuation
+# Norm compatibility for a discrete valuation
 
-Mathlib's rank-one norm keeps the original valued uniform space. We identify
-its valuation ring with the original intrinsic ring and transfer the DVR
+Mathlib's rank-one norm keeps the valued uniform space. We identify
+its valuation ring with the intrinsic ring and transfer the DVR
 structure, without any hypothesis that the residue field is finite.
 -/
 
@@ -40,18 +40,18 @@ local instance : IsUltrametricDist K :=
 theorem discreteValued_norm_le_iff (x y : K) : ‖x‖ ≤ ‖y‖ ↔ val.v x ≤ val.v y :=
   Valued.toNormedField.norm_le_iff
 
-/-- Norm and source valuation give exactly the same intrinsic integer ring. -/
+/-- Norm and valuation give exactly the same intrinsic integer ring. -/
 theorem discreteValued_valuationSubring :
     (NormedField.valuation (K := K)).valuationSubring = val.v.valuationSubring := by
   ext x
   change ‖x‖₊ ≤ 1 ↔ val.v x ≤ 1
   exact_mod_cast (Valued.toNormedField.norm_le_one_iff (x := x))
 
-/-- The normed structure keeps the source uniformity definitionally. -/
+/-- The normed structure keeps the uniformity definitionally. -/
 theorem discreteValued_uniformSpace :
     (discreteValuedNormedField K Γ).toUniformSpace = Valued.toUniformSpace := rfl
 
-/-- Source completeness is completeness for the compatible norm, with no transport axiom. -/
+/-- Completeness is completeness for the compatible norm, with no transport axiom. -/
 theorem discreteValued_completeSpace [h : CompleteSpace K] :
     @CompleteSpace K (discreteValuedNormedField K Γ).toUniformSpace := h
 
@@ -68,7 +68,7 @@ theorem discreteValued_isCompleteDiscreteValuedField [h : CompleteSpace K]
   have := discreteValued_unitBall_isDiscreteValuationRing K Γ
   {}
 
-/-- Henselianity for the original source valuation ring. -/
+/-- Henselianity for the valuation ring. -/
 theorem discreteValued_henselianLocalRing [CompleteSpace K]
     [IsDiscreteValuationRing val.v.valuationSubring] :
     HenselianLocalRing val.v.valuationSubring := by
@@ -78,7 +78,7 @@ theorem discreteValued_henselianLocalRing [CompleteSpace K]
 
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsAlgebraic K L]
 
-/-- The spectral extension is compatible with the original source valuation. -/
+/-- The spectral extension is compatible with the valuation. -/
 instance discreteValued_spectral_hasExtension [CompleteSpace K] :
     val.v.HasExtension (spectralValuation K L) where
   val_isEquiv_comap := by
@@ -94,7 +94,7 @@ omit [Algebra.IsAlgebraic K L]
 variable {ΓL : Type*} [LinearOrderedCommGroupWithZero ΓL] (w : Valuation L ΓL)
 variable [val.v.HasExtension w]
 
-/-- Extension compatibility survives replacing the source valuation by its compatible norm. -/
+/-- Extension compatibility survives replacing the valuation by its compatible norm. -/
 theorem discreteValued_norm_hasExtension :
     (NormedField.valuation (K := K)).HasExtension w where
   val_isEquiv_comap := by
@@ -105,7 +105,7 @@ theorem discreteValued_norm_hasExtension :
     exact hnorm.trans (Valuation.HasExtension.val_map_le_iff val.v w x y).symm
 
 include K Γ in
-/-- DVR structure for the actual chosen extension of a source-valued complete field. -/
+/-- DVR structure for the chosen extension of a source-valued complete field. -/
 theorem discreteValued_extension_isDiscreteValuationRing [CompleteSpace K]
     [IsDiscreteValuationRing val.v.valuationSubring] [FiniteDimensional K L]
     [Algebra.IsSeparable K L] : IsDiscreteValuationRing w.valuationSubring := by
@@ -121,7 +121,7 @@ theorem discreteValued_extension_henselianLocalRing [CompleteSpace K]
   have := discreteValued_isCompleteDiscreteValuedField K Γ
   exact extensionValuationSubring_henselianLocalRing K L w
 
-/-- Integral generation over the original source ring for any compatible chosen extension. -/
+/-- Integral generation over the ring for any compatible chosen extension. -/
 theorem discreteValued_extension_exists_generator [CompleteSpace K]
     [IsDiscreteValuationRing val.v.valuationSubring]
     [PerfectField (IsLocalRing.ResidueField val.v.valuationSubring)]
@@ -153,7 +153,7 @@ theorem discreteValued_extension_exists_generator [CompleteSpace K]
 
 end ChosenExtension
 
-/-- Monogenicity over the original source integer ring, through the compatible norm. -/
+/-- Monogenicity over the integer ring, through the compatible norm. -/
 theorem discreteValued_spectral_exists_generator [CompleteSpace K]
     [IsDiscreteValuationRing val.v.valuationSubring]
     [PerfectField (IsLocalRing.ResidueField val.v.valuationSubring)]

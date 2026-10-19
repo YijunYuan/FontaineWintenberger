@@ -15,14 +15,14 @@ public import FontaineWintenberger.APF.RamificationBound
 
 ## Finite Galois specialization of the APF functions
 
-Ordinary restriction and its actual kernel identify the APF subgroup as the
+Ordinary restriction and its kernel identify the APF subgroup as the
 preimage of the finite upper group. Relative indices and their integrals
 therefore recover the proved finite Herbrand functions on their own rings.
 
-## The actual finite Galois meaning of the APF ramification bound
+## The finite Galois meaning of the APF ramification bound
 
-Absolute restriction has the actual fixing subgroup as kernel, and its
-upper image is the actual finite upper group. Thus the public supremum is
+Absolute restriction has the fixing subgroup as kernel, and its
+upper image is the finite upper group. Thus the public supremum is
 computed by the finite extension's own upper filtration.
 -/
 
@@ -55,7 +55,7 @@ theorem apfInertiaIndex_eq_upperRelIndex
 
 variable (L : Type*) [Field L] [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
 
-/-- The intrinsic abstract-extension index equals the actual finite upper relative index. -/
+/-- The intrinsic abstract-extension index equals the finite upper relative index. -/
 theorem apfIndex_eq_upperRelIndex {u : ℝ} (hu : 0 ≤ u) :
     apfIndex K L u =
       (upperRamificationGroup (R := spectralIntegerRing K L) (L ≃ₐ[K] L) u).relIndex
@@ -71,7 +71,7 @@ theorem apfIndex_eq_upperRelIndex {u : ℝ} (hu : 0 ≤ u) :
     ← upperRamificationGroup_map_autCongr K i.equivFieldRange (by norm_num : -1 ≤ (0 : ℝ))]
   exact Subgroup.relIndex_map_map_of_injective _ _ i.equivFieldRange.autCongr.injective
 
-/-- The APF integral is the actual finite inverse Herbrand function. -/
+/-- The APF integral is the finite inverse Herbrand function. -/
 theorem apfPsi_eq_inverseHerbrandFunction {u : ℝ} (hu : -1 ≤ u) :
     apfPsi K L u = inverseHerbrandFunction (R := spectralIntegerRing K L) (L ≃ₐ[K] L) u := by
   by_cases hu' : u ≤ 0
@@ -83,7 +83,7 @@ theorem apfPsi_eq_inverseHerbrandFunction {u : ℝ} (hu : -1 ≤ u) :
     intro v hv
     exact congrArg (fun n : ℕ ↦ (n : ℝ)) (apfIndex_eq_upperRelIndex K L hv.1)
 
-/-- The actual inverse of the APF integral is the finite Herbrand function. -/
+/-- The inverse of the APF integral is the finite Herbrand function. -/
 theorem apfPhi_eq_herbrandFunction [IsAPF K L] {u : ℝ} (hu : -1 ≤ u) :
     apfPhi K L u = herbrandFunction (R := spectralIntegerRing K L) (L ≃ₐ[K] L) u := by
   apply (IsAPF.strictMono_apfPsi K L).injective
@@ -119,7 +119,7 @@ theorem apfSubgroup_eq_top_iff_finite_upper_eq_top
 
 variable (L : Type*) [Field L] [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
 
-/-- The full-group condition is intrinsic to the actual abstract finite
+/-- The full-group condition is intrinsic to the abstract finite
 extension, independently of its separable embedding. -/
 theorem apfSubgroup_fieldRange_eq_top_iff_finite_upper_eq_top
     (i : L →ₐ[K] SeparableClosure K) {u : ℝ} (hu : -1 ≤ u) :
@@ -145,7 +145,7 @@ theorem apfSubgroup_fieldRange_eq_top_iff_finite_upper_eq_top
     exact Subgroup.mem_map.mpr ⟨s, by rw [h]; trivial, rfl⟩
 
 /-- The public extended-real bound is exactly the supremum where the
-actual finite upper group is full. -/
+finite upper group is full. -/
 theorem apfRamificationBound_eq_sSup_finite_upper :
     apfRamificationBound K L = sSup {x : EReal | ∃ u : ℝ, -1 ≤ u ∧
       upperRamificationGroup (R := spectralIntegerRing K L) (L ≃ₐ[K] L) u = ⊤ ∧

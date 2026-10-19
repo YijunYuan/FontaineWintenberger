@@ -10,7 +10,7 @@ public import FontaineWintenberger.FieldOfNorms.Layers.Descent
 /-!
 # Simultaneous finite descent in a separable tower
 
-Actual finite coefficient fields in a finite separable tower can be chosen
+Finite coefficient fields in a finite separable tower can be chosen
 simultaneously good for both levels, as in Wintenberger, paragraph 3.1.1.
 -/
 
@@ -27,7 +27,7 @@ section Tensor
 variable {C M P : Type*} [Field C] [Field M] [Field P]
     [Algebra C M] [Algebra C P] [Algebra M P] [IsScalarTower C M P]
 
-/-- Linear disjointness makes the actual canonical tensor map injective. -/
+/-- Linear disjointness makes the canonical tensor map injective. -/
 theorem injective_tensor_lift_of_linearDisjoint (D : IntermediateField C P)
     [Module.Finite C D] (hD : D.LinearDisjoint M) :
     Function.Injective (AlgHom.liftEquiv C M D P D.val) := by
@@ -38,7 +38,7 @@ theorem injective_tensor_lift_of_linearDisjoint (D : IntermediateField C P)
     (Algebra.TensorProduct.isField_of_isAlgebraic C M D (.inr inferInstance)).toField
   exact (AlgHom.liftEquiv C M D P D.val).toRingHom.injective
 
-/-- The actual multiplication map is an isomorphism when linearly disjoint
+/-- The multiplication map is an isomorphism when linearly disjoint
 finite fields generate the ambient extension. -/
 def tensorEquivOfLinearDisjoint (D : IntermediateField C P)
     [Module.Finite C D] (hD : D.LinearDisjoint M)
@@ -59,18 +59,18 @@ variable {N : Type*} [Field N] [Algebra C N] [Algebra M N]
     [Algebra N P] [IsScalarTower C M N] [IsScalarTower C N P]
     [IsScalarTower M N P]
 
-/-- The actual intersection with an embedded middle field, viewed inside that field. -/
+/-- The intersection with an embedded middle field, viewed inside that field. -/
 def finiteDescentIntersection (D : IntermediateField C P) : IntermediateField C N :=
   D.comap (IsScalarTower.toAlgHom C N P)
 
-/-- The canonical inclusion of the actual middle intersection into the upper field. -/
+/-- The canonical inclusion of the middle intersection into the upper field. -/
 def finiteDescentIntersectionTo (D : IntermediateField C P) :
     finiteDescentIntersection (N := N) D →ₐ[C] D :=
   ((IsScalarTower.toAlgHom C N P).comp (finiteDescentIntersection (N := N) D).val).codRestrict
     D.toSubalgebra fun x => x.property
 
-/-- Restricting the original disjoint field to the actual middle intersection
-preserves linear disjointness with the original base. -/
+/-- Restricting the disjoint field to the middle intersection
+preserves linear disjointness with the base. -/
 theorem linearDisjoint_finiteDescentIntersection (D : IntermediateField C P)
     (hD : D.LinearDisjoint M) :
     (finiteDescentIntersection (N := N) D).LinearDisjoint M := by
@@ -83,14 +83,14 @@ theorem linearDisjoint_finiteDescentIntersection (D : IntermediateField C P)
     (LinearMap.ker_eq_bot.mpr (finiteDescentIntersectionTo (N := N) D).injective))
   exact h
 
-/-- The actual intersection is finite when the original finite field is. -/
+/-- The intersection is finite when the finite field is. -/
 instance finite_finiteDescentIntersection (D : IntermediateField C P)
     [Module.Finite C D] : Module.Finite C (finiteDescentIntersection (N := N) D) :=
   Module.Finite.of_injective (finiteDescentIntersectionTo (N := N) D).toLinearMap
     (finiteDescentIntersectionTo (N := N) D).injective
 
 omit [Algebra M P] [IsScalarTower C M P] [IsScalarTower M N P] in
-/-- Containing the actual middle primitive element makes the lower
+/-- Containing the middle primitive element makes the lower
 canonical tensor map onto. -/
 theorem surjective_finiteDescentIntersection_tensor_lift (D : IntermediateField C P)
     (b : PowerBasis M N) (hgen : algebraMap N P b.gen ∈ D) :
@@ -108,7 +108,7 @@ theorem surjective_finiteDescentIntersection_tensor_lift (D : IntermediateField 
   intro y
   exact hr trivial
 
-/-- The actual intersection descends the middle field by the canonical map. -/
+/-- The intersection descends the middle field by the canonical map. -/
 def finiteDescentIntersectionTensorEquiv (D : IntermediateField C P)
     [Module.Finite C D] (hD : D.LinearDisjoint M)
     (b : PowerBasis M N) (hgen : algebraMap N P b.gen ∈ D) :
@@ -116,7 +116,7 @@ def finiteDescentIntersectionTensorEquiv (D : IntermediateField C P)
   tensorEquivOfLinearDisjoint _ (linearDisjoint_finiteDescentIntersection D hD)
     (surjective_finiteDescentIntersection_tensor_lift D b hgen)
 
-/-- The middle field degree is the degree of the actual finite intersection. -/
+/-- The middle field degree is the degree of the finite intersection. -/
 theorem finrank_finiteDescentIntersection (D : IntermediateField C P)
     [Module.Finite C D] (hD : D.LinearDisjoint M)
     (b : PowerBasis M N) (hgen : algebraMap N P b.gen ∈ D) :
@@ -124,7 +124,7 @@ theorem finrank_finiteDescentIntersection (D : IntermediateField C P)
   rw [← Module.finrank_baseChange (R := M)]
   exact (finiteDescentIntersectionTensorEquiv D hD b hgen).toLinearEquiv.finrank_eq
 
-/-- The intersection acts on the upper finite field through its actual inclusion. -/
+/-- The intersection acts on the upper finite field through its inclusion. -/
 instance finiteDescentIntersectionAlgebra (D : IntermediateField C P) :
     Algebra (finiteDescentIntersection (N := N) D) D :=
   (finiteDescentIntersectionTo (N := N) D).toRingHom.toAlgebra
@@ -158,7 +158,7 @@ theorem surjective_finiteDescentUpper_tensor_lift (D : IntermediateField C P)
     obtain ⟨w', hw'⟩ := hw
     exact ⟨z' + w', by simp only [map_add, hz', hw']⟩
 
-/-- Equality of actual lower and total degrees forces the upper degree,
+/-- Equality of lower and total degrees forces the upper degree,
 as in the simultaneous descent argument. -/
 theorem finrank_finiteDescentUpper (D : IntermediateField C P)
     [Module.Finite C D] [Module.Finite M N] [Module.Finite N P]
@@ -178,12 +178,12 @@ theorem finrank_finiteDescentUpper (D : IntermediateField C P)
   exact Nat.eq_of_mul_eq_mul_left (Module.finrank_pos (R := M) (M := N))
     (hBD.trans hNP.symm)
 
-/-- Finiteness is retained for the upper extension over the actual intersection. -/
+/-- Finiteness is retained for the upper extension over the intersection. -/
 instance finite_finiteDescentUpper (D : IntermediateField C P) [Module.Finite C D] :
     Module.Finite (finiteDescentIntersection (N := N) D) D :=
   Module.Finite.of_restrictScalars_finite C (finiteDescentIntersection (N := N) D) D
 
-/-- The actual upper canonical tensor map is an isomorphism. -/
+/-- The upper canonical tensor map is an isomorphism. -/
 def finiteDescentUpperTensorEquiv (D : IntermediateField C P)
     [Module.Finite C D] [Module.Finite M N] [Module.Finite N P]
     (hD : D.LinearDisjoint M)
@@ -199,7 +199,7 @@ def finiteDescentUpperTensorEquiv (D : IntermediateField C P)
   rw [Module.finrank_baseChange]
   exact finrank_finiteDescentUpper D hD hsurj b hgen
 
-/-- The upper isomorphism uses the original multiplication map on original elements. -/
+/-- The upper isomorphism uses the multiplication map on elements. -/
 @[simp]
 theorem finiteDescentUpperTensorEquiv_tmul (D : IntermediateField C P)
     [Module.Finite C D] [Module.Finite M N] [Module.Finite N P]
@@ -211,8 +211,8 @@ theorem finiteDescentUpperTensorEquiv_tmul (D : IntermediateField C P)
       algebraMap N P n * (d : P) :=
   Algebra.smul_def n (d : P)
 
-/-- Viewed in the original ambient field, the constructed middle field is
-exactly the intersection of the original finite field and the middle field. -/
+/-- Viewed in the ambient field, the constructed middle field is
+exactly the intersection of the finite field and the middle field. -/
 theorem finiteDescentIntersection_map (D : IntermediateField C P) :
     (finiteDescentIntersection (N := N) D).map (IsScalarTower.toAlgHom C N P) =
       D ⊓ (IsScalarTower.toAlgHom C N P).fieldRange :=
@@ -230,9 +230,9 @@ variable (K : Type*) [Field K] {M N P : Type*} [Field M] [Field N] [Field P]
     [Module.Finite M N] [Module.Finite N P]
     [Algebra.IsSeparable M N] [Algebra.IsSeparable N P]
 
-/-- Simultaneous good finite fields are cofinal in an actual finite separable
+/-- Simultaneous good finite fields are cofinal in a finite separable
 tower. The three tensor isomorphisms are constructed canonical multiplication
-maps, and the middle field is the actual intersection. -/
+maps, and the middle field is the intersection. -/
 theorem exists_finiteIntermediateField_tensor_descent_tower (D₀ : FiniteIntermediateField K P) :
     ∃ (C : FiniteIntermediateField K M) (D : IntermediateField C.val P),
       Module.Finite K (D.restrictScalars K) ∧
@@ -291,7 +291,7 @@ theorem exists_finiteIntermediateField_tensor_descent_tower (D₀ : FiniteInterm
   · exact finiteDescentUpperTensorEquiv_tmul D hD hsurj b hgen
 
 /-- Two prescribed finite fields have a common upper field which is good
-simultaneously at both levels of the original separable tower. -/
+simultaneously at both levels of the separable tower. -/
 theorem exists_common_finiteIntermediateField_tensor_descent_tower
     (D₁ D₂ : FiniteIntermediateField K P) :
     ∃ (C : FiniteIntermediateField K M) (D : IntermediateField C.val P),

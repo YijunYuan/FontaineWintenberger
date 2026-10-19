@@ -13,7 +13,7 @@ public import Mathlib.Algebra.Group.Subgroup.Pointwise
 
 ## Finite-index restriction and normal products
 
-## Relative indices of actual normal products
+## Relative indices of normal products
 -/
 
 @[expose] public section
@@ -36,7 +36,7 @@ theorem finiteIndex_iff_comap_of_range (J : Subgroup G) [f.range.FiniteIndex] :
     exact isFiniteRelIndex_top_iff.mp
       (hrel.trans (isFiniteRelIndex_top_iff.mpr inferInstance))
 
-/-- One factor in the actual range suffices to pull back a normal product. -/
+/-- One factor in the range suffices to pull back a normal product. -/
 theorem comap_sup_eq_of_normal_right_of_le_range
     (A U : Subgroup G) [U.Normal] (hA : A ≤ f.range) :
     A.comap f ⊔ U.comap f = (A ⊔ U).comap f := by
@@ -69,7 +69,7 @@ theorem relIndex_sup_sup_normal :
     _ = ((A.map q).comap q).relIndex B := (relIndex_comap (A.map q) q B).symm
     _ = (A ⊔ U).relIndex B := by rw [hpre]
 
-/-- Intersecting a normal product with a containing subgroup gives its actual product there. -/
+/-- Intersecting a normal product with a containing subgroup gives its product there. -/
 theorem sup_inf_eq_sup_inf_of_le_of_normal (hAB : A ≤ B) :
     (A ⊔ U) ⊓ B = A ⊔ (U ⊓ B) := by
   apply le_antisymm
@@ -84,7 +84,7 @@ theorem sup_inf_eq_sup_inf_of_le_of_normal (hAB : A ≤ B) :
   · exact sup_le (le_inf le_sup_left hAB)
       (le_inf (inf_le_left.trans le_sup_right) inf_le_right)
 
-/-- The relative index of two normal products is the index of their actual intersection. -/
+/-- The relative index of two normal products is the index of their intersection. -/
 theorem relIndex_sup_sup_eq_inf (hAB : A ≤ B) :
     (A ⊔ U).relIndex (B ⊔ U) = (A ⊔ (U ⊓ B)).relIndex B := by
   rw [relIndex_sup_sup_normal, ← inf_relIndex_right,

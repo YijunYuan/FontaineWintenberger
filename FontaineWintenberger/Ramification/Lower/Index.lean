@@ -43,7 +43,7 @@ private theorem ramificationIdx_eq_exponent {e : ℕ}
   have : e + 1 ≤ e := by exact_mod_cast hval
   omega
 
-/-- A mapped uniformizer has a unit-times-uniformizer-power factorization of canonical index. -/
+/-- A mapped uniformizer has an unit-times-uniformizer-power factorization of canonical index. -/
 theorem exists_uniformizer_factor_ramificationIdx {ϖ : R} (hϖ : Irreducible ϖ) :
     ∃ π : S, Irreducible π ∧ ∃ u : Sˣ,
       algebraMap R S ϖ = u * π ^ (mS).ramificationIdx R := by

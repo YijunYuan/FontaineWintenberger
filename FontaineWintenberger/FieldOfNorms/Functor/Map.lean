@@ -17,33 +17,33 @@ public import Mathlib.LinearAlgebra.TensorProduct.Map
 /-!
 # Functoriality of the field of norms
 
-## Isomorphisms of the original norm fields
+## Isomorphisms of the norm fields
 
-Actual field isomorphisms reindex the original finite norm families.
-Their original norm-sum limits and stable valuations are preserved.
+Field isomorphisms reindex the finite norm families.
+Their norm-sum limits and stable valuations are preserved.
 
-## Finite inclusions on the original multiplicative fields of norms
+## Finite inclusions on the multiplicative fields of norms
 
-Canonical pullbacks and original good-field norm base change construct the
+Canonical pullbacks and good-field norm base change construct the
 covariant map on the same norm families. No APF or valued-field structure is
 needed for this multiplicative construction.
 
-## Functor laws for finite maps on the original norm families
+## Functor laws for finite maps on the norm families
 
-Identity and composition are tested on genuinely cofinal original good
-finite fields. All comparisons retain the actual original inclusions.
+Identity and composition are tested on cofinal good
+finite fields. All comparisons retain the inclusions.
 
-## Equivariance of the original finite norm-family maps
+## Equivariance of the finite norm-family maps
 
-Commuting isomorphisms transport the original pullback fields and canonical
-multiplication maps. Standard semilinear tensor equivalences preserve actual
+Commuting isomorphisms transport the pullback fields and canonical
+multiplication maps. Standard semilinear tensor equivalences preserve
 goodness, providing the coordinate comparisons in the covariant functor laws.
 
-## Naturality of the original finite norm-family maps
+## Naturality of the finite norm-family maps
 
-The actual finite-embedding maps agree with the original isomorphism maps.
-Commuting original isomorphisms and inclusions give their functor laws on
-the same original norm families.
+The finite-embedding maps agree with the isomorphism maps.
+Commuting isomorphisms and inclusions give their functor laws on
+the norm families.
 -/
 
 @[expose] public section
@@ -56,7 +56,7 @@ section Multiplicative
 
 variable {K L M N : Type*} [Field K] [Field L] [Field M] [Field N]
     [Algebra K L] [Algebra K M] [Algebra K N]
-/-- The transported actual coordinates satisfy the original finite norm equations. -/
+/-- The transported coordinates satisfy the finite norm equations. -/
 theorem FieldOfNorms.map_compatible (e : L ≃ₐ[K] M) (x : FieldOfNorms K L)
     (E F : FiniteIntermediateField K M) (hEF : E ≤ F) :
     FiniteIntermediateField.norm E F hEF
@@ -68,15 +68,15 @@ theorem FieldOfNorms.map_compatible (e : L ≃ₐ[K] M) (x : FieldOfNorms K L)
   rw [FiniteIntermediateField.equivMap_norm, AlgEquiv.apply_symm_apply,
     FieldOfNorms.coord_norm, AlgEquiv.apply_symm_apply]
 
-/-- The actual field isomorphism reindexes the original norm families,
-with their original zero and multiplication. -/
+/-- The field isomorphism reindexes the norm families,
+with their zero and multiplication. -/
 def FieldOfNorms.map (e : L ≃ₐ[K] M) (x : FieldOfNorms K L) : FieldOfNorms K M :=
   (existsUnique_fieldOfNorms_of_compatible K M
     (fun E => (FiniteIntermediateField.equivMap e.symm.toAlgHom E).symm
       (FieldOfNorms.coord K L (FiniteIntermediateField.map e.symm.toAlgHom E) x))
     (FieldOfNorms.map_compatible e x)).choose
 
-/-- Actual evaluation of the transported family in its original finite field. -/
+/-- Evaluation of the transported family in its finite field. -/
 theorem FieldOfNorms.coord_fieldOfNormsMap (e : L ≃ₐ[K] M) (x : FieldOfNorms K L)
     (E : FiniteIntermediateField K M) :
     FieldOfNorms.coord K M E (FieldOfNorms.map e x) =
@@ -84,7 +84,7 @@ theorem FieldOfNorms.coord_fieldOfNormsMap (e : L ≃ₐ[K] M) (x : FieldOfNorms
         (FieldOfNorms.coord K L (FiniteIntermediateField.map e.symm.toAlgHom E) x) :=
   (existsUnique_fieldOfNorms_of_compatible K M _ (FieldOfNorms.map_compatible e x)).choose_spec.1 E
 
-/-- The original ambient-field formula, including finite intermediate fields moved by e. -/
+/-- The ambient-field formula, including finite intermediate fields moved by e. -/
 @[simp]
 theorem coe_fieldOfNormsEval_fieldOfNormsMap (e : L ≃ₐ[K] M) (x : FieldOfNorms K L)
     (E : FiniteIntermediateField K M) :
@@ -141,7 +141,7 @@ theorem FieldOfNorms.map_refl (x : FieldOfNorms K L) :
   exact congrArg (fun D : FiniteIntermediateField K L => (FieldOfNorms.coord K L D x : L))
     (FiniteIntermediateField.map_id E)
 
-/-- The original coordinate transports respect composition. -/
+/-- The coordinate transports respect composition. -/
 theorem FieldOfNorms.map_trans (e : L ≃ₐ[K] M) (f : M ≃ₐ[K] N) (x : FieldOfNorms K L) :
     FieldOfNorms.map f (FieldOfNorms.map e x) = FieldOfNorms.map (e.trans f) x := by
   apply FieldOfNorms.ext K N
@@ -153,7 +153,7 @@ theorem FieldOfNorms.map_trans (e : L ≃ₐ[K] M) (f : M ≃ₐ[K] N) (x : Fiel
     (FiniteIntermediateField.map_map f.symm.toAlgHom e.symm.toAlgHom E)
 
 /-- The transported norm families form a multiplicative equivalence on
-the same original carriers, before any APF or additive assumptions. -/
+the carriers, before any APF or additive assumptions. -/
 def FieldOfNorms.mulEquiv (e : L ≃ₐ[K] M) : FieldOfNorms K L ≃* FieldOfNorms K M where
   toFun := FieldOfNorms.map e
   invFun := FieldOfNorms.map e.symm
@@ -164,8 +164,8 @@ def FieldOfNorms.mulEquiv (e : L ≃ₐ[K] M) : FieldOfNorms K L ≃* FieldOfNor
 @[simp]
 theorem FieldOfNorms.mulEquiv_apply (e : L ≃ₐ[K] M) (x : FieldOfNorms K L) :
     FieldOfNorms.mulEquiv e x = FieldOfNorms.map e x := rfl
-/-- Original norm-sum nets are taken to the original target nets by the
-actual finite field restrictions and actual finite-layer reindexing. -/
+/-- Norm-sum nets are taken to the target nets by the
+finite field restrictions and finite-layer reindexing. -/
 theorem normSumNet_fieldOfNormsMap (e : L ≃ₐ[K] M) (x y : FieldOfNorms K L)
     (E : FiniteIntermediateField K M) (F : Set.Ici E) :
     normSumNet K M E (FieldOfNorms.map e x) (FieldOfNorms.map e y) F =
@@ -199,7 +199,7 @@ local notation "p" => residueChar K
 variable {L M : Type*} [Field L] [Field M] [Algebra K L] [Algebra K M]
     [Algebra.IsSeparable K L] [Algebra.IsSeparable K M]
 
-/-- Original finite field isomorphisms preserve the actual normalized
+/-- Finite field isomorphisms preserve the normalized
 DVR valuations, on integral and nonintegral elements alike. -/
 theorem spectral_normalizedValuation_algEquiv [FiniteDimensional K L]
     [FiniteDimensional K M] (e : L ≃ₐ[K] M) (x : L) :
@@ -224,8 +224,8 @@ theorem spectral_normalizedValuation_algEquiv [FiniteDimensional K L]
   · have h := hi ⟨x⁻¹, hx⟩
     simpa only [map_inv₀, inv_inj] using h
 
-/-- The literal reindexing preserves the original stable normalized
-valuation, using genuine finite coordinates on both stable tails. -/
+/-- The reindexing preserves the stable normalized
+valuation, using finite coordinates on both stable tails. -/
 theorem FieldOfNorms.valuation_fieldOfNormsMap [IsAPF K L] [IsAPF K M]
     (e : L ≃ₐ[K] M) (x : FieldOfNorms K L) :
     FieldOfNorms.valuation K M (FieldOfNorms.map e x) = FieldOfNorms.valuation K L x := by
@@ -248,8 +248,8 @@ theorem FieldOfNorms.valuation_fieldOfNormsMap [IsAPF K L] [IsAPF K M]
   exact spectral_normalizedValuation_algEquiv K
     (FiniteIntermediateField.equivMap e.symm.toAlgHom F).symm (FieldOfNorms.coord K L P x)
 
-/-- Continuity of the actual finite restrictions and cofinal reindexing
-take the original source sum-net limits to the original target limits. -/
+/-- Continuity of the finite restrictions and cofinal reindexing
+take the sum-net limits to the target limits. -/
 theorem FieldOfNorms.map_add
     [IsAPF K L] [IsAPF K M] (e : L ≃ₐ[K] M) (x y : FieldOfNorms K L) :
     FieldOfNorms.map e (FieldOfNorms.add K L x y) =
@@ -272,8 +272,8 @@ theorem FieldOfNorms.map_add
   funext F
   exact normSumNet_fieldOfNormsMap e x y E F
 
-/-- An actual field isomorphism induces a ring isomorphism between the
-same original norm fields with their already constructed field structures. -/
+/-- A field isomorphism induces a ring isomorphism between the
+same norm fields with their already constructed field structures. -/
 def FieldOfNorms.ringEquiv [IsAPF K L] [IsAPF K M]
     [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)]
     (e : L ≃ₐ[K] M) :
@@ -288,8 +288,8 @@ theorem FieldOfNorms.ringEquiv_apply [IsAPF K L] [IsAPF K M]
     FieldOfNorms.ringEquiv K e x = FieldOfNorms.map e x := rfl
 
 variable (L) in
-/-- The actual original automorphism group acts by ring automorphisms
-of the original norm field, with literal coordinate transport. -/
+/-- The automorphism group acts by ring automorphisms
+of the norm field, with coordinate transport. -/
 def FieldOfNorms.aut [IsAPF K L] [Fact (¬ Module.Finite K L)] :
     (L ≃ₐ[K] L) →* (FieldOfNorms K L ≃+* FieldOfNorms K L) := by
   exact {
@@ -310,7 +310,7 @@ theorem FieldOfNorms.aut_apply [IsAPF K L] [Fact (¬ Module.Finite K L)]
     FieldOfNorms.aut K L e x = FieldOfNorms.map e x := rfl
 
 /-- The ring isomorphism is uniformly continuous for the existing
-valuation uniformities on the original two fields. -/
+valuation uniformities on the two fields. -/
 theorem uniformContinuous_fieldOfNormsRingEquiv [IsAPF K L] [IsAPF K M]
     [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)]
     (e : L ≃ₐ[K] M) :
@@ -320,7 +320,7 @@ theorem uniformContinuous_fieldOfNormsRingEquiv [IsAPF K L] [IsAPF K M]
   change FieldOfNorms.valuation K M (FieldOfNorms.map e x) = FieldOfNorms.valuation K L x
   exact FieldOfNorms.valuation_fieldOfNormsMap K e x
 
-/-- The literal norm-field isomorphism and its literal inverse preserve
+/-- The norm-field isomorphism and its inverse preserve
 the existing uniform spaces; no alternate topology is introduced. -/
 def FieldOfNorms.uniformEquiv [IsAPF K L] [IsAPF K M]
     [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)]
@@ -339,8 +339,8 @@ theorem FieldOfNorms.uniformEquiv_apply [IsAPF K L] [IsAPF K M]
     (e : L ≃ₐ[K] M) (x : FieldOfNorms K L) :
     FieldOfNorms.uniformEquiv K e x = FieldOfNorms.map e x := rfl
 
-/-- Every actual original automorphism acts by an automorphism preserving
-the original stable normalized valuation. -/
+/-- Every automorphism acts by an automorphism preserving
+the stable normalized valuation. -/
 theorem FieldOfNorms.aut_valuation [IsAPF K L] [Fact (¬ Module.Finite K L)]
     (e : L ≃ₐ[K] L) (x : FieldOfNorms K L) :
     FieldOfNorms.valuation K L (FieldOfNorms.aut K L e x) =
@@ -360,12 +360,12 @@ namespace FontaineWintenberger
 variable (K M N : Type*) [Field K] [Field M] [Field N]
     [Algebra K M] [Algebra K N] [Algebra M N] [IsScalarTower K M N]
 
-/-- The original source coordinate included in an actual target finite field. -/
+/-- The coordinate included in a target finite field. -/
 def FieldOfNorms.finiteCoordinate (D : FiniteIntermediateField K N) : FieldOfNorms K M →*₀ D.val :=
   (FiniteIntermediateField.pullbackTo K M D).toRingHom.toMonoidWithZeroHom.comp
     (FieldOfNorms.coord K M (FiniteIntermediateField.pullbackLayer K M D))
 
-/-- On every original good pair these literal coordinates satisfy the original
+/-- On every good pair these coordinates satisfy the
 finite target norm equation. -/
 theorem FieldOfNorms.finiteCoordinate_norm (D D' : FiniteIntermediateField K N) (h : D ≤ D')
     (hD : IsGoodFiniteLayer K M D) (hD' : IsGoodFiniteLayer K M D')
@@ -381,14 +381,14 @@ theorem FieldOfNorms.finiteCoordinate_norm (D D' : FiniteIntermediateField K N) 
 
 variable [Algebra.IsAlgebraic K M] [Module.Finite M N] [Algebra.IsSeparable M N]
 
-/-- The good original finite fields form a genuinely cofinal index set. -/
+/-- The good finite fields form a cofinal index set. -/
 theorem goodFiniteLayers_cofinal (E : FiniteIntermediateField K N) :
     ∃ D, IsGoodFiniteLayer K M D ∧ E ≤ D := by
   obtain ⟨D, hED, hD⟩ := exists_goodFiniteLayer_ge K M E
   exact ⟨D, hD, hED⟩
 
-/-- The actual covariant multiplicative map for a finite separable inclusion,
-constructed from original coordinates on actual good finite fields. -/
+/-- The covariant multiplicative map for a finite separable inclusion,
+constructed from coordinates on good finite fields. -/
 def FieldOfNorms.finiteMap : FieldOfNorms K M →*₀ FieldOfNorms K N where
   toFun x := FieldOfNorms.ofCofinal K N (IsGoodFiniteLayer K M)
     (goodFiniteLayers_cofinal K M N)
@@ -410,7 +410,7 @@ def FieldOfNorms.finiteMap : FieldOfNorms K M →*₀ FieldOfNorms K N where
     simp only [_root_.map_mul,
       FieldOfNorms.coord_fieldOfNormsOfCofinal K N (IsGoodFiniteLayer K M) (E := D) (hE := hD)]
 
-/-- Every good target coordinate retains precisely the included original
+/-- Every good target coordinate retains precisely the included
 pullback coordinate of the input family. -/
 @[simp]
 theorem FieldOfNorms.coord_finiteFieldOfNormsMap (D : FiniteIntermediateField K N)
@@ -422,15 +422,15 @@ theorem FieldOfNorms.coord_finiteFieldOfNormsMap (D : FiniteIntermediateField K 
     (fun E _ => FieldOfNorms.finiteCoordinate K M N E x)
     (fun E F hE hF h => FieldOfNorms.finiteCoordinate_norm K M N E F h hE hF x) D hD
 
-/-- Any original target coordinate is computed from any good upper finite
-field by its original norm. -/
+/-- Any target coordinate is computed from any good upper finite
+field by its norm. -/
 theorem FieldOfNorms.coord_finiteFieldOfNormsMap_any (E D : FiniteIntermediateField K N)
     (hD : IsGoodFiniteLayer K M D) (hED : E ≤ D) (x : FieldOfNorms K M) :
     FieldOfNorms.coord K N E (FieldOfNorms.finiteMap K M N x) =
       FiniteIntermediateField.norm E D hED (FieldOfNorms.finiteCoordinate K M N D x) := by
   rw [← FieldOfNorms.coord_norm K N E D hED, FieldOfNorms.coord_finiteFieldOfNormsMap K M N D hD]
 
-/-- The prescribed original good coordinates determine the covariant map. -/
+/-- The prescribed good coordinates determine the covariant map. -/
 theorem FieldOfNorms.finiteMap_unique (f : FieldOfNorms K M → FieldOfNorms K N)
     (hf : ∀ (D : FiniteIntermediateField K N), IsGoodFiniteLayer K M D →
       ∀ x, FieldOfNorms.coord K N D (f x) = FieldOfNorms.finiteCoordinate K M N D x) :
@@ -440,7 +440,7 @@ theorem FieldOfNorms.finiteMap_unique (f : FieldOfNorms K M → FieldOfNorms K N
   intro D hD
   rw [hf D hD x, FieldOfNorms.coord_finiteFieldOfNormsMap K M N D hD]
 
-/-- The original ambient-element formula at every actual good field. -/
+/-- The ambient-element formula at every good field. -/
 theorem coe_fieldOfNormsEval_finiteFieldOfNormsMap (D : FiniteIntermediateField K N)
     (hD : IsGoodFiniteLayer K M D) (x : FieldOfNorms K M) :
     (FieldOfNorms.coord K N D (FieldOfNorms.finiteMap K M N x) : N) =
@@ -449,7 +449,7 @@ theorem coe_fieldOfNormsEval_finiteFieldOfNormsMap (D : FiniteIntermediateField 
   rw [FieldOfNorms.coord_finiteFieldOfNormsMap K M N D hD]
   rfl
 
-/-- Zero detection is inherited from an actual good finite-field coordinate. -/
+/-- Zero detection is inherited from a good finite-field coordinate. -/
 @[simp]
 theorem FieldOfNorms.finiteMap_eq_zero_iff (x : FieldOfNorms K M) :
     FieldOfNorms.finiteMap K M N x = 0 ↔ x = 0 := by
@@ -474,15 +474,15 @@ section Identity
 
 variable (K M : Type*) [Field K] [Field M] [Algebra K M]
 
-/-- For the actual identity inclusion the canonical pullback is the same
-original finite index. -/
+/-- For the identity inclusion the canonical pullback is the same
+finite index. -/
 theorem FiniteIntermediateField.pullbackLayer_self (D : FiniteIntermediateField K M) :
     FiniteIntermediateField.pullbackLayer K M D = D := by
   apply Subtype.ext
   ext x
   rfl
 
-/-- The original pullback coordinate for the identity is the original
+/-- The pullback coordinate for the identity is the
 coordinate itself. -/
 @[simp]
 theorem FieldOfNorms.finiteCoordinate_self (D : FiniteIntermediateField K M) (x : FieldOfNorms K M)
@@ -495,7 +495,7 @@ theorem FieldOfNorms.finiteCoordinate_self (D : FiniteIntermediateField K M) (x 
 
 variable [Algebra.IsAlgebraic K M]
 
-/-- The covariant finite-inclusion map preserves the actual identity. -/
+/-- The covariant finite-inclusion map preserves the identity. -/
 @[simp]
 theorem FieldOfNorms.finiteMap_refl (x : FieldOfNorms K M) : FieldOfNorms.finiteMap K M M x = x :=
     by
@@ -516,8 +516,8 @@ variable (K M N P : Type*) [Field K] [Field M] [Field N] [Field P]
     [Module.Finite M N] [Module.Finite N P]
     [Algebra.IsSeparable M N] [Algebra.IsSeparable N P]
 
-/-- Composition on the same original norm families, tested on the proved
-cofinal simultaneous good stages of the actual finite separable tower. -/
+/-- Composition on the norm families, tested on the proved
+cofinal simultaneous good stages of the finite separable tower. -/
 theorem FieldOfNorms.finiteMap_trans (x : FieldOfNorms K M) :
     letI : Algebra.IsAlgebraic K N := Algebra.IsAlgebraic.trans K M N
     letI : Module.Finite M P := Module.Finite.trans N P
@@ -555,8 +555,8 @@ section Embeddings
 variable (K : Type*) {L M : Type*} [Field K] [Field L] [Field M]
     [Algebra K L] [Algebra K M]
 
-/-- The actual preimage index can equivalently be computed by pulling back
-to the actual image and then through the original range isomorphism. -/
+/-- The preimage index can equivalently be computed by pulling back
+to the image and then through the range isomorphism. -/
 theorem FiniteIntermediateField.pullback_fieldRange (τ : L →ₐ[K] M) (D : FiniteIntermediateField K
     M) :
     (FiniteIntermediateField.map τ.equivFieldRange.symm.toAlgHom
@@ -576,8 +576,8 @@ theorem FiniteIntermediateField.pullback_fieldRange (τ : L →ₐ[K] M) (D : Fi
 
 variable [Algebra.IsAlgebraic K L]
 
-/-- The actual multiplicative norm-family map for any finite separable
-embedding, factored through its original image with the proved isomorphism API. -/
+/-- The multiplicative norm-family map for any finite separable
+embedding, factored through its image with the proved isomorphism API. -/
 def FieldOfNorms.finiteEmbeddingMap (τ : L →ₐ[K] M)
     [Module.Finite τ.fieldRange M] [Algebra.IsSeparable τ.fieldRange M] :
     FieldOfNorms K L →*₀ FieldOfNorms K M := by
@@ -585,8 +585,8 @@ def FieldOfNorms.finiteEmbeddingMap (τ : L →ₐ[K] M)
   exact (FieldOfNorms.finiteMap K τ.fieldRange M).comp
     (FieldOfNorms.mulEquiv τ.equivFieldRange).toMonoidWithZeroHom
 
-/-- The actual range factorization gives precisely the prescribed good
-coordinates on the original norm families. -/
+/-- The range factorization gives precisely the prescribed good
+coordinates on the norm families. -/
 theorem FieldOfNorms.coord_finiteFieldOfNormsEmbeddingMap (τ : L →ₐ[K] M)
     [Module.Finite τ.fieldRange M] [Algebra.IsSeparable τ.fieldRange M]
     (D : FiniteIntermediateField K M) (hD : IsGoodFiniteLayer K τ.fieldRange D) (x : FieldOfNorms K
@@ -596,8 +596,8 @@ theorem FieldOfNorms.coord_finiteFieldOfNormsEmbeddingMap (τ : L →ₐ[K] M)
   let : Algebra.IsAlgebraic K τ.fieldRange := τ.equivFieldRange.isAlgebraic
   exact FieldOfNorms.coord_finiteFieldOfNormsMap K τ.fieldRange M D hD _
 
-/-- In the actual ambient field, the prescribed coordinate is the original
-embedding applied to the original preimage coordinate. -/
+/-- In the ambient field, the prescribed coordinate is the
+embedding applied to the preimage coordinate. -/
 theorem coe_fieldOfNormsEval_finiteFieldOfNormsEmbeddingMap (τ : L →ₐ[K] M)
     [Module.Finite τ.fieldRange M] [Algebra.IsSeparable τ.fieldRange M]
     (D : FiniteIntermediateField K M) (hD : IsGoodFiniteLayer K τ.fieldRange D) (x : FieldOfNorms K
@@ -627,8 +627,8 @@ variable (K : Type*) {M N M' N' : Type*}
     [Algebra K M] [Algebra K N] [Algebra K M'] [Algebra K N']
     [Algebra M N] [Algebra M' N'] [IsScalarTower K M N] [IsScalarTower K M' N']
 
-/-- Original pullback membership is preserved by a commuting square of
-actual ambient and coefficient-field isomorphisms. -/
+/-- Pullback membership is preserved by a commuting square of
+ambient and coefficient-field isomorphisms. -/
 theorem FiniteIntermediateField.pullback_mem_map_iff (e : M ≃ₐ[K] M') (f : N ≃ₐ[K] N')
     (h : ∀ m : M, f (algebraMap M N m) = algebraMap M' N' (e m))
     (D : FiniteIntermediateField K N) (x : M) :
@@ -638,7 +638,7 @@ theorem FiniteIntermediateField.pullback_mem_map_iff (e : M ≃ₐ[K] M') (f : N
   rw [← h x]
   exact D.val.map_mem_map f.toAlgHom
 
-/-- The actual image of the original pullback is the original target pullback. -/
+/-- The image of the pullback is the target pullback. -/
 theorem FiniteIntermediateField.pullback_map (e : M ≃ₐ[K] M') (f : N ≃ₐ[K] N')
     (h : ∀ m : M, f (algebraMap M N m) = algebraMap M' N' (e m))
     (D : FiniteIntermediateField K N) :
@@ -653,8 +653,8 @@ theorem FiniteIntermediateField.pullback_map (e : M ≃ₐ[K] M') (f : N ≃ₐ[
     apply (FiniteIntermediateField.pullback_mem_map_iff K e f h D (e.symm x)).mp
     simpa only [AlgEquiv.apply_symm_apply] using hx
 
-/-- The restriction of the actual coefficient-field isomorphism to the
-actual original pullbacks. -/
+/-- The restriction of the coefficient-field isomorphism to the
+pullbacks. -/
 def FiniteIntermediateField.pullbackEquiv (e : M ≃ₐ[K] M') (f : N ≃ₐ[K] N')
     (h : ∀ m : M, f (algebraMap M N m) = algebraMap M' N' (e m))
     (D : FiniteIntermediateField K N) :
@@ -669,7 +669,7 @@ theorem coe_finiteIntermediateFieldPullbackEquiv (e : M ≃ₐ[K] M') (f : N ≃
     (D : FiniteIntermediateField K N) (x : FiniteIntermediateField.pullback K M D) :
     (FiniteIntermediateField.pullbackEquiv K e f h D x : M') = e (x : M) := rfl
 
-/-- The actual semilinear tensor transport, retained as an additive equivalence
+/-- The semilinear tensor transport, retained as an additive equivalence
 so no scalar-structure choices are required by its consumers. -/
 def FiniteIntermediateField.tensorAddEquiv (e : M ≃ₐ[K] M') (f : N ≃ₐ[K] N')
     (h : ∀ m : M, f (algebraMap M N m) = algebraMap M' N' (e m))
@@ -717,8 +717,8 @@ def FiniteIntermediateField.tensorAddEquiv (e : M ≃ₐ[K] M') (f : N ≃ₐ[K]
         rw [Algebra.smul_def, Algebra.smul_def, map_mul, hc] }
   exact (TensorProduct.congr em ed).toAddEquiv
 
-/-- The tensor transport uses the actual two original field isomorphisms
-on every original pure tensor. -/
+/-- The tensor transport uses the two field isomorphisms
+on every pure tensor. -/
 @[simp]
 theorem FiniteIntermediateField.tensorAddEquiv_tmul (e : M ≃ₐ[K] M') (f : N ≃ₐ[K] N')
     (h : ∀ m : M, f (algebraMap M N m) = algebraMap M' N' (e m))
@@ -728,7 +728,7 @@ theorem FiniteIntermediateField.tensorAddEquiv_tmul (e : M ≃ₐ[K] M') (f : N 
       e m ⊗ₜ[FiniteIntermediateField.pullback K M' (FiniteIntermediateField.map f.toAlgHom D)]
         FiniteIntermediateField.equivMap f.toAlgHom D d := rfl
 
-/-- The actual original multiplication maps commute with the tensor transport. -/
+/-- The multiplication maps commute with the tensor transport. -/
 theorem FiniteIntermediateField.tensorMap_equiv (e : M ≃ₐ[K] M') (f : N ≃ₐ[K] N')
     (h : ∀ m : M, f (algebraMap M N m) = algebraMap M' N' (e m))
     (D : FiniteIntermediateField K N) (z : M ⊗[FiniteIntermediateField.pullback K M D] D.val) :
@@ -742,7 +742,7 @@ theorem FiniteIntermediateField.tensorMap_equiv (e : M ≃ₐ[K] M') (f : N ≃�
     simp only [Algebra.smul_def, map_mul, h]
   | add z w hz hw => simp only [map_add, hz, hw]
 
-/-- Bijectivity of the actual original multiplication map is invariant under
+/-- Bijectivity of the multiplication map is invariant under
 the commuting field isomorphisms. -/
 theorem isGoodFiniteLayer_map_iff (e : M ≃ₐ[K] M') (f : N ≃ₐ[K] N')
     (h : ∀ m : M, f (algebraMap M N m) = algebraMap M' N' (e m))
@@ -791,22 +791,22 @@ namespace FontaineWintenberger
 variable (K : Type*) {L M N : Type*} [Field K] [Field L] [Field M] [Field N]
     [Algebra K L] [Algebra K M] [Algebra K N]
 
-/-- The codomain is finite over the actual image of an isomorphism. -/
+/-- The codomain is finite over the image of an isomorphism. -/
 theorem moduleFinite_algEquiv_fieldRange (e : L ≃ₐ[K] M) :
     Module.Finite e.toAlgHom.fieldRange M := by
   apply Module.Finite.of_surjective (Algebra.linearMap e.toAlgHom.fieldRange M)
   intro m
   exact ⟨⟨m, e.symm m, e.apply_symm_apply m⟩, rfl⟩
 
-/-- The original image extension of an isomorphism is separable of degree one. -/
+/-- The image extension of an isomorphism is separable of degree one. -/
 theorem isSeparable_algEquiv_fieldRange (e : L ≃ₐ[K] M) :
     Algebra.IsSeparable e.toAlgHom.fieldRange M := by
   constructor
   intro m
   exact isSeparable_algebraMap (⟨m, e.symm m, e.apply_symm_apply m⟩ : e.toAlgHom.fieldRange)
 
-/-- Pulling back through the actual image factorization gives exactly the
-original inverse-isomorphism finite index. -/
+/-- Pulling back through the image factorization gives exactly the
+inverse-isomorphism finite index. -/
 theorem FiniteIntermediateField.pullback_algEquiv (e : L ≃ₐ[K] M) (D : FiniteIntermediateField K M)
     :
     FiniteIntermediateField.map e.toAlgHom.equivFieldRange.symm.toAlgHom
@@ -825,8 +825,8 @@ theorem FiniteIntermediateField.pullback_algEquiv (e : L ≃ₐ[K] M) (D : Finit
     rw [AlgEquiv.apply_symm_apply]
     exact hy
 
-/-- The same actual finite-embedding map on an isomorphism is the already
-constructed original isomorphism map, with no assumed comparison. -/
+/-- The same finite-embedding map on an isomorphism is the already
+constructed isomorphism map, with no assumed comparison. -/
 theorem FieldOfNorms.finiteEmbeddingMap_algEquiv [Algebra.IsAlgebraic K L]
     (e : L ≃ₐ[K] M) (x : FieldOfNorms K L) :
     letI := moduleFinite_algEquiv_fieldRange K e
@@ -848,7 +848,7 @@ section Naturality
 variable {M' N' : Type*} [Field M'] [Field N'] [Algebra K M'] [Algebra K N']
     [Algebra M N] [Algebra M' N'] [IsScalarTower K M N] [IsScalarTower K M' N']
 
-/-- The actual original pullback indices commute with the given isomorphisms. -/
+/-- The pullback indices commute with the given isomorphisms. -/
 theorem FiniteIntermediateField.pullbackLayer_map (e : M ≃ₐ[K] M') (f : N ≃ₐ[K] N')
     (h : ∀ m : M, f (algebraMap M N m) = algebraMap M' N' (e m))
     (D : FiniteIntermediateField K N) :
@@ -861,8 +861,8 @@ variable [Algebra.IsAlgebraic K M] [Algebra.IsAlgebraic K M']
     [Module.Finite M N] [Module.Finite M' N']
     [Algebra.IsSeparable M N] [Algebra.IsSeparable M' N']
 
-/-- Commuting actual isomorphisms and finite inclusions give the same original
-map of norm families, by the proved cofinal original good-coordinate formulas. -/
+/-- Commuting isomorphisms and finite inclusions give the same
+map of norm families, by the proved cofinal good-coordinate formulas. -/
 theorem FieldOfNorms.finiteMap_naturality (e : M ≃ₐ[K] M') (f : N ≃ₐ[K] N')
     (h : ∀ m : M, f (algebraMap M N m) = algebraMap M' N' (e m))
     (x : FieldOfNorms K M) :
@@ -890,16 +890,16 @@ section RangeScalars
 
 variable (M N) [Algebra M N] [IsScalarTower K M N]
 
-/-- Finiteness over the original coefficient field gives finiteness over
-its actual image, through the original source-to-image isomorphism. -/
+/-- Finiteness over the coefficient field gives finiteness over
+its image, through the source-to-image isomorphism. -/
 theorem moduleFinite_algebraMap_fieldRange [Module.Finite M N] :
     Module.Finite (IsScalarTower.toAlgHom K M N).fieldRange N := by
   exact Module.Finite.of_equiv_equiv
     (IsScalarTower.toAlgHom K M N).equivFieldRange.toRingEquiv (RingEquiv.refl N)
     (by ext m; rfl)
 
-/-- Separability over the original coefficient field gives separability over
-the same actual image, with the original inclusion square. -/
+/-- Separability over the coefficient field gives separability over
+the same image, with the inclusion square. -/
 theorem isSeparable_algebraMap_fieldRange [Algebra.IsSeparable M N] :
     Algebra.IsSeparable (IsScalarTower.toAlgHom K M N).fieldRange N := by
   exact Algebra.IsSeparable.of_equiv_equiv
@@ -908,7 +908,7 @@ theorem isSeparable_algebraMap_fieldRange [Algebra.IsSeparable M N] :
 
 end RangeScalars
 
-/-- The original image finiteness transports to the original embedding
+/-- The image finiteness transports to the embedding
 as scalar map; it is proved rather than supplied for the new scalar structure. -/
 theorem moduleFinite_fieldRange_scalars (τ : L →ₐ[K] M) [Module.Finite τ.fieldRange M] :
     letI := τ.toRingHom.toAlgebra
@@ -919,8 +919,8 @@ theorem moduleFinite_fieldRange_scalars (τ : L →ₐ[K] M) [Module.Finite τ.f
   change τ (τ.equivFieldRange.symm r) = (r : M)
   exact congrArg Subtype.val (τ.equivFieldRange.apply_symm_apply r)
 
-/-- The original image separability transports along the same actual
-coefficient isomorphism and the original identity on the ambient field. -/
+/-- The image separability transports along the same
+coefficient isomorphism and the identity on the ambient field. -/
 theorem isSeparable_fieldRange_scalars (τ : L →ₐ[K] M)
     [Algebra.IsSeparable τ.fieldRange M] :
     letI := τ.toRingHom.toAlgebra
@@ -931,8 +931,8 @@ theorem isSeparable_fieldRange_scalars (τ : L →ₐ[K] M)
   change τ (τ.equivFieldRange.symm r) = (r : M)
   exact congrArg Subtype.val (τ.equivFieldRange.apply_symm_apply r)
 
-/-- Algebraicity of the original source and finiteness over its actual image
-give algebraicity of the original target. -/
+/-- Algebraicity of the and finiteness over its image
+give algebraicity of the target. -/
 theorem isAlgebraic_of_finite_fieldRange [Algebra.IsAlgebraic K L]
     (τ : L →ₐ[K] M) [Module.Finite τ.fieldRange M] : Algebra.IsAlgebraic K M := by
   let : Algebra.IsAlgebraic K τ.fieldRange := τ.equivFieldRange.isAlgebraic
@@ -943,8 +943,8 @@ section InclusionComparison
 variable (M N) [Algebra M N] [IsScalarTower K M N]
     [Algebra.IsAlgebraic K M] [Module.Finite M N] [Algebra.IsSeparable M N]
 
-/-- The actual finite-embedding map of an original algebra inclusion agrees
-with the original inclusion map; actual range naturality proves the bridge. -/
+/-- The finite-embedding map of an algebra inclusion agrees
+with the inclusion map; range naturality proves the bridge. -/
 theorem FieldOfNorms.finiteEmbeddingMap_algebraMap (x : FieldOfNorms K M) :
     letI := moduleFinite_algebraMap_fieldRange K M N
     letI := isSeparable_algebraMap_fieldRange K M N
@@ -961,8 +961,8 @@ theorem FieldOfNorms.finiteEmbeddingMap_algebraMap (x : FieldOfNorms K M) :
 
 end InclusionComparison
 
-/-- Naturality for the same arbitrary original embedding maps, obtained
-through their proved original inclusion comparisons. -/
+/-- Naturality for the same arbitrary embedding maps, obtained
+through their proved inclusion comparisons. -/
 theorem FieldOfNorms.finiteEmbeddingMap_naturality [Algebra.IsAlgebraic K L]
     {L' M' : Type*} [Field L'] [Field M'] [Algebra K L'] [Algebra K M']
     (τ : L →ₐ[K] M) (τ' : L' →ₐ[K] M')
@@ -991,8 +991,8 @@ theorem FieldOfNorms.finiteEmbeddingMap_naturality [Algebra.IsAlgebraic K L]
     _ = FieldOfNorms.finiteEmbeddingMap K τ' (FieldOfNorms.map e x) :=
       (FieldOfNorms.finiteEmbeddingMap_algebraMap K L' M' (FieldOfNorms.map e x)).symm
 
-/-- The composite of the original finite embeddings is finite over its
-actual image; the scalar structures are the original embedding maps. -/
+/-- The composite of the finite embeddings is finite over its
+image; the scalar structures are the embedding maps. -/
 theorem moduleFinite_comp_fieldRange (τ : L →ₐ[K] M) (σ : M →ₐ[K] N)
     [Module.Finite τ.fieldRange M] [Module.Finite σ.fieldRange N] :
     Module.Finite (σ.comp τ).fieldRange N := by
@@ -1007,8 +1007,8 @@ theorem moduleFinite_comp_fieldRange (τ : L →ₐ[K] M) (σ : M →ₐ[K] N)
   let : Module.Finite L N := Module.Finite.trans M N
   exact moduleFinite_algebraMap_fieldRange K L N
 
-/-- Separability of the actual image extensions is preserved by the same
-original composite embedding, without a new separability assumption. -/
+/-- Separability of the image extensions is preserved by the same
+composite embedding, without a new separability assumption. -/
 theorem isSeparable_comp_fieldRange (τ : L →ₐ[K] M) (σ : M →ₐ[K] N)
     [Algebra.IsSeparable τ.fieldRange M] [Algebra.IsSeparable σ.fieldRange N] :
     Algebra.IsSeparable (σ.comp τ).fieldRange N := by
@@ -1023,7 +1023,7 @@ theorem isSeparable_comp_fieldRange (τ : L →ₐ[K] M) (σ : M →ₐ[K] N)
   let : Algebra.IsSeparable L N := Algebra.IsSeparable.trans L M N
   exact isSeparable_algebraMap_fieldRange K L N
 
-/-- Equal original embeddings induce equal original norm-family maps,
+/-- Equal embeddings induce equal norm-family maps,
 including their proved finite-image instance transports. -/
 theorem FieldOfNorms.finiteEmbeddingMap_congr [Algebra.IsAlgebraic K L]
     {τ σ : L →ₐ[K] M}
@@ -1034,7 +1034,7 @@ theorem FieldOfNorms.finiteEmbeddingMap_congr [Algebra.IsAlgebraic K L]
   subst σ
   rfl
 
-/-- The same original arbitrary-embedding map preserves the actual identity. -/
+/-- The arbitrary-embedding map preserves the identity. -/
 theorem FieldOfNorms.finiteEmbeddingMap_refl [Algebra.IsAlgebraic K L]
     (x : FieldOfNorms K L) :
     letI : Module.Finite (AlgHom.id K L).fieldRange L := by
@@ -1057,9 +1057,9 @@ theorem FieldOfNorms.finiteEmbeddingMap_refl [Algebra.IsAlgebraic K L]
     ((FieldOfNorms.finiteEmbeddingMap_algEquiv K (AlgEquiv.refl : L ≃ₐ[K] L) x).trans
       (FieldOfNorms.map_refl x))
 
-/-- Arbitrary finite separable embeddings compose on the same original norm
-families. The genuine scalar bridges reduce to the simultaneous-good-stage
-composition theorem for the actual original inclusions. -/
+/-- Arbitrary finite separable embeddings compose on the norm
+families. The scalar bridges reduce to the simultaneous-good-stage
+composition theorem for the inclusions. -/
 theorem FieldOfNorms.finiteEmbeddingMap_trans [Algebra.IsAlgebraic K L]
     (τ : L →ₐ[K] M) (σ : M →ₐ[K] N)
     [Module.Finite τ.fieldRange M] [Algebra.IsSeparable τ.fieldRange M]
@@ -1097,7 +1097,7 @@ theorem FieldOfNorms.finiteEmbeddingMap_trans [Algebra.IsAlgebraic K L]
     _ = FieldOfNorms.finiteEmbeddingMap K (σ.comp τ) x :=
       (FieldOfNorms.finiteEmbeddingMap_algebraMap K L N x).symm
 
-/-- The prescribed original good coordinates uniquely determine the same
+/-- The prescribed good coordinates uniquely determine the same
 arbitrary finite-embedding map, even among all functions of norm families. -/
 theorem FieldOfNorms.finiteEmbeddingMap_unique [Algebra.IsAlgebraic K L]
     (τ : L →ₐ[K] M)

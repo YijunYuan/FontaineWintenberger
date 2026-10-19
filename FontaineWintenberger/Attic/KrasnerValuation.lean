@@ -10,11 +10,11 @@ public import FontaineWintenberger.Mathlib.Analysis.Krasner
 public import FontaineWintenberger.LocalField.Spectral.CompatibleNorm
 
 /-!
-# Krasner descent for the original chosen extension valuation
+# Krasner descent for the chosen extension valuation
 
-Uniqueness of the extension valuation on every actual finite simple field
+Uniqueness of the extension valuation on every finite simple field
 identifies the spectral integer ring on a separable algebraic extension with
-the original chosen valuation ring. The compatible norm then transfers the
+the chosen valuation ring. The compatible norm then transfers the
 proved complete-base Krasner theorem without changing either field element.
 -/
 
@@ -33,9 +33,9 @@ variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField 
     {Γ : Type*} [LinearOrderedCommGroupWithZero Γ] (w : Valuation Ω Γ)
     [(NormedField.valuation (K := K)).HasExtension w]
 
-/-- The spectral ring equals the actual chosen extension valuation ring
+/-- The spectral ring equals the chosen extension valuation ring
 also in an infinite separable algebraic extension: each element is checked
-in its actual finite simple subextension. -/
+in its finite simple subextension. -/
 theorem spectralIntegerRing_eq_separable_extension_valuationSubring :
     spectralIntegerRing K Ω = w.valuationSubring := by
   let : NontriviallyNormedField Ω := spectralNorm.nontriviallyNormedField K Ω
@@ -61,7 +61,7 @@ theorem spectralIntegerRing_eq_separable_extension_valuationSubring :
 
 end AlgebraicExtension
 
-section OriginalValuation
+section Valuation
 
 variable (K : Type*) [Field K] (ΓK : Type*) [LinearOrderedCommGroupWithZero ΓK]
     [val : Valued K ΓK] [Valuation.IsRankOneDiscrete val.v] [CompleteSpace K]
@@ -73,8 +73,8 @@ local notation "Ω" => SeparableClosure K
 
 include ΓK val
 
-/-- Krasner descent in the actual separable closure with its actual chosen
-extension valuation. The original simple-field inclusion is the unique
+/-- Krasner descent in the separable closure with its chosen
+extension valuation. The simple-field inclusion is the unique
 embedding satisfying the same strict comparison with every other conjugate. -/
 theorem discreteValued_krasner_mem_adjoin_and_unique {a b : Ω}
     (hclose : ∀ c : Ω, IsConjRoot K a c → a ≠ c → w (a - b) < w (a - c)) :
@@ -119,7 +119,7 @@ theorem discreteValued_krasner_mem_adjoin_and_unique {a b : Ω}
       _ ≤ _ := w.map_sub _ _
   exact (not_lt_of_ge hbound) (max_lt ha hf')
 
-/-- Literal original additive-valuation Krasner statement. Comparing with
+/-- Additive-valuation Krasner statement. Comparing with
 every other conjugate expresses the strict maximum bound, including the
 empty-conjugate case, without introducing a separation certificate. -/
 theorem discreteValued_krasner_mem_adjoin_and_unique_additive {a b : Ω}
@@ -132,6 +132,6 @@ theorem discreteValued_krasner_mem_adjoin_and_unique_additive {a b : Ω}
             f = (K⟮a⟯).val :=
   discreteValued_krasner_mem_adjoin_and_unique K ΓK w hclose
 
-end OriginalValuation
+end Valuation
 
 end FontaineWintenberger

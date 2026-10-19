@@ -12,10 +12,10 @@ public import FontaineWintenberger.LocalField.Hensel.RootExtraction
 public import Mathlib.RingTheory.Polynomial.ScaleRoots
 
 /-!
-# The original relative field of norms is a separable closure
+# The relative field of norms is a separable closure
 
-Actual finite-coordinate approximations and discriminant root extraction
-supply roots in the same canonical directed union of original norm fields.
+Finite-coordinate approximations and discriminant root extraction
+supply roots in the same canonical directed union of norm fields.
 -/
 
 @[expose] public section
@@ -38,8 +38,8 @@ local notation "p" => residueChar K
 variable [IsAPF K L] [IsAPF K M]
     [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)]
 
-/-- Positive actual finite-map scaling makes the original target valuation
-an extension of the original source valuation, on their same field map. -/
+/-- Positive finite-map scaling makes the target valuation
+an extension of the valuation, on their same field map. -/
 theorem FieldOfNorms.finiteFieldValuation_hasExtension :
     letI : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
     letI := (FieldOfNorms.finiteRingHom K L M).toAlgebra
@@ -72,10 +72,10 @@ variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 local notation "Oₓ" => Valuation.valuationSubring
   (FieldOfNorms.fieldValuation K L)
 
-/-- A monic integral separable polynomial has an exact root in an actual
-finite original norm field in the prescribed common separable closure.
+/-- A monic integral separable polynomial has an exact root in an
+finite norm field in the prescribed common separable closure.
 All approximation and valuation-extension hypotheses of Newton--Krasner
-extraction are produced on the actual original fields. -/
+extraction are produced on the fields. -/
 theorem exists_finite_fieldOfNorms_exact_root :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
     ∀ f : Oₓ[X], f.Monic → (f.map (algebraMap Oₓ (FieldOfNorms K L))).Separable →
@@ -142,7 +142,7 @@ section PolynomialScaling
 variable {F : Type*} [Field F]
 
 /-- Scaling by a nonzero element preserves separability, by the injective
-scaling of the actual root multiset in the separable closure. -/
+scaling of the root multiset in the separable closure. -/
 theorem separable_scaleRoots_of_monic (f : F[X]) (hf : f.Monic) (hsep : f.Separable)
     (s : F) (hs : s ≠ 0) : (f.scaleRoots s).Separable := by
   let S := SeparableClosure F
@@ -157,7 +157,7 @@ theorem separable_scaleRoots_of_monic (f : F[X]) (hf : f.Monic) (hsep : f.Separa
   exact (Polynomial.nodup_roots (p := f.map i) hsep.map).map (mul_right_injective₀ hs')
 
 /-- A positive power of the supplied normalized uniformizer scales every
-coefficient of a monic polynomial into the same actual valuation ring. -/
+coefficient of a monic polynomial into the same valuation ring. -/
 theorem exists_integral_scaleRoots_of_uniformizer
     (v : Valuation F (WithZero (Multiplicative ℤ))) (π : F)
     (hπ : v π = WithZero.exp (-1 : ℤ)) (f : F[X]) (hf : f.Monic) :
@@ -200,8 +200,8 @@ theorem exists_integral_scaleRoots_of_uniformizer
     simp only [hf.coeff_natDegree, tsub_self, pow_zero, mul_one, map_one, le_refl]
   · simp only [coeff_eq_zero_of_natDegree_lt hi, zero_mul, map_zero, zero_le]
 
-/-- A genuine root of the scaled polynomial gives a genuine root of the
-original polynomial after division by the same nonzero scalar. -/
+/-- A root of the scaled polynomial gives a root of the
+polynomial after division by the same nonzero scalar. -/
 theorem aeval_div_eq_zero_of_scaleRoots {E : Type*} [Field E] [Algebra F E]
     (f : F[X]) {s : F} (hs : s ≠ 0) (a : E)
     (ha : aeval a (f.scaleRoots s) = 0) :
@@ -229,9 +229,9 @@ variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 local notation "Oₓ" => Valuation.valuationSubring
   (FieldOfNorms.fieldValuation K L)
 
-/-- Positive actual uniformizer scaling reduces every monic separable
-polynomial to the proved integral case, then divides its genuine root by
-the same nonzero scalar in the same original finite norm field. -/
+/-- Positive uniformizer scaling reduces every monic separable
+polynomial to the proved integral case, then divides its root by
+the same nonzero scalar in the finite norm field. -/
 theorem exists_finite_fieldOfNorms_root_of_monic :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
     ∀ f : (FieldOfNorms K L)[X], f.Monic → f.Separable → 0 < f.natDegree →
@@ -281,15 +281,15 @@ variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 local notation "U" => RelFieldOfNorms K L Ω
 
 /-- Every nonconstant monic separable polynomial over the same canonical
-relative field of norms has an actual root there. Its actual finite coefficients
-are descended, the produced finite original root stage is retained, and
-original finite-map composition gives the literal union inclusion square. -/
-theorem RelFieldOfNorms._exists_root_of_monic :
+relative field of norms has a root there. Its finite coefficients
+are descended, the produced finite root stage is retained, and
+finite-map composition gives the union inclusion square. -/
+theorem RelFieldOfNorms.exists_root_of_monic :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
     ∀ F : U[X], F.Monic → F.Separable → 0 < F.natDegree → ∃ a : U, F.eval a = 0 := by
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
   intro F hF hsep hdegree
-  obtain ⟨N, f, hfmap⟩ := RelFieldOfNorms._exists_polynomial K L Ω F
+  obtain ⟨N, f, hfmap⟩ := RelFieldOfNorms.exists_polynomial K L Ω F
   let : IsScalarTower K N.val Ω := IsScalarTower.to₁₃₄ K L N.val Ω
   let i := RelFieldOfNorms.of K L Ω N
   have hf : f.Monic := Polynomial.monic_of_injective i.injective (by rwa [hfmap])
@@ -308,10 +308,10 @@ theorem RelFieldOfNorms._exists_root_of_monic :
     intro x hx
     exact Q.val.algebraMap_mem ⟨x, hx⟩
   let : Algebra.IsSeparable K Q.val := Algebra.IsSeparable.trans K N.val Q.val
-  let originalAlgebras := ((inferInstance : Algebra K Q.val), (inferInstance : Algebra N.val Q.val))
-  have originalTower : IsScalarTower K N.val Q.val := inferInstance
-  have originalFinite : Module.Finite N.val Q.val := inferInstance
-  have originalSeparable : Algebra.IsSeparable N.val Q.val := inferInstance
+  let algebras := ((inferInstance : Algebra K Q.val), (inferInstance : Algebra N.val Q.val))
+  have tower : IsScalarTower K N.val Q.val := inferInstance
+  have finite : Module.Finite N.val Q.val := inferInstance
+  have separable : Algebra.IsSeparable N.val Q.val := inferInstance
   let φ := FieldOfNorms.finiteRingHom K N.val Q.val
   let := φ.toAlgebra
   obtain ⟨a, ha⟩ := ha
@@ -332,10 +332,10 @@ theorem RelFieldOfNorms._exists_root_of_monic :
   have hcomm : j.comp φ = i := by
     apply RingHom.ext
     intro x
-    have hn := @FieldOfNorms.finiteMap_naturality K N.val Q.val _ _ _ _ originalAlgebras.1
-      N.val R.val _ _ _ _ originalAlgebras.2 (inferInstance : Algebra N.val R.val)
-      originalTower (inferInstance : IsScalarTower K N.val R.val)
-      _ _ originalFinite _ originalSeparable _
+    have hn := @FieldOfNorms.finiteMap_naturality K N.val Q.val _ _ _ _ algebras.1
+      N.val R.val _ _ _ _ algebras.2 (inferInstance : Algebra N.val R.val)
+      tower (inferInstance : IsScalarTower K N.val R.val)
+      _ _ finite _ separable _
       (AlgEquiv.refl : N.val ≃ₐ[K] N.val) e (fun _ => rfl) x
     have hv : FieldOfNorms.map e (φ x) =
         RelFieldOfNorms.transition K L Ω N R hNR x := by
@@ -355,26 +355,26 @@ theorem RelFieldOfNorms._exists_root_of_monic :
   rw [← hfmap, Polynomial.eval_map]
   exact hroot
 
-/-- The actual relative field of norms is separably closed, by the proved original
+/-- The relative field of norms is separably closed, by the proved
 root construction and Mathlib's monic irreducible root criterion. -/
-theorem RelFieldOfNorms._isSepClosed :
+theorem RelFieldOfNorms.isSepClosed :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
     IsSepClosed U := by
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
   apply IsSepClosed.of_exists_root
   intro F hF hirr hsep
-  exact RelFieldOfNorms._exists_root_of_monic K L Ω
+  exact RelFieldOfNorms.exists_root_of_monic K L Ω
     F hF hsep hirr.natDegree_pos
 
-/-- The same relative field of norms, with its original base algebra, is a genuine
-separable closure of the original norm field. -/
-theorem RelFieldOfNorms._isSepClosure :
+/-- The same relative field of norms, with its base algebra, is a
+separable closure of the norm field. -/
+theorem RelFieldOfNorms.isSepClosure :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
     IsSepClosure (FieldOfNorms K L) U := by
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
-  let : IsSepClosed U := RelFieldOfNorms._isSepClosed K L Ω
+  let : IsSepClosed U := RelFieldOfNorms.isSepClosed K L Ω
   let : Algebra.IsSeparable (FieldOfNorms K L) U :=
-    RelFieldOfNorms._isSeparable K L Ω
+    RelFieldOfNorms.isSeparable K L Ω
   exact isSepClosure_iff.mpr ⟨inferInstance, inferInstance⟩
 
 end UnionRoots

@@ -19,11 +19,11 @@ public import Mathlib.RingTheory.Valuation.Extension
 The existing Sylvester determinant and adjugate give discriminant
 base change and integral Bezout identities for monic polynomials.
 
-## Discriminant bounds for two original roots
+## Discriminant bounds for two roots
 
 Integral monic division and multiplicativity of the existing resultant
 isolate the squared difference of two specified roots. The remaining factor
-is integral, so the original discriminant has at least twice their distance's
+is integral, so the discriminant has at least twice their distance's
 additive valuation.
 -/
 
@@ -52,7 +52,7 @@ theorem monic_discr_resultant (f : R[X]) (hf : f.Monic) :
 
 /-- Monic polynomial discriminants commute with arbitrary coefficient maps,
 including maps to rings with zero divisors. -/
-theorem monic_discr_map (f : R[X]) (hf : f.Monic) (φ : R →+* S) :
+theorem _root_.Polynomial.Monic.discr_map (f : R[X]) (hf : f.Monic) (φ : R →+* S) :
     (f.map φ).discr = φ f.discr := by
   nontriviality S
   have h := congrArg φ (monic_discr_resultant f hf)
@@ -62,7 +62,7 @@ theorem monic_discr_map (f : R[X]) (hf : f.Monic) (φ : R →+* S) :
   rw [hf.natDegree_map φ] at h'
   exact (isUnit_neg_one.pow _).mul_left_cancel (h'.trans h.symm)
 
-/-- The actual Sylvester adjugate produces integral coefficients for the
+/-- The Sylvester adjugate produces integral coefficients for the
 discriminant Bezout identity; no division by the derivative is used. -/
 theorem exists_mul_add_mul_eq_discr (f : R[X]) (hf : f.Monic)
     (hdegree : 0 < f.natDegree) :
@@ -99,8 +99,8 @@ section Valuation
 variable {C Γ : Type*} [Field C] [LinearOrderedCommGroupWithZero Γ]
 variable (v : Valuation C Γ)
 
-/-- Every root in the original valued field of a monic integral polynomial
-belongs to its actual valuation ring. -/
+/-- Every root in the valued field of a monic integral polynomial
+belongs to its valuation ring. -/
 theorem monic_root_valuation_le_one (f : v.valuationSubring[X]) (hf : f.Monic)
     (x : C) (hx : aeval x f = 0) : v x ≤ 1 :=
   (Valuation.valuationSubring.integers v).isIntegral_iff_v_le_one.mp ⟨f, hf, hx⟩
@@ -128,7 +128,7 @@ theorem valuation_discr_le_max (f : v.valuationSubring[X]) (hf : f.Monic)
     exact mul_le_of_le_one_left' (B.eval z).property
 
 /-- A sufficiently small residual forces the derivative to have valuation
-at least the discriminant's valuation, without a unit-derivative premise. -/
+at least the discriminant's valuation, without an unit-derivative premise. -/
 theorem valuation_discr_le_derivative (f : v.valuationSubring[X]) (hf : f.Monic)
     (hdegree : 0 < f.natDegree) (z : v.valuationSubring)
     (hz : v ((f.eval z : v.valuationSubring) : C) < v (f.discr : C)) :
@@ -149,7 +149,7 @@ open Polynomial
 
 variable {R : Type*} [CommRing R] [IsDomain R]
 
-/-- Monic division at two distinct original roots gives an integral monic
+/-- Monic division at two distinct roots gives an integral monic
 residual polynomial, without selecting any of the other roots. -/
 theorem exists_monic_two_root_factor (f : R[X]) (hf : f.Monic)
     (a b : R) (ha : f.IsRoot a) (hb : f.IsRoot b) (hab : a ≠ b) :
@@ -164,8 +164,8 @@ theorem exists_monic_two_root_factor (f : R[X]) (hf : f.Monic)
   exact ⟨g, (monic_X_sub_C b).of_mul_monic_left (hg ▸ hqmonic), by rw [hq, hg]⟩
 
 /-- The square of any distinct integral-root difference divides the existing
-discriminant in the original coefficient domain. -/
-theorem sq_sub_dvd_discr (f : R[X]) (hf : f.Monic)
+discriminant in the coefficient domain. -/
+theorem _root_.Polynomial.sq_sub_dvd_discr (f : R[X]) (hf : f.Monic)
     (a b : R) (ha : f.IsRoot a) (hb : f.IsRoot b) (hab : a ≠ b) :
     (a - b) ^ 2 ∣ f.discr := by
   obtain ⟨g, hg, heq⟩ := exists_monic_two_root_factor f hf a b ha hb hab
@@ -219,7 +219,7 @@ variable {C Γ : Type*} [Field C] [LinearOrderedCommGroupWithZero Γ]
 variable (v : Valuation C Γ)
 
 /-- Two specified roots of a monic integral polynomial satisfy the exact
-squared-difference discriminant bound on the original valued field. Root
+squared-difference discriminant bound on the valued field. Root
 integrality is proved, rather than assumed. The zero-discriminant case is
 included, so no separability hypothesis is needed for this stronger bound. -/
 theorem valuation_discr_le_sub_sq (f : v.valuationSubring[X]) (hf : f.Monic)
@@ -238,14 +238,14 @@ theorem valuation_discr_le_sub_sq (f : v.valuationSubring[X]) (hf : f.Monic)
     rw [← aeval_algebraMap_apply_eq_algebraMap_eval]
     exact hb
   have hab₀ : a₀ ≠ b₀ := fun h ↦ hab (congrArg Subtype.val h)
-  obtain ⟨c, hc⟩ := sq_sub_dvd_discr f hf a₀ b₀ ha₀ hb₀ hab₀
+  obtain ⟨c, hc⟩ := Polynomial.sq_sub_dvd_discr f hf a₀ b₀ ha₀ hb₀ hab₀
   have he : (f.discr : C) = (a - b) ^ 2 * (c : C) :=
     congrArg (fun x : v.valuationSubring ↦ (x : C)) hc
   rw [he, map_mul, map_pow]
   exact mul_le_of_le_one_right' c.property
 
-/-- The same bound in Mathlib's associated additive valuation is literally
-twice the root-difference value, with the original discriminant value. -/
+/-- The same bound in Mathlib's associated additive valuation is
+twice the root-difference value, with the discriminant value. -/
 theorem additiveValuation_two_nsmul_sub_le_discr
     (f : v.valuationSubring[X]) (hf : f.Monic)
     (a b : C) (ha : aeval a f = 0) (hb : aeval b f = 0) (hab : a ≠ b) :
@@ -256,32 +256,32 @@ theorem additiveValuation_two_nsmul_sub_le_discr
   simpa only [pow_two] using valuation_discr_le_sub_sq v f hf a b ha hb hab
 
 omit [IsDomain R] in
-/-- Coefficient maps to the original valuation ring preserve the discriminant
+/-- Coefficient maps to the valuation ring preserve the discriminant
 and the pair-root bound. This applies directly to a polynomial from the base
-field evaluated in any actual valued splitting field. -/
+field evaluated in any valued splitting field. -/
 theorem valuation_mapped_discr_le_sub_sq
     (f : R[X]) (hf : f.Monic) (φ : R →+* v.valuationSubring)
     (a b : C) (ha : aeval a (f.map φ) = 0) (hb : aeval b (f.map φ) = 0)
     (hab : a ≠ b) :
     v (φ f.discr : C) ≤ v (a - b) ^ 2 := by
-  rw [← monic_discr_map f hf φ]
+  rw [← Polynomial.Monic.discr_map f hf φ]
   exact valuation_discr_le_sub_sq v (f.map φ) (hf.map φ) a b ha hb hab
 
-/-- The discriminant's additive value is nonnegative in the original
+/-- The discriminant's additive value is nonnegative in the
 valuation ring, with no residue-field cardinality assumption. -/
 theorem additiveValuation_discr_nonneg (f : v.valuationSubring[X]) :
     0 ≤ (Valuation.toAddValuation v) (f.discr : C) := by
   change v (f.discr : C) ≤ 1
   exact f.discr.property
 
-/-- The separable monic polynomial's discriminant has finite original
-additive value, as a consequence of its actual nonvanishing in the field. -/
+/-- The separable monic polynomial's discriminant has finite
+additive value, as a consequence of its nonvanishing in the field. -/
 theorem additiveValuation_discr_ne_top (f : v.valuationSubring[X]) (hf : f.Monic)
     (hsep : (f.map (algebraMap v.valuationSubring C)).Separable) :
     (Valuation.toAddValuation v) (f.discr : C) ≠ ⊤ := by
   apply (AddValuation.ne_top_iff _).mpr
   have hd := (monic_discr_ne_zero_iff _ (hf.map (algebraMap v.valuationSubring C))).mpr hsep
-  rw [monic_discr_map f hf (algebraMap v.valuationSubring C)] at hd
+  rw [Polynomial.Monic.discr_map f hf (algebraMap v.valuationSubring C)] at hd
   exact hd
 
 section Extension
@@ -289,9 +289,9 @@ section Extension
 variable {K ΓK : Type*} [Field K] [Algebra K C] [LinearOrderedCommGroupWithZero ΓK]
 variable (vK : Valuation K ΓK) [vK.HasExtension v]
 
-/-- For an actual extension valuation, the bound uses the original base
-polynomial's original discriminant mapped into the original extension field.
-The canonical map of actual valuation rings supplies integral coefficients. -/
+/-- For an extension valuation, the bound uses the base
+polynomial's discriminant mapped into the extension field.
+The canonical map of valuation rings supplies integral coefficients. -/
 theorem valuation_discr_le_sub_sq_of_extension
     (f : vK.valuationSubring[X]) (hf : f.Monic)
     (a b : C) (ha : aeval a f = 0) (hb : aeval b f = 0) (hab : a ≠ b) :
@@ -305,8 +305,8 @@ theorem valuation_discr_le_sub_sq_of_extension
   have hb' : aeval b (f.map φ) = 0 := by rw [← aeval_eq_aeval_map hcomm]; exact hb
   exact valuation_mapped_discr_le_sub_sq v f hf φ a b ha' hb' hab
 
-/-- The original valued-extension bound in additive form: twice the value
-of any distinct root difference is at most the actual base discriminant value. -/
+/-- The valued-extension bound in additive form: twice the value
+of any distinct root difference is at most the base discriminant value. -/
 theorem additiveValuation_two_nsmul_sub_le_discr_of_extension
     (f : vK.valuationSubring[X]) (hf : f.Monic)
     (a b : C) (ha : aeval a f = 0) (hb : aeval b f = 0) (hab : a ≠ b) :

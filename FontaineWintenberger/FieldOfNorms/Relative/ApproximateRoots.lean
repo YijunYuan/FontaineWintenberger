@@ -12,11 +12,11 @@ public import FontaineWintenberger.FieldOfNorms.Functor.Separable
 public import FontaineWintenberger.FieldOfNorms.Relative.Defs
 
 /-!
-# Approximate roots on the original finite norm fields
+# Approximate roots on the finite norm fields
 
-An actual full upper stage and an actual finite root adjunction give a good
-original coordinate. The surjective high-break quotient map then lifts that
-root to an integral element of the same original norm field.
+A full upper stage and a finite root adjunction give a good
+coordinate. The surjective high-break quotient map then lifts that
+root to an integral element of the norm field.
 -/
 
 @[expose] public section
@@ -28,13 +28,13 @@ namespace FontaineWintenberger
 open Polynomial
 open scoped TensorProduct
 
-section OriginalRootLayer
+section RootLayer
 
 variable (K L : Type*) [Field K] [Field L] [Algebra K L]
     {M : Type*} [Field M] [Algebra K M] [Algebra L M] [IsScalarTower K L M]
 
-/-- The original finite root field over an original finite source field,
-retained as an index in the original target extension. -/
+/-- The finite root field over a finite field,
+retained as an index in the target extension. -/
 def rootFiniteLayer (E : FiniteIntermediateField K L) (x : M) (hx : IsIntegral E.val x) :
     FiniteIntermediateField K M := by
   let D := IntermediateField.adjoin E.val {x}
@@ -42,8 +42,8 @@ def rootFiniteLayer (E : FiniteIntermediateField K L) (x : M) (hx : IsIntegral E
   have hfinite : Module.Finite K D := Module.Finite.trans E.val D
   exact ⟨D.restrictScalars K, hfinite⟩
 
-/-- The canonical pullback of the original root field is exactly the
-original coefficient field, by the actual linear-disjoint intersection. -/
+/-- The canonical pullback of the root field is exactly the
+coefficient field, by the linear-disjoint intersection. -/
 theorem FiniteIntermediateField.pullback_rootFiniteLayer (E : FiniteIntermediateField K L)
     (x : M) (hx : IsIntegral E.val x)
     (hld : (IntermediateField.adjoin E.val {x}).LinearDisjoint L) :
@@ -54,8 +54,8 @@ theorem FiniteIntermediateField.pullback_rootFiniteLayer (E : FiniteIntermediate
   exact FiniteIntermediateField.pullback_eq_of_inf K L E.val D
     (rootFiniteLayer K L E x hx).property hi
 
-/-- Actual linear disjointness and actual primitive generation make
-the same original root field a good finite coordinate. -/
+/-- Linear disjointness and primitive generation make
+the root field a good finite coordinate. -/
 theorem isGoodFiniteLayer_rootFiniteLayer (E : FiniteIntermediateField K L)
     (x : M) (hx : IsIntegral E.val x)
     (hld : (IntermediateField.adjoin E.val {x}).LinearDisjoint L)
@@ -79,9 +79,9 @@ theorem isGoodFiniteLayer_rootFiniteLayer (E : FiniteIntermediateField K L)
   exact htop trivial
 
 omit [Algebra K M] [IsScalarTower K L M] in
-/-- The actual linear disjointness of an original simple field can be
+/-- The linear disjointness of a simple field can be
 checked after any injective ambient field embedding, by transporting its
-actual power basis and reflecting linear independence. -/
+power basis and reflecting linear independence. -/
 theorem linearDisjoint_adjoin_of_injective_algHom
     {Ω : Type*} [Field Ω] [Algebra K Ω] [Algebra L Ω] [IsScalarTower K L Ω]
     (E : FiniteIntermediateField K L) (x : M) (hx : IsIntegral E.val x) (i : M →ₐ[L] Ω)
@@ -102,15 +102,15 @@ theorem linearDisjoint_adjoin_of_injective_algHom
   apply IntermediateField.LinearDisjoint.of_basis_left b.basis
   exact LinearIndependent.of_comp i.toLinearMap hlinL
 
-end OriginalRootLayer
+end RootLayer
 
 section CommonRootCompositum
 
 variable (K L : Type*) [Field K] [Field L] [Algebra K L]
     {Ω : Type*} [Field Ω] [Algebra K Ω] [Algebra L Ω] [IsScalarTower K L Ω]
 
-/-- The literal original root compositum has the same field range as root
-adjunction to the literal original scalar image in a common ambient field. -/
+/-- The root compositum has the same field range as root
+adjunction to the scalar image in a common ambient field. -/
 theorem fieldRange_rootCompositum (x : Ω) :
     ((IntermediateField.adjoin L {x}).val.restrictScalars K).fieldRange =
       (IntermediateField.adjoin (IsScalarTower.toAlgHom K L Ω).fieldRange {x}).restrictScalars K :=
@@ -158,8 +158,8 @@ variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
 
 local notation "p" => residueChar K
 
-/-- The actual relative index of an original finite-field inclusion is at
-most its actual relative degree, by the local fundamental degree formula. -/
+/-- The relative index of a finite-field inclusion is at
+most its relative degree, by the local fundamental degree formula. -/
 theorem embeddingRamificationIdx_le_finrank_of_tower :
     embeddingRamificationIdx K (IsScalarTower.toAlgHom K E F) ≤ Module.finrank E F := by
   let : FiniteDimensional E F := Module.Finite.right K E F
@@ -195,8 +195,8 @@ local notation "p" => residueChar K
 
 local notation "OK" => Valuation.valuationSubring (NormedField.valuation (K := K))
 
-/-- A proved original full-upper product is full in any chosen common
-separable closure with the original scalar embedding. -/
+/-- A proved full-upper product is full in any chosen common
+separable closure with the scalar embedding. -/
 theorem fullUpper_commonClosure_of_embedding
     (i : L →ₐ[K] SeparableClosure K) {b : ℝ} (hb : -1 ≤ b)
     (h : apfSubgroup K i.fieldRange b = ⊤) :
@@ -217,8 +217,8 @@ theorem fullUpper_commonClosure_of_embedding
   rw [AlgHom.map_fieldRange, he] at hm
   exact hm.trans (MonoidHom.range_eq_top.mpr e.autCongr.surjective)
 
-/-- The common-closure root-disjointness theorem applies to the original
-abstract field: its literal field range has precisely its original scalar
+/-- The common-closure root-disjointness theorem applies to the
+abstract field: its field range has precisely its scalar
 image, so linear disjointness is reflected without replacing the field. -/
 theorem linearDisjoint_root_of_fullUpper_abstract
     (f : OK[X]) (hf : f.Monic) (hsep : (f.map (algebraMap OK K)).Separable)
@@ -234,8 +234,8 @@ theorem linearDisjoint_root_of_fullUpper_abstract
   have h := IntermediateField.linearDisjoint_iff'.mp hld
   simpa only [AlgHom.fieldRange_toSubalgebra] using h
 
-/-- The full source subgroup product for the original abstract root
-compositum, on the same original automorphisms of the common closure. -/
+/-- The full source subgroup product for the abstract root
+compositum, on the automorphisms of the common closure. -/
 theorem upperProduct_rootCompositum_fieldRange_eq
     (f : OK[X]) (hf : f.Monic) (hsep : (f.map (algebraMap OK K)).Separable)
     {b : ℝ} (hb : (f.natDegree.factorial : ℝ) *
@@ -268,9 +268,9 @@ attribute [local instance]
   FiniteIntermediateField.instIsPerfectResidueLocalField
   FiniteIntermediateField.instIsSeparable
 
-/-- An actual root at a full-upper stage produces an actual good finite
-coordinate in the original root compositum, with the exact original pullback
-and the genuine degree bound. No goodness or disjointness is assumed. -/
+/-- A root at a full-upper stage produces a good finite
+coordinate in the root compositum, with the exact pullback
+and the degree bound. No goodness or disjointness is assumed. -/
 theorem exists_good_rootFiniteLayer_of_fullUpper
     (E : FiniteIntermediateField K L)
     (f : (Valuation.valuationSubring (NormedField.valuation (K := E.val)))[X])
@@ -342,8 +342,8 @@ attribute [local instance]
 
 omit [Module.Finite L M] [IsAPF K L] [IsAPF K M]
   [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)] in
-/-- A fixing-subgroup inclusion in the actual pullback closure gives the
-full upper product over the same original target coordinate, at its actual
+/-- A fixing-subgroup inclusion in the pullback closure gives the
+full upper product over the target coordinate, at its
 finite-base inverse Herbrand parameter. -/
 theorem FiniteIntermediateField.hasFullUpper_of_pullback_fixing_le (D : FiniteIntermediateField K
     M) :
@@ -402,9 +402,9 @@ local notation "Oₘ" => Valuation.valuationSubring
   (FieldOfNorms.fieldValuation K M)
 
 omit [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)] in
-/-- The original finite norm-field map has a proved positive valuation
-exponent bounded by the original field degree. Both bounds are computed
-in an actual good finite field on the stable original tails. -/
+/-- The finite norm-field map has a proved positive valuation
+exponent bounded by the field degree. Both bounds are computed
+in a good finite field on the stable tails. -/
 theorem exists_finiteFieldOfNormsMap_valuation_scaling_le_finrank :
     letI : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
     ∃ e : ℕ, 0 < e ∧ e ≤ Module.finrank L M ∧ ∀ x : FieldOfNorms K L,
@@ -423,8 +423,8 @@ theorem exists_finiteFieldOfNormsMap_valuation_scaling_le_finrank :
   exact ⟨embeddingRamificationIdx K (FiniteIntermediateField.pullbackTo K L D), he, hb, hv⟩
 
 omit [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)] in
-/-- On actual full-upper good coordinates the valuation exponent is the
-index of that very same original finite-field inclusion. -/
+/-- On full-upper good coordinates the valuation exponent is the
+index of that very same finite-field inclusion. -/
 theorem FieldOfNorms.valuation_finiteFieldOfNormsMap_of_fullUpper
     (D : FiniteIntermediateField K M) (hD : IsGoodFiniteLayer K L D)
     {bL bM : ℝ} (hbL : 0 < bL) (hbM : 0 < bM)
@@ -445,7 +445,7 @@ theorem FieldOfNorms.valuation_finiteFieldOfNormsMap_of_fullUpper
   exact spectral_normalizedValuation_algHom K (FiniteIntermediateField.pullbackTo K L D)
     (FieldOfNorms.coord K L (FiniteIntermediateField.pullbackLayer K L D) x)
 
-/-- The original finite norm-field inclusion restricts to the original
+/-- The finite norm-field inclusion restricts to the
 valuation rings, by its proved positive integral valuation scaling. -/
 def FieldOfNorms.finiteIntegralRingHom :
     Oₗ →+* Oₘ := by
@@ -458,7 +458,7 @@ def FieldOfNorms.finiteIntegralRingHom :
   rw [he]
   exact pow_le_one₀ zero_le a.property
 
-/-- Restriction does not change the actual finite-inclusion field map. -/
+/-- Restriction does not change the finite-inclusion field map. -/
 @[simp]
 theorem coe_finiteFieldOfNormsIntegralRingHom :
     letI : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
@@ -469,8 +469,8 @@ theorem coe_finiteFieldOfNormsIntegralRingHom :
   intro a
   rfl
 
-/-- At an actual good target field, integral restriction has precisely the
-original pullback coordinate followed by the original integer inclusion. -/
+/-- At a good target field, integral restriction has precisely the
+pullback coordinate followed by the integer inclusion. -/
 theorem FieldOfNorms.integralCoordinateAt_finiteFieldOfNormsIntegralRingHom
     (D : FiniteIntermediateField K M) (hD : IsGoodFiniteLayer K L D) :
     ∀ a : Oₗ,
@@ -484,8 +484,8 @@ theorem FieldOfNorms.integralCoordinateAt_finiteFieldOfNormsIntegralRingHom
   apply Subtype.ext
   exact FieldOfNorms.coord_finiteFieldOfNormsMap K L M D hD a.val
 
-/-- Reduction of the mapped original polynomial is the reduction of its
-actual pullback-coordinate polynomial, with the original finite inclusion. -/
+/-- Reduction of the mapped polynomial is the reduction of its
+pullback-coordinate polynomial, with the finite inclusion. -/
 theorem map_fieldOfNormsCoordinatePolynomial_finiteFieldOfNormsIntegralRingHom
     (D : FiniteIntermediateField K M) (hD : IsGoodFiniteLayer K L D)
     {b : ℝ} (hb : 0 < b) (h : D.HasFullUpper K M b)
@@ -507,9 +507,9 @@ theorem map_fieldOfNormsCoordinatePolynomial_finiteFieldOfNormsIntegralRingHom
       K L M D hD]
   rfl
 
-/-- An actual root in an actual good finite coordinate lifts through the
-proved high-break surjection to an original integral norm family whose
-original polynomial residual has at least the prescribed normalized depth. -/
+/-- A root in a good finite coordinate lifts through the
+proved high-break surjection to an integral norm family whose
+polynomial residual has at least the prescribed normalized depth. -/
 theorem exists_fieldOfNorms_approximate_root_of_good_coordinate
     (D : FiniteIntermediateField K M) (hD : IsGoodFiniteLayer K L D)
     {b : ℝ} (hb : 0 < b) (h : D.HasFullUpper K M b)
@@ -553,9 +553,9 @@ attribute [local instance]
   FiniteIntermediateField.instIsPerfectResidueLocalField
   FiniteIntermediateField.instIsSeparable
 
-/-- The actual good root coordinate has the full original relative upper
-product at the original depth. The root-field fixing inclusion discharges
-the finite-base criterion on this same original index. -/
+/-- The good root coordinate has the full relative upper
+product at the depth. The root-field fixing inclusion discharges
+the finite-base criterion on this same index. -/
 theorem exists_good_fullUpper_rootFiniteLayer
     (E : FiniteIntermediateField K L)
     (f : (Valuation.valuationSubring (NormedField.valuation (K := E.val)))[X])
@@ -643,9 +643,9 @@ attribute [local instance]
 local notation "Oₓ" => Valuation.valuationSubring
   (FieldOfNorms.fieldValuation K L)
 
-/-- Actual deep coordinate polynomials simultaneously satisfy every requested
+/-- Deep coordinate polynomials simultaneously satisfy every requested
 quotient precision and the factorial discriminant cutoff. The displayed field
-identity bridges their original spectral integers and the same finite field's
+identity bridges their spectral integers and the same finite field's
 unit ball by the identity on elements. -/
 theorem exists_fieldOfNormsCoordinatePolynomial_root_stage (r : ℕ) :
     ∀ f : Oₓ[X], f.Monic → (f.map (algebraMap Oₓ (FieldOfNorms K L))).Separable →
@@ -698,7 +698,7 @@ theorem exists_fieldOfNormsCoordinatePolynomial_root_stage (r : ℕ) :
     exact (not_lt_of_ge hv) (hr₀.trans_eq hval.symm)
   have hδg : (IsDiscreteValuationRing.addVal
       (NormedField.valuation (K := E.val)).valuationSubring g.discr).toNat ≤ r₀ := by
-    rw [show g.discr = e fE.discr from monic_discr_map fE hfE e.toRingHom,
+    rw [show g.discr = e fE.discr from Polynomial.Monic.discr_map fE hfE e.toRingHom,
       addVal_ringEquiv]
     exact hδ
   have hnb : ((r : ℝ) / α) < (n : ℝ) + 1 := by
@@ -719,9 +719,9 @@ theorem exists_fieldOfNormsCoordinatePolynomial_root_stage (r : ℕ) :
 variable {Ω : Type*} [Field Ω] [Algebra K Ω] [IsSepClosure K Ω]
     [Algebra L Ω] [IsScalarTower K L Ω]
 
-/-- At every prescribed original normalized depth, an actual finite root
+/-- At every prescribed normalized depth, a finite root
 adjunction in the chosen common separable closure supplies an integral
-approximate root in its same original norm field. -/
+approximate root in its same norm field. -/
 theorem exists_fieldOfNorms_approximate_root_at_precision (r : ℕ) :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
     ∀ f : Oₓ[X], f.Monic → (f.map (algebraMap Oₓ (FieldOfNorms K L))).Separable →
@@ -812,8 +812,8 @@ variable [IsAPF K L] [IsAPF K M]
 local notation "Oₗ" => Valuation.valuationSubring (FieldOfNorms.fieldValuation K L)
 local notation "Oₘ" => Valuation.valuationSubring (FieldOfNorms.fieldValuation K M)
 
-/-- The restriction of the actual original finite field map is local:
-positive valuation scaling reflects units in the original valuation rings. -/
+/-- The restriction of the finite field map is local:
+positive valuation scaling reflects units in the valuation rings. -/
 theorem isLocalHom_finiteFieldOfNormsIntegralRingHom :
     IsLocalHom (FieldOfNorms.finiteIntegralRingHom K L M) := by
   let : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
@@ -831,8 +831,8 @@ theorem isLocalHom_finiteFieldOfNormsIntegralRingHom :
   apply (pow_le_pow_iff_left₀ zero_le zero_le he.ne').mp
   simp only [hu, one_pow, le_refl]
 
-/-- The canonical local-length ramification index of the actual original
-valuation-ring map is its original field-valuation scaling exponent. -/
+/-- The canonical local-length ramification index of the
+valuation-ring map is its field-valuation scaling exponent. -/
 theorem FieldOfNorms.finiteIntegralRingHom_ramificationIdx_scaling :
     letI := (FieldOfNorms.finiteIntegralRingHom K L M).toAlgebra
     letI : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
@@ -875,7 +875,7 @@ local notation "p" => residueChar K
 
 variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 
-/-- The canonical original finite-stage exponent is bounded by the actual
+/-- The canonical finite-stage exponent is bounded by the
 finite extension degree, using its proved unique uniformizer value. -/
 theorem RelFieldOfNorms.stageExponent_le_finrank (N : FiniteIntermediateField L Ω) :
     RelFieldOfNorms.stageExponent K L Ω N ≤ Module.finrank L N.val := by
@@ -884,8 +884,8 @@ theorem RelFieldOfNorms.stageExponent_le_finrank (N : FiniteIntermediateField L 
   have h := RelFieldOfNorms.stageExponent_unique K L Ω N e hv
   exact h ▸ he
 
-/-- The chosen positive original stage exponent is exactly the canonical
-ramification index of the actual original valuation-ring inclusion. -/
+/-- The chosen positive stage exponent is exactly the canonical
+ramification index of the valuation-ring inclusion. -/
 theorem RelFieldOfNorms.stageExponent_eq_ramificationIdx (N : FiniteIntermediateField L Ω) :
     letI := (FieldOfNorms.finiteIntegralRingHom K L N.val).toAlgebra
     RelFieldOfNorms.stageExponent K L Ω N =
@@ -913,9 +913,9 @@ variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 local notation "Oₓ" => Valuation.valuationSubring
   (FieldOfNorms.fieldValuation K L)
 
-/-- Original approximate roots have both their prescribed integer depth and
-the source-normalized depth divided by the actual degree bound. Every finite
-stage, integral element and positive ramification exponent is genuine. -/
+/-- Approximate roots have both their prescribed integer depth and
+the source-normalized depth divided by the degree bound. Every finite
+stage, integral element and positive ramification exponent is. -/
 theorem exists_fieldOfNorms_approximate_root_normalized (r : ℕ) :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
     ∀ f : Oₓ[X], f.Monic → (f.map (algebraMap Oₓ (FieldOfNorms K L))).Separable →
@@ -969,8 +969,8 @@ theorem exists_fieldOfNorms_approximate_root_normalized (r : ℕ) :
         (neg_nonpos.mpr (Nat.cast_nonneg r))
 
 /-- The finite-precision source assertion for every real bound: the same
-original residual has integer depth at least `degree * n`, strictly greater
-than the actual ramification index times the prescribed bound. Its valuation
+residual has integer depth at least `degree * n`, strictly greater
+than the ramification index times the prescribed bound. Its valuation
 extending the base normalized valuation has depth at least `n > B`. -/
 theorem exists_fieldOfNorms_approximate_root (B : ℝ) :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
@@ -1009,9 +1009,9 @@ theorem exists_fieldOfNorms_approximate_root (B : ℝ) :
     field_simp
   simpa only [hcancel] using hs
 
-/-- The actual finite root fields and original integral approximate roots
+/-- The finite root fields and integral approximate roots
 may be chosen simultaneously for any sequence of prescribed integer depths.
-Both the original depth and the corrected normalized `1 / degree` bound
+Both the depth and the corrected normalized `1 / degree` bound
 hold at every index, with no further existence assumptions. -/
 theorem exists_fieldOfNorms_approximate_root_sequence (r : ℕ → ℕ) :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
@@ -1037,7 +1037,7 @@ theorem exists_fieldOfNorms_approximate_root_sequence (r : ℕ → ℕ) :
 /-- The corrected original-coordinate precision divided by the degree tends
 to infinity at every prime, for every prescribed depth sequence tending to
 infinity. No residue-field cardinality is involved. -/
-theorem FieldOfNorms._approximation_precision_tendsto (k : ℕ) (hk : 0 < k)
+theorem FieldOfNorms.approximation_precision_tendsto (k : ℕ) (hk : 0 < k)
     (b : ℕ → ℝ) (hb : Filter.Tendsto b Filter.atTop Filter.atTop) :
     Filter.Tendsto (fun n => (⌈((p - 1 : ℕ) : ℝ) / p * b n⌉₊ : ℝ) / (k : ℝ))
       Filter.atTop Filter.atTop := by

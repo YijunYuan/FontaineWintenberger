@@ -16,11 +16,11 @@ public import Mathlib.Order.Hom.WithTopBot
 
 ## Extended finite-base ramification and strictness bounds
 
-## Actual first bounds after finite base change in any finite Galois overfield
+## First bounds after finite base change in any finite Galois overfield
 
-Normal products intersect the actual fixing subgroup by the modular identity.
+Normal products intersect the fixing subgroup by the modular identity.
 The own-ring upper-group base change then sends every old admissible parameter
-to an actual new one. The extended order isomorphism preserves their supremum.
+to a new one. The extended order isomorphism preserves their supremum.
 -/
 
 @[expose] public section
@@ -36,7 +36,7 @@ variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField 
 
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
-/-- The canonical actual Herbrand order isomorphism extended by its two infinite endpoints. -/
+/-- The canonical Herbrand order isomorphism extended by its two infinite endpoints. -/
 noncomputable def apfHerbrandERealOrderIso [IsAPF K L] : EReal ≃o EReal :=
   (apfHerbrandOrderIso K L).withTopCongr.withBotCongr
 
@@ -58,7 +58,7 @@ theorem apfHerbrandERealOrderIso_bot [IsAPF K L] :
 theorem apfHerbrandERealOrderIso_symm_coe [IsAPF K L] (u : ℝ) :
     (apfHerbrandERealOrderIso K L).symm (u : EReal) = (apfPhi K L u : EReal) := rfl
 
-/-- The actual lower bound extends honestly to both infinite endpoints. -/
+/-- The lower bound extends honestly to both infinite endpoints. -/
 theorem IsAPF.le_apfHerbrandERealOrderIso [IsAPF K L] (u : EReal) :
     u ≤ apfHerbrandERealOrderIso K L u := by
   induction u using EReal.rec with
@@ -95,14 +95,14 @@ variable (N : Type*) [Field N] [Algebra K N] [Algebra M N] [IsScalarTower K M N]
 local instance : Algebra.IsSeparable M N := Algebra.isSeparable_tower_top_of_isSeparable K M N
 
 omit [Algebra.IsSeparable K N] in
-/-- Every old admissible upper parameter gives a genuine new admissible parameter. -/
+/-- Every old admissible upper parameter gives a new admissible parameter. -/
 theorem apfSubgroup_finiteBase_eq_top (i : N →ₐ[M] SeparableClosure M)
     {u : ℝ} (hu : -1 ≤ u)
     (htop : apfSubgroup K (baseChangedSeparableEmbedding K M i).fieldRange u = ⊤) :
     apfSubgroup M i.fieldRange (apfPsi K M u) = ⊤ := by
   rw [← comap_apfSubgroup_finiteBase K M i hu, htop, Subgroup.comap_top]
 
-/-- The extended old ramification bound maps below the actual new-base bound. -/
+/-- The extended old ramification bound maps below the new-base bound. -/
 theorem apfHerbrandERealOrderIso_bound_le :
     apfHerbrandERealOrderIso K M (apfRamificationBound K N) ≤
       apfRamificationBound M N := by
@@ -118,7 +118,7 @@ theorem apfHerbrandERealOrderIso_bound_le :
     (IsAPF.apfPsi_mem_Ici K M hu)
     (apfSubgroup_finiteBase_eq_top K M N i hu htop)
 
-/-- Changing a finite base increases the actual extended first ramification bound. -/
+/-- Changing a finite base increases the extended first ramification bound. -/
 theorem apfRamificationBound_le_finiteBase :
     apfRamificationBound K N ≤ apfRamificationBound M N :=
   (IsAPF.le_apfHerbrandERealOrderIso K M _).trans
@@ -187,7 +187,7 @@ local instance finiteOverfieldBounds_perfectField (M : IntermediateField K L) :
 local notation "U" => upperRamificationGroup (R := spectralIntegerRing K L) (L ≃ₐ[K] L)
 
 /-- Every old finite-overfield product parameter is admissible over the
-actual intermediate base on its own spectral integer ring. -/
+intermediate base on its own spectral integer ring. -/
 theorem finiteOverfield_fixing_sup_upper_eq_top
     (M N : IntermediateField K L) (hMN : M ≤ N) {u : ℝ} (hu : -1 ≤ u)
     (htop : N.fixingSubgroup ⊔ U u = ⊤) :
@@ -209,7 +209,7 @@ theorem finiteOverfield_fixing_sup_upper_eq_top
     ← Subgroup.map_sup, hfull,
     Subgroup.map_top_of_surjective _ M.fixingSubgroupEquiv.surjective]
 
-/-- The extended actual old first bound maps below the actual new-base bound
+/-- The extended old first bound maps below the new-base bound
 in any finite Galois overfield, including both infinite endpoints. -/
 theorem apfHerbrandERealOrderIso_bound_le_of_finiteGalois
     (M N : IntermediateField K L) (hMN : M ≤ N) :
@@ -228,7 +228,7 @@ theorem apfHerbrandERealOrderIso_bound_le_of_finiteGalois
     IsAPF.apfPsi_mem_Ici K M hu,
     finiteOverfield_fixing_sup_upper_eq_top K L M N hMN hu htop, rfl⟩
 
-/-- Finite base change increases the same actual intrinsic first bound. -/
+/-- Finite base change increases the same intrinsic first bound. -/
 theorem apfRamificationBound_le_finiteBase_of_finiteGalois
     (M N : IntermediateField K L) (hMN : M ≤ N) :
     apfRamificationBound K N ≤
@@ -236,8 +236,8 @@ theorem apfRamificationBound_le_finiteBase_of_finiteGalois
   (IsAPF.le_apfHerbrandERealOrderIso K M _).trans
     (apfHerbrandERealOrderIso_bound_le_of_finiteGalois K L M N hMN)
 
-/-- The same old first bound is a common lower bound for every actual
-intermediate step, by genuine base change and an actual field inclusion. -/
+/-- The same old first bound is a common lower bound for every
+intermediate step, by base change and a field inclusion. -/
 theorem apfRamificationBound_le_step_of_finiteGalois
     (A B N : IntermediateField K L) (hAB : A ≤ B) (hBN : B ≤ N) :
     apfRamificationBound K N ≤

@@ -11,11 +11,11 @@ public import FontaineWintenberger.Mathlib.RingTheory.SequentialInverseLimit
 public import FontaineWintenberger.FieldOfNorms.Basic.Addition
 
 /-!
-# Reconstruction from the actual deep truncated norm tower
+# Reconstruction from the deep truncated norm tower
 
-Compatible classes are represented by actual integers of the original finite
-fields. Their norms converge at each fixed original finite base and recover
-one family on the original zero-adjoined multiplicative field of norms.
+Compatible classes are represented by integers of the finite
+fields. Their norms converge at each fixed finite base and recover
+one family on the zero-adjoined multiplicative field of norms.
 -/
 
 @[expose] public section
@@ -35,14 +35,14 @@ variable [IsAPF K L] [Fact (¬ Module.Finite K L)] (D : FiniteIntermediateField 
 local notation "𝔈" => deepFiniteTower K L D
 local notation "𝔅" => deepFiniteTowerQuotient K L D
 
-/-- The actual deep quotient tower specialized to the canonical compatible-family subring. -/
+/-- The deep quotient tower specialized to the canonical compatible-family subring. -/
 abbrev deepNormInverseLimit :=
   SequentialInverseLimit.subring (fun n => 𝔅 n)
     (fun n => deepFiniteTowerTransition K L D n (n + 1) (Nat.le_succ n))
 
 local notation "𝒜" => deepNormInverseLimit K L D
 
-/-- Finite composites in the canonical sequential inverse limit are the actual norms. -/
+/-- Finite composites in the canonical sequential inverse limit are the norms. -/
 theorem deepNormInverseLimit_transition (i j : ℕ) (hij : i ≤ j) :
     SequentialInverseLimit.transition (fun n => 𝔅 n)
         (fun n => deepFiniteTowerTransition K L D n (n + 1) (Nat.le_succ n))
@@ -53,13 +53,13 @@ theorem deepNormInverseLimit_transition (i j : ℕ) (hij : i ≤ j) :
       rw [SequentialInverseLimit.transition_succ _ _ i j hj, ih]
       exact deepFiniteTowerTransition_comp K L D i j (j + 1) hj (Nat.le_succ j)
 
-/-- Every pair of coordinates of the actual compatible subring satisfies the original norm. -/
+/-- Every pair of coordinates of the compatible subring satisfies the norm. -/
 theorem deepNormInverseLimit_compatible (a : 𝒜) (i j : ℕ) (hij : i ≤ j) :
     deepFiniteTowerTransition K L D i j hij (a.val j) = a.val i := by
   rw [← deepNormInverseLimit_transition K L D i j hij]
   exact SequentialInverseLimit.transition_projection _ _ i j hij a
 
-/-- An actual integral representative of each original quotient coordinate. -/
+/-- An integral representative of each quotient coordinate. -/
 def deepNormRepresentative (a : 𝒜) (n : ℕ) : spectralIntegerRing K (𝔈 n).val :=
   (Ideal.Quotient.mk_surjective (a.val n)).choose
 
@@ -68,7 +68,7 @@ theorem deepNormRepresentative_mk (a : 𝒜) (n : ℕ) :
     Ideal.Quotient.mk _ (deepNormRepresentative K L D a n) = a.val n :=
   (Ideal.Quotient.mk_surjective (a.val n)).choose_spec
 
-/-- Any actual integral representatives obey the required original norm congruences. -/
+/-- Any integral representatives obey the required norm congruences. -/
 theorem deepNormRepresentative_norm_sub_mem (a : 𝒜)
     (x : ∀ n, spectralIntegerRing K (𝔈 n).val)
     (hx : ∀ n, Ideal.Quotient.mk _ (x n) = a.val n)
@@ -80,7 +80,7 @@ theorem deepNormRepresentative_norm_sub_mem (a : 𝒜)
   rw [← hx m, ← hx n, deepFiniteTowerTransition_mk] at h
   exact Ideal.Quotient.eq.mp h
 
-/-- Norms of integral representatives into one fixed original finite tower field.
+/-- Norms of integral representatives into one fixed finite tower field.
 The initial constant segment only extends the same eventual norm sequence. -/
 def deepNormSequence (x : ∀ n, spectralIntegerRing K (𝔈 n).val) (j n : ℕ) : (𝔈 j).val :=
   if hjn : j ≤ n then
@@ -88,7 +88,7 @@ def deepNormSequence (x : ∀ n, spectralIntegerRing K (𝔈 n).val) (j n : ℕ)
       (deepFiniteTower_monotone K L D hjn) (x n)
   else x j
 
-/-- On its actual tail the fixed-base norm sequence is the original norm without reindexing. -/
+/-- On its tail the fixed-base norm sequence is the norm without reindexing. -/
 theorem deepNormSequence_of_le (x : ∀ n, spectralIntegerRing K (𝔈 n).val)
     (j n : ℕ) (hjn : j ≤ n) :
     deepNormSequence K L D x j n =
@@ -96,7 +96,7 @@ theorem deepNormSequence_of_le (x : ∀ n, spectralIntegerRing K (𝔈 n).val)
         (deepFiniteTower_monotone K L D hjn) (x n) := by
   rw [deepNormSequence, dite_eq_left hjn]
 
-/-- Every term of the actual fixed-base norm sequence remains integral. -/
+/-- Every term of the fixed-base norm sequence remains integral. -/
 theorem deepNormSequence_mem (x : ∀ n, spectralIntegerRing K (𝔈 n).val) (j n : ℕ) :
     deepNormSequence K L D x j n ∈ spectralIntegerRing K (𝔈 j).val := by
   by_cases hjn : j ≤ n
@@ -108,7 +108,7 @@ theorem deepNormSequence_mem (x : ∀ n, spectralIntegerRing K (𝔈 n).val) (j 
   · rw [deepNormSequence, dite_eq_right hjn]
     exact (x j).property
 
-/-- Actual representative norm sequences are Cauchy in each fixed original finite field. -/
+/-- Representative norm sequences are Cauchy in each fixed finite field. -/
 theorem deepNormSequence_cauchy (a : 𝒜)
     (x : ∀ n, spectralIntegerRing K (𝔈 n).val)
     (hx : ∀ n, Ideal.Quotient.mk _ (x n) = a.val n) (j : ℕ) :
@@ -168,7 +168,7 @@ theorem deepNormSequence_cauchy (a : 𝒜)
     linear_combination -heq
   · exact hstep m n hm hmn
 
-/-- Completeness of the same original finite field gives an actual norm-sequence limit. -/
+/-- Completeness of the finite field gives a norm-sequence limit. -/
 theorem exists_tendsto_deepNormSequence (a : 𝒜)
     (x : ∀ n, spectralIntegerRing K (𝔈 n).val)
     (hx : ∀ n, Ideal.Quotient.mk _ (x n) = a.val n) (j : ℕ) :
@@ -179,13 +179,13 @@ theorem exists_tendsto_deepNormSequence (a : 𝒜)
   exact cauchy_map_iff_exists_tendsto.mp
     (deepNormSequence_cauchy K L D a x hx j)
 
-/-- The actual fixed-base limit, chosen from the proved convergence of genuine representatives. -/
+/-- The fixed-base limit, chosen from the proved convergence of representatives. -/
 def deepNormCoordinate (a : 𝒜) (j : ℕ) : (𝔈 j).val :=
   (exists_tendsto_deepNormSequence K L D a
     (deepNormRepresentative K L D a)
     (deepNormRepresentative_mk K L D a) j).choose
 
-/-- The defining genuine representative norms converge to the selected original-field limit. -/
+/-- The defining representative norms converge to the selected original-field limit. -/
 theorem tendsto_deepNormCoordinate (a : 𝒜) (j : ℕ) :
     letI := spectralNorm.nontriviallyNormedField K (𝔈 j).val
     Tendsto (deepNormSequence K L D
@@ -195,7 +195,7 @@ theorem tendsto_deepNormCoordinate (a : 𝒜) (j : ℕ) :
     (deepNormRepresentative K L D a)
     (deepNormRepresentative_mk K L D a) j).choose_spec
 
-/-- Closedness of the original integer ring keeps the actual fixed-base limit integral. -/
+/-- Closedness of the integer ring keeps the fixed-base limit integral. -/
 theorem deepNormCoordinate_mem (a : 𝒜) (j : ℕ) :
     deepNormCoordinate K L D a j ∈ spectralIntegerRing K (𝔈 j).val := by
   let := spectralNorm.nontriviallyNormedField K (𝔈 j).val
@@ -206,7 +206,7 @@ theorem deepNormCoordinate_mem (a : 𝒜) (j : ℕ) :
       (deepNormRepresentative K L D a) j n⟩, by simp, rfl⟩)
   exact heq ▸ z.property
 
-/-- Actual original norm continuity and transitivity make the fixed-base limits compatible. -/
+/-- Norm continuity and transitivity make the fixed-base limits compatible. -/
 theorem deepNormCoordinate_norm (a : 𝒜) (i j : ℕ) (hij : i ≤ j) :
     FiniteIntermediateField.norm (𝔈 i) (𝔈 j) (deepFiniteTower_monotone K L D hij)
       (deepNormCoordinate K L D a j) =
@@ -228,7 +228,7 @@ theorem deepNormCoordinate_norm (a : 𝒜) (i j : ℕ) (hij : i ≤ j) :
       FiniteIntermediateField.norm_norm]
   exact tendsto_nhds_unique (hc.congr' heq) (tendsto_deepNormCoordinate K L D a i)
 
-/-- The fixed original ideal power is closed, so the actual limit retains its quotient class. -/
+/-- The fixed ideal power is closed, so the limit retains its quotient class. -/
 theorem deepNormCoordinate_sub_mem (a : 𝒜) (j : ℕ) :
     deepNormCoordinate K L D a j -
       (deepNormRepresentative K L D a j : (𝔈 j).val) ∈
@@ -248,7 +248,7 @@ theorem deepNormCoordinate_sub_mem (a : 𝒜) (j : ℕ) :
       = _
   rw [FiniteIntermediateField.coe_integerNorm, deepNormSequence_of_le K L D x j n hn]
 
-/-- A proved cofinal index for any specified original finite intermediate field. -/
+/-- A proved cofinal index for any specified finite intermediate field. -/
 def deepNormFamilyIndex (F : FiniteIntermediateField K L) : ℕ :=
   (deepFiniteTower_cofinal K L D F).choose
 
@@ -256,13 +256,13 @@ theorem le_deepNormFamilyIndex (F : FiniteIntermediateField K L) :
     F ≤ 𝔈 (deepNormFamilyIndex K L D F) :=
   (deepFiniteTower_cofinal K L D F).choose_spec
 
-/-- The actual original-field family obtained by norm descent of the proved fixed-base limits. -/
+/-- The original-field family obtained by norm descent of the proved fixed-base limits. -/
 def deepNormFamily (a : 𝒜) (F : FiniteIntermediateField K L) : F.val :=
   FiniteIntermediateField.norm F (𝔈 (deepNormFamilyIndex K L D F))
     (le_deepNormFamilyIndex K L D F)
       (deepNormCoordinate K L D a (deepNormFamilyIndex K L D F))
 
-/-- Descent to an original finite field is independent of its cofinal containing index. -/
+/-- Descent to a finite field is independent of its cofinal containing index. -/
 theorem deepNormFamily_eq_norm (a : 𝒜) (F : FiniteIntermediateField K L) (j : ℕ) (hFj : F ≤ 𝔈 j) :
     deepNormFamily K L D a F =
       FiniteIntermediateField.norm F (𝔈 j) hFj (deepNormCoordinate K L D a j) := by
@@ -288,7 +288,7 @@ theorem deepNormFamily_eq_norm (a : 𝒜) (F : FiniteIntermediateField K L) (j :
       congrArg (FiniteIntermediateField.norm F (𝔈 j) hFj)
         (deepNormCoordinate_norm K L D a j k hjk)
 
-/-- The descended family satisfies all original finite-field norm equations. -/
+/-- The descended family satisfies all finite-field norm equations. -/
 theorem deepNormFamily_norm (a : 𝒜) (F G : FiniteIntermediateField K L) (hFG : F ≤ G) :
     FiniteIntermediateField.norm F G hFG (deepNormFamily K L D a G) =
       deepNormFamily K L D a F := by
@@ -297,7 +297,7 @@ theorem deepNormFamily_norm (a : 𝒜) (F G : FiniteIntermediateField K L) (hFG 
     deepNormFamily_eq_norm K L D a F j (hFG.trans hGj),
     FiniteIntermediateField.norm_norm]
 
-/-- Every descended coordinate is integral in its original finite field. -/
+/-- Every descended coordinate is integral in its finite field. -/
 theorem deepNormFamily_mem (a : 𝒜) (F : FiniteIntermediateField K L) :
     deepNormFamily K L D a F ∈ spectralIntegerRing K F.val := by
   let n := deepNormFamilyIndex K L D F
@@ -308,7 +308,7 @@ theorem deepNormFamily_mem (a : 𝒜) (F : FiniteIntermediateField K L) :
   rw [FiniteIntermediateField.coe_integerNorm] at h
   exact h
 
-/-- The same original field of norms carrier contains a unique integral family
+/-- The field of norms carrier contains an unique integral family
 with the proved fixed-base representative limits. -/
 theorem existsUnique_fieldOfNorms_deepNormCoordinate (a : 𝒜) :
     ∃! γ : FieldOfNorms K L, FieldOfNorms.valuation K L γ ≤ 1 ∧
@@ -327,22 +327,22 @@ theorem existsUnique_fieldOfNorms_deepNormCoordinate (a : 𝒜) :
     rw [← FieldOfNorms.coord_norm K L F (𝔈 j) hFj δ, hδ.2 j,
       deepNormFamily_eq_norm K L D a F j hFj]
 
-/-- Reconstruction is the proved actual integral family on the original field of norms carrier. -/
+/-- Reconstruction is the proved integral family on the field of norms carrier. -/
 def deepNormReconstruction (a : 𝒜) : FieldOfNorms K L :=
   (existsUnique_fieldOfNorms_deepNormCoordinate K L D a).choose
 
-/-- The reconstructed original family is integral for the same stable valuation. -/
+/-- The reconstructed family is integral for the same stable valuation. -/
 theorem deepNormReconstruction_valuation_le_one (a : 𝒜) :
     FieldOfNorms.valuation K L (deepNormReconstruction K L D a) ≤ 1 :=
   (existsUnique_fieldOfNorms_deepNormCoordinate K L D a).choose_spec.1.1
 
-/-- Reconstruction has precisely the original fixed-base limits as its actual coordinates. -/
+/-- Reconstruction has precisely the fixed-base limits as its coordinates. -/
 theorem FieldOfNorms.coord_deepNormReconstruction (a : 𝒜) (j : ℕ) :
     FieldOfNorms.coord K L (𝔈 j) (deepNormReconstruction K L D a) =
       deepNormCoordinate K L D a j :=
   (existsUnique_fieldOfNorms_deepNormCoordinate K L D a).choose_spec.1.2 j
 
-/-- The actual reconstructed family retains every original quotient truncation. -/
+/-- The reconstructed family retains every quotient truncation. -/
 theorem deepNormReconstruction_sub_mem (a : 𝒜) (j : ℕ) :
     FieldOfNorms.coord K L (𝔈 j) (deepNormReconstruction K L D a) -
       (deepNormRepresentative K L D a j : (𝔈 j).val) ∈
@@ -352,8 +352,8 @@ theorem deepNormReconstruction_sub_mem (a : 𝒜) (j : ℕ) :
   rw [FieldOfNorms.coord_deepNormReconstruction]
   exact deepNormCoordinate_sub_mem K L D a j
 
-/-- Two choices of genuine representatives have norm sequences whose difference
-tends to zero in one fixed original finite field. -/
+/-- Two choices of representatives have norm sequences whose difference
+tends to zero in one fixed finite field. -/
 theorem deepNormSequence_sub_tendsto_zero (a : 𝒜)
     (x y : ∀ n, spectralIntegerRing K (𝔈 n).val)
     (hx : ∀ n, Ideal.Quotient.mk _ (x n) = a.val n)
@@ -398,7 +398,7 @@ theorem deepNormSequence_sub_tendsto_zero (a : 𝒜)
     deepNormSequence_of_le K L D x j n hjn,
     deepNormSequence_of_le K L D y j n hjn]
 
-/-- Every choice of actual representatives converges to the same original-field limit. -/
+/-- Every choice of representatives converges to the same original-field limit. -/
 theorem deepNormSequence_tendsto (a : 𝒜)
     (x : ∀ n, spectralIntegerRing K (𝔈 n).val)
     (hx : ∀ n, Ideal.Quotient.mk _ (x n) = a.val n) (j : ℕ) :
@@ -413,7 +413,7 @@ theorem deepNormSequence_tendsto (a : 𝒜)
     hd.add (tendsto_deepNormCoordinate K L D a j)
 
 /-- Reconstruction is independent of representatives in the strong sense that
-all their actual original norm sequences converge to its coordinates. -/
+all their norm sequences converge to its coordinates. -/
 theorem deepNormReconstruction_tendsto (a : 𝒜)
     (x : ∀ n, spectralIntegerRing K (𝔈 n).val)
     (hx : ∀ n, Ideal.Quotient.mk _ (x n) = a.val n) (j : ℕ) :
@@ -423,7 +423,7 @@ theorem deepNormReconstruction_tendsto (a : 𝒜)
   rw [FieldOfNorms.coord_deepNormReconstruction]
   exact deepNormSequence_tendsto K L D a x hx j
 
-/-- Every actual representative has the required congruence with the reconstructed coordinate. -/
+/-- Every representative has the required congruence with the reconstructed coordinate. -/
 theorem deepNormReconstruction_sub_mem_of_representative (a : 𝒜)
     (x : ∀ n, spectralIntegerRing K (𝔈 n).val)
     (hx : ∀ n, Ideal.Quotient.mk _ (x n) = a.val n) (j : ℕ) :
@@ -442,8 +442,8 @@ theorem deepNormReconstruction_sub_mem_of_representative (a : 𝒜)
       = _
   rw [FiniteIntermediateField.coe_integerNorm, deepNormSequence_of_le K L D x j n hn]
 
-/-- Every actual compatible quotient family reconstructs uniquely on the
-original field of norms carrier, with convergence for every representative choice. -/
+/-- Every compatible quotient family reconstructs uniquely on the
+field of norms carrier, with convergence for every representative choice. -/
 theorem existsUnique_fieldOfNorms_of_truncatedNorms (a : 𝒜) :
     ∃! γ : FieldOfNorms K L, FieldOfNorms.valuation K L γ ≤ 1 ∧
       ∀ (x : ∀ n, spectralIntegerRing K (𝔈 n).val),

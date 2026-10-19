@@ -13,7 +13,7 @@ public import Mathlib.RingTheory.DiscreteValuationRing.TFAE
 /-!
 # Valuation rings of finite separable extensions
 
-The spectral unit ball is the actual integral closure of the base unit ball.
+The spectral unit ball is the integral closure of the base unit ball.
 Integral-closure finiteness and the valuation-ring structure prove it is a DVR,
 without any finiteness hypothesis on the residue field.
 -/

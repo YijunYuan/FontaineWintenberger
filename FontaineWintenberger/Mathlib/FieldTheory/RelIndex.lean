@@ -8,10 +8,10 @@ module
 public import Mathlib.FieldTheory.Galois.Infinite
 
 /-!
-# Actual relative fixing indices
+# Relative fixing indices
 
-The fixing index of two actual intermediate fields in any algebraic Galois
-ambient extension equals their actual relative field degree. The natural-valued
+The fixing index of two intermediate fields in any algebraic Galois
+ambient extension equals their relative field degree. The natural-valued
 identity includes infinite degree and index, both represented by zero.
 -/
 
@@ -25,7 +25,7 @@ variable (K : Type*) [Field K] {Ω : Type*} [Field Ω] [Algebra K Ω] [IsGalois 
     (M N : IntermediateField K Ω)
     (hMN : M ≤ N)
 
-/-- The actual relative fixing index equals the field degree over the intermediate base. -/
+/-- The relative fixing index equals the field degree over the intermediate base. -/
 theorem fixingSubgroup_relIndex_eq_finrank :
     N.fixingSubgroup.relIndex M.fixingSubgroup =
       Module.finrank M (IntermediateField.extendScalars hMN) := by
@@ -41,7 +41,7 @@ theorem fixingSubgroup_relIndex_eq_finrank :
   exact (IntermediateField.finrank_eq_fixingSubgroup_index Ω
     (IntermediateField.extendScalars hMN)).symm
 
-/-- A finite extension of the intermediate field gives a genuinely nonzero fixing index. -/
+/-- A finite extension of the intermediate field gives a nonzero fixing index. -/
 theorem fixingSubgroup_relIndex_pos [FiniteDimensional M (IntermediateField.extendScalars hMN)] :
     0 < N.fixingSubgroup.relIndex M.fixingSubgroup := by
   rw [fixingSubgroup_relIndex_eq_finrank K M N hMN]

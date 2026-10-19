@@ -10,9 +10,9 @@ public import FontaineWintenberger.Ramification.Upper.Transport
 public import FontaineWintenberger.Ramification.Upper.CosetMax
 
 /-!
-# Lower ramification for actual intermediate-field automorphisms
+# Lower ramification for intermediate-field automorphisms
 
-The integer ring over a finite intermediate base is the same actual subring.
+The integer ring over a finite intermediate base is the same subring.
 The canonical fixing-subgroup equivalence therefore transports displacement
 orders and lower groups to the ordinary automorphism group over that base.
 -/
@@ -34,7 +34,7 @@ local instance : IsDiscreteValuationRing (spectralIntegerRing M E) := by
   rw [← finiteBase_spectralIntegerRing_eq K E M]
   infer_instance
 
-/-- The order over the intermediate base is the original actual displacement order. -/
+/-- The order over the intermediate base is the displacement order. -/
 theorem finiteBase_ramificationOrder (g : M.fixingSubgroup) :
     ramificationOrder (R := spectralIntegerRing M E) (E ≃ₐ[M] E)
         (M.fixingSubgroupEquiv g) =
@@ -43,7 +43,7 @@ theorem finiteBase_ramificationOrder (g : M.fixingSubgroup) :
     M.fixingSubgroupEquiv (finiteBase_spectralIntegerRingEquiv_smul K E M)]
   rfl
 
-/-- Real lower groups transport through the actual fixing-subgroup equivalence. -/
+/-- Real lower groups transport through the fixing-subgroup equivalence. -/
 theorem finiteBase_lowerReal_map_fixingSubgroupEquiv (t : ℝ) :
     ((lowerRamificationGroupReal (E ≃ₐ[K] E)
         (IsLocalRing.maximalIdeal (spectralIntegerRing K E)) t).subgroupOf
@@ -65,7 +65,7 @@ theorem finiteBase_lower_map_fixingSubgroupEquiv (n : ℤ) :
   simpa only [lowerRamificationGroupReal_intCast] using
     finiteBase_lowerReal_map_fixingSubgroupEquiv K E M (n : ℝ)
 
-/-- Inside the original automorphism group, the actual lower group is the intersection. -/
+/-- Inside the automorphism group, the lower group is the intersection. -/
 theorem finiteBase_lowerReal_map_restrictScalars (t : ℝ) :
     (lowerRamificationGroupReal (E ≃ₐ[M] E)
         (IsLocalRing.maximalIdeal (spectralIntegerRing M E)) t).map
@@ -79,7 +79,7 @@ theorem finiteBase_lowerReal_map_restrictScalars (t : ℝ) :
     rfl
   rw [hc, Subgroup.subgroupOf_map_subtype]
 
-/-- Integer lower numbering is compatible with the actual restriction of scalars. -/
+/-- Integer lower numbering is compatible with the restriction of scalars. -/
 theorem finiteBase_lower_map_restrictScalars (n : ℤ) :
     (lowerRamificationGroup (E ≃ₐ[M] E)
         (IsLocalRing.maximalIdeal (spectralIntegerRing M E)) n).map
@@ -89,7 +89,7 @@ theorem finiteBase_lower_map_restrictScalars (n : ℤ) :
   simpa only [lowerRamificationGroupReal_intCast] using
     finiteBase_lowerReal_map_restrictScalars K E M (n : ℝ)
 
-/-- If the actual fixing group lies in the original inertia, the own-ring
+/-- If the fixing group lies in the inertia, the own-ring
 intermediate-base action has full inertia. -/
 theorem finiteBase_lower_zero_eq_top
     (hM : M.fixingSubgroup ≤ lowerRamificationGroup (E ≃ₐ[K] E)
@@ -102,7 +102,7 @@ theorem finiteBase_lower_zero_eq_top
 
 variable [FiniteDimensional K E]
 
-/-- Actual upper groups transport through the identity of integer subrings. -/
+/-- Upper groups transport through the identity of integer subrings. -/
 theorem finiteBase_upper_map_fixingSubgroupEquiv {v : ℝ} (hv : -1 ≤ v) :
     (upperRamificationGroup (R := spectralIntegerRing K E) M.fixingSubgroup v).map
         M.fixingSubgroupEquiv.toMonoidHom =

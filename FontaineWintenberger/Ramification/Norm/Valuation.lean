@@ -13,7 +13,7 @@ public import Mathlib.RingTheory.Ideal.Norm.RelNorm
 /-!
 # Normalized valuations of algebraic norms
 
-The relative norm of the actual maximal ideal gives normalized norm
+The relative norm of the maximal ideal gives normalized norm
 valuations without a normality or finite residue-field assumption.
 -/
 
@@ -35,7 +35,7 @@ variable (R S : Type*) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
 local notation "mR" => IsLocalRing.maximalIdeal R
 local notation "mS" => IsLocalRing.maximalIdeal S
 
-/-- The norm of an actual integral uniformizer has valuation equal to the
+/-- The norm of an integral uniformizer has valuation equal to the
 canonical residue degree. -/
 theorem addVal_intNorm_uniformizer {π : S} (hπ : Irreducible π) :
     addVal R (Algebra.intNorm R S π) = ((mS).inertiaDeg R : ℕ∞) := by
@@ -48,7 +48,7 @@ theorem addVal_intNorm_uniformizer {π : S} (hπ : Irreducible π) :
   exact ((addVal_eq_iff_associated _ _).mpr
     (Ideal.span_singleton_eq_span_singleton.mp hspan)).trans (hϖ.addVal_pow _)
 
-/-- Normalized integral norm valuations multiply by the actual residue degree,
+/-- Normalized integral norm valuations multiply by the residue degree,
 including zero. -/
 theorem addVal_intNorm (x : S) :
     addVal R (Algebra.intNorm R S x) = ((mS).inertiaDeg R : ℕ∞) * addVal S x := by
@@ -63,7 +63,7 @@ theorem addVal_intNorm (x : S) :
       addVal_intNorm_uniformizer R S hπ, addVal_def' u hπ, nsmul_eq_mul, mul_comm]
 
 /-- The canonical normalized multiplicative valuations satisfy the same norm
-identity on the actual integral rings. -/
+identity on the integral rings. -/
 theorem intValuation_intNorm (x : S) :
     (maximalIdeal R).intValuation (Algebra.intNorm R S x) =
       (maximalIdeal S).intValuation x ^ (mS).inertiaDeg R := by
@@ -99,7 +99,7 @@ variable (K L : Type*) [Field K] [Field L] [Algebra K L]
     [Algebra S L] [IsFractionRing S L] [IsScalarTower R S L]
     [FiniteDimensional K L] [Algebra.IsSeparable K L]
 
-/-- The normalized valuation of the actual field norm, for arbitrary finite
+/-- The normalized valuation of the field norm, for arbitrary finite
 separable fraction-field extensions of finite local DVR extensions. -/
 theorem normalizedValuation_norm (x : L) :
     (maximalIdeal R).valuation K (Algebra.norm K x) =
@@ -132,8 +132,8 @@ variable {Γ : Type*} [LinearOrderedCommGroupWithZero Γ] (w : Valuation L Γ)
 local notation "OK" => Valuation.valuationSubring (NormedField.valuation (K := K))
 local notation "OL" => Valuation.valuationSubring w
 
-/-- The actual chosen extension valuation ring gives the field norm identity
-with the actual residue-field degree. -/
+/-- The chosen extension valuation ring gives the field norm identity
+with the residue-field degree. -/
 theorem extensionValuationSubring_normalizedValuation_norm (x : L) :
     letI := extensionValuationSubring_isDiscreteValuationRing K L w
     (maximalIdeal OK).valuation K (Algebra.norm K x) =
@@ -143,7 +143,7 @@ theorem extensionValuationSubring_normalizedValuation_norm (x : L) :
   rw [← local_inertiaDeg_eq_finrank_residueField OK OL]
   exact normalizedValuation_norm OK OL K L x
 
-/-- Norms preserve normalized valuations when the actual residue degree is one. -/
+/-- Norms preserve normalized valuations when the residue degree is one. -/
 theorem extensionValuationSubring_normalizedValuation_norm_of_residueDegree_one
     (hf : Module.finrank (IsLocalRing.ResidueField OK) (IsLocalRing.ResidueField OL) = 1)
     (x : L) :

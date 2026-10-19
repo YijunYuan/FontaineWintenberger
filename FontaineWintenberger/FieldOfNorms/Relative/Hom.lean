@@ -14,17 +14,17 @@ public import Mathlib.Algebra.Group.Units.Equiv
 /-!
 # Homomorphisms of the relative field of norms
 
-## Finite-stage factorization and gluing of original norm-field Hom maps
+## Finite-stage factorization and gluing of norm-field Hom maps
 
-Finite basis images lie in one actual target stage. Canonical range
-factorization then gives an actual finite-stage algebra homomorphism;
-finite full faithfulness supplies and glues the original field embeddings.
+Finite basis images lie in one target stage. Canonical range
+factorization then gives a finite-stage algebra homomorphism;
+finite full faithfulness supplies and glues the field embeddings.
 
-## Automorphisms of the original separable relative field of norms
+## Automorphisms of the separable relative field of norms
 
-The actual field-of-norms functor identifies algebraic endomorphism monoids.
+The field-of-norms functor identifies algebraic endomorphism monoids.
 Passing to their units gives the canonical automorphism-group correspondence,
-with the original finite-image formula and rational valuation preservation.
+with the finite-image formula and rational valuation preservation.
 
 Reference: Wintenberger, Theorem 3.2.2(ii), and its automorphism consequence.
 -/
@@ -35,8 +35,8 @@ noncomputable section
 
 namespace FontaineWintenberger
 
-/-- Containment of the images of a genuine finite basis gives canonical
-factorization through the original embedded target field. -/
+/-- Containment of the images of a finite basis gives canonical
+factorization through the embedded target field. -/
 theorem exists_algHom_factor_of_basis_mem_range
     {F A B C : Type*} [Field F] [Field A] [Field B] [Field C]
     [Algebra F A] [Algebra F B] [Algebra F C] [FiniteDimensional F A]
@@ -66,9 +66,9 @@ local notation "p" => residueChar K
 
 variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 
-/-- A finite algebraic Hom into the actual relative field of norms factors through
-one actual finite original stage. -/
-theorem RelFieldOfNorms._exists_algHom_factor :
+/-- A finite algebraic Hom into the relative field of norms factors through
+one finite stage. -/
+theorem RelFieldOfNorms.exists_algHom_factor :
     ∀ {A : Type*} [Field A] [Algebra (FieldOfNorms K L) A]
       [FiniteDimensional (FieldOfNorms K L) A]
       (f : A →ₐ[FieldOfNorms K L] RelFieldOfNorms K L M),
@@ -76,7 +76,7 @@ theorem RelFieldOfNorms._exists_algHom_factor :
         ∃ g : A →ₐ[FieldOfNorms K L] FieldOfNorms K N.val,
           (RelFieldOfNorms.ofAlgHom K L M N).comp g = f := by
   intro A _ _ _ f
-  obtain ⟨N, x, hx⟩ := RelFieldOfNorms._exists_finiteStage K L M
+  obtain ⟨N, x, hx⟩ := RelFieldOfNorms.exists_finiteStage K L M
     (fun i => f (Module.finBasis (FieldOfNorms K L) A i))
   refine ⟨N, exists_algHom_factor_of_basis_mem_range f
     (RelFieldOfNorms.ofAlgHom K L M N) (fun i => ?_)⟩
@@ -85,9 +85,9 @@ theorem RelFieldOfNorms._exists_algHom_factor :
 variable (M₁ : Type*) [Field M₁] [Algebra K M₁] [Algebra L M₁]
     [IsScalarTower K L M₁] [Algebra.IsSeparable L M₁]
 
-/-- Every Hom from an actual finite source norm field to the union comes from
-an original field embedding into an actual finite target layer. -/
-theorem RelFieldOfNorms._exists_finite_preimage (Q : FiniteIntermediateField L M₁) :
+/-- Every Hom from a finite norm field to the union comes from
+a field embedding into a finite target layer. -/
+theorem RelFieldOfNorms.exists_finite_preimage (Q : FiniteIntermediateField L M₁) :
     ∀ f : FieldOfNorms K Q.val →ₐ[FieldOfNorms K L] RelFieldOfNorms K L M,
       ∃ R : FiniteIntermediateField L M,
         ∃ φ : Q.val →ₐ[L] R.val,
@@ -97,14 +97,14 @@ theorem RelFieldOfNorms._exists_finite_preimage (Q : FiniteIntermediateField L M
   let : FiniteDimensional (FieldOfNorms K L) (FieldOfNorms K Q.val) :=
     finiteDimensional_finiteFieldOfNorms K L Q.val
   intro f
-  obtain ⟨R, g, hg⟩ := RelFieldOfNorms._exists_algHom_factor K L M f
+  obtain ⟨R, g, hg⟩ := RelFieldOfNorms.exists_algHom_factor K L M f
   let e := FieldOfNorms.finiteHomEquiv K L Q.val R.val
   refine ⟨R, e.symm g, ?_⟩
   exact (congrArg (fun j =>
     (RelFieldOfNorms.ofAlgHom K L M R).comp j)
     (e.apply_symm_apply g)).trans hg
 
-/-- Enlarging the actual target layer leaves the induced map into the same
+/-- Enlarging the target layer leaves the induced map into the same
 relative field of norms unchanged. -/
 theorem RelFieldOfNorms.of_finiteHom_inclusion (Q : FiniteIntermediateField L M₁)
     (R P : FiniteIntermediateField L M) (hRP : R ≤ P) (φ : Q.val →ₐ[L] R.val)
@@ -131,9 +131,9 @@ theorem RelFieldOfNorms.of_finiteHom_inclusion (Q : FiniteIntermediateField L M�
     ((congrArg (RelFieldOfNorms.of K L M P) hi).trans
       (RelFieldOfNorms.of_transition K L M R P hRP y))
 
-/-- Equality of maps into the actual union reflects equality of the original
+/-- Equality of maps into the union reflects equality of the
 finite-source embeddings, even when their target stages differ. -/
-theorem RelFieldOfNorms._finiteHom_faithful (Q : FiniteIntermediateField L M₁)
+theorem RelFieldOfNorms.finiteHom_faithful (Q : FiniteIntermediateField L M₁)
     (R S : FiniteIntermediateField L M) (φ : Q.val →ₐ[L] R.val) (ψ : Q.val →ₐ[L] S.val) :
     (∀ x : FieldOfNorms K Q.val,
       RelFieldOfNorms.of K L M R
@@ -157,9 +157,9 @@ theorem RelFieldOfNorms._finiteHom_faithful (Q : FiniteIntermediateField L M₁)
           Q S P (FiniteIntermediateField.le_sup_right R S) ψ x).symm)
   exact congrArg (fun z : P.val => (z : M)) (AlgHom.congr_fun he a)
 
-/-- Restricting an original finite embedding to a smaller source stage gives
-the same finite Hom evaluated after the original transition map. -/
-theorem RelFieldOfNorms._finiteHom_source_inclusion (Q T : FiniteIntermediateField L M₁)
+/-- Restricting a finite embedding to a smaller source stage gives
+the same finite Hom evaluated after the transition map. -/
+theorem RelFieldOfNorms.finiteHom_inclusion (Q T : FiniteIntermediateField L M₁)
     (hQT : Q ≤ T) (R : FiniteIntermediateField L M) (ψ : T.val →ₐ[L] R.val)
     (x : FieldOfNorms K Q.val) :
     FieldOfNorms.finiteHomEquiv K L Q.val R.val
@@ -180,9 +180,9 @@ theorem RelFieldOfNorms._finiteHom_source_inclusion (Q T : FiniteIntermediateFie
   exact hc.trans (congrArg
     (FieldOfNorms.finiteHomEquiv K L T.val R.val ψ) hi)
 
-/-- A Hom of the actual norm-field unions determines an original algebra
+/-- A Hom of the norm-field unions determines an algebra
 embedding whose finite restrictions realize all its finite-stage maps. -/
-theorem RelFieldOfNorms._exists_originalHom :
+theorem RelFieldOfNorms.exists_hom :
     ∀ f : RelFieldOfNorms K L M₁ →ₐ[FieldOfNorms K L]
         RelFieldOfNorms K L M,
       ∃ t : M₁ →ₐ[L] M, ∀ Q : FiniteIntermediateField L M₁,
@@ -195,14 +195,14 @@ theorem RelFieldOfNorms._exists_originalHom :
   classical
   intro f
   choose R φ hφ using fun Q : FiniteIntermediateField L M₁ =>
-    RelFieldOfNorms._exists_finite_preimage K L M M₁ Q
+    RelFieldOfNorms.exists_finite_preimage K L M M₁ Q
       (f.comp (RelFieldOfNorms.ofAlgHom K L M₁ Q))
   let family (Q : FiniteIntermediateField L M₁) : Q.val →ₐ[L] M := (R Q).val.val.comp (φ Q)
   have hc (Q T : FiniteIntermediateField L M₁) (hQT : Q ≤ T) :
       family Q = (family T).comp (IntermediateField.inclusion hQT) := by
     apply AlgHom.ext
     intro a
-    refine RelFieldOfNorms._finiteHom_faithful K L M M₁
+    refine RelFieldOfNorms.finiteHom_faithful K L M M₁
       Q (R Q) (R T) (φ Q) ((φ T).comp (IntermediateField.inclusion hQT)) ?_ a
     intro x
     have hQ := AlgHom.congr_fun (hφ Q) x
@@ -211,14 +211,14 @@ theorem RelFieldOfNorms._exists_originalHom :
     exact hQ.trans ((congrArg f
       (RelFieldOfNorms.of_transition K L M₁ Q T hQT x).symm).trans
         (hT.symm.trans (congrArg (RelFieldOfNorms.of K L M (R T))
-          (RelFieldOfNorms._finiteHom_source_inclusion K L M M₁
+          (RelFieldOfNorms.finiteHom_inclusion K L M M₁
             Q T hQT (R T) (φ T) x).symm)))
   let t := FiniteIntermediateField.liftAlgHom family hc
   refine ⟨t, fun Q => ⟨R Q, φ Q, ⟨?_, hφ Q⟩⟩⟩
   intro a
   exact (FiniteIntermediateField.liftAlgHom_apply family hc Q a).symm
 
-/-- A genuine original finite-stage factorization computes the induced union
+/-- A finite-stage factorization computes the induced union
 map by the same finite Hom, independently of the chosen containing stage. -/
 theorem RelFieldOfNorms.algMap_of_factor (t : M₁ →ₐ[L] M)
     (Q : FiniteIntermediateField L M₁) (R : FiniteIntermediateField L M) (φ : Q.val →ₐ[L] R.val)
@@ -260,18 +260,18 @@ theorem RelFieldOfNorms.algMap_of_factor (t : M₁ →ₐ[L] M)
     _ = _ := congrArg (fun j => RelFieldOfNorms.of K L M R
       (FieldOfNorms.finiteHomEquiv K L Q.val R.val j x)) hc
 
-/-- Every algebra Hom of the actual unions is induced by an original embedding. -/
+/-- Every algebra Hom of the unions is induced by an embedding. -/
 theorem RelFieldOfNorms.algMap_surjective :
     Function.Surjective (RelFieldOfNorms.algMap K L M₁ M) := by
   intro f
-  obtain ⟨t, ht⟩ := RelFieldOfNorms._exists_originalHom K L M M₁ f
+  obtain ⟨t, ht⟩ := RelFieldOfNorms.exists_hom K L M M₁ f
   refine ⟨t, AlgHom.ext (fun z => ?_)⟩
-  obtain ⟨Q, x, rfl⟩ := RelFieldOfNorms._exists_stage K L M₁ z
+  obtain ⟨Q, x, rfl⟩ := RelFieldOfNorms.exists_stage K L M₁ z
   obtain ⟨R, φ, hφ, hf⟩ := ht Q
   exact (RelFieldOfNorms.algMap_of_factor K L M M₁
     t Q R φ hφ x).trans (AlgHom.congr_fun hf x)
 
-/-- The actual union functor distinguishes every original algebra embedding. -/
+/-- The union functor distinguishes every algebra embedding. -/
 theorem RelFieldOfNorms.algMap_injective :
     Function.Injective (RelFieldOfNorms.algMap K L M₁ M) := by
   intro t u h
@@ -280,7 +280,7 @@ theorem RelFieldOfNorms.algMap_injective :
   obtain ⟨Q, ha⟩ := FiniteIntermediateField.exists_mem (L := L) a
   let R := FiniteIntermediateField.map t Q
   let S := FiniteIntermediateField.map u Q
-  refine RelFieldOfNorms._finiteHom_faithful K L M M₁
+  refine RelFieldOfNorms.finiteHom_faithful K L M M₁
     Q R S (FiniteIntermediateField.equivMap t Q).toAlgHom
       (FiniteIntermediateField.equivMap u Q).toAlgHom ?_ ⟨a, ha⟩
   intro x
@@ -290,7 +290,7 @@ theorem RelFieldOfNorms.algMap_injective :
         (RelFieldOfNorms.algMap_of_factor K L M M₁ u Q S
           (FiniteIntermediateField.equivMap u Q).toAlgHom (fun _ => rfl) x))
 
-/-- Full faithfulness for arbitrary original separable algebraic extensions. -/
+/-- Full faithfulness for arbitrary separable algebraic extensions. -/
 theorem RelFieldOfNorms.algMap_bijective :
     Function.Bijective (RelFieldOfNorms.algMap K L M₁ M) := by
   exact ⟨RelFieldOfNorms.algMap_injective K L M M₁,
@@ -310,7 +310,7 @@ local notation "p" => residueChar K
 
 variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 
-/-- The canonical full Hom equivalence is the actual original union functor. -/
+/-- The canonical full Hom equivalence is the union functor. -/
 def RelFieldOfNorms.homEquiv :
     (M →ₐ[L] N) ≃ (RelFieldOfNorms K L M →ₐ[FieldOfNorms K L]
       RelFieldOfNorms K L N) := by
@@ -334,7 +334,7 @@ local notation "p" => residueChar K
 
 variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 
-/-- The original union functor preserves the actual endomorphism monoid. -/
+/-- The union functor preserves the endomorphism monoid. -/
 def RelFieldOfNorms.endHom :
     (M →ₐ[L] M) →* (RelFieldOfNorms K L M →ₐ[FieldOfNorms K L]
       RelFieldOfNorms K L M) := by
@@ -354,14 +354,14 @@ def RelFieldOfNorms.endHom :
     exact congrArg (fun f => f z)
       (RelFieldOfNorms.map_comp K L M M t M s).symm
 
-/-- Full faithfulness identifies the original endomorphism monoids. -/
+/-- Full faithfulness identifies the endomorphism monoids. -/
 def RelFieldOfNorms.endEquiv :
     (M →ₐ[L] M) ≃* (RelFieldOfNorms K L M →ₐ[FieldOfNorms K L]
       RelFieldOfNorms K L M) := by
   exact MulEquiv.ofBijective (RelFieldOfNorms.endHom K L M)
     (RelFieldOfNorms.algMap_bijective K L M M)
 
-/-- The canonical automorphism-group correspondence on the same original fields. -/
+/-- The canonical automorphism-group correspondence on the fields. -/
 def RelFieldOfNorms.autEquiv :
     (M ≃ₐ[L] M) ≃* (RelFieldOfNorms K L M ≃ₐ[FieldOfNorms K L]
       RelFieldOfNorms K L M) := by
@@ -370,20 +370,20 @@ def RelFieldOfNorms.autEquiv :
       (AlgEquiv.algHomUnitsEquiv (FieldOfNorms K L)
         (RelFieldOfNorms K L M)))
 
-/-- The group correspondence has the actual induced algebra map as its forward map. -/
+/-- The group correspondence has the induced algebra map as its forward map. -/
 @[simp]
 theorem RelFieldOfNorms.autEquiv_toAlgHom (σ : M ≃ₐ[L] M) :
     (RelFieldOfNorms.autEquiv K L M σ).toAlgHom =
       RelFieldOfNorms.algMap K L M M σ.toAlgHom := rfl
 
-/-- Evaluation is the same original union embedding. -/
+/-- Evaluation is the union embedding. -/
 @[simp]
 theorem RelFieldOfNorms.autEquiv_apply (σ : M ≃ₐ[L] M)
     (z : RelFieldOfNorms K L M) :
     RelFieldOfNorms.autEquiv K L M σ z =
       RelFieldOfNorms.map K L M M σ.toAlgHom z := rfl
 
-/-- On every actual finite original stage the automorphism is literal image transport. -/
+/-- On every finite stage the automorphism is image transport. -/
 theorem RelFieldOfNorms.autEquiv_of (σ : M ≃ₐ[L] M)
     (Q : FiniteIntermediateField L M) (x : FieldOfNorms K Q.val) :
     RelFieldOfNorms.autEquiv K L M σ
@@ -392,7 +392,7 @@ theorem RelFieldOfNorms.autEquiv_of (σ : M ≃ₐ[L] M)
         (RelFieldOfNorms.stageMap K L M M σ.toAlgHom Q x) :=
   RelFieldOfNorms.map_of K L M M σ.toAlgHom Q x
 
-/-- Every original algebra automorphism preserves the compatible rational valuation. -/
+/-- Every algebra automorphism preserves the compatible rational valuation. -/
 theorem RelFieldOfNorms.autEquiv_valuation (σ : M ≃ₐ[L] M)
     (z : RelFieldOfNorms K L M) :
     RelFieldOfNorms.valuation K L M
@@ -400,8 +400,8 @@ theorem RelFieldOfNorms.autEquiv_valuation (σ : M ≃ₐ[L] M)
       RelFieldOfNorms.valuation K L M z :=
   RelFieldOfNorms.map_valuation K L M M σ.toAlgHom z
 
-/-- Every automorphism of the original target union preserves its rational valuation. -/
-theorem RelFieldOfNorms._algEquiv_valuation :
+/-- Every automorphism of the target union preserves its rational valuation. -/
+theorem RelFieldOfNorms.algEquiv_valuation :
     ∀ (σ : RelFieldOfNorms K L M ≃ₐ[FieldOfNorms K L]
         RelFieldOfNorms K L M)
       (z : RelFieldOfNorms K L M),

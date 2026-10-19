@@ -15,16 +15,16 @@ public import FontaineWintenberger.APF.Tower.Tame
 /-!
 # The valuation of the field of norms
 
-## The actual stable valuation on the multiplicative field of norms
+## The stable valuation on the multiplicative field of norms
 
-Actual residue inclusions on an APF finite tail are bijective, so actual field
-norms preserve their normalized valuations. The original multiplicative limit
+Residue inclusions on an APF finite tail are bijective, so field
+norms preserve their normalized valuations. The multiplicative limit
 therefore has a single coordinate-independent normalized valuation.
 
-## The source normalization above the actual maximal unramified field
+## The normalization above the maximal unramified field
 
-The existing stable valuation is computed at every original finite field above
-the actual maximal unramified subfield, as in Wintenberger, paragraph 2.1.2.
+The existing stable valuation is computed at every finite field above
+the maximal unramified subfield, as in Wintenberger, paragraph 2.1.2.
 -/
 
 @[expose] public section
@@ -41,7 +41,7 @@ namespace FiniteIntermediateField
 
 local notation "R₀" => Valuation.valuationSubring (NormedField.valuation (K := K))
 
-/-- Original field norms preserve normalized valuations whenever their actual
+/-- Field norms preserve normalized valuations whenever their
 residue inclusion is surjective. No normality is required. -/
 theorem normalizedValuation_norm_of_residueInclusion_surjective
     (E F : FiniteIntermediateField K L) (hEF : E ≤ F)
@@ -78,7 +78,7 @@ theorem normalizedValuation_norm_of_residueInclusion_surjective
 
 end FiniteIntermediateField
 
-/-- Evaluate the original multiplicative limit and then use the actual
+/-- Evaluate the multiplicative limit and then use the
 normalized valuation of that finite field. -/
 def FieldOfNorms.coordinateValuation (E : FiniteIntermediateField K L) : FieldOfNorms K L →*₀
     WithZero (Multiplicative
@@ -89,7 +89,7 @@ def FieldOfNorms.coordinateValuation (E : FiniteIntermediateField K L) : FieldOf
 variable [PerfectField (IsLocalRing.ResidueField
   (NormedField.valuation (K := K)).valuationSubring)]
 
-/-- The normalized coordinate valuations agree on an actual APF finite tail. -/
+/-- The normalized coordinate valuations agree on an APF finite tail. -/
 theorem IsAPF.exists_fieldOfNormsCoordinateValuation_stable [IsAPF K L] :
     ∃ E₀ : FiniteIntermediateField K L, ∀ E F : FiniteIntermediateField K L, E₀ ≤ E → E₀ ≤ F →
       ∀ x : FieldOfNorms K L,
@@ -108,14 +108,14 @@ theorem IsAPF.exists_fieldOfNormsCoordinateValuation_stable [IsAPF K L] :
   rw [FieldOfNorms.coord_norm] at hvE hvF
   exact hvE.trans hvF.symm
 
-/-- The stable normalized multiplicative valuation on the original single
-field of norms carrier. APF supplies and proves the actual finite stable tail. -/
+/-- The stable normalized multiplicative valuation on the single
+field of norms carrier. APF supplies and proves the finite stable tail. -/
 def FieldOfNorms.valuation [IsAPF K L] : FieldOfNorms K L →*₀ WithZero (Multiplicative ℤ) :=
   FieldOfNorms.coordinateValuation K L
     (IsAPF.exists_fieldOfNormsCoordinateValuation_stable K L).choose
 
 /-- The same normalized valuation is computed by every sufficiently large
-original finite coordinate. -/
+finite coordinate. -/
 theorem IsAPF.exists_fieldOfNormsValuation_eq_coordinate [IsAPF K L] :
     ∃ E₀ : FiniteIntermediateField K L, ∀ E : FiniteIntermediateField K L, E₀ ≤ E → ∀ x :
         FieldOfNorms K L,
@@ -123,7 +123,7 @@ theorem IsAPF.exists_fieldOfNormsValuation_eq_coordinate [IsAPF K L] :
   let hex := IsAPF.exists_fieldOfNormsCoordinateValuation_stable K L
   exact ⟨hex.choose, fun E hE x => hex.choose_spec hex.choose E le_rfl hE x⟩
 
-/-- The stable normalized valuation detects zero on the original field of norms. -/
+/-- The stable normalized valuation detects zero on the field of norms. -/
 @[simp]
 theorem FieldOfNorms.valuation_eq_zero_iff [IsAPF K L] (x : FieldOfNorms K L) :
     FieldOfNorms.valuation K L x = 0 ↔ x = 0 := by
@@ -138,8 +138,8 @@ namespace FontaineWintenberger
 variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
-/-- The same stable valuation is computed at every actual finite intermediate field above
-the actual maximal unramified subfield, not merely above a chosen stable witness. -/
+/-- The same stable valuation is computed at every finite intermediate field above
+the maximal unramified subfield, not merely above a chosen stable witness. -/
 theorem FieldOfNorms.valuation_eq_coordinate_of_maximalUnramified_le [IsAPF K L]
     (E : FiniteIntermediateField K L) (hE : apfMaximalUnramified K L ≤ E) (x : FieldOfNorms K L) :
     FieldOfNorms.valuation K L x = FieldOfNorms.coordinateValuation K L E x := by

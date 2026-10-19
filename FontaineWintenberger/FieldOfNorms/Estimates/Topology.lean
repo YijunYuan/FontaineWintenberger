@@ -11,10 +11,10 @@ public import FontaineWintenberger.LocalField.Spectral.Tower
 public import Mathlib.Topology.Instances.Matrix
 
 /-!
-# Continuity of actual finite norms and ideal-power topology
+# Continuity of finite norms and ideal-power topology
 
-The determinant of the original multiplication matrix is continuous over
-the complete finite-dimensional base. Discrete ideal powers are actual balls.
+The determinant of the multiplication matrix is continuous over
+the complete finite-dimensional base. Discrete ideal powers are balls.
 -/
 
 @[expose] public section
@@ -32,7 +32,7 @@ variable (E F : Type*) [NormedField E] [NormedField F]
 
 include K
 
-/-- The actual relative field norm is continuous for the original compatible
+/-- The relative field norm is continuous for the compatible
 norms, by the finite multiplication matrix over the complete base. -/
 theorem continuous_algebraNorm_of_finiteDimensional :
     Continuous (Algebra.norm E : F → E) := by
@@ -50,8 +50,8 @@ section FiniteIntermediateFields
 variable {K L : Type*} [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
     [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
-/-- Continuity of the same original finite-layer norm, with the canonical
-spectral norms on the original two finite fields. -/
+/-- Continuity of the finite-layer norm, with the canonical
+spectral norms on the two finite fields. -/
 theorem FiniteIntermediateField.continuous_norm (E F : FiniteIntermediateField K L) (hEF : E ≤ F) :
     letI := spectralNorm.nontriviallyNormedField K E.val
     letI := spectralNorm.nontriviallyNormedField K F.val
@@ -72,7 +72,7 @@ variable (E : Type*) [NontriviallyNormedField E] [IsUltrametricDist E]
 local notation "R" => Valuation.valuationSubring (NormedField.valuation (K := E))
 variable [IsDiscreteValuationRing (NormedField.valuation (K := E)).valuationSubring]
 
-/-- An actual uniformizer of the norm unit ball has norm strictly between
+/-- An uniformizer of the norm unit ball has norm strictly between
 zero and one. -/
 theorem norm_uniformizer_pos_lt_one (π : R) (hπ : Irreducible π) :
     0 < ‖(π : E)‖ ∧ ‖(π : E)‖ < 1 := by
@@ -83,7 +83,7 @@ theorem norm_uniformizer_pos_lt_one (π : R) (hπ : Irreducible π) :
   refine ⟨norm_pos_iff.mpr (fun h => hπ.ne_zero (Subtype.ext h)), ?_⟩
   exact_mod_cast hlt
 
-/-- The canonical norm topology identifies an actual ideal power with
+/-- The canonical norm topology identifies an ideal power with
 the corresponding uniformizer-radius closed ball, including exponent zero. -/
 theorem mem_maximalIdeal_pow_iff_norm_le (π : R) (hπ : Irreducible π)
     (x : R) (n : ℕ) :
@@ -106,7 +106,7 @@ theorem mem_maximalIdeal_pow_iff_norm_le (π : R) (hπ : Irreducible π)
     change (x : E) = (π : E) ^ n * ((x : E) / (π : E) ^ n)
     field_simp
 
-/-- The image of the actual ideal power in its original field is exactly
+/-- The image of the ideal power in its field is exactly
 the corresponding closed norm ball. -/
 theorem image_maximalIdeal_pow_eq_closedBall (π : R) (hπ : Irreducible π) (n : ℕ) :
     (fun x : R => (x : E)) '' ((IsLocalRing.maximalIdeal R ^ n : Ideal R) : Set R) =
@@ -124,7 +124,7 @@ theorem image_maximalIdeal_pow_eq_closedBall (π : R) (hπ : Irreducible π) (n 
     let y : R := ⟨x, by exact_mod_cast hx1⟩
     exact ⟨y, (mem_maximalIdeal_pow_iff_norm_le E π hπ y n).mpr hx', rfl⟩
 
-/-- Every actual ideal power has closed image in the original field. -/
+/-- Every ideal power has closed image in the field. -/
 theorem isClosed_image_maximalIdeal_pow (n : ℕ) :
     IsClosed ((fun x : R => (x : E)) ''
       ((IsLocalRing.maximalIdeal R ^ n : Ideal R) : Set R)) := by
@@ -132,8 +132,8 @@ theorem isClosed_image_maximalIdeal_pow (n : ℕ) :
   rw [image_maximalIdeal_pow_eq_closedBall E π hπ]
   exact Metric.isClosed_closedBall
 
-/-- The original discrete ideal powers form a neighborhood basis at zero
-for the original field norm. -/
+/-- The discrete ideal powers form a neighborhood basis at zero
+for the field norm. -/
 theorem nhds_zero_hasBasis_maximalIdeal_pow :
     (nhds (0 : E)).HasBasis (fun _ : ℕ => True)
       (fun n => (fun x : R => (x : E)) ''
@@ -143,7 +143,7 @@ theorem nhds_zero_hasBasis_maximalIdeal_pow :
   exact Metric.nhds_basis_closedBall_pow
     (norm_uniformizer_pos_lt_one E π hπ).1 (norm_uniformizer_pos_lt_one E π hπ).2
 
-/-- Closed actual ideal powers are complete inside the original complete
+/-- Closed ideal powers are complete inside the complete
 field; no residue-field compactness is used. -/
 theorem isComplete_image_maximalIdeal_pow [CompleteSpace E] (n : ℕ) :
     IsComplete ((fun x : R => (x : E)) ''
@@ -157,8 +157,8 @@ section SpectralIdealPowers
 variable {K L : Type*} [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
-/-- Actual spectral ideal powers have closed image for the canonical norm
-on the original finite field. -/
+/-- Spectral ideal powers have closed image for the canonical norm
+on the finite field. -/
 theorem FiniteIntermediateField.isClosed_image_maximalIdeal_pow (E : FiniteIntermediateField K L)
     (n : ℕ) :
     letI := spectralNorm.nontriviallyNormedField K E.val
@@ -172,8 +172,8 @@ theorem FiniteIntermediateField.isClosed_image_maximalIdeal_pow (E : FiniteInter
   let := normedAlgebra_unitBall_isDiscreteValuationRing K E.val
   exact FontaineWintenberger.isClosed_image_maximalIdeal_pow E.val n
 
-/-- The original spectral ideal powers give the actual field topology at
-zero for every actual finite intermediate field. -/
+/-- The spectral ideal powers give the field topology at
+zero for every finite intermediate field. -/
 theorem FiniteIntermediateField.nhds_zero_hasBasis_maximalIdeal_pow (E : FiniteIntermediateField K
     L) :
     letI := spectralNorm.nontriviallyNormedField K E.val

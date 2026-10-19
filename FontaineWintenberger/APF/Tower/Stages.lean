@@ -15,22 +15,22 @@ public import FontaineWintenberger.APF.RamificationBound
 /-!
 # Finite stages of an APF extension
 
-## Actual finite stages of an APF extension
+## Finite stages of an APF extension
 
-The closed actual APF product has an actual finite fixed field. These stages
-are increasing and cofinal. Restricting the inverse of an original separable
-embedding gives genuine finite subfields of the original abstract extension.
+The closed APF product has a finite fixed field. These stages
+are increasing and cofinal. Restricting the inverse of a separable
+embedding gives finite subfields of the abstract extension.
 
 ## Countable cofinal finite intermediate fields of an APF extension
 
-The genuine APF fixed fields at integer parameters pull back to a monotone
-cofinal sequence in the original abstract extension. No finite-residue or
+The APF fixed fields at integer parameters pull back to a monotone
+cofinal sequence in the abstract extension. No finite-residue or
 normality assumption is used.
 
-## Cofinal growth of the actual relative first ramification bounds
+## Cofinal growth of the relative first ramification bounds
 
-The original finite-base closure homomorphism carries an actual stage
-containment to a full relative APF product. Its actual Herbrand parameter
+The finite-base closure homomorphism carries a stage
+containment to a full relative APF product. Its Herbrand parameter
 therefore bounds the extended first ramification bound from below. The
 extended-real statement includes trivial finite steps.
 -/
@@ -44,7 +44,7 @@ namespace FontaineWintenberger
 variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
 
 
-/-- Absolute upper groups eventually fix every actual finite subfield. -/
+/-- Absolute upper groups eventually fix every finite subfield. -/
 theorem exists_absoluteUpper_le_fixingSubgroup_of_finite
     (M : IntermediateField K (SeparableClosure K)) [FiniteDimensional K M] :
     ∃ U : ℝ, 0 ≤ U ∧ ∀ u : ℝ, U ≤ u →
@@ -60,7 +60,7 @@ theorem exists_absoluteUpper_le_fixingSubgroup_of_finite
   rw [hU u ((le_max_left _ _).trans hu)] at hx
   exact Subgroup.mem_bot.mp hx
 
-/-- The actual fixed field of the actual APF product. -/
+/-- The fixed field of the APF product. -/
 def apfFiniteStage (L : IntermediateField K (SeparableClosure K)) (u : ℝ) :
     IntermediateField K (SeparableClosure K) :=
   IntermediateField.fixedField (apfSubgroup K L u)
@@ -71,13 +71,13 @@ theorem fixingSubgroup_apfFiniteStage (L : IntermediateField K (SeparableClosure
   InfiniteGalois.fixingSubgroup_fixedField
     ⟨apfSubgroup K L u, isClosed_apfSubgroup K L u⟩
 
-/-- Each actual stage lies inside the original separable subextension. -/
+/-- Each stage lies inside the separable subextension. -/
 theorem apfFiniteStage_le (L : IntermediateField K (SeparableClosure K)) (u : ℝ) :
     apfFiniteStage K L u ≤ L :=
   (IntermediateField.fixedField_le (show L.fixingSubgroup ≤ apfSubgroup K L u from
     le_sup_left)).trans_eq (InfiniteGalois.fixedField_fixingSubgroup L)
 
-/-- APF openness proves genuine finite degree of every actual stage. -/
+/-- APF openness proves finite degree of every stage. -/
 theorem finiteDimensional_apfFiniteStage (L : IntermediateField K (SeparableClosure K))
     [IsAPFSubextension K L] {u : ℝ} (hu : -1 ≤ u) :
     FiniteDimensional K (apfFiniteStage K L u) := by
@@ -85,13 +85,13 @@ theorem finiteDimensional_apfFiniteStage (L : IntermediateField K (SeparableClos
   rw [fixingSubgroup_apfFiniteStage]
   exact IsAPFSubextension.isOpen_apfSubgroup u hu
 
-/-- The actual finite-stage fields increase with the upper parameter. -/
+/-- The finite-stage fields increase with the upper parameter. -/
 theorem apfFiniteStage_mono (L : IntermediateField K (SeparableClosure K))
     {u v : ℝ} (hu : -1 ≤ u) (hv : -1 ≤ v) (huv : u ≤ v) :
     apfFiniteStage K L u ≤ apfFiniteStage K L v :=
   IntermediateField.fixedField_le (apfSubgroup_antitoneOn K L hu hv huv)
 
-/-- Every actual finite subfield occurs in a genuine stage. -/
+/-- Every finite subfield occurs in a stage. -/
 theorem exists_le_apfFiniteStage (L M : IntermediateField K (SeparableClosure K))
     [FiniteDimensional K M] (hML : M ≤ L) :
     ∃ U : ℝ, 0 ≤ U ∧ ∀ u : ℝ, U ≤ u → M ≤ apfFiniteStage K L u := by
@@ -104,8 +104,8 @@ theorem exists_le_apfFiniteStage (L M : IntermediateField K (SeparableClosure K)
 
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
-/-- The actual stage pulls back to a finite intermediate field of the
-original abstract L, with a proved equality of its original embedded image. -/
+/-- The stage pulls back to a finite intermediate field of the
+abstract L, with a proved equality of its embedded image. -/
 theorem exists_finiteIntermediateField_map_eq_apfFiniteStage [IsAPF K L]
     (j : L →ₐ[K] SeparableClosure K) {u : ℝ} (hu : -1 ≤ u) :
     ∃ E : FiniteIntermediateField K L, E.val.map j = apfFiniteStage K j.fieldRange u := by
@@ -126,8 +126,8 @@ theorem exists_finiteIntermediateField_map_eq_apfFiniteStage [IsAPF K L]
         (IntermediateField.inclusion (apfFiniteStage_le K j.fieldRange u) x))
   rw [he, IntermediateField.fieldRange_val]
 
-/-- The actual pulled-back stages are cofinal among finite subfields of
-an arbitrary original abstract separable APF extension. -/
+/-- The pulled-back stages are cofinal among finite subfields of
+an arbitrary abstract separable APF extension. -/
 theorem IsAPF.exists_finiteIntermediateField_ge_map_eq_apfFiniteStage [IsAPF K L]
     (j : L →ₐ[K] SeparableClosure K) (D : FiniteIntermediateField K L) :
     ∃ (u : ℝ) (E : FiniteIntermediateField K L), 0 ≤ u ∧ D ≤ E ∧
@@ -158,8 +158,8 @@ variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField 
 
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
-/-- The actual integer-parameter APF stages give a monotone cofinal
-sequence of original finite fields, with exact original embedded images. -/
+/-- The integer-parameter APF stages give a monotone cofinal
+sequence of finite fields, with exact embedded images. -/
 theorem IsAPF.exists_monotone_cofinal_finiteIntermediateFields_map [IsAPF K L]
     (j : L →ₐ[K] SeparableClosure K) :
     ∃ E : ℕ → FiniteIntermediateField K L, Monotone E ∧
@@ -194,8 +194,8 @@ theorem IsAPF.exists_monotone_cofinal_finiteIntermediateFields_map [IsAPF K L]
     obtain ⟨y, hy, he⟩ := hjx
     exact (j.injective he) ▸ hy
 
-/-- Every original abstract separable APF extension has a countable
-monotone cofinal sequence among all of its actual finite intermediate fields. -/
+/-- Every abstract separable APF extension has a countable
+monotone cofinal sequence among all of its finite intermediate fields. -/
 theorem IsAPF.exists_monotone_cofinal_finiteIntermediateFields [IsAPF K L] :
     ∃ E : ℕ → FiniteIntermediateField K L, Monotone E ∧ ∀ D : FiniteIntermediateField K L, ∃ n : ℕ,
         D ≤ E n := by
@@ -221,8 +221,8 @@ variable (M : Type*) [NontriviallyNormedField M] [IsCompleteDiscreteValuedField 
 variable (N : Type*) [Field N] [Algebra K N] [Algebra M N] [IsScalarTower K M N]
     [Algebra.IsSeparable M N]
 
-/-- Containment of the actual finite-base fixing range in the old APF
-product gives an actual extended relative first bound at the original
+/-- Containment of the finite-base fixing range in the old APF
+product gives an extended relative first bound at the
 finite-base Herbrand parameter. -/
 theorem apfPsi_le_apfRamificationBound_of_range_le
     (i : N →ₐ[M] SeparableClosure M) {u : ℝ} (hu : 0 ≤ u)
@@ -247,8 +247,8 @@ variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField 
       (NormedField.valuation (K := K)).valuationSubring)]
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
-/-- A genuine APF-stage containment gives the actual relative extended
-first bound on the original finite fields and their canonical spectral norm. -/
+/-- An APF-stage containment gives the relative extended
+first bound on the finite fields and their canonical spectral norm. -/
 theorem apfPsi_le_relativeFirstBound_of_apfFiniteStage_le
     (E F : FiniteIntermediateField K L) (hEF : E ≤ F) (j : L →ₐ[K] SeparableClosure K)
     {u : ℝ} (hu : 0 ≤ u) (hstage : apfFiniteStage K j.fieldRange u ≤ E.val.map j) :
@@ -299,8 +299,8 @@ theorem apfPsi_le_relativeFirstBound_of_apfFiniteStage_le
         (sup_le_sup_right (IntermediateField.fixingSubgroup_le hFL) _)
   exact AbstractFiniteBase.apfPsi_le_apfRamificationBound_of_range_le K E.val F.val i hu hfix
 
-/-- The actual relative first bounds become arbitrarily large on a genuine
-finite-layer tail of the original abstract separable APF extension. Trivial
+/-- The relative first bounds become arbitrarily large on a
+finite-layer tail of the abstract separable APF extension. Trivial
 steps retain their extended bound `∞`. -/
 theorem IsAPF.exists_finiteIntermediateField_relativeFirstBound_ge [IsAPF K L] (c : ℝ) :
     ∃ T : FiniteIntermediateField K L, ∀ E F : FiniteIntermediateField K L, T ≤ E → ∀ hEF : E ≤ F,

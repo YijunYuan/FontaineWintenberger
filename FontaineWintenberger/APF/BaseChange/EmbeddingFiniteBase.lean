@@ -10,9 +10,9 @@ public import FontaineWintenberger.APF.BaseChange.EmbeddingComparison
 public import FontaineWintenberger.Mathlib.FieldTheory.SeparableEmbeddings
 
 /-!
-# Embedding comparisons over original abstract finite bases
+# Embedding comparisons over abstract finite bases
 
-The actual compatible norm on each original finite base supplies its
+The compatible norm on each finite base supplies its
 intrinsic relative first bound. Restricting scalars preserves normalized
 embedding numbers without assuming a valuation transport certificate.
 -/
@@ -36,10 +36,10 @@ variable {F Ω : Type*} [Field F] [Field Ω] [Algebra K F] [Algebra K Ω]
     [FiniteDimensional K F] [FiniteDimensional K Ω]
     [Algebra.IsSeparable K F] [Algebra.IsSeparable K Ω]
 
-/-- Forgetting an actual compatible finite base leaves the intrinsic
-embedding number unchanged. The original abstract base retains its original
+/-- Forgetting a compatible finite base leaves the intrinsic
+embedding number unchanged. The abstract base retains its
 norm; both source and ambient integer rings are identified through their
-proved actual unit balls, and both local indices are genuinely transported. -/
+proved unit balls, and both local indices are transported. -/
 theorem embeddingNumber_restrictScalars_of_normedAlgebra :
     letI := Algebra.isSeparable_tower_bot_of_isSeparable K M Ω
     letI := normedAlgebra_isPerfectResidueLocalField K M
@@ -119,8 +119,8 @@ section AmbientExtension
 
 variable (K Ω : Type*) [Field K] [Field Ω] [Algebra K Ω] [Normal K Ω]
 
-/-- An actual embedding of an actual intermediate field extends to an
-automorphism of an ordinary normal ambient field, by Mathlib's genuine lift. -/
+/-- An embedding of an intermediate field extends to an
+automorphism of an ordinary normal ambient field, by Mathlib's lift. -/
 theorem exists_aut_comp_intermediate (F : IntermediateField K Ω) (σ : F →ₐ[K] Ω) :
     ∃ s : Ω ≃ₐ[K] Ω, s.toAlgHom.comp F.val = σ := by
   obtain ⟨s, hs⟩ := exists_aut_extends_intermediate_embedding K Ω F σ
@@ -135,8 +135,8 @@ variable (K Ω : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField 
 variable {F : Type*} [Field F] [Algebra K F] [FiniteDimensional K F]
     [Algebra.IsSeparable K F]
 
-/-- The first bound controls every actual pair of embeddings of an
-original finite field, without assuming that either image is stable. -/
+/-- The first bound controls every pair of embeddings of an
+finite field, without assuming that either image is stable. -/
 theorem apfRamificationBound_le_embeddingPairNumber (σ τ : F →ₐ[K] Ω) :
     apfRamificationBound K F ≤ embeddingRamificationNumber K σ τ := by
   let e := τ.equivFieldRange
@@ -156,7 +156,7 @@ theorem apfRamificationBound_le_embeddingPairNumber (σ τ : F →ₐ[K] Ω) :
 
 end ArbitraryEmbeddingFirstBound
 
-section OriginalRelativePairBound
+section RelativePairBound
 
 variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
 variable (M : Type*) [NontriviallyNormedField M] [IsUltrametricDist M]
@@ -166,8 +166,8 @@ variable {F Ω : Type*} [Field F] [Field Ω] [Algebra K F] [Algebra K Ω]
     [FiniteDimensional K F] [FiniteDimensional K Ω]
     [Algebra.IsSeparable K F] [IsGalois K Ω]
 
-/-- The actual relative first bound over the original abstract normed base
-controls the same pair number over the original old base. Every base norm,
+/-- The relative first bound over the abstract normed base
+controls the same pair number over the old base. Every base norm,
 integer ring, separability and perfect-residue prerequisite is produced. -/
 theorem apfRelativeBound_le_embeddingPairNumber_of_normedAlgebra :
     letI := Algebra.isSeparable_tower_bot_of_isSeparable K M Ω
@@ -191,8 +191,8 @@ theorem apfRelativeBound_le_embeddingPairNumber_of_normedAlgebra :
   exact apfRamificationBound_le_embeddingPairNumber M Ω σ τ
 
 omit [Algebra M Ω] [IsScalarTower K M Ω] in
-/-- Actual ambient embeddings agreeing on the original normed finite base
-are separated by its actual relative first bound, even when that base image
+/-- Ambient embeddings agreeing on the normed finite base
+are separated by its relative first bound, even when that base image
 is moved by either ambient automorphism. -/
 theorem apfRelativeBound_le_pairNumber_of_normedAlgebra
     (i : F →ₐ[K] Ω) (s t : Ω ≃ₐ[K] Ω)
@@ -218,10 +218,10 @@ theorem apfRelativeBound_le_pairNumber_of_normedAlgebra
   exact apfRelativeBound_le_embeddingPairNumber_of_normedAlgebra K M f g
 
 omit [Algebra M Ω] [IsScalarTower K M Ω] in
-/-- Ordinary total ramification and the actual relative first bound of an
-original finite base force rigidity of every extension embedding. The image
-of that base need not be preserved by the original ambient automorphism. -/
-theorem embeddingNumber_eq_restriction_of_lt_originalBound
+/-- Ordinary total ramification and the relative first bound of an
+finite base force rigidity of every extension embedding. The image
+of that base need not be preserved by the ambient automorphism. -/
+theorem embeddingNumber_eq_restriction_of_lt_bound
     (E D : IntermediateField K Ω) (hED : E ≤ D)
     (e : F ≃ₐ[K] D) (hM : ∀ m : M, (e (algebraMap M F m) : Ω) ∈ E)
     (htotal : embeddingRamificationIdx K (IntermediateField.inclusion hED) =
@@ -294,6 +294,6 @@ theorem embeddingNumber_eq_restriction_of_lt_originalBound
     simpa only [Subgroup.coe_one, mul_one] using h.trans heq
   exact congrArg (fun j : ℝ≥0∞ => ((j : EReal) - 1)) hj
 
-end OriginalRelativePairBound
+end RelativePairBound
 
 end FontaineWintenberger

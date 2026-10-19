@@ -15,7 +15,7 @@ public import FontaineWintenberger.Ramification.Lower.GaloisGroup
 
 The intrinsic ideal-inertia groups and order function can be evaluated on a
 single algebra generator. Monogenicity is supplied by the integral-generator
-producer, rather than assumed for the actual finite-extension specialization.
+producer, rather than assumed for the finite-extension specialization.
 -/
 
 @[expose] public section
@@ -93,7 +93,7 @@ instance spectralIntegerRing_decompositionSubgroup_smulCommClass : SMulCommClass
       (r : K) • (g : L ≃ₐ[K] L) (x : L)
     exact map_smul (g : L ≃ₐ[K] L) (r : K) (x : L)
 
-/-- Monogenicity supplies an actual generator on which every intrinsic order is attained. -/
+/-- Monogenicity supplies a generator on which every intrinsic order is attained. -/
 theorem spectralIntegerRing_exists_order_generator :
     ∃ x : OL, ∀ g : D,
       (OL).ramificationOrder K g = addVal OL (g • x - x) := by

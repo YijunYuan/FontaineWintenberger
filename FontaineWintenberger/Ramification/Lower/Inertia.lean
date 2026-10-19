@@ -13,7 +13,7 @@ public import Mathlib.NumberTheory.RamificationInertia.Galois
 /-!
 # Inertia for finite extensions of complete discrete valuation fields
 
-The full field automorphism action on the actual spectral integers has the
+The full field automorphism action on the spectral integers has the
 base integers as its invariant ring. Mathlib's ideal inertia theorem then
 identifies the order of the zero lower group with the canonical local index.
 -/
@@ -51,7 +51,7 @@ variable (R S G : Type*) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
     [Group G] [Finite G] [MulSemiringAction G S] [IsGaloisGroup G R S]
     [Algebra.HasSeparableResidueFieldsAt R S (IsLocalRing.maximalIdeal R)]
 
-/-- Zero lower inertia has the actual canonical local ramification index as its order. -/
+/-- Zero lower inertia has the canonical local ramification index as its order. -/
 theorem card_lowerRamificationGroup_zero :
     Nat.card (lowerRamificationGroup G (IsLocalRing.maximalIdeal S) 0) =
       (IsLocalRing.maximalIdeal S).ramificationIdx R := by
@@ -68,7 +68,7 @@ variable (R S G : Type*) [CommRing R] [IsLocalRing R]
     [CommRing S] [IsLocalRing S] [Algebra R S] [IsLocalHom (algebraMap R S)]
     [Group G] [Finite G] [MulSemiringAction G S] [IsGaloisGroup G R S]
 
-/-- The actual residue automorphism induced by an automorphism of a local algebra. -/
+/-- The residue automorphism induced by an automorphism of a local algebra. -/
 noncomputable def localResidueGaloisHom :
     G →* (IsLocalRing.ResidueField S ≃ₐ[IsLocalRing.ResidueField R]
       IsLocalRing.ResidueField S) :=
@@ -84,7 +84,7 @@ theorem localResidueGaloisHom_residue (g : G) (x : S) :
     localResidueGaloisHom R S G g (IsLocalRing.residue S x) =
       IsLocalRing.residue S (g • x) := rfl
 
-/-- The actual reduction homomorphism is onto the actual residue automorphism group. -/
+/-- The reduction homomorphism is onto the residue automorphism group. -/
 theorem localResidueGaloisHom_surjective :
     Function.Surjective (localResidueGaloisHom R S G) := by
   intro σ
@@ -109,7 +109,7 @@ theorem ker_localResidueGaloisHom :
     obtain ⟨x, rfl⟩ := IsLocalRing.residue_surjective x
     exact congrArg (fun σ => σ (IsLocalRing.residue S x)) hg
 
-/-- The residue automorphism group is the actual quotient by the zero lower group. -/
+/-- The residue automorphism group is the quotient by the zero lower group. -/
 noncomputable def localResidueGaloisEquiv :
     G ⧸ lowerRamificationGroup G (IsLocalRing.maximalIdeal S) 0 ≃*
       (IsLocalRing.ResidueField S ≃ₐ[IsLocalRing.ResidueField R]
@@ -123,7 +123,7 @@ theorem localResidueGaloisEquiv_mk (g : G) :
     localResidueGaloisEquiv R S G g = localResidueGaloisHom R S G g := rfl
 
 include G in
-/-- Normality of the actual local residue-field extension. -/
+/-- Normality of the local residue-field extension. -/
 theorem localResidue_normal : Normal (IsLocalRing.ResidueField R) (IsLocalRing.ResidueField S) :=
   Ideal.Quotient.normal G (IsLocalRing.maximalIdeal R) (IsLocalRing.maximalIdeal S)
 
@@ -143,19 +143,19 @@ instance spectralIntegerRing_galois_smulDistribClass : SMulDistribClass G S L wh
     change g ((x : L) * y) = ((g • x : S) : L) * g y
     exact map_mul g (x : L) y
 
-/-- The proved full action has the actual base integer ring as its fixed ring. -/
+/-- The proved full action has the base integer ring as its fixed ring. -/
 instance spectralIntegerRing_isGaloisGroup : IsGaloisGroup G R S :=
   IsGaloisGroup.of_isFractionRing G R S K L
 
 variable [PerfectField (IsLocalRing.ResidueField
   (NormedField.valuation (K := K)).valuationSubring)]
 
-/-- The actual residue extension is Galois, without a finite-residue assumption. -/
+/-- The residue extension is Galois, without a finite-residue assumption. -/
 instance spectralIntegerRing_residue_isGalois :
     IsGalois (IsLocalRing.ResidueField R) (IsLocalRing.ResidueField S) where
   __ := localResidue_normal R S G
 
-/-- Inertia order for the actual full Galois action on the actual spectral integers. -/
+/-- Inertia order for the full Galois action on the spectral integers. -/
 theorem spectralIntegerRing_card_lower_zero :
     Nat.card (lowerRamificationGroup G (IsLocalRing.maximalIdeal S) 0) =
       (IsLocalRing.maximalIdeal S).ramificationIdx R := by

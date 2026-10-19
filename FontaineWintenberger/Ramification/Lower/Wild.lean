@@ -12,17 +12,17 @@ public import Mathlib.GroupTheory.PGroup
 /-!
 # Wild inertia
 
-## Depth raising in the actual lower groups
+## Depth raising in the lower groups
 
 An element of the `n`-th congruence group moves the `k`-th maximal-ideal
 power by order at least `n + k`. In positive residue characteristic,
 taking the residue-characteristic power raises every positive depth.
 
-## Actual relative prime-step chains in finite p-groups
+## Relative prime-step chains in finite p-groups
 
 Each proper subgroup is contained in a maximal subgroup, which is normal
 of index `p`. Recursion in the finite subgroup lattice gives a finite chain
-of actual inclusions, represented by the canonical reflexive transitive closure.
+of inclusions, represented by the canonical reflexive transitive closure.
 -/
 
 @[expose] public section
@@ -53,7 +53,7 @@ private theorem pow_sub_pow_mem_pow {B : Type*} [CommRing B] (I : Ideal B)
 variable {B : Type*} [CommRing B] [IsDomain B] [IsDiscreteValuationRing B]
 variable (G : Type*) [Group G] [MulSemiringAction G B]
 
-/-- The actual lower congruence action gains the input's ideal-power order. -/
+/-- The lower congruence action gains the input's ideal-power order. -/
 theorem smul_sub_mem_maximalIdeal_pow_add {n k : ℕ} {g : G}
     (hg : g ∈ lowerRamificationGroup G (IsLocalRing.maximalIdeal B) n)
     {x : B} (hx : x ∈ IsLocalRing.maximalIdeal B ^ k) :
@@ -145,7 +145,7 @@ theorem pow_pow_mem_lowerRamificationGroup (p : ℕ) [Fact p.Prime]
     simpa only [pow_succ p j, pow_mul, Nat.succ_eq_add_one] using
       pow_mem_lowerRamificationGroup_succ G p (show 1 ≤ j + 1 by omega) ih
 
-/-- The actual first wild ramification group is a finite `p`-group.
+/-- The first wild ramification group is a finite `p`-group.
 No finiteness or perfection of the residue field is needed. -/
 theorem lowerRamificationGroup_one_isPGroup [Finite G] [FaithfulSMul G B]
     (p : ℕ) [Fact p.Prime] [CharP (IsLocalRing.ResidueField B) p] :
@@ -167,8 +167,8 @@ variable {G : Type*} [Group G] [Finite G] {p : ℕ} [Fact p.Prime]
 variable {B : Type*} [CommRing B] [IsDomain B] [IsDiscreteValuationRing B]
     [MulSemiringAction G B] [FaithfulSMul G B] [CharP (IsLocalRing.ResidueField B) p]
 
-/-- Every relative subgroup inclusion inside actual wild inertia has a
-finite refinement by actual normal steps of index the residue characteristic. -/
+/-- Every relative subgroup inclusion inside wild inertia has a
+finite refinement by normal steps of index the residue characteristic. -/
 theorem wild_subgroup_prime_chain
     (K H : Subgroup (lowerRamificationGroup G (IsLocalRing.maximalIdeal B) 1)) (hHK : H ≤ K) :
     Relation.ReflTransGen
