@@ -55,9 +55,11 @@ theorem RelFieldOfNorms.absolute_relative_stage (τ : M ≃ₐ[L] M)
     (N : FiniteIntermediateField L M) (x : FieldOfNorms K N.val) :
     RelFieldOfNorms.of K L M
         (RelFieldOfNorms.absoluteLayer K M L (τ.restrictScalars K) N)
-        (FieldOfNorms.map (RelFieldOfNorms.absoluteLayerEquiv K M L (τ.restrictScalars K) N) x) =
+        (FieldOfNorms.mapEquiv
+          (RelFieldOfNorms.absoluteLayerEquiv K M L (τ.restrictScalars K) N) x) =
       RelFieldOfNorms.of K L M (FiniteIntermediateField.map τ.toAlgHom N)
-        (FieldOfNorms.map ((FiniteIntermediateField.equivMap τ.toAlgHom N).restrictScalars K) x) :=
+        (FieldOfNorms.mapEquiv
+          ((FiniteIntermediateField.equivMap τ.toAlgHom N).restrictScalars K) x) :=
             by
   exact RelFieldOfNorms.of_transport_congr K L M
     (RelFieldOfNorms.absoluteLayer K M L (τ.restrictScalars K) N) (FiniteIntermediateField.map

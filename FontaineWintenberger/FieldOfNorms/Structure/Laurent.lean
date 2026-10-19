@@ -49,8 +49,8 @@ def FieldOfNorms.powerSeriesEquiv :
     ⟨u, hu.le.trans (by simp)⟩
   exact valuedPowerSeriesEquiv (FieldOfNorms K L)
     (residueConstantsIntegerHom K L)
-    (residueConstantsResidueEquiv K L)
-    (fun x => (residueConstantsResidueEquiv_apply K L x).symm)
+    (FieldOfNorms.residueEquiv K L)
+    (fun x => (FieldOfNorms.residueEquiv_apply K L x).symm)
     π hu
 
 /-- The canonical Laurent-coordinate field isomorphism on the same
@@ -63,8 +63,8 @@ def FieldOfNorms.laurentEquiv :
     ⟨u, hu.le.trans (by simp)⟩
   exact laurentUniformizerEquiv (FieldOfNorms K L)
     (residueConstantsIntegerHom K L)
-    (residueConstantsResidueEquiv K L)
-    (fun x => (residueConstantsResidueEquiv_apply K L x).symm)
+    (FieldOfNorms.residueEquiv K L)
+    (fun x => (FieldOfNorms.residueEquiv_apply K L x).symm)
     π hu
 
 /-- Integral constants are exactly the coefficient section. -/
@@ -76,8 +76,8 @@ theorem FieldOfNorms.powerSeriesEquiv_C (a : κL) :
   let : DiscreteUniformity κL := inferInstance
   exact valuedPowerSeriesEquiv_C (FieldOfNorms K L)
     (residueConstantsIntegerHom K L)
-    (residueConstantsResidueEquiv K L)
-    (fun x => (residueConstantsResidueEquiv_apply K L x).symm)
+    (FieldOfNorms.residueEquiv K L)
+    (fun x => (FieldOfNorms.residueEquiv_apply K L x).symm)
     ⟨u, hu.le.trans (by simp)⟩ hu a
 
 /-- The integral parameter represents precisely the chosen uniformizer. -/
@@ -89,8 +89,8 @@ theorem FieldOfNorms.powerSeriesEquiv_X :
   exact congrArg (fun z : (FieldOfNorms.fieldValuation K L).valuationSubring =>
     (z : FieldOfNorms K L)) (valuedPowerSeriesEquiv_X (FieldOfNorms K L)
       (residueConstantsIntegerHom K L)
-      (residueConstantsResidueEquiv K L)
-      (fun x => (residueConstantsResidueEquiv_apply K L x).symm)
+      (FieldOfNorms.residueEquiv K L)
+      (fun x => (FieldOfNorms.residueEquiv_apply K L x).symm)
       ⟨u, hu.le.trans (by simp)⟩ hu)
 
 /-- The Laurent isomorphism extends the integral evaluation. -/
@@ -132,7 +132,7 @@ theorem FieldOfNorms.laurentEquiv_valuation (A : LaurentSeries κL) :
 
 /-- The coordinate map is uniformly continuous for precisely the
 already constructed stable-valuation uniformity on the field. -/
-theorem uniformContinuous_fieldOfNormsLaurentEquiv :
+theorem FieldOfNorms.uniformContinuous_laurentEquiv :
     UniformContinuous (FieldOfNorms.laurentEquiv K L u hu) := by
   let : UniformSpace κL := ⊥
   let : DiscreteUniformity κL := inferInstance
@@ -141,7 +141,7 @@ theorem uniformContinuous_fieldOfNormsLaurentEquiv :
   exact uniformContinuous_laurentUniformizerEquiv (FieldOfNorms K L) _ _ _ π hu
 
 /-- The inverse also preserves the valuation uniformities. -/
-theorem uniformContinuous_fieldOfNormsLaurentEquiv_symm :
+theorem FieldOfNorms.uniformContinuous_laurentEquiv_symm :
     UniformContinuous (FieldOfNorms.laurentEquiv K L u hu).symm := by
   let : UniformSpace κL := ⊥
   let : DiscreteUniformity κL := inferInstance
@@ -150,14 +150,14 @@ theorem uniformContinuous_fieldOfNormsLaurentEquiv_symm :
   exact uniformContinuous_laurentUniformizerEquiv_symm (FieldOfNorms K L) _ _ _ π hu
 
 /-- Continuity for the existing field of norms field topology. -/
-theorem continuous_fieldOfNormsLaurentEquiv :
+theorem FieldOfNorms.continuous_laurentEquiv :
     Continuous (FieldOfNorms.laurentEquiv K L u hu) := by
-  exact (uniformContinuous_fieldOfNormsLaurentEquiv K L u hu).continuous
+  exact (FieldOfNorms.uniformContinuous_laurentEquiv K L u hu).continuous
 
 /-- Continuity of the Laurent expansion map. -/
-theorem continuous_fieldOfNormsLaurentEquiv_symm :
+theorem FieldOfNorms.continuous_laurentEquiv_symm :
     Continuous (FieldOfNorms.laurentEquiv K L u hu).symm := by
-  exact (uniformContinuous_fieldOfNormsLaurentEquiv_symm K L u hu).continuous
+  exact (FieldOfNorms.uniformContinuous_laurentEquiv_symm K L u hu).continuous
 
 /-- The constants and chosen uniformizer characterize
 the continuous Laurent-coordinate field map uniquely. -/
@@ -176,7 +176,7 @@ theorem FieldOfNorms.laurentEquiv_unique :
 
 /-- Integral evaluation is continuous for the inherited integer
 ring topology and the discrete-coefficient power-series topology. -/
-theorem continuous_fieldOfNormsPowerSeriesEquiv :
+theorem FieldOfNorms.continuous_powerSeriesEquiv :
     letI : UniformSpace κL := ⊥
     Continuous (FieldOfNorms.powerSeriesEquiv K L u hu) := by
   let : UniformSpace κL := ⊥
@@ -198,8 +198,8 @@ theorem continuous_fieldOfNormsPowerSeriesEquiv :
     valuationSubring_completeSpace (FieldOfNorms K L)
   exact continuous_powerSeriesUniformizerEquiv
     (residueConstantsIntegerHom K L)
-    (residueConstantsResidueEquiv K L)
-    (fun x => (residueConstantsResidueEquiv_apply K L x).symm)
+    (FieldOfNorms.residueEquiv K L)
+    (fun x => (FieldOfNorms.residueEquiv_apply K L x).symm)
     π (irreducible_of_valuation_exp_neg_one (FieldOfNorms K L) π hu)
     (hasEval_of_valuation_exp_neg_one (FieldOfNorms K L) π hu)
 

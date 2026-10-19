@@ -42,6 +42,7 @@ FontaineWintenberger.lean   imports one aggregate file per layer
 ```
 
 `scripts/b1_mapping.py` records where every pre-reorganization file went.
+`python3 scripts/check_aggregates.py` (run in CI) verifies both rules above.
 
 A layer may import only layers above it in this list. Never import `APF` or
 `FieldOfNorms` from `Ramification` or `LocalField`. Every `.lean` file must be imported by

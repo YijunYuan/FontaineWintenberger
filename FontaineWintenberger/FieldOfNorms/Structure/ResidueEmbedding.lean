@@ -99,7 +99,7 @@ def FieldOfNorms.ofTail (D : FiniteIntermediateField K L)
 
 /-- The extension retains every specified tail coordinate. -/
 @[simp]
-theorem FieldOfNorms.coord_fieldOfNormsOfTail (D : FiniteIntermediateField K L)
+theorem FieldOfNorms.coord_ofTail (D : FiniteIntermediateField K L)
     (x : ∀ E : FiniteIntermediateField K L, D ≤ E → E.val)
     (hx : ∀ (E F : FiniteIntermediateField K L) (hDE : D ≤ E) (hDF : D ≤ F) (hEF : E ≤ F),
       FiniteIntermediateField.norm E F hEF (x F hDF) = x E hDE)
@@ -109,7 +109,7 @@ theorem FieldOfNorms.coord_fieldOfNormsOfTail (D : FiniteIntermediateField K L)
 
 /-- At any finite intermediate field, the extension is a finite norm
 from the finite compositum with the specified starting field. -/
-theorem FieldOfNorms.coord_fieldOfNormsOfTail_any (D : FiniteIntermediateField K L)
+theorem FieldOfNorms.coord_ofTail_of_le (D : FiniteIntermediateField K L)
     (x : ∀ E : FiniteIntermediateField K L, D ≤ E → E.val)
     (hx : ∀ (E F : FiniteIntermediateField K L) (hDE : D ≤ E) (hDF : D ≤ F) (hEF : E ≤ F),
       FiniteIntermediateField.norm E F hEF (x F hDF) = x E hDE) (E : FiniteIntermediateField K L) :
@@ -119,7 +119,7 @@ theorem FieldOfNorms.coord_fieldOfNormsOfTail_any (D : FiniteIntermediateField K
         (x (FiniteIntermediateField.sup E D) (FiniteIntermediateField.le_sup_right E D)) := by
   rw [← FieldOfNorms.coord_norm K L E (FiniteIntermediateField.sup E D)
       (FiniteIntermediateField.le_sup_left E D),
-    FieldOfNorms.coord_fieldOfNormsOfTail]
+    FieldOfNorms.coord_ofTail]
 
 end CofinalTail
 
@@ -278,7 +278,7 @@ def residueConstants : κL →*₀ FieldOfNorms K L := by
     (fun E F hE hF hEF => residueCoordinate_norm K L E F hE hF hEF x)
   have he (E : FiniteIntermediateField K L) (hE : K₁ ≤ E) (x : κL) :
       FieldOfNorms.coord K L E (f x) = residueCoordinate K L E hE x :=
-    FieldOfNorms.coord_fieldOfNormsOfTail K L K₁
+    FieldOfNorms.coord_ofTail K L K₁
       (fun E hE => residueCoordinate K L E hE x)
       (fun E F hE hF hEF => residueCoordinate_norm K L E F hE hF hEF x) E hE
   exact {
@@ -303,7 +303,7 @@ theorem FieldOfNorms.coord_residueConstants (E : FiniteIntermediateField K L) (h
     (x : κL) :
     FieldOfNorms.coord K L E (residueConstants K L x) =
       residueCoordinate K L E hE x :=
-  FieldOfNorms.coord_fieldOfNormsOfTail K L K₁
+  FieldOfNorms.coord_ofTail K L K₁
     (fun E hE => residueCoordinate K L E hE x)
     (fun E F hE hF hEF => residueCoordinate_norm K L E F hE hF hEF x) E hE
 
@@ -315,7 +315,7 @@ theorem FieldOfNorms.coord_residueConstants_any (E : FiniteIntermediateField K L
           (FiniteIntermediateField.le_sup_left E K₁)
         (residueCoordinate K L (FiniteIntermediateField.sup E K₁)
           (FiniteIntermediateField.le_sup_right E K₁) x) :=
-  FieldOfNorms.coord_fieldOfNormsOfTail_any K L K₁
+  FieldOfNorms.coord_ofTail_of_le K L K₁
     (fun E hE => residueCoordinate K L E hE x)
     (fun E F hE hF hEF => residueCoordinate_norm K L E F hE hF hEF x) E
 
@@ -338,7 +338,7 @@ theorem residueConstants_injective :
 /-- The constants are integral for the stable valuation. -/
 theorem residueConstants_valuation_le_one (x : κL) :
     FieldOfNorms.valuation K L (residueConstants K L x) ≤ 1 := by
-  obtain ⟨T, hT⟩ := IsAPF.exists_fieldOfNormsValuation_eq_coordinate K L
+  obtain ⟨T, hT⟩ := FieldOfNorms.exists_valuation_eq_coordinateValuation K L
   let E := FiniteIntermediateField.sup T K₁
   have hE : K₁ ≤ E := FiniteIntermediateField.le_sup_right T K₁
   rw [hT E (FiniteIntermediateField.le_sup_left T K₁)]
@@ -500,7 +500,7 @@ theorem FieldOfNorms.residueLayerEquiv_residueConstantsInteger (x : κL) :
 /-- The constants identify the intrinsic residue
 field with the entire field of norms residue field, retaining the
 finite starting-stage Frobenius normalization. -/
-def residueConstantsResidueEquiv :
+def FieldOfNorms.residueEquiv :
     κL ≃+* IsLocalRing.ResidueField
       (FieldOfNorms.fieldValuation K L).valuationSubring := by
   exact (residueCoordinateEquiv K L (deepFiniteTower K L K₁ 0)
@@ -510,8 +510,8 @@ def residueConstantsResidueEquiv :
 /-- This residue isomorphism is induced by the source
 constants, rather than by a new coefficient model. -/
 @[simp]
-theorem residueConstantsResidueEquiv_apply (x : κL) :
-    residueConstantsResidueEquiv K L x =
+theorem FieldOfNorms.residueEquiv_apply (x : κL) :
+    FieldOfNorms.residueEquiv K L x =
       IsLocalRing.residue _ (residueConstantsInteger K L x) := by
   apply (FieldOfNorms.residueLayerEquiv K L K₁).injective
   exact (FieldOfNorms.residueLayerEquiv K L K₁).apply_symm_apply _ |>.trans

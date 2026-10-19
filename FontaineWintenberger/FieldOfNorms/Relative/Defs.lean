@@ -101,7 +101,7 @@ def RelFieldOfNorms.transition (N P : FiniteIntermediateField L M) (h : N ≤ P)
   letI : Module.Finite N.val P.val := Module.Finite.right L N.val P.val
   letI : Algebra.IsSeparable N.val P.val :=
     Algebra.isSeparable_tower_top_of_isSeparable L N.val P.val
-  exact FieldOfNorms.finiteRingHom K N.val P.val
+  exact FieldOfNorms.inclusion K N.val P.val
 
 /-- The identity law is retained at the finite stage. -/
 @[simp]
@@ -110,7 +110,7 @@ theorem RelFieldOfNorms.transition_self (N : FiniteIntermediateField L M) :
       RingHom.id (FieldOfNorms K N.val) := by
   apply RingHom.ext
   intro x
-  exact FieldOfNorms.finiteMap_refl K N.val x
+  exact FieldOfNorms.inclusion_self K N.val x
 
 /-- Composition retains the finite norm-family maps in the same tower. -/
 theorem RelFieldOfNorms.transition_comp (N P Q : FiniteIntermediateField L M)
@@ -137,7 +137,7 @@ theorem RelFieldOfNorms.transition_comp (N P Q : FiniteIntermediateField L M)
     Algebra.isSeparable_tower_top_of_isSeparable L P.val Q.val
   apply RingHom.ext
   intro x
-  exact FieldOfNorms.finiteMap_trans K N.val P.val Q.val x
+  exact FieldOfNorms.inclusion_inclusion K N.val P.val Q.val x
 
 /-- The proved identity and composition laws give the directed system. -/
 instance RelFieldOfNorms.instDirectedSystem :
@@ -223,7 +223,7 @@ theorem RelFieldOfNorms.exists_polynomial :
 /-- The finite-inclusion map from the base norm field to a stage. -/
 def RelFieldOfNorms.baseToStage (N : FiniteIntermediateField L M) :
     FieldOfNorms K L →+* FieldOfNorms K N.val := by
-  exact FieldOfNorms.finiteRingHom K L N.val
+  exact FieldOfNorms.inclusion K L N.val
 
 /-- Transition maps commute with the finite maps from the base field. -/
 theorem RelFieldOfNorms.transition_base (N P : FiniteIntermediateField L M) (hNP : N ≤ P) :
@@ -238,7 +238,7 @@ theorem RelFieldOfNorms.transition_base (N P : FiniteIntermediateField L M) (hNP
     Algebra.isSeparable_tower_top_of_isSeparable L N.val P.val
   apply RingHom.ext
   intro x
-  exact FieldOfNorms.finiteMap_trans K L N.val P.val x
+  exact FieldOfNorms.inclusion_inclusion K L N.val P.val x
 
 /-- The canonical base embedding into the same directed union. -/
 def RelFieldOfNorms.baseHom :
@@ -285,7 +285,7 @@ theorem RelFieldOfNorms.isSeparable :
   intro z
   obtain ⟨N, x, rfl⟩ := RelFieldOfNorms.exists_stage K L M z
   let : Algebra.IsSeparable (FieldOfNorms K L) (FieldOfNorms K N.val) :=
-    (FieldOfNorms.finite_finite_separable_degree K L N.val
+    (FieldOfNorms.finiteDimensional_isSeparable_finrank_inclusion K L N.val
 ).2.1
   exact IsSeparable.map (RelFieldOfNorms.ofAlgHom K L M N)
     (RelFieldOfNorms.ofAlgHom K L M N).injective
@@ -330,36 +330,34 @@ theorem RelFieldOfNorms.valueMap_pow (e c : ℕ) (he : 0 < e) (hc : 0 < c)
 
 /-- The positive scaling exponent of the finite map from the base. -/
 def RelFieldOfNorms.stageExponent (N : FiniteIntermediateField L M) : ℕ :=
-  Classical.choose (exists_finiteFieldOfNormsMap_valuation_scaling K L N.val
+  Classical.choose (FieldOfNorms.exists_valuation_inclusion_eq_pow K L N.val
 )
 
-omit [Fact (¬ Module.Finite K L)] in
 /-- Positivity is supplied by the finite-embedding theorem. -/
 theorem RelFieldOfNorms.stageExponent_pos (N : FiniteIntermediateField L M) :
     0 < RelFieldOfNorms.stageExponent K L M N :=
-  (Classical.choose_spec (exists_finiteFieldOfNormsMap_valuation_scaling K L N.val
+  (Classical.choose_spec (FieldOfNorms.exists_valuation_inclusion_eq_pow K L N.val
 )).1
 
-omit [Fact (¬ Module.Finite K L)] in
 /-- The chosen exponent satisfies the proved finite-map valuation identity. -/
 theorem RelFieldOfNorms.stageExponent_spec (N : FiniteIntermediateField L M) (x : FieldOfNorms K L)
     :
     FieldOfNorms.valuation K N.val
-        (FieldOfNorms.finiteMap K L N.val x) =
+        (FieldOfNorms.inclusion K L N.val x) =
       FieldOfNorms.valuation K L x ^ RelFieldOfNorms.stageExponent K L M N :=
-  (Classical.choose_spec (exists_finiteFieldOfNormsMap_valuation_scaling K L N.val
+  (Classical.choose_spec (FieldOfNorms.exists_valuation_inclusion_eq_pow K L N.val
 )).2 x
 
 /-- The base uniformizer makes the finite-stage scaling exponent unique. -/
 theorem RelFieldOfNorms.stageExponent_unique (N : FiniteIntermediateField L M) (c : ℕ)
     (hc : ∀ x : FieldOfNorms K L,
       FieldOfNorms.valuation K N.val
-        (FieldOfNorms.finiteMap K L N.val x) = FieldOfNorms.valuation K L x ^ c) :
+        (FieldOfNorms.inclusion K L N.val x) = FieldOfNorms.valuation K L x ^ c) :
     c = RelFieldOfNorms.stageExponent K L M N := by
   have h := (hc (FieldOfNorms.uniformizer K L)).symm.trans
     (RelFieldOfNorms.stageExponent_spec K L M N
       (FieldOfNorms.uniformizer K L))
-  rw [FieldOfNorms.valuation_fieldOfNormsUniformizer, ← WithZero.exp_nsmul,
+  rw [FieldOfNorms.valuation_uniformizer, ← WithZero.exp_nsmul,
     ← WithZero.exp_nsmul] at h
   have hn := WithZero.exp_injective h
   simp only [nsmul_eq_mul, mul_neg, mul_one] at hn
@@ -381,12 +379,12 @@ theorem RelFieldOfNorms.transition_valuation_scaling (N P : FiniteIntermediateFi
   let : Module.Finite N.val P.val := Module.Finite.right L N.val P.val
   let : Algebra.IsSeparable N.val P.val :=
     Algebra.isSeparable_tower_top_of_isSeparable L N.val P.val
-  obtain ⟨c, hc, hv⟩ := exists_finiteFieldOfNormsMap_valuation_scaling K N.val P.val
+  obtain ⟨c, hc, hv⟩ := FieldOfNorms.exists_valuation_inclusion_eq_pow K N.val P.val
   refine ⟨c, hc, ?_, hv⟩
   apply (RelFieldOfNorms.stageExponent_unique K L M P
     (RelFieldOfNorms.stageExponent K L M N * c) ?_).symm
   intro x
-  rw [← FieldOfNorms.finiteMap_trans K L N.val P.val x, hv,
+  rw [← FieldOfNorms.inclusion_inclusion K L N.val P.val x, hv,
     RelFieldOfNorms.stageExponent_spec, pow_mul]
 
 /-- The stage valuation, rationally normalized over the base norm field. -/
@@ -426,7 +424,7 @@ theorem RelFieldOfNorms.stageValuation_base (N : FiniteIntermediateField L M) (x
   rw [RelFieldOfNorms.stageValuation_apply]
   change RelFieldOfNorms.valueMap (RelFieldOfNorms.stageExponent K L M N)
       (FieldOfNorms.valuation K N.val
-        (FieldOfNorms.finiteMap K L N.val x)) = _
+        (FieldOfNorms.inclusion K L N.val x)) = _
   rw [RelFieldOfNorms.stageExponent_spec]
   simpa only [one_mul] using RelFieldOfNorms.valueMap_pow 1
     (RelFieldOfNorms.stageExponent K L M N) (by decide)
@@ -527,7 +525,7 @@ def RelFieldOfNorms.finiteEquiv :
   letI : IsAPF K M := (isAPF_finite_extension_iff K M L).mpr ‹_›
   letI : Fact (¬ Module.Finite K M) := ⟨RelFieldOfNorms.ambient_infinite K L M⟩
   exact (RelFieldOfNorms.topEquiv K L M).symm.trans
-    (FieldOfNorms.ringEquiv K
+    (FieldOfNorms.mapEquiv
       ((IntermediateField.topEquiv :
         (⊤ : IntermediateField L M) ≃ₐ[L] M).restrictScalars K))
 
@@ -535,11 +533,17 @@ def RelFieldOfNorms.finiteEquiv :
 @[simp]
 theorem RelFieldOfNorms.finiteEquiv_of_top
     (x : FieldOfNorms K (RelFieldOfNorms.top L M).val) :
+    letI : Algebra.IsSeparable K M := Algebra.IsSeparable.trans K L M
+    letI : IsAPF K M := (isAPF_finite_extension_iff K M L).mpr ‹_›
+    letI : Fact (¬ Module.Finite K M) := ⟨RelFieldOfNorms.ambient_infinite K L M⟩
     RelFieldOfNorms.finiteEquiv K L M
         (RelFieldOfNorms.of K L M (RelFieldOfNorms.top L M) x) =
-      FieldOfNorms.map ((IntermediateField.topEquiv :
+      FieldOfNorms.mapEquiv ((IntermediateField.topEquiv :
         (⊤ : IntermediateField L M) ≃ₐ[L] M).restrictScalars K) x := by
-  change FieldOfNorms.map ((IntermediateField.topEquiv :
+  let : Algebra.IsSeparable K M := Algebra.IsSeparable.trans K L M
+  let : IsAPF K M := (isAPF_finite_extension_iff K M L).mpr ‹_›
+  let : Fact (¬ Module.Finite K M) := ⟨RelFieldOfNorms.ambient_infinite K L M⟩
+  change FieldOfNorms.mapEquiv ((IntermediateField.topEquiv :
       (⊤ : IntermediateField L M) ≃ₐ[L] M).restrictScalars K)
     ((RelFieldOfNorms.topEquiv K L M).symm
       (RelFieldOfNorms.topEquiv K L M x)) = _
@@ -552,9 +556,15 @@ theorem RelFieldOfNorms.finiteEquiv_of (N : FiniteIntermediateField L M) (x : Fi
     letI : Algebra.IsSeparable N.val M :=
       Algebra.isSeparable_tower_top_of_isSeparable L N.val M
     letI : IsScalarTower K N.val M := IsScalarTower.of_algebraMap_eq' rfl
+    letI : Algebra.IsSeparable K M := Algebra.IsSeparable.trans K L M
+    letI : IsAPF K M := (isAPF_finite_extension_iff K M L).mpr ‹_›
+    letI : Fact (¬ Module.Finite K M) := ⟨RelFieldOfNorms.ambient_infinite K L M⟩
     RelFieldOfNorms.finiteEquiv K L M
         (RelFieldOfNorms.of K L M N x) =
-      FieldOfNorms.finiteMap K N.val M x := by
+      FieldOfNorms.inclusion K N.val M x := by
+  let : Algebra.IsSeparable K M := Algebra.IsSeparable.trans K L M
+  let : IsAPF K M := (isAPF_finite_extension_iff K M L).mpr ‹_›
+  let : Fact (¬ Module.Finite K M) := ⟨RelFieldOfNorms.ambient_infinite K L M⟩
   let : Module.Finite N.val M := Module.Finite.right L N.val M
   let : Algebra.IsSeparable N.val M :=
     Algebra.isSeparable_tower_top_of_isSeparable L N.val M
@@ -573,21 +583,27 @@ theorem RelFieldOfNorms.finiteEquiv_of (N : FiniteIntermediateField L M) (x : Fi
     show N.val ≤ (⊤ : IntermediateField L M) from le_top
   rw [← RelFieldOfNorms.of_transition K L M N
     (RelFieldOfNorms.top L M) hNT x, RelFieldOfNorms.finiteEquiv_of_top]
-  simpa only [FieldOfNorms.map_refl, RelFieldOfNorms.transition, FieldOfNorms.finiteRingHom_apply]
-    using FieldOfNorms.finiteMap_naturality K
+  simpa only [FieldOfNorms.mapEquiv_refl, RelFieldOfNorms.transition]
+    using FieldOfNorms.mapEquiv_inclusion
     (AlgEquiv.refl : N.val ≃ₐ[K] N.val)
     ((IntermediateField.topEquiv :
       (⊤ : IntermediateField L M) ≃ₐ[L] M).restrictScalars K) (fun _ => rfl) x
 
 /-- The same finite comparison commutes with the base inclusion. -/
 theorem RelFieldOfNorms.finiteEquiv_base (x : FieldOfNorms K L) :
+    letI : Algebra.IsSeparable K M := Algebra.IsSeparable.trans K L M
+    letI : IsAPF K M := (isAPF_finite_extension_iff K M L).mpr ‹_›
+    letI : Fact (¬ Module.Finite K M) := ⟨RelFieldOfNorms.ambient_infinite K L M⟩
     RelFieldOfNorms.finiteEquiv K L M
         (RelFieldOfNorms.baseHom K L M x) =
-      FieldOfNorms.finiteMap K L M x := by
+      FieldOfNorms.inclusion K L M x := by
+  let : Algebra.IsSeparable K M := Algebra.IsSeparable.trans K L M
+  let : IsAPF K M := (isAPF_finite_extension_iff K M L).mpr ‹_›
+  let : Fact (¬ Module.Finite K M) := ⟨RelFieldOfNorms.ambient_infinite K L M⟩
   rw [← RelFieldOfNorms.of_base K L M (RelFieldOfNorms.top L M) x,
     RelFieldOfNorms.finiteEquiv_of_top]
-  simpa only [FieldOfNorms.map_refl, RelFieldOfNorms.baseToStage, FieldOfNorms.finiteRingHom_apply]
-    using FieldOfNorms.finiteMap_naturality K
+  simpa only [FieldOfNorms.mapEquiv_refl, RelFieldOfNorms.baseToStage]
+    using FieldOfNorms.mapEquiv_inclusion
     (AlgEquiv.refl : L ≃ₐ[K] L)
     ((IntermediateField.topEquiv :
       (⊤ : IntermediateField L M) ≃ₐ[L] M).restrictScalars K) (fun _ => rfl) x
@@ -610,7 +626,7 @@ theorem RelFieldOfNorms.finiteEquiv_valuation
     Algebra.IsSeparable.trans K L (RelFieldOfNorms.top L M).val
   obtain ⟨x, rfl⟩ :=
     (RelFieldOfNorms.of_top_bijective K L M).surjective z
-  rw [RelFieldOfNorms.finiteEquiv_of_top, FieldOfNorms.valuation_fieldOfNormsMap,
+  rw [RelFieldOfNorms.finiteEquiv_of_top, FieldOfNorms.valuation_mapEquiv,
     RelFieldOfNorms.valuation_of, RelFieldOfNorms.stageValuation_apply]
 
 /-- Finite comparison over the same base and its finite-inclusion algebra. -/
@@ -620,7 +636,7 @@ def RelFieldOfNorms.finiteAlgEquiv :
     letI : Fact (¬ Module.Finite K M) := ⟨RelFieldOfNorms.ambient_infinite K L M⟩
     letI : IsAPF K M := (isAPF_finite_extension_iff K M L).mpr ‹_›
     letI : Fact (¬ Module.Finite K M) := ⟨RelFieldOfNorms.ambient_infinite K L M⟩
-    letI := (FieldOfNorms.finiteRingHom K L M
+    letI := (FieldOfNorms.inclusion K L M
 ).toAlgebra
     RelFieldOfNorms K L M ≃ₐ[FieldOfNorms K L] FieldOfNorms K M := by
   letI : Algebra.IsSeparable K M := Algebra.IsSeparable.trans K L M
@@ -628,7 +644,7 @@ def RelFieldOfNorms.finiteAlgEquiv :
   letI : Fact (¬ Module.Finite K M) := ⟨RelFieldOfNorms.ambient_infinite K L M⟩
   letI : IsAPF K M := (isAPF_finite_extension_iff K M L).mpr ‹_›
   letI : Fact (¬ Module.Finite K M) := ⟨RelFieldOfNorms.ambient_infinite K L M⟩
-  letI := (FieldOfNorms.finiteRingHom K L M
+  letI := (FieldOfNorms.inclusion K L M
 ).toAlgebra
   exact { RelFieldOfNorms.finiteEquiv K L M with
     commutes' := RelFieldOfNorms.finiteEquiv_base K L M }
@@ -653,7 +669,7 @@ def RelFieldOfNorms.stageMap (N : FiniteIntermediateField L M) :
     FieldOfNorms K N.val ≃+* FieldOfNorms K (FiniteIntermediateField.map t N).val := by
   letI : Algebra.IsSeparable K (FiniteIntermediateField.map t N).val :=
     Algebra.IsSeparable.trans K L (FiniteIntermediateField.map t N).val
-  exact FieldOfNorms.ringEquiv K
+  exact FieldOfNorms.mapEquiv
     ((FiniteIntermediateField.equivMap t N).restrictScalars K)
 
 /-- Stage transport is the existing norm-family isomorphism. -/
@@ -661,7 +677,7 @@ def RelFieldOfNorms.stageMap (N : FiniteIntermediateField L M) :
 theorem RelFieldOfNorms.stageMap_apply (N : FiniteIntermediateField L M) (x : FieldOfNorms K N.val)
     :
     RelFieldOfNorms.stageMap K L M M' t N x =
-      FieldOfNorms.map ((FiniteIntermediateField.equivMap t N).restrictScalars K) x := rfl
+      FieldOfNorms.mapEquiv ((FiniteIntermediateField.equivMap t N).restrictScalars K) x := rfl
 
 /-- Transport of the finite image commutes with the base inclusion. -/
 theorem RelFieldOfNorms.stageMap_base (N : FiniteIntermediateField L M) (x : FieldOfNorms K L) :
@@ -669,8 +685,8 @@ theorem RelFieldOfNorms.stageMap_base (N : FiniteIntermediateField L M) (x : Fie
         (RelFieldOfNorms.baseToStage K L M N x) =
       RelFieldOfNorms.baseToStage K L M' (FiniteIntermediateField.map t N) x := by
   rw [RelFieldOfNorms.stageMap_apply]
-  simpa only [RelFieldOfNorms.baseToStage, FieldOfNorms.finiteRingHom_apply,
-    FieldOfNorms.map_refl] using FieldOfNorms.finiteMap_naturality K
+  simpa only [RelFieldOfNorms.baseToStage,
+    FieldOfNorms.mapEquiv_refl] using FieldOfNorms.mapEquiv_inclusion
     (AlgEquiv.refl : L ≃ₐ[K] L) ((FiniteIntermediateField.equivMap t N).restrictScalars K)
     (fun a => (FiniteIntermediateField.equivMap t N).commutes a) x
 
@@ -703,8 +719,8 @@ theorem RelFieldOfNorms.stageMap_transition (N P : FiniteIntermediateField L M)
     Algebra.isSeparable_tower_top_of_isSeparable L
       (FiniteIntermediateField.map t N).val (FiniteIntermediateField.map t P).val
   rw [RelFieldOfNorms.stageMap_apply, RelFieldOfNorms.stageMap_apply]
-  simpa only [RelFieldOfNorms.transition, FieldOfNorms.finiteRingHom_apply] using
-    FieldOfNorms.finiteMap_naturality K ((FiniteIntermediateField.equivMap t N).restrictScalars K)
+  simpa only [RelFieldOfNorms.transition] using
+    FieldOfNorms.mapEquiv_inclusion ((FiniteIntermediateField.equivMap t N).restrictScalars K)
       ((FiniteIntermediateField.equivMap t P).restrictScalars K)
       (fun _ => by apply Subtype.ext; rfl) x
 
@@ -717,12 +733,12 @@ theorem RelFieldOfNorms.stageExponent_map (N : FiniteIntermediateField L M) :
   apply (RelFieldOfNorms.stageExponent_unique K L M'
     (FiniteIntermediateField.map t N) (RelFieldOfNorms.stageExponent K L M N) ?_).symm
   intro x
-  have h := FieldOfNorms.valuation_fieldOfNormsMap K
+  have h := FieldOfNorms.valuation_mapEquiv
     ((FiniteIntermediateField.equivMap t N).restrictScalars K)
     (RelFieldOfNorms.baseToStage K L M N x)
   rw [← RelFieldOfNorms.stageMap_apply K L M M' t N,
     RelFieldOfNorms.stageMap_base K L M M' t N] at h
-  simp only [RelFieldOfNorms.baseToStage, FieldOfNorms.finiteRingHom_apply] at h
+  simp only [RelFieldOfNorms.baseToStage] at h
   exact h.trans (RelFieldOfNorms.stageExponent_spec K L M N x)
 
 /-- The stage isomorphisms preserve the rationally normalized valuations. -/
@@ -734,11 +750,11 @@ theorem RelFieldOfNorms.stageMap_valuation (N : FiniteIntermediateField L M)
   let : Algebra.IsSeparable K (FiniteIntermediateField.map t N).val :=
     Algebra.IsSeparable.trans K L (FiniteIntermediateField.map t N).val
   rw [RelFieldOfNorms.stageValuation_apply, RelFieldOfNorms.stageValuation_apply,
-    RelFieldOfNorms.stageMap_apply, FieldOfNorms.valuation_fieldOfNormsMap,
+    RelFieldOfNorms.stageMap_apply, FieldOfNorms.valuation_mapEquiv,
     RelFieldOfNorms.stageExponent_map K L M M' t N]
 
 /-- The compatible finite-image maps induce a map on the same canonical unions. -/
-def RelFieldOfNorms.map :
+def RelFieldOfNorms.mapEquiv :
     RelFieldOfNorms K L M →+*
       RelFieldOfNorms K L M' := by
   refine DirectLimit.Ring.lift (fun N : FiniteIntermediateField L M => FieldOfNorms K N.val)
@@ -756,19 +772,19 @@ def RelFieldOfNorms.map :
 /-- Evaluation on a finite family is the finite-image formula. -/
 @[simp]
 theorem RelFieldOfNorms.map_of (N : FiniteIntermediateField L M) (x : FieldOfNorms K N.val) :
-    RelFieldOfNorms.map K L M M' t
+    RelFieldOfNorms.mapEquiv K L M M' t
         (RelFieldOfNorms.of K L M N x) =
       RelFieldOfNorms.of K L M' (FiniteIntermediateField.map t N)
         (RelFieldOfNorms.stageMap K L M M' t N x) := rfl
 
 /-- The unital finite-stage maps induce an embedding of the fields. -/
 theorem RelFieldOfNorms.map_injective :
-    Function.Injective (RelFieldOfNorms.map K L M M' t) := by
-  exact (RelFieldOfNorms.map K L M M' t).injective
+    Function.Injective (RelFieldOfNorms.mapEquiv K L M M' t) := by
+  exact (RelFieldOfNorms.mapEquiv K L M M' t).injective
 
 /-- The induced union map fixes the base norm field. -/
 theorem RelFieldOfNorms.map_base (x : FieldOfNorms K L) :
-    RelFieldOfNorms.map K L M M' t
+    RelFieldOfNorms.mapEquiv K L M M' t
         (RelFieldOfNorms.baseHom K L M x) =
       RelFieldOfNorms.baseHom K L M' x := by
   rw [← RelFieldOfNorms.of_base K L M FiniteIntermediateField.bottom x,
@@ -777,7 +793,7 @@ theorem RelFieldOfNorms.map_base (x : FieldOfNorms K L) :
 /-- The induced embedding preserves the canonical rational union valuation. -/
 theorem RelFieldOfNorms.map_valuation (z : RelFieldOfNorms K L M) :
     RelFieldOfNorms.valuation K L M'
-        (RelFieldOfNorms.map K L M M' t z) =
+        (RelFieldOfNorms.mapEquiv K L M M' t z) =
       RelFieldOfNorms.valuation K L M z := by
   obtain ⟨N, x, rfl⟩ := RelFieldOfNorms.exists_stage K L M z
   rw [RelFieldOfNorms.map_of, RelFieldOfNorms.valuation_of,
@@ -787,22 +803,23 @@ theorem RelFieldOfNorms.map_valuation (z : RelFieldOfNorms K L M) :
 def RelFieldOfNorms.algMap :
     RelFieldOfNorms K L M →ₐ[FieldOfNorms K L]
       RelFieldOfNorms K L M' := by
-  exact { RelFieldOfNorms.map K L M M' t with
+  exact { RelFieldOfNorms.mapEquiv K L M M' t with
     commutes' := RelFieldOfNorms.map_base K L M M' t }
 
 /-- Algebra bundling preserves the same map on the same union carrier. -/
 @[simp]
 theorem RelFieldOfNorms.algMap_apply (z : RelFieldOfNorms K L M) :
     RelFieldOfNorms.algMap K L M M' t z =
-      RelFieldOfNorms.map K L M M' t z := rfl
+      RelFieldOfNorms.mapEquiv K L M M' t z := rfl
 
 /-- Equal image stages and equal ambient transports give the same union element. -/
 theorem RelFieldOfNorms.of_transport_congr {D : Type*} [Field D] [Algebra K D]
+    [Algebra.IsSeparable K D] [IsAPF K D] [Fact (¬ Module.Finite K D)]
     (P Q : FiniteIntermediateField L M') (e : D ≃ₐ[K] P.val) (f : D ≃ₐ[K] Q.val)
     (hPQ : P = Q) (hef : ∀ a : D, (e a : M') = (f a : M'))
     (x : FieldOfNorms K D) :
-    RelFieldOfNorms.of K L M' P (FieldOfNorms.map e x) =
-      RelFieldOfNorms.of K L M' Q (FieldOfNorms.map f x) := by
+    RelFieldOfNorms.of K L M' P (FieldOfNorms.mapEquiv e x) =
+      RelFieldOfNorms.of K L M' Q (FieldOfNorms.mapEquiv f x) := by
   subst Q
   have heq : e = f := by
     apply AlgEquiv.ext
@@ -813,23 +830,23 @@ theorem RelFieldOfNorms.of_transport_congr {D : Type*} [Field D] [Algebra K D]
 /-- The identity extension embedding induces the identity on the same union. -/
 @[simp]
 theorem RelFieldOfNorms.map_id :
-    RelFieldOfNorms.map K L M M (AlgHom.id L M) =
+    RelFieldOfNorms.mapEquiv K L M M (AlgHom.id L M) =
       RingHom.id (RelFieldOfNorms K L M) := by
   apply RingHom.ext
   intro z
   obtain ⟨N, x, rfl⟩ := RelFieldOfNorms.exists_stage K L M z
-  change RelFieldOfNorms.map K L M M (AlgHom.id L M)
+  change RelFieldOfNorms.mapEquiv K L M M (AlgHom.id L M)
       (RelFieldOfNorms.of K L M N x) =
     RelFieldOfNorms.of K L M N x
   rw [RelFieldOfNorms.map_of, RelFieldOfNorms.stageMap_apply]
   calc
     _ = RelFieldOfNorms.of K L M N
-        (FieldOfNorms.map (AlgEquiv.refl : N.val ≃ₐ[K] N.val) x) := by
+        (FieldOfNorms.mapEquiv (AlgEquiv.refl : N.val ≃ₐ[K] N.val) x) := by
       apply RelFieldOfNorms.of_transport_congr
       · exact FiniteIntermediateField.map_id N
       · intro a
         rfl
-    _ = _ := by rw [FieldOfNorms.map_refl]
+    _ = _ := by rw [FieldOfNorms.mapEquiv_refl]
 
 variable (M'' : Type*) [Field M''] [Algebra K M''] [Algebra L M'']
     [IsScalarTower K L M''] [Algebra.IsSeparable L M'']
@@ -837,18 +854,18 @@ variable (s : M' →ₐ[L] M'')
 
 /-- Composition of ambient embeddings gives composition of the same union maps. -/
 theorem RelFieldOfNorms.map_comp :
-    (RelFieldOfNorms.map K L M' M'' s).comp
-        (RelFieldOfNorms.map K L M M' t) =
-      RelFieldOfNorms.map K L M M'' (s.comp t) := by
+    (RelFieldOfNorms.mapEquiv K L M' M'' s).comp
+        (RelFieldOfNorms.mapEquiv K L M M' t) =
+      RelFieldOfNorms.mapEquiv K L M M'' (s.comp t) := by
   apply RingHom.ext
   intro z
   obtain ⟨N, x, rfl⟩ := RelFieldOfNorms.exists_stage K L M z
-  change RelFieldOfNorms.map K L M' M'' s
-      (RelFieldOfNorms.map K L M M' t
+  change RelFieldOfNorms.mapEquiv K L M' M'' s
+      (RelFieldOfNorms.mapEquiv K L M M' t
         (RelFieldOfNorms.of K L M N x)) = _
   rw [RelFieldOfNorms.map_of, RelFieldOfNorms.map_of, RelFieldOfNorms.map_of]
   simp only [RelFieldOfNorms.stageMap_apply]
-  rw [FieldOfNorms.map_trans]
+  rw [FieldOfNorms.mapEquiv_trans]
   apply RelFieldOfNorms.of_transport_congr
   · exact FiniteIntermediateField.map_map t s N
   · intro a
@@ -882,8 +899,8 @@ def RelFieldOfNorms.congr (e : M ≃ₐ[L] N) :
     (RelFieldOfNorms.algMap K L N M e.symm.toAlgHom) ?_ ?_
   · apply AlgHom.ext
     intro x
-    change RelFieldOfNorms.map K L M N e.toAlgHom
-      (RelFieldOfNorms.map K L N M e.symm.toAlgHom x) = x
+    change RelFieldOfNorms.mapEquiv K L M N e.toAlgHom
+      (RelFieldOfNorms.mapEquiv K L N M e.symm.toAlgHom x) = x
     have h := congrArg
       (fun f : RelFieldOfNorms K L N →+*
         RelFieldOfNorms K L N => f x)
@@ -892,8 +909,8 @@ def RelFieldOfNorms.congr (e : M ≃ₐ[L] N) :
       RingHom.id_apply] using h
   · apply AlgHom.ext
     intro x
-    change RelFieldOfNorms.map K L N M e.symm.toAlgHom
-      (RelFieldOfNorms.map K L M N e.toAlgHom x) = x
+    change RelFieldOfNorms.mapEquiv K L N M e.symm.toAlgHom
+      (RelFieldOfNorms.mapEquiv K L M N e.toAlgHom x) = x
     have h := congrArg
       (fun f : RelFieldOfNorms K L M →+*
         RelFieldOfNorms K L M => f x)
@@ -912,14 +929,14 @@ theorem RelFieldOfNorms.congr_toAlgHom (e : M ≃ₐ[L] N) :
 theorem RelFieldOfNorms.congr_apply (e : M ≃ₐ[L] N)
     (x : RelFieldOfNorms K L M) :
     RelFieldOfNorms.congr K L M N e x =
-      RelFieldOfNorms.map K L M N e.toAlgHom x := rfl
+      RelFieldOfNorms.mapEquiv K L M N e.toAlgHom x := rfl
 
 /-- The inverse comparison is induced by the inverse isomorphism. -/
 @[simp]
 theorem RelFieldOfNorms.congr_symm_apply (e : M ≃ₐ[L] N)
     (x : RelFieldOfNorms K L N) :
     (RelFieldOfNorms.congr K L M N e).symm x =
-      RelFieldOfNorms.map K L N M e.symm.toAlgHom x := rfl
+      RelFieldOfNorms.mapEquiv K L N M e.symm.toAlgHom x := rfl
 
 /-- The union comparison preserves the rational valuation. -/
 theorem RelFieldOfNorms.congr_valuation (e : M ≃ₐ[L] N)
@@ -934,7 +951,7 @@ theorem RelFieldOfNorms.congr_valuation (e : M ≃ₐ[L] N)
 theorem RelFieldOfNorms.congr_refl_apply
     (x : RelFieldOfNorms K L M) :
     RelFieldOfNorms.congr K L M M (AlgEquiv.refl : M ≃ₐ[L] M) x = x := by
-  change RelFieldOfNorms.map K L M M (AlgHom.id L M) x = x
+  change RelFieldOfNorms.mapEquiv K L M M (AlgHom.id L M) x = x
   exact DFunLike.congr_fun (RelFieldOfNorms.map_id K L M) x
 
 variable (P : Type w'') [Field P] [Algebra K P] [Algebra L P]
@@ -946,9 +963,9 @@ theorem RelFieldOfNorms.congr_trans_apply (e : M ≃ₐ[L] N) (f : N ≃ₐ[L] P
     RelFieldOfNorms.congr K L M P (e.trans f) x =
       RelFieldOfNorms.congr K L N P f
         (RelFieldOfNorms.congr K L M N e x) := by
-  change RelFieldOfNorms.map K L M P (f.toAlgHom.comp e.toAlgHom) x =
-    RelFieldOfNorms.map K L N P f.toAlgHom
-      (RelFieldOfNorms.map K L M N e.toAlgHom x)
+  change RelFieldOfNorms.mapEquiv K L M P (f.toAlgHom.comp e.toAlgHom) x =
+    RelFieldOfNorms.mapEquiv K L N P f.toAlgHom
+      (RelFieldOfNorms.mapEquiv K L M N e.toAlgHom x)
   exact (DFunLike.congr_fun
     (RelFieldOfNorms.map_comp K L M N e.toAlgHom P f.toAlgHom) x).symm
 

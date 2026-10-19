@@ -92,13 +92,13 @@ theorem RelFieldOfNorms.exists_finite_preimage (Q : FiniteIntermediateField L M�
       ∃ R : FiniteIntermediateField L M,
         ∃ φ : Q.val →ₐ[L] R.val,
           (RelFieldOfNorms.ofAlgHom K L M R).comp
-            (FieldOfNorms.finiteAlgHom K L Q.val R.val
+            (FieldOfNorms.mapAlgHom K L Q.val R.val
               φ) = f := by
   let : FiniteDimensional (FieldOfNorms K L) (FieldOfNorms K Q.val) :=
-    finiteDimensional_finiteFieldOfNorms K L Q.val
+    FieldOfNorms.finiteDimensional K L Q.val
   intro f
   obtain ⟨R, g, hg⟩ := RelFieldOfNorms.exists_algHom_factor K L M f
-  let e := FieldOfNorms.finiteHomEquiv K L Q.val R.val
+  let e := FieldOfNorms.algHomEquiv K L Q.val R.val
   refine ⟨R, e.symm g, ?_⟩
   exact (congrArg (fun j =>
     (RelFieldOfNorms.ofAlgHom K L M R).comp j)
@@ -110,22 +110,22 @@ theorem RelFieldOfNorms.of_finiteHom_inclusion (Q : FiniteIntermediateField L M�
     (R P : FiniteIntermediateField L M) (hRP : R ≤ P) (φ : Q.val →ₐ[L] R.val)
     (x : FieldOfNorms K Q.val) :
     RelFieldOfNorms.of K L M P
-        (FieldOfNorms.finiteHomEquiv K L Q.val P.val
+        (FieldOfNorms.algHomEquiv K L Q.val P.val
           ((IntermediateField.inclusion hRP).comp φ) x) =
       RelFieldOfNorms.of K L M R
-        (FieldOfNorms.finiteHomEquiv K L Q.val R.val φ x) := by
-  let y := FieldOfNorms.finiteHomEquiv K L Q.val R.val φ x
+        (FieldOfNorms.algHomEquiv K L Q.val R.val φ x) := by
+  let y := FieldOfNorms.algHomEquiv K L Q.val R.val φ x
   have hc := congrArg (fun f => f x)
-    (FieldOfNorms.finiteAlgHom_comp K L Q.val R.val P.val
+    (FieldOfNorms.mapAlgHom_comp K L Q.val R.val P.val
       φ
       (IntermediateField.inclusion hRP))
-  have hi : FieldOfNorms.finiteHomEquiv K L R.val P.val
+  have hi : FieldOfNorms.algHomEquiv K L R.val P.val
       (IntermediateField.inclusion hRP) y =
       RelFieldOfNorms.transition K L M R P hRP y := by
     let : Algebra R.val P.val := (IntermediateField.inclusion hRP).toRingHom.toAlgebra
     let : IsScalarTower L R.val P.val := IsScalarTower.of_algebraMap_eq' rfl
     let : IsScalarTower K R.val P.val := IsScalarTower.of_algebraMap_eq' rfl
-    exact FieldOfNorms.finiteAlgHom_algebraMap K L R.val P.val
+    exact FieldOfNorms.mapAlgHom_algebraMap K L R.val P.val
       y
   exact (congrArg (RelFieldOfNorms.of K L M P) hc).trans
     ((congrArg (RelFieldOfNorms.of K L M P) hi).trans
@@ -137,9 +137,9 @@ theorem RelFieldOfNorms.finiteHom_faithful (Q : FiniteIntermediateField L M₁)
     (R S : FiniteIntermediateField L M) (φ : Q.val →ₐ[L] R.val) (ψ : Q.val →ₐ[L] S.val) :
     (∀ x : FieldOfNorms K Q.val,
       RelFieldOfNorms.of K L M R
-          (FieldOfNorms.finiteHomEquiv K L Q.val R.val φ x) =
+          (FieldOfNorms.algHomEquiv K L Q.val R.val φ x) =
         RelFieldOfNorms.of K L M S
-          (FieldOfNorms.finiteHomEquiv K L Q.val S.val ψ x)) →
+          (FieldOfNorms.algHomEquiv K L Q.val S.val ψ x)) →
       ∀ a : Q.val, (φ a : M) = (ψ a : M) := by
   intro h a
   let P : FiniteIntermediateField L M := FiniteIntermediateField.sup R S
@@ -147,7 +147,7 @@ theorem RelFieldOfNorms.finiteHom_faithful (Q : FiniteIntermediateField L M₁)
       S)).comp φ =
       (IntermediateField.inclusion (show S ≤ P from FiniteIntermediateField.le_sup_right R S)).comp
           ψ := by
-    apply (FieldOfNorms.finiteHomEquiv K L Q.val P.val).injective
+    apply (FieldOfNorms.algHomEquiv K L Q.val P.val).injective
     apply AlgHom.ext
     intro x
     apply RelFieldOfNorms.of_injective K L M P
@@ -162,23 +162,23 @@ the same finite Hom evaluated after the transition map. -/
 theorem RelFieldOfNorms.finiteHom_inclusion (Q T : FiniteIntermediateField L M₁)
     (hQT : Q ≤ T) (R : FiniteIntermediateField L M) (ψ : T.val →ₐ[L] R.val)
     (x : FieldOfNorms K Q.val) :
-    FieldOfNorms.finiteHomEquiv K L Q.val R.val
+    FieldOfNorms.algHomEquiv K L Q.val R.val
         (ψ.comp (IntermediateField.inclusion hQT)) x =
-      FieldOfNorms.finiteHomEquiv K L T.val R.val ψ
+      FieldOfNorms.algHomEquiv K L T.val R.val ψ
         (RelFieldOfNorms.transition K L M₁ Q T hQT x) := by
   have hc := congrArg (fun f => f x)
-    (FieldOfNorms.finiteAlgHom_comp K L Q.val T.val R.val
+    (FieldOfNorms.mapAlgHom_comp K L Q.val T.val R.val
       (IntermediateField.inclusion hQT) ψ)
-  have hi : FieldOfNorms.finiteHomEquiv K L Q.val T.val
+  have hi : FieldOfNorms.algHomEquiv K L Q.val T.val
       (IntermediateField.inclusion hQT) x =
       RelFieldOfNorms.transition K L M₁ Q T hQT x := by
     let : Algebra Q.val T.val := (IntermediateField.inclusion hQT).toRingHom.toAlgebra
     let : IsScalarTower L Q.val T.val := IsScalarTower.of_algebraMap_eq' rfl
     let : IsScalarTower K Q.val T.val := IsScalarTower.of_algebraMap_eq' rfl
-    exact FieldOfNorms.finiteAlgHom_algebraMap K L Q.val T.val
+    exact FieldOfNorms.mapAlgHom_algebraMap K L Q.val T.val
       x
   exact hc.trans (congrArg
-    (FieldOfNorms.finiteHomEquiv K L T.val R.val ψ) hi)
+    (FieldOfNorms.algHomEquiv K L T.val R.val ψ) hi)
 
 /-- A Hom of the norm-field unions determines an algebra
 embedding whose finite restrictions realize all its finite-stage maps. -/
@@ -190,7 +190,7 @@ theorem RelFieldOfNorms.exists_hom :
           ∃ φ : Q.val →ₐ[L] R.val,
             (∀ a : Q.val, (φ a : M) = t a) ∧
               (RelFieldOfNorms.ofAlgHom K L M R).comp
-                (FieldOfNorms.finiteHomEquiv K L Q.val R.val φ) =
+                (FieldOfNorms.algHomEquiv K L Q.val R.val φ) =
                 f.comp (RelFieldOfNorms.ofAlgHom K L M₁ Q) := by
   classical
   intro f
@@ -226,7 +226,7 @@ theorem RelFieldOfNorms.algMap_of_factor (t : M₁ →ₐ[L] M)
     RelFieldOfNorms.algMap K L M₁ M t
         (RelFieldOfNorms.of K L M₁ Q x) =
       RelFieldOfNorms.of K L M R
-        (FieldOfNorms.finiteHomEquiv K L Q.val R.val φ x) := by
+        (FieldOfNorms.algHomEquiv K L Q.val R.val φ x) := by
   let J : FiniteIntermediateField L M := FiniteIntermediateField.map t Q
   let e : Q.val ≃ₐ[L] J.val := FiniteIntermediateField.equivMap t Q
   have hJR : J ≤ R := by
@@ -240,25 +240,25 @@ theorem RelFieldOfNorms.algMap_of_factor (t : M₁ →ₐ[L] M)
     apply AlgHom.ext
     intro a
     exact Subtype.ext (h a).symm
-  have he : FieldOfNorms.finiteHomEquiv K L Q.val J.val e.toAlgHom x =
-      FieldOfNorms.map (e.restrictScalars K) x := by
-    exact FieldOfNorms.finiteEmbeddingMap_algEquiv K (e.restrictScalars K) x
+  have he : FieldOfNorms.algHomEquiv K L Q.val J.val e.toAlgHom x =
+      FieldOfNorms.mapEquiv (e.restrictScalars K) x := by
+    exact FieldOfNorms.map_algEquiv (e.restrictScalars K) x
   calc
     _ = RelFieldOfNorms.of K L M J
-        (FieldOfNorms.map (e.restrictScalars K) x) :=
+        (FieldOfNorms.mapEquiv (e.restrictScalars K) x) :=
       (RelFieldOfNorms.map_of K L M₁ M t Q x).trans
         (congrArg (RelFieldOfNorms.of K L M J)
           (RelFieldOfNorms.stageMap_apply K L M₁ M t Q x))
     _ = RelFieldOfNorms.of K L M J
-        (FieldOfNorms.finiteHomEquiv K L Q.val J.val e.toAlgHom x) :=
+        (FieldOfNorms.algHomEquiv K L Q.val J.val e.toAlgHom x) :=
       congrArg (RelFieldOfNorms.of K L M J) he.symm
     _ = RelFieldOfNorms.of K L M R
-        (FieldOfNorms.finiteHomEquiv K L Q.val R.val
+        (FieldOfNorms.algHomEquiv K L Q.val R.val
           ((IntermediateField.inclusion hJR).comp e.toAlgHom) x) :=
       (RelFieldOfNorms.of_finiteHom_inclusion K L M M₁
         Q J R hJR e.toAlgHom x).symm
     _ = _ := congrArg (fun j => RelFieldOfNorms.of K L M R
-      (FieldOfNorms.finiteHomEquiv K L Q.val R.val j x)) hc
+      (FieldOfNorms.algHomEquiv K L Q.val R.val j x)) hc
 
 /-- Every algebra Hom of the unions is induced by an embedding. -/
 theorem RelFieldOfNorms.algMap_surjective :
@@ -342,15 +342,15 @@ def RelFieldOfNorms.endHom :
            map_one' := ?_, map_mul' := ?_ }
   · apply AlgHom.ext
     intro z
-    change RelFieldOfNorms.map K L M M (AlgHom.id L M) z = z
+    change RelFieldOfNorms.mapEquiv K L M M (AlgHom.id L M) z = z
     rw [RelFieldOfNorms.map_id]
     rfl
   · intro s t
     apply AlgHom.ext
     intro z
-    change RelFieldOfNorms.map K L M M (s.comp t) z =
-      RelFieldOfNorms.map K L M M s
-        (RelFieldOfNorms.map K L M M t z)
+    change RelFieldOfNorms.mapEquiv K L M M (s.comp t) z =
+      RelFieldOfNorms.mapEquiv K L M M s
+        (RelFieldOfNorms.mapEquiv K L M M t z)
     exact congrArg (fun f => f z)
       (RelFieldOfNorms.map_comp K L M M t M s).symm
 
@@ -381,7 +381,7 @@ theorem RelFieldOfNorms.autEquiv_toAlgHom (σ : M ≃ₐ[L] M) :
 theorem RelFieldOfNorms.autEquiv_apply (σ : M ≃ₐ[L] M)
     (z : RelFieldOfNorms K L M) :
     RelFieldOfNorms.autEquiv K L M σ z =
-      RelFieldOfNorms.map K L M M σ.toAlgHom z := rfl
+      RelFieldOfNorms.mapEquiv K L M M σ.toAlgHom z := rfl
 
 /-- On every finite stage the automorphism is image transport. -/
 theorem RelFieldOfNorms.autEquiv_of (σ : M ≃ₐ[L] M)

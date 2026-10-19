@@ -24,7 +24,6 @@ public import FontaineWintenberger.FieldOfNorms.Estimates.Wild
 public import FontaineWintenberger.FieldOfNorms.Functor.FullyFaithful
 public import FontaineWintenberger.FieldOfNorms.Functor.Galois
 public import FontaineWintenberger.FieldOfNorms.Functor.Map
-public import FontaineWintenberger.FieldOfNorms.Functor.RingHom
 public import FontaineWintenberger.FieldOfNorms.Functor.Separable
 public import FontaineWintenberger.FieldOfNorms.Galois.AbsoluteGroup
 public import FontaineWintenberger.FieldOfNorms.Galois.Action

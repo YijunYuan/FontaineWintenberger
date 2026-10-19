@@ -166,12 +166,12 @@ variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
 /-- The proved stable coordinate valuation makes integral norm families
 integral on one finite tail, simultaneously for every family. -/
-theorem IsAPF.exists_finiteIntermediateField_fieldOfNormsEval_mem_of_le_one [IsAPF K L] :
+theorem IsAPF.exists_finiteIntermediateField_coord_mem_of_le_one [IsAPF K L] :
     ∃ T : FiniteIntermediateField K L, ∀ E : FiniteIntermediateField K L, T ≤ E → ∀ x :
         FieldOfNorms K L,
       FieldOfNorms.valuation K L x ≤ 1 →
         FieldOfNorms.coord K L E x ∈ spectralIntegerRing K E.val := by
-  obtain ⟨T, hT⟩ := IsAPF.exists_fieldOfNormsValuation_eq_coordinate K L
+  obtain ⟨T, hT⟩ := FieldOfNorms.exists_valuation_eq_coordinateValuation K L
   refine ⟨T, fun E hE x hx => ?_⟩
   rw [hT E hE x] at hx
   change FieldOfNorms.coord K L E x ∈
@@ -185,7 +185,7 @@ valuation is integral: integral norms descend from a common tail. -/
 theorem FieldOfNorms.coord_mem_of_valuation_le_one [IsAPF K L] (x : FieldOfNorms K L)
     (hx : FieldOfNorms.valuation K L x ≤ 1) (E : FiniteIntermediateField K L) :
     FieldOfNorms.coord K L E x ∈ spectralIntegerRing K E.val := by
-  obtain ⟨T, hT⟩ := IsAPF.exists_finiteIntermediateField_fieldOfNormsEval_mem_of_le_one K L
+  obtain ⟨T, hT⟩ := IsAPF.exists_finiteIntermediateField_coord_mem_of_le_one K L
   let F := FiniteIntermediateField.sup E T
   have hEF : E ≤ F := FiniteIntermediateField.le_sup_left E T
   let xF : spectralIntegerRing K F.val :=
@@ -206,7 +206,7 @@ theorem FieldOfNorms.valuation_le_one_iff [IsAPF K L] (x : FieldOfNorms K L) :
   constructor
   · exact fun hx E => FieldOfNorms.coord_mem_of_valuation_le_one K L x hx E
   · intro hx
-    let T := (IsAPF.exists_fieldOfNormsCoordinateValuation_stable K L).choose
+    let T := (FieldOfNorms.exists_coordinateValuation_stable K L).choose
     change FieldOfNorms.coord K L T x ∈
       ((IsDiscreteValuationRing.maximalIdeal (spectralIntegerRing K T.val)).valuation
         T.val).valuationSubring
@@ -579,7 +579,7 @@ def FieldOfNorms.add [IsAPF K L] (α β : FieldOfNorms K L) : FieldOfNorms K L :
   (existsUnique_fieldOfNorms_add K L α β).choose
 
 /-- Every coordinate of the sum is its norm-sum limit. -/
-theorem tendsto_normSumNet_fieldOfNormsAdd [IsAPF K L] (α β : FieldOfNorms K L)
+theorem FieldOfNorms.tendsto_normSumNet_add [IsAPF K L] (α β : FieldOfNorms K L)
     (E : FiniteIntermediateField K L) :
     letI := spectralNorm.nontriviallyNormedField K E.val
     Tendsto (normSumNet K L E α β) atTop
@@ -587,7 +587,7 @@ theorem tendsto_normSumNet_fieldOfNormsAdd [IsAPF K L] (α β : FieldOfNorms K L
   (existsUnique_fieldOfNorms_add K L α β).choose_spec.1 E
 
 /-- The norm-sum limits uniquely characterize the same sum operation. -/
-theorem eq_fieldOfNormsAdd_of_tendsto [IsAPF K L] (α β γ : FieldOfNorms K L)
+theorem FieldOfNorms.eq_add_of_tendsto [IsAPF K L] (α β γ : FieldOfNorms K L)
     (hγ : ∀ E : FiniteIntermediateField K L,
       letI := spectralNorm.nontriviallyNormedField K E.val
       Tendsto (normSumNet K L E α β) atTop (nhds (FieldOfNorms.coord K L E γ))) :
@@ -598,20 +598,20 @@ theorem eq_fieldOfNormsAdd_of_tendsto [IsAPF K L] (α β γ : FieldOfNorms K L)
 theorem FieldOfNorms.add_comm [IsAPF K L] (α β : FieldOfNorms K L) :
     FieldOfNorms.add K L α β = FieldOfNorms.add K L β α := by
   symm
-  apply eq_fieldOfNormsAdd_of_tendsto K L α β
+  apply FieldOfNorms.eq_add_of_tendsto K L α β
   intro E
   let := spectralNorm.nontriviallyNormedField K E.val
   have heq : normSumNet K L E α β = normSumNet K L E β α := by
     funext F
     simp only [normSumNet, _root_.add_comm]
   rw [heq]
-  exact tendsto_normSumNet_fieldOfNormsAdd K L β α E
+  exact FieldOfNorms.tendsto_normSumNet_add K L β α E
 
 /-- The zero is the left identity for the field of norms addition. -/
 theorem FieldOfNorms.add_zero_left [IsAPF K L] (α : FieldOfNorms K L) :
     FieldOfNorms.add K L 0 α = α := by
   symm
-  apply eq_fieldOfNormsAdd_of_tendsto K L 0 α α
+  apply FieldOfNorms.eq_add_of_tendsto K L 0 α α
   intro E
   let := spectralNorm.nontriviallyNormedField K E.val
   have heq : normSumNet K L E 0 α = fun _ => FieldOfNorms.coord K L E α :=
@@ -626,24 +626,24 @@ theorem FieldOfNorms.add_zero_right [IsAPF K L] (α : FieldOfNorms K L) :
 
 /-- Exact norm multiplicativity gives distributivity of the
 multiplication over the field of norms addition. -/
-theorem mul_fieldOfNormsAdd [IsAPF K L] (δ α β : FieldOfNorms K L) :
+theorem FieldOfNorms.left_distrib [IsAPF K L] (δ α β : FieldOfNorms K L) :
     δ * FieldOfNorms.add K L α β =
       FieldOfNorms.add K L (δ * α) (δ * β) := by
-  apply eq_fieldOfNormsAdd_of_tendsto K L (δ * α) (δ * β)
+  apply FieldOfNorms.eq_add_of_tendsto K L (δ * α) (δ * β)
   intro E
   let := spectralNorm.nontriviallyNormedField K E.val
   rw [map_mul]
   simpa only [← normSumNet_mul_left] using
-    (tendsto_normSumNet_fieldOfNormsAdd K L α β E).const_mul (FieldOfNorms.coord K L E δ)
+    (FieldOfNorms.tendsto_normSumNet_add K L α β E).const_mul (FieldOfNorms.coord K L E δ)
 
 /-- Integral inputs have an integral sum, on the same stable valuation. -/
-theorem FieldOfNorms.valuation_fieldOfNormsAdd_le_one [IsAPF K L] (α β : FieldOfNorms K L)
+theorem FieldOfNorms.valuation_add_le_one [IsAPF K L] (α β : FieldOfNorms K L)
     (hα : FieldOfNorms.valuation K L α ≤ 1) (hβ : FieldOfNorms.valuation K L β ≤ 1) :
     FieldOfNorms.valuation K L (FieldOfNorms.add K L α β) ≤ 1 := by
   rw [FieldOfNorms.valuation_le_one_iff K L]
   intro E
   exact normSumNet_limit_mem_of_valuation_le_one K L α β hα hβ E _
-    (tendsto_normSumNet_fieldOfNormsAdd K L α β E)
+    (FieldOfNorms.tendsto_normSumNet_add K L α β E)
 
 /-- The sum of integral inputs has the proved eventual coordinate
 approximation at every finite precision. -/
@@ -656,7 +656,7 @@ theorem FieldOfNorms.add_sub_mem_of_valuation_le_one [IsAPF K L] (α β : FieldO
           ((IsLocalRing.maximalIdeal (spectralIntegerRing K E.val) ^ s :
             Ideal (spectralIntegerRing K E.val)) : Set (spectralIntegerRing K E.val)) := by
   obtain ⟨γ, hγ, _⟩ := existsUnique_fieldOfNorms_integral_add K L α β hα hβ
-  have heq := eq_fieldOfNormsAdd_of_tendsto K L α β γ hγ.2.1
+  have heq := FieldOfNorms.eq_add_of_tendsto K L α β γ hγ.2.1
   simpa only [heq] using hγ.2.2
 
 end FontaineWintenberger
@@ -727,7 +727,7 @@ theorem FieldOfNorms.add_sub_mem [IsAPF K L] (α β : FieldOfNorms K L) :
   let q := (WithZero.log (w δ)).toNat
   have hδbound : w δ ≤ WithZero.exp (q : ℤ) :=
     WithZero.le_exp_log.trans (WithZero.exp_le_exp.mpr (Int.self_le_toNat _))
-  obtain ⟨T₀, hT₀⟩ := IsAPF.exists_fieldOfNormsValuation_eq_coordinate K L
+  obtain ⟨T₀, hT₀⟩ := FieldOfNorms.exists_valuation_eq_coordinateValuation K L
   intro n
   obtain ⟨T₁, hT₁⟩ := FieldOfNorms.add_sub_mem_of_valuation_le_one
     K L (α / δ) (β / δ) ha hb (n + q)
@@ -747,7 +747,7 @@ theorem FieldOfNorms.add_sub_mem [IsAPF K L] (α β : FieldOfNorms K L) :
   apply (ValuationSubring.mem_image_maximalIdeal_pow_iff_normalizedValuation
     (spectralIntegerRing K E.val) _ n).mpr
   have hs := congrArg (FieldOfNorms.coord K L E)
-    (mul_fieldOfNormsAdd K L δ (α / δ) (β / δ))
+    (FieldOfNorms.left_distrib K L δ (α / δ) (β / δ))
   rw [_root_.map_mul, hδα, hδβ] at hs
   have hαE : FieldOfNorms.coord K L E δ * FieldOfNorms.coord K L E (α / δ) =
       FieldOfNorms.coord K L E α := by rw [← _root_.map_mul, hδα]

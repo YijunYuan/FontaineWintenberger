@@ -43,25 +43,27 @@ namespace FontaineWintenberger
 
 section FixedField
 
-variable (K L P : Type*) [Field K] [Field L] [Field P]
-    [Algebra K L] [Algebra K P] [Algebra L P] [IsScalarTower K L P]
-    [FiniteDimensional L P] [IsGalois L P] [Algebra.IsAlgebraic K P]
+variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
+    (L P : Type*) [Field L] [Field P] [Algebra K L] [Algebra K P]
+    [Algebra L P] [IsScalarTower K L P] [Algebra.IsSeparable K L] [Algebra.IsSeparable K P]
+    [FiniteDimensional L P] [IsGalois L P]
+    [IsAPF K L] [IsAPF K P] [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K P)]
 
 /-- The fixed-family descent applies to every subgroup of the
 finite Galois group, with its restricted action. -/
-theorem mem_range_finiteFieldOfNormsMap_fixedField_iff
+theorem FieldOfNorms.mem_range_inclusion_fixedField_iff
     (H : Subgroup (P ≃ₐ[L] P)) (β : FieldOfNorms K P) :
     letI : IsScalarTower K (IntermediateField.fixedField H) P :=
       IsScalarTower.of_algebraMap_eq' rfl
     letI : Algebra.IsAlgebraic K (IntermediateField.fixedField H) :=
       inferInstanceAs (Algebra.IsAlgebraic K ((IntermediateField.fixedField H).restrictScalars K))
-    β ∈ Set.range (FieldOfNorms.finiteMap K (IntermediateField.fixedField H) P) ↔
-      ∀ σ : H, FieldOfNorms.map (σ.val.restrictScalars K) β = β := by
+    β ∈ Set.range (FieldOfNorms.inclusion K (IntermediateField.fixedField H) P) ↔
+      ∀ σ : H, FieldOfNorms.mapEquiv (σ.val.restrictScalars K) β = β := by
   let : IsScalarTower K (IntermediateField.fixedField H) P :=
     IsScalarTower.of_algebraMap_eq' rfl
   let : Algebra.IsAlgebraic K (IntermediateField.fixedField H) :=
     inferInstanceAs (Algebra.IsAlgebraic K ((IntermediateField.fixedField H).restrictScalars K))
-  rw [mem_range_finiteFieldOfNormsMap_iff_fixed]
+  rw [FieldOfNorms.mem_range_inclusion_iff_fixed]
   let e := IntermediateField.subgroupEquivAlgEquiv H
   constructor
   · intro h σ
@@ -90,8 +92,8 @@ variable [IsAPF K L] [IsAPF K P]
 
 /-- Every subfield of a finite Galois norm field is the
 image of the field fixed by its subgroup. -/
-theorem exists_fixedField_finiteFieldOfNorms_range :
-    letI := (FieldOfNorms.finiteRingHom K L P).toAlgebra
+theorem FieldOfNorms.exists_fixedField_inclusion_range :
+    letI := (FieldOfNorms.inclusion K L P).toAlgebra
     ∀ D : IntermediateField (FieldOfNorms K L) (FieldOfNorms K P),
       ∃ H : Subgroup (P ≃ₐ[L] P),
         letI : IsScalarTower K (IntermediateField.fixedField H) P :=
@@ -99,11 +101,11 @@ theorem exists_fixedField_finiteFieldOfNorms_range :
         letI : Algebra.IsAlgebraic K (IntermediateField.fixedField H) :=
           inferInstanceAs (Algebra.IsAlgebraic K
             ((IntermediateField.fixedField H).restrictScalars K))
-        Set.range (FieldOfNorms.finiteMap K (IntermediateField.fixedField H) P) =
+        Set.range (FieldOfNorms.inclusion K (IntermediateField.fixedField H) P) =
           (D : Set (FieldOfNorms K P)) := by
-  let := (FieldOfNorms.finiteRingHom K L P).toAlgebra
-  let := FieldOfNorms.finiteGaloisMulSemiringAction K L P
-  have := FieldOfNorms.finite_isGaloisGroup K L P
+  let := (FieldOfNorms.inclusion K L P).toAlgebra
+  let := FieldOfNorms.galoisAction K L P
+  have := FieldOfNorms.isGaloisGroup K L P
   intro D
   let H := fixingSubgroup (P ≃ₐ[L] P) (D : Set (FieldOfNorms K P))
   refine ⟨H, ?_⟩
@@ -116,7 +118,7 @@ theorem exists_fixedField_finiteFieldOfNorms_range :
     IsGaloisGroup.fixedPoints_fixingSubgroup (P ≃ₐ[L] P) (FieldOfNorms K L)
       (FieldOfNorms K P) D
   ext β
-  rw [mem_range_finiteFieldOfNormsMap_fixedField_iff]
+  rw [FieldOfNorms.mem_range_inclusion_fixedField_iff]
   change β ∈ (FixedPoints.intermediateField H :
     IntermediateField (FieldOfNorms K L) (FieldOfNorms K P)) ↔ β ∈ D
   rw [hD]
@@ -145,9 +147,10 @@ theorem RelFieldOfNorms.of_map_subfield (P : FiniteIntermediateField L Ω)
     letI : Algebra.IsSeparable Q.val P.val :=
       Algebra.isSeparable_tower_top_of_isSeparable L Q.val P.val
     RelFieldOfNorms.of K L Ω (FiniteIntermediateField.map P.val.val Q)
-        (FieldOfNorms.map ((FiniteIntermediateField.equivMap P.val.val Q).restrictScalars K) α) =
+        (FieldOfNorms.mapEquiv
+          ((FiniteIntermediateField.equivMap P.val.val Q).restrictScalars K) α) =
       RelFieldOfNorms.of K L Ω P
-        (FieldOfNorms.finiteMap K Q.val P.val α) := by
+        (FieldOfNorms.inclusion K Q.val P.val α) := by
   let : IsScalarTower K Q.val P.val := IsScalarTower.of_algebraMap_eq' rfl
   let : Algebra.IsAlgebraic K Q.val :=
     inferInstanceAs (Algebra.IsAlgebraic K (Q.val.restrictScalars K))
@@ -167,12 +170,12 @@ theorem RelFieldOfNorms.of_map_subfield (P : FiniteIntermediateField L Ω)
   let : Module.Finite R.val P.val := Module.Finite.right L R.val P.val
   let : Algebra.IsSeparable R.val P.val :=
     Algebra.isSeparable_tower_top_of_isSeparable L R.val P.val
-  have hn := FieldOfNorms.finiteMap_naturality K (e.restrictScalars K)
+  have hn := FieldOfNorms.mapEquiv_inclusion (e.restrictScalars K)
     (AlgEquiv.refl : P.val ≃ₐ[K] P.val) (fun _ => rfl) α
   have hv : RelFieldOfNorms.transition K L Ω R P hRP
-      (FieldOfNorms.map (e.restrictScalars K) α) = FieldOfNorms.finiteMap K Q.val P.val α := by
-    change FieldOfNorms.finiteMap K R.val P.val (FieldOfNorms.map (e.restrictScalars K) α) = _
-    simpa only [FieldOfNorms.map_refl] using hn.symm
+      (FieldOfNorms.mapEquiv (e.restrictScalars K) α) = FieldOfNorms.inclusion K Q.val P.val α := by
+    change FieldOfNorms.inclusion K R.val P.val (FieldOfNorms.mapEquiv (e.restrictScalars K) α) = _
+    simpa only [FieldOfNorms.mapEquiv_refl] using hn.symm
   exact (RelFieldOfNorms.of_transition K L Ω R P hRP _).symm.trans
     (congrArg (RelFieldOfNorms.of K L Ω P) hv)
 
@@ -193,7 +196,7 @@ theorem RelFieldOfNorms.exists_finite_subfield_preimage :
   -- an opaque stage: instance search on `FieldOfNorms K P.val` keys on `P`, not on its value
   clear_value P
   let D' := D.comap (RelFieldOfNorms.ofAlgHom K L Ω P)
-  obtain ⟨H, hH⟩ := exists_fixedField_finiteFieldOfNorms_range K L P.val D'
+  obtain ⟨H, hH⟩ := FieldOfNorms.exists_fixedField_inclusion_range K L P.val D'
   let M : FiniteIntermediateField L P.val := ⟨IntermediateField.fixedField H, inferInstance⟩
   let : IsScalarTower K M.val P.val := IsScalarTower.of_algebraMap_eq' rfl
   let : Algebra.IsAlgebraic K M.val :=
@@ -207,11 +210,11 @@ theorem RelFieldOfNorms.exists_finite_subfield_preimage :
   ext z
   constructor
   · rintro ⟨αN, rfl⟩
-    obtain ⟨α, rfl⟩ := (FieldOfNorms.mulEquiv e).surjective αN
-    have hm : FieldOfNorms.finiteMap K M.val P.val α ∈ D' :=
+    obtain ⟨α, rfl⟩ := (FieldOfNorms.mapEquiv e).surjective αN
+    have hm : FieldOfNorms.inclusion K M.val P.val α ∈ D' :=
       (Set.ext_iff.mp hH _).mp ⟨α, rfl⟩
     have hm' : RelFieldOfNorms.of K L Ω P
-        (FieldOfNorms.finiteMap K M.val P.val α) ∈ D := hm
+        (FieldOfNorms.inclusion K M.val P.val α) ∈ D := hm
     exact (congrArg (fun z => z ∈ D)
       (RelFieldOfNorms.of_map_subfield K L Ω P M α)).mpr hm'
   · intro hz
@@ -222,10 +225,10 @@ theorem RelFieldOfNorms.exists_finite_subfield_preimage :
     have hβ : β ∈ D' := by
       change RelFieldOfNorms.of K L Ω P β ∈ D
       exact hj.symm ▸ hz
-    have hr : β ∈ Set.range (FieldOfNorms.finiteMap K M.val P.val) :=
+    have hr : β ∈ Set.range (FieldOfNorms.inclusion K M.val P.val) :=
       (Set.ext_iff.mp hH β).mpr hβ
     obtain ⟨α, hα⟩ := hr
-    refine ⟨FieldOfNorms.map e α, ?_⟩
+    refine ⟨FieldOfNorms.mapEquiv e α, ?_⟩
     exact (RelFieldOfNorms.of_map_subfield K L Ω P M α).trans
       ((congrArg (RelFieldOfNorms.of K L Ω P) hα).trans hj)
 
@@ -376,7 +379,8 @@ theorem RelFieldOfNorms.finiteImage_le_fieldRange_of_le
     intro a
     exact ⟨⟨⟨a.val, hNM a.property⟩, a.property⟩, rfl⟩
   let e := AlgEquiv.ofBijective q ⟨q.injective, hq⟩
-  let Q : FiniteIntermediateField L M := ⟨Q₀, Module.Finite.equiv e.symm.toLinearEquiv⟩
+  have : Module.Finite L Q₀ := Module.Finite.equiv e.symm.toLinearEquiv
+  let Q : FiniteIntermediateField L M := ⟨Q₀, this⟩
   have hmap : FiniteIntermediateField.map M.val Q = N := by
     apply Subtype.ext
     ext a
@@ -387,9 +391,9 @@ theorem RelFieldOfNorms.finiteImage_le_fieldRange_of_le
       exact ⟨⟨a, hNM ha⟩, ha, rfl⟩
   intro z hz
   obtain ⟨a, rfl⟩ := (mem_relFieldOfNormsFiniteImage K L Ω N z).mp hz
-  obtain ⟨b, hb⟩ := (FieldOfNorms.mulEquiv (e.restrictScalars K)).surjective a
+  obtain ⟨b, hb⟩ := (FieldOfNorms.mapEquiv (e.restrictScalars K)).surjective a
   refine ⟨RelFieldOfNorms.of K L M Q b, ?_⟩
-  change RelFieldOfNorms.map K L M Ω M.val
+  change RelFieldOfNorms.mapEquiv K L M Ω M.val
     (RelFieldOfNorms.of K L M Q b) = _
   rw [RelFieldOfNorms.map_of, RelFieldOfNorms.stageMap_apply]
   have h := RelFieldOfNorms.of_transport_congr K L Ω
@@ -458,7 +462,7 @@ theorem RelFieldOfNorms.exists_subfield_preimage :
       exact c.property
     apply hAD
     apply hQA
-    change RelFieldOfNorms.map K L M Ω M.val
+    change RelFieldOfNorms.mapEquiv K L M Ω M.val
       (RelFieldOfNorms.of K L M Q a) ∈ _
     rw [RelFieldOfNorms.map_of]
     exact (mem_relFieldOfNormsFiniteImage K L Ω Q' _).mpr ⟨_, rfl⟩

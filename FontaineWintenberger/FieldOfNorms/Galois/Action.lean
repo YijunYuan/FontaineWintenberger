@@ -44,14 +44,15 @@ namespace FontaineWintenberger
 
 section Fields
 
-variable (K L : Type*) [Field K] [Field L] [Algebra K L]
+variable (K L : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K] [Field L]
+    [Algebra K L] [Algebra.IsSeparable K L] [IsAPF K L] [Fact (¬ Module.Finite K L)]
 
 /-- A finite-field fixer fixes that finite coordinate of every
 norm-compatible family, without a normality hypothesis. -/
-theorem FieldOfNorms.coord_fieldOfNormsMap_of_mem_fixingSubgroup
+theorem FieldOfNorms.coord_mapEquiv_of_mem_fixingSubgroup
     (E : FiniteIntermediateField K L) (σ : L ≃ₐ[K] L) (hσ : σ ∈ E.val.fixingSubgroup)
     (x : FieldOfNorms K L) :
-    FieldOfNorms.coord K L E (FieldOfNorms.map σ x) = FieldOfNorms.coord K L E x := by
+    FieldOfNorms.coord K L E (FieldOfNorms.mapEquiv σ x) = FieldOfNorms.coord K L E x := by
   have hfix := (IntermediateField.mem_fixingSubgroup_iff E.val σ).mp hσ
   have hinv := (IntermediateField.mem_fixingSubgroup_iff E.val σ⁻¹).mp
     (E.val.fixingSubgroup.inv_mem hσ)
@@ -66,7 +67,7 @@ theorem FieldOfNorms.coord_fieldOfNormsMap_of_mem_fixingSubgroup
     · intro hy
       exact ⟨y, hy, hinv y hy⟩
   apply Subtype.val_injective
-  rw [coe_fieldOfNormsEval_fieldOfNormsMap]
+  rw [FieldOfNorms.coe_coord_mapEquiv]
   exact (congrArg σ (congrArg
     (fun D : FiniteIntermediateField K L => (FieldOfNorms.coord K L D x : L)) hmap)).trans
       (hfix _ (FieldOfNorms.coord K L E x).property)
@@ -97,8 +98,8 @@ theorem FieldOfNorms.valuation_sub_le_of_mem_deep_fixingSubgroup (n : ℕ)
   have he : FieldOfNorms.integralCoordinate K L (FiniteIntermediateField.bottom) b n =
       FieldOfNorms.integralCoordinate K L (FiniteIntermediateField.bottom) a n := by
     apply Subtype.ext
-    change FieldOfNorms.coord K L _ (FieldOfNorms.map σ x) = FieldOfNorms.coord K L _ x
-    exact FieldOfNorms.coord_fieldOfNormsMap_of_mem_fixingSubgroup K L _ σ hσ x
+    change FieldOfNorms.coord K L _ (FieldOfNorms.mapEquiv σ x) = FieldOfNorms.coord K L _ x
+    exact FieldOfNorms.coord_mapEquiv_of_mem_fixingSubgroup K L _ σ hσ x
   have hq : q b = q a := congrArg (Ideal.Quotient.mk _) he
   have hz : q (b - a) = 0 := by rw [map_sub, hq, sub_self]
   exact (FieldOfNorms.truncation_eq_zero_iff K L (FiniteIntermediateField.bottom) n
@@ -106,7 +107,7 @@ theorem FieldOfNorms.valuation_sub_le_of_mem_deep_fixingSubgroup (n : ℕ)
 
 /-- Every integral family has a continuous orbit under the
 Krull topology, with its inherited valuation topology. -/
-theorem continuous_fieldOfNormsAut_apply_of_integral :
+theorem FieldOfNorms.continuous_aut_apply_of_integral :
     ∀ (x : FieldOfNorms K L), FieldOfNorms.valuation K L x ≤ 1 →
       Continuous (fun σ : L ≃ₐ[K] L => FieldOfNorms.aut K L σ x) := by
   intro x hx
@@ -117,7 +118,7 @@ theorem continuous_fieldOfNormsAut_apply_of_integral :
       (nhds σ₀) (nhds 0) := by
     apply (Valued.nhds_zero_hasBasis_integer_closedBall (FieldOfNorms K L)
       (FieldOfNorms.uniformizer K L)
-      (FieldOfNorms.valuation_fieldOfNormsUniformizer K L)).tendsto_right_iff.mpr
+      (FieldOfNorms.valuation_uniformizer K L)).tendsto_right_iff.mpr
     intro n _
     let E := deepFiniteTower K L (FiniteIntermediateField.bottom) n
     have hH : (E.val.fixingSubgroup : Set (L ≃ₐ[K] L)) ∈ nhds 1 :=
@@ -153,15 +154,15 @@ theorem continuous_fieldOfNormsAut_apply_of_integral :
 
 /-- Every norm-field family has a continuous orbit under the
 Krull topology and the valuation topology. -/
-theorem continuous_fieldOfNormsAut_apply :
+theorem FieldOfNorms.continuous_aut_apply :
     ∀ x : FieldOfNorms K L,
       Continuous (fun σ : L ≃ₐ[K] L => FieldOfNorms.aut K L σ x) := by
   intro x
   let A := (FieldOfNorms.fieldValuation K L).valuationSubring
   obtain ⟨a, b, hb, heq⟩ := IsFractionRing.div_surjective A x
-  have ha := continuous_fieldOfNormsAut_apply_of_integral K L (a : FieldOfNorms K L)
+  have ha := FieldOfNorms.continuous_aut_apply_of_integral K L (a : FieldOfNorms K L)
     a.property
-  have hc := continuous_fieldOfNormsAut_apply_of_integral K L (b : FieldOfNorms K L)
+  have hc := FieldOfNorms.continuous_aut_apply_of_integral K L (b : FieldOfNorms K L)
     b.property
   have hne : (b : FieldOfNorms K L) ≠ 0 := fun h =>
     nonZeroDivisors.ne_zero hb (Subtype.ext h)
@@ -206,7 +207,7 @@ theorem FieldOfNorms.absoluteAut_apply (σ : SeparableClosure K ≃ₐ[K] Separa
       FieldOfNorms.aut K L (AlgEquiv.restrictNormalHom L σ) x := rfl
 
 /-- The coordinate formula, viewed in the same separable closure. -/
-theorem coe_fieldOfNormsEval_fieldOfNormsAbsoluteAut
+theorem FieldOfNorms.coe_coord_absoluteAut
     (σ : SeparableClosure K ≃ₐ[K] SeparableClosure K)
     (x : FieldOfNorms K L) (E : FiniteIntermediateField K L) :
     ((FieldOfNorms.coord K L E (FieldOfNorms.absoluteAut K L σ x) : L) :
@@ -215,12 +216,12 @@ theorem coe_fieldOfNormsEval_fieldOfNormsAbsoluteAut
         (FiniteIntermediateField.map (AlgEquiv.restrictNormalHom L σ).symm.toAlgHom E) x : L) :
           SeparableClosure K) := by
   let τ := AlgEquiv.restrictNormalHom L σ
-  change ((FieldOfNorms.coord K L E (FieldOfNorms.map τ x) : L) : SeparableClosure K) = _
+  change ((FieldOfNorms.coord K L E (FieldOfNorms.mapEquiv τ x) : L) : SeparableClosure K) = _
   calc
     _ = ((τ (FieldOfNorms.coord K L (FiniteIntermediateField.map τ.symm.toAlgHom E) x) : L) :
         SeparableClosure K) :=
       congrArg (fun y : L => (y : SeparableClosure K))
-        (coe_fieldOfNormsEval_fieldOfNormsMap τ x E)
+        (FieldOfNorms.coe_coord_mapEquiv τ x E)
     _ = _ := AlgEquiv.restrictNormalHom_apply L σ _
 
 /-- Absolute Galois transport preserves the normalized valuation. -/
@@ -232,12 +233,12 @@ theorem FieldOfNorms.absoluteAut_valuation
 
 /-- Every absolute Galois orbit is continuous for the Krull and
 norm-field valuation topologies. -/
-theorem continuous_fieldOfNormsAbsoluteAut_apply :
+theorem FieldOfNorms.continuous_absoluteAut_apply :
     ∀ x : FieldOfNorms K L,
       Continuous (fun σ : SeparableClosure K ≃ₐ[K] SeparableClosure K =>
         FieldOfNorms.absoluteAut K L σ x) := by
   intro x
-  exact (continuous_fieldOfNormsAut_apply K L x).comp
+  exact (FieldOfNorms.continuous_aut_apply K L x).comp
     (InfiniteGalois.restrictNormalHom_continuous L)
 
 /-- The kernel is exactly the pointwise fixer of the field `L`. -/

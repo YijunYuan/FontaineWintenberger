@@ -98,7 +98,7 @@ theorem IsAPF.exists_deep_finiteTower [IsAPF K L]
         (deepFiniteTowerBound K n : EReal) ≤
           apfRamificationBound (E n).val (IntermediateField.extendScalars hEF)) := by
   obtain ⟨W, hW⟩ := IsAPF.exists_finiteIntermediateField_wild_tail K L
-  obtain ⟨V, hV⟩ := IsAPF.exists_fieldOfNormsValuation_eq_coordinate K L
+  obtain ⟨V, hV⟩ := FieldOfNorms.exists_valuation_eq_coordinateValuation K L
   choose T hT using fun n : ℕ =>
     IsAPF.exists_finiteIntermediateField_relativeFirstBound_ge K L (deepFiniteTowerBound K n)
   choose P hP using fun n : ℕ =>

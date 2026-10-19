@@ -241,7 +241,7 @@ def FieldOfNorms.ofCofinal (P : FiniteIntermediateField K L → Prop)
 
 /-- Every prescribed cofinal coordinate is retained exactly. -/
 @[simp]
-theorem FieldOfNorms.coord_fieldOfNormsOfCofinal (P : FiniteIntermediateField K L → Prop)
+theorem FieldOfNorms.coord_ofCofinal (P : FiniteIntermediateField K L → Prop)
     (hP : ∀ E, ∃ F, P F ∧ E ≤ F)
     (x : ∀ E, P E → E.val)
     (hx : ∀ (E F : FiniteIntermediateField K L) (hE : P E) (hF : P F) (hEF : E ≤ F),
@@ -252,7 +252,7 @@ theorem FieldOfNorms.coord_fieldOfNormsOfCofinal (P : FiniteIntermediateField K 
 
 /-- Any finite field is computed from any prescribed cofinal upper
 field by its norm, independently of the choice. -/
-theorem FieldOfNorms.coord_fieldOfNormsOfCofinal_any (P : FiniteIntermediateField K L → Prop)
+theorem FieldOfNorms.coord_ofCofinal_of_le (P : FiniteIntermediateField K L → Prop)
     (hP : ∀ E, ∃ F, P F ∧ E ≤ F)
     (x : ∀ E, P E → E.val)
     (hx : ∀ (E F : FiniteIntermediateField K L) (hE : P E) (hF : P F) (hEF : E ≤ F),
@@ -260,6 +260,6 @@ theorem FieldOfNorms.coord_fieldOfNormsOfCofinal_any (P : FiniteIntermediateFiel
     (E F : FiniteIntermediateField K L) (hF : P F) (hEF : E ≤ F) :
     FieldOfNorms.coord K L E (FieldOfNorms.ofCofinal K L P hP x hx) =
       FiniteIntermediateField.norm E F hEF (x F hF) := by
-  rw [← FieldOfNorms.coord_norm K L E F hEF, FieldOfNorms.coord_fieldOfNormsOfCofinal]
+  rw [← FieldOfNorms.coord_norm K L E F hEF, FieldOfNorms.coord_ofCofinal]
 
 end FontaineWintenberger

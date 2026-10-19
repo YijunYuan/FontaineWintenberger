@@ -135,38 +135,15 @@ theorem FieldOfNorms.residueLayerEquiv_residue :
   intro α
   rfl
 
-/-- Above the proved APF residue-stable layer, coordinate reduction
-identifies the field of norms residue field with the intrinsic residue
-field of the canonical integral closure in the extension. -/
-def FieldOfNorms.residueEquiv :
-    IsLocalRing.ResidueField (FieldOfNorms.fieldValuation K L).valuationSubring ≃+*
-      IsLocalRing.ResidueField
-        (integralClosure 𝒪[K] L) := by
-  let T := apfResidueLayer K L
-  let E := deepFiniteTower K L T 0
-  exact (FieldOfNorms.residueLayerEquiv K L T).trans
-    (integralClosureResidueEquiv K L E
-      (le_deepFiniteTower K L T 0)).toRingEquiv
-
-/-- On residues of integral norm families, the intrinsic residue
-isomorphism is the finite residue inclusion after coordinate reduction. -/
-@[simp]
-theorem FieldOfNorms.residueEquiv_residue :
-    ∀ α : (FieldOfNorms.fieldValuation K L).valuationSubring,
-    FieldOfNorms.residueEquiv K L (IsLocalRing.residue _ α) =
-      integralClosureResidueFromLayer K L
-        (deepFiniteTower K L (apfResidueLayer K L) 0)
-        (IsLocalRing.residue _ (FieldOfNorms.integralCoordinate K L
-          (apfResidueLayer K L) α 0)) := by
-  intro α
-  rfl
-
 /-- The field of norms residue field is perfect, with no finite
 residue-field hypothesis. -/
 instance FieldOfNorms.instPerfectFieldResidueField :
     PerfectField (IsLocalRing.ResidueField
       (FieldOfNorms.fieldValuation K L).valuationSubring) := by
   let := IsAPF.perfectField_integralClosureResidue K L
-  exact PerfectField.of_ringEquiv (FieldOfNorms.residueEquiv K L).symm
+  let T := apfResidueLayer K L
+  exact PerfectField.of_ringEquiv ((FieldOfNorms.residueLayerEquiv K L T).trans
+    (integralClosureResidueEquiv K L (deepFiniteTower K L T 0)
+      (le_deepFiniteTower K L T 0)).toRingEquiv).symm
 
 end FontaineWintenberger

@@ -101,7 +101,7 @@ def RelFieldOfNorms.galoisSubgroup :
         rw [RingEquiv.apply_symm_apply] }
 
 /-- Membership means a commuting square with an automorphism. -/
-theorem mem_relFieldOfNormsGaloisSubgroup :
+theorem RelFieldOfNorms.mem_galoisSubgroup :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
     ∀ β : RingAut U, β ∈ RelFieldOfNorms.galoisSubgroup K L ↔
       ∃ σ : L ≃ₐ[K] L, ∀ x : X, β (ι x) = ι (ρ σ x) := by
@@ -125,14 +125,14 @@ theorem RelFieldOfNorms.galoisSubgroup_base_unique :
 
 /-- The existential square is exactly preservation of the base image
 and membership of its transported restriction in the action image. -/
-theorem mem_relFieldOfNormsGaloisSubgroup_iff_stable_image :
+theorem RelFieldOfNorms.mem_galoisSubgroup_iff_stable_image :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
     ∀ β : RingAut U, β ∈ RelFieldOfNorms.galoisSubgroup K L ↔
       β '' Set.range ι = Set.range ι ∧
         ∃ a ∈ (ρ).range, ∀ x : X, β (ι x) = ι (a x) := by
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
   intro β
-  rw [mem_relFieldOfNormsGaloisSubgroup]
+  rw [RelFieldOfNorms.mem_galoisSubgroup]
   constructor
   · rintro ⟨σ, hσ⟩
     refine ⟨?_, ρ σ, ⟨σ, rfl⟩, hσ⟩
@@ -167,7 +167,7 @@ local notation "S" => RelFieldOfNorms.galoisSubgroup K L
 
 /-- The automorphism supplied by the subgroup membership theorem. -/
 def RelFieldOfNorms.galoisRestrictionFun (β : S) : L ≃ₐ[K] L :=
-  Classical.choose ((mem_relFieldOfNormsGaloisSubgroup K L β.val).mp β.property)
+  Classical.choose ((RelFieldOfNorms.mem_galoisSubgroup K L β.val).mp β.property)
 
 /-- The chosen automorphism has the base square on every element. -/
 theorem RelFieldOfNorms.galoisRestrictionFun_base :
@@ -177,7 +177,7 @@ theorem RelFieldOfNorms.galoisRestrictionFun_base :
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
   intro β x
   exact Classical.choose_spec
-    ((mem_relFieldOfNormsGaloisSubgroup K L β.val).mp β.property) x
+    ((RelFieldOfNorms.mem_galoisSubgroup K L β.val).mp β.property) x
 
 end FontaineWintenberger
 
@@ -253,7 +253,7 @@ theorem RelFieldOfNorms.galoisRestriction_eq_iff :
       (RelFieldOfNorms.galoisRestriction_base K L β) hσ
 
 /-- The kernel consists exactly of automorphisms fixing the base pointwise. -/
-theorem mem_relFieldOfNormsGaloisRestriction_ker_iff :
+theorem RelFieldOfNorms.mem_galoisRestriction_ker_iff :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
     ∀ β : S, β ∈ (r).ker ↔ ∀ x : X, β.val (ι x) = ι x := by
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
@@ -290,7 +290,7 @@ def RelFieldOfNorms.galoisRelativeHom :
   letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
   exact
     (MulSemiringAction.toRingEquiv (U ≃ₐ[X] U) U).codRestrict S fun β => by
-      apply (mem_relFieldOfNormsGaloisSubgroup K L β.toRingEquiv).mpr
+      apply (RelFieldOfNorms.mem_galoisSubgroup K L β.toRingEquiv).mpr
       refine ⟨1, ?_⟩
       intro x
       change β (ι x) = ι ((ρ) 1 x)
@@ -307,7 +307,7 @@ theorem RelFieldOfNorms.galoisRelativeHom_injective :
 theorem RelFieldOfNorms.galoisRelativeHom_mem_ker :
     ∀ β, RelFieldOfNorms.galoisRelativeHom K L β ∈ (r).ker := by
   intro β
-  apply (mem_relFieldOfNormsGaloisRestriction_ker_iff K L _).mpr
+  apply (RelFieldOfNorms.mem_galoisRestriction_ker_iff K L _).mpr
   cases β
   assumption
 
@@ -318,7 +318,7 @@ theorem RelFieldOfNorms.galoisRelativeHom_surjective_ker :
         (RelFieldOfNorms.galoisRelativeHom_mem_ker K L)) := by
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
   intro β
-  have hfix := (mem_relFieldOfNormsGaloisRestriction_ker_iff K L β.val).mp
+  have hfix := (RelFieldOfNorms.mem_galoisRestriction_ker_iff K L β.val).mp
     β.property
   refine ⟨{ β.val.val with commutes' := hfix }, ?_⟩
   apply Subtype.ext
@@ -366,7 +366,7 @@ theorem RelFieldOfNorms.galoisKernelEquiv_apply :
         (@Semifield.toCommSemiring Ω
           (@Field.toSemifield Ω (separableClosure K (AlgebraicClosure K)).toField))
     ∀ σ z, (RelFieldOfNorms.galoisKernelEquiv K L σ).val.val z =
-      RelFieldOfNorms.map K L Ω Ω σ.toAlgHom z := by
+      RelFieldOfNorms.mapEquiv K L Ω Ω σ.toAlgHom z := by
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
   let : Semiring Ω :=
     @CommSemiring.toSemiring Ω
@@ -407,7 +407,7 @@ def RelFieldOfNorms.ambientGaloisHom :
   letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
   refine (A).codRestrict S ?_
   intro σ
-  apply (mem_relFieldOfNormsGaloisSubgroup K L (A σ)).mpr
+  apply (RelFieldOfNorms.mem_galoisSubgroup K L (A σ)).mpr
   refine ⟨AlgEquiv.restrictNormalHom L σ, ?_⟩
   intro x
   simpa only [FieldOfNorms.absoluteAut_apply] using

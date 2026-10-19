@@ -39,9 +39,9 @@ is reflected by equality of the finite restrictions. -/
 theorem RelFieldOfNorms.map_eq_on_stage_iff (s t : M →ₐ[L] M)
     (Q : FiniteIntermediateField L M) :
     (∀ x : FieldOfNorms K Q.val,
-      RelFieldOfNorms.map K L M M s
+      RelFieldOfNorms.mapEquiv K L M M s
           (RelFieldOfNorms.of K L M Q x) =
-        RelFieldOfNorms.map K L M M t
+        RelFieldOfNorms.mapEquiv K L M M t
           (RelFieldOfNorms.of K L M Q x)) ↔
       ∀ a : Q.val, s (a : M) = t (a : M) := by
   let P := FiniteIntermediateField.sup (FiniteIntermediateField.map s Q)
@@ -53,16 +53,16 @@ theorem RelFieldOfNorms.map_eq_on_stage_iff (s t : M →ₐ[L] M)
     (IntermediateField.inclusion (FiniteIntermediateField.le_sup_right _ _)).comp
       (FiniteIntermediateField.equivMap t Q).toAlgHom
   have hs (x : FieldOfNorms K Q.val) :
-      RelFieldOfNorms.map K L M M s
+      RelFieldOfNorms.mapEquiv K L M M s
           (RelFieldOfNorms.of K L M Q x) =
         RelFieldOfNorms.of K L M P
-          (FieldOfNorms.finiteHomEquiv K L Q.val P.val φ x) :=
+          (FieldOfNorms.algHomEquiv K L Q.val P.val φ x) :=
     RelFieldOfNorms.algMap_of_factor K L M M s Q P φ (fun _ => rfl) x
   have ht (x : FieldOfNorms K Q.val) :
-      RelFieldOfNorms.map K L M M t
+      RelFieldOfNorms.mapEquiv K L M M t
           (RelFieldOfNorms.of K L M Q x) =
         RelFieldOfNorms.of K L M P
-          (FieldOfNorms.finiteHomEquiv K L Q.val P.val ψ x) :=
+          (FieldOfNorms.algHomEquiv K L Q.val P.val ψ x) :=
     RelFieldOfNorms.algMap_of_factor K L M M t Q P ψ (fun _ => rfl) x
   constructor
   · intro h
@@ -82,7 +82,7 @@ def RelFieldOfNorms.finiteImage (Q : FiniteIntermediateField L M) :
 theorem RelFieldOfNorms.finiteImage_finite (Q : FiniteIntermediateField L M) :
     Module.Finite (FieldOfNorms K L) (RelFieldOfNorms.finiteImage K L M Q) := by
   let : Module.Finite (FieldOfNorms K L) (FieldOfNorms K Q.val) :=
-    (FieldOfNorms.finite_finite_separable_degree K L Q.val
+    (FieldOfNorms.finiteDimensional_isSeparable_finrank_inclusion K L Q.val
 ).1
   exact Module.Finite.equiv
     (RelFieldOfNorms.ofAlgHom K L M Q).equivFieldRange.toLinearEquiv
@@ -201,6 +201,6 @@ theorem RelFieldOfNorms.krullEquiv_toMulEquiv :
 theorem RelFieldOfNorms.krullEquiv_apply (σ : M ≃ₐ[L] M)
     (z : RelFieldOfNorms K L M) :
     RelFieldOfNorms.krullEquiv K L M σ z =
-      RelFieldOfNorms.map K L M M σ.toAlgHom z := rfl
+      RelFieldOfNorms.mapEquiv K L M M σ.toAlgHom z := rfl
 
 end FontaineWintenberger

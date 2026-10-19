@@ -111,10 +111,9 @@ theorem FieldOfNorms.isDiscreteValuationRing :
 /-- **Theorem 2.1.3 (iii).** The residue field of the field of norms is the residue field
 `k_L` of `L`, the residue field of the integral closure of `𝒪_K` in `L`. -/
 def FieldOfNorms.residueFieldEquiv :
-    IsLocalRing.ResidueField
-        (Valued.v : Valuation (FieldOfNorms K L) (WithZero (Multiplicative ℤ))).valuationSubring
-      ≃+* IsLocalRing.ResidueField
-        (integralClosure 𝒪[K] L) :=
+    IsLocalRing.ResidueField (integralClosure 𝒪[K] L) ≃+*
+      IsLocalRing.ResidueField
+        (Valued.v : Valuation (FieldOfNorms K L) (WithZero (Multiplicative ℤ))).valuationSubring :=
   FieldOfNorms.residueEquiv K L
 
 end FieldOfNorms
@@ -136,10 +135,10 @@ def FieldOfNorms.homEquiv (M N : Type*) [Field M] [Field N] [Algebra K M] [Algeb
     haveI : Fact (¬ Module.Finite K N) := ⟨RelFieldOfNorms.ambient_infinite K L N⟩
     letI : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
     letI : Algebra.IsSeparable L N := Algebra.isSeparable_tower_top_of_isSeparable K L N
-    letI := (FieldOfNorms.finiteRingHom K L M).toAlgebra
-    letI := (FieldOfNorms.finiteRingHom K L N).toAlgebra
+    letI := (FieldOfNorms.inclusion K L M).toAlgebra
+    letI := (FieldOfNorms.inclusion K L N).toAlgebra
     (M →ₐ[L] N) ≃ (FieldOfNorms K M →ₐ[FieldOfNorms K L] FieldOfNorms K N) :=
-  FieldOfNorms.finiteHomEquiv K L M N
+  FieldOfNorms.algHomEquiv K L M N
 
 /-- **Corollary 3.2.3.** The absolute Galois groups of `L` and of `X_K(L)` are isomorphic as
 topological groups. -/

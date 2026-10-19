@@ -315,7 +315,7 @@ theorem FieldOfNorms.valuation_eq_coordinate_of_fullUpper
     [IsAPF K L] {E : FiniteIntermediateField K L} {b : ℝ} (hb : 0 < b)
     (h : E.HasFullUpper K L b) (α : FieldOfNorms K L) :
     FieldOfNorms.valuation K L α = FieldOfNorms.coordinateValuation K L E α := by
-  obtain ⟨V, hV⟩ := IsAPF.exists_fieldOfNormsValuation_eq_coordinate K L
+  obtain ⟨V, hV⟩ := FieldOfNorms.exists_valuation_eq_coordinateValuation K L
   let F := FiniteIntermediateField.sup E V
   have hEF : E ≤ F := FiniteIntermediateField.le_sup_left E V
   rw [hV F (FiniteIntermediateField.le_sup_right E V)]
@@ -450,7 +450,7 @@ theorem FieldOfNorms.highBreakProjection_eq_iff
 
 /-- The kernel ideal is exactly the r-th maximal-ideal power in the
 field of norms valuation ring, with its proved normalized valuation. -/
-theorem ker_fieldOfNormsHighBreakProjection
+theorem FieldOfNorms.ker_highBreakProjection
     (r : ℕ) (hrb : r ≤ ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊) :
     RingHom.ker (FieldOfNorms.highBreakProjection K L hb h r hrb) =
       IsLocalRing.maximalIdeal
@@ -502,7 +502,7 @@ def FieldOfNorms.coordinatePolynomial (E : FiniteIntermediateField K L) :
 /-- Every coefficient is the finite coordinate of that same
 coefficient of the polynomial. -/
 @[simp]
-theorem coeff_fieldOfNormsCoordinatePolynomial (E : FiniteIntermediateField K L) :
+theorem FieldOfNorms.coeff_coordinatePolynomial (E : FiniteIntermediateField K L) :
     ∀ (f : Oₓ[X]) (i : ℕ),
       (FieldOfNorms.coordinatePolynomial K L E f).coeff i =
         FieldOfNorms.integralCoordinateAt K L E (f.coeff i) := by
@@ -513,53 +513,53 @@ theorem coeff_fieldOfNormsCoordinatePolynomial (E : FiniteIntermediateField K L)
   · simp [FieldOfNorms.coordinatePolynomial, coeff_monomial, mem_support_iff, hi]
 
 /-- The coordinate polynomial has exactly the monic degree. -/
-theorem natDegree_fieldOfNormsCoordinatePolynomial (E : FiniteIntermediateField K L) :
+theorem FieldOfNorms.natDegree_coordinatePolynomial (E : FiniteIntermediateField K L) :
     ∀ f : Oₓ[X], f.Monic →
       (FieldOfNorms.coordinatePolynomial K L E f).natDegree = f.natDegree := by
   intro f hf
   apply natDegree_eq_of_le_of_coeff_ne_zero
   · apply natDegree_le_iff_coeff_eq_zero.mpr
     intro i hi
-    rw [coeff_fieldOfNormsCoordinatePolynomial, coeff_eq_zero_of_natDegree_lt hi,
+    rw [FieldOfNorms.coeff_coordinatePolynomial, coeff_eq_zero_of_natDegree_lt hi,
       FieldOfNorms.integralCoordinateAt_zero]
-  · rw [coeff_fieldOfNormsCoordinatePolynomial, hf.coeff_natDegree,
+  · rw [FieldOfNorms.coeff_coordinatePolynomial, hf.coeff_natDegree,
       FieldOfNorms.integralCoordinateAt_one]
     exact one_ne_zero
 
 /-- The same coordinate polynomial is monic in the integers. -/
-theorem monic_fieldOfNormsCoordinatePolynomial (E : FiniteIntermediateField K L) :
+theorem FieldOfNorms.monic_coordinatePolynomial (E : FiniteIntermediateField K L) :
     ∀ f : Oₓ[X], f.Monic →
       (FieldOfNorms.coordinatePolynomial K L E f).Monic := by
   intro f hf
   change (FieldOfNorms.coordinatePolynomial K L E f).coeff
     (FieldOfNorms.coordinatePolynomial K L E f).natDegree = 1
-  rw [natDegree_fieldOfNormsCoordinatePolynomial K L E f hf,
-    coeff_fieldOfNormsCoordinatePolynomial, hf.coeff_natDegree,
+  rw [FieldOfNorms.natDegree_coordinatePolynomial K L E f hf,
+    FieldOfNorms.coeff_coordinatePolynomial, hf.coeff_natDegree,
         FieldOfNorms.integralCoordinateAt_one]
 
 /-- Passing the integral coefficient polynomial into its finite
 field preserves monicity. -/
-theorem monic_map_fieldOfNormsCoordinatePolynomial (E : FiniteIntermediateField K L) :
+theorem FieldOfNorms.monic_map_coordinatePolynomial (E : FiniteIntermediateField K L) :
     ∀ f : Oₓ[X], f.Monic →
       ((FieldOfNorms.coordinatePolynomial K L E f).map
         (algebraMap (spectralIntegerRing K E.val) E.val)).Monic := by
   intro f hf
-  exact (monic_fieldOfNormsCoordinatePolynomial K L E f hf).map _
+  exact (FieldOfNorms.monic_coordinatePolynomial K L E f hf).map _
 
 /-- The finite-field polynomial also has precisely the degree. -/
-theorem natDegree_map_fieldOfNormsCoordinatePolynomial (E : FiniteIntermediateField K L) :
+theorem FieldOfNorms.natDegree_map_coordinatePolynomial (E : FiniteIntermediateField K L) :
     ∀ f : Oₓ[X], f.Monic →
       ((FieldOfNorms.coordinatePolynomial K L E f).map
         (algebraMap (spectralIntegerRing K E.val) E.val)).natDegree = f.natDegree := by
   intro f hf
-  rw [(monic_fieldOfNormsCoordinatePolynomial K L E f hf).natDegree_map,
-    natDegree_fieldOfNormsCoordinatePolynomial K L E f hf]
+  rw [(FieldOfNorms.monic_coordinatePolynomial K L E f hf).natDegree_map,
+    FieldOfNorms.natDegree_coordinatePolynomial K L E f hf]
 
 variable (E : FiniteIntermediateField K L) {b : ℝ} (hb : 0 < b) (h : E.HasFullUpper K L b)
 
 /-- Reduction of the coefficient polynomial agrees with mapping the
 polynomial by the high-break quotient ring homomorphism. -/
-theorem map_fieldOfNormsCoordinatePolynomial
+theorem FieldOfNorms.map_coordinatePolynomial
     (r : ℕ) (hrb : r ≤ ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊) :
     ∀ f : Oₓ[X],
       (FieldOfNorms.coordinatePolynomial K L E f).map
@@ -567,7 +567,7 @@ theorem map_fieldOfNormsCoordinatePolynomial
           f.map (FieldOfNorms.highBreakProjection K L hb h r hrb) := by
   intro f
   ext i
-  simp only [coeff_map, coeff_fieldOfNormsCoordinatePolynomial,
+  simp only [coeff_map, FieldOfNorms.coeff_coordinatePolynomial,
       FieldOfNorms.highBreakProjection_apply]
 
 /-- The existing discriminant commutes with the original-coordinate reduction;
@@ -580,8 +580,8 @@ theorem FieldOfNorms.highBreakProjection_discr
           (FieldOfNorms.coordinatePolynomial K L E f).discr := by
   intro f hf
   have hd := congrArg Polynomial.discr
-    (map_fieldOfNormsCoordinatePolynomial K L E hb h r hrb f)
-  rw [Polynomial.Monic.discr_map _ (monic_fieldOfNormsCoordinatePolynomial K L E f hf),
+    (FieldOfNorms.map_coordinatePolynomial K L E hb h r hrb f)
+  rw [Polynomial.Monic.discr_map _ (FieldOfNorms.monic_coordinatePolynomial K L E f hf),
     Polynomial.Monic.discr_map f hf] at hd
   exact hd.symm
 
@@ -643,14 +643,14 @@ theorem FieldOfNorms.coordinatePolynomial_discr_additiveValuation
 include hb h in
 /-- At the same proved precision the finite-field coordinate polynomial
 is separable, because its discriminant has nonzero valuation. -/
-theorem separable_fieldOfNormsCoordinatePolynomial
+theorem FieldOfNorms.separable_coordinatePolynomial
     (r : ℕ) (hrb : r ≤ ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊) :
     ∀ (f : Oₓ[X]), f.Monic →
       WithZero.exp (-(r : ℤ)) < FieldOfNorms.valuation K L (f.discr : FieldOfNorms K L) →
       ((FieldOfNorms.coordinatePolynomial K L E f).map
         (algebraMap (spectralIntegerRing K E.val) E.val)).Separable := by
   intro f hf hr
-  have hfE := monic_fieldOfNormsCoordinatePolynomial K L E f hf
+  have hfE := FieldOfNorms.monic_coordinatePolynomial K L E f hf
   apply (monic_discr_ne_zero_iff _ (hfE.map
     (algebraMap (spectralIntegerRing K E.val) E.val))).mp
   rw [Polynomial.Monic.discr_map _ hfE]
@@ -680,7 +680,7 @@ theorem exists_fieldOfNorms_discr_precision :
 /-- Along every finite-coordinate sequence with full products
 at depths tending to infinity, the discriminant value is eventually
 constant and the coordinate polynomials are separable. -/
-theorem eventually_fieldOfNormsCoordinatePolynomial_discr_stable
+theorem FieldOfNorms.eventually_coordinatePolynomial_discr_stable
     (F : ℕ → FiniteIntermediateField K L) (c : ℕ → ℝ) (hc : ∀ n, 0 < c n)
     (hF : ∀ n, (F n).HasFullUpper K L (c n))
     (hctop : Filter.Tendsto c Filter.atTop Filter.atTop) :
@@ -704,13 +704,13 @@ theorem eventually_fieldOfNormsCoordinatePolynomial_discr_stable
     exact_mod_cast hn.trans (Nat.le_ceil _)
   exact ⟨FieldOfNorms.coordinatePolynomial_discr_valuation K L (F n)
       (hc n) (hF n) r hrb f hf hr,
-    separable_fieldOfNormsCoordinatePolynomial K L (F n)
+    FieldOfNorms.separable_coordinatePolynomial K L (F n)
       (hc n) (hF n) r hrb f hf hr⟩
 
 /-- An increasing cofinal sequence of finite fields has full
 upper depths tending to infinity and stabilizes every monic separable
 polynomial's discriminant, with eventual finite-field separability. -/
-theorem exists_cofinal_fieldOfNormsCoordinatePolynomial_discr_stable :
+theorem FieldOfNorms.exists_cofinal_coordinatePolynomial_discr_stable :
     ∃ F : ℕ → FiniteIntermediateField K L, Monotone F ∧
       (∀ n, (F n).HasFullUpper K L ((n : ℝ) + 1)) ∧
       (∀ D : FiniteIntermediateField K L, ∃ n, D ≤ F n) ∧
@@ -727,7 +727,7 @@ theorem exists_cofinal_fieldOfNormsCoordinatePolynomial_discr_stable :
   obtain ⟨F, hmono, hF, hcofinal⟩ :=
     IsAPF.exists_monotone_cofinal_fullUpper_stages K L c (fun n ↦ (hc n).le)
   refine ⟨F, hmono, hF, hcofinal, ?_⟩
-  apply eventually_fieldOfNormsCoordinatePolynomial_discr_stable K L F c hc hF
+  apply FieldOfNorms.eventually_coordinatePolynomial_discr_stable K L F c hc hF
   exact Filter.tendsto_atTop_add_const_right Filter.atTop (1 : ℝ)
     tendsto_natCast_atTop_atTop
 

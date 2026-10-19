@@ -117,7 +117,7 @@ theorem FieldOfNorms.valuation_sum_le_one [IsAPF K L] {ι : Type*}
   | empty => simp
   | @insert i s hi ih =>
     rw [Finset.sum_insert hi]
-    exact FieldOfNorms.valuation_fieldOfNormsAdd_le_one K L _ _
+    exact FieldOfNorms.valuation_add_le_one K L _ _
       (ha i (Finset.mem_insert_self i s)) (ih (fun j hj => ha j (Finset.mem_insert_of_mem hj)))
 
 /-- Every finite sum of families approximates the ordinary sum
@@ -175,11 +175,11 @@ instance (priority := low) FieldOfNorms.instCommSemiring [IsAPF K L] : CommSemir
     L) :=
   {
     (inferInstance : CommMonoidWithZero (FieldOfNorms K L)), FieldOfNorms.instAddCommMonoid K L with
-    left_distrib := mul_fieldOfNormsAdd K L
+    left_distrib := FieldOfNorms.left_distrib K L
     right_distrib := fun a b c => by
       change FieldOfNorms.add K L a b * c =
         FieldOfNorms.add K L (a * c) (b * c)
-      rw [mul_comm _ c, mul_fieldOfNormsAdd, mul_comm c a, mul_comm c b]
+      rw [mul_comm _ c, FieldOfNorms.left_distrib, mul_comm c a, mul_comm c b]
     natCast := fun n => n • (1 : FieldOfNorms K L)
     natCast_zero := zero_nsmul _
     natCast_succ := fun n => AddMonoid.nsmul_succ n _ }
@@ -302,8 +302,8 @@ theorem FieldOfNorms.valuation_add_le_max [IsAPF K L] (α β : FieldOfNorms K L)
   obtain ⟨δ, hδ, hmax, ha, hb⟩ := hscale
   have hδα : δ * (α / δ) = α := by simp [div_eq_mul_inv, mul_left_comm, hδ]
   have hδβ : δ * (β / δ) = β := by simp [div_eq_mul_inv, mul_left_comm, hδ]
-  have hsum := FieldOfNorms.valuation_fieldOfNormsAdd_le_one K L (α / δ) (β / δ) ha hb
-  have heq := mul_fieldOfNormsAdd K L δ (α / δ) (β / δ)
+  have hsum := FieldOfNorms.valuation_add_le_one K L (α / δ) (β / δ) ha hb
+  have heq := FieldOfNorms.left_distrib K L δ (α / δ) (β / δ)
   rw [hδα, hδβ] at heq
   change w (FieldOfNorms.add K L α β) ≤ max (w α) (w β)
   rw [← heq, _root_.map_mul, ← hmax]
@@ -371,7 +371,7 @@ theorem FieldOfNorms.valuation_sub_eq_of_cofinal_coordinate [IsAPF K L]
       FieldOfNorms.valuation K L (α - β) = WithZero.exp (-n) := by
   intro α β n hcofinal
   let s : ℕ := n.toNat + 1
-  obtain ⟨T₀, hT₀⟩ := IsAPF.exists_fieldOfNormsValuation_eq_coordinate K L
+  obtain ⟨T₀, hT₀⟩ := FieldOfNorms.exists_valuation_eq_coordinateValuation K L
   obtain ⟨T₁, hT₁⟩ := FieldOfNorms.coord_sub_sub_mem K L α β s
   obtain ⟨E, hE, hval⟩ := hcofinal (FiniteIntermediateField.sup T₀ T₁)
   have hE₀ := (FiniteIntermediateField.le_sup_left T₀ T₁).trans hE

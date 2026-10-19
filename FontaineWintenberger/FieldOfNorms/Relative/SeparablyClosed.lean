@@ -40,19 +40,19 @@ variable [IsAPF K L] [IsAPF K M]
 
 /-- Positive finite-map scaling makes the target valuation
 an extension of the valuation, on their same field map. -/
-theorem FieldOfNorms.finiteFieldValuation_hasExtension :
+theorem FieldOfNorms.fieldValuation_hasExtension_inclusion :
     letI : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
-    letI := (FieldOfNorms.finiteRingHom K L M).toAlgebra
+    letI := (FieldOfNorms.inclusion K L M).toAlgebra
     (FieldOfNorms.fieldValuation K L).HasExtension
       (FieldOfNorms.fieldValuation K M) := by
   let : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
-  let := (FieldOfNorms.finiteRingHom K L M).toAlgebra
-  obtain ⟨e, he, hv⟩ := exists_finiteFieldOfNormsMap_valuation_scaling K L M
+  let := (FieldOfNorms.inclusion K L M).toAlgebra
+  obtain ⟨e, he, hv⟩ := FieldOfNorms.exists_valuation_inclusion_eq_pow K L M
   constructor
   intro x y
   change FieldOfNorms.valuation K L x ≤ FieldOfNorms.valuation K L y ↔
-    FieldOfNorms.valuation K M (FieldOfNorms.finiteMap K L M x) ≤
-      FieldOfNorms.valuation K M (FieldOfNorms.finiteMap K L M y)
+    FieldOfNorms.valuation K M (FieldOfNorms.inclusion K L M x) ≤
+      FieldOfNorms.valuation K M (FieldOfNorms.inclusion K L M y)
   rw [hv, hv]
   exact (pow_le_pow_iff_left₀ zero_le zero_le he.ne').symm
 
@@ -81,7 +81,7 @@ theorem exists_finite_fieldOfNorms_exact_root :
     ∀ f : Oₓ[X], f.Monic → (f.map (algebraMap Oₓ (FieldOfNorms K L))).Separable →
       0 < f.natDegree →
       ∃ N : FiniteIntermediateField L Ω, Module.finrank L N.val ≤ f.natDegree ∧
-        letI := (FieldOfNorms.finiteRingHom K L N.val).toAlgebra
+        letI := (FieldOfNorms.inclusion K L N.val).toAlgebra
         ∃ a : FieldOfNorms K N.val, aeval a (f.map (algebraMap Oₓ (FieldOfNorms K L))) = 0 := by
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
   intro f hf hsep hdegree
@@ -89,14 +89,14 @@ theorem exists_finite_fieldOfNorms_exact_root :
   let r := 2 * f.natDegree * d + 1
   obtain ⟨N, hdegreeN, hz⟩ := exists_fieldOfNorms_approximate_root_at_precision
     K L (Ω := Ω) r f hf hsep hdegree
-  let φ := FieldOfNorms.finiteRingHom K L N.val
+  let φ := FieldOfNorms.inclusion K L N.val
   let : Algebra (FieldOfNorms K L) (FieldOfNorms K N.val) := φ.toAlgebra
   let : Algebra Oₓ (FieldOfNorms K N.val) := (φ.comp (Oₓ).subtype).toAlgebra
   let : IsScalarTower Oₓ (FieldOfNorms K L) (FieldOfNorms K N.val) :=
     IsScalarTower.of_algebraMap_eq' rfl
-  let ρ := FieldOfNorms.finiteIntegralRingHom K L N.val
+  let ρ := FieldOfNorms.integerInclusion K L N.val
   obtain ⟨z, hz⟩ := hz
-  obtain ⟨e, he, hedegree, hv⟩ := exists_finiteFieldOfNormsMap_valuation_scaling_le_finrank
+  obtain ⟨e, he, hedegree, hv⟩ := FieldOfNorms.exists_valuation_inclusion_eq_pow_le_finrank
     K L N.val
   have hek : e ≤ f.natDegree := hedegree.trans hdegreeN
   let w := FieldOfNorms.fieldValuation K N.val
@@ -111,7 +111,7 @@ theorem exists_finite_fieldOfNorms_exact_root :
   have hdelta : WithZero.exp (-((d : ℤ) * (e * 2 : ℕ))) <
       w (algebraMap (FieldOfNorms K L) (FieldOfNorms K N.val) (f.discr : FieldOfNorms K L)) ^ 2 :=
           by
-    change _ < FieldOfNorms.valuation K N.val (FieldOfNorms.finiteMap K L N.val _) ^ 2
+    change _ < FieldOfNorms.valuation K N.val (FieldOfNorms.inclusion K L N.val _) ^ 2
     rw [hv, ← pow_mul]
     have h := pow_lt_pow_left₀ hd zero_le (by omega : e * 2 ≠ 0)
     rw [← WithZero.exp_nsmul] at h
@@ -123,12 +123,12 @@ theorem exists_finite_fieldOfNorms_exact_root :
     push_cast
     have hmul' : (e : ℤ) * d ≤ (f.natDegree : ℤ) * d := by exact_mod_cast hmul
     nlinarith
-  obtain ⟨hfinite, hseparable, _⟩ := FieldOfNorms.finite_finite_separable_degree
+  obtain ⟨hfinite, hseparable, _⟩ := FieldOfNorms.finiteDimensional_isSeparable_finrank_inclusion
     K L N.val
   let : Module.Finite (FieldOfNorms K L) (FieldOfNorms K N.val) := hfinite
   let : Algebra.IsSeparable (FieldOfNorms K L) (FieldOfNorms K N.val) := hseparable
   let : (FieldOfNorms.fieldValuation K L).HasExtension w :=
-    FieldOfNorms.finiteFieldValuation_hasExtension K L N.val
+    FieldOfNorms.fieldValuation_hasExtension_inclusion K L N.val
   obtain ⟨a, ha, _, _, _⟩ := discreteValued_exists_root_mem_adjoin_of_discr
     (FieldOfNorms K L) (WithZero (Multiplicative ℤ)) (FieldOfNorms K N.val) w
       f hf hdegree z.val z.property (hres.trans_lt (hcut.trans hdelta))
@@ -236,14 +236,14 @@ theorem exists_finite_fieldOfNorms_root_of_monic :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
     ∀ f : (FieldOfNorms K L)[X], f.Monic → f.Separable → 0 < f.natDegree →
       ∃ N : FiniteIntermediateField L Ω, Module.finrank L N.val ≤ f.natDegree ∧
-        letI := (FieldOfNorms.finiteRingHom K L N.val).toAlgebra
+        letI := (FieldOfNorms.inclusion K L N.val).toAlgebra
         ∃ a : FieldOfNorms K N.val, aeval a f = 0 := by
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
   intro f hf hsep hdegree
   let π := FieldOfNorms.uniformizer K L
   obtain ⟨s, hs, m, _, _, hcoeff⟩ := exists_integral_scaleRoots_of_uniformizer
     (FieldOfNorms.fieldValuation K L) π
-      (FieldOfNorms.valuation_fieldOfNormsUniformizer K L) f hf
+      (FieldOfNorms.valuation_uniformizer K L) f hf
   have hsub : algebraMap Oₓ (FieldOfNorms K L) = (Oₓ).subtype := by
     rfl
   have hlifts : f.scaleRoots s ∈ Polynomial.lifts (algebraMap Oₓ (FieldOfNorms K L)) :=
@@ -259,7 +259,7 @@ theorem exists_finite_fieldOfNorms_root_of_monic :
     exact separable_scaleRoots_of_monic f hf hsep s hs
   obtain ⟨N, hdegreeN, ha⟩ := exists_finite_fieldOfNorms_exact_root
     K L (Ω := Ω) g hg hgsep (by rwa [hgdegree])
-  let := (FieldOfNorms.finiteRingHom K L N.val).toAlgebra
+  let := (FieldOfNorms.inclusion K L N.val).toAlgebra
   obtain ⟨a, ha⟩ := ha
   rw [hgmap] at ha
   refine ⟨N, hdegreeN.trans_eq hgdegree, a / algebraMap (FieldOfNorms K L) (FieldOfNorms K N.val)
@@ -308,11 +308,7 @@ theorem RelFieldOfNorms.exists_root_of_monic :
     intro x hx
     exact Q.val.algebraMap_mem ⟨x, hx⟩
   let : Algebra.IsSeparable K Q.val := Algebra.IsSeparable.trans K N.val Q.val
-  let algebras := ((inferInstance : Algebra K Q.val), (inferInstance : Algebra N.val Q.val))
-  have tower : IsScalarTower K N.val Q.val := inferInstance
-  have finite : Module.Finite N.val Q.val := inferInstance
-  have separable : Algebra.IsSeparable N.val Q.val := inferInstance
-  let φ := FieldOfNorms.finiteRingHom K N.val Q.val
+  let φ := FieldOfNorms.inclusion K N.val Q.val
   let := φ.toAlgebra
   obtain ⟨a, ha⟩ := ha
   let : Module.Finite L R.val := R.property
@@ -321,7 +317,7 @@ theorem RelFieldOfNorms.exists_root_of_monic :
       commutes' x := by
         apply Subtype.ext
         rfl }
-  let eX := FieldOfNorms.ringEquiv K e
+  let eX := FieldOfNorms.mapEquiv e
   let j := (RelFieldOfNorms.of K L Ω R).comp eX.toRingHom
   let : Algebra N.val R.val := (IntermediateField.inclusion hNR).toRingHom.toAlgebra
   let : IsScalarTower K N.val R.val := IsScalarTower.of_algebraMap_eq' rfl
@@ -332,17 +328,16 @@ theorem RelFieldOfNorms.exists_root_of_monic :
   have hcomm : j.comp φ = i := by
     apply RingHom.ext
     intro x
-    have hn := @FieldOfNorms.finiteMap_naturality K N.val Q.val _ _ _ _ algebras.1
-      N.val R.val _ _ _ _ algebras.2 (inferInstance : Algebra N.val R.val)
-      tower (inferInstance : IsScalarTower K N.val R.val)
-      _ _ finite _ separable _
-      (AlgEquiv.refl : N.val ≃ₐ[K] N.val) e (fun _ => rfl) x
-    have hv : FieldOfNorms.map e (φ x) =
+    have hn := @FieldOfNorms.mapEquiv_inclusion K _ _ N.val Q.val _ _ _ _ _ _ _ _ _ _
+      N.val R.val _ _ _ _ _ _ _ _ _ _
+      (inferInstance : Algebra N.val Q.val) (inferInstance : Algebra N.val R.val)
+      (inferInstance : IsScalarTower K N.val Q.val) (inferInstance : IsScalarTower K N.val R.val)
+      _ _ _ _ (AlgEquiv.refl : N.val ≃ₐ[K] N.val) e (fun _ => rfl) x
+    have hv : FieldOfNorms.mapEquiv e (φ x) =
         RelFieldOfNorms.transition K L Ω N R hNR x := by
-      simpa only [FieldOfNorms.map_refl, φ, RelFieldOfNorms.transition,
-        FieldOfNorms.finiteRingHom_apply] using hn
+      simpa only [FieldOfNorms.mapEquiv_refl, φ, RelFieldOfNorms.transition] using hn
     change RelFieldOfNorms.of K L Ω R
-      (FieldOfNorms.map e (φ x)) = i x
+      (FieldOfNorms.mapEquiv e (φ x)) = i x
     rw [hv]
     exact RelFieldOfNorms.of_transition K L Ω N R hNR x
   have hroot := congrArg j ha

@@ -559,6 +559,18 @@ FontaineWintenberger/
 - 全库构建 0 错误 0 警告；最慢 `FieldOfNorms/Galois/Ambient` 54 s、`APF/BaseChange/EmbeddingComparison` 50 s。
 - `docs/MATHLIB_REUSE.md`、`CLAUDE.md` 的 `𝒪[K]` 条目改为上述说明。
 
+### C4-映射（分支 `refactor`，2026-10-20）：`FieldOfNorms.map` / `mapEquiv` / `inclusion` 合一
+- `Functor/Map.lean` 与 `Functor/RingHom.lean` 合并为一个 `Functor/Map.lean`。三类映射各保留一个公开定义，全部是环同态：
+  - `FieldOfNorms.mapEquiv (e : L ≃ₐ[K] M) : X_K(L) ≃+* X_K(M)`（原 `map`/`mulEquiv`/`ringEquiv`/`uniformEquiv` 四件）；
+  - `FieldOfNorms.inclusion K M N : X_K(M) →+* X_K(N)`（原 `finiteMap`（`→*₀`）+ `finiteRingHom`）；
+  - `FieldOfNorms.map (τ : L →ₐ[K] M) : X_K(L) →+* X_K(M)`（原 `finiteEmbeddingMap` + `finiteEmbeddingRingHom`），`[Module.Finite τ.fieldRange M] [Algebra.IsSeparable τ.fieldRange M]`。
+  乘法层的构造（`mapFun`、`inclusion₀`，不要求 APF）留作同文件内的脚手架；下游一律用环同态版本，`_apply` 引理随之消失（`inclusion_apply`/`ringEquiv_apply` 等 6 条删除）。`IsAPF K τ.fieldRange`、`Fact (¬ Module.Finite K τ.fieldRange)` 以及 `Module.Finite`/`IsSeparable` 的 fieldRange 传递改为实例，14 处 `letI := moduleFinite_…` 删除。
+- 引理按 Mathlib 命名重排：`coord_mapEquiv`/`coe_coord_mapEquiv`、`coord_inclusion`、`coord_map`、`valuation_mapEquiv`、`exists_valuation_inclusion_eq_pow`、`uniformContinuous_inclusion`/`_map`、`mapEquiv_inclusion`（自然性）、`map_toAlgHom`、`map_algEquiv`、`map_map`、`map_id`、`map_unique`；Galois 层 `finiteGaloisAction/…Equiv` → `autRestrictScalars`、`galoisAction`、`autEquiv`、`autEquivOfMap`，`finiteAlgHom/finiteHomEquiv` → `mapAlgHom`/`algHomEquiv`。
+- 连带清理 C1 遗留的 34 个 `…fieldOfNormsXxx…` 引理名（`valuation_fieldOfNormsUniformizer → FieldOfNorms.valuation_uniformizer` 等）；`mul_fieldOfNormsAdd` 改名 `FieldOfNorms.left_distrib`（不能叫 `FieldOfNorms.mul_add`：`FieldOfNorms.*` 声明体内会遮蔽根命名空间的 `mul_add`）。
+- `FieldOfNorms.residueEquiv : 𝓀[L] ≃+* 𝓀[X_K(L)]` 统一为常数嵌入诱导的那一个（原 `residueConstantsResidueEquiv`）；由深层坐标归约合成的反向版本移至 `Attic/ResidueLayerComposite.lean`（`residueLayerComposite`），`Main.residueFieldEquiv` 随之改为 `𝓀[L] ≃+* 𝓀[X]` 方向。
+- 代价：`Functor/Galois.lean`、`Galois/Action.lean`、`Relative/EssImage.lean` 中原先"仅乘法"的 section 现在带 APF 假设（`mapEquiv` 是环同构）；相应 `omit` 改写。
+- `scripts/check_aggregates.py` + CI 步骤：每个文件被其层的聚合文件 import、分层 import 顺序、根文件 import 全部聚合。
+
 ### F5 设计细化（原计划，供对照）
 1. **`FieldOfNorms K L`**：`def FieldOfNorms := WithZero (normCompatibleUnits K L)`；`instance : CommGroupWithZero := inferInstanceAs …`（无条件）；`instance : Nontrivial`、`Inhabited`。`coord E : FieldOfNorms K L →*₀ E` 替代 `normLimitEval`。
 2. **加法与域**：`normLimitAdd` 的定义只依赖 `[IsAPF K L]`（`p` 仅被线程传递，`Convergence.lean` 中唯一实质使用是 `p ∈ 𝔪^n` 的发散性，来自 `PrimeValuation`）。目标：

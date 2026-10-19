@@ -93,7 +93,7 @@ theorem FieldOfNorms.integral_nhds_zero_hasBasis :
         WithZero.exp (-((n + 2 : ℕ) : ℤ))}) := by
   have h := Valued.nhds_zero_hasBasis_integer_closedBall (FieldOfNorms K L)
     (FieldOfNorms.uniformizer K L)
-    (FieldOfNorms.valuation_fieldOfNormsUniformizer K L)
+    (FieldOfNorms.valuation_uniformizer K L)
   rw [nhds_subtype]
   exact h.comap Subtype.val
 

@@ -147,7 +147,7 @@ theorem RelFieldOfNorms.absoluteGaloisEquiv_apply (σ : Ω ≃ₐ[L] Ω)
     RelFieldOfNorms.absoluteGaloisEquiv K L Ω σ
       (RelFieldOfNorms.separableClosureEquiv K L Ω z) =
       RelFieldOfNorms.separableClosureEquiv K L Ω
-        (RelFieldOfNorms.map K L Ω Ω σ.toAlgHom z) := by
+        (RelFieldOfNorms.mapEquiv K L Ω Ω σ.toAlgHom z) := by
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
   change (RelFieldOfNorms.separableClosureEquiv K L Ω)
     ((RelFieldOfNorms.krullEquiv K L Ω σ)
@@ -173,7 +173,7 @@ theorem FieldOfNorms.absoluteGaloisEquiv_apply
     FieldOfNorms.absoluteGaloisEquiv K L Ω σ
       (RelFieldOfNorms.separableClosureEquiv K L Ω z) =
       RelFieldOfNorms.separableClosureEquiv K L Ω
-        (RelFieldOfNorms.map K L Ω Ω
+        (RelFieldOfNorms.mapEquiv K L Ω Ω
           ((separableClosureEquiv K L Ω).autCongr σ).toAlgHom z) := by
   let : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
   exact RelFieldOfNorms.absoluteGaloisEquiv_apply K L Ω

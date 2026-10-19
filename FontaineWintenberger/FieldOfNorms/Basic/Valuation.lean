@@ -88,7 +88,7 @@ def FieldOfNorms.coordinateValuation (E : FiniteIntermediateField K L) : FieldOf
 variable [PerfectField 𝓀[K]]
 
 /-- The normalized coordinate valuations agree on an APF finite tail. -/
-theorem IsAPF.exists_fieldOfNormsCoordinateValuation_stable [IsAPF K L] :
+theorem FieldOfNorms.exists_coordinateValuation_stable [IsAPF K L] :
     ∃ E₀ : FiniteIntermediateField K L, ∀ E F : FiniteIntermediateField K L, E₀ ≤ E → E₀ ≤ F →
       ∀ x : FieldOfNorms K L,
         FieldOfNorms.coordinateValuation K L E x = FieldOfNorms.coordinateValuation K L F x := by
@@ -110,15 +110,15 @@ theorem IsAPF.exists_fieldOfNormsCoordinateValuation_stable [IsAPF K L] :
 field of norms carrier. APF supplies and proves the finite stable tail. -/
 def FieldOfNorms.valuation [IsAPF K L] : FieldOfNorms K L →*₀ WithZero (Multiplicative ℤ) :=
   FieldOfNorms.coordinateValuation K L
-    (IsAPF.exists_fieldOfNormsCoordinateValuation_stable K L).choose
+    (FieldOfNorms.exists_coordinateValuation_stable K L).choose
 
 /-- The same normalized valuation is computed by every sufficiently large
 finite coordinate. -/
-theorem IsAPF.exists_fieldOfNormsValuation_eq_coordinate [IsAPF K L] :
+theorem FieldOfNorms.exists_valuation_eq_coordinateValuation [IsAPF K L] :
     ∃ E₀ : FiniteIntermediateField K L, ∀ E : FiniteIntermediateField K L, E₀ ≤ E → ∀ x :
         FieldOfNorms K L,
       FieldOfNorms.valuation K L x = FieldOfNorms.coordinateValuation K L E x := by
-  let hex := IsAPF.exists_fieldOfNormsCoordinateValuation_stable K L
+  let hex := FieldOfNorms.exists_coordinateValuation_stable K L
   exact ⟨hex.choose, fun E hE x => hex.choose_spec hex.choose E le_rfl hE x⟩
 
 /-- The stable normalized valuation detects zero on the field of norms. -/
@@ -141,7 +141,7 @@ the maximal unramified subfield, not merely above a chosen stable witness. -/
 theorem FieldOfNorms.valuation_eq_coordinate_of_maximalUnramified_le [IsAPF K L]
     (E : FiniteIntermediateField K L) (hE : apfMaximalUnramified K L ≤ E) (x : FieldOfNorms K L) :
     FieldOfNorms.valuation K L x = FieldOfNorms.coordinateValuation K L E x := by
-  obtain ⟨D, hD⟩ := IsAPF.exists_fieldOfNormsValuation_eq_coordinate K L
+  obtain ⟨D, hD⟩ := FieldOfNorms.exists_valuation_eq_coordinateValuation K L
   let F := FiniteIntermediateField.sup D E
   have hEF : E ≤ F := FiniteIntermediateField.le_sup_right D E
   have hs := spectralResidueInclusion_surjective_of_apfMaximalUnramified_le

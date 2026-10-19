@@ -12,7 +12,6 @@ public import FontaineWintenberger.FieldOfNorms.Structure.ResidueEmbedding
 public import FontaineWintenberger.FieldOfNorms.Basic.Valuation
 public import FontaineWintenberger.Ramification.Embedding.Basic
 public import FontaineWintenberger.FieldOfNorms.Layers.GaloisGood
-public import FontaineWintenberger.FieldOfNorms.Functor.RingHom
 public import Mathlib.FieldTheory.Galois.IsGaloisGroup
 
 /-!
@@ -39,12 +38,13 @@ namespace FontaineWintenberger
 
 section Coordinates
 
-variable {K L : Type*} [Field K] [Field L] [Algebra K L]
+variable {K L : Type*} [NontriviallyNormedField K] [IsPerfectResidueLocalField K] [Field L]
+    [Algebra K L] [Algebra.IsSeparable K L] [IsAPF K L] [Fact (¬ Module.Finite K L)]
 
 /-- At a stable finite intermediate field, fixed norm families have fixed
     coordinates. -/
-theorem FieldOfNorms.coord_fixed_of_fieldOfNormsMap_fixed (σ : L ≃ₐ[K] L)
-    (hσ : ∀ x : FieldOfNorms K L, FieldOfNorms.map σ x = x)
+theorem FieldOfNorms.coord_fixed_of_mapEquiv_fixed (σ : L ≃ₐ[K] L)
+    (hσ : ∀ x : FieldOfNorms K L, FieldOfNorms.mapEquiv σ x = x)
     (E : FiniteIntermediateField K L) (hE : FiniteIntermediateField.map σ.toAlgHom E = E)
     (x : FieldOfNorms K L) :
     σ (FieldOfNorms.coord K L E x : L) = (FieldOfNorms.coord K L E x : L) := by
@@ -53,7 +53,7 @@ theorem FieldOfNorms.coord_fixed_of_fieldOfNormsMap_fixed (σ : L ≃ₐ[K] L)
     change FiniteIntermediateField.map σ.symm.toAlgHom (FiniteIntermediateField.map σ.toAlgHom E) =
         E at h
     rwa [hE] at h
-  have h := coe_fieldOfNormsEval_fieldOfNormsMap σ x E
+  have h := FieldOfNorms.coe_coord_mapEquiv σ x E
   rw [hσ x, hEinv] at h
   exact h.symm
 
@@ -73,7 +73,7 @@ def FieldOfNorms.uniformizerCoordinateInteger [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (E : FiniteIntermediateField K L) : spectralIntegerRing K E.val :=
   ⟨FieldOfNorms.coord K L E (FieldOfNorms.uniformizer K L),
     FieldOfNorms.coord_mem_of_valuation_le_one K L _ (by
-      rw [FieldOfNorms.valuation_fieldOfNormsUniformizer]
+      rw [FieldOfNorms.valuation_uniformizer]
       change WithZero.exp (-1 : ℤ) ≤ WithZero.exp 0
       exact WithZero.exp_le_exp.mpr (by omega)) E⟩
 
@@ -87,7 +87,7 @@ theorem FieldOfNorms.uniformizerCoordinateInteger_irreducible [IsAPF K L]
   have hv : (IsDiscreteValuationRing.maximalIdeal R).valuation E.val (z : E.val) =
       WithZero.exp (-1 : ℤ) :=
     (FieldOfNorms.valuation_eq_coordinate_of_maximalUnramified_le K L E hE _).symm.trans
-      (FieldOfNorms.valuation_fieldOfNormsUniformizer K L)
+      (FieldOfNorms.valuation_uniformizer K L)
   have hzval : addVal R z = 1 := by
     change (IsDiscreteValuationRing.maximalIdeal R).valuation E.val
       (algebraMap R E.val z) = WithZero.exp (-1 : ℤ) at hv
@@ -111,8 +111,9 @@ theorem FieldOfNorms.uniformizerCoordinateInteger_irreducible [IsAPF K L]
 
 /-- The constants force the restriction to a stable field
 to act trivially on its entire residue field. -/
-theorem FiniteIntermediateField.residue_eq_of_fieldOfNormsMap_fixed [IsAPF K L]
-    (σ : L ≃ₐ[K] L) (hσ : ∀ x : FieldOfNorms K L, FieldOfNorms.map σ x = x)
+theorem FiniteIntermediateField.residue_eq_of_mapEquiv_fixed [IsAPF K L]
+    [Fact (¬ Module.Finite K L)] (σ : L ≃ₐ[K] L)
+    (hσ : ∀ x : FieldOfNorms K L, FieldOfNorms.mapEquiv σ x = x)
     (E : FiniteIntermediateField K L) (hE : FiniteIntermediateField.map σ.toAlgHom E = E)
     (hK₁ : apfMaximalTame K L ≤ E) (s : E.val ≃ₐ[K] E.val)
     (hs : ∀ a : E.val, (s a : L) = σ (a : L)) :
@@ -130,20 +131,20 @@ theorem FiniteIntermediateField.residue_eq_of_fieldOfNormsMap_fixed [IsAPF K L]
   change (s (residueIntegralCoordinate K L E hK₁ c : E.val) : L) =
     ((residueIntegralCoordinate K L E hK₁ c : E.val) : L)
   rw [hs]
-  have h := FieldOfNorms.coord_fixed_of_fieldOfNormsMap_fixed σ hσ E hE
+  have h := FieldOfNorms.coord_fixed_of_mapEquiv_fixed σ hσ E hE
     (residueConstants K L c)
   rw [FieldOfNorms.coord_residueConstants K L E hK₁] at h
   exact h
 
 /-- Fixing the norm families makes the restriction on every
 stable field above the maximal tame part the identity. -/
-theorem FiniteIntermediateField.aut_eq_of_fieldOfNormsMap_fixed [IsAPF K L]
+theorem FiniteIntermediateField.aut_eq_of_mapEquiv_fixed [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (σ : L ≃ₐ[K] L)
-    (hσ : ∀ x : FieldOfNorms K L, FieldOfNorms.map σ x = x)
+    (hσ : ∀ x : FieldOfNorms K L, FieldOfNorms.mapEquiv σ x = x)
     (E : FiniteIntermediateField K L) (hE : FiniteIntermediateField.map σ.toAlgHom E = E)
     (hK₁ : apfMaximalTame K L ≤ E) (s : E.val ≃ₐ[K] E.val)
     (hs : ∀ a : E.val, (s a : L) = σ (a : L)) : s = AlgEquiv.refl := by
-  have hres := FiniteIntermediateField.residue_eq_of_fieldOfNormsMap_fixed K L σ hσ E hE hK₁ s hs
+  have hres := FiniteIntermediateField.residue_eq_of_mapEquiv_fixed K L σ hσ E hE hK₁ s hs
   let π := FieldOfNorms.uniformizerCoordinateInteger K L E
   have hπ : Irreducible π := FieldOfNorms.uniformizerCoordinateInteger_irreducible K L
     E ((apfMaximalUnramified_le_maximalTame K L).trans hK₁)
@@ -153,7 +154,7 @@ theorem FiniteIntermediateField.aut_eq_of_fieldOfNormsMap_fixed [IsAPF K L]
     apply Subtype.val_injective
     change (s (π : E.val) : L) = ((π : E.val) : L)
     rw [hs]
-    exact FieldOfNorms.coord_fixed_of_fieldOfNormsMap_fixed σ hσ E hE
+    exact FieldOfNorms.coord_fixed_of_mapEquiv_fixed σ hσ E hE
       (FieldOfNorms.uniformizer K L)
   have ht : embeddingIntegralOrder K s.toAlgHom (AlgHom.id K E.val) = ⊤ := by
     rw [embeddingIntegralOrder_eq_uniformizer K _ _ hres hπ, hfix, sub_self, addVal_zero]
@@ -164,9 +165,9 @@ theorem FiniteIntermediateField.aut_eq_of_fieldOfNormsMap_fixed [IsAPF K L]
 
 /-- Norm families distinguish all automorphisms, without
 normality of the infinite separable APF extension. -/
-theorem FieldOfNorms.map_eq_self_iff [IsAPF K L] [Fact (¬ Module.Finite K L)]
+theorem FieldOfNorms.mapEquiv_eq_self_iff [IsAPF K L] [Fact (¬ Module.Finite K L)]
     (σ : L ≃ₐ[K] L) :
-    (∀ x : FieldOfNorms K L, FieldOfNorms.map σ x = x) ↔ σ = 1 := by
+    (∀ x : FieldOfNorms K L, FieldOfNorms.mapEquiv σ x = x) ↔ σ = 1 := by
   constructor
   · intro hσ
     apply AlgEquiv.ext
@@ -181,7 +182,7 @@ theorem FieldOfNorms.map_eq_self_iff [IsAPF K L] [Fact (¬ Module.Finite K L)]
     let s := IntermediateField.normalClosureRestrict D.val σ
     have hs : ∀ b : E.val, (s b : L) = σ (b : L) :=
       fun b => IntermediateField.coe_normalClosureRestrict D.val σ b
-    have hsid := FiniteIntermediateField.aut_eq_of_fieldOfNormsMap_fixed K L σ hσ E hE
+    have hsid := FiniteIntermediateField.aut_eq_of_mapEquiv_fixed K L σ hσ E hE
       ((FiniteIntermediateField.le_sup_right D₀ _).trans hDE) s hs
     have ha₀ : a ∈ D₀.val := IntermediateField.subset_adjoin K {a} (by simp)
     have ha : a ∈ E.val := hDE (FiniteIntermediateField.le_sup_left D₀ _ ha₀)
@@ -190,7 +191,7 @@ theorem FieldOfNorms.map_eq_self_iff [IsAPF K L] [Fact (¬ Module.Finite K L)]
     exact h
   · rintro rfl
     intro x
-    exact FieldOfNorms.map_refl x
+    exact FieldOfNorms.mapEquiv_refl x
 
 /-- The automorphism homomorphism on the norm field is injective. -/
 theorem FieldOfNorms.aut_injective [IsAPF K L] [Fact (¬ Module.Finite K L)] :
@@ -198,7 +199,7 @@ theorem FieldOfNorms.aut_injective [IsAPF K L] [Fact (¬ Module.Finite K L)] :
   intro σ τ hστ
   have hker : FieldOfNorms.aut K L (τ⁻¹ * σ) = 1 := by
     rw [_root_.map_mul, map_inv, hστ, inv_mul_cancel]
-  have hs : τ⁻¹ * σ = 1 := (FieldOfNorms.map_eq_self_iff K L _).mp (by
+  have hs : τ⁻¹ * σ = 1 := (FieldOfNorms.mapEquiv_eq_self_iff K L _).mp (by
     intro x
     change FieldOfNorms.aut K L (τ⁻¹ * σ) x = x
     rw [hker]
@@ -215,12 +216,16 @@ namespace FontaineWintenberger
 
 section Families
 
-variable (K M N : Type*) [Field K] [Field M] [Field N]
-    [Algebra K M] [Algebra K N] [Algebra M N] [IsScalarTower K M N]
-    [Module.Finite M N] [IsGalois M N]
+variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
+variable (M N : Type*) [Field M] [Field N] [Algebra K M] [Algebra K N] [Algebra M N]
+    [IsScalarTower K M N] [Algebra.IsSeparable K M] [Algebra.IsSeparable K N]
+    [IsAPF K M] [IsAPF K N]
+    [Fact (¬ Module.Finite K M)] [Fact (¬ Module.Finite K N)] [Module.Finite M N] [IsGalois M N]
 
+omit [IsPerfectResidueLocalField K] [Algebra.IsSeparable K M] [IsAPF K M] [IsAPF K N]
+  [Fact (¬ Module.Finite K M)] [Fact (¬ Module.Finite K N)] in
 /-- Stable good finite fields are a cofinal subsystem of the target. -/
-theorem galoisStableGoodFiniteLayers_cofinal [Algebra.IsAlgebraic K N]
+theorem galoisStableGoodFiniteLayers_cofinal
     (E : FiniteIntermediateField K N) :
     ∃ D : FiniteIntermediateField K N,
       (IsGoodFiniteLayer K M D ∧ ∀ σ : N ≃ₐ[M] N,
@@ -228,10 +233,11 @@ theorem galoisStableGoodFiniteLayers_cofinal [Algebra.IsAlgebraic K N]
   obtain ⟨D, hED, hg, hs, _⟩ := exists_galois_stable_goodFiniteLayer_ge K M N E
   exact ⟨D, ⟨hg, hs⟩, hED⟩
 
+omit [Algebra.IsSeparable K M] [IsAPF K M] [Fact (¬ Module.Finite K M)] in
 /-- A fixed family has an unique pullback coordinate at
 every stable finite field. -/
 theorem existsUnique_galoisNormCoordinate (β : FieldOfNorms K N)
-    (hβ : ∀ σ : N ≃ₐ[M] N, FieldOfNorms.map (σ.restrictScalars K) β = β)
+    (hβ : ∀ σ : N ≃ₐ[M] N, FieldOfNorms.mapEquiv (σ.restrictScalars K) β = β)
     (D : FiniteIntermediateField K N)
     (hD : ∀ σ : N ≃ₐ[M] N, D.val.map (σ.restrictScalars K).toAlgHom = D.val) :
     ∃! a : FiniteIntermediateField.pullback K M D,
@@ -241,7 +247,7 @@ theorem existsUnique_galoisNormCoordinate (β : FieldOfNorms K N)
     intro σ
     have hi : FiniteIntermediateField.map (σ.restrictScalars K).symm.toAlgHom D = D :=
       Subtype.ext (hD σ.symm)
-    have h := coe_fieldOfNormsEval_fieldOfNormsMap (σ.restrictScalars K) β D
+    have h := FieldOfNorms.coe_coord_mapEquiv (σ.restrictScalars K) β D
     rw [hβ σ, hi] at h
     exact h.symm
   obtain ⟨m, hm⟩ := (IsGalois.mem_range_algebraMap_iff_fixed
@@ -254,25 +260,27 @@ theorem existsUnique_galoisNormCoordinate (β : FieldOfNorms K N)
 
 /-- The unique preimage lies in the pullback field. -/
 def galoisNormCoordinate (β : FieldOfNorms K N)
-    (hβ : ∀ σ : N ≃ₐ[M] N, FieldOfNorms.map (σ.restrictScalars K) β = β)
+    (hβ : ∀ σ : N ≃ₐ[M] N, FieldOfNorms.mapEquiv (σ.restrictScalars K) β = β)
     (D : FiniteIntermediateField K N)
     (hD : ∀ σ : N ≃ₐ[M] N, D.val.map (σ.restrictScalars K).toAlgHom = D.val) :
     FiniteIntermediateField.pullback K M D :=
   (existsUnique_galoisNormCoordinate K M N β hβ D hD).choose
 
+omit [Algebra.IsSeparable K M] [IsAPF K M] [Fact (¬ Module.Finite K M)] in
 /-- Inclusion of the preimage recovers exactly the coordinate. -/
 theorem galoisNormCoordinate_spec (β : FieldOfNorms K N)
-    (hβ : ∀ σ : N ≃ₐ[M] N, FieldOfNorms.map (σ.restrictScalars K) β = β)
+    (hβ : ∀ σ : N ≃ₐ[M] N, FieldOfNorms.mapEquiv (σ.restrictScalars K) β = β)
     (D : FiniteIntermediateField K N)
     (hD : ∀ σ : N ≃ₐ[M] N, D.val.map (σ.restrictScalars K).toAlgHom = D.val) :
     FiniteIntermediateField.pullbackTo K M D (galoisNormCoordinate K M N β hβ D hD) =
       FieldOfNorms.coord K N D β :=
   (existsUnique_galoisNormCoordinate K M N β hβ D hD).choose_spec.1
 
+omit [Algebra.IsSeparable K M] [IsAPF K M] [Fact (¬ Module.Finite K M)] in
 /-- Good-pair norm base change proves compatibility of the
 descended coordinates on every nested stable good pair. -/
 theorem galoisNormCoordinate_norm (β : FieldOfNorms K N)
-    (hβ : ∀ σ : N ≃ₐ[M] N, FieldOfNorms.map (σ.restrictScalars K) β = β)
+    (hβ : ∀ σ : N ≃ₐ[M] N, FieldOfNorms.mapEquiv (σ.restrictScalars K) β = β)
     (D F : FiniteIntermediateField K N) (hDF : D ≤ F)
     (hgD : IsGoodFiniteLayer K M D) (hgF : IsGoodFiniteLayer K M F)
     (hsD : ∀ σ : N ≃ₐ[M] N, D.val.map (σ.restrictScalars K).toAlgHom = D.val)
@@ -288,14 +296,14 @@ theorem galoisNormCoordinate_norm (β : FieldOfNorms K N)
       ((FieldOfNorms.coord_norm K N D F hDF β).trans
         (galoisNormCoordinate_spec K M N β hβ D hsD).symm))
 
-variable [Algebra.IsAlgebraic K N]
-
 /-- A chosen stable good target field dominates each finite
 field through its pullback. -/
 def galoisGoodUpper (C : FiniteIntermediateField K M) : FiniteIntermediateField K N :=
   (exists_galois_stable_goodFiniteLayer_ge K M N
     (FiniteIntermediateField.map (IsScalarTower.toAlgHom K M N) C)).choose
 
+omit [IsPerfectResidueLocalField K] [Algebra.IsSeparable K M] [IsAPF K M] [IsAPF K N]
+  [Fact (¬ Module.Finite K M)] [Fact (¬ Module.Finite K N)] in
 theorem galoisGoodUpper_spec (C : FiniteIntermediateField K M) :
     IsGoodFiniteLayer K M (galoisGoodUpper K M N C) ∧
       (∀ σ : N ≃ₐ[M] N, (galoisGoodUpper K M N C).val.map
@@ -310,7 +318,7 @@ theorem galoisGoodUpper_spec (C : FiniteIntermediateField K M) :
 /-- The norm of the descended coordinate defines a coordinate at
 every finite field, before any compatibility is assumed. -/
 def galoisCoordinate (β : FieldOfNorms K N)
-    (hβ : ∀ σ : N ≃ₐ[M] N, FieldOfNorms.map (σ.restrictScalars K) β = β)
+    (hβ : ∀ σ : N ≃ₐ[M] N, FieldOfNorms.mapEquiv (σ.restrictScalars K) β = β)
     (C : FiniteIntermediateField K M) : C.val :=
   FiniteIntermediateField.norm C (FiniteIntermediateField.pullbackLayer K M (galoisGoodUpper
       K M N C))
@@ -318,10 +326,11 @@ def galoisCoordinate (β : FieldOfNorms K N)
     (galoisNormCoordinate K M N β hβ (galoisGoodUpper K M N C)
       (galoisGoodUpper_spec K M N C).2.1)
 
+omit [Algebra.IsSeparable K M] [IsAPF K M] [Fact (¬ Module.Finite K M)] in
 /-- Common stable good upper fields and norm transitivity
 prove independence of the chosen upper field. -/
 theorem galoisCoordinate_eq_norm (β : FieldOfNorms K N)
-    (hβ : ∀ σ : N ≃ₐ[M] N, FieldOfNorms.map (σ.restrictScalars K) β = β)
+    (hβ : ∀ σ : N ≃ₐ[M] N, FieldOfNorms.mapEquiv (σ.restrictScalars K) β = β)
     (C : FiniteIntermediateField K M) (D : FiniteIntermediateField K N) (hgD : IsGoodFiniteLayer K
         M D)
     (hsD : ∀ σ : N ≃ₐ[M] N, D.val.map (σ.restrictScalars K).toAlgHom = D.val)
@@ -347,10 +356,11 @@ theorem galoisCoordinate_eq_norm (β : FieldOfNorms K N)
       ((FiniteIntermediateField.norm_norm C CD CF hCD hDp aF).symm.trans
         (congrArg (FiniteIntermediateField.norm C CD hCD) hvD)))
 
+omit [Algebra.IsSeparable K M] [IsAPF K M] [Fact (¬ Module.Finite K M)] in
 /-- Compatibility at every inclusion is proved from the
 coordinate independence and finite norm transitivity. -/
 theorem galoisCoordinate_norm (β : FieldOfNorms K N)
-    (hβ : ∀ σ : N ≃ₐ[M] N, FieldOfNorms.map (σ.restrictScalars K) β = β)
+    (hβ : ∀ σ : N ≃ₐ[M] N, FieldOfNorms.mapEquiv (σ.restrictScalars K) β = β)
     (C C' : FiniteIntermediateField K M) (hCC' : C ≤ C') :
     FiniteIntermediateField.norm C C' hCC' (galoisCoordinate K M N β hβ C') =
       galoisCoordinate K M N β hβ C := by
@@ -364,22 +374,24 @@ theorem galoisCoordinate_norm (β : FieldOfNorms K N)
 /-- Reconstruction produces an element of the norm
 limit, using compatibility just proved for all finite fields. -/
 def galoisNormDescent (β : FieldOfNorms K N)
-    (hβ : ∀ σ : N ≃ₐ[M] N, FieldOfNorms.map (σ.restrictScalars K) β = β) : FieldOfNorms K M :=
+    (hβ : ∀ σ : N ≃ₐ[M] N, FieldOfNorms.mapEquiv (σ.restrictScalars K) β = β) : FieldOfNorms K M :=
   (existsUnique_fieldOfNorms_of_compatible K M (galoisCoordinate K M N β hβ)
     (galoisCoordinate_norm K M N β hβ)).choose
 
+omit [Algebra.IsSeparable K M] [IsAPF K M] [Fact (¬ Module.Finite K M)] in
 theorem FieldOfNorms.coord_galoisNormDescent (β : FieldOfNorms K N)
-    (hβ : ∀ σ : N ≃ₐ[M] N, FieldOfNorms.map (σ.restrictScalars K) β = β)
+    (hβ : ∀ σ : N ≃ₐ[M] N, FieldOfNorms.mapEquiv (σ.restrictScalars K) β = β)
     (C : FiniteIntermediateField K M) :
     FieldOfNorms.coord K M C (galoisNormDescent K M N β hβ) =
       galoisCoordinate K M N β hβ C :=
   (existsUnique_fieldOfNorms_of_compatible K M (galoisCoordinate K M N β hβ)
     (galoisCoordinate_norm K M N β hβ)).choose_spec.1 C
 
+omit [Algebra.IsSeparable K M] [IsAPF K M] [Fact (¬ Module.Finite K M)] in
 /-- At every stable good field, descent retains its unique
 pullback coordinate exactly. -/
 theorem FieldOfNorms.coord_galoisNormDescent_pullback (β : FieldOfNorms K N)
-    (hβ : ∀ σ : N ≃ₐ[M] N, FieldOfNorms.map (σ.restrictScalars K) β = β)
+    (hβ : ∀ σ : N ≃ₐ[M] N, FieldOfNorms.mapEquiv (σ.restrictScalars K) β = β)
     (D : FiniteIntermediateField K N) (hgD : IsGoodFiniteLayer K M D)
     (hsD : ∀ σ : N ≃ₐ[M] N, D.val.map (σ.restrictScalars K).toAlgHom = D.val) :
     FieldOfNorms.coord K M (FiniteIntermediateField.pullbackLayer K M D) (galoisNormDescent K M N β
@@ -389,13 +401,11 @@ theorem FieldOfNorms.coord_galoisNormDescent_pullback (β : FieldOfNorms K N)
     ((galoisCoordinate_eq_norm K M N β hβ _ D hgD hsD le_rfl).trans
       (FiniteIntermediateField.norm_self _ _))
 
-variable [Algebra.IsAlgebraic K M]
-
 /-- Every element in the image is fixed by the
 relative automorphism action, proved on cofinal stable good coordinates. -/
-theorem FieldOfNorms.map_finiteFieldOfNormsMap_relative (σ : N ≃ₐ[M] N) (α : FieldOfNorms K M) :
-    FieldOfNorms.map (σ.restrictScalars K) (FieldOfNorms.finiteMap K M N α) =
-      FieldOfNorms.finiteMap K M N α := by
+theorem FieldOfNorms.mapEquiv_restrictScalars_inclusion (σ : N ≃ₐ[M] N) (α : FieldOfNorms K M) :
+    FieldOfNorms.mapEquiv (σ.restrictScalars K) (FieldOfNorms.inclusion K M N α) =
+      FieldOfNorms.inclusion K M N α := by
   apply FieldOfNorms.ext_cofinal K N
     (fun D => IsGoodFiniteLayer K M D ∧ ∀ τ : N ≃ₐ[M] N,
       D.val.map (τ.restrictScalars K).toAlgHom = D.val)
@@ -404,37 +414,37 @@ theorem FieldOfNorms.map_finiteFieldOfNormsMap_relative (σ : N ≃ₐ[M] N) (α
   apply Subtype.val_injective
   have hi : FiniteIntermediateField.map (σ.restrictScalars K).symm.toAlgHom D = D :=
     Subtype.ext (hsD σ.symm)
-  have h := coe_fieldOfNormsEval_fieldOfNormsMap (σ.restrictScalars K)
-    (FieldOfNorms.finiteMap K M N α) D
+  have h := FieldOfNorms.coe_coord_mapEquiv (σ.restrictScalars K)
+    (FieldOfNorms.inclusion K M N α) D
   rw [hi] at h
-  exact h.trans ((congrArg σ (coe_fieldOfNormsEval_finiteFieldOfNormsMap K M N D hgD α)).trans
-    ((σ.commutes _).trans (coe_fieldOfNormsEval_finiteFieldOfNormsMap K M N D hgD α).symm))
+  exact h.trans ((congrArg σ (FieldOfNorms.coe_coord_inclusion K M N D hgD α)).trans
+    ((σ.commutes _).trans (FieldOfNorms.coe_coord_inclusion K M N D hgD α).symm))
 
 /-- The reconstructed family maps back to the given fixed
 family, by the good-coordinate formula and cofinality. -/
-theorem FieldOfNorms.finiteMap_galoisNormDescent (β : FieldOfNorms K N)
-    (hβ : ∀ σ : N ≃ₐ[M] N, FieldOfNorms.map (σ.restrictScalars K) β = β) :
-    FieldOfNorms.finiteMap K M N (galoisNormDescent K M N β hβ) = β := by
+theorem FieldOfNorms.inclusion_galoisNormDescent (β : FieldOfNorms K N)
+    (hβ : ∀ σ : N ≃ₐ[M] N, FieldOfNorms.mapEquiv (σ.restrictScalars K) β = β) :
+    FieldOfNorms.inclusion K M N (galoisNormDescent K M N β hβ) = β := by
   apply FieldOfNorms.ext_cofinal K N
     (fun D => IsGoodFiniteLayer K M D ∧ ∀ σ : N ≃ₐ[M] N,
       D.val.map (σ.restrictScalars K).toAlgHom = D.val)
     (galoisStableGoodFiniteLayers_cofinal K M N)
   intro D ⟨hgD, hsD⟩
-  exact (FieldOfNorms.coord_finiteFieldOfNormsMap K M N D hgD _).trans
+  exact (FieldOfNorms.coord_inclusion K M N D hgD _).trans
     ((congrArg (FiniteIntermediateField.pullbackTo K M D)
       (FieldOfNorms.coord_galoisNormDescent_pullback K M N β hβ D hgD hsD)).trans
         (galoisNormCoordinate_spec K M N β hβ D hsD))
 
 /-- The fixed families are precisely the image of the
 finite-inclusion map; all descent and compatibility obligations are proved. -/
-theorem mem_range_finiteFieldOfNormsMap_iff_fixed (β : FieldOfNorms K N) :
-    β ∈ Set.range (FieldOfNorms.finiteMap K M N) ↔
-      ∀ σ : N ≃ₐ[M] N, FieldOfNorms.map (σ.restrictScalars K) β = β := by
+theorem FieldOfNorms.mem_range_inclusion_iff_fixed (β : FieldOfNorms K N) :
+    β ∈ Set.range (FieldOfNorms.inclusion K M N) ↔
+      ∀ σ : N ≃ₐ[M] N, FieldOfNorms.mapEquiv (σ.restrictScalars K) β = β := by
   constructor
   · rintro ⟨α, rfl⟩ σ
-    exact FieldOfNorms.map_finiteFieldOfNormsMap_relative K M N σ α
+    exact FieldOfNorms.mapEquiv_restrictScalars_inclusion K M N σ α
   · intro hβ
-    exact ⟨galoisNormDescent K M N β hβ, FieldOfNorms.finiteMap_galoisNormDescent K M N β hβ⟩
+    exact ⟨galoisNormDescent K M N β hβ, FieldOfNorms.inclusion_galoisNormDescent K M N β hβ⟩
 
 end Families
 
@@ -448,116 +458,116 @@ variable (M N : Type*) [Field M] [Field N] [Algebra K M] [Algebra K N]
 
 /-- The relative action is the norm-field action after
 the restriction of scalars. -/
-def FieldOfNorms.finiteGaloisAction [IsAPF K N] [Fact (¬ Module.Finite K N)] :
+def FieldOfNorms.autRestrictScalars [IsAPF K N] [Fact (¬ Module.Finite K N)] :
     (N ≃ₐ[M] N) →* (FieldOfNorms K N ≃+* FieldOfNorms K N) := by
   exact (FieldOfNorms.aut K N).comp (AlgEquiv.restrictScalarsHom K)
 
 @[simp]
-theorem FieldOfNorms.finiteGaloisAction_apply [IsAPF K N]
+theorem FieldOfNorms.autRestrictScalars_apply [IsAPF K N]
     [Fact (¬ Module.Finite K N)] (σ : N ≃ₐ[M] N) (β : FieldOfNorms K N) :
-    FieldOfNorms.finiteGaloisAction K M N σ β =
-      FieldOfNorms.map (σ.restrictScalars K) β := rfl
+    FieldOfNorms.autRestrictScalars K M N σ β =
+      FieldOfNorms.mapEquiv (σ.restrictScalars K) β := rfl
 
 /-- Faithfulness is produced by the proved action and the
 injective restriction of scalars; it is not an additional hypothesis. -/
-theorem FieldOfNorms.finiteGaloisAction_injective [IsAPF K N]
+theorem FieldOfNorms.autRestrictScalars_injective [IsAPF K N]
     [Fact (¬ Module.Finite K N)] :
-    Function.Injective (FieldOfNorms.finiteGaloisAction K M N) := by
+    Function.Injective (FieldOfNorms.autRestrictScalars K M N) := by
   exact (FieldOfNorms.aut_injective K N).comp
     (AlgEquiv.restrictScalars_injective K)
 
 /-- The canonical action on the target field. -/
 @[instance_reducible]
-def FieldOfNorms.finiteGaloisMulSemiringAction [IsAPF K N]
+def FieldOfNorms.galoisAction [IsAPF K N]
     [Fact (¬ Module.Finite K N)] :
     MulSemiringAction (N ≃ₐ[M] N) (FieldOfNorms K N) := by
   exact MulSemiringAction.compHom (FieldOfNorms K N)
-    (FieldOfNorms.finiteGaloisAction K M N)
+    (FieldOfNorms.autRestrictScalars K M N)
 
 variable [Algebra.IsSeparable K M] [Module.Finite M N] [IsGalois M N]
 
 /-- The fixed field of the relative action is the
 image of the checked field homomorphism. -/
-theorem fixedPoints_finiteFieldOfNormsGaloisAction [IsAPF K M] [IsAPF K N]
+theorem FieldOfNorms.fixedPoints_galoisAction [IsAPF K M] [IsAPF K N]
     [Fact (¬ Module.Finite K M)] [Fact (¬ Module.Finite K N)] :
-    letI := FieldOfNorms.finiteGaloisMulSemiringAction K M N
+    letI := FieldOfNorms.galoisAction K M N
     (FixedPoints.subfield (N ≃ₐ[M] N) (FieldOfNorms K N) : Set (FieldOfNorms K N)) =
-      Set.range (FieldOfNorms.finiteRingHom K M N) := by
-  let := FieldOfNorms.finiteGaloisMulSemiringAction K M N
-  exact Set.ext (fun β => (mem_range_finiteFieldOfNormsMap_iff_fixed K M N β).symm)
+      Set.range (FieldOfNorms.inclusion K M N) := by
+  let := FieldOfNorms.galoisAction K M N
+  exact Set.ext (fun β => (FieldOfNorms.mem_range_inclusion_iff_fixed K M N β).symm)
 
 /-- The official finite Galois-group structure is proved from
 faithfulness, the scalar action and the proved fixed-family descent. -/
-theorem FieldOfNorms.finite_isGaloisGroup [IsAPF K M] [IsAPF K N]
+theorem FieldOfNorms.isGaloisGroup [IsAPF K M] [IsAPF K N]
     [Fact (¬ Module.Finite K M)] [Fact (¬ Module.Finite K N)] :
-    letI := (FieldOfNorms.finiteRingHom K M N).toAlgebra
-    letI := FieldOfNorms.finiteGaloisMulSemiringAction K M N
+    letI := (FieldOfNorms.inclusion K M N).toAlgebra
+    letI := FieldOfNorms.galoisAction K M N
     IsGaloisGroup (N ≃ₐ[M] N) (FieldOfNorms K M) (FieldOfNorms K N) := by
-  let := (FieldOfNorms.finiteRingHom K M N).toAlgebra
-  let := FieldOfNorms.finiteGaloisMulSemiringAction K M N
+  let := (FieldOfNorms.inclusion K M N).toAlgebra
+  let := FieldOfNorms.galoisAction K M N
   constructor
   · constructor
     intro σ τ h
-    apply FieldOfNorms.finiteGaloisAction_injective K M N
+    apply FieldOfNorms.autRestrictScalars_injective K M N
     exact RingEquiv.ext h
   · constructor
     intro σ α β
-    change FieldOfNorms.map (σ.restrictScalars K) (FieldOfNorms.finiteMap K M N α * β) =
-      FieldOfNorms.finiteMap K M N α * FieldOfNorms.map (σ.restrictScalars K) β
-    rw [FieldOfNorms.map_mul, FieldOfNorms.map_finiteFieldOfNormsMap_relative K M N σ α]
+    change FieldOfNorms.mapEquiv (σ.restrictScalars K) (FieldOfNorms.inclusion K M N α * β) =
+      FieldOfNorms.inclusion K M N α * FieldOfNorms.mapEquiv (σ.restrictScalars K) β
+    rw [map_mul, FieldOfNorms.mapEquiv_restrictScalars_inclusion K M N σ α]
   · constructor
     intro β hβ
-    exact (mem_range_finiteFieldOfNormsMap_iff_fixed K M N β).mpr hβ
+    exact (FieldOfNorms.mem_range_inclusion_iff_fixed K M N β).mpr hβ
 
 /-- Finite Artin theory proves finiteness over the embedded source,
 without assuming finiteness of the norm-field extension. -/
-theorem finiteDimensional_finiteFieldOfNorms_of_isGalois [IsAPF K M] [IsAPF K N]
+theorem FieldOfNorms.finiteDimensional_of_isGalois [IsAPF K M] [IsAPF K N]
     [Fact (¬ Module.Finite K M)] [Fact (¬ Module.Finite K N)] :
-    letI := (FieldOfNorms.finiteRingHom K M N).toAlgebra
+    letI := (FieldOfNorms.inclusion K M N).toAlgebra
     FiniteDimensional (FieldOfNorms K M) (FieldOfNorms K N) := by
-  let := (FieldOfNorms.finiteRingHom K M N).toAlgebra
-  let := FieldOfNorms.finiteGaloisMulSemiringAction K M N
-  let := FieldOfNorms.finite_isGaloisGroup K M N
+  let := (FieldOfNorms.inclusion K M N).toAlgebra
+  let := FieldOfNorms.galoisAction K M N
+  let := FieldOfNorms.isGaloisGroup K M N
   exact IsGaloisGroup.finiteDimensional (N ≃ₐ[M] N) (FieldOfNorms K M) (FieldOfNorms K N)
 
 /-- The target norm field is Galois over the embedded source. -/
-theorem isGalois_finiteFieldOfNorms [IsAPF K M] [IsAPF K N]
+theorem FieldOfNorms.isGalois [IsAPF K M] [IsAPF K N]
     [Fact (¬ Module.Finite K M)] [Fact (¬ Module.Finite K N)] :
-    letI := (FieldOfNorms.finiteRingHom K M N).toAlgebra
+    letI := (FieldOfNorms.inclusion K M N).toAlgebra
     IsGalois (FieldOfNorms K M) (FieldOfNorms K N) := by
-  let := (FieldOfNorms.finiteRingHom K M N).toAlgebra
-  let := FieldOfNorms.finiteGaloisMulSemiringAction K M N
-  let := FieldOfNorms.finite_isGaloisGroup K M N
+  let := (FieldOfNorms.inclusion K M N).toAlgebra
+  let := FieldOfNorms.galoisAction K M N
+  let := FieldOfNorms.isGaloisGroup K M N
   exact IsGaloisGroup.isGalois (N ≃ₐ[M] N) (FieldOfNorms K M) (FieldOfNorms K N)
 
 /-- The finite Galois norm-field extension retains the full degree. -/
-theorem finrank_finiteFieldOfNorms_of_isGalois [IsAPF K M] [IsAPF K N]
+theorem FieldOfNorms.finrank_of_isGalois [IsAPF K M] [IsAPF K N]
     [Fact (¬ Module.Finite K M)] [Fact (¬ Module.Finite K N)] :
-    letI := (FieldOfNorms.finiteRingHom K M N).toAlgebra
+    letI := (FieldOfNorms.inclusion K M N).toAlgebra
     Module.finrank (FieldOfNorms K M) (FieldOfNorms K N) = Module.finrank M N := by
-  let := (FieldOfNorms.finiteRingHom K M N).toAlgebra
-  let := FieldOfNorms.finiteGaloisMulSemiringAction K M N
-  let := FieldOfNorms.finite_isGaloisGroup K M N
+  let := (FieldOfNorms.inclusion K M N).toAlgebra
+  let := FieldOfNorms.galoisAction K M N
+  let := FieldOfNorms.isGaloisGroup K M N
   exact (IsGaloisGroup.card_eq_finrank (N ≃ₐ[M] N) (FieldOfNorms K M) (FieldOfNorms K N)).symm.trans
     (IsGalois.card_aut_eq_finrank M N)
 
 /-- The relative action identifies the two Galois groups. -/
-def FieldOfNorms.finiteGaloisEquiv [IsAPF K M] [IsAPF K N]
+def FieldOfNorms.autEquiv [IsAPF K M] [IsAPF K N]
     [Fact (¬ Module.Finite K M)] [Fact (¬ Module.Finite K N)] :
-    letI := (FieldOfNorms.finiteRingHom K M N).toAlgebra
+    letI := (FieldOfNorms.inclusion K M N).toAlgebra
     (N ≃ₐ[M] N) ≃* (FieldOfNorms K N ≃ₐ[FieldOfNorms K M] FieldOfNorms K N) := by
-  let := (FieldOfNorms.finiteRingHom K M N).toAlgebra
-  let := FieldOfNorms.finiteGaloisMulSemiringAction K M N
-  let := FieldOfNorms.finite_isGaloisGroup K M N
+  let := (FieldOfNorms.inclusion K M N).toAlgebra
+  let := FieldOfNorms.galoisAction K M N
+  let := FieldOfNorms.isGaloisGroup K M N
   exact IsGaloisGroup.mulEquivAlgEquiv (N ≃ₐ[M] N) (FieldOfNorms K M) (FieldOfNorms K N)
 
 @[simp]
-theorem FieldOfNorms.finiteGaloisEquiv_apply [IsAPF K M] [IsAPF K N]
+theorem FieldOfNorms.autEquiv_apply [IsAPF K M] [IsAPF K N]
     [Fact (¬ Module.Finite K M)] [Fact (¬ Module.Finite K N)]
     (σ : N ≃ₐ[M] N) (β : FieldOfNorms K N) :
-    letI := (FieldOfNorms.finiteRingHom K M N).toAlgebra
-    FieldOfNorms.finiteGaloisEquiv K M N σ β =
-      FieldOfNorms.map (σ.restrictScalars K) β := rfl
+    letI := (FieldOfNorms.inclusion K M N).toAlgebra
+    FieldOfNorms.autEquiv K M N σ β =
+      FieldOfNorms.mapEquiv (σ.restrictScalars K) β := rfl
 
 end ValuedFields
 

@@ -142,7 +142,7 @@ theorem RelFieldOfNorms.objectMapOf_bijective :
 theorem RelFieldOfNorms.objectMapOf_apply (t : M →ₐ[L] N)
     (x : RelFieldOfNorms K L M) :
     (RelFieldOfNorms.objectMapOf.{u, v, w} K L M N t).hom.hom x =
-      RelFieldOfNorms.map K L M N t x := rfl
+      RelFieldOfNorms.mapEquiv K L M N t x := rfl
 
 /-- The compatible rational valuations are preserved by the categorical map. -/
 theorem RelFieldOfNorms.objectMapOf_valuation (t : M →ₐ[L] N)
@@ -159,7 +159,7 @@ def RelFieldOfNorms.objectFiniteAlgEquiv [Module.Finite L M] :
     letI : Fact (¬ Module.Finite K M) := ⟨RelFieldOfNorms.ambient_infinite K L M⟩
     letI : IsAPF K M := (isAPF_finite_extension_iff K M L).mpr ‹_›
     letI : Fact (¬ Module.Finite K M) := ⟨RelFieldOfNorms.ambient_infinite K L M⟩
-    letI := (FieldOfNorms.finiteRingHom K L M
+    letI := (FieldOfNorms.inclusion K L M
 ).toAlgebra
     (RelFieldOfNorms.objectOf.{u, v, w} K L M).obj ≃ₐ[FieldOfNorms K L]
       FieldOfNorms K M := by
@@ -168,7 +168,7 @@ def RelFieldOfNorms.objectFiniteAlgEquiv [Module.Finite L M] :
   letI : Fact (¬ Module.Finite K M) := ⟨RelFieldOfNorms.ambient_infinite K L M⟩
   letI : IsAPF K M := (isAPF_finite_extension_iff K M L).mpr ‹_›
   letI : Fact (¬ Module.Finite K M) := ⟨RelFieldOfNorms.ambient_infinite K L M⟩
-  letI := (FieldOfNorms.finiteRingHom K L M
+  letI := (FieldOfNorms.inclusion K L M
 ).toAlgebra
   dsimp only [RelFieldOfNorms.objectOf]
   exact RelFieldOfNorms.finiteAlgEquiv K L M

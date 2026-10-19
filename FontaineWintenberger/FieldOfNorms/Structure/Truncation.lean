@@ -45,7 +45,7 @@ theorem FieldOfNorms.add_deep_sub_mem (α β : FieldOfNorms K L)
           Ideal (spectralIntegerRing K (𝔈 n).val)) : Set (spectralIntegerRing K (𝔈 n).val)) := by
   let := spectralNorm.nontriviallyNormedField K (𝔈 n).val
   apply (FiniteIntermediateField.isClosed_image_maximalIdeal_pow (𝔈 n) (n + 2)).mem_of_tendsto
-    (((tendsto_normSumNet_fieldOfNormsAdd K L α β (𝔈 n)).sub_const
+    (((FieldOfNorms.tendsto_normSumNet_add K L α β (𝔈 n)).sub_const
       (FieldOfNorms.coord K L (𝔈 n) α)).sub_const (FieldOfNorms.coord K L (𝔈 n) β))
   filter_upwards [] with F
   have hEF : 𝔈 n ≤ F.val := F.property
@@ -172,7 +172,7 @@ theorem FieldOfNorms.truncationHom_deepIntegralReconstruction (a : 𝒜) :
 
 /-- Reconstructing the quotient coordinates returns the same
 integral family, rather than a new model of its field. -/
-theorem deepIntegralReconstruction_fieldOfNormsTruncationHom :
+theorem deepIntegralReconstruction_truncationHom :
     ∀ α : Valuation.valuationSubring (FieldOfNorms.fieldValuation K L),
     deepIntegralReconstruction K L D
       (FieldOfNorms.truncationHom K L D α) = α := by
@@ -212,7 +212,7 @@ def FieldOfNorms.truncationEquiv :
     Valuation.valuationSubring (FieldOfNorms.fieldValuation K L) ≃+* 𝒜 := by
   exact { FieldOfNorms.truncationHom K L D with
     invFun := deepIntegralReconstruction K L D
-    left_inv := deepIntegralReconstruction_fieldOfNormsTruncationHom K L D
+    left_inv := deepIntegralReconstruction_truncationHom K L D
     right_inv := FieldOfNorms.truncationHom_deepIntegralReconstruction K L D }
 
 /-- The exact quotient kernel is the valuation ball. -/

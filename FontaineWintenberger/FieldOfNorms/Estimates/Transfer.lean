@@ -61,7 +61,7 @@ def FieldOfNorms.integerAut [IsAPF K L] [Fact (¬ Module.Finite K L)]
     map_add' := fun x y => Subtype.ext (g.map_add x y) }
 
 @[simp]
-theorem coe_fieldOfNormsIntegerAut [IsAPF K L] [Fact (¬ Module.Finite K L)]
+theorem FieldOfNorms.coe_integerAut [IsAPF K L] [Fact (¬ Module.Finite K L)]
     (σ : L ≃ₐ[K] L) :
     ∀ x : (FieldOfNorms.fieldValuation K L).valuationSubring,
       (FieldOfNorms.integerAut K L σ x : FieldOfNorms K L) =
@@ -124,7 +124,7 @@ theorem FieldOfNorms.integerAut_eq_one_iff [IsAPF K L]
     rw [_root_.map_one]
     rfl
 
-theorem neg_one_le_fieldOfNormsRamificationNumber [IsAPF K L]
+theorem FieldOfNorms.neg_one_le_ramificationNumber [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (σ : L ≃ₐ[K] L) :
     -1 ≤ FieldOfNorms.ramificationNumber K L σ := by
   unfold FieldOfNorms.ramificationNumber
@@ -159,7 +159,7 @@ theorem FieldOfNorms.ramificationNumber_exists_real [IsAPF K L]
     fun ht => hσ ((FieldOfNorms.ramificationNumber_eq_top_iff K L σ).mp ht)
   have hb : FieldOfNorms.ramificationNumber K L σ ≠ ⊥ :=
     ne_bot_of_le_ne_bot (EReal.coe_ne_bot (-1))
-      (neg_one_le_fieldOfNormsRamificationNumber K L σ)
+      (FieldOfNorms.neg_one_le_ramificationNumber K L σ)
   exact ⟨_, (EReal.coe_toReal ht hb).symm⟩
 
 /-- The canonical residue automorphism induced by the action
@@ -381,11 +381,11 @@ theorem residueIntegralCoordinate_aut [IsAPF K L]
 /-- Coordinate covariance on the cofinal stable fields
 proves equivariance of the same source-normalized constants in the
 multiplicative field of norms. No normality of the ambient extension is used. -/
-theorem FieldOfNorms.map_residueConstants [IsAPF K L]
+theorem FieldOfNorms.mapEquiv_residueConstants [IsAPF K L] [Fact (¬ Module.Finite K L)]
     (σ : L ≃ₐ[K] L)
     (a : IsLocalRing.ResidueField
       (integralClosure 𝒪[K] L)) :
-    FieldOfNorms.map σ (residueConstants K L a) =
+    FieldOfNorms.mapEquiv σ (residueConstants K L a) =
       residueConstants K L (algebraicResidueAut K L σ a) := by
   apply FieldOfNorms.ext
   intro T
@@ -400,11 +400,11 @@ theorem FieldOfNorms.map_residueConstants [IsAPF K L]
       (IntermediateField.le_normalClosure D.val)
   have hEinv : FiniteIntermediateField.map σ.symm.toAlgHom E = E :=
     Subtype.ext (IntermediateField.map_normalClosure_eq D.val σ.symm)
-  have hcoord : FieldOfNorms.coord K L E (FieldOfNorms.map σ (residueConstants K L a)) =
+  have hcoord : FieldOfNorms.coord K L E (FieldOfNorms.mapEquiv σ (residueConstants K L a)) =
       FieldOfNorms.coord K L E
         (residueConstants K L (algebraicResidueAut K L σ a)) := by
     apply Subtype.val_injective
-    rw [coe_fieldOfNormsEval_fieldOfNormsMap, hEinv,
+    rw [FieldOfNorms.coe_coord_mapEquiv, hEinv,
       FieldOfNorms.coord_residueConstants K L E hE,
       FieldOfNorms.coord_residueConstants K L E hE]
     have h := residueIntegralCoordinate_aut K L σ E hE s (fun _ => rfl) a
@@ -421,40 +421,40 @@ theorem FieldOfNorms.integerAut_residueConstantsInteger [IsAPF K L]
         residueConstantsInteger K L (algebraicResidueAut K L σ a) := by
   intro a
   apply Subtype.ext
-  change FieldOfNorms.map σ (residueConstants K L a) =
+  change FieldOfNorms.mapEquiv σ (residueConstants K L a) =
     residueConstants K L (algebraicResidueAut K L σ a)
-  exact FieldOfNorms.map_residueConstants K L σ a
+  exact FieldOfNorms.mapEquiv_residueConstants K L σ a
 
 /-- The residue isomorphism induced by the same constants
 intertwines the two residue actions. -/
-theorem FieldOfNorms.residueAut_residueConstantsResidueEquiv [IsAPF K L]
+theorem FieldOfNorms.residueAut_residueEquiv [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (σ : L ≃ₐ[K] L) :
     ∀ a, FieldOfNorms.residueAut K L σ
-      (residueConstantsResidueEquiv K L a) =
-        residueConstantsResidueEquiv K L (algebraicResidueAut K L σ a) := by
+      (FieldOfNorms.residueEquiv K L a) =
+        FieldOfNorms.residueEquiv K L (algebraicResidueAut K L σ a) := by
   intro a
-  rw [residueConstantsResidueEquiv_apply, FieldOfNorms.residueAut_residue,
+  rw [FieldOfNorms.residueEquiv_apply, FieldOfNorms.residueAut_residue,
     FieldOfNorms.integerAut_residueConstantsInteger,
-    ← residueConstantsResidueEquiv_apply]
+    ← FieldOfNorms.residueEquiv_apply]
 
 /-- Inertia is exactly inertia on the norm field. -/
 theorem FieldOfNorms.residueAut_eq_refl_iff_algebraicResidueAut [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (σ : L ≃ₐ[K] L) :
     FieldOfNorms.residueAut K L σ = RingEquiv.refl _ ↔
       algebraicResidueAut K L σ = RingEquiv.refl _ := by
-  let e := residueConstantsResidueEquiv K L
+  let e := FieldOfNorms.residueEquiv K L
   constructor
   · intro h
     apply RingEquiv.ext
     intro a
     apply e.injective
-    have hc := FieldOfNorms.residueAut_residueConstantsResidueEquiv K L σ a
+    have hc := FieldOfNorms.residueAut_residueEquiv K L σ a
     simpa only [h, RingEquiv.refl_apply] using hc.symm
   · intro h
     apply RingEquiv.ext
     intro b
     obtain ⟨a, rfl⟩ := e.surjective b
-    have hc := FieldOfNorms.residueAut_residueConstantsResidueEquiv K L σ a
+    have hc := FieldOfNorms.residueAut_residueEquiv K L σ a
     simpa only [h, RingEquiv.refl_apply] using hc
 
 /-- The residue of a moved finite embedding is the
@@ -871,7 +871,7 @@ theorem FieldOfNorms.valuation_sub_eventually_coordinate [IsAPF K L]
           (FieldOfNorms.coord K L E α - FieldOfNorms.coord K L E β) = WithZero.exp (-n) := by
   intro α β n hn
   let s : ℕ := n.toNat + 1
-  obtain ⟨T₀, hT₀⟩ := IsAPF.exists_fieldOfNormsValuation_eq_coordinate K L
+  obtain ⟨T₀, hT₀⟩ := FieldOfNorms.exists_valuation_eq_coordinateValuation K L
   obtain ⟨T₁, hT₁⟩ := FieldOfNorms.coord_sub_sub_mem K L α β s
   refine ⟨FiniteIntermediateField.sup T₀ T₁, fun E hE => ?_⟩
   have hE₀ := (FiniteIntermediateField.le_sup_left T₀ T₁).trans hE
@@ -960,8 +960,8 @@ theorem exists_finiteIntermediateField_stableRamificationNumber_eq [IsAPF K L]
         s (FieldOfNorms.coord K L E (FieldOfNorms.uniformizer K L)) := by
     apply Subtype.val_injective
     change (FieldOfNorms.coord K L E
-      (FieldOfNorms.map σ (FieldOfNorms.uniformizer K L)) : L) = _
-    rw [coe_fieldOfNormsEval_fieldOfNormsMap, hEinv, hs]
+      (FieldOfNorms.mapEquiv σ (FieldOfNorms.uniformizer K L)) : L) = _
+    rw [FieldOfNorms.coe_coord_mapEquiv, hEinv, hs]
   let πE := FieldOfNorms.uniformizerCoordinateInteger K L E
   let R := spectralIntegerRing K E.val
   let δE : R := spectralIntegerInclusion K s.toAlgHom πE - πE
