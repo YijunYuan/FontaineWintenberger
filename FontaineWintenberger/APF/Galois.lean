@@ -6,8 +6,8 @@ Authors: Yijun Yuan
 module
 
 public import FontaineWintenberger.LocalField.Basic
-public import FontaineWintenberger.APF.IndexTransport
-public import FontaineWintenberger.Ramification.InfiniteEquiv
+public import FontaineWintenberger.APF.Index
+public import FontaineWintenberger.Ramification.Infinite.Restriction
 
 /-!
 # The intrinsic Galois APF criterion

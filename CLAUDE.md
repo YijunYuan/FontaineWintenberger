@@ -29,15 +29,19 @@ standard linter set).
 
 ```
 FontaineWintenberger/
-  Mathlib/        upstream candidates: Mathlib naming, zero project imports
-  LocalField/     base-field classes, spectral norm, Hensel/Krasner, residue fields, Laurent coords
-  Ramification/   Serre IV: lower/upper groups, Herbrand φ ψ, different, norms, embeddings
-  APF/            Wintenberger §1
-  FieldOfNorms/   Wintenberger §2–3: Basic, Structure, Estimates, Functor, Relative, Galois
+  Mathlib/        upstream candidates (zero project imports): GroupTheory, FieldTheory
+                  (incl. FiniteIntermediateField), RingTheory, Analysis, Topology
+  LocalField/     Basic (base-field classes), Spectral/, Hensel/, Residue/, Laurent/
+  Ramification/   Serre IV: Lower/, Herbrand/, Upper/, Infinite/, Different/, Norm/, Fields/, Embedding/
+  APF/            Wintenberger §1: Defs, Index, Herbrand, Strict, Finite/, BaseChange/, Elementary/, Tower/
+  FieldOfNorms/   Wintenberger §2–3, in import order: Layers/, Estimates/, Basic/, Structure/,
+                  Functor/, Relative/, Galois/
   Attic/          code without downstream use, kept for review; built, not imported
-  Main.lean       the five final statements with clean signatures
+  Main.lean       the five final statements with clean signatures (to be written)
 FontaineWintenberger.lean   imports one aggregate file per layer
 ```
+
+`scripts/b1_mapping.py` records where every pre-reorganization file went.
 
 A layer may import only layers above it in this list. Never import `APF` or
 `FieldOfNorms` from `Ramification` or `LocalField`. Every `.lean` file must be imported by

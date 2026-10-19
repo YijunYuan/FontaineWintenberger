@@ -6,7 +6,7 @@ Authors: Yijun Yuan
 module
 
 public import FontaineWintenberger.LocalField.Basic
-public import FontaineWintenberger.APF.IndexTransport
+public import FontaineWintenberger.APF.Index
 public import Mathlib.MeasureTheory.Integral.DominatedConvergence
 
 /-!

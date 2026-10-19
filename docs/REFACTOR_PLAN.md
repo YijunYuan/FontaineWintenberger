@@ -530,6 +530,16 @@ FontaineWintenberger/
 - 现状：230 个模块全部 < 60 s，最慢 `EmbeddingFiberTate` 59 s、`EmbeddingComparison` 57 s、`FiniteTower` 48 s、`TruncatedNorms` 47 s、`RamificationTransfer` 36 s；全库约 1800 s CPU（原始约 8000 s，其中六个文件占 5000 s）。
 - 未做：六个文件的 `Ω = SeparableClosure K` 泛化为 `[IsSepClosure K Ω]`。慢的根因（abbrev 载体）已消除，这一项不再影响编译时间，归入 C（命名/签名清理）阶段处理。
 
+### C1 + B（分支 `refactor`，2026-10-19/20）
+- **C1（提交 4ec090f）** 机械重命名 `scripts/c1_rename.py`：`NormLimit → FieldOfNorms`、`normLimitEval → FieldOfNorms.coord`、`normLimitGroup → FieldOfNorms.normCompatibleUnits`、`normLimitXxx → FieldOfNorms.xxx`、`finiteNormLimitXxx → FieldOfNorms.finiteXxx`、`SeparableNormUnion → RelFieldOfNorms`、`separableNormUnionXxx`/`normUnionXxx → RelFieldOfNorms.xxx`、`FiniteLayer → FiniteIntermediateField`、`finiteLayerXxx → FiniteIntermediateField.xxx`，实例名 `FieldOfNorms.instField` 等。坑：声明名进入命名空间后，其证明体里对 Mathlib 根引理 `map_one`/`map_mul`/`add_comm`/`ext` 的裸引用会被同名的 `FieldOfNorms.map_one` 捕获，须写 `_root_.map_one`（204 处，脚本处理；`@[ext]` 属性与 `ext` 策略位置例外）。
+- **B（脚本 `scripts/b1_reorganize.py` + 映射 `scripts/b1_mapping.py`）** 229 → 157 个文件，六层：`Mathlib/`(13) `LocalField/`(12) `Ramification/`(49) `APF/`(29) `FieldOfNorms/`(48) `Attic/`(6)，每层一个聚合文件，根文件只导入聚合文件；`lakefile` 用 `globs = ["FontaineWintenberger.*"]` 让 Attic 也参与构建。与附录 B-1 的偏差：
+  - 13 个"范数估计"文件完全不提及 `FieldOfNorms`（它们是 `FiniteIntermediateField` 上的有限层整数范数估计，只因陈述含 `apfRamificationBound` 而不能下沉）；仍放 `FieldOfNorms/Estimates/`，但 `Basic/Addition` 导入它们，所以 FieldOfNorms 目录内部顺序是 FiniteIntermediateField → Estimates → Basic → Structure → Functor → Relative → Galois。
+  - `FiniteIntermediateField` 本体（`Multiplicative`、`Isomorphism`、`Addition` 的有限中间域部分 + `FiniteLayerGlue`）放到 `Mathlib/FieldTheory/FiniteIntermediateField.lean`（零项目依赖，Mathlib 候选）。
+  - `PrimeDegree`、`PrimeChain`、`NormCongruence`、`NormTower` 按 section 拆成纯 Serre 部分（留 Ramification）与含 `apfRamificationBound` 的部分（→ `APF/Elementary/{PrimeDegree, NormPrecision}`），消除 Ramification → APF 的倒置 import。
+  - `EmbeddingComparison`、`EmbeddingFiberTate`、`EmbeddingFiniteBase` 整体进 `APF/BaseChange/`（它们 import APF）；`AlgebraicResidue`、`PrimeValuation`、`SeparableBaseChange` 进 `APF/Tower/`、`FieldOfNorms/Layers/`。
+  - `LocalField/` 中 import Ramification 的 10 个文件（`FullGalois`、`FixedField`、`SpectralMaps`、`BaseChange`、`Teichmuller`、`TruncatedCoefficients`、`TotalRamification`、`ResidueEquiv`…）下沉到 `Ramification/Lower/`、`Ramification/Upper/`。
+  - 合并时 `universe` 重复声明去重；`Lower/Basic` 合并后 `IsDiscreteValuationRing.maximalIdeal` 与 `IsLocalRing.maximalIdeal` 歧义，用 `open … hiding maximalIdeal`。
+
 ### F5 设计细化（原计划，供对照）
 1. **`FieldOfNorms K L`**：`def FieldOfNorms := WithZero (normCompatibleUnits K L)`；`instance : CommGroupWithZero := inferInstanceAs …`（无条件）；`instance : Nontrivial`、`Inhabited`。`coord E : FieldOfNorms K L →*₀ E` 替代 `normLimitEval`。
 2. **加法与域**：`normLimitAdd` 的定义只依赖 `[IsAPF K L]`（`p` 仅被线程传递，`Convergence.lean` 中唯一实质使用是 `p ∈ 𝔪^n` 的发散性，来自 `PrimeValuation`）。目标：
