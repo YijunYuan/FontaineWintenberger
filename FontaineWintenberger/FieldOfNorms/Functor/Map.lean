@@ -32,7 +32,8 @@ For an APF extension `L/K` the field of norms `X_K(L)` is functorial in `L`: a `
 * `FieldOfNorms.mapEquiv`: The ring isomorphism `X_K(L) ≃+* X_K(M)` induced by a `K`-isomorphism `e
   : L ≃ₐ[K] M`: the coordinate at a finite intermediate field `E` of `M` is `e` applied to the
   coordinate at `e⁻¹(E)`.
-* `FieldOfNorms.aut`: The action of `Aut(L/K)` on `X_K(L)` by ring automorphisms.
+* `FieldOfNorms.aut`: **Remark 3.2.4 (i).** The action of `Aut(L/K)` on `X_K(L)` by ring
+  automorphisms.
 * `FieldOfNorms.pullbackCoord`: The coordinate of a norm family of `M` at the pullback `D ∩ M` of a
   finite intermediate field `D` of `N`, pushed into `D`.
 * `FieldOfNorms.inclusion₀`: The multiplicative inclusion `X_K(M) →*₀ X_K(N)` of a finite separable
@@ -341,7 +342,7 @@ theorem FieldOfNorms.uniformContinuous_mapEquiv (e : L ≃ₐ[K] M) :
   exact FieldOfNorms.valuation_mapEquiv e x
 
 variable (K L) in
-/-- The action of `Aut(L/K)` on `X_K(L)` by ring automorphisms. -/
+/-- **Remark 3.2.4 (i).** The action of `Aut(L/K)` on `X_K(L)` by ring automorphisms. -/
 def FieldOfNorms.aut : (L ≃ₐ[K] L) →* (FieldOfNorms K L ≃+* FieldOfNorms K L) where
   toFun := FieldOfNorms.mapEquiv
   map_one' := RingEquiv.ext fun x => FieldOfNorms.mapEquiv_refl x

@@ -537,9 +537,9 @@ theorem FieldOfNorms.residueLayerEquiv_residueConstantsInteger (x : κL) :
     FieldOfNorms.integralCoordinate_residueConstantsInteger,
     residueCoordinateEquiv_apply]
 
-/-- The constants identify the intrinsic residue
-field with the entire field of norms residue field, retaining the
-finite starting-stage Frobenius normalization. -/
+/-- **Theorem 2.1.3 (iii).** The residue field of `X_K(L)` is the residue field `k_L` of `L`
+(the residue field of the integral closure of `𝒪_K` in `L`); the isomorphism is induced by the
+constants `residueConstants`. -/
 def FieldOfNorms.residueEquiv :
     κL ≃+* IsLocalRing.ResidueField
       (FieldOfNorms.fieldValuation K L).valuationSubring := by

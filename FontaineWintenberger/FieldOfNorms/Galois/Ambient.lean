@@ -53,7 +53,8 @@ Reference: Wintenberger, Remark 3.2.4.
 
 ## Main definitions
 
-* `RelFieldOfNorms.galoisSubgroup`: The target, inside ring automorphisms of the same union.
+* `RelFieldOfNorms.galoisSubgroup`: The automorphisms of `X_{L/K}(Ω) = X_K(L)^sep` that restrict to
+  `X_K(L)` through the action of some element of `Gal(L/K)` (Wintenberger 3.2.4).
 * `RelFieldOfNorms.galoisRestrictionFun`: The automorphism supplied by the subgroup membership
   theorem.
 * `RelFieldOfNorms.galoisRestriction`: The base restriction, as a group homomorphism.
@@ -62,8 +63,9 @@ Reference: Wintenberger, Remark 3.2.4.
   the kernel.
 * `RelFieldOfNorms.galoisKernelEquiv`: The relative Galois group identifies with that same kernel.
 * `RelFieldOfNorms.ambientGaloisHom`: The ambient action takes values in the semilinear subgroup.
-* `RelFieldOfNorms.ambientGaloisEquiv`: Wintenberger’s ambient Galois group isomorphism for the
-  union.
+* `RelFieldOfNorms.ambientGaloisEquiv`: **Remark 3.2.4 (iii).** The action of `Gal(Ω/K)` on
+  `X_K(L)^sep` identifies `Gal(Ω/K)` with `RelFieldOfNorms.galoisSubgroup`, the automorphisms of
+  `X_K(L)^sep` that restrict to `X_K(L)` through the action of some element of `Gal(L/K)`.
 
 ## Main results
 
@@ -106,7 +108,8 @@ local notation "U" => RelFieldOfNorms K L Ω
 local notation "ι" => RelFieldOfNorms.baseHom K L Ω
 local notation "ρ" => FieldOfNorms.aut K L
 
-/-- The target, inside ring automorphisms of the same union. -/
+/-- The automorphisms of `X_{L/K}(Ω) = X_K(L)^sep` that restrict to `X_K(L)` through the action
+of some element of `Gal(L/K)` (Wintenberger 3.2.4). -/
 def RelFieldOfNorms.galoisSubgroup :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
     Subgroup (RingAut U) := by
@@ -520,7 +523,9 @@ theorem RelFieldOfNorms.ambientGaloisHom_surjective :
   exact ((Φ).map_mul (τ.restrictScalars K) σ).trans
     ((congrArg (fun z : S => z * Φ σ) hrel).trans (inv_mul_cancel_right β (Φ σ)))
 
-/-- Wintenberger’s ambient Galois group isomorphism for the union. -/
+/-- **Remark 3.2.4 (iii).** The action of `Gal(Ω/K)` on `X_K(L)^sep` identifies `Gal(Ω/K)` with
+`RelFieldOfNorms.galoisSubgroup`, the automorphisms of `X_K(L)^sep` that restrict to `X_K(L)`
+through the action of some element of `Gal(L/K)`. -/
 def RelFieldOfNorms.ambientGaloisEquiv :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
     (Ω ≃ₐ[K] Ω) ≃* S := by

@@ -173,8 +173,7 @@ theorem FieldOfNorms.integral_completeSpace :
   exact (h.completeSpace_congr (FieldOfNorms.truncationEquiv K L D).surjective).mpr
     inferInstance
 
-/-- The field of norms field is complete for precisely the already
-constructed canonical stable-valuation uniformity. -/
+/-- **Theorem 2.1.3 (ii).** The field of norms is complete for its valuation. -/
 instance FieldOfNorms.instCompleteSpace :
     CompleteSpace (FieldOfNorms K L) := by
   let := FieldOfNorms.integral_completeSpace K L (FiniteIntermediateField.bottom (K := K) (L := L))

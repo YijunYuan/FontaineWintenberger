@@ -28,8 +28,9 @@ fixed fields reflect factorization through each intermediate field.
 
 * `FieldOfNorms.mapAlgHom`: The map on relative finite embeddings is an algebra homomorphism for the
   norm field, by the embedding composition law.
-* `FieldOfNorms.algHomEquiv`: The canonical full finite Hom equivalence needs only the infinite APF
-  base; all finite-extension APF and infinitude facts are produced.
+* `FieldOfNorms.algHomEquiv`: **Theorem 3.1.2.** For finite separable extensions `M`, `N` of the APF
+  extension `L/K`, the field of norms is fully faithful: `Hom_L(M, N) ≃ Hom_{X_K(L)}(X_K(M),
+  X_K(N))`.
 
 ## Main results
 
@@ -672,8 +673,8 @@ theorem FieldOfNorms.mapAlgHom_bijective
     FieldOfNorms.mapAlgHom_surjective_of_isGalois_top K L M N P
 ⟩
 
-/-- The canonical full finite Hom equivalence needs only the
-infinite APF base; all finite-extension APF and infinitude facts are produced. -/
+/-- **Theorem 3.1.2.** For finite separable extensions `M`, `N` of the APF extension `L/K`, the
+field of norms is fully faithful: `Hom_L(M, N) ≃ Hom_{X_K(L)}(X_K(M), X_K(N))`. -/
 def FieldOfNorms.algHomEquiv [IsAPF K L] [Fact (¬ Module.Finite K L)] :
     let hM : IsAPF K M := (isAPF_finite_extension_iff K M L).mpr ‹_›
     let hN : IsAPF K N := (isAPF_finite_extension_iff K N L).mpr ‹_›

@@ -584,6 +584,11 @@ FontaineWintenberger/
 - 不泛化的部分：`IsAPF` 的定义层（`APF/Defs`、`APF/Index`、`APF/BaseChange/*`、`Ramification/Embedding`、`Ramification/Infinite`）仍以 `SeparableClosure K` 为基准；`IsAPF` 已证明与嵌入无关，这里不需要 `Ω`。
 - 划掉：把 `absoluteUpperRamificationGroup`/`apfSubgroup` 改到 `G_K` 上——对外接口已经经由 `sepEquiv` 使用 `G_K`，内部改动不提高易用性。
 
+### 删除 `Main.lean`，主结论回到所属模块（分支 `refactor`，2026-10-20）
+- 对外接口改为 `Gal(K^sep/K)`（或任意 `[IsSepClosure K Ω]` 的 `Gal(Ω/K)`）：这是论文的绝对 Galois 群；本文主场景 `𝔽_q((t))` 不完美，Mathlib 的 `Field.absoluteGaloisGroup K = Aut(K^alg/K)` 只经限制映射 `sepEquiv` 与之同构，而库内全部对象（上分歧群、`apfSubgroup`、`fixingSubgroup` 对应）都在 `Gal(K^sep/K)` 上。
+- `Main.lean` 删除（Mathlib 没有这种汇总文件）。五个目标的声明各在其模块，docstring 标注论文编号：`isAPF_iff_isOpen_apfSubgroup`（新增，1.2.1 的单条 iff，`APF/Defs`）、`isStrictlyAPF_iff`（`APF/Strict`）、`FieldOfNorms.instField`/`instValued`/`instCharP`（`Basic/Ring`）、`instCompleteSpace`、`instIsDiscreteValuationRing`、`residueEquiv`（`Structure/`）、`algHomEquiv`（`Functor/FullyFaithful`）、`absoluteGaloisEquiv`（原 `fieldOfNormsAbsoluteGaloisEquiv`，`Galois/AbsoluteGroup`；带 `Ω` 的版本改名 `absoluteGaloisEquivOfSepClosure`）、`aut`、`RelFieldOfNorms.absoluteAut`、`ambientGaloisEquiv`。根文件 `FontaineWintenberger.lean` 的模块文档列出这份对照；README 同步。
+- `Main.lean` 里的纯搬运（`FieldOfNorms.charP`/`completeSpace`/`isDiscreteValuationRing`、`residueFieldEquiv`、`homEquiv`、`isStrictlyAPF_iff_liminf_pos`）不再保留。`G_K`（`Field.absoluteGaloisGroup`）版本的四条转写移至 `Attic/AbsoluteGaloisGroupStatements.lean`。
+
 ### F5 设计细化（原计划，供对照）
 1. **`FieldOfNorms K L`**：`def FieldOfNorms := WithZero (normCompatibleUnits K L)`；`instance : CommGroupWithZero := inferInstanceAs …`（无条件）；`instance : Nontrivial`、`Inhabited`。`coord E : FieldOfNorms K L →*₀ E` 替代 `normLimitEval`。
 2. **加法与域**：`normLimitAdd` 的定义只依赖 `[IsAPF K L]`（`p` 仅被线程传递，`Convergence.lean` 中唯一实质使用是 `p ∈ 𝔪^n` 的发散性，来自 `PrimeValuation`）。目标：

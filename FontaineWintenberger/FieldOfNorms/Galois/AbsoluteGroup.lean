@@ -24,11 +24,10 @@ therefore identifies the absolute Galois groups with their Krull topologies.
   separable closure using its proved separable-closure structure.
 * `RelFieldOfNorms.absoluteGaloisEquiv`: The corollary for the closure and the canonical separable
   closure of the norm field.
-* `FieldOfNorms.absoluteGaloisEquiv`: The absolute Galois equivalence on the project's canonical
-  separable-closure automorphism groups, with their existing Krull topologies.
-* `fieldOfNormsAbsoluteGaloisEquiv`: The absolute Galois equivalence with no supplied closure or
-  embedding data: the canonical separable closure of the field is itself a separable closure of the
-  base via the composite algebra.
+* `FieldOfNorms.absoluteGaloisEquivOfSepClosure`: Corollary 3.2.3 computed through a chosen
+  separable closure `Ω` of `K` containing `L`: `Gal(L^sep/L) ≃ₜ* Gal(X_K(L)^sep/X_K(L))`.
+* `FieldOfNorms.absoluteGaloisEquiv`: **Corollary 3.2.3.** The absolute Galois groups of `L` and of
+  `X_K(L)` are isomorphic as topological groups: `Gal(L^sep/L) ≃ₜ* Gal(X_K(L)^sep/X_K(L))`.
 
 ## Main results
 
@@ -42,8 +41,8 @@ therefore identifies the absolute Galois groups with their Krull topologies.
   that extension too.
 * `RelFieldOfNorms.absoluteGaloisEquiv_apply`: The comparison agrees on the same union with the
   norm-field automorphism, rather than an independently constructed action.
-* `FieldOfNorms.absoluteGaloisEquiv_apply`: The canonical absolute-group equivalence retains
-  precisely the union map after conjugating the closure.
+* `FieldOfNorms.absoluteGaloisEquivOfSepClosure_apply`: The canonical absolute-group equivalence
+  retains precisely the union map after conjugating the closure.
 
 ## References
 
@@ -189,9 +188,9 @@ theorem RelFieldOfNorms.absoluteGaloisEquiv_apply (σ : Ω ≃ₐ[L] Ω)
         (RelFieldOfNorms.separableClosureEquiv K L Ω z))) = _
   rw [AlgEquiv.symm_apply_apply, RelFieldOfNorms.krullEquiv_apply]
 
-/-- The absolute Galois equivalence on the project's canonical
-separable-closure automorphism groups, with their existing Krull topologies. -/
-def FieldOfNorms.absoluteGaloisEquiv :
+/-- Corollary 3.2.3 computed through a chosen separable closure `Ω` of `K` containing `L`:
+`Gal(L^sep/L) ≃ₜ* Gal(X_K(L)^sep/X_K(L))`. -/
+def FieldOfNorms.absoluteGaloisEquivOfSepClosure :
     (SeparableClosure L ≃ₐ[L] SeparableClosure L) ≃ₜ*
       (SeparableClosure X ≃ₐ[X] SeparableClosure X) := by
   exact (krullAutCongr (separableClosureEquiv K L Ω)).trans
@@ -199,12 +198,12 @@ def FieldOfNorms.absoluteGaloisEquiv :
 
 /-- The canonical absolute-group equivalence retains precisely the
 union map after conjugating the closure. -/
-theorem FieldOfNorms.absoluteGaloisEquiv_apply
+theorem FieldOfNorms.absoluteGaloisEquivOfSepClosure_apply
     (σ : SeparableClosure L ≃ₐ[L] SeparableClosure L)
     (z : letI : Algebra.IsSeparable L Ω :=
       Algebra.isSeparable_tower_top_of_isSeparable K L Ω; U) :
     letI : Algebra.IsSeparable L Ω := Algebra.isSeparable_tower_top_of_isSeparable K L Ω
-    FieldOfNorms.absoluteGaloisEquiv K L Ω σ
+    FieldOfNorms.absoluteGaloisEquivOfSepClosure K L Ω σ
       (RelFieldOfNorms.separableClosureEquiv K L Ω z) =
       RelFieldOfNorms.separableClosureEquiv K L Ω
         (RelFieldOfNorms.mapEquiv K L Ω Ω
@@ -213,10 +212,9 @@ theorem FieldOfNorms.absoluteGaloisEquiv_apply
   exact RelFieldOfNorms.absoluteGaloisEquiv_apply K L Ω
     ((separableClosureEquiv K L Ω).autCongr σ) z
 
-/-- The absolute Galois equivalence with no supplied closure or embedding
-data: the canonical separable closure of the field is itself a
-separable closure of the base via the composite algebra. -/
-def fieldOfNormsAbsoluteGaloisEquiv :
+/-- **Corollary 3.2.3.** The absolute Galois groups of `L` and of `X_K(L)` are isomorphic as
+topological groups: `Gal(L^sep/L) ≃ₜ* Gal(X_K(L)^sep/X_K(L))`. -/
+def FieldOfNorms.absoluteGaloisEquiv :
     (SeparableClosure L ≃ₐ[L] SeparableClosure L) ≃ₜ*
       (SeparableClosure X ≃ₐ[X] SeparableClosure X) := by
   let : Algebra K (SeparableClosure L) :=

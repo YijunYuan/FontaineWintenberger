@@ -45,6 +45,9 @@ field extensions, with no normality or finiteness assumption.
 * `exists_aut_comp_separableClosure_embeddings`: Two separable-closure embeddings are conjugate by
   an automorphism.
 * `isAPF_iff_embedding`: The public APF predicate can be tested using any specified embedding.
+* `isAPF_iff_isOpen_apfSubgroup`: **Wintenberger 1.2.1.** `L/K` is arithmetically profinite iff
+  `G_K^u · G_L` is open in `G_K = Gal(K^sep/K)` for every `u ≥ -1`; the condition does not depend on
+  the embedding of `L` into `K^sep`.
 * `isAPF_iff_exists_embedding`: The embedding quantifier in `IsAPF` is nonvacuous.
 * `IsAPF.of_algHom`: APF descends along every algebra embedding, including nonnormal subextensions
   (Wintenberger 1.2.3 (iii)).
@@ -219,6 +222,14 @@ theorem isAPF_iff_embedding (i : L →ₐ[K] SeparableClosure K) :
   · exact fun h ↦ h.isAPFSubextension i
   · intro h
     exact ⟨fun j => (isAPFSubextension_fieldRange_iff K L i j).mp h⟩
+
+/-- **Wintenberger 1.2.1.** `L/K` is arithmetically profinite iff `G_K^u · G_L` is open in
+`G_K = Gal(K^sep/K)` for every `u ≥ -1`; the condition does not depend on the embedding of
+`L` into `K^sep`. -/
+theorem isAPF_iff_isOpen_apfSubgroup :
+    IsAPF K L ↔ ∀ (i : L →ₐ[K] SeparableClosure K) (u : ℝ), -1 ≤ u →
+      IsOpen (apfSubgroup K i.fieldRange u : Set (SeparableClosure K ≃ₐ[K] SeparableClosure K)) :=
+  ⟨fun h i => (h.isAPFSubextension i).isOpen_apfSubgroup, fun h => ⟨fun i => ⟨h i⟩⟩⟩
 
 /-- The embedding quantifier in `IsAPF` is nonvacuous. -/
 theorem isAPF_iff_exists_embedding :

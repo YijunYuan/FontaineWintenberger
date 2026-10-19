@@ -254,6 +254,7 @@ addition. Every additive inverse is its (p-1)-fold sum. -/
 instance FieldOfNorms.instNeg [IsAPF K L] [Fact (¬ Module.Finite K L)] : Neg (FieldOfNorms K L) :=
   ⟨fun α => (p - 1) • α⟩
 
+/-- **Wintenberger 2.1.1.** The field of norms `X_K(L)` of an infinite APF extension is a field. -/
 instance FieldOfNorms.instField [IsAPF K L] [Fact (¬ Module.Finite K L)] :
     Field (FieldOfNorms K L) :=
   { FieldOfNorms.instCommSemiring K L, FieldOfNorms.instCommGroupWithZero K L, FieldOfNorms.instNeg
@@ -270,8 +271,8 @@ theorem FieldOfNorms.field_toCommSemiring [IsAPF K L] [Fact (¬ Module.Finite K 
         FieldOfNorms.instCommSemiring K L :=
   rfl
 
-/-- The field has residue characteristic p, with no finiteness
-assumption on the perfect residue field of the base. -/
+/-- **Theorem 2.1.3 (i).** The field of norms has characteristic `p`, the residue characteristic
+of `K`. -/
 instance FieldOfNorms.instCharP [IsAPF K L] [Fact (¬ Module.Finite K L)] :
     CharP (FieldOfNorms K L) p := by
   have h := FieldOfNorms.natCast_prime_eq_zero K L
@@ -349,8 +350,8 @@ theorem FieldOfNorms.fieldValuation_apply [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (α : FieldOfNorms K L) :
     FieldOfNorms.fieldValuation K L α = FieldOfNorms.valuation K L α := rfl
 
-/-- The canonical valued-field structure uses exactly the existing stable
-map and its valuation uniformity on the field carrier. -/
+/-- **Wintenberger 2.1.1.** The field of norms is a valued field with value group `ℤ`, the
+valuation being the stable normalized valuation of the coordinates. -/
 instance FieldOfNorms.instValued [IsAPF K L] [Fact (¬ Module.Finite K L)] :
     Valued (FieldOfNorms K L) (WithZero (Multiplicative ℤ)) :=
   Valued.mk' (FieldOfNorms.fieldValuation K L)

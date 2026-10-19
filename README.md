@@ -7,17 +7,19 @@ ramification-theoretic foundations follow Serre, *Local Fields*, Chapter IV.
 
 ## The five targets
 
-All five are stated in `FontaineWintenberger/Main.lean` as one-line consequences of library
-declarations. Throughout, `K` is a complete discretely valued field with perfect residue field of
-characteristic `p` (`IsPerfectResidueLocalField K`) and `L/K` is a separable extension.
+Each result lives in its own module, as in Mathlib; the root file `FontaineWintenberger.lean`
+lists them. Throughout, `K` is a complete discretely valued field with perfect residue field of
+characteristic `p` (`IsPerfectResidueLocalField K`), `L/K` is a separable extension, and the
+absolute Galois group is `Gal(K^sep/K)` (Mathlib's `Field.absoluteGaloisGroup K = Aut(K^alg/K)`
+is isomorphic to it by restriction; see `Attic/AbsoluteGaloisGroupStatements.lean`).
 
-| Target | Statement in `Main.lean` |
+| Target | Declaration (module) |
 |---|---|
-| 1. APF and strictly APF extensions (Wintenberger 1.2.1) | `IsAPF K L`, `isAPF_iff_isOpen_absoluteGaloisGroup`; `IsStrictlyAPF K L`, `isStrictlyAPF_iff_liminf_pos` |
-| 2. The field of norms (2.1.1) | `FieldOfNorms K L` with instances `Field`, `Valued _ ℤᵐ⁰`, `CharP _ p` |
-| 3. Theorem 2.1.3 | `FieldOfNorms.charP`, `FieldOfNorms.completeSpace`, `FieldOfNorms.isDiscreteValuationRing`, `FieldOfNorms.residueFieldEquiv : 𝓀[L] ≃+* 𝓀[X_K(L)]` |
-| 4. Theorem 3.1.2 and Corollary 3.2.3 | `FieldOfNorms.homEquiv : (M →ₐ[L] N) ≃ (X_K(M) →ₐ[X_K(L)] X_K(N))`, `FieldOfNorms.absoluteGaloisGroupEquiv : G_L ≃ₜ* G_{X_K(L)}` |
-| 5. Remark 3.2.4 | `FieldOfNorms.aut`; for any separable closure `Ω` of `K`: `RelFieldOfNorms.absoluteAut : Gal(Ω/K) →* RingAut (X_{L/K}(Ω))`, `RelFieldOfNorms.ambientGaloisEquiv`; for `Ω = K^sep`: `RelFieldOfNorms.absoluteGaloisGroupAction`, `RelFieldOfNorms.absoluteGaloisGroupEquiv` on `G_K` |
+| 1. APF and strictly APF extensions (Wintenberger 1.2.1) | `IsAPF`, `isAPF_iff_isOpen_apfSubgroup` (`APF/Defs`); `IsStrictlyAPF`, `isStrictlyAPF_iff` (`APF/Strict`) |
+| 2. The field of norms (2.1.1) | `FieldOfNorms K L` with instances `Field`, `Valued _ ℤᵐ⁰`, `CharP _ p` (`FieldOfNorms/Basic/Ring`) |
+| 3. Theorem 2.1.3 | `CompleteSpace` (`Structure/Completeness`), `FieldOfNorms.instIsDiscreteValuationRing` (`Structure/Uniformizer`), `FieldOfNorms.residueEquiv : 𝓀[L] ≃+* 𝓀[X_K(L)]` (`Structure/ResidueEmbedding`) |
+| 4. Theorem 3.1.2 and Corollary 3.2.3 | `FieldOfNorms.algHomEquiv : (M →ₐ[L] N) ≃ (X_K(M) →ₐ[X_K(L)] X_K(N))` (`Functor/FullyFaithful`), `FieldOfNorms.absoluteGaloisEquiv : Gal(L^sep/L) ≃ₜ* Gal(X_K(L)^sep/X_K(L))` (`Galois/AbsoluteGroup`) |
+| 5. Remark 3.2.4 | `FieldOfNorms.aut` (`Functor/Map`); for any separable closure `Ω` of `K` containing `L`: `RelFieldOfNorms.absoluteAut : Gal(Ω/K) →* RingAut (X_{L/K}(Ω))` (`Galois/RelAction`), `RelFieldOfNorms.ambientGaloisEquiv : Gal(Ω/K) ≃* galoisSubgroup` (`Galois/Ambient`) |
 
 ## Layout
 
@@ -29,7 +31,6 @@ FontaineWintenberger/
   APF/            Wintenberger §1: arithmetically profinite extensions
   FieldOfNorms/   Wintenberger §2–3: the field of norms, its structure, functoriality, Galois action
   Attic/          code without downstream use, built but not imported
-  Main.lean       the five target statements
 FontaineWintenberger.lean   imports one aggregate file per layer
 ```
 

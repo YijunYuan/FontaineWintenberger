@@ -41,6 +41,9 @@ blueprint `fw:apf-bounded-index-growth` for an abstract separable extension.
 
 ## Main results
 
+* `isStrictlyAPF_iff`: **Wintenberger 1.2.1**, strict version: `L/K` is strictly APF iff it is APF
+  and the ratios `ψ_{L/K}(u) / (G_K^0 : G_K^u G_L)` are bounded below by a positive constant as `u →
+  ∞`.
 * `isStrictlyAPF_iff_constant_pos`: The positivity criterion, including the infinite first-bound
   endpoint.
 * `IsAPF.window_mul_index_le_apfPsi`: A nonnegative interval of the Herbrand integral controls its
@@ -115,6 +118,8 @@ APF, and the ratio `ψ_{L/K}(u) / (G_K^0 : G_L^0 G_K^u)` stays bounded below as 
 class IsStrictlyAPF : Prop extends IsAPF K L where
   liminf_pos : 0 < liminf (apfStrictnessRatio K L) atTop
 
+/-- **Wintenberger 1.2.1**, strict version: `L/K` is strictly APF iff it is APF and the ratios
+`ψ_{L/K}(u) / (G_K^0 : G_K^u G_L)` are bounded below by a positive constant as `u → ∞`. -/
 theorem isStrictlyAPF_iff :
     IsStrictlyAPF K L ↔ IsAPF K L ∧ 0 < liminf (apfStrictnessRatio K L) atTop :=
   ⟨fun h => ⟨h.toIsAPF, h.liminf_pos⟩, fun h => { toIsAPF := h.1, liminf_pos := h.2 }⟩

@@ -182,6 +182,7 @@ instance FieldOfNorms.instIsRankOneDiscrete [IsAPF K L] [Fact (¬ Module.Finite 
     (Valued.v : Valuation (FieldOfNorms K L) (WithZero (Multiplicative ℤ))).IsRankOneDiscrete :=
   FieldOfNorms.fieldValuation_isRankOneDiscrete K L
 
+/-- **Theorem 2.1.3 (ii).** The valuation ring of `X_K(L)` is a discrete valuation ring. -/
 instance FieldOfNorms.instIsDiscreteValuationRing [IsAPF K L] [Fact (¬ Module.Finite K L)] :
     IsDiscreteValuationRing
       (Valued.v : Valuation (FieldOfNorms K L) (WithZero (Multiplicative ℤ))).valuationSubring :=

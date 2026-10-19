@@ -45,8 +45,9 @@ Reference: Wintenberger, Remark 3.2.4.
   fields.
 * `RelFieldOfNorms.absoluteMap`: The compatible finite-stage transports act on the same relative
   field of norms.
-* `RelFieldOfNorms.absoluteAut`: The ambient transports form an automorphism action on the same
-  union.
+* `RelFieldOfNorms.absoluteAut`: **Remark 3.2.4 (ii).** For `L/K` Galois inside a separable closure
+  `Ω` of `K`, the group `Gal(Ω/K)` acts on `X_{L/K}(Ω) = X_K(L)^sep` by ring automorphisms,
+  extending the action of `Gal(L/K)` on `X_K(L)`.
 
 ## Main results
 
@@ -504,7 +505,9 @@ theorem RelFieldOfNorms.absoluteMap_mul_apply
         (fun y => RelFieldOfNorms.absoluteMap K L σ
           (RelFieldOfNorms.absoluteMap K L τ y)) hx))
 
-/-- The ambient transports form an automorphism action on the same union. -/
+/-- **Remark 3.2.4 (ii).** For `L/K` Galois inside a separable closure `Ω` of `K`, the group
+`Gal(Ω/K)` acts on `X_{L/K}(Ω) = X_K(L)^sep` by ring automorphisms, extending the action of
+`Gal(L/K)` on `X_K(L)`. -/
 def RelFieldOfNorms.absoluteAut :
     letI : Group (RingAut (RelFieldOfNorms K L (Ω))) :=
         RingAut.instGroup _

@@ -40,7 +40,7 @@ for f in sorted(SRC.rglob('*.lean')):
             bad.append(f'{f.relative_to(ROOT)} imports the lower layer {m}')
 root = ROOT / 'FontaineWintenberger.lean'
 root_imports = set(IMPORT.findall(root.read_text()))
-for layer in LAYERS + ['Main']:
+for layer in LAYERS:
     if f'FontaineWintenberger.{layer}' not in root_imports:
         bad.append(f'FontaineWintenberger.lean does not import FontaineWintenberger.{layer}')
 for name in bad:
