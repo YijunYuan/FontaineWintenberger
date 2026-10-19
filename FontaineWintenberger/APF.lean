@@ -19,10 +19,13 @@ public import FontaineWintenberger.APF.Elementary.NormContinuity
 public import FontaineWintenberger.APF.Elementary.NormPrecision
 public import FontaineWintenberger.APF.Elementary.PrimeDegree
 public import FontaineWintenberger.APF.Elementary.TameCompositum
+public import FontaineWintenberger.APF.Finite.ConstantIndex
 public import FontaineWintenberger.APF.Finite.Galois
 public import FontaineWintenberger.APF.Finite.Nonnormal
 public import FontaineWintenberger.APF.Finite.Slope
 public import FontaineWintenberger.APF.Galois
+public import FontaineWintenberger.APF.Galois.Restriction
+public import FontaineWintenberger.APF.Galois.Union
 public import FontaineWintenberger.APF.Herbrand
 public import FontaineWintenberger.APF.Index
 public import FontaineWintenberger.APF.RamificationBound
@@ -33,4 +36,5 @@ public import FontaineWintenberger.APF.Tower.PrimeValuation
 public import FontaineWintenberger.APF.Tower.Residue
 public import FontaineWintenberger.APF.Tower.Stages
 public import FontaineWintenberger.APF.Tower.Tame
+public import FontaineWintenberger.APF.Tower.TotallyRamified
 public import FontaineWintenberger.APF.Tower.Wild
