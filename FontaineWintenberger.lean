@@ -10,3 +10,5 @@ public import FontaineWintenberger.LocalField
 public import FontaineWintenberger.Ramification
 public import FontaineWintenberger.APF
 public import FontaineWintenberger.FieldOfNorms
+
+public import FontaineWintenberger.Main

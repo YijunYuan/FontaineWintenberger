@@ -547,6 +547,11 @@ FontaineWintenberger/
 - `exists_aut_extends_intermediate_embedding` 是 `AlgHom.liftNormal` 的三行推论，有 4 个调用方；保留在 `Mathlib/FieldTheory/SeparableEmbeddings`，上游化时内联。
 - **未做，归入 A5**：166 处 `OK`/`R`/`A`/`R₀`/`O`（全是 `(NormedField.valuation (K := K)).valuationSubring`）的局部记号统一——等 `𝒪[K]`（`Valued.integer`）切换一起做，避免改两次。
 
+### F6（分支 `refactor`，2026-10-20）：绝对 Galois 群接口与 `Main.lean`
+- `Mathlib/FieldTheory/AbsoluteGaloisGroup.lean`（上游候选）：`Field.absoluteGaloisGroup.restrictSep : G_K →* Gal(K^sep/K)`（Mathlib 的 `AlgEquiv.restrictNormalHom`），单射（`K^al/K^sep` 纯不可分 ⇒ `IsPurelyInseparable.injective_comp_algebraMap`）、满射、连续（`InfiniteGalois.restrictNormalHom_continuous`）、开（`K^al/K` 的有限子扩张由有限子集生成，生成元的 `q^n` 次幂落在 `K^sep`，Frobenius 单射）；`sepEquiv : G_K ≃ₜ* Gal(K^sep/K)`；`instance : CompactSpace (absoluteGaloisGroup K)`（K 不完美时 Mathlib 没有此实例）。
+- `Main.lean`：五个目标的公开陈述，全部是库中声明的一行推论：`isAPF_iff_isOpen_absoluteGaloisGroup`（1.2.1，用 `G_K`）、`isStrictlyAPF_iff_liminf_pos`；`FieldOfNorms.charP`/`completeSpace`/`isDiscreteValuationRing`/`residueFieldEquiv`（Thm 2.1.3，剩余域 = `𝒪_K` 在 `L` 中整闭包的剩余域）；`FieldOfNorms.homEquiv`（Thm 3.1.2）、`FieldOfNorms.absoluteGaloisGroupEquiv : G_L ≃ₜ* G_{X_K(L)}`（Cor 3.2.3）；`FieldOfNorms.aut`、`RelFieldOfNorms.absoluteGaloisGroupAction : G_K →* RingAut X_K(L)^sep`、`RelFieldOfNorms.absoluteGaloisGroupEquiv : G_K ≃* galoisSubgroup`（Rem 3.2.4）。根文件导入 `Main`。
+- 未做：把库内部 `absoluteUpperRamificationGroup`、`apfSubgroup` 改成在 `G_K` 上定义（C2 表）。内部保留 `Gal(K^sep/K)` 是 A5 的既定决定（Mathlib 无限 Galois 理论要求 `IsGalois`）；对外接口已经在 `Main.lean` 以 `G_K` 给出。
+
 ### F5 设计细化（原计划，供对照）
 1. **`FieldOfNorms K L`**：`def FieldOfNorms := WithZero (normCompatibleUnits K L)`；`instance : CommGroupWithZero := inferInstanceAs …`（无条件）；`instance : Nontrivial`、`Inhabited`。`coord E : FieldOfNorms K L →*₀ E` 替代 `normLimitEval`。
 2. **加法与域**：`normLimitAdd` 的定义只依赖 `[IsAPF K L]`（`p` 仅被线程传递，`Convergence.lean` 中唯一实质使用是 `p ∈ 𝔪^n` 的发散性，来自 `PrimeValuation`）。目标：

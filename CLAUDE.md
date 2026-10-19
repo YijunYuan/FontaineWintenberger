@@ -37,7 +37,7 @@ FontaineWintenberger/
   FieldOfNorms/   Wintenberger §2–3, in import order: Layers/, Estimates/, Basic/, Structure/,
                   Functor/, Relative/, Galois/
   Attic/          code without downstream use, kept for review; built, not imported
-  Main.lean       the five final statements with clean signatures (to be written)
+  Main.lean       the five final statements with clean signatures
 FontaineWintenberger.lean   imports one aggregate file per layer
 ```
 

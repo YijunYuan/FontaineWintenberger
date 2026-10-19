@@ -8,6 +8,7 @@ module
 public import FontaineWintenberger.Mathlib.Analysis.Krasner
 public import FontaineWintenberger.Mathlib.Analysis.SpectralIntegers
 public import FontaineWintenberger.Mathlib.Analysis.UniformContinuity
+public import FontaineWintenberger.Mathlib.FieldTheory.AbsoluteGaloisGroup
 public import FontaineWintenberger.Mathlib.FieldTheory.FiniteIntermediateField
 public import FontaineWintenberger.Mathlib.FieldTheory.NormalClosure
 public import FontaineWintenberger.Mathlib.FieldTheory.RelIndex
