@@ -114,7 +114,7 @@ def FieldOfNorms.residueFieldEquiv :
     IsLocalRing.ResidueField
         (Valued.v : Valuation (FieldOfNorms K L) (WithZero (Multiplicative ℤ))).valuationSubring
       ≃+* IsLocalRing.ResidueField
-        (integralClosure (NormedField.valuation (K := K)).valuationSubring L) :=
+        (integralClosure 𝒪[K] L) :=
   FieldOfNorms.residueEquiv K L
 
 end FieldOfNorms

@@ -40,7 +40,7 @@ theorem spectralValuation_hasExtension_tower [Algebra E L] [IsScalarTower K E L]
 /-- The field embedding restricts to the spectral integer
 rings as an algebra map over the base integer ring. -/
 def spectralIntegerInclusion (i : E →ₐ[K] L) :
-    spectralIntegerRing K E →ₐ[(NormedField.valuation (K := K)).valuationSubring]
+    spectralIntegerRing K E →ₐ[𝒪[K]]
       spectralIntegerRing K L := by
   let : Algebra E L := i.toRingHom.toAlgebra
   let : IsScalarTower K E L := IsScalarTower.of_algebraMap_eq (fun r ↦ (i.commutes r).symm)
@@ -68,7 +68,7 @@ theorem spectralIntegerInclusion_isLocalHom (i : E →ₐ[K] L) :
 base residue algebra. -/
 def spectralResidueInclusion (i : E →ₐ[K] L) :
     IsLocalRing.ResidueField (spectralIntegerRing K E) →ₐ[
-      IsLocalRing.ResidueField (NormedField.valuation (K := K)).valuationSubring]
+      𝓀[K]]
         IsLocalRing.ResidueField (spectralIntegerRing K L) := by
   let := spectralIntegerInclusion_isLocalHom K i
   exact IsLocalRing.ResidueField.mapAlgHom' (spectralIntegerInclusion K i)

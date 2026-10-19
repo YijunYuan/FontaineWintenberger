@@ -71,8 +71,7 @@ end Extended
 section FiniteBase
 
 variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+    [PerfectField 𝓀[K]]
 variable (M : IntermediateField K (SeparableClosure K)) [FiniteDimensional K M]
 
 noncomputable local instance : NontriviallyNormedField M :=
@@ -170,8 +169,7 @@ private theorem finiteOverfield_fixing_map
 variable (K L : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [NontriviallyNormedField L] [NormedAlgebra K L] [IsUltrametricDist L]
     [FiniteDimensional K L] [IsGalois K L]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+    [PerfectField 𝓀[K]]
 
 local instance finiteOverfieldBounds_completeSpace (M : IntermediateField K L) :
     CompleteSpace M := FiniteDimensional.complete K M
@@ -179,10 +177,8 @@ local instance finiteOverfieldBounds_discreteValuationRing (M : IntermediateFiel
     IsCompleteDiscreteValuedField M :=
   normedAlgebra_isCompleteDiscreteValuedField K M
 local instance finiteOverfieldBounds_perfectField (M : IntermediateField K L) :
-    PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := M)).valuationSubring) :=
-  Algebra.IsAlgebraic.perfectField (IsLocalRing.ResidueField
-    (NormedField.valuation (K := K)).valuationSubring)
+    PerfectField 𝓀[M] :=
+  Algebra.IsAlgebraic.perfectField 𝓀[K]
 
 local notation "U" => upperRamificationGroup (R := spectralIntegerRing K L) (L ≃ₐ[K] L)
 

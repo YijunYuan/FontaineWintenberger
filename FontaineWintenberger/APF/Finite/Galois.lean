@@ -31,8 +31,7 @@ computed by the finite extension's own upper filtration.
 namespace FontaineWintenberger
 
 variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-variable [PerfectField (IsLocalRing.ResidueField
-    (NormedField.valuation (K := K)).valuationSubring)]
+variable [PerfectField 𝓀[K]]
 
 theorem apfSubgroup_eq_comap_upper
     (E : FiniteGaloisIntermediateField K (SeparableClosure K)) {u : ℝ} (hu : -1 ≤ u) :
@@ -95,8 +94,7 @@ end FontaineWintenberger
 namespace FontaineWintenberger
 
 variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-variable [PerfectField (IsLocalRing.ResidueField
-  (NormedField.valuation (K := K)).valuationSubring)]
+variable [PerfectField 𝓀[K]]
 
 theorem apfSubgroup_eq_top_iff_finite_upper_eq_top
     (E : IntermediateField K (SeparableClosure K)) [FiniteDimensional K E] [IsGalois K E]

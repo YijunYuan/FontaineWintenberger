@@ -76,8 +76,7 @@ section FixedField
 
 variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     (L : Type*) [Field L] [Algebra K L] [IsGalois K L] [FiniteDimensional K L]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+    [PerfectField 𝓀[K]]
     (r : ℤ)
 
 local notation "G" => L ≃ₐ[K] L

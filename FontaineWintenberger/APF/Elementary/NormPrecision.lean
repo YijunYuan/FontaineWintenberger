@@ -35,21 +35,19 @@ section Spectral
 
 variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
 variable (L : Type*) [Field L] [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
-variable [PerfectField (IsLocalRing.ResidueField
-  (NormedField.valuation (K := K)).valuationSubring)]
+variable [PerfectField 𝓀[K]]
 
-local notation "OK" => Valuation.valuationSubring (NormedField.valuation (K := K))
 local notation "OL" => spectralIntegerRing K L
 
 /-- A prime-degree producer supplies the ideal-power addition
 congruence used in the tower step, at the exact trace-ideal precision. -/
 theorem spectralIntegerRing_prime_degree_norm_add_congruence
     (hp : (Module.finrank K L).Prime)
-    (he : (IsLocalRing.maximalIdeal OL).ramificationIdx OK = Module.finrank K L) :
+    (he : (IsLocalRing.maximalIdeal OL).ramificationIdx 𝒪[K] = Module.finrank K L) :
     ∃ t : ℕ, apfRamificationBound K L = ((t : ℝ) : EReal) ∧
       ∀ α β : OL,
-        Algebra.intNorm OK OL (α + β) - Algebra.intNorm OK OL α - Algebra.intNorm OK OL β ∈
-          IsLocalRing.maximalIdeal OK ^
+        Algebra.intNorm 𝒪[K] OL (α + β) - Algebra.intNorm 𝒪[K] OL α - Algebra.intNorm 𝒪[K] OL β ∈
+          IsLocalRing.maximalIdeal 𝒪[K] ^
             (((Module.finrank K L - 1) * (t + 1)) / Module.finrank K L) := by
   obtain ⟨t, _ht, hbound, _hdiff, htrace, _hval⟩ :=
     spectralIntegerRing_prime_degree_ramification K L hp he
@@ -98,19 +96,17 @@ theorem ceil_mul_div_le_prime_norm_precision (p t : ℕ) (hp : 0 < p)
 variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
 
 variable (L : Type*) [Field L] [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+    [PerfectField 𝓀[K]]
 
-local notation "R" => Valuation.valuationSubring (NormedField.valuation (K := K))
 local notation "S" => spectralIntegerRing K L
 
 /-- Prime-degree norm congruence at every common intrinsic lower bound. -/
 theorem spectralIntegerRing_prime_norm_add_congruence_of_bound
     (p : ℕ) [Fact p.Prime] (hd : Module.finrank K L = p)
-    (he : (IsLocalRing.maximalIdeal S).ramificationIdx R = Module.finrank K L)
+    (he : (IsLocalRing.maximalIdeal S).ramificationIdx 𝒪[K] = Module.finrank K L)
     (b : ℝ) (hb : (b : EReal) ≤ apfRamificationBound K L) (x y : S) :
-    Algebra.intNorm R S (x + y) - Algebra.intNorm R S x - Algebra.intNorm R S y ∈
-      IsLocalRing.maximalIdeal R ^ ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊ := by
+    Algebra.intNorm 𝒪[K] S (x + y) - Algebra.intNorm 𝒪[K] S x - Algebra.intNorm 𝒪[K] S y ∈
+      IsLocalRing.maximalIdeal 𝒪[K] ^ ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊ := by
   have hp : (Module.finrank K L).Prime := hd ▸ Fact.out
   obtain ⟨t, ht, hcongr⟩ := spectralIntegerRing_prime_degree_norm_add_congruence K L hp he
   have hbt : b ≤ (t : ℝ) := by

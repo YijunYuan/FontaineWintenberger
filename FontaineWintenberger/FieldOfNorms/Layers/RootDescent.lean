@@ -33,15 +33,14 @@ open Polynomial
 variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
 
 
-local notation "OK" => Valuation.valuationSubring (NormedField.valuation (K := K))
 
 /-- Every conjugate of a root is attained by an automorphism fixing
 the field when its upper product is full. -/
 theorem exists_fixing_aut_root_of_fullUpper
     (L : IntermediateField K (SeparableClosure K))
-    (f : OK[X]) (hf : f.Monic) (hsep : (f.map (algebraMap OK K)).Separable)
+    (f : 𝒪[K][X]) (hf : f.Monic) (hsep : (f.map (algebraMap 𝒪[K] K)).Separable)
     {b : ℝ} (hb : (f.natDegree.factorial : ℝ) *
-      (IsDiscreteValuationRing.addVal OK f.discr).toNat ≤ b)
+      (IsDiscreteValuationRing.addVal 𝒪[K] f.discr).toNat ≤ b)
     (htop : apfSubgroup K L b = ⊤)
     (x : SeparableClosure K) (hx : aeval x f = 0)
     (y : SeparableClosure K) (hy : aeval y (minpoly K x) = 0) :
@@ -65,9 +64,9 @@ theorem exists_fixing_aut_root_of_fullUpper
 to a field with full upper product. -/
 theorem minpoly_natDegree_eq_of_fullUpper
     (L : IntermediateField K (SeparableClosure K))
-    (f : OK[X]) (hf : f.Monic) (hsep : (f.map (algebraMap OK K)).Separable)
+    (f : 𝒪[K][X]) (hf : f.Monic) (hsep : (f.map (algebraMap 𝒪[K] K)).Separable)
     {b : ℝ} (hb : (f.natDegree.factorial : ℝ) *
-      (IsDiscreteValuationRing.addVal OK f.discr).toNat ≤ b)
+      (IsDiscreteValuationRing.addVal 𝒪[K] f.discr).toNat ≤ b)
     (htop : apfSubgroup K L b = ⊤)
     (x : SeparableClosure K) (hx : aeval x f = 0) :
     (minpoly L x).natDegree = (minpoly K x).natDegree := by
@@ -99,9 +98,9 @@ theorem minpoly_natDegree_eq_of_fullUpper
 polynomial over the APF field, by the proved degree equality. -/
 theorem minpoly_map_eq_of_fullUpper
     (L : IntermediateField K (SeparableClosure K))
-    (f : OK[X]) (hf : f.Monic) (hsep : (f.map (algebraMap OK K)).Separable)
+    (f : 𝒪[K][X]) (hf : f.Monic) (hsep : (f.map (algebraMap 𝒪[K] K)).Separable)
     {b : ℝ} (hb : (f.natDegree.factorial : ℝ) *
-      (IsDiscreteValuationRing.addVal OK f.discr).toNat ≤ b)
+      (IsDiscreteValuationRing.addVal 𝒪[K] f.discr).toNat ≤ b)
     (htop : apfSubgroup K L b = ⊤)
     (x : SeparableClosure K) (hx : aeval x f = 0) :
     (minpoly K x).map (algebraMap K L) = minpoly L x := by
@@ -115,9 +114,9 @@ theorem minpoly_map_eq_of_fullUpper
 APF field, with no normality hypothesis on either field. -/
 theorem linearDisjoint_root_of_fullUpper
     (L : IntermediateField K (SeparableClosure K))
-    (f : OK[X]) (hf : f.Monic) (hsep : (f.map (algebraMap OK K)).Separable)
+    (f : 𝒪[K][X]) (hf : f.Monic) (hsep : (f.map (algebraMap 𝒪[K] K)).Separable)
     {b : ℝ} (hb : (f.natDegree.factorial : ℝ) *
-      (IsDiscreteValuationRing.addVal OK f.discr).toNat ≤ b)
+      (IsDiscreteValuationRing.addVal 𝒪[K] f.discr).toNat ≤ b)
     (htop : apfSubgroup K L b = ⊤)
     (x : SeparableClosure K) (hx : aeval x f = 0) :
     (IntermediateField.adjoin K {x}).LinearDisjoint L :=
@@ -127,9 +126,9 @@ theorem linearDisjoint_root_of_fullUpper
 /-- The simple compositum has exactly the root-field degree. -/
 theorem finrank_root_adjunction_eq_of_fullUpper
     (L : IntermediateField K (SeparableClosure K))
-    (f : OK[X]) (hf : f.Monic) (hsep : (f.map (algebraMap OK K)).Separable)
+    (f : 𝒪[K][X]) (hf : f.Monic) (hsep : (f.map (algebraMap 𝒪[K] K)).Separable)
     {b : ℝ} (hb : (f.natDegree.factorial : ℝ) *
-      (IsDiscreteValuationRing.addVal OK f.discr).toNat ≤ b)
+      (IsDiscreteValuationRing.addVal 𝒪[K] f.discr).toNat ≤ b)
     (htop : apfSubgroup K L b = ⊤)
     (x : SeparableClosure K) (hx : aeval x f = 0) :
     Module.finrank L (IntermediateField.adjoin L {x}) =
@@ -141,12 +140,12 @@ theorem finrank_root_adjunction_eq_of_fullUpper
 /-- The root field has degree at most the polynomial. -/
 theorem finrank_root_adjunction_le_polynomial_degree
     {Ω : Type*} [Field Ω] [Algebra K Ω]
-    (f : OK[X]) (hf : f.Monic) (x : Ω) (hx : aeval x f = 0) :
+    (f : 𝒪[K][X]) (hf : f.Monic) (x : Ω) (hx : aeval x f = 0) :
     Module.finrank K (IntermediateField.adjoin K {x}) ≤ f.natDegree := by
-  have hxK : aeval x (f.map (algebraMap OK K)) = 0 := by rwa [aeval_map_algebraMap]
-  have hxint : IsIntegral K x := ⟨f.map (algebraMap OK K), hf.map _, hxK⟩
+  have hxK : aeval x (f.map (algebraMap 𝒪[K] K)) = 0 := by rwa [aeval_map_algebraMap]
+  have hxint : IsIntegral K x := ⟨f.map (algebraMap 𝒪[K] K), hf.map _, hxK⟩
   rw [IntermediateField.adjoin.finrank hxint]
-  have hd := natDegree_le_of_dvd (minpoly.dvd K x hxK) ((hf.map (algebraMap OK K)).ne_zero)
+  have hd := natDegree_le_of_dvd (minpoly.dvd K x hxK) ((hf.map (algebraMap 𝒪[K] K)).ne_zero)
   simpa only [hf.natDegree_map] using hd
 
 open scoped TensorProduct
@@ -180,9 +179,9 @@ def rootAdjunctionTensorMap {Ω : Type*} [Field Ω] [Algebra K Ω]
 minimal-polynomial descent and the primitive root. -/
 theorem rootAdjunctionTensorMap_bijective_of_fullUpper
     (L : IntermediateField K (SeparableClosure K))
-    (f : OK[X]) (hf : f.Monic) (hsep : (f.map (algebraMap OK K)).Separable)
+    (f : 𝒪[K][X]) (hf : f.Monic) (hsep : (f.map (algebraMap 𝒪[K] K)).Separable)
     {b : ℝ} (hb : (f.natDegree.factorial : ℝ) *
-      (IsDiscreteValuationRing.addVal OK f.discr).toNat ≤ b)
+      (IsDiscreteValuationRing.addVal 𝒪[K] f.discr).toNat ≤ b)
     (htop : apfSubgroup K L b = ⊤)
     (x : SeparableClosure K) (hx : aeval x f = 0) :
     Function.Bijective (rootAdjunctionTensorMap K L x) := by
@@ -214,9 +213,9 @@ theorem rootAdjunctionTensorMap_bijective_of_fullUpper
 from the full upper stage rather than supplied as certificates. -/
 def rootAdjunctionTensorEquivOfFullUpper
     (L : IntermediateField K (SeparableClosure K))
-    (f : OK[X]) (hf : f.Monic) (hsep : (f.map (algebraMap OK K)).Separable)
+    (f : 𝒪[K][X]) (hf : f.Monic) (hsep : (f.map (algebraMap 𝒪[K] K)).Separable)
     {b : ℝ} (hb : (f.natDegree.factorial : ℝ) *
-      (IsDiscreteValuationRing.addVal OK f.discr).toNat ≤ b)
+      (IsDiscreteValuationRing.addVal 𝒪[K] f.discr).toNat ≤ b)
     (htop : apfSubgroup K L b = ⊤)
     (x : SeparableClosure K) (hx : aeval x f = 0) :
     L ⊗[K] (IntermediateField.adjoin K {x}) ≃ₐ[L] IntermediateField.adjoin L {x} :=
@@ -226,9 +225,9 @@ def rootAdjunctionTensorEquivOfFullUpper
 @[simp]
 theorem rootAdjunctionTensorEquivOfFullUpper_tmul
     (L : IntermediateField K (SeparableClosure K))
-    (f : OK[X]) (hf : f.Monic) (hsep : (f.map (algebraMap OK K)).Separable)
+    (f : 𝒪[K][X]) (hf : f.Monic) (hsep : (f.map (algebraMap 𝒪[K] K)).Separable)
     {b : ℝ} (hb : (f.natDegree.factorial : ℝ) *
-      (IsDiscreteValuationRing.addVal OK f.discr).toNat ≤ b)
+      (IsDiscreteValuationRing.addVal 𝒪[K] f.discr).toNat ≤ b)
     (htop : apfSubgroup K L b = ⊤)
     (x : SeparableClosure K) (hx : aeval x f = 0)
     (l : L) (d : IntermediateField.adjoin K {x}) :
@@ -239,9 +238,9 @@ theorem rootAdjunctionTensorEquivOfFullUpper_tmul
 
 /-- The absolute upper group fixes the whole root field. -/
 theorem absoluteUpper_le_root_fixingSubgroup
-    (f : OK[X]) (hf : f.Monic) (hsep : (f.map (algebraMap OK K)).Separable)
+    (f : 𝒪[K][X]) (hf : f.Monic) (hsep : (f.map (algebraMap 𝒪[K] K)).Separable)
     {b : ℝ} (hb : (f.natDegree.factorial : ℝ) *
-      (IsDiscreteValuationRing.addVal OK f.discr).toNat ≤ b)
+      (IsDiscreteValuationRing.addVal 𝒪[K] f.discr).toNat ≤ b)
     (x : SeparableClosure K) (hx : aeval x f = 0) :
     absoluteUpperRamificationGroup K b ≤ (IntermediateField.adjoin K {x}).fixingSubgroup := by
   apply (IntermediateField.le_iff_le _ _).mp
@@ -254,9 +253,9 @@ theorem absoluteUpper_le_root_fixingSubgroup
 compositum product, on the ambient automorphisms. -/
 theorem apfSubgroup_root_compositum_eq_fixingSubgroup
     (L : IntermediateField K (SeparableClosure K))
-    (f : OK[X]) (hf : f.Monic) (hsep : (f.map (algebraMap OK K)).Separable)
+    (f : 𝒪[K][X]) (hf : f.Monic) (hsep : (f.map (algebraMap 𝒪[K] K)).Separable)
     {b : ℝ} (hb : (f.natDegree.factorial : ℝ) *
-      (IsDiscreteValuationRing.addVal OK f.discr).toNat ≤ b)
+      (IsDiscreteValuationRing.addVal 𝒪[K] f.discr).toNat ≤ b)
     (htop : apfSubgroup K L b = ⊤)
     (x : SeparableClosure K) (hx : aeval x f = 0) :
     apfSubgroup K ((IntermediateField.adjoin L {x}).restrictScalars K) b =
@@ -299,11 +298,9 @@ local instance rootField_discrete :
 local instance rootField_separableClosureAlgebra : Algebra D (SeparableClosure D) :=
   (separableClosure D (AlgebraicClosure D)).algebra'
 
-variable [PerfectField (IsLocalRing.ResidueField
-    (NormedField.valuation (K := K)).valuationSubring)]
+variable [PerfectField 𝓀[K]]
 
-local instance rootField_residuePerfect : PerfectField (IsLocalRing.ResidueField
-    (NormedField.valuation (K := D)).valuationSubring) :=
+local instance rootField_residuePerfect : PerfectField 𝓀[D] :=
   normedAlgebra_residueField_perfectField K D
 
 variable (L : IntermediateField K Ω)
@@ -329,8 +326,7 @@ end RootStructures
 section RelativeRoot
 
 variable (x : SeparableClosure K)
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+    [PerfectField 𝓀[K]]
     (L : IntermediateField K (SeparableClosure K))
 
 attribute [local instance] rootField_finite rootField_normedField rootField_normedAlgebra
@@ -341,14 +337,12 @@ attribute [local instance] rootField_finite rootField_normedField rootField_norm
 local notation "D" => IntermediateField.adjoin K (Singleton.singleton x : Set (SeparableClosure K))
 local notation "M" => IntermediateField.adjoin L (Singleton.singleton x : Set (SeparableClosure K))
 
-omit [PerfectField (IsLocalRing.ResidueField
-    (NormedField.valuation (K := K)).valuationSubring)] in
+omit [PerfectField 𝓀[K]] in
 /-- The finite separable root adjunction remains APF over the base. -/
 theorem isAPF_rootAdjunction [IsAPF K L] : IsAPF K M :=
   (isAPF_finite_extension_iff K M L).mpr ‹_›
 
-omit [IsCompleteDiscreteValuedField K] [PerfectField (IsLocalRing.ResidueField
-    (NormedField.valuation (K := K)).valuationSubring)]
+omit [IsCompleteDiscreteValuedField K] [PerfectField 𝓀[K]]
       in
 /-- The infinite field embeds in its simple compositum,
 so that compositum still has infinite degree over the base. -/
@@ -362,9 +356,9 @@ theorem rootAdjunction_not_finite [Fact (¬ Module.Finite K L)] : ¬ Module.Fini
 /-- The compositum has full relative upper product over the
 root field at the finite-base Herbrand parameter. -/
 theorem rootAdjunction_fullUpper
-    (f : OK[X]) (hf : f.Monic) (hsep : (f.map (algebraMap OK K)).Separable)
+    (f : 𝒪[K][X]) (hf : f.Monic) (hsep : (f.map (algebraMap 𝒪[K] K)).Separable)
     {b : ℝ} (hb : (f.natDegree.factorial : ℝ) *
-      (IsDiscreteValuationRing.addVal OK f.discr).toNat ≤ b)
+      (IsDiscreteValuationRing.addVal 𝒪[K] f.discr).toNat ≤ b)
     (htop : apfSubgroup K L b = ⊤) (hx : aeval x f = 0) :
     apfSubgroup D (IsSepClosed.lift : M →ₐ[D] SeparableClosure D).fieldRange
       (apfPsi K D b) = ⊤ := by
@@ -401,9 +395,9 @@ theorem rootAdjunction_fullUpper
 /-- The relative upper product gives the extended
 first-bound estimate, including a trivial root field. -/
 theorem apfPsi_le_rootAdjunction_firstBound
-    (f : OK[X]) (hf : f.Monic) (hsep : (f.map (algebraMap OK K)).Separable)
+    (f : 𝒪[K][X]) (hf : f.Monic) (hsep : (f.map (algebraMap 𝒪[K] K)).Separable)
     {b : ℝ} (hb : (f.natDegree.factorial : ℝ) *
-      (IsDiscreteValuationRing.addVal OK f.discr).toNat ≤ b)
+      (IsDiscreteValuationRing.addVal 𝒪[K] f.discr).toNat ≤ b)
     (htop : apfSubgroup K L b = ⊤) (hx : aeval x f = 0) :
     (apfPsi K D b : EReal) ≤ apfRamificationBound D M := by
   have hb0 : 0 ≤ b := (mul_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)).trans hb
@@ -414,9 +408,9 @@ theorem apfPsi_le_rootAdjunction_firstBound
 /-- The new-base first bound is at least the full-product
 parameter, by the proved finite-base Herbrand lower bound. -/
 theorem le_rootAdjunction_firstBound
-    (f : OK[X]) (hf : f.Monic) (hsep : (f.map (algebraMap OK K)).Separable)
+    (f : 𝒪[K][X]) (hf : f.Monic) (hsep : (f.map (algebraMap 𝒪[K] K)).Separable)
     {b : ℝ} (hb : (f.natDegree.factorial : ℝ) *
-      (IsDiscreteValuationRing.addVal OK f.discr).toNat ≤ b)
+      (IsDiscreteValuationRing.addVal 𝒪[K] f.discr).toNat ≤ b)
     (htop : apfSubgroup K L b = ⊤) (hx : aeval x f = 0) :
     (b : EReal) ≤ apfRamificationBound D M :=
   (EReal.coe_le_coe_iff.mpr (IsAPF.le_apfPsi K D b)).trans
@@ -454,9 +448,9 @@ variable [IsSepClosure K Ω]
 any chosen separable closure, through the proved closure isomorphism. -/
 theorem linearDisjoint_root_of_fullUpper_commonClosure
     (L : IntermediateField K Ω)
-    (f : OK[X]) (hf : f.Monic) (hsep : (f.map (algebraMap OK K)).Separable)
+    (f : 𝒪[K][X]) (hf : f.Monic) (hsep : (f.map (algebraMap 𝒪[K] K)).Separable)
     {b : ℝ} (hb : (f.natDegree.factorial : ℝ) *
-      (IsDiscreteValuationRing.addVal OK f.discr).toNat ≤ b)
+      (IsDiscreteValuationRing.addVal 𝒪[K] f.discr).toNat ≤ b)
     (htop : L.fixingSubgroup ⊔ upperRamificationGroupInfinite K Ω b = ⊤)
     (x : Ω) (hx : aeval x f = 0) :
     (IntermediateField.adjoin K {x}).LinearDisjoint L := by
@@ -465,7 +459,7 @@ theorem linearDisjoint_root_of_fullUpper_commonClosure
   have hy : aeval y f = 0 := by
     apply e.injective
     rw [map_zero]
-    change (e.restrictScalars OK) (aeval y f) = 0
+    change (e.restrictScalars 𝒪[K]) (aeval y f) = 0
     rw [← aeval_algHom_apply]
     change aeval (e (e.symm x)) f = 0
     rw [e.apply_symm_apply]
@@ -503,9 +497,9 @@ theorem rootAdjunctionTensorMap_surjective_commonClosure
 separable closure; the carrier is the simple compositum there. -/
 theorem rootAdjunctionTensorMap_bijective_commonClosure
     (L : IntermediateField K Ω)
-    (f : OK[X]) (hf : f.Monic) (hsep : (f.map (algebraMap OK K)).Separable)
+    (f : 𝒪[K][X]) (hf : f.Monic) (hsep : (f.map (algebraMap 𝒪[K] K)).Separable)
     {b : ℝ} (hb : (f.natDegree.factorial : ℝ) *
-      (IsDiscreteValuationRing.addVal OK f.discr).toNat ≤ b)
+      (IsDiscreteValuationRing.addVal 𝒪[K] f.discr).toNat ≤ b)
     (htop : L.fixingSubgroup ⊔ upperRamificationGroupInfinite K Ω b = ⊤)
     (x : Ω) (hx : aeval x f = 0) :
     Function.Bijective (rootAdjunctionTensorMap K L x) := by
@@ -528,9 +522,9 @@ theorem rootAdjunctionTensorMap_bijective_commonClosure
 fields with their same simple compositum in the chosen closure. -/
 def rootAdjunctionTensorEquivCommonClosure
     (L : IntermediateField K Ω)
-    (f : OK[X]) (hf : f.Monic) (hsep : (f.map (algebraMap OK K)).Separable)
+    (f : 𝒪[K][X]) (hf : f.Monic) (hsep : (f.map (algebraMap 𝒪[K] K)).Separable)
     {b : ℝ} (hb : (f.natDegree.factorial : ℝ) *
-      (IsDiscreteValuationRing.addVal OK f.discr).toNat ≤ b)
+      (IsDiscreteValuationRing.addVal 𝒪[K] f.discr).toNat ≤ b)
     (htop : L.fixingSubgroup ⊔ upperRamificationGroupInfinite K Ω b = ⊤)
     (x : Ω) (hx : aeval x f = 0) :
     L ⊗[K] (IntermediateField.adjoin K {x}) ≃ₐ[L] IntermediateField.adjoin L {x} :=
@@ -540,9 +534,9 @@ def rootAdjunctionTensorEquivCommonClosure
 @[simp]
 theorem rootAdjunctionTensorEquivCommonClosure_tmul
     (L : IntermediateField K Ω)
-    (f : OK[X]) (hf : f.Monic) (hsep : (f.map (algebraMap OK K)).Separable)
+    (f : 𝒪[K][X]) (hf : f.Monic) (hsep : (f.map (algebraMap 𝒪[K] K)).Separable)
     {b : ℝ} (hb : (f.natDegree.factorial : ℝ) *
-      (IsDiscreteValuationRing.addVal OK f.discr).toNat ≤ b)
+      (IsDiscreteValuationRing.addVal 𝒪[K] f.discr).toNat ≤ b)
     (htop : L.fixingSubgroup ⊔ upperRamificationGroupInfinite K Ω b = ⊤)
     (x : Ω) (hx : aeval x f = 0) (l : L) (d : IntermediateField.adjoin K {x}) :
     (rootAdjunctionTensorEquivCommonClosure K L f hf hsep hb htop x hx (l ⊗ₜ[K] d) : Ω) =
@@ -552,9 +546,9 @@ theorem rootAdjunctionTensorEquivCommonClosure_tmul
 chosen common separable closure. -/
 theorem finrank_root_adjunction_eq_commonClosure
     (L : IntermediateField K Ω)
-    (f : OK[X]) (hf : f.Monic) (hsep : (f.map (algebraMap OK K)).Separable)
+    (f : 𝒪[K][X]) (hf : f.Monic) (hsep : (f.map (algebraMap 𝒪[K] K)).Separable)
     {b : ℝ} (hb : (f.natDegree.factorial : ℝ) *
-      (IsDiscreteValuationRing.addVal OK f.discr).toNat ≤ b)
+      (IsDiscreteValuationRing.addVal 𝒪[K] f.discr).toNat ≤ b)
     (htop : L.fixingSubgroup ⊔ upperRamificationGroupInfinite K Ω b = ⊤)
     (x : Ω) (hx : aeval x f = 0) :
     Module.finrank L (IntermediateField.adjoin L {x}) =
@@ -566,9 +560,9 @@ theorem finrank_root_adjunction_eq_commonClosure
 /-- The upper group in the chosen common closure fixes the whole
 root field there. -/
 theorem upper_le_root_fixingSubgroup_commonClosure
-    (f : OK[X]) (hf : f.Monic) (hsep : (f.map (algebraMap OK K)).Separable)
+    (f : 𝒪[K][X]) (hf : f.Monic) (hsep : (f.map (algebraMap 𝒪[K] K)).Separable)
     {b : ℝ} (hb : (f.natDegree.factorial : ℝ) *
-      (IsDiscreteValuationRing.addVal OK f.discr).toNat ≤ b)
+      (IsDiscreteValuationRing.addVal 𝒪[K] f.discr).toNat ≤ b)
     (x : Ω) (hx : aeval x f = 0) :
     upperRamificationGroupInfinite K Ω b ≤ (IntermediateField.adjoin K {x}).fixingSubgroup := by
   let e := IsSepClosure.equiv K (SeparableClosure K) Ω
@@ -576,7 +570,7 @@ theorem upper_le_root_fixingSubgroup_commonClosure
   have hy : aeval y f = 0 := by
     apply e.injective
     rw [map_zero]
-    change (e.restrictScalars OK) (aeval y f) = 0
+    change (e.restrictScalars 𝒪[K]) (aeval y f) = 0
     rw [← aeval_algHom_apply]
     change aeval (e (e.symm x)) f = 0
     rwa [e.apply_symm_apply]
@@ -592,9 +586,9 @@ theorem upper_le_root_fixingSubgroup_commonClosure
 on the automorphisms in the chosen common closure. -/
 theorem upperProduct_root_compositum_eq_commonClosure
     (L : IntermediateField K Ω)
-    (f : OK[X]) (hf : f.Monic) (hsep : (f.map (algebraMap OK K)).Separable)
+    (f : 𝒪[K][X]) (hf : f.Monic) (hsep : (f.map (algebraMap 𝒪[K] K)).Separable)
     {b : ℝ} (hb : (f.natDegree.factorial : ℝ) *
-      (IsDiscreteValuationRing.addVal OK f.discr).toNat ≤ b)
+      (IsDiscreteValuationRing.addVal 𝒪[K] f.discr).toNat ≤ b)
     (htop : L.fixingSubgroup ⊔ upperRamificationGroupInfinite K Ω b = ⊤)
     (x : Ω) (hx : aeval x f = 0) :
     ((IntermediateField.adjoin L {x}).restrictScalars K).fixingSubgroup ⊔
@@ -614,8 +608,7 @@ theorem upperProduct_root_compositum_eq_commonClosure
 
 section RelativeCommonClosure
 
-variable (x : Ω) [PerfectField (IsLocalRing.ResidueField
-    (NormedField.valuation (K := K)).valuationSubring)] (L : IntermediateField K Ω)
+variable (x : Ω) [PerfectField 𝓀[K]] (L : IntermediateField K Ω)
 
 attribute [local instance] rootField_finite rootField_normedField rootField_normedAlgebra
   rootField_ultrametric rootField_complete rootField_discrete rootField_separableClosureAlgebra
@@ -625,14 +618,12 @@ attribute [local instance] rootField_finite rootField_normedField rootField_norm
 local notation "D" => IntermediateField.adjoin K (Singleton.singleton x : Set Ω)
 local notation "M" => IntermediateField.adjoin L (Singleton.singleton x : Set Ω)
 
-omit [PerfectField (IsLocalRing.ResidueField
-    (NormedField.valuation (K := K)).valuationSubring)] in
+omit [PerfectField 𝓀[K]] in
 /-- The root compositum in the chosen common closure remains APF. -/
 theorem isAPF_rootAdjunction_commonClosure [IsAPF K L] : IsAPF K M :=
   (isAPF_finite_extension_iff K M L).mpr ‹_›
 
-omit [IsCompleteDiscreteValuedField K] [PerfectField (IsLocalRing.ResidueField
-    (NormedField.valuation (K := K)).valuationSubring)]
+omit [IsCompleteDiscreteValuedField K] [PerfectField 𝓀[K]]
       [IsSepClosure K Ω] in
 /-- Infinite degree is retained by the root compositum in the
 chosen common closure. -/
@@ -647,9 +638,9 @@ theorem rootAdjunction_not_finite_commonClosure [Fact (¬ Module.Finite K L)] :
 /-- The full relative upper product over the root field in the
 chosen common closure. All field carriers remain the carriers. -/
 theorem rootAdjunction_fullUpper_commonClosure
-    (f : OK[X]) (hf : f.Monic) (hsep : (f.map (algebraMap OK K)).Separable)
+    (f : 𝒪[K][X]) (hf : f.Monic) (hsep : (f.map (algebraMap 𝒪[K] K)).Separable)
     {b : ℝ} (hb : (f.natDegree.factorial : ℝ) *
-      (IsDiscreteValuationRing.addVal OK f.discr).toNat ≤ b)
+      (IsDiscreteValuationRing.addVal 𝒪[K] f.discr).toNat ≤ b)
     (htop : L.fixingSubgroup ⊔ upperRamificationGroupInfinite K Ω b = ⊤)
     (hx : aeval x f = 0) :
     apfSubgroup D (IsSepClosed.lift : M →ₐ[D] SeparableClosure D).fieldRange
@@ -704,9 +695,9 @@ theorem rootAdjunction_fullUpper_commonClosure
 /-- The relative first bound in the chosen common closure dominates
 the finite-base Herbrand parameter. -/
 theorem apfPsi_le_rootAdjunction_firstBound_commonClosure
-    (f : OK[X]) (hf : f.Monic) (hsep : (f.map (algebraMap OK K)).Separable)
+    (f : 𝒪[K][X]) (hf : f.Monic) (hsep : (f.map (algebraMap 𝒪[K] K)).Separable)
     {b : ℝ} (hb : (f.natDegree.factorial : ℝ) *
-      (IsDiscreteValuationRing.addVal OK f.discr).toNat ≤ b)
+      (IsDiscreteValuationRing.addVal 𝒪[K] f.discr).toNat ≤ b)
     (htop : L.fixingSubgroup ⊔ upperRamificationGroupInfinite K Ω b = ⊤)
     (hx : aeval x f = 0) :
     (apfPsi K D b : EReal) ≤ apfRamificationBound D M := by
@@ -718,9 +709,9 @@ theorem apfPsi_le_rootAdjunction_firstBound_commonClosure
 /-- The new-base first bound also dominates the
 parameter, since the finite-base inverse Herbrand function does. -/
 theorem le_rootAdjunction_firstBound_commonClosure
-    (f : OK[X]) (hf : f.Monic) (hsep : (f.map (algebraMap OK K)).Separable)
+    (f : 𝒪[K][X]) (hf : f.Monic) (hsep : (f.map (algebraMap 𝒪[K] K)).Separable)
     {b : ℝ} (hb : (f.natDegree.factorial : ℝ) *
-      (IsDiscreteValuationRing.addVal OK f.discr).toNat ≤ b)
+      (IsDiscreteValuationRing.addVal 𝒪[K] f.discr).toNat ≤ b)
     (htop : L.fixingSubgroup ⊔ upperRamificationGroupInfinite K Ω b = ⊤)
     (hx : aeval x f = 0) :
     (b : EReal) ≤ apfRamificationBound D M :=

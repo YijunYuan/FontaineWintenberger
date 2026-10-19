@@ -195,26 +195,25 @@ section Spectral
 variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
 variable (L : Type*) [Field L] [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
 
-local notation "OK" => Valuation.valuationSubring (NormedField.valuation (K := K))
 local notation "OL" => spectralIntegerRing K L
 local notation "GL" => L ≃ₐ[K] L
 
 /-- The integral norm on the spectral integers is the product
 over the full field Galois action. -/
 theorem spectralIntegerRing_algebraMap_intNorm_eq_prod (x : OL) :
-    algebraMap OK OL (Algebra.intNorm OK OL x) = ∏ g : GL, g • x := by
+    algebraMap 𝒪[K] OL (Algebra.intNorm 𝒪[K] OL x) = ∏ g : GL, g • x := by
   apply FaithfulSMul.algebraMap_injective OL L
-  rw [← IsScalarTower.algebraMap_apply OK OL L,
-    IsScalarTower.algebraMap_apply OK K L, Algebra.algebraMap_intNorm (L := L),
+  rw [← IsScalarTower.algebraMap_apply 𝒪[K] OL L,
+    IsScalarTower.algebraMap_apply 𝒪[K] K L, Algebra.algebraMap_intNorm (L := L),
     Algebra.norm_eq_prod_automorphisms, map_prod]
   rfl
 
 /-- The integral trace is the transfer under the same field action. -/
 theorem spectralIntegerRing_algebraMap_intTrace_eq_sum (x : OL) :
-    algebraMap OK OL (Algebra.intTrace OK OL x) = ∑ g : GL, g • x := by
+    algebraMap 𝒪[K] OL (Algebra.intTrace 𝒪[K] OL x) = ∑ g : GL, g • x := by
   apply FaithfulSMul.algebraMap_injective OL L
-  rw [← IsScalarTower.algebraMap_apply OK OL L,
-    IsScalarTower.algebraMap_apply OK K L, Algebra.algebraMap_intTrace (L := L),
+  rw [← IsScalarTower.algebraMap_apply 𝒪[K] OL L,
+    IsScalarTower.algebraMap_apply 𝒪[K] K L, Algebra.algebraMap_intTrace (L := L),
     trace_eq_sum_automorphisms, map_sum]
   rfl
 
@@ -222,12 +221,12 @@ theorem spectralIntegerRing_algebraMap_intTrace_eq_sum (x : OL) :
 of an element of the same integral closure. -/
 theorem spectralIntegerRing_exists_intNorm_add_sub_eq_intTrace
     (hp : (Module.finrank K L).Prime) (α β : OL) :
-    ∃ z : OL, Algebra.intNorm OK OL (α + β) - Algebra.intNorm OK OL α -
-      Algebra.intNorm OK OL β = Algebra.intTrace OK OL z := by
+    ∃ z : OL, Algebra.intNorm 𝒪[K] OL (α + β) - Algebra.intNorm 𝒪[K] OL α -
+      Algebra.intNorm 𝒪[K] OL β = Algebra.intTrace 𝒪[K] OL z := by
   classical
   have : Fact (Nat.card GL).Prime := ⟨by rwa [IsGalois.card_aut_eq_finrank K L]⟩
   obtain ⟨z, hz⟩ := exists_prod_add_sub_eq_sum_smul GL OL α β
-  refine ⟨z, (FaithfulSMul.algebraMap_injective OK OL) ?_⟩
+  refine ⟨z, (FaithfulSMul.algebraMap_injective 𝒪[K] OL) ?_⟩
   simpa only [map_sub, spectralIntegerRing_algebraMap_intNorm_eq_prod,
     spectralIntegerRing_algebraMap_intTrace_eq_sum] using hz
 
@@ -237,8 +236,8 @@ theorem spectralIntegerRing_exists_intNorm_add_sub_eq_intTrace_mem_pow
     (hp : (Module.finrank K L).Prime) (r : ℕ) (α β : OL)
     (hα : α ∈ IsLocalRing.maximalIdeal OL ^ r) :
     ∃ z ∈ IsLocalRing.maximalIdeal OL ^ r,
-      Algebra.intNorm OK OL (α + β) - Algebra.intNorm OK OL α - Algebra.intNorm OK OL β =
-        Algebra.intTrace OK OL z := by
+      Algebra.intNorm 𝒪[K] OL (α + β) - Algebra.intNorm 𝒪[K] OL α - Algebra.intNorm 𝒪[K] OL β =
+        Algebra.intTrace 𝒪[K] OL z := by
   classical
   have : Fact (Nat.card GL).Prime := ⟨by rwa [IsGalois.card_aut_eq_finrank K L]⟩
   have hI (g : GL) (x : OL) (hx : x ∈ IsLocalRing.maximalIdeal OL ^ r) :
@@ -247,7 +246,7 @@ theorem spectralIntegerRing_exists_intNorm_add_sub_eq_intTrace_mem_pow
     exact (mem_maximalIdeal_pow_iff_addVal x r).mp hx
   obtain ⟨z, hzI, hz⟩ := exists_prod_add_sub_eq_sum_smul_mem GL OL
     (IsLocalRing.maximalIdeal OL ^ r) hI α β hα
-  refine ⟨z, hzI, (FaithfulSMul.algebraMap_injective OK OL) ?_⟩
+  refine ⟨z, hzI, (FaithfulSMul.algebraMap_injective 𝒪[K] OL) ?_⟩
   simpa only [map_sub, spectralIntegerRing_algebraMap_intNorm_eq_prod,
     spectralIntegerRing_algebraMap_intTrace_eq_sum] using hz
 
@@ -256,12 +255,12 @@ error after the norm of their difference is removed. -/
 theorem spectralIntegerRing_intNorm_sub_sub_mem_intTraceIdeal_pow
     (hp : (Module.finrank K L).Prime) (r : ℕ) (α β : OL)
     (hδ : α - β ∈ IsLocalRing.maximalIdeal OL ^ r) :
-    Algebra.intNorm OK OL α - Algebra.intNorm OK OL β - Algebra.intNorm OK OL (α - β) ∈
-      intTraceIdeal OK OL (IsLocalRing.maximalIdeal OL ^ r) := by
+    Algebra.intNorm 𝒪[K] OL α - Algebra.intNorm 𝒪[K] OL β - Algebra.intNorm 𝒪[K] OL (α - β) ∈
+      intTraceIdeal 𝒪[K] OL (IsLocalRing.maximalIdeal OL ^ r) := by
   obtain ⟨z, hzI, hz⟩ :=
     spectralIntegerRing_exists_intNorm_add_sub_eq_intTrace_mem_pow K L hp r (α - β) β hδ
-  have he : Algebra.intNorm OK OL α - Algebra.intNorm OK OL β -
-      Algebra.intNorm OK OL (α - β) = Algebra.intTrace OK OL z := by
+  have he : Algebra.intNorm 𝒪[K] OL α - Algebra.intNorm 𝒪[K] OL β -
+      Algebra.intNorm 𝒪[K] OL (α - β) = Algebra.intTrace 𝒪[K] OL z := by
     simp only [sub_add_cancel] at hz
     linear_combination hz
   rw [he, intTraceIdeal, Submodule.mem_map]
@@ -271,8 +270,8 @@ theorem spectralIntegerRing_intNorm_sub_sub_mem_intTraceIdeal_pow
 finiteness, total-ramification, or characteristic-zero assumption. -/
 theorem spectralIntegerRing_intNorm_add_sub_mem_intTraceIdeal
     (hp : (Module.finrank K L).Prime) (α β : OL) :
-    Algebra.intNorm OK OL (α + β) - Algebra.intNorm OK OL α - Algebra.intNorm OK OL β ∈
-      intTraceIdeal OK OL ⊤ := by
+    Algebra.intNorm 𝒪[K] OL (α + β) - Algebra.intNorm 𝒪[K] OL α - Algebra.intNorm 𝒪[K] OL β ∈
+      intTraceIdeal 𝒪[K] OL ⊤ := by
   obtain ⟨z, hz⟩ := spectralIntegerRing_exists_intNorm_add_sub_eq_intTrace K L hp α β
   rw [intTraceIdeal, Submodule.mem_map]
   exact ⟨z, by trivial, hz.symm⟩

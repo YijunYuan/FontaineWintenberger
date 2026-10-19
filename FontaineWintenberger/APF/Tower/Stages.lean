@@ -211,12 +211,10 @@ noncomputable section
 namespace FontaineWintenberger.AbstractFiniteBase
 
 variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+    [PerfectField 𝓀[K]]
 variable (M : Type*) [NontriviallyNormedField M] [IsCompleteDiscreteValuedField M]
     [NormedAlgebra K M] [FiniteDimensional K M] [Algebra.IsSeparable K M]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := M)).valuationSubring)]
+    [PerfectField 𝓀[M]]
     [Algebra M (SeparableClosure K)] [IsScalarTower K M (SeparableClosure K)]
 variable (N : Type*) [Field N] [Algebra K N] [Algebra M N] [IsScalarTower K M N]
     [Algebra.IsSeparable M N]
@@ -243,8 +241,7 @@ end FontaineWintenberger.AbstractFiniteBase
 namespace FontaineWintenberger
 
 variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+    [PerfectField 𝓀[K]]
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
 /-- An APF-stage containment gives the relative extended

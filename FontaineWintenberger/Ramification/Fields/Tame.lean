@@ -71,8 +71,7 @@ section Fields
 
 variable (K L : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [Field L] [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+    [PerfectField 𝓀[K]]
 
 local notation "G" => L ≃ₐ[K] L
 local notation "B" => spectralIntegerRing K L
@@ -102,7 +101,7 @@ theorem wild_fixedField_upper_eq_bot {u : ℝ} (hu : 0 < u) :
 /-- Its ramification index is the index of wild inertia in inertia. -/
 theorem wild_fixedField_ramificationIdx_eq_relIndex :
     (IsLocalRing.maximalIdeal (spectralIntegerRing K F₁)).ramificationIdx
-      (NormedField.valuation (K := K)).valuationSubring = (P).relIndex D := by
+      𝒪[K] = (P).relIndex D := by
   let ρ : G →* (F₁ ≃ₐ[K] F₁) := AlgEquiv.restrictNormalHom F₁
   have hker : ρ.ker = P := by
     rw [show ρ = AlgEquiv.restrictNormalHom F₁ from rfl,
@@ -119,7 +118,7 @@ by its ramification index on the nonnegative half-line. -/
 theorem wild_fixedField_inverseHerbrandFunction {u : ℝ} (hu : 0 ≤ u) :
     inverseHerbrandFunction (R := spectralIntegerRing K F₁) (F₁ ≃ₐ[K] F₁) u =
       ((IsLocalRing.maximalIdeal (spectralIntegerRing K F₁)).ramificationIdx
-        (NormedField.valuation (K := K)).valuationSubring : ℝ) * u := by
+        𝒪[K] : ℝ) * u := by
   rw [inverseHerbrandFunction_eq_card_inertia_mul (F₁ ≃ₐ[K] F₁)
     (fun _ hu => wild_fixedField_upper_eq_bot K L hu) hu,
     spectralIntegerRing_card_lower_zero K F₁]
@@ -130,17 +129,15 @@ theorem wild_fixedField_ramificationIdx_coprime (p : ℕ) [Fact p.Prime]
     [CharP (IsLocalRing.ResidueField B) p] :
     Nat.Coprime p
       ((IsLocalRing.maximalIdeal (spectralIntegerRing K F₁)).ramificationIdx
-        (NormedField.valuation (K := K)).valuationSubring) := by
+        𝒪[K]) := by
   let : PerfectField (IsLocalRing.ResidueField B) :=
-    Algebra.IsAlgebraic.perfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)
+    Algebra.IsAlgebraic.perfectField 𝓀[K]
   rw [wild_fixedField_ramificationIdx_eq_relIndex K L]
   change Nat.Coprime p ((P).subgroupOf D).index
   rw [Subgroup.index_eq_card]
   exact coprime_card_tameInertiaQuotient G p
 
-omit [PerfectField (IsLocalRing.ResidueField
-  (NormedField.valuation (K := K)).valuationSubring)] in
+omit [PerfectField 𝓀[K]] in
 /-- The Galois group above the wild fixed field is a p-group. -/
 theorem wild_fixedField_isPGroup (p : ℕ) [Fact p.Prime]
     [CharP (IsLocalRing.ResidueField B) p] : IsPGroup p (L ≃ₐ[F₁] L) := by

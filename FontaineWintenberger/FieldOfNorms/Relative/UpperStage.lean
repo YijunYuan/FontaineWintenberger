@@ -198,8 +198,7 @@ theorem finrank_eq_prime_pow_of_apfFiniteStage_pos_le
   have hU : IsPGroup p U := by
     let : CharP (IsLocalRing.ResidueField (spectralIntegerRing K Ω)) p :=
       charP_of_injective_algebraMap
-        (algebraMap (IsLocalRing.ResidueField
-          (NormedField.valuation (K := K)).valuationSubring)
+        (algebraMap 𝓀[K]
           (IsLocalRing.ResidueField (spectralIntegerRing K Ω))).injective p
     exact (lowerRamificationGroup_one_isPGroup (Ω ≃ₐ[K] Ω) p).to_le
       (upperRamificationGroup_le_lower_one (Ω ≃ₐ[K] Ω) hu)

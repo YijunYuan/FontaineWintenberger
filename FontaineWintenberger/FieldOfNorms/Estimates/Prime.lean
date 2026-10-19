@@ -26,8 +26,7 @@ noncomputable section
 namespace FontaineWintenberger.FiniteIntermediateField
 
 variable {K Ω : Type*} [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+    [PerfectField 𝓀[K]]
     [NontriviallyNormedField Ω] [NormedAlgebra K Ω] [IsUltrametricDist Ω]
     [Algebra.IsSeparable K Ω]
 
@@ -37,10 +36,8 @@ local instance primeNorm_discreteValuationRing (E : FiniteIntermediateField K Ω
     IsCompleteDiscreteValuedField E.val :=
   normedAlgebra_isCompleteDiscreteValuedField K E.val
 local instance primeNorm_perfectField (E : FiniteIntermediateField K Ω) : PerfectField
-    (IsLocalRing.ResidueField
-    (NormedField.valuation (K := E.val)).valuationSubring) :=
-  Algebra.IsAlgebraic.perfectField (IsLocalRing.ResidueField
-    (NormedField.valuation (K := K)).valuationSubring)
+    𝓀[E.val] :=
+  Algebra.IsAlgebraic.perfectField 𝓀[K]
 
 
 /-- Prime-step congruence for the same finite-layer integral norm,
@@ -50,7 +47,7 @@ theorem integerNorm_prime_add_congruence_of_bound
     let F' := IntermediateField.extendScalars hEF
     ∀ (_ : IsGalois E.val F') (_ : Module.finrank E.val F' = p)
       (_ : (IsLocalRing.maximalIdeal (spectralIntegerRing E.val F')).ramificationIdx
-        (NormedField.valuation (K := E.val)).valuationSubring = Module.finrank E.val F')
+        𝒪[E.val] = Module.finrank E.val F')
       (b : ℝ) (_ : (b : EReal) ≤ apfRamificationBound E.val F')
       (x y : spectralIntegerRing K F.val),
       integerNorm E F hEF (x + y) - integerNorm E F hEF x - integerNorm E F hEF y ∈
@@ -76,31 +73,31 @@ theorem integerNorm_prime_add_congruence_of_bound
   have hc := spectralIntegerRing_prime_norm_add_congruence_of_bound
     E.val F' p hd he b hb (e x) (e y)
   let f : spectralIntegerRing K E.val ≃+*
-      (NormedField.valuation (K := E.val)).valuationSubring :=
+      𝒪[E.val] :=
     RingEquiv.subringCongr (congrArg ValuationSubring.toSubring
       (spectralIntegerRing_eq_normedUnitBall K E.val))
   have hnorm (z : spectralIntegerRing K F.val) :
-      Algebra.intNorm (NormedField.valuation (K := E.val)).valuationSubring T (e z) =
+      Algebra.intNorm 𝒪[E.val] T (e z) =
         f (integerNorm E F hEF z) := by
     apply Subtype.ext
-    change ((Algebra.intNorm (NormedField.valuation (K := E.val)).valuationSubring T (e z)) : E.val)
+    change ((Algebra.intNorm 𝒪[E.val] T (e z)) : E.val)
         =
       ((integerNorm E F hEF z) : E.val)
     rw [coe_integerNorm]
     exact Algebra.algebraMap_intNorm
-      (A := (NormedField.valuation (K := E.val)).valuationSubring)
+      (A := 𝒪[E.val])
       (B := T) (K := E.val) (L := F') (e z)
   have hsum :
-      Algebra.intNorm (NormedField.valuation (K := E.val)).valuationSubring T (e x + e y) =
+      Algebra.intNorm 𝒪[E.val] T (e x + e y) =
         f (integerNorm E F hEF (x + y)) :=
-    (congrArg (Algebra.intNorm (NormedField.valuation (K := E.val)).valuationSubring T)
+    (congrArg (Algebra.intNorm 𝒪[E.val] T)
       (map_add e x y).symm).trans (hnorm (x + y))
   have hdefect := congrArg₂
-    (fun a b : (NormedField.valuation (K := E.val)).valuationSubring => a - b)
-    (congrArg₂ (fun a b : (NormedField.valuation (K := E.val)).valuationSubring => a - b)
+    (fun a b : 𝒪[E.val] => a - b)
+    (congrArg₂ (fun a b : 𝒪[E.val] => a - b)
       hsum (hnorm x)) (hnorm y)
   have hm : f (integerNorm E F hEF (x + y) - integerNorm E F hEF x - integerNorm E F hEF y) ∈
-      IsLocalRing.maximalIdeal (NormedField.valuation (K := E.val)).valuationSubring ^
+      IsLocalRing.maximalIdeal 𝒪[E.val] ^
         ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊ := by
     simpa only [map_sub] using hdefect ▸ hc
   rw [mem_maximalIdeal_pow_iff_addVal, addVal_ringEquiv f] at hm

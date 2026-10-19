@@ -55,8 +55,11 @@ variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K] 
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L] [IsAPF K L] [Fact (¬ Module.Finite K L)]
 ```
 
-- `𝒪[K]`, `𝓀[K]`: Mathlib's `Valued.integer` / `Valued.ResidueField`, via the scoped instance
-  `NormedField.toValued`. Do not write `(NormedField.valuation K).valuationSubring` by hand.
+- `𝒪[K]`, `𝓀[K]`: scoped notations of `namespace FontaineWintenberger` (declared in
+  `LocalField/Basic.lean`) for `(NormedField.valuation (K := K)).valuationSubring` and its residue
+  field; definitionally Mathlib's `Valued.integer K` / `Valued.ResidueField K`. Do not write the
+  expanded form by hand, and do not introduce file-local abbreviations (`OK`, `R`, `O`, …) for it.
+  Files in `FontaineWintenberger/Mathlib/` do not import `LocalField/Basic.lean` and spell it out.
 - `residueChar K := ringChar 𝓀[K]`; never thread a separate `(p : ℕ) [Fact p.Prime]`.
 - Finite extensions `L/K` get their spectral norm from the scoped instances in
   `LocalField/Spectral/Instances.lean`; their integer ring is `𝒪[L]`.

@@ -78,15 +78,14 @@ section Spectral
 open IsLocalRing IsDiscreteValuationRing
 
 variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-variable [PerfectField (ResidueField (NormedField.valuation (K := K)).valuationSubring)]
+variable [PerfectField (ResidueField 𝒪[K])]
 variable (L : Type*) [Field L] [Algebra K L] [FiniteDimensional K L]
 variable [Algebra.IsSeparable K L]
 
-local notation "OK" => Valuation.valuationSubring (NormedField.valuation (K := K))
 local notation "OL" => spectralIntegerRing K L
 local notation "D" => ValuationSubring.decompositionSubgroup K (spectralIntegerRing K L)
 
-instance spectralIntegerRing_decompositionSubgroup_smulCommClass : SMulCommClass D OK OL where
+instance spectralIntegerRing_decompositionSubgroup_smulCommClass : SMulCommClass D 𝒪[K] OL where
   smul_comm g r x := by
     apply Subtype.ext
     change (g : L ≃ₐ[K] L) ((r : K) • (x : L)) =

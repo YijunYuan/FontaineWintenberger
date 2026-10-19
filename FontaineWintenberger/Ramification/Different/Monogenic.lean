@@ -94,20 +94,19 @@ variable (L : Type*) [Field L] [Algebra K L] [FiniteDimensional K L]
 variable {Γ : Type*} [LinearOrderedCommGroupWithZero Γ] (w : Valuation L Γ)
     [(NormedField.valuation (K := K)).HasExtension w]
 
-local notation "OK" => Valuation.valuationSubring (NormedField.valuation (K := K))
 local notation "OL" => Valuation.valuationSubring w
 
 /-- For every uniformizer in a residue-degree-one extension, its
 minimal-polynomial derivative generates the different ideal. -/
 theorem extensionValuationSubring_different_uniformizer
-    (hf : Module.finrank (IsLocalRing.ResidueField OK) (IsLocalRing.ResidueField OL) = 1)
+    (hf : Module.finrank (IsLocalRing.ResidueField 𝒪[K]) (IsLocalRing.ResidueField OL) = 1)
     {π : OL} (hπ : Irreducible π) :
     letI := extensionValuationSubring_isDiscreteValuationRing K L w
-    differentIdeal OK OL = Ideal.span {Polynomial.aeval π (minpoly OK π).derivative} := by
+    differentIdeal 𝒪[K] OL = Ideal.span {Polynomial.aeval π (minpoly 𝒪[K] π).derivative} := by
   have := extensionValuationSubring_isDiscreteValuationRing K L w
   have hdegree := extensionValuationSubring_ramificationIdx_mul_residueDegree K L w
   rw [hf, mul_one] at hdegree
-  exact differentIdeal_eq_span_derivative_of_adjoin_eq_top OK OL K L
+  exact differentIdeal_eq_span_derivative_of_adjoin_eq_top 𝒪[K] OL K L
     (extensionValuationSubring_adjoin_uniformizer_eq_top K L w hdegree hπ)
 
 end ChosenExtension

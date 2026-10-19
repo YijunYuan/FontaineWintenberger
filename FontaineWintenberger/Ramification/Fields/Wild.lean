@@ -26,8 +26,7 @@ namespace FontaineWintenberger
 variable (K L : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [NontriviallyNormedField L] [NormedAlgebra K L] [IsUltrametricDist L]
     [FiniteDimensional K L] [IsGalois K L]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+    [PerfectField 𝓀[K]]
 
 local notation "P" => lowerRamificationGroup (L ≃ₐ[K] L)
   (IsLocalRing.maximalIdeal (spectralIntegerRing K L)) 1
@@ -37,13 +36,10 @@ variable (M : IntermediateField K L)
 local instance : CompleteSpace M := FiniteDimensional.complete K M
 local instance : IsCompleteDiscreteValuedField M :=
   normedAlgebra_isCompleteDiscreteValuedField K M
-local instance : PerfectField (IsLocalRing.ResidueField
-    (NormedField.valuation (K := M)).valuationSubring) :=
-  Algebra.IsAlgebraic.perfectField (IsLocalRing.ResidueField
-    (NormedField.valuation (K := K)).valuationSubring)
+local instance : PerfectField 𝓀[M] :=
+  Algebra.IsAlgebraic.perfectField 𝓀[K]
 
-omit [PerfectField (IsLocalRing.ResidueField
-  (NormedField.valuation (K := K)).valuationSubring)] in
+omit [PerfectField 𝓀[K]] in
 /-- Every base above the wild fixed field has full own-ring inertia. -/
 theorem wildField_lower_zero_eq_top (hM : IntermediateField.fixedField P ≤ M) :
     lowerRamificationGroup (L ≃ₐ[M] L)
@@ -59,7 +55,7 @@ theorem wildField_lower_zero_eq_top (hM : IntermediateField.fixedField P ≤ M) 
 wild fixed field is its relative field degree. -/
 theorem wildField_top_ramificationIdx_eq_finrank (hM : IntermediateField.fixedField P ≤ M) :
     (IsLocalRing.maximalIdeal (spectralIntegerRing M L)).ramificationIdx
-      (NormedField.valuation (K := M)).valuationSubring = Module.finrank M L := by
+      𝒪[M] = Module.finrank M L := by
   rw [← spectralIntegerRing_card_lower_zero M L, wildField_lower_zero_eq_top K L M hM,
     Subgroup.card_top, IsGalois.card_aut_eq_finrank]
 
@@ -69,9 +65,9 @@ theorem wildField_step_ramificationIdx_eq_finrank (N : IntermediateField K L)
     (hMN : M ≤ N) (hM : IntermediateField.fixedField P ≤ M) :
     let B := IntermediateField.extendScalars hMN
     (IsLocalRing.maximalIdeal (spectralIntegerRing M B)).ramificationIdx
-      (NormedField.valuation (K := M)).valuationSubring = Module.finrank M B := by
+      𝒪[M] = Module.finrank M B := by
   let B := IntermediateField.extendScalars hMN
-  let R := (NormedField.valuation (K := M)).valuationSubring
+  let R := 𝒪[M]
   let S := spectralIntegerRing M B
   let T := spectralIntegerRing M L
   have : IsDiscreteValuationRing S := inferInstance

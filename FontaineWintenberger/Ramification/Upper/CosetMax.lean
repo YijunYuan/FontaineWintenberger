@@ -88,8 +88,7 @@ theorem exists_fixedField_ramificationOrder_max (τ : D₀) (hτ : τ ≠ 1) :
   intro h
   exact hτ (r.2.symm.trans (h ▸ map_one ρ))
 
-variable [PerfectField (IsLocalRing.ResidueField
-  (NormedField.valuation (K := K)).valuationSubring)]
+variable [PerfectField 𝓀[K]]
 
 /-- Tate's average at a maximal representative is the integral Herbrand value. -/
 theorem fixedField_order_sub_one_eq_herbrand (s : G₀) (hs : ρ s ≠ 1)

@@ -42,24 +42,23 @@ variable [Algebra.IsSeparable K L]
 variable {Γ : Type*} [LinearOrderedCommGroupWithZero Γ] (w : Valuation L Γ)
 variable [(NormedField.valuation (K := K)).HasExtension w]
 
-local notation "OK" => Valuation.valuationSubring (NormedField.valuation (K := K))
 
 /-- The integral-closure construction equals any compatible chosen valuation ring. -/
 theorem spectralIntegerRing_eq_extension_valuationSubring :
     spectralIntegerRing K L = w.valuationSubring := by
   apply ValuationSubring.eq_of_le_of_ne_top
   · intro x hx
-    have hint : IsIntegral OK x := (isIntegral_iff_spectralNorm_le_one K x).mpr hx
+    have hint : IsIntegral 𝒪[K] x := (isIntegral_iff_spectralNorm_le_one K x).mpr hx
     have hW : IsIntegral w.valuationSubring x := hint.tower_top
     exact (Valuation.valuationSubring.integers w).isIntegral_iff_v_le_one.mp hW
   · intro htop
     have hfield : IsField w.valuationSubring := by
       rw [htop]
       exact Field.toIsField _
-    obtain ⟨π, hπ⟩ := IsDiscreteValuationRing.exists_irreducible OK
-    have hmem : ¬ IsUnit (algebraMap OK w.valuationSubring π) :=
-      map_nonunit (algebraMap OK w.valuationSubring) π hπ.not_isUnit
-    have hne : algebraMap OK w.valuationSubring π ≠ 0 := by
+    obtain ⟨π, hπ⟩ := IsDiscreteValuationRing.exists_irreducible 𝒪[K]
+    have hmem : ¬ IsUnit (algebraMap 𝒪[K] w.valuationSubring π) :=
+      map_nonunit (algebraMap 𝒪[K] w.valuationSubring) π hπ.not_isUnit
+    have hne : algebraMap 𝒪[K] w.valuationSubring π ≠ 0 := by
       intro h
       apply hπ.ne_zero
       apply Subtype.ext
@@ -70,15 +69,15 @@ theorem spectralIntegerRing_eq_extension_valuationSubring :
 
 /-- Any compatible chosen valuation ring is the base integral closure in `L`. -/
 instance extensionValuationSubring_isIntegralClosure :
-    IsIntegralClosure w.valuationSubring OK L where
+    IsIntegralClosure w.valuationSubring 𝒪[K] L where
   algebraMap_injective := Subtype.val_injective
   isIntegral_iff := by
     intro x
     rw [← spectralIntegerRing_eq_extension_valuationSubring K L w]
     exact (spectralIntegerRing_isIntegralClosure K L).isIntegral_iff
 
-instance extensionValuationSubring_moduleFinite : Module.Finite OK w.valuationSubring :=
-  IsIntegralClosure.finite (A := OK) (K := K) (L := L) (C := w.valuationSubring)
+instance extensionValuationSubring_moduleFinite : Module.Finite 𝒪[K] w.valuationSubring :=
+  IsIntegralClosure.finite (A := 𝒪[K]) (K := K) (L := L) (C := w.valuationSubring)
 
 include K in
 theorem extensionValuationSubring_isDiscreteValuationRing :
@@ -92,9 +91,8 @@ theorem extensionValuationSubring_henselianLocalRing : HenselianLocalRing w.valu
   infer_instance
 
 /-- Monogenicity for any chosen compatible extension valuation, with arbitrary perfect residue. -/
-theorem extensionValuationSubring_exists_generator [PerfectField (IsLocalRing.ResidueField
-    (NormedField.valuation (K := K)).valuationSubring)] :
-    ∃ x : w.valuationSubring, Algebra.adjoin OK {x} = ⊤ := by
+theorem extensionValuationSubring_exists_generator [PerfectField 𝓀[K]] :
+    ∃ x : w.valuationSubring, Algebra.adjoin 𝒪[K] {x} = ⊤ := by
   have := extensionValuationSubring_isDiscreteValuationRing K L w
   have := extensionValuationSubring_henselianLocalRing K L w
   exact exists_integral_generator

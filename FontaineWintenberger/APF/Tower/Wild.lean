@@ -135,8 +135,7 @@ theorem finrank_eq_prime_pow_of_apfFiniteStage_one_le
   have hU : IsPGroup p U := by
     let : CharP (IsLocalRing.ResidueField (spectralIntegerRing K Ω)) p :=
       charP_of_injective_algebraMap
-        (algebraMap (IsLocalRing.ResidueField
-          (NormedField.valuation (K := K)).valuationSubring)
+        (algebraMap 𝓀[K]
           (IsLocalRing.ResidueField (spectralIntegerRing K Ω))).injective p
     exact (lowerRamificationGroup_one_isPGroup (Ω ≃ₐ[K] Ω) p).to_le
       (upperRamificationGroup_le_lower_one (Ω ≃ₐ[K] Ω) (by norm_num : (0 : ℝ) < 1))
@@ -175,7 +174,7 @@ theorem FiniteIntermediateField.ramificationIdx_eq_finrank_of_residueInclusion_s
     (NormedField.valuation (K := K)) (spectralValuation K E.val) (spectralValuation K F.val)
   have : Module.Finite (spectralIntegerRing K E.val) (spectralIntegerRing K F.val) :=
     Module.Finite.of_restrictScalars_finite
-      (NormedField.valuation (K := K)).valuationSubring _ _
+      𝒪[K] _ _
   have : IsScalarTower (spectralIntegerRing K E.val) E.val F.val :=
     Valuation.HasExtension.instIsScalarTower_valuationSubring
       (L := F.val) (spectralValuation K E.val)

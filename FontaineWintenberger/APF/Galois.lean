@@ -36,8 +36,7 @@ theorem isOpen_upperRamificationGroupInfinite_iff_finiteIndex
     exact (upperRamificationGroupInfinite K L u).isOpen_of_isClosed_of_finiteIndex
       (isClosed_upperRamificationGroupInfinite K L u)
 
-variable [PerfectField (IsLocalRing.ResidueField
-    (NormedField.valuation (K := K)).valuationSubring)]
+variable [PerfectField 𝓀[K]]
 
 theorem apfSubgroup_eq_comap_upperInfinite
     (L : IntermediateField K (SeparableClosure K)) [IsGalois K L] {u : ℝ} (hu : -1 ≤ u) :

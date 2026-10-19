@@ -69,14 +69,13 @@ end FiniteIntermediateFields
 section IdealPowers
 
 variable (E : Type*) [NontriviallyNormedField E] [IsUltrametricDist E]
-local notation "R" => Valuation.valuationSubring (NormedField.valuation (K := E))
-variable [IsDiscreteValuationRing (NormedField.valuation (K := E)).valuationSubring]
+variable [IsDiscreteValuationRing 𝒪[E]]
 
 /-- An uniformizer of the norm unit ball has norm strictly between
 zero and one. -/
-theorem norm_uniformizer_pos_lt_one (π : R) (hπ : Irreducible π) :
+theorem norm_uniformizer_pos_lt_one (π : 𝒪[E]) (hπ : Irreducible π) :
     0 < ‖(π : E)‖ ∧ ‖(π : E)‖ < 1 := by
-  have hmem : π ∈ IsLocalRing.maximalIdeal R := by
+  have hmem : π ∈ IsLocalRing.maximalIdeal 𝒪[E] := by
     rw [hπ.maximalIdeal_eq]
     exact Ideal.subset_span (Set.mem_singleton π)
   have hlt := (Valuation.mem_maximalIdeal_iff E (NormedField.valuation (K := E))).mp hmem
@@ -85,9 +84,9 @@ theorem norm_uniformizer_pos_lt_one (π : R) (hπ : Irreducible π) :
 
 /-- The canonical norm topology identifies an ideal power with
 the corresponding uniformizer-radius closed ball, including exponent zero. -/
-theorem mem_maximalIdeal_pow_iff_norm_le (π : R) (hπ : Irreducible π)
-    (x : R) (n : ℕ) :
-    x ∈ IsLocalRing.maximalIdeal R ^ n ↔ ‖(x : E)‖ ≤ ‖(π : E)‖ ^ n := by
+theorem mem_maximalIdeal_pow_iff_norm_le (π : 𝒪[E]) (hπ : Irreducible π)
+    (x : 𝒪[E]) (n : ℕ) :
+    x ∈ IsLocalRing.maximalIdeal 𝒪[E] ^ n ↔ ‖(x : E)‖ ≤ ‖(π : E)‖ ^ n := by
   rw [hπ.maximalIdeal_eq, Ideal.span_singleton_pow, Ideal.mem_span_singleton]
   have hπ₀ : (π : E) ≠ 0 := fun h => hπ.ne_zero (Subtype.ext h)
   constructor
@@ -100,7 +99,7 @@ theorem mem_maximalIdeal_pow_iff_norm_le (π : R) (hπ : Irreducible π)
     have hy : ‖(x : E) / (π : E) ^ n‖ ≤ 1 := by
       rw [norm_div, norm_pow, div_le_one (pow_pos (norm_pos_iff.mpr hπ₀) n)]
       exact hx
-    let y : R := ⟨(x : E) / (π : E) ^ n, by exact_mod_cast hy⟩
+    let y : 𝒪[E] := ⟨(x : E) / (π : E) ^ n, by exact_mod_cast hy⟩
     refine ⟨y, ?_⟩
     apply Subtype.ext
     change (x : E) = (π : E) ^ n * ((x : E) / (π : E) ^ n)
@@ -108,8 +107,8 @@ theorem mem_maximalIdeal_pow_iff_norm_le (π : R) (hπ : Irreducible π)
 
 /-- The image of the ideal power in its field is exactly
 the corresponding closed norm ball. -/
-theorem image_maximalIdeal_pow_eq_closedBall (π : R) (hπ : Irreducible π) (n : ℕ) :
-    (fun x : R => (x : E)) '' ((IsLocalRing.maximalIdeal R ^ n : Ideal R) : Set R) =
+theorem image_maximalIdeal_pow_eq_closedBall (π : 𝒪[E]) (hπ : Irreducible π) (n : ℕ) :
+    (fun x : 𝒪[E] => (x : E)) '' ((IsLocalRing.maximalIdeal 𝒪[E] ^ n : Ideal 𝒪[E]) : Set 𝒪[E]) =
       Metric.closedBall (0 : E) (‖(π : E)‖ ^ n) := by
   ext x
   constructor
@@ -121,14 +120,14 @@ theorem image_maximalIdeal_pow_eq_closedBall (π : R) (hπ : Irreducible π) (n 
       simpa only [Metric.mem_closedBall, dist_zero_right] using hx
     have hx1 : ‖x‖ ≤ 1 := hx'.trans
       (pow_le_one₀ (norm_nonneg _) (norm_uniformizer_pos_lt_one E π hπ).2.le)
-    let y : R := ⟨x, by exact_mod_cast hx1⟩
+    let y : 𝒪[E] := ⟨x, by exact_mod_cast hx1⟩
     exact ⟨y, (mem_maximalIdeal_pow_iff_norm_le E π hπ y n).mpr hx', rfl⟩
 
 /-- Every ideal power has closed image in the field. -/
 theorem isClosed_image_maximalIdeal_pow (n : ℕ) :
-    IsClosed ((fun x : R => (x : E)) ''
-      ((IsLocalRing.maximalIdeal R ^ n : Ideal R) : Set R)) := by
-  obtain ⟨π, hπ⟩ := IsDiscreteValuationRing.exists_irreducible R
+    IsClosed ((fun x : 𝒪[E] => (x : E)) ''
+      ((IsLocalRing.maximalIdeal 𝒪[E] ^ n : Ideal 𝒪[E]) : Set 𝒪[E])) := by
+  obtain ⟨π, hπ⟩ := IsDiscreteValuationRing.exists_irreducible 𝒪[E]
   rw [image_maximalIdeal_pow_eq_closedBall E π hπ]
   exact Metric.isClosed_closedBall
 
@@ -136,9 +135,9 @@ theorem isClosed_image_maximalIdeal_pow (n : ℕ) :
 for the field norm. -/
 theorem nhds_zero_hasBasis_maximalIdeal_pow :
     (nhds (0 : E)).HasBasis (fun _ : ℕ => True)
-      (fun n => (fun x : R => (x : E)) ''
-        ((IsLocalRing.maximalIdeal R ^ n : Ideal R) : Set R)) := by
-  obtain ⟨π, hπ⟩ := IsDiscreteValuationRing.exists_irreducible R
+      (fun n => (fun x : 𝒪[E] => (x : E)) ''
+        ((IsLocalRing.maximalIdeal 𝒪[E] ^ n : Ideal 𝒪[E]) : Set 𝒪[E])) := by
+  obtain ⟨π, hπ⟩ := IsDiscreteValuationRing.exists_irreducible 𝒪[E]
   simp_rw [image_maximalIdeal_pow_eq_closedBall E π hπ]
   exact Metric.nhds_basis_closedBall_pow
     (norm_uniformizer_pos_lt_one E π hπ).1 (norm_uniformizer_pos_lt_one E π hπ).2
@@ -146,8 +145,8 @@ theorem nhds_zero_hasBasis_maximalIdeal_pow :
 /-- Closed ideal powers are complete inside the complete
 field; no residue-field compactness is used. -/
 theorem isComplete_image_maximalIdeal_pow [CompleteSpace E] (n : ℕ) :
-    IsComplete ((fun x : R => (x : E)) ''
-      ((IsLocalRing.maximalIdeal R ^ n : Ideal R) : Set R)) :=
+    IsComplete ((fun x : 𝒪[E] => (x : E)) ''
+      ((IsLocalRing.maximalIdeal 𝒪[E] ^ n : Ideal 𝒪[E]) : Set 𝒪[E])) :=
   (isClosed_image_maximalIdeal_pow E n).isComplete
 
 end IdealPowers

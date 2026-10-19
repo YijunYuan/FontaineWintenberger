@@ -27,19 +27,18 @@ variable (M : Type*) [NormedField M] [IsUltrametricDist M] [NormedAlgebra K M]
 /-- The residue extension of a finite compatible normed extension is finite. -/
 theorem normedAlgebra_residueField_finiteDimensional :
     FiniteDimensional
-      (IsLocalRing.ResidueField (NormedField.valuation (K := K)).valuationSubring)
-      (IsLocalRing.ResidueField (NormedField.valuation (K := M)).valuationSubring) := by
+      (𝓀[K])
+      (𝓀[M]) := by
   have := extensionValuationSubring_moduleFinite K M (NormedField.valuation (K := M))
   infer_instance
 
 /-- Perfectness propagates to the residue field; its cardinality is unrestricted. -/
 theorem normedAlgebra_residueField_perfectField [PerfectField
-    (IsLocalRing.ResidueField (NormedField.valuation (K := K)).valuationSubring)] :
-    PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := M)).valuationSubring) := by
+    (𝓀[K])] :
+    PerfectField (𝓀[M]) := by
   have := normedAlgebra_residueField_finiteDimensional K M
   exact Algebra.IsAlgebraic.perfectField
-    (IsLocalRing.ResidueField (NormedField.valuation (K := K)).valuationSubring)
+    (𝓀[K])
 
 omit [IsCompleteDiscreteValuedField K] in
 /-- A finite separable normed extension of a local field is again a local field, with the same
@@ -52,7 +51,7 @@ theorem normedAlgebra_isPerfectResidueLocalField [IsPerfectResidueLocalField K] 
   have := normedAlgebra_residueField_finiteDimensional K L
   { residueChar_prime := by
       rw [← Algebra.ringChar_eq
-        (IsLocalRing.ResidueField (NormedField.valuation (K := K)).valuationSubring)]
+        (𝓀[K])]
       exact IsPerfectResidueLocalField.residueChar_prime }
 
 omit [IsCompleteDiscreteValuedField K] in
@@ -63,6 +62,6 @@ theorem normedAlgebra_residueChar_eq [IsPerfectResidueLocalField K] (L : Type*)
     residueChar L = residueChar K :=
   have := normedAlgebra_residueField_finiteDimensional K L
   (Algebra.ringChar_eq
-    (IsLocalRing.ResidueField (NormedField.valuation (K := K)).valuationSubring) _).symm
+    (𝓀[K]) _).symm
 
 end FontaineWintenberger

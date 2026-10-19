@@ -42,7 +42,7 @@ theorem discreteValued_norm_le_iff (x y : K) : ‖x‖ ≤ ‖y‖ ↔ val.v x �
 
 /-- Norm and valuation give exactly the same intrinsic integer ring. -/
 theorem discreteValued_valuationSubring :
-    (NormedField.valuation (K := K)).valuationSubring = val.v.valuationSubring := by
+    𝒪[K] = val.v.valuationSubring := by
   ext x
   change ‖x‖₊ ≤ 1 ↔ val.v x ≤ 1
   exact_mod_cast (Valued.toNormedField.norm_le_one_iff (x := x))
@@ -57,7 +57,7 @@ theorem discreteValued_completeSpace [h : CompleteSpace K] :
 
 theorem discreteValued_unitBall_isDiscreteValuationRing
     [IsDiscreteValuationRing val.v.valuationSubring] :
-    IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring := by
+    IsDiscreteValuationRing 𝒪[K] := by
   rw [discreteValued_valuationSubring K Γ]
   infer_instance
 
@@ -129,8 +129,7 @@ theorem discreteValued_extension_exists_generator [CompleteSpace K]
     ∃ x : w.valuationSubring, Algebra.adjoin val.v.valuationSubring {x} = ⊤ := by
   have := discreteValued_norm_hasExtension K Γ L w
   have := discreteValued_isCompleteDiscreteValuedField K Γ
-  have : PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring) := by
+  have : PerfectField 𝓀[K] := by
     rw [discreteValued_valuationSubring K Γ]
     infer_instance
   obtain ⟨x, hx⟩ := extensionValuationSubring_exists_generator K L w
@@ -140,7 +139,7 @@ theorem discreteValued_extension_exists_generator [CompleteSpace K]
   let e := RingEquiv.subringCongr
     (congrArg ValuationSubring.toSubring (discreteValued_valuationSubring K Γ))
   have he : (algebraMap val.v.valuationSubring w.valuationSubring).comp
-      e.toRingHom = algebraMap (NormedField.valuation (K := K)).valuationSubring
+      e.toRingHom = algebraMap 𝒪[K]
         w.valuationSubring := by
     ext r
     rfl

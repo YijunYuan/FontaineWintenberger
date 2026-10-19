@@ -167,7 +167,6 @@ variable {E N : Type*} [Field E] [Field N] [Algebra K E] [Algebra K N]
     [FiniteDimensional K E] [FiniteDimensional K N]
     [Algebra.IsSeparable K E] [Algebra.IsSeparable K N]
 
-local notation "OK" => Valuation.valuationSubring (NormedField.valuation (K := K))
 local notation "OE" => spectralIntegerRing K E
 local notation "ON" => spectralIntegerRing K N
 
@@ -279,10 +278,10 @@ theorem embeddingRamificationIdx_comp (σ : E →ₐ[K] N) (u : N →ₐ[K] M) :
 theorem embeddingRamificationIdx_eq (σ τ : E →ₐ[K] N) :
     embeddingRamificationIdx K σ = embeddingRamificationIdx K τ := by
   have ht (ι : E →ₐ[K] N) :
-      (IsLocalRing.maximalIdeal ON).ramificationIdx OK =
-        (IsLocalRing.maximalIdeal OE).ramificationIdx OK * embeddingRamificationIdx K ι := by
+      (IsLocalRing.maximalIdeal ON).ramificationIdx 𝒪[K] =
+        (IsLocalRing.maximalIdeal OE).ramificationIdx 𝒪[K] * embeddingRamificationIdx K ι := by
     let : Algebra OE ON := (spectralIntegerInclusion K ι).toRingHom.toAlgebra
-    let : IsScalarTower OK OE ON :=
+    let : IsScalarTower 𝒪[K] OE ON :=
       IsScalarTower.of_algebraMap_eq (fun r => (spectralIntegerInclusion K ι).commutes r |>.symm)
     let : FaithfulSMul OE ON := (faithfulSMul_iff_algebraMap_injective OE ON).mpr (by
       intro a b hab
@@ -290,8 +289,8 @@ theorem embeddingRamificationIdx_eq (σ τ : E →ₐ[K] N) :
       exact ι.injective (congrArg (fun x : ON => (x : N)) hab))
     let : IsLocalHom (algebraMap OE ON) :=
       ⟨(spectralIntegerInclusion_isLocalHom K ι).map_nonunit⟩
-    exact local_ramificationIdx_tower OK OE ON
-  exact Nat.eq_of_mul_eq_mul_left (local_ramificationIdx_pos OK OE)
+    exact local_ramificationIdx_tower 𝒪[K] OE ON
+  exact Nat.eq_of_mul_eq_mul_left (local_ramificationIdx_pos 𝒪[K] OE)
     ((ht σ).symm.trans (ht τ))
 
 omit [FiniteDimensional K E] in
@@ -374,14 +373,14 @@ theorem embeddingRamificationOrder_eq_zero_of_residue_ne {σ τ : E →ₐ[K] N}
 
 omit [FiniteDimensional K E] in
 theorem embeddingIntegralOrder_eq_generator (σ τ : E →ₐ[K] N)
-    {x : OE} (hx : Algebra.adjoin OK {x} = ⊤) :
+    {x : OE} (hx : Algebra.adjoin 𝒪[K] {x} = ⊤) :
     embeddingIntegralOrder K σ τ =
       addVal ON (spectralIntegerInclusion K σ x - spectralIntegerInclusion K τ x) :=
   integralEmbeddingOrder_eq_generator _ _ hx
 
 omit [FiniteDimensional K E] in
 theorem embeddingRamificationOrder_eq_generator (σ τ : E →ₐ[K] N)
-    {x : OE} (hx : Algebra.adjoin OK {x} = ⊤) :
+    {x : OE} (hx : Algebra.adjoin 𝒪[K] {x} = ⊤) :
     embeddingRamificationOrder K σ τ =
       (addVal ON (spectralIntegerInclusion K σ x - spectralIntegerInclusion K τ x) : ℝ≥0∞) /
         embeddingRamificationIdx K σ := by
@@ -389,7 +388,7 @@ theorem embeddingRamificationOrder_eq_generator (σ τ : E →ₐ[K] N)
 
 /-- Integral generation supplies one element computing every embedding pair. -/
 theorem exists_embeddingIntegralOrder_generator :
-    ∃ x : OE, Algebra.adjoin OK {x} = ⊤ ∧ ∀ σ τ : E →ₐ[K] N,
+    ∃ x : OE, Algebra.adjoin 𝒪[K] {x} = ⊤ ∧ ∀ σ τ : E →ₐ[K] N,
       embeddingIntegralOrder K σ τ =
         addVal ON (spectralIntegerInclusion K σ x - spectralIntegerInclusion K τ x) := by
   obtain ⟨x, hx⟩ := spectralIntegerRing_exists_generator K E

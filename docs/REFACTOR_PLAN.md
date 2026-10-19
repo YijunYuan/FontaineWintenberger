@@ -552,6 +552,13 @@ FontaineWintenberger/
 - `Main.lean`：五个目标的公开陈述，全部是库中声明的一行推论：`isAPF_iff_isOpen_absoluteGaloisGroup`（1.2.1，用 `G_K`）、`isStrictlyAPF_iff_liminf_pos`；`FieldOfNorms.charP`/`completeSpace`/`isDiscreteValuationRing`/`residueFieldEquiv`（Thm 2.1.3，剩余域 = `𝒪_K` 在 `L` 中整闭包的剩余域）；`FieldOfNorms.homEquiv`（Thm 3.1.2）、`FieldOfNorms.absoluteGaloisGroupEquiv : G_L ≃ₜ* G_{X_K(L)}`（Cor 3.2.3）；`FieldOfNorms.aut`、`RelFieldOfNorms.absoluteGaloisGroupAction : G_K →* RingAut X_K(L)^sep`、`RelFieldOfNorms.absoluteGaloisGroupEquiv : G_K ≃* galoisSubgroup`（Rem 3.2.4）。根文件导入 `Main`。
 - 未做：把库内部 `absoluteUpperRamificationGroup`、`apfSubgroup` 改成在 `G_K` 上定义（C2 表）。内部保留 `Gal(K^sep/K)` 是 A5 的既定决定（Mathlib 无限 Galois 理论要求 `IsGalois`）；对外接口已经在 `Main.lean` 以 `G_K` 给出。
 
+### A5-记号（分支 `refactor`，2026-10-20）：`𝒪[K]` / `𝓀[K]`
+- `LocalField/Basic.lean` 在 `namespace FontaineWintenberger` 内声明 `scoped notation "𝒪[" F "]" => Valuation.valuationSubring (NormedField.valuation (K := F))` 与 `𝓀[F]`（其剩余域）。保留 `ValuationSubring` 形式而不是直接用 Mathlib 的 `Valued.integer`（`Subring`）：两者定义等价，但库内全部 `IsDiscreteValuationRing`、`Algebra`、`IsScalarTower`、`HenselianLocalRing` 实例都以 `valuationSubring` 为键，换载体会重演 F5 之前的实例重建。记号绑定变量不能叫 `K`：`(K := K)` 里的实参名会被宏替换成 `(F := …)`。
+- `scripts/a5_integer_notation.py`：84 个文件，`(NormedField.valuation (K := X)).valuationSubring → 𝒪[X]`、`IsLocalRing.ResidueField (…) → 𝓀[X]`，并内联 54 处 `local notation "OK|R|A|R₀|O|OM" => …`（替换时跳过 `--` 注释与 `(R := …)` 命名实参）。跳过 `Mathlib/` 层（不 import `LocalField/Basic`）；`Ramification/Lower/GaloisGroup` 补 import（否则 `𝒪` 被自动绑定成隐变量，报 "goal contains metavariables"）。
+- 剩余 63 处 `NormedField.valuation (K := X)` 都是赋值本身（`HasExtension`、`spectralValuation` 比较、`hval` 等式），不是整数环，保留。
+- 全库构建 0 错误 0 警告；最慢 `FieldOfNorms/Galois/Ambient` 54 s、`APF/BaseChange/EmbeddingComparison` 50 s。
+- `docs/MATHLIB_REUSE.md`、`CLAUDE.md` 的 `𝒪[K]` 条目改为上述说明。
+
 ### F5 设计细化（原计划，供对照）
 1. **`FieldOfNorms K L`**：`def FieldOfNorms := WithZero (normCompatibleUnits K L)`；`instance : CommGroupWithZero := inferInstanceAs …`（无条件）；`instance : Nontrivial`、`Inhabited`。`coord E : FieldOfNorms K L →*₀ E` 替代 `normLimitEval`。
 2. **加法与域**：`normLimitAdd` 的定义只依赖 `[IsAPF K L]`（`p` 仅被线程传递，`Convergence.lean` 中唯一实质使用是 `p ∈ 𝔪^n` 的发散性，来自 `PrimeValuation`）。目标：

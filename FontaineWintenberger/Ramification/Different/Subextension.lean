@@ -664,7 +664,6 @@ variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField 
 variable (L : Type*) [Field L] [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
 variable (M : IntermediateField K L)
 
-local notation "A" => Valuation.valuationSubring (NormedField.valuation (K := K))
 local notation "B" => Valuation.valuationSubring
   (Valuation.comap (algebraMap M L) (spectralValuation K L))
 local notation "C" => spectralIntegerRing K L
@@ -678,37 +677,36 @@ invariants of its fixing subgroup. No normality is required. -/
 theorem intermediate_spectral_integer_isGaloisGroup : IsGaloisGroup H B C := by
   have := intermediate_spectral_isDiscreteValuationRing K L M
   have : IsGaloisGroup H M L := IsGaloisGroup.intermediateField G K L M
-  have : Algebra.IsIntegral B C := Algebra.IsIntegral.tower_top A
+  have : Algebra.IsIntegral B C := Algebra.IsIntegral.tower_top 𝒪[K]
   have : SMulDistribClass H C L := {
     smul_distrib_smul := fun h x z => by
       change (h : L ≃ₐ[K] L) ((x : L) * z) = ((h • x : C) : L) * (h : L ≃ₐ[K] L) z
       exact map_mul (h : L ≃ₐ[K] L) (x : L) z }
   exact IsGaloisGroup.of_isFractionRing H B C M L
 
-variable [PerfectField (IsLocalRing.ResidueField
-  (Valuation.valuationSubring (NormedField.valuation (K := K))))]
+variable [PerfectField 𝓀[K]]
 
 /-- The zero orbit index is exactly the residue-field degree of
 the intermediate extension. -/
 theorem intermediate_spectral_zeroOrbitIndex_eq_residueDegree :
     letI := intermediate_spectral_isDiscreteValuationRing K L M
     (H ⊔ I₀).index =
-      Module.finrank (IsLocalRing.ResidueField A) (IsLocalRing.ResidueField B) := by
+      Module.finrank (IsLocalRing.ResidueField 𝒪[K]) (IsLocalRing.ResidueField B) := by
   have := intermediate_spectral_isDiscreteValuationRing K L M
-  have : Module.Finite B C := Module.Finite.of_restrictScalars_finite A B C
+  have : Module.Finite B C := Module.Finite.of_restrictScalars_finite 𝒪[K] B C
   have := intermediate_spectral_integer_isGaloisGroup K L M
   have : PerfectField (IsLocalRing.ResidueField B) :=
-    Algebra.IsAlgebraic.perfectField (IsLocalRing.ResidueField A)
+    Algebra.IsAlgebraic.perfectField (IsLocalRing.ResidueField 𝒪[K])
   have hn := fixingIndex_eq_zeroIndex_mul_inertiaRatio (R := C) G H
-  rw [card_inertia_div_card_subgroup_inertia A B C G H] at hn
+  rw [card_inertia_div_card_subgroup_inertia 𝒪[K] B C G H] at hn
   rw [(IntermediateField.finrank_eq_fixingSubgroup_index L M).symm] at hn
   have hd := congrArg (fun n : ℕ => (n : ℝ))
-    (local_ramificationIdx_mul_residueDegree_eq_finrank A B K M)
+    (local_ramificationIdx_mul_residueDegree_eq_finrank 𝒪[K] B K M)
   rw [Nat.cast_mul] at hd
-  have he : ((IsLocalRing.maximalIdeal B).ramificationIdx A : ℝ) ≠ 0 :=
-    Nat.cast_ne_zero.mpr (local_ramificationIdx_pos A B).ne'
+  have he : ((IsLocalRing.maximalIdeal B).ramificationIdx 𝒪[K] : ℝ) ≠ 0 :=
+    Nat.cast_ne_zero.mpr (local_ramificationIdx_pos 𝒪[K] B).ne'
   have hf : ((H ⊔ I₀).index : ℝ) =
-      Module.finrank (IsLocalRing.ResidueField A) (IsLocalRing.ResidueField B) := by
+      Module.finrank (IsLocalRing.ResidueField 𝒪[K]) (IsLocalRing.ResidueField B) := by
     apply mul_right_cancel₀ he
     nlinarith [hd, hn]
   exact_mod_cast hf
@@ -718,22 +716,22 @@ and residue fields, with their algebra maps. -/
 theorem intermediate_spectral_different_order_eq_upperOrbitIndex_integral {N : ℕ}
     (hN : lowerRamificationGroup G (IsLocalRing.maximalIdeal C) N = ⊥) :
     letI := intermediate_spectral_isDiscreteValuationRing K L M
-    ((Module.finrank (IsLocalRing.ResidueField A) (IsLocalRing.ResidueField B) : ℝ) *
-        ((emultiplicity (IsLocalRing.maximalIdeal B) (differentIdeal A B)).toNat : ℝ)) =
+    ((Module.finrank (IsLocalRing.ResidueField 𝒪[K]) (IsLocalRing.ResidueField B) : ℝ) *
+        ((emultiplicity (IsLocalRing.maximalIdeal B) (differentIdeal 𝒪[K] B)).toNat : ℝ)) =
       (Module.finrank K M : ℝ) -
-          Module.finrank (IsLocalRing.ResidueField A) (IsLocalRing.ResidueField B) +
+          Module.finrank (IsLocalRing.ResidueField 𝒪[K]) (IsLocalRing.ResidueField B) +
         ∫ u in (0 : ℝ)..(herbrandFunction (R := C) G N),
           ((Module.finrank K M : ℝ) - (H ⊔ U u).index) := by
   classical
   have := intermediate_spectral_isDiscreteValuationRing K L M
-  have : Module.Finite B C := Module.Finite.of_restrictScalars_finite A B C
+  have : Module.Finite B C := Module.Finite.of_restrictScalars_finite 𝒪[K] B C
   have := intermediate_spectral_integer_isGaloisGroup K L M
   have : PerfectField (IsLocalRing.ResidueField B) :=
-    Algebra.IsAlgebraic.perfectField (IsLocalRing.ResidueField A)
+    Algebra.IsAlgebraic.perfectField (IsLocalRing.ResidueField 𝒪[K])
   let : MulSemiringAction G (FractionRing C) := IsFractionRing.mulSemiringAction G C _
-  let : IsGalois (FractionRing A) (FractionRing C) :=
-    IsGaloisGroup.isGalois G (FractionRing A) (FractionRing C)
-  have h := subextension_different_order_eq_upperOrbitIndex_integral A B C G H hN
+  let : IsGalois (FractionRing 𝒪[K]) (FractionRing C) :=
+    IsGaloisGroup.isGalois G (FractionRing 𝒪[K]) (FractionRing C)
+  have h := subextension_different_order_eq_upperOrbitIndex_integral 𝒪[K] B C G H hN
   simpa only [intermediate_spectral_zeroOrbitIndex_eq_residueDegree K L M,
     (IntermediateField.finrank_eq_fixingSubgroup_index L M).symm] using h
 
@@ -742,24 +740,24 @@ the expected one-break profile and different formula. The finite
 Galois closure may have a nontrivial residue extension. -/
 theorem intermediate_spectral_prime_degree_different_profile
     (hp : (Module.finrank K M).Prime)
-    (he : (IsLocalRing.maximalIdeal B).ramificationIdx A = Module.finrank K M) :
+    (he : (IsLocalRing.maximalIdeal B).ramificationIdx 𝒪[K] = Module.finrank K M) :
     letI := intermediate_spectral_isDiscreteValuationRing K L M
     ∃ b : ℝ, 0 ≤ b ∧
       (∀ u : ℝ, 0 ≤ u → (H ⊔ U u).index = if u ≤ b then 1 else Module.finrank K M) ∧
-      ((emultiplicity (IsLocalRing.maximalIdeal B) (differentIdeal A B)).toNat : ℝ) =
+      ((emultiplicity (IsLocalRing.maximalIdeal B) (differentIdeal 𝒪[K] B)).toNat : ℝ) =
         ((Module.finrank K M : ℝ) - 1) * (b + 1) := by
   classical
   have := intermediate_spectral_isDiscreteValuationRing K L M
-  have : Module.Finite B C := Module.Finite.of_restrictScalars_finite A B C
+  have : Module.Finite B C := Module.Finite.of_restrictScalars_finite 𝒪[K] B C
   have := intermediate_spectral_integer_isGaloisGroup K L M
   have : PerfectField (IsLocalRing.ResidueField B) :=
-    Algebra.IsAlgebraic.perfectField (IsLocalRing.ResidueField A)
+    Algebra.IsAlgebraic.perfectField (IsLocalRing.ResidueField 𝒪[K])
   let : MulSemiringAction G (FractionRing C) := IsFractionRing.mulSemiringAction G C _
-  let : IsGalois (FractionRing A) (FractionRing C) :=
-    IsGaloisGroup.isGalois G (FractionRing A) (FractionRing C)
+  let : IsGalois (FractionRing 𝒪[K]) (FractionRing C) :=
+    IsGaloisGroup.isGalois G (FractionRing 𝒪[K]) (FractionRing C)
   have hindex : (H).index = Module.finrank K M :=
     (IntermediateField.finrank_eq_fixingSubgroup_index L M).symm
-  simpa only [hindex] using subextension_prime_degree_different_profile A B C G H
+  simpa only [hindex] using subextension_prime_degree_different_profile 𝒪[K] B C G H
     (by simpa only [hindex] using hp) (by simpa only [hindex] using he)
 
 end Spectral

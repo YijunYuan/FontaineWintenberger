@@ -129,26 +129,25 @@ variable (L : Type*) [Field L] [Algebra K L] [FiniteDimensional K L]
 variable {Γ : Type*} [LinearOrderedCommGroupWithZero Γ] (w : Valuation L Γ)
     [(NormedField.valuation (K := K)).HasExtension w]
 
-local notation "OK" => Valuation.valuationSubring (NormedField.valuation (K := K))
 local notation "OL" => Valuation.valuationSubring w
 
 /-- The chosen extension valuation ring gives the field norm identity
 with the residue-field degree. -/
 theorem extensionValuationSubring_normalizedValuation_norm (x : L) :
     letI := extensionValuationSubring_isDiscreteValuationRing K L w
-    (maximalIdeal OK).valuation K (Algebra.norm K x) =
+    (maximalIdeal 𝒪[K]).valuation K (Algebra.norm K x) =
       ((maximalIdeal OL).valuation L x) ^
-        Module.finrank (IsLocalRing.ResidueField OK) (IsLocalRing.ResidueField OL) := by
+        Module.finrank (IsLocalRing.ResidueField 𝒪[K]) (IsLocalRing.ResidueField OL) := by
   have := extensionValuationSubring_isDiscreteValuationRing K L w
-  rw [← local_inertiaDeg_eq_finrank_residueField OK OL]
-  exact normalizedValuation_norm OK OL K L x
+  rw [← local_inertiaDeg_eq_finrank_residueField 𝒪[K] OL]
+  exact normalizedValuation_norm 𝒪[K] OL K L x
 
 /-- Norms preserve normalized valuations when the residue degree is one. -/
 theorem extensionValuationSubring_normalizedValuation_norm_of_residueDegree_one
-    (hf : Module.finrank (IsLocalRing.ResidueField OK) (IsLocalRing.ResidueField OL) = 1)
+    (hf : Module.finrank (IsLocalRing.ResidueField 𝒪[K]) (IsLocalRing.ResidueField OL) = 1)
     (x : L) :
     letI := extensionValuationSubring_isDiscreteValuationRing K L w
-    (maximalIdeal OK).valuation K (Algebra.norm K x) =
+    (maximalIdeal 𝒪[K]).valuation K (Algebra.norm K x) =
       (maximalIdeal OL).valuation L x := by
   have := extensionValuationSubring_isDiscreteValuationRing K L w
   simpa only [hf, pow_one] using extensionValuationSubring_normalizedValuation_norm K L w x

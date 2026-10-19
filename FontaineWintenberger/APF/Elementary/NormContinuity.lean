@@ -61,11 +61,9 @@ theorem ceil_prime_herbrand_piece_le_precision (p t r : ℕ) (hp : 0 < p) :
       exact (div_le_iff₀ hpR).mpr (by nlinarith [hreal])
 
 variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+    [PerfectField 𝓀[K]]
 variable (L : Type*) [Field L] [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
 
-local notation "R" => Valuation.valuationSubring (NormedField.valuation (K := K))
 local notation "S" => spectralIntegerRing K L
 
 attribute [local instance] FractionRing.liftAlgebra
@@ -74,43 +72,43 @@ attribute [local instance] FractionRing.liftAlgebra
 norm precision and the trace ideal of the controlled error. -/
 theorem exists_spectralIntegerRing_prime_norm_sub_precision
     (hp : (Module.finrank K L).Prime)
-    (he : (IsLocalRing.maximalIdeal S).ramificationIdx R = Module.finrank K L) :
+    (he : (IsLocalRing.maximalIdeal S).ramificationIdx 𝒪[K] = Module.finrank K L) :
     ∃ t : ℕ, apfRamificationBound K L = ((t : ℝ) : EReal) ∧
-      (emultiplicity (IsLocalRing.maximalIdeal S) (differentIdeal R S)).toNat =
+      (emultiplicity (IsLocalRing.maximalIdeal S) (differentIdeal 𝒪[K] S)).toNat =
         (Module.finrank K L - 1) * (t + 1) ∧
       ∀ (r : ℕ) (x y : S), x - y ∈ IsLocalRing.maximalIdeal S ^ r →
-        Algebra.intNorm R S x - Algebra.intNorm R S y ∈
-          IsLocalRing.maximalIdeal R ^
+        Algebra.intNorm 𝒪[K] S x - Algebra.intNorm 𝒪[K] S y ∈
+          IsLocalRing.maximalIdeal 𝒪[K] ^
             min r (((Module.finrank K L - 1) * (t + 1) + r) / Module.finrank K L) := by
   obtain ⟨t, _, hbound, hd, _, _⟩ := spectralIntegerRing_prime_degree_ramification K L hp he
-  have hd' : (emultiplicity (IsLocalRing.maximalIdeal S) (differentIdeal R S)).toNat =
+  have hd' : (emultiplicity (IsLocalRing.maximalIdeal S) (differentIdeal 𝒪[K] S)).toNat =
       (Module.finrank K L - 1) * (t + 1) := by rw [hd]; rfl
   refine ⟨t, hbound, hd', fun r x y hxy => ?_⟩
-  have : Algebra.IsSeparable (FractionRing R) (FractionRing S) := by
+  have : Algebra.IsSeparable (FractionRing 𝒪[K]) (FractionRing S) := by
     apply Algebra.IsSeparable.of_equiv_equiv
-      (FractionRing.algEquiv R K).symm.toRingEquiv
+      (FractionRing.algEquiv 𝒪[K] K).symm.toRingEquiv
       (FractionRing.algEquiv S L).symm.toRingEquiv
     ext y
     exact IsFractionRing.algEquiv_commutes
-      (FractionRing.algEquiv R K).symm (FractionRing.algEquiv S L).symm y
-  have hn := intNorm_mem_maximalIdeal_pow R S hxy
+      (FractionRing.algEquiv 𝒪[K] K).symm (FractionRing.algEquiv S L).symm y
+  have hn := intNorm_mem_maximalIdeal_pow 𝒪[K] S hxy
   have ht := spectralIntegerRing_intNorm_sub_sub_mem_intTraceIdeal_pow K L hp r x y hxy
-  rw [intTraceIdeal_pow R S K L r, he, hd'] at ht
+  rw [intTraceIdeal_pow 𝒪[K] S K L r, he, hd'] at ht
   have hn' := Ideal.pow_le_pow_right (min_le_left r
     (((Module.finrank K L - 1) * (t + 1) + r) / Module.finrank K L)) hn
   have ht' := Ideal.pow_le_pow_right (min_le_right r
     (((Module.finrank K L - 1) * (t + 1) + r) / Module.finrank K L)) ht
-  simpa only [sub_add_cancel] using (IsLocalRing.maximalIdeal R ^
+  simpa only [sub_add_cancel] using (IsLocalRing.maximalIdeal 𝒪[K] ^
     min r (((Module.finrank K L - 1) * (t + 1) + r) / Module.finrank K L)).add_mem ht' hn'
 
 /-- The integral norm in a totally ramified Galois prime step
 has the intrinsic Herbrand modulus of continuity. -/
 theorem spectralIntegerRing_prime_norm_sub_congruence
     (hp : (Module.finrank K L).Prime)
-    (he : (IsLocalRing.maximalIdeal S).ramificationIdx R = Module.finrank K L)
+    (he : (IsLocalRing.maximalIdeal S).ramificationIdx 𝒪[K] = Module.finrank K L)
     (r : ℕ) (x y : S) (hxy : x - y ∈ IsLocalRing.maximalIdeal S ^ r) :
-    Algebra.intNorm R S x - Algebra.intNorm R S y ∈
-      IsLocalRing.maximalIdeal R ^ ⌈apfPhi K L (r : ℝ)⌉₊ := by
+    Algebra.intNorm 𝒪[K] S x - Algebra.intNorm 𝒪[K] S y ∈
+      IsLocalRing.maximalIdeal 𝒪[K] ^ ⌈apfPhi K L (r : ℝ)⌉₊ := by
   obtain ⟨t, _hbound, hd, hprecision⟩ :=
     exists_spectralIntegerRing_prime_norm_sub_precision K L hp he
   obtain ⟨b, _hb, _hidx, _hpsi, hphi, hdiff⟩ := apf_prime_degree_different_profile K L hp he

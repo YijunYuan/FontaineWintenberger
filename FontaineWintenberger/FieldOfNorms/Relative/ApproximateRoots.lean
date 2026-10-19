@@ -168,7 +168,7 @@ theorem embeddingRamificationIdx_le_finrank_of_tower :
     (NormedField.valuation (K := K)) (spectralValuation K E) (spectralValuation K F)
   let : Module.Finite (spectralIntegerRing K E) (spectralIntegerRing K F) :=
     Module.Finite.of_restrictScalars_finite
-      (NormedField.valuation (K := K)).valuationSubring _ _
+      𝒪[K] _ _
   let : IsScalarTower (spectralIntegerRing K E) E F :=
     Valuation.HasExtension.instIsScalarTower_valuationSubring
       (L := F) (spectralValuation K E)
@@ -193,7 +193,6 @@ variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
 
 local notation "p" => residueChar K
 
-local notation "OK" => Valuation.valuationSubring (NormedField.valuation (K := K))
 
 /-- A proved full-upper product is full in any chosen common
 separable closure with the scalar embedding. -/
@@ -221,9 +220,9 @@ theorem fullUpper_commonClosure_of_embedding
 abstract field: its field range has precisely its scalar
 image, so linear disjointness is reflected without replacing the field. -/
 theorem linearDisjoint_root_of_fullUpper_abstract
-    (f : OK[X]) (hf : f.Monic) (hsep : (f.map (algebraMap OK K)).Separable)
+    (f : 𝒪[K][X]) (hf : f.Monic) (hsep : (f.map (algebraMap 𝒪[K] K)).Separable)
     {b : ℝ} (hb : (f.natDegree.factorial : ℝ) *
-      (IsDiscreteValuationRing.addVal OK f.discr).toNat ≤ b)
+      (IsDiscreteValuationRing.addVal 𝒪[K] f.discr).toNat ≤ b)
     (htop : (IsScalarTower.toAlgHom K L Ω).fieldRange.fixingSubgroup ⊔
       upperRamificationGroupInfinite K Ω b = ⊤)
     (x : Ω) (hx : aeval x f = 0) :
@@ -237,9 +236,9 @@ theorem linearDisjoint_root_of_fullUpper_abstract
 /-- The full source subgroup product for the abstract root
 compositum, on the automorphisms of the common closure. -/
 theorem upperProduct_rootCompositum_fieldRange_eq
-    (f : OK[X]) (hf : f.Monic) (hsep : (f.map (algebraMap OK K)).Separable)
+    (f : 𝒪[K][X]) (hf : f.Monic) (hsep : (f.map (algebraMap 𝒪[K] K)).Separable)
     {b : ℝ} (hb : (f.natDegree.factorial : ℝ) *
-      (IsDiscreteValuationRing.addVal OK f.discr).toNat ≤ b)
+      (IsDiscreteValuationRing.addVal 𝒪[K] f.discr).toNat ≤ b)
     (htop : (IsScalarTower.toAlgHom K L Ω).fieldRange.fixingSubgroup ⊔
       upperRamificationGroupInfinite K Ω b = ⊤)
     (x : Ω) (hx : aeval x f = 0) :
@@ -273,13 +272,13 @@ coordinate in the root compositum, with the exact pullback
 and the degree bound. No goodness or disjointness is assumed. -/
 theorem exists_good_rootFiniteLayer_of_fullUpper
     (E : FiniteIntermediateField K L)
-    (f : (Valuation.valuationSubring (NormedField.valuation (K := E.val)))[X])
+    (f : 𝒪[E.val][X])
     (hf : f.Monic)
     (hsep : (f.map (algebraMap _ E.val)).Separable)
     {b : ℝ} (hb : 0 < b)
     (hcut : (f.natDegree.factorial : ℝ) *
       (IsDiscreteValuationRing.addVal
-        (NormedField.valuation (K := E.val)).valuationSubring f.discr).toNat ≤ b)
+        𝒪[E.val] f.discr).toNat ≤ b)
     (hE : E.HasFullUpper K L b)
     (x : Ω) (hx : aeval x f = 0) :
     let M := IntermediateField.adjoin L {x}
@@ -293,7 +292,7 @@ theorem exists_good_rootFiniteLayer_of_fullUpper
   let M := IntermediateField.adjoin L {x}
   let xM : M := ⟨x, IntermediateField.mem_adjoin_simple_self L x⟩
   have hxM : aeval xM f = 0 := by
-    let j : M →ₐ[(NormedField.valuation (K := E.val)).valuationSubring] Ω :=
+    let j : M →ₐ[𝒪[E.val]] Ω :=
       M.val.restrictScalars _
     apply j.injective
     change j (aeval xM f) = 0
@@ -558,12 +557,12 @@ product at the depth. The root-field fixing inclusion discharges
 the finite-base criterion on this same index. -/
 theorem exists_good_fullUpper_rootFiniteLayer
     (E : FiniteIntermediateField K L)
-    (f : (Valuation.valuationSubring (NormedField.valuation (K := E.val)))[X])
+    (f : 𝒪[E.val][X])
     (hf : f.Monic) (hsep : (f.map (algebraMap _ E.val)).Separable)
     {b : ℝ} (hb : 0 < b)
     (hcut : (f.natDegree.factorial : ℝ) *
       (IsDiscreteValuationRing.addVal
-        (NormedField.valuation (K := E.val)).valuationSubring f.discr).toNat ≤ b)
+        𝒪[E.val] f.discr).toNat ≤ b)
     (hE : E.HasFullUpper K L b) (x : Ω) (hx : aeval x f = 0) :
     let M := IntermediateField.adjoin L {x}
     letI : IsScalarTower K M Ω := IsScalarTower.to₁₃₄ K L M Ω
@@ -650,7 +649,7 @@ unit ball by the identity on elements. -/
 theorem exists_fieldOfNormsCoordinatePolynomial_root_stage (r : ℕ) :
     ∀ f : Oₓ[X], f.Monic → (f.map (algebraMap Oₓ (FieldOfNorms K L))).Separable →
       ∃ (E : FiniteIntermediateField K L) (b : ℝ)
-        (g : (NormedField.valuation (K := E.val)).valuationSubring[X]),
+        (g : 𝒪[E.val][X]),
         0 < b ∧ E.HasFullUpper K L b ∧ g.Monic ∧ g.natDegree = f.natDegree ∧
         (g.map (algebraMap _ E.val)).Separable ∧
         g.map (algebraMap _ E.val) =
@@ -659,7 +658,7 @@ theorem exists_fieldOfNormsCoordinatePolynomial_root_stage (r : ℕ) :
         r ≤ ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊ ∧
         (g.natDegree.factorial : ℝ) *
           (IsDiscreteValuationRing.addVal
-            (NormedField.valuation (K := E.val)).valuationSubring g.discr).toNat ≤ b := by
+            𝒪[E.val] g.discr).toNat ≤ b := by
   intro f hf hsep
   obtain ⟨r₀, hr₀⟩ := exists_fieldOfNorms_discr_precision K L f hf hsep
   obtain ⟨F, _, hF, _, hstable⟩ :=
@@ -675,7 +674,7 @@ theorem exists_fieldOfNormsCoordinatePolynomial_root_stage (r : ℕ) :
   let E := F n
   let fE := FieldOfNorms.coordinatePolynomial K L E f
   let e : spectralIntegerRing K E.val ≃+*
-      (NormedField.valuation (K := E.val)).valuationSubring :=
+      𝒪[E.val] :=
     RingEquiv.subringCongr (congrArg ValuationSubring.toSubring
       (spectralIntegerRing_eq_normedUnitBall K E.val))
   let g := fE.map e.toRingHom
@@ -697,7 +696,7 @@ theorem exists_fieldOfNormsCoordinatePolynomial_root_stage (r : ℕ) :
       (spectralIntegerRing K E.val) fE.discr r₀).mp hm'
     exact (not_lt_of_ge hv) (hr₀.trans_eq hval.symm)
   have hδg : (IsDiscreteValuationRing.addVal
-      (NormedField.valuation (K := E.val)).valuationSubring g.discr).toNat ≤ r₀ := by
+      𝒪[E.val] g.discr).toNat ≤ r₀ := by
     rw [show g.discr = e fE.discr from Polynomial.Monic.discr_map fE hfE e.toRingHom,
       addVal_ringEquiv]
     exact hδ
@@ -746,7 +745,7 @@ theorem exists_fieldOfNorms_approximate_root_at_precision (r : ℕ) :
     (degree_ne_of_natDegree_ne (Nat.ne_of_gt hpos))
   have hxg : aeval x g = 0 := by
     simpa only [Polynomial.map_map, Polynomial.eval_map_algebraMap,
-      ← IsScalarTower.algebraMap_eq (NormedField.valuation (K := E.val)).valuationSubring E.val Ω]
+      ← IsScalarTower.algebraMap_eq 𝒪[E.val] E.val Ω]
           using hx
   let M := IntermediateField.adjoin L {x}
   let : Module.Finite L M := IntermediateField.adjoin.finiteDimensional

@@ -22,8 +22,7 @@ nonnegative first break. The intrinsic extended supremum equals that break.
 namespace FontaineWintenberger
 
 variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+    [PerfectField 𝓀[K]]
 variable (L : Type*) [Field L] [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
 variable (M : IntermediateField K L)
 
@@ -60,7 +59,6 @@ theorem exists_apfRamificationBound_eq_coe_of_fixingSubgroup
     exact EReal.coe_le_coe_iff.mpr ((hiff u hu).mp ht)
   · exact le_sSup ⟨b, by linarith, (hiff b (by linarith)).mpr le_rfl, rfl⟩
 
-local notation "R" => Valuation.valuationSubring (NormedField.valuation (K := K))
 local notation "B" => Valuation.valuationSubring
   (Valuation.comap (algebraMap M L) (spectralValuation K L))
 
@@ -68,7 +66,7 @@ local notation "B" => Valuation.valuationSubring
 nonnegative intrinsic first bound, attained in the upper filtration. -/
 theorem exists_apfRamificationBound_eq_coe_of_totallyRamified
     (hdegree : 1 < Module.finrank K M)
-    (he : (IsLocalRing.maximalIdeal B).ramificationIdx R = Module.finrank K M) :
+    (he : (IsLocalRing.maximalIdeal B).ramificationIdx 𝒪[K] = Module.finrank K M) :
     ∃ b : ℝ, 0 ≤ b ∧ apfRamificationBound K M = (b : EReal) ∧
       ∀ u : ℝ, -1 ≤ u → (H ⊔ U u = ⊤ ↔ u ≤ b) := by
   have hH : H ≠ ⊤ := by
@@ -81,7 +79,7 @@ theorem exists_apfRamificationBound_eq_coe_of_totallyRamified
     have hEq : IntermediateField.fixedField H = M := IsGalois.fixedField_fixingSubgroup M
     exact Eq.mp (congrArg (fun N : IntermediateField K L =>
       (IsLocalRing.maximalIdeal (Valuation.valuationSubring
-        (Valuation.comap (algebraMap N L) (spectralValuation K L)))).ramificationIdx R =
+        (Valuation.comap (algebraMap N L) (spectralValuation K L)))).ramificationIdx 𝒪[K] =
           Module.finrank K N) hEq.symm) he
   exact exists_apfRamificationBound_eq_coe_of_fixingSubgroup K L M hH hz
 

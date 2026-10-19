@@ -23,10 +23,8 @@ namespace FontaineWintenberger
 
 variable (K L : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K] [Field L]
     [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+    [PerfectField 𝓀[K]]
 
-local notation "R" => Valuation.valuationSubring (NormedField.valuation (K := K))
 local notation "B" => spectralIntegerRing K L
 local notation "G" => L ≃ₐ[K] L
 local notation "I" => lowerRamificationGroup G (IsLocalRing.maximalIdeal B) 0
@@ -37,7 +35,7 @@ local notation "A" => Valuation.valuationSubring
 /-- The field fixed by the zero lower group has ramification
 index one over the base. -/
 theorem inertia_fixedField_ramificationIdx :
-    (IsLocalRing.maximalIdeal A).ramificationIdx R = 1 := by
+    (IsLocalRing.maximalIdeal A).ramificationIdx 𝒪[K] = 1 := by
   rw [fixedField_ramificationIdx_eq_relIndex K L I]
   simp
 
@@ -75,9 +73,9 @@ theorem inertia_fixedField_residue_surjective :
 /-- The canonical residue map of the inertia fixed field is an
 residue-field isomorphism over the base residue field. -/
 def inertiaFixedFieldResidueEquiv :
-    IsLocalRing.ResidueField A ≃ₐ[IsLocalRing.ResidueField R]
+    IsLocalRing.ResidueField A ≃ₐ[IsLocalRing.ResidueField 𝒪[K]]
       IsLocalRing.ResidueField B :=
-  AlgEquiv.ofBijective (IsScalarTower.toAlgHom (IsLocalRing.ResidueField R)
+  AlgEquiv.ofBijective (IsScalarTower.toAlgHom (IsLocalRing.ResidueField 𝒪[K])
     (IsLocalRing.ResidueField A) (IsLocalRing.ResidueField B))
     ⟨(algebraMap (IsLocalRing.ResidueField A) (IsLocalRing.ResidueField B)).injective,
       inertia_fixedField_residue_surjective K L⟩

@@ -27,10 +27,8 @@ noncomputable section
 namespace FontaineWintenberger
 
 variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+    [PerfectField 𝓀[K]]
 
-local notation "R" => Valuation.valuationSubring (NormedField.valuation (K := K))
 
 /-- The full zero index in a finite Galois overfield equals the
 residue degree of the intermediate field. -/
@@ -38,7 +36,7 @@ theorem apfSubgroup_index_zero_eq_residueDegree_of_finiteGalois
     (Ω : Type*) [Field Ω] [Algebra K Ω] [FiniteDimensional K Ω] [IsGalois K Ω]
     (M : IntermediateField K Ω) (j : Ω →ₐ[K] SeparableClosure K) :
     (apfSubgroup K (j.comp M.val).fieldRange 0).index =
-      Module.finrank (IsLocalRing.ResidueField R)
+      Module.finrank (IsLocalRing.ResidueField 𝒪[K])
         (IsLocalRing.ResidueField (spectralIntegerRing K M)) := by
   rw [apfSubgroup_fieldRange_index_eq_fixingSubgroup_sup_upper_index K Ω M j (by norm_num),
     upperRamificationGroup_zero, ← lowerRamificationGroup_zero,
@@ -52,7 +50,7 @@ theorem apfSubgroup_index_zero_eq_residueDegree
     (M : Type*) [Field M] [Algebra K M] [FiniteDimensional K M]
     [Algebra.IsSeparable K M] (j : M →ₐ[K] SeparableClosure K) :
     (apfSubgroup K j.fieldRange 0).index =
-      Module.finrank (IsLocalRing.ResidueField R)
+      Module.finrank (IsLocalRing.ResidueField 𝒪[K])
         (IsLocalRing.ResidueField (spectralIntegerRing K M)) := by
   let Ω := IntermediateField.normalClosure K M (SeparableClosure K)
   let i : M →ₐ[K] Ω :=
@@ -71,8 +69,7 @@ theorem apfSubgroup_index_zero_eq_residueDegree
   rw [← hr, apfSubgroup_index_zero_eq_residueDegree_of_finiteGalois K Ω N Ω.val,
     spectral_residueDegree_algEquiv K M e]
 
-omit [PerfectField (IsLocalRing.ResidueField
-    (NormedField.valuation (K := K)).valuationSubring)] in
+omit [PerfectField 𝓀[K]] in
 /-- Beyond the zero stage, the zero APF product is unchanged. -/
 theorem apfSubgroup_zero_eq_of_apfFiniteStage_le
     (L E : IntermediateField K (SeparableClosure K))
@@ -90,9 +87,9 @@ theorem residueDegree_eq_zeroStage_of_apfFiniteStage_le
     (L : IntermediateField K (SeparableClosure K)) [IsAPFSubextension K L]
     (E : IntermediateField K (SeparableClosure K)) [FiniteDimensional K E]
     (hEL : E ≤ L) (hstage : apfFiniteStage K L 0 ≤ E) :
-    Module.finrank (IsLocalRing.ResidueField R)
+    Module.finrank (IsLocalRing.ResidueField 𝒪[K])
         (IsLocalRing.ResidueField (spectralIntegerRing K E)) =
-      Module.finrank (IsLocalRing.ResidueField R)
+      Module.finrank (IsLocalRing.ResidueField 𝒪[K])
         (IsLocalRing.ResidueField (spectralIntegerRing K (apfFiniteStage K L 0))) := by
   have := finiteDimensional_apfFiniteStage K L (by norm_num : -1 ≤ (0 : ℝ))
   rw [← apfSubgroup_index_zero_eq_residueDegree K E E.val,
@@ -137,9 +134,9 @@ variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 a finite intermediate field pulled back from its zero stage. -/
 theorem IsAPF.exists_finiteIntermediateField_residueDegree_stable [IsAPF K L] :
     ∃ E₀ : FiniteIntermediateField K L, ∀ F : FiniteIntermediateField K L, E₀ ≤ F →
-      Module.finrank (IsLocalRing.ResidueField R)
+      Module.finrank (IsLocalRing.ResidueField 𝒪[K])
           (IsLocalRing.ResidueField (spectralIntegerRing K F.val)) =
-        Module.finrank (IsLocalRing.ResidueField R)
+        Module.finrank (IsLocalRing.ResidueField 𝒪[K])
           (IsLocalRing.ResidueField (spectralIntegerRing K E₀.val)) := by
   let j : L →ₐ[K] SeparableClosure K := IsSepClosed.lift
   obtain ⟨E₀, hE₀⟩ := exists_finiteIntermediateField_map_eq_apfFiniteStage K L j

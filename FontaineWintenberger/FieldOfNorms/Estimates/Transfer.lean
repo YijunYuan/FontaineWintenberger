@@ -281,19 +281,19 @@ theorem FieldOfNorms.ramificationNumber_eq_nat_sub_one [IsAPF K L]
 its map on the integral closure of the base integers. -/
 def algebraicResidueAut (σ : L ≃ₐ[K] L) :
     IsLocalRing.ResidueField
-      (integralClosure (NormedField.valuation (K := K)).valuationSubring L) ≃+*
+      (integralClosure 𝒪[K] L) ≃+*
     IsLocalRing.ResidueField
-      (integralClosure (NormedField.valuation (K := K)).valuationSubring L) :=
+      (integralClosure 𝒪[K] L) :=
   IsLocalRing.ResidueField.mapEquiv
     (σ.restrictScalars (NormedField.valuation (K :=
         K)).valuationSubring).mapIntegralClosure.toRingEquiv
 
 @[simp]
 theorem algebraicResidueAut_residue (σ : L ≃ₐ[K] L)
-    (a : integralClosure (NormedField.valuation (K := K)).valuationSubring L) :
+    (a : integralClosure 𝒪[K] L) :
     algebraicResidueAut K L σ (IsLocalRing.residue _ a) =
       IsLocalRing.residue _
-        ((σ.restrictScalars (NormedField.valuation (K := K)).valuationSubring).mapIntegralClosure a)
+        ((σ.restrictScalars 𝒪[K]).mapIntegralClosure a)
             := rfl
 
 /-- Ordinary finite residue inclusions commute with the intrinsic
@@ -323,7 +323,7 @@ theorem algebraicResidueAut_fromLayer (σ : L ≃ₐ[K] L) (E : FiniteIntermedia
   apply Subtype.ext
   change σ (((integralClosureSpectralEquiv K L).symm
       (spectralIntegerInclusion K E.val.val x) :
-        integralClosure (NormedField.valuation (K := K)).valuationSubring L) : L) = _
+        integralClosure 𝒪[K] L) : L) = _
   simp only [coe_integralClosureSpectralEquiv_symm, coe_spectralIntegerInclusion]
   exact (hs (x : E.val)).symm
 
@@ -332,7 +332,7 @@ Frobenius normalization after inclusion into the intrinsic residue field. -/
 theorem residueCoordinateEquiv_pow [IsAPF K L]
     (E : FiniteIntermediateField K L) (hE : apfMaximalTame K L ≤ E)
     (a : IsLocalRing.ResidueField
-      (integralClosure (NormedField.valuation (K := K)).valuationSubring L)) :
+      (integralClosure 𝒪[K] L)) :
     integralClosureResidueFromLayer K L E (residueCoordinateEquiv K L E hE a) ^
       p ^ residueDegree K L E hE = a := by
   rw [residueCoordinateEquiv_apply, residue_residueIntegralCoordinate,
@@ -345,15 +345,14 @@ theorem residueCoordinateEquiv_aut [IsAPF K L]
     (σ : L ≃ₐ[K] L) (E : FiniteIntermediateField K L) (hE : apfMaximalTame K L ≤ E)
     (s : E.val ≃ₐ[K] E.val) (hs : ∀ a : E.val, (s a : L) = σ (a : L))
     (a : IsLocalRing.ResidueField
-      (integralClosure (NormedField.valuation (K := K)).valuationSubring L)) :
+      (integralClosure 𝒪[K] L)) :
     spectralResidueInclusion K s.toAlgHom (residueCoordinateEquiv K L E hE a) =
       residueCoordinateEquiv K L E hE (algebraicResidueAut K L σ a) := by
   let κ := IsLocalRing.ResidueField
-    (integralClosure (NormedField.valuation (K := K)).valuationSubring L)
+    (integralClosure 𝒪[K] L)
   let : PerfectField κ := IsAPF.perfectField_integralClosureResidue K L
   let : CharP κ p := charP_of_injective_algebraMap
-    (algebraMap (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring) κ).injective p
+    (algebraMap 𝓀[K] κ).injective p
   apply (integralClosureResidueFromLayer K L E).injective
   apply (iterateFrobeniusEquiv κ p (residueDegree K L E hE)).injective
   change integralClosureResidueFromLayer K L E
@@ -372,7 +371,7 @@ theorem residueIntegralCoordinate_aut [IsAPF K L]
     (σ : L ≃ₐ[K] L) (E : FiniteIntermediateField K L) (hE : apfMaximalTame K L ≤ E)
     (s : E.val ≃ₐ[K] E.val) (hs : ∀ a : E.val, (s a : L) = σ (a : L))
     (a : IsLocalRing.ResidueField
-      (integralClosure (NormedField.valuation (K := K)).valuationSubring L)) :
+      (integralClosure 𝒪[K] L)) :
     spectralIntegerInclusion K s.toAlgHom (residueIntegralCoordinate K L E hE a) =
       residueIntegralCoordinate K L E hE (algebraicResidueAut K L σ a) := by
   rw [residueIntegralCoordinate_eq_spectralTeichmuller,
@@ -385,7 +384,7 @@ multiplicative field of norms. No normality of the ambient extension is used. -/
 theorem FieldOfNorms.map_residueConstants [IsAPF K L]
     (σ : L ≃ₐ[K] L)
     (a : IsLocalRing.ResidueField
-      (integralClosure (NormedField.valuation (K := K)).valuationSubring L)) :
+      (integralClosure 𝒪[K] L)) :
     FieldOfNorms.map σ (residueConstants K L a) =
       residueConstants K L (algebraicResidueAut K L σ a) := by
   apply FieldOfNorms.ext

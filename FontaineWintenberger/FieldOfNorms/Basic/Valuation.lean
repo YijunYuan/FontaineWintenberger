@@ -39,7 +39,6 @@ variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
 namespace FiniteIntermediateField
 
-local notation "R₀" => Valuation.valuationSubring (NormedField.valuation (K := K))
 
 /-- Field norms preserve normalized valuations whenever their
 residue inclusion is surjective. No normality is required. -/
@@ -59,7 +58,7 @@ theorem normalizedValuation_norm_of_residueInclusion_surjective
   have := Valuation.HasExtension.valuationSubring_isScalarTower
     (NormedField.valuation (K := K)) (spectralValuation K E.val) (spectralValuation K F.val)
   have : Module.Finite (spectralIntegerRing K E.val) (spectralIntegerRing K F.val) :=
-    Module.Finite.of_restrictScalars_finite R₀ _ _
+    Module.Finite.of_restrictScalars_finite 𝒪[K] _ _
   have : IsScalarTower (spectralIntegerRing K E.val) E.val F.val :=
     Valuation.HasExtension.instIsScalarTower_valuationSubring
       (L := F.val) (spectralValuation K E.val)
@@ -86,8 +85,7 @@ def FieldOfNorms.coordinateValuation (E : FiniteIntermediateField K L) : FieldOf
   let v := (IsDiscreteValuationRing.maximalIdeal (spectralIntegerRing K E.val)).valuation E.val
   v.toMonoidWithZeroHom.comp (FieldOfNorms.coord K L E)
 
-variable [PerfectField (IsLocalRing.ResidueField
-  (NormedField.valuation (K := K)).valuationSubring)]
+variable [PerfectField 𝓀[K]]
 
 /-- The normalized coordinate valuations agree on an APF finite tail. -/
 theorem IsAPF.exists_fieldOfNormsCoordinateValuation_stable [IsAPF K L] :

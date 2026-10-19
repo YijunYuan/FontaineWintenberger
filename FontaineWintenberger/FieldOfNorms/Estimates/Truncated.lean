@@ -168,7 +168,7 @@ private theorem exists_integerNorm_sub_mem_of_add_congruence (r : ℕ)
     (NormedField.valuation (K := K)) (spectralValuation K E.val) (spectralValuation K F.val)
   let R := spectralIntegerRing K E.val
   let S := spectralIntegerRing K F.val
-  let R₀ := (NormedField.valuation (K := K)).valuationSubring
+  let R₀ := 𝒪[K]
   have : Module.Finite R₀ R := extensionValuationSubring_moduleFinite K E.val
     (spectralValuation K E.val)
   have : Module.Finite R S := Module.Finite.of_restrictScalars_finite R₀ _ _
@@ -262,7 +262,7 @@ theorem addVal_integerNorm_of_totallyRamified (x : spectralIntegerRing K F.val) 
     (NormedField.valuation (K := K)) (spectralValuation K E.val) (spectralValuation K F.val)
   let R := spectralIntegerRing K E.val
   let S := spectralIntegerRing K F.val
-  let R₀ := (NormedField.valuation (K := K)).valuationSubring
+  let R₀ := 𝒪[K]
   have : Module.Finite R S := Module.Finite.of_restrictScalars_finite R₀ _ _
   have : IsScalarTower R E.val F.val :=
     Valuation.HasExtension.instIsScalarTower_valuationSubring

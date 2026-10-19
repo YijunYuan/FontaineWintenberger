@@ -21,9 +21,9 @@ This file packages those standing hypotheses into two `Prop` classes.
 
 The field is presented by its norm (`NontriviallyNormedField`) because Mathlib's spectral-norm
 machinery, which supplies the canonical norm on algebraic extensions, is stated for normed fields.
-The ring of integers `𝒪[K]` and residue field `𝓀[K]` are Mathlib's `Valued.integer` and
-`Valued.ResidueField`, obtained through the scoped instance `NormedField.toValued`; files using them
-should `open scoped NormedField Valued NNReal`. (The switch to that notation is step F1b.)
+The ring of integers `𝒪[K]` and residue field `𝓀[K]` are scoped notations of this namespace for
+`(NormedField.valuation K).valuationSubring` and its residue field; they are definitionally
+Mathlib's `Valued.integer K` and `Valued.ResidueField K`.
 
 ## Main definitions
 
@@ -41,44 +41,53 @@ should `open scoped NormedField Valued NNReal`. (The switch to that notation is 
 
 @[expose] public section
 
-open scoped NormedField Valued NNReal
+open scoped NormedField NNReal
 
 namespace FontaineWintenberger
+
+/-- The ring of integers of a nonarchimedean normed field, as a valuation subring. It is
+definitionally Mathlib's `Valued.integer K` (through `NormedField.toValued`), but keeping the
+`ValuationSubring` form lets the `IsDiscreteValuationRing`, `Algebra`, `IsScalarTower`, ...
+instances of this library apply without transport. -/
+scoped notation "𝒪[" F "]" => Valuation.valuationSubring (NormedField.valuation (K := F))
+
+/-- The residue field of a nonarchimedean normed field. -/
+scoped notation "𝓀[" F "]" =>
+  IsLocalRing.ResidueField (Valuation.valuationSubring (NormedField.valuation (K := F)))
 
 /-- A complete, nonarchimedean, discretely valued field, presented by its norm. -/
 class IsCompleteDiscreteValuedField (K : Type*) [NontriviallyNormedField K] : Prop
     extends IsUltrametricDist K, CompleteSpace K,
-      IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring
+      IsDiscreteValuationRing 𝒪[K]
 
 /-- Wintenberger's standing assumption on a local field: complete, discretely valued, with a
 perfect residue field of prime characteristic. Unlike Mathlib's `IsNonarchimedeanLocalField`, the
 residue field need not be finite. -/
 class IsPerfectResidueLocalField (K : Type*) [NontriviallyNormedField K] : Prop
     extends IsCompleteDiscreteValuedField K,
-      PerfectField (IsLocalRing.ResidueField
-        (NormedField.valuation (K := K)).valuationSubring) where
+      PerfectField (𝓀[K]) where
   residueChar_prime :
-    (ringChar (IsLocalRing.ResidueField (NormedField.valuation (K := K)).valuationSubring)).Prime
+    (ringChar (𝓀[K])).Prime
 
 variable (K : Type*) [NontriviallyNormedField K]
 
 /-- The residue characteristic of a local field. -/
 noncomputable abbrev residueChar [IsPerfectResidueLocalField K] : ℕ :=
-  ringChar (IsLocalRing.ResidueField (NormedField.valuation (K := K)).valuationSubring)
+  ringChar (𝓀[K])
 
 instance [IsPerfectResidueLocalField K] : Fact (residueChar K).Prime :=
   ⟨IsPerfectResidueLocalField.residueChar_prime⟩
 
 theorem residueChar_eq [IsPerfectResidueLocalField K] (p : ℕ)
-    [CharP (IsLocalRing.ResidueField (NormedField.valuation (K := K)).valuationSubring) p] :
+    [CharP (𝓀[K]) p] :
     residueChar K = p :=
   CharP.eq _ (ringChar.charP _) ‹_›
 
 /-- Build the local-field structure from the individual hypotheses. -/
 theorem IsPerfectResidueLocalField.of_charP [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField (NormedField.valuation (K := K)).valuationSubring)]
+    [PerfectField (𝓀[K])]
     (p : ℕ) [hp : Fact p.Prime]
-    [CharP (IsLocalRing.ResidueField (NormedField.valuation (K := K)).valuationSubring) p] :
+    [CharP (𝓀[K]) p] :
     IsPerfectResidueLocalField K where
   residueChar_prime := by rw [ringChar.eq _ p]; exact hp.out
 

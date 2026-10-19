@@ -100,8 +100,7 @@ theorem IsAPF.exists_finiteIntermediateField_natCast_mem_maximalIdeal_pow [IsAPF
     (NormedField.valuation (K := K)) (spectralValuation K W.val) (spectralValuation K E.val)
   let : CharP (IsLocalRing.ResidueField (spectralIntegerRing K W.val)) p :=
     charP_of_injective_algebraMap
-      (algebraMap (IsLocalRing.ResidueField
-        (NormedField.valuation (K := K)).valuationSubring)
+      (algebraMap 𝓀[K]
         (IsLocalRing.ResidueField (spectralIntegerRing K W.val))).injective p
   have hp : (p : spectralIntegerRing K W.val) ∈
       IsLocalRing.maximalIdeal (spectralIntegerRing K W.val) := by

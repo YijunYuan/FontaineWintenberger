@@ -129,13 +129,12 @@ theorem integerNorm_sub_congruence_of_totallyRamified
       (isNonarchimedean_spectralNorm (K := K) (L := F'))
   have : Algebra.IsSeparable E.val F' :=
     Algebra.isSeparable_tower_top_of_isSeparable K E.val F'
-  have : CharP (IsLocalRing.ResidueField
-      (NormedField.valuation (K := E.val)).valuationSubring) p :=
+  have : CharP 𝓀[E.val] p :=
     charP_of_injective_algebraMap'
-      (IsLocalRing.ResidueField (NormedField.valuation (K := K)).valuationSubring) p
+      𝓀[K] p
   let R := spectralIntegerRing K E.val
   let S := spectralIntegerRing K F.val
-  let R' := (NormedField.valuation (K := E.val)).valuationSubring
+  let R' := 𝒪[E.val]
   let S' := spectralIntegerRing E.val F'
   let f : R ≃+* R' := RingEquiv.subringCongr (congrArg ValuationSubring.toSubring
     (spectralIntegerRing_eq_normedUnitBall K E.val))
@@ -215,7 +214,7 @@ theorem exists_integerNorm_add_congruence_of_totallyRamified
   have hp : residueChar E.val = p := normedAlgebra_residueChar_eq K E.val
   let R := spectralIntegerRing K E.val
   let S := spectralIntegerRing K F.val
-  let R' := (NormedField.valuation (K := E.val)).valuationSubring
+  let R' := 𝒪[E.val]
   let S' := spectralIntegerRing E.val F'
   let f : R ≃+* R' := RingEquiv.subringCongr (congrArg ValuationSubring.toSubring
     (spectralIntegerRing_eq_normedUnitBall K E.val))

@@ -97,11 +97,9 @@ section Fields
 
 variable (K L : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [Field L] [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+    [PerfectField 𝓀[K]]
 
 local notation "G" => L ≃ₐ[K] L
-local notation "R" => Valuation.valuationSubring (NormedField.valuation (K := K))
 local notation "B" => spectralIntegerRing K L
 local notation "D" => lowerRamificationGroup G (IsLocalRing.maximalIdeal B) 0
 
@@ -110,12 +108,12 @@ inertia-relative fixing-group index. The subgroup need not be normal. -/
 theorem fixedField_ramificationIdx_eq_relIndex (H : Subgroup G) :
     (IsLocalRing.maximalIdeal
       ((spectralValuation K L).comap
-        (algebraMap (IntermediateField.fixedField H) L)).valuationSubring).ramificationIdx R =
+        (algebraMap (IntermediateField.fixedField H) L)).valuationSubring).ramificationIdx 𝒪[K] =
       H.relIndex D := by
   let A := ((spectralValuation K L).comap
     (algebraMap (IntermediateField.fixedField H) L)).valuationSubring
   let := intermediate_spectral_isDiscreteValuationRing K L (IntermediateField.fixedField H)
-  have ht := local_ramificationIdx_tower R A B
+  have ht := local_ramificationIdx_tower 𝒪[K] A B
   rw [← spectralIntegerRing_card_lower_zero K L, ← fixedField_card_inertia K L H,
     card_lowerRamificationGroup_zero_subgroup] at ht
   apply Nat.mul_right_cancel (Nat.card_pos (α := ↥(H ⊓ D)))
@@ -126,7 +124,7 @@ transitive on its embeddings. -/
 theorem fixedField_sup_inertia_eq_top (H : Subgroup G)
     (he : (IsLocalRing.maximalIdeal
       ((spectralValuation K L).comap
-        (algebraMap (IntermediateField.fixedField H) L)).valuationSubring).ramificationIdx R =
+        (algebraMap (IntermediateField.fixedField H) L)).valuationSubring).ramificationIdx 𝒪[K] =
           Module.finrank K (IntermediateField.fixedField H)) : H ⊔ D = ⊤ := by
   apply sup_eq_top_of_relIndex_eq_index H D
   rw [← fixedField_ramificationIdx_eq_relIndex K L H, he,
@@ -138,7 +136,7 @@ of the inertia action, without a normality hypothesis. -/
 theorem fixedField_ramificationIdx_eq_finrank_iff (H : Subgroup G) :
     (IsLocalRing.maximalIdeal
       ((spectralValuation K L).comap
-        (algebraMap (IntermediateField.fixedField H) L)).valuationSubring).ramificationIdx R =
+        (algebraMap (IntermediateField.fixedField H) L)).valuationSubring).ramificationIdx 𝒪[K] =
           Module.finrank K (IntermediateField.fixedField H) ↔ H ⊔ D = ⊤ := by
   rw [fixedField_ramificationIdx_eq_relIndex K L H,
     IntermediateField.finrank_eq_fixingSubgroup_index,
@@ -153,7 +151,7 @@ theorem fixedField_sup_wild_eq_top (p : ℕ) [Fact p.Prime]
     [CharP (IsLocalRing.ResidueField B) p] (H : Subgroup G)
     (he : (IsLocalRing.maximalIdeal
       ((spectralValuation K L).comap
-        (algebraMap (IntermediateField.fixedField H) L)).valuationSubring).ramificationIdx R =
+        (algebraMap (IntermediateField.fixedField H) L)).valuationSubring).ramificationIdx 𝒪[K] =
           Module.finrank K (IntermediateField.fixedField H))
     (n : ℕ) (hd : Module.finrank K (IntermediateField.fixedField H) = p ^ n) :
     H ⊔ P = ⊤ := by
@@ -173,7 +171,7 @@ theorem fixedField_wild_linearDisjoint (p : ℕ) [Fact p.Prime]
     [CharP (IsLocalRing.ResidueField B) p] (H : Subgroup G)
     (he : (IsLocalRing.maximalIdeal
       ((spectralValuation K L).comap
-        (algebraMap (IntermediateField.fixedField H) L)).valuationSubring).ramificationIdx R =
+        (algebraMap (IntermediateField.fixedField H) L)).valuationSubring).ramificationIdx 𝒪[K] =
           Module.finrank K (IntermediateField.fixedField H))
     (n : ℕ) (hd : Module.finrank K (IntermediateField.fixedField H) = p ^ n) :
     (IntermediateField.fixedField P).LinearDisjoint (IntermediateField.fixedField H) := by
@@ -198,7 +196,7 @@ theorem fixedField_wild_compositum_finrank (p : ℕ) [Fact p.Prime]
     [CharP (IsLocalRing.ResidueField B) p] (H : Subgroup G)
     (he : (IsLocalRing.maximalIdeal
       ((spectralValuation K L).comap
-        (algebraMap (IntermediateField.fixedField H) L)).valuationSubring).ramificationIdx R =
+        (algebraMap (IntermediateField.fixedField H) L)).valuationSubring).ramificationIdx 𝒪[K] =
           Module.finrank K (IntermediateField.fixedField H))
     (n : ℕ) (hd : Module.finrank K (IntermediateField.fixedField H) = p ^ n) :
     Module.finrank (IntermediateField.fixedField P)
@@ -219,7 +217,7 @@ theorem fixedField_wild_norm_baseChange (p : ℕ) [Fact p.Prime]
     [CharP (IsLocalRing.ResidueField B) p] (H : Subgroup G)
     (he : (IsLocalRing.maximalIdeal
       ((spectralValuation K L).comap
-        (algebraMap (IntermediateField.fixedField H) L)).valuationSubring).ramificationIdx R =
+        (algebraMap (IntermediateField.fixedField H) L)).valuationSubring).ramificationIdx 𝒪[K] =
           Module.finrank K (IntermediateField.fixedField H))
     (n : ℕ) (hd : Module.finrank K (IntermediateField.fixedField H) = p ^ n)
     (x : IntermediateField.fixedField H) :

@@ -78,8 +78,7 @@ theorem isCompact_upperRamificationGroupInfinite (u : ℝ) :
     IsCompact (upperRamificationGroupInfinite K Ω u : Set (Ω ≃ₐ[K] Ω)) :=
   (isClosed_upperRamificationGroupInfinite K Ω u).isCompact
 
-variable [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+variable [PerfectField 𝓀[K]]
 
 /-- Finitely many upper conditions can be lifted together with one prescribed finite restriction. -/
 theorem exists_lift_finite_upper_conditions (E : FiniteGaloisIntermediateField K Ω)
@@ -155,8 +154,7 @@ namespace FontaineWintenberger
 
 variable (K Ω : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [Field Ω] [Algebra K Ω]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+    [PerfectField 𝓀[K]]
 
 /-- A cofinal family of finite intermediate fields tests all infinite upper conditions. -/
 theorem mem_upperRamificationGroupInfinite_iff_cofinal

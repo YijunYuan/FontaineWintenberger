@@ -72,8 +72,7 @@ theorem le_ceil_apfPhi_of_apfPsi_le [IsAPF K L] (f : M →ₐ[K] L)
         apfPhi_le_of_algHom K L f (Nat.cast_nonneg s)
   exact_mod_cast h.trans (Nat.le_ceil _)
 
-variable [PerfectField (IsLocalRing.ResidueField
-  (NormedField.valuation (K := K)).valuationSubring)]
+variable [PerfectField 𝓀[K]]
 
 /-- Uniform precision for the relative finite fields, with the
 canonical spectral norm on their finite base. -/

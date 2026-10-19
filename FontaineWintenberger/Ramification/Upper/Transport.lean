@@ -127,8 +127,7 @@ noncomputable def intermediateDecompositionRestriction : (L ≃ₐ[K] L) →* D�
   (AlgEquiv.restrictNormalHom F).codRestrict _
     (restrictNormal_mem_intermediate_decomposition K L F)
 
-variable [PerfectField (IsLocalRing.ResidueField
-  (NormedField.valuation (K := K)).valuationSubring)]
+variable [PerfectField 𝓀[K]]
 
 /-- The quotient theorem on an arbitrary Galois intermediate field's pullback ring. -/
 theorem intermediate_map_upperRamificationGroup (u : ℝ) (hu : -1 ≤ u) :
@@ -273,27 +272,26 @@ variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField 
 variable {L M : Type*} [Field L] [Field M] [Algebra K L] [Algebra K M]
     [Algebra.IsAlgebraic K L] [Algebra.IsAlgebraic K M]
 
-local notation "R₀" => Valuation.valuationSubring (NormedField.valuation (K := K))
 local notation "OL" => spectralIntegerRing K L
 local notation "OM" => spectralIntegerRing K M
 
 /-- A field isomorphism restricts canonically to the spectral integer rings. -/
-noncomputable def spectralIntegerRingEquiv (f : L ≃ₐ[K] M) : OL ≃ₐ[R₀] OM :=
-  ((IsIntegralClosure.equiv R₀ OL L (integralClosure R₀ L)).trans
-    (f.restrictScalars R₀).mapIntegralClosure).trans
-      (IsIntegralClosure.equiv R₀ (integralClosure R₀ M) M OM)
+noncomputable def spectralIntegerRingEquiv (f : L ≃ₐ[K] M) : OL ≃ₐ[𝒪[K]] OM :=
+  ((IsIntegralClosure.equiv 𝒪[K] OL L (integralClosure 𝒪[K] L)).trans
+    (f.restrictScalars 𝒪[K]).mapIntegralClosure).trans
+      (IsIntegralClosure.equiv 𝒪[K] (integralClosure 𝒪[K] M) M OM)
 
 @[simp]
 theorem coe_spectralIntegerRingEquiv (f : L ≃ₐ[K] M) (x : OL) :
     ((spectralIntegerRingEquiv K f x : OM) : M) = f (x : L) := by
   unfold spectralIntegerRingEquiv
   simp only [AlgEquiv.trans_apply]
-  rw [show ∀ y : integralClosure R₀ M,
-    ((IsIntegralClosure.equiv R₀ (integralClosure R₀ M) M OM y : OM) : M) = (y : M) from
-      IsIntegralClosure.algebraMap_equiv R₀ (integralClosure R₀ M) M OM]
-  change f (((IsIntegralClosure.equiv R₀ OL L (integralClosure R₀ L)) x :
-    integralClosure R₀ L) : L) = f (x : L)
-  exact congrArg f (IsIntegralClosure.algebraMap_equiv R₀ OL L (integralClosure R₀ L) x)
+  rw [show ∀ y : integralClosure 𝒪[K] M,
+    ((IsIntegralClosure.equiv 𝒪[K] (integralClosure 𝒪[K] M) M OM y : OM) : M) = (y : M) from
+      IsIntegralClosure.algebraMap_equiv 𝒪[K] (integralClosure 𝒪[K] M) M OM]
+  change f (((IsIntegralClosure.equiv 𝒪[K] OL L (integralClosure 𝒪[K] L)) x :
+    integralClosure 𝒪[K] L) : L) = f (x : L)
+  exact congrArg f (IsIntegralClosure.algebraMap_equiv 𝒪[K] OL L (integralClosure 𝒪[K] L) x)
 
 /-- The integer-ring equivalence intertwines the field actions under conjugation. -/
 theorem spectralIntegerRingEquiv_smul (f : L ≃ₐ[K] M) (s : L ≃ₐ[K] L) (x : OL) :
@@ -338,8 +336,7 @@ variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField 
 variable (F L : Type*) [Field F] [Field L] [Algebra K F] [Algebra K L]
     [Algebra F L] [IsScalarTower K F L] [IsGalois K F] [IsGalois K L]
     [FiniteDimensional K F] [FiniteDimensional K L]
-variable [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+variable [PerfectField 𝓀[K]]
 
 /-- Ordinary restriction preserves upper groups in every finite Galois field tower. -/
 theorem restrictNormalHom_map_upperRamificationGroup_tower (u : ℝ) (hu : -1 ≤ u) :
@@ -373,8 +370,7 @@ open CategoryTheory Opposite
 
 variable (K Ω : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [Field Ω] [Algebra K Ω]
-variable [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+variable [PerfectField 𝓀[K]]
 
 /-- Mathlib's finite Galois transition maps preserve the upper groups. -/
 theorem finGaloisGroupMap_map_upperRamificationGroup

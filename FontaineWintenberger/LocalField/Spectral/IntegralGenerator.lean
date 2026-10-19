@@ -162,14 +162,14 @@ theorem adjoin_uniformizer_eq_top [Module.Finite R S] [FaithfulSMul R S]
 section Spectral
 
 variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-variable [PerfectField (ResidueField (NormedField.valuation (K := K)).valuationSubring)]
+variable [PerfectField (ResidueField 𝒪[K])]
 variable (L : Type*) [Field L] [Algebra K L] [FiniteDimensional K L]
 variable [Algebra.IsSeparable K L]
 
 /-- The spectral integer ring of a finite separable extension is monogenic. -/
 theorem spectralIntegerRing_exists_generator :
     ∃ x : spectralIntegerRing K L,
-      Algebra.adjoin (NormedField.valuation (K := K)).valuationSubring {x} = ⊤ :=
+      Algebra.adjoin 𝒪[K] {x} = ⊤ :=
   exists_integral_generator
 
 end Spectral

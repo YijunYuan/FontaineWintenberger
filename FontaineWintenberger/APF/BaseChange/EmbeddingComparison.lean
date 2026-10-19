@@ -195,7 +195,6 @@ variable (K Ω : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField 
 variable (H : Subgroup (Ω ≃ₐ[K] Ω))
 
 local notation "F₀" => IntermediateField.fixedField H
-local notation "R₀" => Valuation.valuationSubring (NormedField.valuation (K := K))
 local notation "A₀" => spectralIntegerRing K F₀
 local notation "B₀" => spectralIntegerRing K Ω
 
@@ -205,11 +204,11 @@ theorem fixedField_spectralInteger_isGaloisGroup :
     letI : Algebra A₀ B₀ := (spectralIntegerInclusion K (F₀).val).toRingHom.toAlgebra
     IsGaloisGroup H A₀ B₀ := by
   let : Algebra A₀ B₀ := (spectralIntegerInclusion K (F₀).val).toRingHom.toAlgebra
-  let : IsScalarTower R₀ A₀ B₀ := IsScalarTower.of_algebraMap_eq (fun r => by
+  let : IsScalarTower 𝒪[K] A₀ B₀ := IsScalarTower.of_algebraMap_eq (fun r => by
     exact ((spectralIntegerInclusion K (F₀).val).commutes r).symm)
   let : IsScalarTower A₀ F₀ Ω := IsScalarTower.of_algebraMap_eq (fun _ => rfl)
   let : IsScalarTower A₀ B₀ Ω := IsScalarTower.of_algebraMap_eq (fun _ => rfl)
-  let : Algebra.IsIntegral A₀ B₀ := Algebra.IsIntegral.tower_top R₀
+  let : Algebra.IsIntegral A₀ B₀ := Algebra.IsIntegral.tower_top 𝒪[K]
   let : SMulDistribClass H B₀ Ω :=
     { smul_distrib_smul := fun h x z => by
         change (h : Ω ≃ₐ[K] Ω) ((x : Ω) * z) =
@@ -224,7 +223,7 @@ theorem embeddingIntegralOrder_fixedField_eq_sum (σ : Ω ≃ₐ[K] Ω) :
     embeddingIntegralOrder K (σ.toAlgHom.comp (F₀).val) (F₀).val =
       ∑ h : H, ramificationOrder (R := B₀) (Ω ≃ₐ[K] Ω) (σ * h.1) := by
   let : Algebra A₀ B₀ := (spectralIntegerInclusion K (F₀).val).toRingHom.toAlgebra
-  let : IsScalarTower R₀ A₀ B₀ := IsScalarTower.of_algebraMap_eq (fun r => by
+  let : IsScalarTower 𝒪[K] A₀ B₀ := IsScalarTower.of_algebraMap_eq (fun r => by
     exact ((spectralIntegerInclusion K (F₀).val).commutes r).symm)
   let := Fintype.ofFinite H
   let : IsGaloisGroup H A₀ B₀ := fixedField_spectralInteger_isGaloisGroup K Ω H
@@ -235,11 +234,11 @@ theorem embeddingIntegralOrder_fixedField_eq_sum (σ : Ω ≃ₐ[K] Ω) :
   obtain ⟨x, hx⟩ := spectralIntegerRing_exists_generator K Ω
   obtain ⟨y, hy⟩ := spectralIntegerRing_exists_generator K F₀
   have hf : spectralIntegerInclusion K (σ.toAlgHom.comp (F₀).val) =
-      (MulSemiringAction.toAlgAut (Ω ≃ₐ[K] Ω) R₀ B₀ σ).toAlgHom.comp
-        (IsScalarTower.toAlgHom R₀ A₀ B₀) := by
+      (MulSemiringAction.toAlgAut (Ω ≃ₐ[K] Ω) 𝒪[K] B₀ σ).toAlgHom.comp
+        (IsScalarTower.toAlgHom 𝒪[K] A₀ B₀) := by
     ext a
     rfl
-  have hg : spectralIntegerInclusion K (F₀).val = IsScalarTower.toAlgHom R₀ A₀ B₀ := by
+  have hg : spectralIntegerInclusion K (F₀).val = IsScalarTower.toAlgHom 𝒪[K] A₀ B₀ := by
     ext a
     rfl
   rw [embeddingIntegralOrder, hf, hg]
@@ -264,7 +263,7 @@ theorem fixedField_spectral_card_inertia :
     Nat.card (lowerRamificationGroup H (IsLocalRing.maximalIdeal B₀) 0) =
       embeddingRamificationIdx K (F₀).val := by
   let : Algebra A₀ B₀ := (spectralIntegerInclusion K (F₀).val).toRingHom.toAlgebra
-  let : IsScalarTower R₀ A₀ B₀ := IsScalarTower.of_algebraMap_eq (fun r =>
+  let : IsScalarTower 𝒪[K] A₀ B₀ := IsScalarTower.of_algebraMap_eq (fun r =>
     ((spectralIntegerInclusion K (F₀).val).commutes r).symm)
   let : FaithfulSMul A₀ B₀ := (faithfulSMul_iff_algebraMap_injective A₀ B₀).mpr (by
     intro a b hab
@@ -272,7 +271,7 @@ theorem fixedField_spectral_card_inertia :
     exact (F₀).val.injective (congrArg (fun z : B₀ => (z : Ω)) hab))
   let : IsLocalHom (algebraMap A₀ B₀) :=
     ⟨(spectralIntegerInclusion_isLocalHom K (F₀).val).map_nonunit⟩
-  let : Module.Finite A₀ B₀ := Module.Finite.of_restrictScalars_finite R₀ A₀ B₀
+  let : Module.Finite A₀ B₀ := Module.Finite.of_restrictScalars_finite 𝒪[K] A₀ B₀
   let : IsGaloisGroup H A₀ B₀ := fixedField_spectralInteger_isGaloisGroup K Ω H
   have := hasSeparableResidueFieldsAt_maximalIdeal A₀ B₀
   exact card_lowerRamificationGroup_zero A₀ B₀ H

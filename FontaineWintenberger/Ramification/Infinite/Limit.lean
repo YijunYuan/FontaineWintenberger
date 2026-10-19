@@ -32,8 +32,7 @@ open CategoryTheory Opposite
 
 variable (K Ω : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [Field Ω] [Algebra K Ω]
-variable [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+variable [PerfectField 𝓀[K]]
 
 /-- Ordinary finite restriction, restricted to the upper subgroups. -/
 noncomputable def finiteUpperRamificationGroupMap
@@ -192,8 +191,7 @@ noncomputable abbrev absoluteUpperRamificationGroup (u : ℝ) :
     Subgroup (SeparableClosure K ≃ₐ[K] SeparableClosure K) :=
   upperRamificationGroupInfinite K (SeparableClosure K) u
 
-variable [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+variable [PerfectField 𝓀[K]]
 
 /-- Absolute upper projection onto every finite Galois subextension. -/
 theorem absolute_map_upperRamificationGroup

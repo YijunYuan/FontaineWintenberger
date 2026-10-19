@@ -9,7 +9,7 @@ proved that belongs upstream. Keep it current when the pin moves.
 | Role | Mathlib |
 |---|---|
 | Nonarchimedean normed field, valuation `‖·‖₊` | `NormedField.valuation`, `NormedField.toValued` (scoped), `IsUltrametricDist` |
-| Integers and residue field | `𝒪[K]` = `Valued.integer`, `𝓀[K]` = `Valued.ResidueField` |
+| Integers and residue field | `𝒪[K]`, `𝓀[K]`: project-scoped notations for `(NormedField.valuation (K := K)).valuationSubring` and its residue field, definitionally `Valued.integer K` / `Valued.ResidueField K` (kept as a `ValuationSubring` so the library's instances apply directly) |
 | Spectral norm on algebraic extensions | `spectralNorm`, `spectralNorm.nontriviallyNormedField`, `spectralNorm.normedAlgebra`, `spectralNorm.completeSpace` |
 | Krasner's lemma | `IsKrasner`, `IsKrasner.of_completeSpace` |
 | Henselian rings, adic completeness | `HenselianLocalRing`, `IsAdicComplete.henselianRing` |

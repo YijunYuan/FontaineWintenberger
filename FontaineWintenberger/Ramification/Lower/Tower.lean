@@ -82,24 +82,23 @@ variable [Algebra.IsSeparable K L]
 variable {Γ : Type*} [LinearOrderedCommGroupWithZero Γ] (w : Valuation L Γ)
 variable [(NormedField.valuation (K := K)).HasExtension w]
 
-local notation "OK" => Valuation.valuationSubring (NormedField.valuation (K := K))
 local notation "OL" => Valuation.valuationSubring w
 
 /-- The index ideal identity for a chosen finite-extension valuation ring. -/
 theorem extensionValuationSubring_map_maximalIdeal :
-    (IsLocalRing.maximalIdeal OK).map (algebraMap OK OL) =
-      IsLocalRing.maximalIdeal OL ^ (IsLocalRing.maximalIdeal OL).ramificationIdx OK := by
+    (IsLocalRing.maximalIdeal 𝒪[K]).map (algebraMap 𝒪[K] OL) =
+      IsLocalRing.maximalIdeal OL ^ (IsLocalRing.maximalIdeal OL).ramificationIdx 𝒪[K] := by
   have := extensionValuationSubring_isDiscreteValuationRing K L w
-  exact map_maximalIdeal_eq_pow_ramificationIdx OK OL
+  exact map_maximalIdeal_eq_pow_ramificationIdx 𝒪[K] OL
 
 /-- Normalized numerical scaling on the and chosen extension fields. -/
 theorem extensionValuationSubring_normalizedValuation_algebraMap (x : K) :
     letI := extensionValuationSubring_isDiscreteValuationRing K L w
     (IsDiscreteValuationRing.maximalIdeal OL).valuation L (algebraMap K L x) =
-      ((IsDiscreteValuationRing.maximalIdeal OK).valuation K x) ^
-        (IsLocalRing.maximalIdeal OL).ramificationIdx OK := by
+      ((IsDiscreteValuationRing.maximalIdeal 𝒪[K]).valuation K x) ^
+        (IsLocalRing.maximalIdeal OL).ramificationIdx 𝒪[K] := by
   have := extensionValuationSubring_isDiscreteValuationRing K L w
-  exact normalizedValuation_algebraMap OK OL K L x
+  exact normalizedValuation_algebraMap 𝒪[K] OL K L x
 
 end ChosenExtension
 

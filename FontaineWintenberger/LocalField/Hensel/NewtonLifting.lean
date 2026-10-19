@@ -34,14 +34,13 @@ section Newton
 
 variable {K : Type*} [NontriviallyNormedField K] [IsUltrametricDist K]
 
-local notation "O" => Valuation.valuationSubring (NormedField.valuation (K := K))
 
-private theorem newton_unitBall_norm_le_one (x : O) : ‖x‖ ≤ 1 := by
+private theorem newton_unitBall_norm_le_one (x : 𝒪[K]) : ‖x‖ ≤ 1 := by
   exact_mod_cast x.property
 
 /-- Integral polynomial evaluation is nonexpanding on the valuation
 unit ball. The divided difference remains in that same integer ring. -/
-theorem unitBall_polynomial_norm_sub_le (F : Polynomial O) (x y : O) :
+theorem unitBall_polynomial_norm_sub_le (F : Polynomial 𝒪[K]) (x y : 𝒪[K]) :
     ‖F.eval x - F.eval y‖ ≤ ‖x - y‖ := by
   obtain ⟨q, hq⟩ := F.evalSubFactor x y
   calc
@@ -51,8 +50,8 @@ theorem unitBall_polynomial_norm_sub_le (F : Polynomial O) (x y : O) :
       exact newton_unitBall_norm_le_one q
     _ = _ := one_mul _
 
-private theorem newton_root_unique {F : Polynomial O} {a : O}
-    (ha : F.eval a = 0) (z : O) (hz : F.eval z = 0)
+private theorem newton_root_unique {F : Polynomial 𝒪[K]} {a : 𝒪[K]}
+    (ha : F.eval a = 0) (z : 𝒪[K]) (hz : F.eval z = 0)
     (hclose : ‖z - a‖ < ‖F.derivative.eval a‖) : z = a := by
   let h := z - a
   obtain ⟨q, hq⟩ := F.binomExpansion a h
@@ -73,7 +72,7 @@ private theorem newton_root_unique {F : Polynomial O} {a : O}
   exact eq_of_sub_eq_zero hh
 
 /-- In the derivative ball, Taylor's linear term determines the exact change in norm. -/
-theorem unitBall_polynomial_norm_sub_eq_of_norm_lt_derivative (F : Polynomial O) (a z : O)
+theorem unitBall_polynomial_norm_sub_eq_of_norm_lt_derivative (F : Polynomial 𝒪[K]) (a z : 𝒪[K])
     (hclose : ‖z - a‖ < ‖F.derivative.eval a‖) :
     ‖F.eval z - F.eval a‖ = ‖F.derivative.eval a‖ * ‖z - a‖ := by
   let h := z - a
@@ -94,11 +93,11 @@ section Hensel
 
 open Nat
 
-variable {F : Polynomial (Valuation.valuationSubring (NormedField.valuation (K := K)))}
-  {a : Valuation.valuationSubring (NormedField.valuation (K := K))}
+variable {F : Polynomial 𝒪[K]}
+  {a : 𝒪[K]}
 
 /-- `T` is an auxiliary value that is used to control the behavior of the polynomial `F`. -/
-private def T_gen (F : Polynomial O) (a : O) : ℝ := ‖F.eval a‖ / ‖F.derivative.eval a‖ ^ 2
+private def T_gen (F : Polynomial 𝒪[K]) (a : 𝒪[K]) : ℝ := ‖F.eval a‖ / ‖F.derivative.eval a‖ ^ 2
 
 local notation "T" => T_gen F a
 
@@ -137,7 +136,7 @@ private theorem T_pow {n : ℕ} (hn : n ≠ 0) : T ^ n < 1 := pow_lt_one₀ T_no
 private theorem T_pow' (n : ℕ) : T ^ 2 ^ n < 1 := T_pow hnorm (pow_ne_zero _ two_ne_zero)
 
 /-- Newton approximations in the valuation unit ball satisfy successive values of `ih`. -/
-private def ih_gen (n : ℕ) (z : O) : Prop :=
+private def ih_gen (n : ℕ) (z : 𝒪[K]) : Prop :=
   ‖F.derivative.eval z‖ = ‖F.derivative.eval a‖ ∧ ‖F.eval z‖ ≤
     ‖F.derivative.eval a‖ ^ 2 * T ^ 2 ^ n
 
@@ -149,7 +148,7 @@ private theorem ih_0 : ih 0 a := by
   rw [mul_comm]
   exact le_of_eq (div_mul_cancel₀ _ (deriv_sq_norm_ne_zero hnorm)).symm
 
-private theorem calc_norm_le_one {n : ℕ} {z : O} (hz : ih n z) :
+private theorem calc_norm_le_one {n : ℕ} {z : 𝒪[K]} (hz : ih n z) :
     ‖(↑(F.eval z) : K) / ↑(F.derivative.eval z)‖ ≤ 1 :=
   calc
     ‖(↑(F.eval z) : K) / ↑(F.derivative.eval z)‖ =
@@ -163,7 +162,7 @@ private theorem calc_norm_le_one {n : ℕ} {z : O} (hz : ih n z) :
     _ = ‖F.derivative.eval a‖ * T ^ 2 ^ n := div_sq_cancel _ _
     _ ≤ 1 := by bound [newton_unitBall_norm_le_one (F.derivative.eval a), T_pow' hnorm n]
 
-private theorem calc_deriv_dist {z z' z1 : O} (hz' : z' = z - z1)
+private theorem calc_deriv_dist {z z' z1 : 𝒪[K]} (hz' : z' = z - z1)
     (hz1 : ‖z1‖ = ‖F.eval z‖ / ‖F.derivative.eval a‖) {n} (hz : ih n z) :
     ‖F.derivative.eval z' - F.derivative.eval z‖ < ‖F.derivative.eval a‖ :=
   calc
@@ -178,10 +177,10 @@ private theorem calc_deriv_dist {z z' z1 : O} (hz' : z' = z - z1)
       (T_pow' hnorm _)
 
 
-private theorem calc_eval_newton {z z' z1 : O} (hz' : z' = z - z1)
+private theorem calc_eval_newton {z z' z1 : 𝒪[K]} (hz' : z' = z - z1)
     {n : ℕ} (hz : ih n z)
     (hzeq : (z1 : K) = (↑(F.eval z) : K) / (↑(F.derivative.eval z) : K)) :
-    ∃ q : O, F.eval z' = q * z1 ^ 2 := by
+    ∃ q : 𝒪[K], F.eval z' = q * z1 ^ 2 := by
   have hdzne : F.derivative.eval z ≠ 0 := by
     intro hzero
     have := hz.1
@@ -197,8 +196,8 @@ private theorem calc_eval_newton {z z' z1 : O} (hz' : z' = z - z1)
   exact ⟨q, by simpa [sub_eq_add_neg, hcancel, hz'] using hq⟩
 
 omit hnorm in
-private theorem calc_eval_newton_norm {z z' z1 : O} {n : ℕ} (hz : ih n z)
-    {q : O} (heq : F.eval z' = q * z1 ^ 2)
+private theorem calc_eval_newton_norm {z z' z1 : 𝒪[K]} {n : ℕ} (hz : ih n z)
+    {q : 𝒪[K]} (heq : F.eval z' = q * z1 ^ 2)
     (hz1 : ‖z1‖ = ‖F.eval z‖ / ‖F.derivative.eval a‖) :
     ‖F.eval z'‖ ≤ ‖F.derivative.eval a‖ ^ 2 * T ^ 2 ^ (n + 1) := by
   calc
@@ -214,18 +213,18 @@ private theorem calc_eval_newton_norm {z z' z1 : O} {n : ℕ} (hz : ih n z)
     _ = ‖F.derivative.eval a‖ ^ 2 * T ^ 2 ^ (n + 1) := by rw [← pow_mul, pow_succ 2]
 
 /-- Division is in `K`; its norm bound proves that the correction belongs to `O`. -/
-private def newton_correction {n : ℕ} {z : O} (hz : ih n z) : O :=
+private def newton_correction {n : ℕ} {z : 𝒪[K]} (hz : ih n z) : 𝒪[K] :=
   ⟨(↑(F.eval z) : K) / (↑(F.derivative.eval z) : K), by
     exact_mod_cast calc_norm_le_one hnorm hz⟩
 
-private theorem newton_correction_norm {n : ℕ} {z : O} (hz : ih n z) :
+private theorem newton_correction_norm {n : ℕ} {z : 𝒪[K]} (hz : ih n z) :
     ‖newton_correction hnorm hz‖ = ‖F.eval z‖ / ‖F.derivative.eval a‖ := by
   change ‖(↑(F.eval z) : K) / (↑(F.derivative.eval z) : K)‖ = _
   rw [norm_div]
   exact congrArg (fun t : ℝ => ‖F.eval z‖ / t) hz.1
 
 /-- The derivative norm is unchanged and the residual is squared at each Newton step. -/
-private def ih_n {n : ℕ} {z : O} (hz : ih n z) : { z' : O // ih (n + 1) z' } := by
+private def ih_n {n : ℕ} {z : 𝒪[K]} (hz : ih n z) : { z' : 𝒪[K] // ih (n + 1) z' } := by
   let z1 := newton_correction hnorm hz
   let z' := z - z1
   have hdist : ‖F.derivative.eval z' - F.derivative.eval z‖ < ‖F.derivative.eval a‖ :=
@@ -234,18 +233,18 @@ private def ih_n {n : ℕ} {z : O} (hz : ih n z) : { z' : O // ih (n + 1) z' } :
     have hsmall : ‖F.derivative.eval z' - F.derivative.eval z‖ < ‖F.derivative.eval z‖ := by
       rwa [hz.1]
     have heq := IsUltrametricDist.isNonarchimedean_norm.add_eq_right_of_lt
-      (norm_neg : ∀ x : O, ‖-x‖ = ‖x‖) hsmall
+      (norm_neg : ∀ x : 𝒪[K], ‖-x‖ = ‖x‖) hsmall
     rw [sub_add_cancel] at heq
     exact heq.trans hz.1
   refine ⟨z', hfeq, ?_⟩
   obtain ⟨q, hq⟩ := calc_eval_newton hnorm (z' := z') rfl hz rfl
   exact calc_eval_newton_norm hz hq (newton_correction_norm hnorm hz)
 
-private def newton_seq_aux : ∀ n : ℕ, { z : O // ih n z }
+private def newton_seq_aux : ∀ n : ℕ, { z : 𝒪[K] // ih n z }
   | 0 => ⟨a, ih_0 hnorm⟩
   | k + 1 => ih_n hnorm (newton_seq_aux k).2
 
-private def newton_seq_gen (n : ℕ) : O := (newton_seq_aux hnorm n).1
+private def newton_seq_gen (n : ℕ) : 𝒪[K] := (newton_seq_aux hnorm n).1
 
 local notation "newton_seq" => newton_seq_gen hnorm
 
@@ -327,12 +326,12 @@ private theorem newton_seq_is_cauchy : CauchySeq newton_seq := by
 field. The derivative may be a nonunit. The root has the exact Newton distance
 from the initial approximation, and is unique in the derivative ball. -/
 theorem unitBall_hensel_nonunit [CompleteSpace K] :
-    ∃ z : O, F.eval z = 0 ∧
+    ∃ z : 𝒪[K], F.eval z = 0 ∧
       ‖z - a‖ < ‖F.derivative.eval a‖ ∧
       ‖F.derivative.eval z‖ = ‖F.derivative.eval a‖ ∧
       ‖z - a‖ = ‖F.eval a‖ / ‖F.derivative.eval a‖ ∧
-      ∀ z' : O, F.eval z' = 0 → ‖z' - a‖ < ‖F.derivative.eval a‖ → z' = z := by
-  let : CompleteSpace O := unitBall_completeSpace K
+      ∀ z' : 𝒪[K], F.eval z' = 0 → ‖z' - a‖ < ‖F.derivative.eval a‖ → z' = z := by
+  let : CompleteSpace 𝒪[K] := unitBall_completeSpace K
   obtain ⟨z, hz⟩ := cauchySeq_tendsto_of_complete (newton_seq_is_cauchy hnorm)
   have heval_lim : Tendsto (fun n => F.eval (newton_seq n)) atTop (𝓝 (F.eval z)) :=
     F.continuousAt.tendsto.comp hz

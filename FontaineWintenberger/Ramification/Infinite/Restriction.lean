@@ -85,8 +85,7 @@ theorem restrictNormal_mem_upperRamificationGroupInfinite (u : ℝ) (hu : -1 ≤
   simpa only [MulEquiv.symm_apply_apply] using h
 
 variable [IsGalois K Ω]
-variable [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+variable [PerfectField 𝓀[K]]
 
 /-- A finite list of prescribed subextension restrictions is realized inside the upper
 group. -/

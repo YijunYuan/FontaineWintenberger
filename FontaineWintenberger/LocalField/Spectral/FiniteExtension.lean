@@ -26,31 +26,30 @@ variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField 
 variable (L : Type*) [Field L] [Algebra K L] [FiniteDimensional K L]
 variable [Algebra.IsSeparable K L]
 
-local notation "OK" => Valuation.valuationSubring (NormedField.valuation (K := K))
 local notation "OL" => spectralIntegerRing K L
 
 
-instance spectralIntegerRing_moduleFinite : Module.Finite OK OL :=
-  IsIntegralClosure.finite (A := OK) (K := K) (L := L) (C := OL)
+instance spectralIntegerRing_moduleFinite : Module.Finite 𝒪[K] OL :=
+  IsIntegralClosure.finite (A := 𝒪[K]) (K := K) (L := L) (C := OL)
 
-instance spectralIntegerRing_moduleFree : Module.Free OK OL :=
-  IsIntegralClosure.module_free OK K L OL
+instance spectralIntegerRing_moduleFree : Module.Free 𝒪[K] OL :=
+  IsIntegralClosure.module_free 𝒪[K] K L OL
 
-theorem spectralIntegerRing_finrank : Module.finrank OK OL = Module.finrank K L :=
-  IsIntegralClosure.rank OK K L OL
+theorem spectralIntegerRing_finrank : Module.finrank 𝒪[K] OL = Module.finrank K L :=
+  IsIntegralClosure.rank 𝒪[K] K L OL
 
 instance spectralIntegerRing_isNoetherianRing : IsNoetherianRing OL :=
-  IsNoetherianRing.of_finite OK OL
+  IsNoetherianRing.of_finite 𝒪[K] OL
 
 theorem spectralIntegerRing_not_isField : ¬ IsField OL := by
   rw [IsLocalRing.isField_iff_maximalIdeal_eq]
   intro hm
-  obtain ⟨π, hπ⟩ := IsDiscreteValuationRing.exists_irreducible OK
-  have hmem : algebraMap OK OL π ∈ IsLocalRing.maximalIdeal OL :=
-    map_nonunit (algebraMap OK OL) π hπ.not_isUnit
-  have hz : algebraMap OK OL π = 0 := by simpa [hm] using hmem
+  obtain ⟨π, hπ⟩ := IsDiscreteValuationRing.exists_irreducible 𝒪[K]
+  have hmem : algebraMap 𝒪[K] OL π ∈ IsLocalRing.maximalIdeal OL :=
+    map_nonunit (algebraMap 𝒪[K] OL) π hπ.not_isUnit
+  have hz : algebraMap 𝒪[K] OL π = 0 := by simpa [hm] using hmem
   apply hπ.ne_zero
-  apply FaithfulSMul.algebraMap_injective OK OL
+  apply FaithfulSMul.algebraMap_injective 𝒪[K] OL
   exact hz.trans (map_zero _).symm
 
 instance spectralIntegerRing_isDiscreteValuationRing : IsDiscreteValuationRing OL := by

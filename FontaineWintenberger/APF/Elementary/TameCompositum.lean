@@ -66,8 +66,7 @@ private theorem sup_eq_top_iff_subgroupOf_sup_eq_top
 variable (K L : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [NontriviallyNormedField L] [NormedAlgebra K L] [IsUltrametricDist L]
     [FiniteDimensional K L] [IsGalois K L]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+    [PerfectField 𝓀[K]]
 
 local notation "G" => L ≃ₐ[K] L
 local notation "P" => lowerRamificationGroup G
@@ -77,15 +76,13 @@ local notation "U" => upperRamificationGroup (R := spectralIntegerRing K L) G
 
 local notation "e" => Ideal.ramificationIdx
   (IsLocalRing.maximalIdeal (spectralIntegerRing K A))
-  (Valuation.valuationSubring (NormedField.valuation (K := K)))
+  𝒪[K]
 
 local instance wildFirstBound_completeSpace : CompleteSpace A := FiniteDimensional.complete K A
 local instance wildFirstBound_discreteValuationRing : IsCompleteDiscreteValuedField A :=
   normedAlgebra_isCompleteDiscreteValuedField K A
-local instance wildFirstBound_perfectField : PerfectField (IsLocalRing.ResidueField
-    (NormedField.valuation (K := A)).valuationSubring) :=
-  Algebra.IsAlgebraic.perfectField (IsLocalRing.ResidueField
-    (NormedField.valuation (K := K)).valuationSubring)
+local instance wildFirstBound_perfectField : PerfectField 𝓀[A] :=
+  Algebra.IsAlgebraic.perfectField 𝓀[K]
 
 local instance wildFirstBound_finiteDimensional : FiniteDimensional A L :=
   FiniteDimensional.right K A L
@@ -97,8 +94,7 @@ local instance wildFirstBound_spectralDVR : IsDiscreteValuationRing
   infer_instance
 
 omit [IsUltrametricDist L] [FiniteDimensional K L]
-  [PerfectField (IsLocalRing.ResidueField
-    (NormedField.valuation (K := K)).valuationSubring)] in
+  [PerfectField 𝓀[K]] in
 private theorem wild_compositum_fixing_map (J : Subgroup G) :
     ((IntermediateField.fixedField P ⊔ IntermediateField.fixedField J).fixingSubgroup.subgroupOf
         (A).fixingSubgroup).map
@@ -110,8 +106,7 @@ private theorem wild_compositum_fixing_map (J : Subgroup G) :
   rfl
 
 omit [IsUltrametricDist L]
-  [PerfectField (IsLocalRing.ResidueField
-    (NormedField.valuation (K := K)).valuationSubring)] in
+  [PerfectField 𝓀[K]] in
 private theorem wild_compositum_fixing_proper (J : Subgroup G) (hH : J ≠ ⊤) (hHP : J ⊔ P = ⊤) :
     (IntermediateField.extendScalars (le_sup_left : IntermediateField.fixedField P ≤
         (IntermediateField.fixedField P ⊔ IntermediateField.fixedField J))).fixingSubgroup ≠ ⊤ := by
@@ -238,7 +233,7 @@ theorem exists_apfRamificationBound_wild_compositum_of_totallyRamified
     (he : (IsLocalRing.maximalIdeal (Valuation.valuationSubring
       (Valuation.comap (algebraMap (IntermediateField.fixedField J) L)
         (spectralValuation K L)))).ramificationIdx
-          (NormedField.valuation (K := K)).valuationSubring =
+          𝒪[K] =
             Module.finrank K (IntermediateField.fixedField J))
     (n : ℕ) (hd : Module.finrank K (IntermediateField.fixedField J) = p ^ n)
     (hdegree : 1 < Module.finrank K (IntermediateField.fixedField J)) :
@@ -284,8 +279,7 @@ private theorem relIndex_inf_of_sup_eq_top
     _ = P.relIndex D := congrArg P.relIndex hD
 
 variable (K Ω : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+    [PerfectField 𝓀[K]]
     [NontriviallyNormedField Ω] [NormedAlgebra K Ω] [IsUltrametricDist Ω]
     [FiniteDimensional K Ω] [IsGalois K Ω]
 
@@ -295,23 +289,21 @@ local notation "P" => lowerRamificationGroup G
 local notation "A" => IntermediateField.fixedField P
 local notation "e" => Ideal.ramificationIdx
   (IsLocalRing.maximalIdeal (spectralIntegerRing K A))
-  (Valuation.valuationSubring (NormedField.valuation (K := K)))
+  𝒪[K]
 
 local instance (E : IntermediateField K Ω) : CompleteSpace E :=
   FiniteDimensional.complete K E
 local instance (E : IntermediateField K Ω) :
     IsCompleteDiscreteValuedField E :=
   normedAlgebra_isCompleteDiscreteValuedField K E
-local instance (E : IntermediateField K Ω) : PerfectField (IsLocalRing.ResidueField
-    (NormedField.valuation (K := E)).valuationSubring) :=
+local instance (E : IntermediateField K Ω) : PerfectField 𝓀[E] :=
   normedAlgebra_residueField_perfectField K E
 local instance (E : IntermediateField K Ω) : FiniteDimensional E Ω :=
   Module.Finite.right K E Ω
 local instance (E : IntermediateField K Ω) : IsGalois E Ω :=
   IsGalois.tower_top_of_isGalois K E Ω
 
-omit [PerfectField (IsLocalRing.ResidueField
-  (NormedField.valuation (K := K)).valuationSubring)] in
+omit [PerfectField 𝓀[K]] in
 /-- The tame compositum, over any intermediate base, is its
 own wild fixed field. No normality of the intermediate base is needed. -/
 theorem wild_compositum_extendScalars_eq_fixedField (F : IntermediateField K Ω) :
@@ -336,7 +328,7 @@ omit [IsUltrametricDist Ω] in
 theorem wild_fixedField_apfPsi {u : ℝ} (hu : 0 ≤ u) :
     apfPsi K A u =
       ((IsLocalRing.maximalIdeal (spectralIntegerRing K A)).ramificationIdx
-        (NormedField.valuation (K := K)).valuationSubring : ℝ) * u := by
+        𝒪[K] : ℝ) * u := by
   rw [apfPsi_eq_inverseHerbrandFunction K A (by linarith),
     wild_fixedField_inverseHerbrandFunction K Ω hu]
 
@@ -348,7 +340,7 @@ theorem wild_compositum_apfPsi_over_right (F : IntermediateField K Ω)
         (show F ≤ A ⊔ F from le_sup_right)) u =
       ((IsLocalRing.maximalIdeal (spectralIntegerRing F
         (IntermediateField.extendScalars (show F ≤ A ⊔ F from le_sup_right)))).ramificationIdx
-          (NormedField.valuation (K := F)).valuationSubring : ℝ) * u := by
+          𝒪[F] : ℝ) * u := by
   rw [wild_compositum_extendScalars_eq_fixedField K Ω F]
   exact wild_fixedField_apfPsi F Ω hu
 
@@ -358,9 +350,9 @@ theorem wild_compositum_ramificationIdx_eq (F : IntermediateField K Ω)
     (hFP : F.fixingSubgroup ⊔ P = ⊤) :
     (IsLocalRing.maximalIdeal (spectralIntegerRing F
       (IntermediateField.extendScalars (show F ≤ A ⊔ F from le_sup_right)))).ramificationIdx
-        (NormedField.valuation (K := F)).valuationSubring =
+        𝒪[F] =
       (IsLocalRing.maximalIdeal (spectralIntegerRing K A)).ramificationIdx
-        (NormedField.valuation (K := K)).valuationSubring := by
+        𝒪[K] := by
   let M := A ⊔ F
   let N := IntermediateField.extendScalars (show F ≤ M from le_sup_right)
   have hfix : N.fixingSubgroup =
@@ -376,7 +368,7 @@ theorem wild_compositum_ramificationIdx_eq (F : IntermediateField K Ω)
       IntermediateField.fixingSubgroup_fixedField, Subgroup.mem_inf]
     exact and_iff_left g.property
   change (IsLocalRing.maximalIdeal (spectralIntegerRing F N)).ramificationIdx
-      (NormedField.valuation (K := F)).valuationSubring = _
+      𝒪[F] = _
   rw [intermediate_spectral_ramificationIdx_eq_relIndex F Ω N, hfix,
     ← finiteBase_lower_map_fixingSubgroupEquiv K Ω F 0,
     Subgroup.relIndex_map_map_of_injective _ _ F.fixingSubgroupEquiv.injective,
@@ -463,14 +455,14 @@ theorem wild_compositum_herbrand_scaling_of_totallyRamified
     (H : Subgroup G)
     (he : (IsLocalRing.maximalIdeal ((spectralValuation K Ω).comap
       (algebraMap (IntermediateField.fixedField H) Ω)).valuationSubring).ramificationIdx
-        (NormedField.valuation (K := K)).valuationSubring =
+        𝒪[K] =
           Module.finrank K (IntermediateField.fixedField H))
     (n : ℕ) (hd : Module.finrank K (IntermediateField.fixedField H) = p ^ n) :
     let F := IntermediateField.fixedField H
     let MA := IntermediateField.extendScalars (show A ≤ A ⊔ F from le_sup_left)
     let MF := IntermediateField.extendScalars (show F ≤ A ⊔ F from le_sup_right)
     (IsLocalRing.maximalIdeal (spectralIntegerRing F MF)).ramificationIdx
-      (NormedField.valuation (K := F)).valuationSubring = e ∧
+      𝒪[F] = e ∧
     ∀ u : ℝ, 0 ≤ u →
       apfPsi F MF u = (e : ℝ) * u ∧
       apfPsi A MA ((e : ℝ) * u) = (e : ℝ) * apfPsi K F u ∧

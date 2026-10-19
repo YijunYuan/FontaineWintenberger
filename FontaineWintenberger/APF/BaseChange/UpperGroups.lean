@@ -56,8 +56,7 @@ local instance finiteOverfieldBase_completeSpace : CompleteSpace M :=
 local instance finiteOverfieldBase_discreteValuationRing : IsCompleteDiscreteValuedField M :=
   normedAlgebra_isCompleteDiscreteValuedField K M
 
-variable [PerfectField (IsLocalRing.ResidueField
-    (NormedField.valuation (K := K)).valuationSubring)]
+variable [PerfectField 𝓀[K]]
 
 /-- Finite base change for the own-ring upper groups, with no normality of the base. -/
 theorem finiteBase_upperRamificationGroup_of_finiteGalois {u : ℝ} (hu : -1 ≤ u) :
@@ -99,8 +98,7 @@ local instance : CompleteSpace M := IntermediateField.completeSpace_of_finiteDim
 local instance : IsCompleteDiscreteValuedField M :=
   normedAlgebra_isCompleteDiscreteValuedField K M
 
-variable [PerfectField (IsLocalRing.ResidueField
-    (NormedField.valuation (K := K)).valuationSubring)]
+variable [PerfectField 𝓀[K]]
 
 /-- Finite base change for the own-ring upper groups, with no normality of the base. -/
 theorem finiteBase_upperRamificationGroup {u : ℝ} (hu : -1 ≤ u) :
@@ -218,8 +216,7 @@ theorem finiteTower_range_restrictScalarsHom :
 
 variable [FiniteDimensional K M] [Algebra.IsSeparable K M]
 
-variable [PerfectField (IsLocalRing.ResidueField
-    (NormedField.valuation (K := K)).valuationSubring)]
+variable [PerfectField 𝓀[K]]
 
 /-- Finite base change for the abstract embedded base, mapped to its fixing subgroup. -/
 theorem finiteTower_upper_map_restrictScalars {u : ℝ} (hu : -1 ≤ u) :
@@ -283,8 +280,7 @@ end FontaineWintenberger
 namespace FontaineWintenberger
 
 variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+    [PerfectField 𝓀[K]]
 variable (M : IntermediateField K (SeparableClosure K)) [FiniteDimensional K M]
 
 noncomputable local instance : NontriviallyNormedField M :=
@@ -296,8 +292,7 @@ local instance : IsUltrametricDist M :=
 local instance : CompleteSpace M := spectralNorm.completeSpace K M
 local instance : IsCompleteDiscreteValuedField M :=
   normedAlgebra_isCompleteDiscreteValuedField K M
-local instance : PerfectField (IsLocalRing.ResidueField
-    (NormedField.valuation (K := M)).valuationSubring) :=
+local instance : PerfectField 𝓀[M] :=
   normedAlgebra_residueField_perfectField K M
 
 /-- New-base upper conditions can be tested on the old-base normal overfields. -/

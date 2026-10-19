@@ -81,29 +81,27 @@ theorem intermediate_spectral_henselianLocalRing (F : IntermediateField K L) :
     ((spectralValuation K L).comap (algebraMap F L))
 
 /-- Integral generators exist in the intermediate integer ring. -/
-theorem intermediate_spectral_exists_generator [PerfectField (IsLocalRing.ResidueField
-    (NormedField.valuation (K := K)).valuationSubring)] (F : IntermediateField K L) :
+theorem intermediate_spectral_exists_generator [PerfectField 𝓀[K]] (F : IntermediateField K L) :
     ∃ y : ((spectralValuation K L).comap (algebraMap F L)).valuationSubring,
-      Algebra.adjoin (NormedField.valuation (K := K)).valuationSubring {y} = ⊤ :=
+      Algebra.adjoin 𝒪[K] {y} = ⊤ :=
   extensionValuationSubring_exists_generator K F
     ((spectralValuation K L).comap (algebraMap F L))
 
 variable (H : Subgroup (L ≃ₐ[K] L))
 
 local notation "F" => IntermediateField.fixedField H
-local notation "R" => Valuation.valuationSubring (NormedField.valuation (K := K))
 local notation "A" => Valuation.valuationSubring
   (Valuation.comap (algebraMap F L) (spectralValuation K L))
 local notation "B" => spectralIntegerRing K L
 
 /-- The top integers are finite over the fixed-field integers. -/
 theorem fixedField_integer_moduleFinite : Module.Finite A B :=
-  Module.Finite.of_restrictScalars_finite R A B
+  Module.Finite.of_restrictScalars_finite 𝒪[K] A B
 
 /-- The top integer ring has the fixed-field integers as its invariants. -/
 theorem fixedField_integer_isGaloisGroup : IsGaloisGroup H A B := by
   have : IsDiscreteValuationRing A := intermediate_spectral_isDiscreteValuationRing K L F
-  have : Algebra.IsIntegral A B := Algebra.IsIntegral.tower_top R
+  have : Algebra.IsIntegral A B := Algebra.IsIntegral.tower_top 𝒪[K]
   have : SMulDistribClass H B L := {
     smul_distrib_smul := fun h x z => by
       change (h : L ≃ₐ[K] L) ((x : L) * z) = ((h • x : B) : L) * (h : L ≃ₐ[K] L) z

@@ -26,15 +26,14 @@ variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField 
 variable (L : Type*) [Field L] [Algebra K L] [FiniteDimensional K L]
     [Algebra.IsSeparable K L]
 
-local notation "R" => Valuation.valuationSubring (NormedField.valuation (K := K))
 
 omit [FiniteDimensional K L] in
 /-- A field isomorphism preserves the canonical residue degree. -/
 theorem spectral_residueDegree_algEquiv {M : Type*} [Field M] [Algebra K M]
     [Algebra.IsSeparable K M] (e : L ≃ₐ[K] M) :
-    Module.finrank (IsLocalRing.ResidueField R)
+    Module.finrank (IsLocalRing.ResidueField 𝒪[K])
         (IsLocalRing.ResidueField (spectralIntegerRing K M)) =
-      Module.finrank (IsLocalRing.ResidueField R)
+      Module.finrank (IsLocalRing.ResidueField 𝒪[K])
         (IsLocalRing.ResidueField (spectralIntegerRing K L)) :=
   (IsLocalRing.ResidueField.mapAlgEquiv' (spectralIntegerRingEquiv K
       e)).toLinearEquiv.finrank_eq.symm
@@ -45,12 +44,12 @@ theorem extensionValuationSubring_residueDegree_eq_spectral
     {Γ : Type*} [LinearOrderedCommGroupWithZero Γ] (w : Valuation L Γ)
     [(NormedField.valuation (K := K)).HasExtension w] :
     letI := extensionValuationSubring_isDiscreteValuationRing K L w
-    Module.finrank (IsLocalRing.ResidueField R) (IsLocalRing.ResidueField w.valuationSubring) =
-      Module.finrank (IsLocalRing.ResidueField R)
+    Module.finrank (IsLocalRing.ResidueField 𝒪[K]) (IsLocalRing.ResidueField w.valuationSubring) =
+      Module.finrank (IsLocalRing.ResidueField 𝒪[K])
         (IsLocalRing.ResidueField (spectralIntegerRing K L)) := by
   have := extensionValuationSubring_isDiscreteValuationRing K L w
   exact (IsLocalRing.ResidueField.mapAlgEquiv'
-    (IsIntegralClosure.equiv R (spectralIntegerRing K L) L
+    (IsIntegralClosure.equiv 𝒪[K] (spectralIntegerRing K L) L
         w.valuationSubring)).toLinearEquiv.finrank_eq.symm
 
 end FontaineWintenberger

@@ -53,7 +53,7 @@ private theorem spectralIntegerInclusion_sub_mem_pow_of_normedTower
     [Algebra.IsAlgebraic K E] [Algebra.IsAlgebraic K L] [Algebra.IsAlgebraic E L]
     [IsDiscreteValuationRing (spectralIntegerRing K E)]
     [IsDiscreteValuationRing (spectralIntegerRing K L)]
-    [IsDiscreteValuationRing (NormedField.valuation (K := E)).valuationSubring]
+    [IsDiscreteValuationRing 𝒪[E]]
     [IsDiscreteValuationRing (spectralIntegerRing E L)]
     (i : E →ₐ[K] L) (hi : ∀ z, algebraMap E L z = i z)
     (r : ℕ) (x y : spectralIntegerRing K E)
@@ -62,8 +62,8 @@ private theorem spectralIntegerInclusion_sub_mem_pow_of_normedTower
       spectralIntegerInclusion K i y ∈
       IsLocalRing.maximalIdeal (spectralIntegerRing K L) ^
         ((IsLocalRing.maximalIdeal (spectralIntegerRing E L)).ramificationIdx
-          (NormedField.valuation (K := E)).valuationSubring * r) := by
-  let RF := (NormedField.valuation (K := E)).valuationSubring
+          𝒪[E] * r) := by
+  let RF := 𝒪[E]
   let T := spectralIntegerRing E L
   let f : spectralIntegerRing K E ≃+* RF :=
     RingEquiv.subringCongr (congrArg ValuationSubring.toSubring
@@ -97,15 +97,14 @@ local notation "P" => lowerRamificationGroup G
 local notation "A" => IntermediateField.fixedField P
 local notation "e" => Ideal.ramificationIdx
   (IsLocalRing.maximalIdeal (spectralIntegerRing K A))
-  (Valuation.valuationSubring (NormedField.valuation (K := K)))
+  𝒪[K]
 
 local instance (E : IntermediateField K Ω) : CompleteSpace E :=
   FiniteDimensional.complete K E
 local instance (E : IntermediateField K Ω) :
     IsCompleteDiscreteValuedField E :=
   normedAlgebra_isCompleteDiscreteValuedField K E
-local instance (E : IntermediateField K Ω) : PerfectField (IsLocalRing.ResidueField
-    (NormedField.valuation (K := E)).valuationSubring) :=
+local instance (E : IntermediateField K Ω) : PerfectField 𝓀[E] :=
   normedAlgebra_residueField_perfectField K E
 
 /-- Finite-layer integer inclusions multiply integral precision by
@@ -119,7 +118,7 @@ theorem spectralIntegerInclusion_sub_mem_pow_ramificationIdx
       spectralIntegerInclusion K (IntermediateField.inclusion hFM) y ∈
       IsLocalRing.maximalIdeal (spectralIntegerRing K M) ^
         ((IsLocalRing.maximalIdeal (spectralIntegerRing F MF)).ramificationIdx
-          (NormedField.valuation (K := F)).valuationSubring * r) := by
+          𝒪[F] * r) := by
   let MF := IntermediateField.extendScalars hFM
   let : NontriviallyNormedField MF := inferInstanceAs (NontriviallyNormedField M)
   let : NormedAlgebra K MF := inferInstanceAs (NormedAlgebra K M)
@@ -157,19 +156,19 @@ theorem intNorm_sub_congruence_of_totallyRamified_fixedField
     (H : Subgroup G)
     (he : (IsLocalRing.maximalIdeal ((spectralValuation K Ω).comap
       (algebraMap (IntermediateField.fixedField H) Ω)).valuationSubring).ramificationIdx
-        (NormedField.valuation (K := K)).valuationSubring =
+        𝒪[K] =
           Module.finrank K (IntermediateField.fixedField H))
     (n : ℕ) (hd : Module.finrank K (IntermediateField.fixedField H) = p ^ n)
     (r : ℕ) (x y : spectralIntegerRing K (IntermediateField.fixedField H))
     (hxy : x - y ∈ IsLocalRing.maximalIdeal
       (spectralIntegerRing K (IntermediateField.fixedField H)) ^ r) :
-    Algebra.intNorm (NormedField.valuation (K := K)).valuationSubring
+    Algebra.intNorm 𝒪[K]
         (spectralIntegerRing K (IntermediateField.fixedField H)) x -
-      Algebra.intNorm (NormedField.valuation (K := K)).valuationSubring
+      Algebra.intNorm 𝒪[K]
         (spectralIntegerRing K (IntermediateField.fixedField H)) y ∈
-      IsLocalRing.maximalIdeal (NormedField.valuation (K := K)).valuationSubring ^
+      IsLocalRing.maximalIdeal 𝒪[K] ^
         ⌈apfPhi K (IntermediateField.fixedField H) (r : ℝ)⌉₊ := by
-  let R := (NormedField.valuation (K := K)).valuationSubring
+  let R := 𝒪[K]
   let F := IntermediateField.fixedField H
   let S := spectralIntegerRing K F
   let T := spectralIntegerRing K A
@@ -208,7 +207,6 @@ section Extension
 
 variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
 
-local notation "R" => Valuation.valuationSubring (NormedField.valuation (K := K))
 
 /-- The intermediate field need not be normal: its own total
 ramification and prime-power degree give the norm continuity modulus. -/
@@ -218,13 +216,13 @@ theorem intNorm_sub_congruence_of_totallyRamified_intermediateField
     (p : ℕ) [Fact p.Prime]
     [CharP (IsLocalRing.ResidueField (spectralIntegerRing K Ω)) p]
     (M : IntermediateField K Ω)
-    (he : (IsLocalRing.maximalIdeal (spectralIntegerRing K M)).ramificationIdx R =
+    (he : (IsLocalRing.maximalIdeal (spectralIntegerRing K M)).ramificationIdx 𝒪[K] =
       Module.finrank K M)
     (n : ℕ) (hd : Module.finrank K M = p ^ n)
     (r : ℕ) (x y : spectralIntegerRing K M)
     (hxy : x - y ∈ IsLocalRing.maximalIdeal (spectralIntegerRing K M) ^ r) :
-    Algebra.intNorm R (spectralIntegerRing K M) x -
-      Algebra.intNorm R (spectralIntegerRing K M) y ∈ IsLocalRing.maximalIdeal R ^
+    Algebra.intNorm 𝒪[K] (spectralIntegerRing K M) x -
+      Algebra.intNorm 𝒪[K] (spectralIntegerRing K M) y ∈ IsLocalRing.maximalIdeal 𝒪[K] ^
         ⌈apfPhi K M (r : ℝ)⌉₊ := by
   let H := M.fixingSubgroup
   have hM : IntermediateField.fixedField H = M := IsGalois.fixedField_fixingSubgroup M
@@ -234,7 +232,7 @@ theorem intNorm_sub_congruence_of_totallyRamified_intermediateField
     (algebraMap (IntermediateField.fixedField H) Ω)
   have he' :
       letI := extensionValuationSubring_isDiscreteValuationRing K (IntermediateField.fixedField H) w
-      (IsLocalRing.maximalIdeal w.valuationSubring).ramificationIdx R =
+      (IsLocalRing.maximalIdeal w.valuationSubring).ramificationIdx 𝒪[K] =
         Module.finrank K (IntermediateField.fixedField H) := by
     rw [extensionValuationSubring_ramificationIdx_eq_spectral K
       (IntermediateField.fixedField H) w]
@@ -251,11 +249,11 @@ private theorem intNorm_sub_congruence_of_algEquiv
     [Algebra.IsSeparable K M] (e : L ≃ₐ[K] M) (r : ℕ)
     (hM : ∀ u v : spectralIntegerRing K M,
       u - v ∈ IsLocalRing.maximalIdeal (spectralIntegerRing K M) ^ r →
-        Algebra.intNorm R (spectralIntegerRing K M) u -
-          Algebra.intNorm R (spectralIntegerRing K M) v ∈ IsLocalRing.maximalIdeal R ^
+        Algebra.intNorm 𝒪[K] (spectralIntegerRing K M) u -
+          Algebra.intNorm 𝒪[K] (spectralIntegerRing K M) v ∈ IsLocalRing.maximalIdeal 𝒪[K] ^
             ⌈apfPhi K M (r : ℝ)⌉₊)
     (x y : S) (hxy : x - y ∈ IsLocalRing.maximalIdeal S ^ r) :
-    Algebra.intNorm R S x - Algebra.intNorm R S y ∈ IsLocalRing.maximalIdeal R ^
+    Algebra.intNorm 𝒪[K] S x - Algebra.intNorm 𝒪[K] S y ∈ IsLocalRing.maximalIdeal 𝒪[K] ^
       ⌈apfPhi K L (r : ℝ)⌉₊ := by
   let f := spectralIntegerRingEquiv K e
   have hxy' : f x - f y ∈ IsLocalRing.maximalIdeal (spectralIntegerRing K M) ^ r := by
@@ -270,11 +268,11 @@ private theorem intNorm_sub_congruence_of_algEquiv
 has its intrinsic Herbrand norm modulus, over an arbitrary perfect residue
 field. The trivial extension and zero inputs are included. -/
 theorem intNorm_sub_congruence_of_totallyRamified
-    (p : ℕ) [Fact p.Prime] [CharP (IsLocalRing.ResidueField R) p]
-    (he : (IsLocalRing.maximalIdeal S).ramificationIdx R = Module.finrank K L)
+    (p : ℕ) [Fact p.Prime] [CharP (IsLocalRing.ResidueField 𝒪[K]) p]
+    (he : (IsLocalRing.maximalIdeal S).ramificationIdx 𝒪[K] = Module.finrank K L)
     (n : ℕ) (hd : Module.finrank K L = p ^ n)
     (r : ℕ) (x y : S) (hxy : x - y ∈ IsLocalRing.maximalIdeal S ^ r) :
-    Algebra.intNorm R S x - Algebra.intNorm R S y ∈ IsLocalRing.maximalIdeal R ^
+    Algebra.intNorm 𝒪[K] S x - Algebra.intNorm 𝒪[K] S y ∈ IsLocalRing.maximalIdeal 𝒪[K] ^
       ⌈apfPhi K L (r : ℝ)⌉₊ := by
   let j : L →ₐ[K] SeparableClosure K := IsSepClosed.lift
   let Ω := IntermediateField.normalClosure K L (SeparableClosure K)
@@ -284,14 +282,14 @@ theorem intNorm_sub_congruence_of_totallyRamified
     IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
       (isNonarchimedean_spectralNorm (K := K) (L := Ω))
   have : CharP (IsLocalRing.ResidueField (spectralIntegerRing K Ω)) p :=
-    charP_of_injective_algebraMap' (IsLocalRing.ResidueField R) p
+    charP_of_injective_algebraMap' (IsLocalRing.ResidueField 𝒪[K]) p
   let i : L →ₐ[K] Ω :=
     j.codRestrict Ω.toSubalgebra (fun x => j.fieldRange_le_normalClosure ⟨x, rfl⟩)
   let M := i.fieldRange
   let e : L ≃ₐ[K] M := i.equivFieldRange
   let : FiniteDimensional K M := Module.Finite.equiv e.toLinearEquiv
   have hn : Module.finrank K M = Module.finrank K L := e.toLinearEquiv.finrank_eq.symm
-  have heM : (IsLocalRing.maximalIdeal (spectralIntegerRing K M)).ramificationIdx R =
+  have heM : (IsLocalRing.maximalIdeal (spectralIntegerRing K M)).ramificationIdx 𝒪[K] =
       Module.finrank K M := by
     rw [spectral_ramificationIdx_algEquiv K e, he, hn]
   exact intNorm_sub_congruence_of_algEquiv K L M e r

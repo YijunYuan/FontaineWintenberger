@@ -26,8 +26,7 @@ noncomputable section
 namespace FontaineWintenberger.FiniteIntermediateField
 
 variable {K Ω : Type*} [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+    [PerfectField 𝓀[K]]
     [NontriviallyNormedField Ω] [NormedAlgebra K Ω] [IsUltrametricDist Ω]
     [FiniteDimensional K Ω] [IsGalois K Ω]
 
@@ -37,10 +36,8 @@ local instance wildNorm_discreteValuationRing (E : FiniteIntermediateField K Ω)
     IsCompleteDiscreteValuedField E.val :=
   normedAlgebra_isCompleteDiscreteValuedField K E.val
 local instance wildNorm_perfectField (E : FiniteIntermediateField K Ω) : PerfectField
-    (IsLocalRing.ResidueField
-    (NormedField.valuation (K := E.val)).valuationSubring) :=
-  Algebra.IsAlgebraic.perfectField (IsLocalRing.ResidueField
-    (NormedField.valuation (K := K)).valuationSubring)
+    𝓀[E.val] :=
+  Algebra.IsAlgebraic.perfectField 𝓀[K]
 
 local notation "P" => lowerRamificationGroup (Ω ≃ₐ[K] Ω)
   (IsLocalRing.maximalIdeal (spectralIntegerRing K Ω)) 1

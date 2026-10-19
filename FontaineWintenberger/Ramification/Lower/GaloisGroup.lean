@@ -6,6 +6,7 @@ Authors: Yijun Yuan
 module
 
 public import FontaineWintenberger.Mathlib.Analysis.SpectralIntegers
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.Lower.Basic
 
 /-!
@@ -23,7 +24,6 @@ namespace FontaineWintenberger
 variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsAlgebraic K L]
 
-local notation "OK" => Valuation.valuationSubring (NormedField.valuation (K := K))
 local notation "OL" => spectralIntegerRing K L
 local notation "D" => ValuationSubring.decompositionSubgroup K (spectralIntegerRing K L)
 
@@ -48,7 +48,7 @@ instance spectralIntegerRing_galois_faithfulSMul : FaithfulSMul (L ≃ₐ[K] L) 
     apply (spectralDecompositionEquiv K L).symm.injective
     exact FaithfulSMul.eq_of_smul_eq_smul (α := OL) h
 
-instance spectralIntegerRing_galois_smulCommClass : SMulCommClass (L ≃ₐ[K] L) OK OL where
+instance spectralIntegerRing_galois_smulCommClass : SMulCommClass (L ≃ₐ[K] L) 𝒪[K] OL where
   smul_comm g r x := by
     apply Subtype.ext
     change g ((r : K) • (x : L)) = (r : K) • g (x : L)

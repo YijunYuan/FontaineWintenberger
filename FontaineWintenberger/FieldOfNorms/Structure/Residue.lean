@@ -141,7 +141,7 @@ field of the canonical integral closure in the extension. -/
 def FieldOfNorms.residueEquiv :
     IsLocalRing.ResidueField (FieldOfNorms.fieldValuation K L).valuationSubring ≃+*
       IsLocalRing.ResidueField
-        (integralClosure (NormedField.valuation (K := K)).valuationSubring L) := by
+        (integralClosure 𝒪[K] L) := by
   let T := apfResidueLayer K L
   let E := deepFiniteTower K L T 0
   exact (FieldOfNorms.residueLayerEquiv K L T).trans

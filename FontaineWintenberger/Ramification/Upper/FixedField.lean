@@ -28,7 +28,6 @@ variable (L : Type*) [Field L] [Algebra K L] [IsGalois K L]
 variable (H : Subgroup (L ≃ₐ[K] L)) [H.Normal]
 
 local notation "F₀" => IntermediateField.fixedField H
-local notation "R₀" => Valuation.valuationSubring (NormedField.valuation (K := K))
 local notation "A₀" => Valuation.valuationSubring
   (Valuation.comap (algebraMap F₀ L) (spectralValuation K L))
 local notation "B₀" => spectralIntegerRing K L
@@ -137,7 +136,7 @@ theorem fixedFieldDecompositionRestriction_algebraMap (σ : L ≃ₐ[K] L) (a : 
   exact AlgEquiv.restrictNormal_commutes σ F₀ (a : F₀)
 
 /-- The intrinsic decomposition action fixes the coefficient integers. -/
-instance fixedFieldDecomposition_smulCommClass : SMulCommClass D₀ R₀ A₀ where
+instance fixedFieldDecomposition_smulCommClass : SMulCommClass D₀ 𝒪[K] A₀ where
   smul_comm g r a := by
     apply Subtype.ext
     change (g : F₀ ≃ₐ[K] F₀) ((r : K) • (a : F₀)) =
@@ -147,15 +146,14 @@ instance fixedFieldDecomposition_smulCommClass : SMulCommClass D₀ R₀ A₀ wh
 omit [H.Normal] in
 /-- Passing to the induced integer algebra automorphism preserves the intrinsic order. -/
 theorem fixedFieldDecomposition_order
-    [IsDiscreteValuationRing (NormedField.valuation (K := K)).valuationSubring]
+    [IsDiscreteValuationRing 𝒪[K]]
     (g : D₀) :
     letI := intermediate_spectral_isDiscreteValuationRing K L F₀
-    ramificationOrder (R := A₀) (A₀ ≃ₐ[R₀] A₀)
-        (MulSemiringAction.toAlgAut D₀ R₀ A₀ g) =
+    ramificationOrder (R := A₀) (A₀ ≃ₐ[𝒪[K]] A₀)
+        (MulSemiringAction.toAlgAut D₀ 𝒪[K] A₀ g) =
       (A₀).ramificationOrder K g := rfl
 
-variable [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+variable [PerfectField 𝓀[K]]
 
 /-- The scaled coset identity on the field restriction and intrinsic integer orders. -/
 theorem fixedField_ramificationIdx_mul_order_eq_sum (σ : L ≃ₐ[K] L) :
@@ -171,7 +169,7 @@ theorem fixedField_ramificationIdx_mul_order_eq_sum (σ : L ≃ₐ[K] L) :
   obtain ⟨x, hx⟩ := spectralIntegerRing_exists_generator K L
   obtain ⟨y, hy⟩ := intermediate_spectral_exists_generator K L F₀
   exact ramificationIdx_mul_order_eq_sum_coset (L ≃ₐ[K] L) H
-    (MulSemiringAction.toAlgAut D₀ R₀ A₀ (fixedFieldDecompositionRestriction K L H σ)) σ
+    (MulSemiringAction.toAlgAut D₀ 𝒪[K] A₀ (fixedFieldDecompositionRestriction K L H σ)) σ
     (fixedFieldDecompositionRestriction_algebraMap K L H σ) hx hy
 
 omit [H.Normal] in
@@ -183,7 +181,7 @@ theorem fixedField_card_inertia :
   have := fixedField_integer_moduleFinite K L H
   have := fixedField_integer_isGaloisGroup K L H
   have : PerfectField (IsLocalRing.ResidueField A₀) :=
-    Algebra.IsAlgebraic.perfectField (IsLocalRing.ResidueField R₀)
+    Algebra.IsAlgebraic.perfectField (IsLocalRing.ResidueField 𝒪[K])
   have := hasSeparableResidueFieldsAt_maximalIdeal A₀ B₀
   exact card_lowerRamificationGroup_zero A₀ B₀ H
 

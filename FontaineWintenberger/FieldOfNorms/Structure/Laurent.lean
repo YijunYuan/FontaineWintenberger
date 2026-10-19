@@ -34,7 +34,7 @@ variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 
 local notation "κL" => IsLocalRing.ResidueField
-  (integralClosure (Valuation.valuationSubring (NormedField.valuation (K := K))) L)
+  (integralClosure 𝒪[K] L)
 
 variable (u : FieldOfNorms K L) (hu : FieldOfNorms.valuation K L u = exp (-1 : ℤ))
 

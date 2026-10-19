@@ -72,8 +72,7 @@ end GroupAction
 variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
 variable (L : Type*) [Field L] [Algebra K L] [IsGalois K L] [FiniteDimensional K L]
 variable (H : Subgroup (L ≃ₐ[K] L)) [H.Normal]
-variable [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+variable [PerfectField 𝓀[K]]
 
 local notation "G₀" => L ≃ₐ[K] L
 local notation "F₀" => IntermediateField.fixedField H

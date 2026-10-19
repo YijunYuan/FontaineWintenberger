@@ -257,19 +257,18 @@ variable (L : Type*) [Field L] [Algebra K L] [FiniteDimensional K L]
 variable {Γ : Type*} [LinearOrderedCommGroupWithZero Γ] (w : Valuation L Γ)
     [(NormedField.valuation (K := K)).HasExtension w]
 
-local notation "OK" => Valuation.valuationSubring (NormedField.valuation (K := K))
 local notation "OL" => Valuation.valuationSubring w
 
 /-- The exact trace-ideal formula on every compatible extension
 valuation ring, over an arbitrary residue field. -/
 theorem extensionValuationSubring_intTraceIdeal_pow (n : ℕ) :
     letI := extensionValuationSubring_isDiscreteValuationRing K L w
-    intTraceIdeal OK OL (IsLocalRing.maximalIdeal OL ^ n) =
-      IsLocalRing.maximalIdeal OK ^
-        (((emultiplicity (IsLocalRing.maximalIdeal OL) (differentIdeal OK OL)).toNat + n) /
-          (IsLocalRing.maximalIdeal OL).ramificationIdx OK) := by
+    intTraceIdeal 𝒪[K] OL (IsLocalRing.maximalIdeal OL ^ n) =
+      IsLocalRing.maximalIdeal 𝒪[K] ^
+        (((emultiplicity (IsLocalRing.maximalIdeal OL) (differentIdeal 𝒪[K] OL)).toNat + n) /
+          (IsLocalRing.maximalIdeal OL).ramificationIdx 𝒪[K]) := by
   have := extensionValuationSubring_isDiscreteValuationRing K L w
-  exact intTraceIdeal_pow OK OL K L n
+  exact intTraceIdeal_pow 𝒪[K] OL K L n
 
 end ChosenExtension
 

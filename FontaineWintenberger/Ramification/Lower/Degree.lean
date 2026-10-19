@@ -120,23 +120,22 @@ variable [Algebra.IsSeparable K L]
 variable {Γ : Type*} [LinearOrderedCommGroupWithZero Γ] (w : Valuation L Γ)
 variable [(NormedField.valuation (K := K)).HasExtension w]
 
-local notation "OK" => Valuation.valuationSubring (NormedField.valuation (K := K))
 local notation "OL" => Valuation.valuationSubring w
 
 /-- The chosen extension valuation ring satisfies the fundamental degree identity. -/
 theorem extensionValuationSubring_ramificationIdx_mul_residueDegree :
-    (IsLocalRing.maximalIdeal OL).ramificationIdx OK *
-      Module.finrank (IsLocalRing.ResidueField OK) (IsLocalRing.ResidueField OL) =
+    (IsLocalRing.maximalIdeal OL).ramificationIdx 𝒪[K] *
+      Module.finrank (IsLocalRing.ResidueField 𝒪[K]) (IsLocalRing.ResidueField OL) =
         Module.finrank K L := by
   have := extensionValuationSubring_isDiscreteValuationRing K L w
-  exact local_ramificationIdx_mul_residueDegree_eq_finrank OK OL K L
+  exact local_ramificationIdx_mul_residueDegree_eq_finrank 𝒪[K] OL K L
 
 /-- Any uniformizer of a totally ramified chosen finite extension generates its integers. -/
 theorem extensionValuationSubring_adjoin_uniformizer_eq_top
-    (he : (IsLocalRing.maximalIdeal OL).ramificationIdx OK = Module.finrank K L)
-    {π : OL} (hπ : Irreducible π) : Algebra.adjoin OK {π} = ⊤ := by
+    (he : (IsLocalRing.maximalIdeal OL).ramificationIdx 𝒪[K] = Module.finrank K L)
+    {π : OL} (hπ : Irreducible π) : Algebra.adjoin 𝒪[K] {π} = ⊤ := by
   have := extensionValuationSubring_isDiscreteValuationRing K L w
-  exact adjoin_uniformizer_eq_top_of_ramificationIdx_eq_field_finrank OK OL K L he hπ
+  exact adjoin_uniformizer_eq_top_of_ramificationIdx_eq_field_finrank 𝒪[K] OL K L he hπ
 
 end ChosenExtension
 
@@ -169,7 +168,7 @@ theorem discreteValued_extension_moduleFinite : Module.Finite R S := by
   let e := RingEquiv.subringCongr
     (congrArg ValuationSubring.toSubring (discreteValued_valuationSubring K ΓK))
   apply Module.Finite.of_equiv_equiv
-    (A₁ := (NormedField.valuation (K := K)).valuationSubring)
+    (A₁ := 𝒪[K])
     (B₁ := S) (A₂ := R) (B₂ := S) e (RingEquiv.refl S)
   ext r
   rfl

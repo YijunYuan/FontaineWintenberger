@@ -193,7 +193,7 @@ theorem intermediate_spectral_ramificationIdx_eq_one_iff_inertia_le
     (Ω : Type*) [Field Ω] [Algebra K Ω] [FiniteDimensional K Ω] [IsGalois K Ω]
     (M : IntermediateField K Ω) :
     (IsLocalRing.maximalIdeal (spectralIntegerRing K M)).ramificationIdx
-        (NormedField.valuation (K := K)).valuationSubring = 1 ↔
+        𝒪[K] = 1 ↔
       lowerRamificationGroup (Ω ≃ₐ[K] Ω)
         (IsLocalRing.maximalIdeal (spectralIntegerRing K Ω)) 0 ≤ M.fixingSubgroup := by
   rw [intermediate_spectral_ramificationIdx_eq_relIndex K Ω M, Subgroup.relIndex_eq_one]
@@ -204,13 +204,12 @@ theorem intermediate_spectral_ramificationIdx_coprime_iff_wild_le
     (Ω : Type*) [Field Ω] [Algebra K Ω] [FiniteDimensional K Ω] [IsGalois K Ω]
     (M : IntermediateField K Ω) :
     Nat.Coprime p ((IsLocalRing.maximalIdeal (spectralIntegerRing K M)).ramificationIdx
-      (NormedField.valuation (K := K)).valuationSubring) ↔
+      𝒪[K]) ↔
       lowerRamificationGroup (Ω ≃ₐ[K] Ω)
         (IsLocalRing.maximalIdeal (spectralIntegerRing K Ω)) 1 ≤ M.fixingSubgroup := by
   let : CharP (IsLocalRing.ResidueField (spectralIntegerRing K Ω)) p :=
     charP_of_injective_algebraMap
-      (algebraMap (IsLocalRing.ResidueField
-        (NormedField.valuation (K := K)).valuationSubring)
+      (algebraMap 𝓀[K]
         (IsLocalRing.ResidueField (spectralIntegerRing K Ω))).injective p
   rw [intermediate_spectral_ramificationIdx_eq_relIndex K Ω M]
   have hc := wild_fixedField_ramificationIdx_coprime K Ω p
@@ -225,7 +224,7 @@ absolute inertia fixes it, without normality of the subfield. -/
 theorem spectral_ramificationIdx_eq_one_iff_absoluteInertia_le
     (M : IntermediateField K (SeparableClosure K)) [FiniteDimensional K M] :
     (IsLocalRing.maximalIdeal (spectralIntegerRing K M)).ramificationIdx
-        (NormedField.valuation (K := K)).valuationSubring = 1 ↔
+        𝒪[K] = 1 ↔
       absoluteUpperRamificationGroup K 0 ≤ M.fixingSubgroup := by
   let Ω := finiteGaloisNormalClosure K M
   let f : M →ₐ[K] Ω := M.val.codRestrict Ω.toIntermediateField.toSubalgebra
@@ -252,7 +251,7 @@ absolute wild inertia fixes it, without normality of the subfield. -/
 theorem spectral_ramificationIdx_coprime_iff_absoluteWildInertia_le
     (M : IntermediateField K (SeparableClosure K)) [FiniteDimensional K M] :
     Nat.Coprime p ((IsLocalRing.maximalIdeal (spectralIntegerRing K M)).ramificationIdx
-      (NormedField.valuation (K := K)).valuationSubring) ↔
+      𝒪[K]) ↔
       absoluteWildInertia K ≤ M.fixingSubgroup := by
   let Ω := finiteGaloisNormalClosure K M
   let f : M →ₐ[K] Ω := M.val.codRestrict Ω.toIntermediateField.toSubalgebra
@@ -279,7 +278,7 @@ theorem le_apfFiniteStage_zero_iff_ramificationIdx_eq_one
     (hML : M ≤ L) :
     M ≤ apfFiniteStage K L 0 ↔
       (IsLocalRing.maximalIdeal (spectralIntegerRing K M)).ramificationIdx
-        (NormedField.valuation (K := K)).valuationSubring = 1 := by
+        𝒪[K] = 1 := by
   rw [spectral_ramificationIdx_eq_one_iff_absoluteInertia_le K M]
   constructor
   · intro h
@@ -299,7 +298,7 @@ theorem le_apfTameStage_iff_ramificationIdx_coprime
     (hML : M ≤ L) :
     M ≤ apfTameStage K L ↔
       Nat.Coprime p ((IsLocalRing.maximalIdeal (spectralIntegerRing K M)).ramificationIdx
-        (NormedField.valuation (K := K)).valuationSubring) := by
+        𝒪[K]) := by
   rw [spectral_ramificationIdx_coprime_iff_absoluteWildInertia_le K M]
   constructor
   · intro h
@@ -375,8 +374,7 @@ theorem finrank_eq_prime_pow_of_apfTameStage_le
   have hU : IsPGroup p U := by
     let : CharP (IsLocalRing.ResidueField (spectralIntegerRing K Ω)) p :=
       charP_of_injective_algebraMap
-        (algebraMap (IsLocalRing.ResidueField
-          (NormedField.valuation (K := K)).valuationSubring)
+        (algebraMap 𝓀[K]
           (IsLocalRing.ResidueField (spectralIntegerRing K Ω))).injective p
     exact lowerRamificationGroup_one_isPGroup (Ω ≃ₐ[K] Ω) p
   obtain ⟨n, hn⟩ := relIndex_eq_prime_pow_of_le_sup p A B C U hU hAB hBC hCU
@@ -447,7 +445,7 @@ maximal unramified part exactly when its ramification index is one. -/
 theorem le_apfMaximalUnramified_iff [IsAPF K L] (E : FiniteIntermediateField K L) :
     E ≤ apfMaximalUnramified K L ↔
       (IsLocalRing.maximalIdeal (spectralIntegerRing K E.val)).ramificationIdx
-        (NormedField.valuation (K := K)).valuationSubring = 1 := by
+        𝒪[K] = 1 := by
   let j : L →ₐ[K] SeparableClosure K := IsSepClosed.lift
   have : FiniteDimensional K (E.val.map j) :=
     Module.Finite.equiv (IntermediateField.equivMap E.val j).toLinearEquiv
@@ -465,7 +463,7 @@ this universal property also gives its uniqueness. -/
 theorem isGreatest_apfMaximalUnramified [IsAPF K L] :
     IsGreatest {E : FiniteIntermediateField K L |
       (IsLocalRing.maximalIdeal (spectralIntegerRing K E.val)).ramificationIdx
-        (NormedField.valuation (K := K)).valuationSubring = 1}
+        𝒪[K] = 1}
       (apfMaximalUnramified K L) :=
   ⟨(le_apfMaximalUnramified_iff K L _).mp le_rfl,
     fun E hE => (le_apfMaximalUnramified_iff K L E).mpr hE⟩
@@ -482,11 +480,9 @@ theorem apfMaximalUnramified_le_maximalTame [IsAPF K L] :
 residue degree, with no normality assumption. -/
 theorem residueDegree_eq_apfMaximalUnramified [IsAPF K L]
     (E : FiniteIntermediateField K L) (hE : apfMaximalUnramified K L ≤ E) :
-    Module.finrank (IsLocalRing.ResidueField
-        (NormedField.valuation (K := K)).valuationSubring)
+    Module.finrank 𝓀[K]
       (IsLocalRing.ResidueField (spectralIntegerRing K E.val)) =
-    Module.finrank (IsLocalRing.ResidueField
-        (NormedField.valuation (K := K)).valuationSubring)
+    Module.finrank 𝓀[K]
       (IsLocalRing.ResidueField
         (spectralIntegerRing K (apfMaximalUnramified K L).val)) := by
   let j : L →ₐ[K] SeparableClosure K := IsSepClosed.lift
@@ -552,9 +548,9 @@ theorem integralClosureResidueFromLayer_bijective_of_apfMaximalUnramified_le
 residue-field equivalence with the canonical integral closure of the L. -/
 def apfMaximalUnramifiedResidueEquiv [IsAPF K L] :
     IsLocalRing.ResidueField (spectralIntegerRing K (apfMaximalUnramified K L).val)
-      ≃ₐ[IsLocalRing.ResidueField (NormedField.valuation (K := K)).valuationSubring]
+      ≃ₐ[𝓀[K]]
         IsLocalRing.ResidueField
-          (integralClosure (NormedField.valuation (K := K)).valuationSubring L) :=
+          (integralClosure 𝒪[K] L) :=
   AlgEquiv.ofBijective (integralClosureResidueFromLayer K L (apfMaximalUnramified K L))
     (integralClosureResidueFromLayer_bijective_of_apfMaximalUnramified_le K L _ le_rfl)
 
@@ -570,7 +566,7 @@ its ramification index is prime to the residue characteristic. -/
 theorem le_apfMaximalTame_iff [IsAPF K L] (E : FiniteIntermediateField K L) :
     E ≤ apfMaximalTame K L ↔
       Nat.Coprime p ((IsLocalRing.maximalIdeal (spectralIntegerRing K E.val)).ramificationIdx
-        (NormedField.valuation (K := K)).valuationSubring) := by
+        𝒪[K]) := by
   let j : L →ₐ[K] SeparableClosure K := IsSepClosed.lift
   have : FiniteDimensional K (E.val.map j) :=
     Module.Finite.equiv (IntermediateField.equivMap E.val j).toLinearEquiv
@@ -588,7 +584,7 @@ normality of the extension or of any finite subfield. -/
 theorem isGreatest_apfMaximalTame [IsAPF K L] :
     IsGreatest {E : FiniteIntermediateField K L |
       Nat.Coprime p ((IsLocalRing.maximalIdeal (spectralIntegerRing K E.val)).ramificationIdx
-        (NormedField.valuation (K := K)).valuationSubring)}
+        𝒪[K])}
       (apfMaximalTame K L) :=
   ⟨(le_apfMaximalTame_iff K L _).mp le_rfl,
     fun E hE => (le_apfMaximalTame_iff K L E).mpr hE⟩

@@ -134,7 +134,7 @@ variable [IsAPF K L]
 local notation "K₀" => apfMaximalUnramified K L
 local notation "K₁" => apfMaximalTame K L
 local notation "κL" => IsLocalRing.ResidueField
-  (integralClosure (Valuation.valuationSubring (NormedField.valuation (K := K))) L)
+  (integralClosure 𝒪[K] L)
 
 /-- The exponent of the finite degree over the maximal tame
 part, supplied by the proved original-field wild-tail theorem. -/

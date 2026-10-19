@@ -27,7 +27,7 @@ variable (L : Type*) [NormedField L] [NormedAlgebra K L] [IsUltrametricDist L]
 
 /-- The spectral integer subring is the unit ball of any compatible field norm. -/
 theorem spectralIntegerRing_eq_normedUnitBall :
-    spectralIntegerRing K L = (NormedField.valuation (K := L)).valuationSubring := by
+    spectralIntegerRing K L = 𝒪[L] := by
   ext x
   change spectralNorm K L x ≤ 1 ↔ ‖x‖ ≤ 1
   rw [NormedAlgebra.norm_eq_spectralNorm K]

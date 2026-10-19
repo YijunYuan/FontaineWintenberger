@@ -93,8 +93,7 @@ end Embeddings
 section Valued
 
 variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+    [PerfectField 𝓀[K]]
 variable (M : IntermediateField K (SeparableClosure K)) [FiniteDimensional K M]
 
 noncomputable local instance : NontriviallyNormedField M :=
@@ -113,8 +112,7 @@ local notation "ρ" =>
   MonoidHom.comp (Subgroup.subtype (IntermediateField.fixingSubgroup M))
     (MulEquiv.toMonoidHom (absoluteGaloisBaseChangeEquiv K M))
 
-omit [IsCompleteDiscreteValuedField K] [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)] in
+omit [IsCompleteDiscreteValuedField K] [PerfectField 𝓀[K]] in
 /-- The absolute fixing subgroup has finite index for a finite new base. -/
 theorem absoluteGaloisBaseChange_range_finiteIndex : (ρ).range.FiniteIndex := by
   rw [absoluteGaloisBaseChange_range K M]
@@ -175,8 +173,7 @@ end FontaineWintenberger
 namespace FontaineWintenberger
 
 variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+    [PerfectField 𝓀[K]]
 variable (M : IntermediateField K (SeparableClosure K)) [FiniteDimensional K M]
 
 noncomputable local instance : NontriviallyNormedField M :=
@@ -281,8 +278,7 @@ end Calculus
 section FiniteBase
 
 variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-    [PerfectField (IsLocalRing.ResidueField
-      (NormedField.valuation (K := K)).valuationSubring)]
+    [PerfectField 𝓀[K]]
 variable (M : IntermediateField K (SeparableClosure K)) [FiniteDimensional K M]
 
 noncomputable local instance : NontriviallyNormedField M :=

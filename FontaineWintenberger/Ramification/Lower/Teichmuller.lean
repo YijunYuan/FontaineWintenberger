@@ -157,7 +157,7 @@ instance spectralIntegerRing_isAdicComplete :
   have hval : NormedField.valuation (K := E) = spectralValuation K E := by
     ext x
     rfl
-  have : IsDiscreteValuationRing (NormedField.valuation (K := E)).valuationSubring := by
+  have : IsDiscreteValuationRing 𝒪[E] := by
     rw [hval]
     exact spectralIntegerRing_isDiscreteValuationRing K E
   exact unitBall_isAdicComplete E
@@ -166,13 +166,13 @@ instance spectralIntegerRing_isAdicComplete :
 instance spectralResidueField_perfectField :
     PerfectField (IsLocalRing.ResidueField (spectralIntegerRing K E)) :=
   Algebra.IsAlgebraic.perfectField
-    (IsLocalRing.ResidueField (NormedField.valuation (K := K)).valuationSubring)
+    𝓀[K]
 
 /-- The finite residue inclusion preserves the residue characteristic. -/
 instance spectralResidueField_charP :
     CharP (IsLocalRing.ResidueField (spectralIntegerRing K E)) p :=
   charP_of_injective_algebraMap
-    (algebraMap (IsLocalRing.ResidueField (NormedField.valuation (K := K)).valuationSubring)
+    (algebraMap 𝓀[K]
       (IsLocalRing.ResidueField (spectralIntegerRing K E))).injective p
 
 /-- The canonical multiplicative representatives in the finite

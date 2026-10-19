@@ -134,7 +134,6 @@ section Spectral
 variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
 variable (L : Type*) [Field L] [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
 
-local notation "R" => Valuation.valuationSubring (NormedField.valuation (K := K))
 local notation "S" => spectralIntegerRing K L
 local notation "G" => L ≃ₐ[K] L
 
@@ -144,23 +143,22 @@ instance spectralIntegerRing_galois_smulDistribClass : SMulDistribClass G S L wh
     exact map_mul g (x : L) y
 
 /-- The proved full action has the base integer ring as its fixed ring. -/
-instance spectralIntegerRing_isGaloisGroup : IsGaloisGroup G R S :=
-  IsGaloisGroup.of_isFractionRing G R S K L
+instance spectralIntegerRing_isGaloisGroup : IsGaloisGroup G 𝒪[K] S :=
+  IsGaloisGroup.of_isFractionRing G 𝒪[K] S K L
 
-variable [PerfectField (IsLocalRing.ResidueField
-  (NormedField.valuation (K := K)).valuationSubring)]
+variable [PerfectField 𝓀[K]]
 
 /-- The residue extension is Galois, without a finite-residue assumption. -/
 instance spectralIntegerRing_residue_isGalois :
-    IsGalois (IsLocalRing.ResidueField R) (IsLocalRing.ResidueField S) where
-  __ := localResidue_normal R S G
+    IsGalois (IsLocalRing.ResidueField 𝒪[K]) (IsLocalRing.ResidueField S) where
+  __ := localResidue_normal 𝒪[K] S G
 
 /-- Inertia order for the full Galois action on the spectral integers. -/
 theorem spectralIntegerRing_card_lower_zero :
     Nat.card (lowerRamificationGroup G (IsLocalRing.maximalIdeal S) 0) =
-      (IsLocalRing.maximalIdeal S).ramificationIdx R := by
-  have := hasSeparableResidueFieldsAt_maximalIdeal R S
-  exact card_lowerRamificationGroup_zero R S G
+      (IsLocalRing.maximalIdeal S).ramificationIdx 𝒪[K] := by
+  have := hasSeparableResidueFieldsAt_maximalIdeal 𝒪[K] S
+  exact card_lowerRamificationGroup_zero 𝒪[K] S G
 
 end Spectral
 

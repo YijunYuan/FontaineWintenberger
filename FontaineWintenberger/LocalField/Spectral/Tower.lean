@@ -60,20 +60,19 @@ variable (L : Type*) [NormedField L] [IsUltrametricDist L] [NormedAlgebra K L]
 include K in
 /-- DVR structure for the norm unit ball of a chosen normed field extension. -/
 theorem normedAlgebra_unitBall_isDiscreteValuationRing :
-    IsDiscreteValuationRing (NormedField.valuation (K := L)).valuationSubring :=
+    IsDiscreteValuationRing 𝒪[L] :=
   extensionValuationSubring_isDiscreteValuationRing K L (NormedField.valuation (K := L))
 
 include K in
 /-- Henselianity for that norm unit ball. -/
 theorem normedAlgebra_unitBall_henselianLocalRing :
-    HenselianLocalRing (NormedField.valuation (K := L)).valuationSubring :=
+    HenselianLocalRing 𝒪[L] :=
   extensionValuationSubring_henselianLocalRing K L (NormedField.valuation (K := L))
 
 /-- The norm unit ball is generated over the base unit ball. -/
-theorem normedAlgebra_unitBall_exists_generator [PerfectField (IsLocalRing.ResidueField
-    (NormedField.valuation (K := K)).valuationSubring)] :
-    ∃ x : (NormedField.valuation (K := L)).valuationSubring,
-      Algebra.adjoin (NormedField.valuation (K := K)).valuationSubring {x} = ⊤ :=
+theorem normedAlgebra_unitBall_exists_generator [PerfectField 𝓀[K]] :
+    ∃ x : 𝒪[L],
+      Algebra.adjoin 𝒪[K] {x} = ⊤ :=
   extensionValuationSubring_exists_generator K L (NormedField.valuation (K := L))
 
 /-- A finite separable normed extension of a complete discretely valued field is again one. -/

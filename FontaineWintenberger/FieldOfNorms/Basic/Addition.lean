@@ -248,16 +248,15 @@ end IntegralFamilies
 section IdealPowerCauchy
 
 variable (E : Type*) [NontriviallyNormedField E] [IsUltrametricDist E]
-    [IsDiscreteValuationRing (NormedField.valuation (K := E)).valuationSubring]
-local notation "R" => Valuation.valuationSubring (NormedField.valuation (K := E))
+    [IsDiscreteValuationRing 𝒪[E]]
 variable {ι : Type*} [Preorder ι] [Nonempty ι] [IsDirectedOrder ι]
 
 /-- Ideal-power control on pairs of a net proves the
 Cauchy condition for its field uniformity. -/
 theorem cauchy_map_of_eventually_sub_mem_maximalIdeal_pow (f : ι → E)
     (h : ∀ n : ℕ, ∃ a : ι, ∀ b, a ≤ b → ∀ c, a ≤ c →
-      f b - f c ∈ (fun x : R => (x : E)) ''
-        ((IsLocalRing.maximalIdeal R ^ n : Ideal R) : Set R)) :
+      f b - f c ∈ (fun x : 𝒪[E] => (x : E)) ''
+        ((IsLocalRing.maximalIdeal 𝒪[E] ^ n : Ideal 𝒪[E]) : Set 𝒪[E])) :
     Cauchy (map f atTop) := by
   apply (IsUniformAddGroup.cauchy_map_iff_tendsto atTop f).mpr
   refine ⟨inferInstance, (nhds_zero_hasBasis_maximalIdeal_pow E).tendsto_right_iff.mpr ?_⟩
@@ -271,8 +270,8 @@ Cauchy estimates. -/
 theorem exists_tendsto_of_eventually_sub_mem_maximalIdeal_pow [CompleteSpace E]
     (f : ι → E)
     (h : ∀ n : ℕ, ∃ a : ι, ∀ b, a ≤ b → ∀ c, a ≤ c →
-      f b - f c ∈ (fun x : R => (x : E)) ''
-        ((IsLocalRing.maximalIdeal R ^ n : Ideal R) : Set R)) :
+      f b - f c ∈ (fun x : 𝒪[E] => (x : E)) ''
+        ((IsLocalRing.maximalIdeal 𝒪[E] ^ n : Ideal 𝒪[E]) : Set 𝒪[E])) :
     ∃ z : E, Tendsto f atTop (nhds z) :=
   cauchy_map_iff_exists_tendsto.mp
     (cauchy_map_of_eventually_sub_mem_maximalIdeal_pow E f h)

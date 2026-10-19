@@ -29,7 +29,6 @@ attribute [local instance] FractionRing.liftAlgebra
 variable {K Ω : Type*} [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [Field Ω] [Algebra K Ω] [Algebra.IsSeparable K Ω]
 
-local notation "R₀" => Valuation.valuationSubring (NormedField.valuation (K := K))
 
 /-- The integral norm for an inclusion of finite intermediate fields. -/
 def integerNorm (E F : FiniteIntermediateField K Ω) (hEF : E ≤ F) :
@@ -41,7 +40,7 @@ def integerNorm (E F : FiniteIntermediateField K Ω) (hEF : E ≤ F) :
   have := Valuation.HasExtension.valuationSubring_isScalarTower
     (NormedField.valuation (K := K)) (spectralValuation K E.val) (spectralValuation K F.val)
   have : Module.Finite (spectralIntegerRing K E.val) (spectralIntegerRing K F.val) :=
-    Module.Finite.of_restrictScalars_finite R₀ _ _
+    Module.Finite.of_restrictScalars_finite 𝒪[K] _ _
   exact Algebra.intNorm (spectralIntegerRing K E.val) (spectralIntegerRing K F.val)
 
 /-- The integral norm is the field norm under inclusion. -/
@@ -56,7 +55,7 @@ theorem coe_integerNorm (E F : FiniteIntermediateField K Ω) (hEF : E ≤ F)
   have := Valuation.HasExtension.valuationSubring_isScalarTower
     (NormedField.valuation (K := K)) (spectralValuation K E.val) (spectralValuation K F.val)
   have : Module.Finite (spectralIntegerRing K E.val) (spectralIntegerRing K F.val) :=
-    Module.Finite.of_restrictScalars_finite R₀ _ _
+    Module.Finite.of_restrictScalars_finite 𝒪[K] _ _
   have : IsScalarTower (spectralIntegerRing K E.val) E.val F.val :=
     Valuation.HasExtension.instIsScalarTower_valuationSubring
       (L := F.val) (spectralValuation K E.val)
@@ -96,7 +95,7 @@ theorem integerNorm_mem_maximalIdeal_pow (E F : FiniteIntermediateField K Ω) (h
   have := Valuation.HasExtension.valuationSubring_isScalarTower
     (NormedField.valuation (K := K)) (spectralValuation K E.val) (spectralValuation K F.val)
   have : Module.Finite (spectralIntegerRing K E.val) (spectralIntegerRing K F.val) :=
-    Module.Finite.of_restrictScalars_finite R₀ _ _
+    Module.Finite.of_restrictScalars_finite 𝒪[K] _ _
   have : IsScalarTower (spectralIntegerRing K E.val) E.val F.val :=
     Valuation.HasExtension.instIsScalarTower_valuationSubring
       (L := F.val) (spectralValuation K E.val)
@@ -150,9 +149,9 @@ theorem integerNorm_add_congruence_tower (E F G : FiniteIntermediateField K Ω)
   have := Valuation.HasExtension.valuationSubring_isScalarTower
     (spectralValuation K E.val) (spectralValuation K F.val) (spectralValuation K G.val)
   have : Module.Finite (spectralIntegerRing K E.val) (spectralIntegerRing K F.val) :=
-    Module.Finite.of_restrictScalars_finite R₀ _ _
+    Module.Finite.of_restrictScalars_finite 𝒪[K] _ _
   have : Module.Finite (spectralIntegerRing K F.val) (spectralIntegerRing K G.val) :=
-    Module.Finite.of_restrictScalars_finite R₀ _ _
+    Module.Finite.of_restrictScalars_finite 𝒪[K] _ _
   have : IsScalarTower (spectralIntegerRing K E.val) E.val F.val :=
     Valuation.HasExtension.instIsScalarTower_valuationSubring
       (L := F.val) (spectralValuation K E.val)

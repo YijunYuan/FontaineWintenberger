@@ -113,31 +113,30 @@ variable (L : Type*) [Field L] [Algebra K L] [FiniteDimensional K L]
 variable {Γ : Type*} [LinearOrderedCommGroupWithZero Γ] (w : Valuation L Γ)
     [(NormedField.valuation (K := K)).HasExtension w]
 
-local notation "R" => Valuation.valuationSubring (NormedField.valuation (K := K))
 local notation "S" => Valuation.valuationSubring w
 
 /-- Finite-precision norm approximation for the chosen extension
 integers, with total ramification and p-power degree on the fields. -/
 theorem extensionValuationSubring_exists_intNorm_sub_mem_maximalIdeal_pow (n r : ℕ)
-    (he : (IsLocalRing.maximalIdeal S).ramificationIdx R = Module.finrank K L)
+    (he : (IsLocalRing.maximalIdeal S).ramificationIdx 𝒪[K] = Module.finrank K L)
     (hd : Module.finrank K L = p ^ n) :
     letI := extensionValuationSubring_isDiscreteValuationRing K L w
     ∀ (_ : ∀ x y : S,
-      Algebra.intNorm R S (x + y) - Algebra.intNorm R S x - Algebra.intNorm R S y ∈
-        IsLocalRing.maximalIdeal R ^ r) (a : R),
-    ∃ α : S, Algebra.intNorm R S α - a ∈ IsLocalRing.maximalIdeal R ^ r := by
+      Algebra.intNorm 𝒪[K] S (x + y) - Algebra.intNorm 𝒪[K] S x - Algebra.intNorm 𝒪[K] S y ∈
+        IsLocalRing.maximalIdeal 𝒪[K] ^ r) (a : 𝒪[K]),
+    ∃ α : S, Algebra.intNorm 𝒪[K] S α - a ∈ IsLocalRing.maximalIdeal 𝒪[K] ^ r := by
   have := extensionValuationSubring_isDiscreteValuationRing K L w
   intro hadd a
-  have : Algebra.IsSeparable (FractionRing R) (FractionRing S) := by
+  have : Algebra.IsSeparable (FractionRing 𝒪[K]) (FractionRing S) := by
     apply Algebra.IsSeparable.of_equiv_equiv
-      (FractionRing.algEquiv R K).symm.toRingEquiv
+      (FractionRing.algEquiv 𝒪[K] K).symm.toRingEquiv
       (FractionRing.algEquiv S L).symm.toRingEquiv
     ext y
     exact IsFractionRing.algEquiv_commutes
-      (FractionRing.algEquiv R K).symm (FractionRing.algEquiv S L).symm y
-  apply exists_intNorm_sub_mem_maximalIdeal_pow R S p n r ?_ ?_ hadd a
-  · rwa [← IsFractionRing.finrank_eq R K S L]
-  · rw [← IsFractionRing.finrank_eq R K S L]
+      (FractionRing.algEquiv 𝒪[K] K).symm (FractionRing.algEquiv S L).symm y
+  apply exists_intNorm_sub_mem_maximalIdeal_pow 𝒪[K] S p n r ?_ ?_ hadd a
+  · rwa [← IsFractionRing.finrank_eq 𝒪[K] K S L]
+  · rw [← IsFractionRing.finrank_eq 𝒪[K] K S L]
     exact hd
 
 end ChosenExtension

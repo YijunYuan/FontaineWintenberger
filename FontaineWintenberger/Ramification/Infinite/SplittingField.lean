@@ -87,38 +87,37 @@ variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField 
 variable (P : Type*) [Field P] [Algebra K P] [FiniteDimensional K P]
     [Algebra.IsSeparable K P]
 
-local notation "OK" => Valuation.valuationSubring (NormedField.valuation (K := K))
 local notation "OP" => spectralIntegerRing K P
 
 /-- The canonical ramification index is at most the extension degree. -/
 theorem spectral_ramificationIdx_le_finrank :
-    (IsLocalRing.maximalIdeal OP).ramificationIdx OK ≤ Module.finrank K P := by
-  rw [← local_ramificationIdx_mul_residueDegree_eq_finrank OK OP K P]
+    (IsLocalRing.maximalIdeal OP).ramificationIdx 𝒪[K] ≤ Module.finrank K P := by
+  rw [← local_ramificationIdx_mul_residueDegree_eq_finrank 𝒪[K] OP K P]
   exact Nat.le_mul_of_pos_right _ Module.finrank_pos
 
 /-- A separable monic integral polynomial has finite DVR
 discriminant value. -/
-theorem addVal_discr_ne_top (f : OK[X]) (hf : f.Monic)
-    (hsep : (f.map (algebraMap OK K)).Separable) :
-    IsDiscreteValuationRing.addVal OK f.discr ≠ ⊤ := by
+theorem addVal_discr_ne_top (f : 𝒪[K][X]) (hf : f.Monic)
+    (hsep : (f.map (algebraMap 𝒪[K] K)).Separable) :
+    IsDiscreteValuationRing.addVal 𝒪[K] f.discr ≠ ⊤ := by
   apply IsDiscreteValuationRing.addVal_eq_top_iff.not.mpr
   intro hz
-  have hd := (monic_discr_ne_zero_iff _ (hf.map (algebraMap OK K))).mpr hsep
-  rw [Polynomial.Monic.discr_map f hf (algebraMap OK K), hz, map_zero] at hd
+  have hd := (monic_discr_ne_zero_iff _ (hf.map (algebraMap 𝒪[K] K))).mpr hsep
+  rw [Polynomial.Monic.discr_map f hf (algebraMap 𝒪[K] K), hz, map_zero] at hd
   exact hd rfl
 
 /-- At an index above the discriminant value times the
 ramification index, every upper automorphism fixes every root.
 Root integrality and the lower displacement bound are derived internally. -/
 theorem upperRamificationGroup_fixes_integral_polynomial_root
-    (f : OK[X]) (hf : f.Monic) (hsep : (f.map (algebraMap OK K)).Separable)
-    {b : ℝ} (hb : ((IsLocalRing.maximalIdeal OP).ramificationIdx OK : ℝ) *
-      (IsDiscreteValuationRing.addVal OK f.discr).toNat ≤ b)
+    (f : 𝒪[K][X]) (hf : f.Monic) (hsep : (f.map (algebraMap 𝒪[K] K)).Separable)
+    {b : ℝ} (hb : ((IsLocalRing.maximalIdeal OP).ramificationIdx 𝒪[K] : ℝ) *
+      (IsDiscreteValuationRing.addVal 𝒪[K] f.discr).toNat ≤ b)
     (g : P ≃ₐ[K] P) (hg : g ∈ upperRamificationGroup (R := OP) (P ≃ₐ[K] P) b)
     (a : P) (ha : aeval a f = 0) : g a = a := by
-  let e := (IsLocalRing.maximalIdeal OP).ramificationIdx OK
-  let d := (IsDiscreteValuationRing.addVal OK f.discr).toNat
-  have hd : IsDiscreteValuationRing.addVal OK f.discr = (d : ℕ∞) :=
+  let e := (IsLocalRing.maximalIdeal OP).ramificationIdx 𝒪[K]
+  let d := (IsDiscreteValuationRing.addVal 𝒪[K] f.discr).toNat
+  have hd : IsDiscreteValuationRing.addVal 𝒪[K] f.discr = (d : ℕ∞) :=
     (ENat.natCast_toNat (addVal_discr_ne_top K f hf hsep)).symm
   have hb0 : 0 ≤ b := (mul_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)).trans hb
   let t := inverseHerbrandFunction (R := OP) (P ≃ₐ[K] P) b
@@ -133,8 +132,8 @@ theorem upperRamificationGroup_fixes_integral_polynomial_root
     rw [hcast]
     linarith [Int.le_ceil t]
   let a₀ : OP := ⟨a, (isIntegral_iff_spectralNorm_le_one K a).mp ⟨f, hf, ha⟩⟩
-  let fP := f.map (algebraMap OK OP)
-  have hcomm : (algebraMap OP P).comp (algebraMap OK OP) = algebraMap OK P := by
+  let fP := f.map (algebraMap 𝒪[K] OP)
+  have hcomm : (algebraMap OP P).comp (algebraMap 𝒪[K] OP) = algebraMap 𝒪[K] P := by
     ext x
     rfl
   have haP : fP.IsRoot a₀ := by
@@ -143,7 +142,7 @@ theorem upperRamificationGroup_fixes_integral_polynomial_root
     rw [← aeval_algebraMap_apply_eq_algebraMap_eval]
     exact (aeval_eq_aeval_map hcomm f a).symm.trans ha
   have hgroot : aeval (g a) f = 0 := by
-    rw [show g a = (g.restrictScalars OK) a from rfl, aeval_algHom_apply, ha, map_zero]
+    rw [show g a = (g.restrictScalars 𝒪[K]) a from rfl, aeval_algHom_apply, ha, map_zero]
   have hgaP : fP.IsRoot (g • a₀) := by
     apply Subtype.val_injective
     change algebraMap OP P (fP.eval (g • a₀)) = 0
@@ -154,7 +153,7 @@ theorem upperRamificationGroup_fixes_integral_polynomial_root
   have hpair := IsDiscreteValuationRing.addVal_le_iff_dvd.mpr
     (Polynomial.sq_sub_dvd_discr fP (hf.map _) (g • a₀) a₀ hgaP haP hne)
   rw [IsDiscreteValuationRing.addVal_pow, nsmul_eq_mul, Polynomial.Monic.discr_map f hf,
-    addVal_algebraMap OK OP, hd] at hpair
+    addVal_algebraMap 𝒪[K] OP, hd] at hpair
   have hlower : (n : ℕ∞) ≤ IsDiscreteValuationRing.addVal OP (g • a₀ - a₀) := by
     exact (mem_lowerRamificationGroup_iff_addVal (P ≃ₐ[K] P) ⌈t⌉ g).mp hg a₀
   have hsmall : (n : ℕ∞) ≤ (e : ℕ∞) * d := by
@@ -176,35 +175,34 @@ variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField 
 
 variable (P : Type*) [Field P] [Algebra K P]
 
-local notation "OK" => Valuation.valuationSubring (NormedField.valuation (K := K))
 
 /-- The splitting field has trivial upper group above the degree
 factorial times the normalized discriminant value. Finiteness and
 separability of this field are consequences of its splitting property. -/
 theorem upperRamificationGroup_splittingField_eq_bot
-    (f : OK[X]) (hf : f.Monic) (hsep : (f.map (algebraMap OK K)).Separable)
-    [IsSplittingField K P (f.map (algebraMap OK K))]
+    (f : 𝒪[K][X]) (hf : f.Monic) (hsep : (f.map (algebraMap 𝒪[K] K)).Separable)
+    [IsSplittingField K P (f.map (algebraMap 𝒪[K] K))]
     {b : ℝ} (hb : (f.natDegree.factorial : ℝ) *
-      (IsDiscreteValuationRing.addVal OK f.discr).toNat ≤ b) :
-    letI : FiniteDimensional K P := IsSplittingField.finiteDimensional P (f.map (algebraMap OK K))
+      (IsDiscreteValuationRing.addVal 𝒪[K] f.discr).toNat ≤ b) :
+    letI : FiniteDimensional K P := IsSplittingField.finiteDimensional P (f.map (algebraMap 𝒪[K] K))
     letI : IsGalois K P := IsGalois.of_separable_splitting_field hsep
     upperRamificationGroup (R := spectralIntegerRing K P) (P ≃ₐ[K] P) b = ⊥ := by
-  let : FiniteDimensional K P := IsSplittingField.finiteDimensional P (f.map (algebraMap OK K))
+  let : FiniteDimensional K P := IsSplittingField.finiteDimensional P (f.map (algebraMap 𝒪[K] K))
   let : IsGalois K P := IsGalois.of_separable_splitting_field hsep
-  have he : (IsLocalRing.maximalIdeal (spectralIntegerRing K P)).ramificationIdx OK ≤
+  have he : (IsLocalRing.maximalIdeal (spectralIntegerRing K P)).ramificationIdx 𝒪[K] ≤
       f.natDegree.factorial := by
     apply (spectral_ramificationIdx_le_finrank K P).trans
     simpa only [hf.natDegree_map] using
-      finrank_le_factorial_of_isSplittingField (P := P) (f.map (algebraMap OK K)) hsep
+      finrank_le_factorial_of_isSplittingField (P := P) (f.map (algebraMap 𝒪[K] K)) hsep
   apply le_antisymm _ bot_le
   intro g hg
   change g = 1
-  have hroots : ∀ a ∈ (f.map (algebraMap OK K)).rootSet P, g a = a := by
+  have hroots : ∀ a ∈ (f.map (algebraMap 𝒪[K] K)).rootSet P, g a = a := by
     intro a ha
     apply upperRamificationGroup_fixes_integral_polynomial_root K P f hf hsep
       (le_trans (mul_le_mul_of_nonneg_right (Nat.cast_le.mpr he) (Nat.cast_nonneg _)) hb)
       g hg a
-    have hcomm : (algebraMap K P).comp (algebraMap OK K) = algebraMap OK P := by
+    have hcomm : (algebraMap K P).comp (algebraMap 𝒪[K] K) = algebraMap 𝒪[K] P := by
       ext x
       rfl
     exact (aeval_eq_aeval_map hcomm f a).trans (aeval_eq_zero_of_mem_rootSet ha)
@@ -213,7 +211,7 @@ theorem upperRamificationGroup_splittingField_eq_bot
   change g x = x
   apply (AlgHom.mem_equalizer g.toAlgHom (1 : P ≃ₐ[K] P).toAlgHom x).mp
   have htop : AlgHom.equalizer g.toAlgHom (1 : P ≃ₐ[K] P).toAlgHom = ⊤ := by
-    rw [eq_top_iff, ← IsSplittingField.adjoin_rootSet P (f.map (algebraMap OK K)),
+    rw [eq_top_iff, ← IsSplittingField.adjoin_rootSet P (f.map (algebraMap 𝒪[K] K)),
       Algebra.adjoin_le_iff]
     exact hroots
   rw [htop]
@@ -226,19 +224,18 @@ section AbsoluteRoots
 variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
 
 
-local notation "OK" => Valuation.valuationSubring (NormedField.valuation (K := K))
 
 /-- Above the factorial-discriminant cutoff, the absolute upper
 group fixes every root in the separable closure. The finite
 Galois stage is the field generated by these same roots. -/
 theorem absoluteUpperRamificationGroup_fixes_integral_polynomial_root
-    (f : OK[X]) (hf : f.Monic) (hsep : (f.map (algebraMap OK K)).Separable)
+    (f : 𝒪[K][X]) (hf : f.Monic) (hsep : (f.map (algebraMap 𝒪[K] K)).Separable)
     {b : ℝ} (hb : (f.natDegree.factorial : ℝ) *
-      (IsDiscreteValuationRing.addVal OK f.discr).toNat ≤ b)
+      (IsDiscreteValuationRing.addVal 𝒪[K] f.discr).toNat ≤ b)
     (g : SeparableClosure K ≃ₐ[K] SeparableClosure K)
     (hg : g ∈ absoluteUpperRamificationGroup K b)
     (a : SeparableClosure K) (ha : aeval a f = 0) : g a = a := by
-  let fK := f.map (algebraMap OK K)
+  let fK := f.map (algebraMap 𝒪[K] K)
   have hs : (fK.map (algebraMap K (SeparableClosure K))).Splits :=
     IsSepClosed.splits_codomain fK hsep
   let P := IntermediateField.adjoin K (fK.rootSet (SeparableClosure K))
@@ -255,7 +252,7 @@ theorem absoluteUpperRamificationGroup_fixes_integral_polynomial_root
     rw [hbot] at hgP
     exact hgP
   have haK : a ∈ fK.rootSet (SeparableClosure K) := by
-    apply (hf.map (algebraMap OK K)).mem_rootSet.mpr
+    apply (hf.map (algebraMap 𝒪[K] K)).mem_rootSet.mpr
     rwa [aeval_map_algebraMap K]
   let aP : P := ⟨a, IntermediateField.subset_adjoin K _ haK⟩
   have hc := congrArg (fun s : P ≃ₐ[K] P => algebraMap P (SeparableClosure K) (s aP)) hg1

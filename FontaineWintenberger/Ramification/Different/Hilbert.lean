@@ -101,27 +101,26 @@ section Spectral
 variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
 variable (L : Type*) [Field L] [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
 variable [PerfectField (ResidueField
-  (Valuation.valuationSubring (NormedField.valuation (K := K))))]
+  𝒪[K])]
 
-local notation "OK" => Valuation.valuationSubring (NormedField.valuation (K := K))
 local notation "OL" => spectralIntegerRing K L
 local notation "G₀" => L ≃ₐ[K] L
 
 /-- Hilbert's nonidentity-order formula for the different and full
 Galois group; the integral generator is proved to exist. -/
 theorem spectralIntegerRing_different_order_eq_sum_ramificationOrder [DecidableEq G₀] :
-    emultiplicity (IsLocalRing.maximalIdeal OL) (differentIdeal OK OL) =
+    emultiplicity (IsLocalRing.maximalIdeal OL) (differentIdeal 𝒪[K] OL) =
       ∑ g ∈ Finset.univ.erase (1 : G₀), ramificationOrder (R := OL) G₀ g := by
   classical
   obtain ⟨θ, hθ⟩ := spectralIntegerRing_exists_generator K L
-  exact differentIdeal_order_eq_sum_ramificationOrder OK OL K L G₀ hθ
+  exact differentIdeal_order_eq_sum_ramificationOrder 𝒪[K] OL K L G₀ hθ
 
 /-- Hilbert's cardinal formula with a finite cutoff, beyond which all
 lower groups are trivial. -/
 theorem spectralIntegerRing_different_order_eq_sum_lower_card :
     ∃ N : ℕ,
       (∀ n : ℕ, N ≤ n → lowerRamificationGroup G₀ (IsLocalRing.maximalIdeal OL) n = ⊥) ∧
-      emultiplicity (IsLocalRing.maximalIdeal OL) (differentIdeal OK OL) =
+      emultiplicity (IsLocalRing.maximalIdeal OL) (differentIdeal 𝒪[K] OL) =
         ∑ n ∈ Finset.range N,
           ((Nat.card (lowerRamificationGroup G₀ (IsLocalRing.maximalIdeal OL) n) - 1 : ℕ) : ℕ∞) :=
               by

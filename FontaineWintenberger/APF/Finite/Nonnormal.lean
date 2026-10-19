@@ -28,8 +28,7 @@ and upper groups, so the finite nonnormal formulas apply to the fields.
 namespace FontaineWintenberger
 
 variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-variable [PerfectField (IsLocalRing.ResidueField
-    (NormedField.valuation (K := K)).valuationSubring)]
+variable [PerfectField 𝓀[K]]
 variable (E : FiniteGaloisIntermediateField K (SeparableClosure K))
 variable (M : IntermediateField K E)
 
@@ -61,8 +60,7 @@ theorem apfSubgroup_map_eq_comap_sup_upper {u : ℝ} (hu : -1 ≤ u) :
     _ = _ := Subgroup.comap_sup_eq ρ _ _
       (AlgEquiv.restrictNormalHom_surjective (F := K) (K₁ := E) (SeparableClosure K))
 
-omit [PerfectField (IsLocalRing.ResidueField
-    (NormedField.valuation (K := K)).valuationSubring)] in
+omit [PerfectField 𝓀[K]] in
 /-- Inertia intersection of the finite fixing-subgroup product. -/
 theorem fixingSubgroup_sup_upper_inf_zero {u : ℝ} (hu : 0 ≤ u) :
     (H₀ ⊔ U₀ u) ⊓ U₀ 0 = (H₀ ⊓ U₀ 0) ⊔ U₀ u := by
@@ -164,8 +162,7 @@ theorem fixingSubgroup_map_autCongr (f : L ≃ₐ[K] N) (M : IntermediateField K
 end FixingSubgroup
 
 variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-variable [PerfectField (IsLocalRing.ResidueField
-    (NormedField.valuation (K := K)).valuationSubring)]
+variable [PerfectField 𝓀[K]]
 variable (L : Type*) [Field L] [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
 variable (M : IntermediateField K L)
 
