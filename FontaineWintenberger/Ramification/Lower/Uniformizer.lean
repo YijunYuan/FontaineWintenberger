@@ -15,6 +15,17 @@ public import Mathlib.Algebra.Polynomial.Taylor
 Perfect-residue Frobenius lifts reduce every element to a prime power plus
 an uniformizer multiple. The polynomial Taylor identity then upgrades one
 lower congruence depth from the corresponding uniformizer congruence.
+
+## Main results
+
+* `mem_lowerRamificationGroup_succ_of_uniformizer`: Over a perfect residue field, the next
+  uniformizer congruence raises the lower depth of the whole ring action.
+* `mem_lowerRamificationGroup_iff_uniformizer`: Inertia membership at every nonnegative depth is
+  detected on any uniformizer.
+
+## References
+
+* Serre, *Local Fields*, Chapter IV (ramification groups, Herbrand functions, the different).
 -/
 
 @[expose] public section

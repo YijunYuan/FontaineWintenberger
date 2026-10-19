@@ -31,6 +31,42 @@ reconstructed intermediate fields. Combining this producer with
 its full Hom correspondence gives the categorical field-of-norms equivalence.
 
 Reference: Wintenberger, Theorem 3.2.2.
+
+## Main definitions
+
+* `RelFieldOfNorms.objectOf`: Bundle the norm union of a separable field algebra.
+* `RelFieldOfNorms.objectMapOf`: Bundle the union embedding of field algebras.
+* `RelFieldOfNorms.obj`: The separable relative field of norms, as an object of the canonical
+  category.
+* `RelFieldOfNorms.objMap`: The categorical morphism is exactly the induced algebra embedding.
+* `RelFieldOfNorms.objectFiniteAlgEquiv`: The value on a finite field is its canonical terminal norm
+  field.
+* `RelFieldOfNorms.functor`: The norm-union construction is a functor on the canonical categories.
+* `RelFieldOfNorms.functorFullyFaithful`: Full faithfulness uses the proved Hom correspondence.
+* `RelFieldOfNorms.objectIso`: An original-union algebra isomorphism gives the same canonical
+  categorical isomorphism.
+
+## Main results
+
+* `RelFieldOfNorms.objectMapOf_id`: The bundled union map preserves identities.
+* `RelFieldOfNorms.objectMapOf_comp`: The bundled union map preserves composition.
+* `RelFieldOfNorms.objectMapOf_bijective`: The full Hom correspondence remains bijective after
+  canonical bundling.
+* `RelFieldOfNorms.objectMapOf_apply`: Canonical categorical bundling leaves the union embedding
+  unchanged.
+* `RelFieldOfNorms.objectMapOf_valuation`: The compatible rational valuations are preserved by the
+  categorical map.
+* `RelFieldOfNorms.objMap_bijective`: The categorical map on each pair of field algebras is
+  bijective.
+* `RelFieldOfNorms.functor_mem_essImage_of_algEquiv`: An union isomorphism remains in the same
+  functor's essential image when the field is replaced by an universe-lifted isomorphic copy.
+* `RelFieldOfNorms.functorEssSurj`: Every canonical separable target object is the value of an
+  extension.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §2–3 (le corps des normes, fonctorialité).
 -/
 
 @[expose] public section

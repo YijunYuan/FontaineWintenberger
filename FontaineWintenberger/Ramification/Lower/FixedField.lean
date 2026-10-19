@@ -17,6 +17,21 @@ We restrict the ambient spectral valuation to the intermediate field.
 The chosen-extension theorem supplies its DVR structure. Fraction
 field Galois descent then proves the invariant-ring structure needed
 by Tate's scaled identity.
+
+## Main results
+
+* `intermediate_spectral_isDiscreteValuationRing`: The restricted spectral valuation ring of any
+  intermediate field is a DVR.
+* `intermediate_spectral_henselianLocalRing`: The same intermediate integer ring is Henselian.
+* `intermediate_spectral_exists_generator`: Integral generators exist in the intermediate integer
+  ring.
+* `fixedField_integer_moduleFinite`: The top integers are finite over the fixed-field integers.
+* `fixedField_integer_isGaloisGroup`: The top integer ring has the fixed-field integers as its
+  invariants.
+
+## References
+
+* Serre, *Local Fields*, Chapter IV (ramification groups, Herbrand functions, the different).
 -/
 
 @[expose] public section

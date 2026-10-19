@@ -13,6 +13,17 @@ public import Mathlib.FieldTheory.Galois.Infinite
 The fixing index of two intermediate fields in any algebraic Galois
 ambient extension equals their relative field degree. The natural-valued
 identity includes infinite degree and index, both represented by zero.
+
+## Main results
+
+* `fixingSubgroup_relIndex_eq_finrank`: The relative fixing index equals the field degree over the
+  intermediate base.
+* `fixingSubgroup_relIndex_pos`: A finite extension of the intermediate field gives a nonzero fixing
+  index.
+
+## References
+
+* Mathlib; this file is an upstream candidate and has no project-specific reference.
 -/
 
 @[expose] public section

@@ -16,6 +16,16 @@ public import Mathlib.RingTheory.Henselian
 The norm topology on the unit ball of a discretely valued normed field agrees
 with its maximal-ideal-adic topology. Completeness therefore supplies Hensel
 lifting without any restriction on the residue field.
+
+## Main results
+
+* `mem_maximalIdeal_pow_iff_norm`: Powers of the maximal ideal are norm balls of uniformizer-power
+  radius.
+
+## References
+
+* Serre, *Local Fields*, Chapters I–II (discrete valuation rings, completions, unramified and
+  totally ramified extensions).
 -/
 
 @[expose] public section

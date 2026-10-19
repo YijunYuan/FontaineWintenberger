@@ -12,6 +12,15 @@ public import Mathlib.Topology.Algebra.Valued.ValuedField
 
 The valued-field uniformities are preserved without a surjectivity
 assumption on the ambient value group.
+
+## Main results
+
+* `valuedRingEquiv_uniformContinuous`: A ring equivalence preserving the valuations preserves the
+  existing valuation uniformities, even without surjectivity onto the ambient value group.
+
+## References
+
+* Mathlib; this file is an upstream candidate and has no project-specific reference.
 -/
 
 @[expose] public section

@@ -21,6 +21,36 @@ Mathlib's separable-closure uniqueness and fixing-subgroup equivalence.
 
 Normal closure is taken inside the separable closure. Changing the
 base preserves the carrier of a finite intermediate field containing the new base.
+
+## Main definitions
+
+* `separableClosureBaseChangeEquiv`: An isomorphism of the two separable closures over the new base
+  field.
+* `absoluteGaloisBaseChangeEquiv`: The absolute Galois group of the new base is the fixing subgroup.
+* `finiteGaloisNormalClosure`: The finite normal closure of a finite separable subextension.
+* `finiteGaloisLayerOverBase`: A finite old-base Galois layer is finite Galois over every contained
+  base.
+
+## Main results
+
+* `isSepClosure_over_subextension`: The separable closure is a separable closure over every
+  subextension.
+* `coe_absoluteGaloisBaseChangeEquiv`: The fixing-subgroup element is precisely the conjugate field
+  automorphism.
+* `absoluteGaloisBaseChangeEquiv_apply`: The automorphism identification commutes with the closure
+  isomorphism.
+* `le_finiteGaloisNormalClosure`: The normal closure contains the field.
+* `exists_finiteGalois_over_base_layer`: Finite Galois layers over the new base lie in finite Galois
+  layers over the old base.
+* `exists_finiteGalois_containing_base`: The old-base finite Galois layers containing the new base
+  are cofinal on the old-base side.
+* `finiteGaloisLayerOverBase_restrictScalars`: Rebasing a finite intermediate field keeps its
+  ambient field.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §1 (extensions arithmétiquement profinies).
 -/
 
 @[expose] public section

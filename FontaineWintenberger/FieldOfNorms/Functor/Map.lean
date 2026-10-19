@@ -19,33 +19,53 @@ public import Mathlib.LinearAlgebra.TensorProduct.Map
 /-!
 # Functoriality of the field of norms
 
-## Isomorphisms of the norm fields
+For an APF extension `L/K` the field of norms `X_K(L)` is functorial in `L`: a `K`-isomorphism
+`L ≃ₐ[K] M` reindexes the norm-compatible families, and a finite separable extension `M ⊆ N`
+(more generally a `K`-embedding with finite separable range) induces a field homomorphism
+`X_K(M) → X_K(N)` by reading coordinates on the *good* finite intermediate fields of `N`
+(`IsGoodFiniteLayer`), those `D` for which `M ⊗_{D ∩ M} D → N` is an isomorphism.
 
-Field isomorphisms reindex the finite norm families.
-Their norm-sum limits and stable valuations are preserved.
+## Main definitions
 
-## Finite inclusions on the multiplicative fields of norms
+* `FieldOfNorms.mapFun`: The reindexing of norm families along a `K`-isomorphism `e : L ≃ₐ[K] M`, as
+  a bare function.
+* `FieldOfNorms.mapEquiv`: The ring isomorphism `X_K(L) ≃+* X_K(M)` induced by a `K`-isomorphism `e
+  : L ≃ₐ[K] M`: the coordinate at a finite intermediate field `E` of `M` is `e` applied to the
+  coordinate at `e⁻¹(E)`.
+* `FieldOfNorms.aut`: The action of `Aut(L/K)` on `X_K(L)` by ring automorphisms.
+* `FieldOfNorms.pullbackCoord`: The coordinate of a norm family of `M` at the pullback `D ∩ M` of a
+  finite intermediate field `D` of `N`, pushed into `D`.
+* `FieldOfNorms.inclusion₀`: The multiplicative inclusion `X_K(M) →*₀ X_K(N)` of a finite separable
+  extension `N/M`, defined without APF hypotheses; `FieldOfNorms.inclusion` packages it as a ring
+  homomorphism.
+* `FieldOfNorms.inclusion`: The field homomorphism `X_K(M) →+* X_K(N)` induced by a finite separable
+  extension `N/M` inside the APF tower over `K`: at a good finite intermediate field `D` of `N` the
+  coordinate is the coordinate at `D ∩ M`.
+* `FiniteIntermediateField.pullbackEquiv`: The restriction of the coefficient-field isomorphism to
+  the pullbacks.
+* `FiniteIntermediateField.tensorAddEquiv`: The semilinear tensor transport, retained as an additive
+  equivalence so no scalar-structure choices are required by its consumers.
 
-Canonical pullbacks and good-field norm base change construct the
-covariant map on the same norm families. No APF or valued-field structure is
-needed for this multiplicative construction.
+## Main results
 
-## Functor laws for finite maps on the norm families
+* `FieldOfNorms.mapFun_compatible`: The transported coordinates satisfy the finite norm equations.
+* `spectral_normalizedValuation_algEquiv`: Finite field isomorphisms preserve the normalized DVR
+  valuations, on integral and nonintegral elements alike.
+* `FieldOfNorms.coord_mapEquiv`: The coordinate of a transported family, in the finite intermediate
+  field.
+* `FieldOfNorms.coe_coord_mapEquiv`: The coordinate of a transported family, in the ambient field.
+* `FieldOfNorms.valuation_mapEquiv`: The transport preserves the normalized valuation.
+* `FieldOfNorms.uniformContinuous_mapEquiv`: The transport is uniformly continuous for the valuation
+  uniformities.
+* `FieldOfNorms.pullbackCoord_norm`: On every good pair these coordinates satisfy the finite target
+  norm equation.
+* `FiniteIntermediateField.pullbackLayer_self`: For the identity inclusion the canonical pullback is
+  the same finite index.
 
-Identity and composition are tested on cofinal good
-finite fields. All comparisons retain the inclusions.
+## References
 
-## Equivariance of the finite norm-family maps
-
-Commuting isomorphisms transport the pullback fields and canonical
-multiplication maps. Standard semilinear tensor equivalences preserve
-goodness, providing the coordinate comparisons in the covariant functor laws.
-
-## Naturality of the finite norm-family maps
-
-The finite-embedding maps agree with the isomorphism maps.
-Commuting isomorphisms and inclusions give their functor laws on
-the norm families.
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §3.1 (functoriality of `X_K`).
 -/
 
 @[expose] public section

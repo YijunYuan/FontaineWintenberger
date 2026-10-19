@@ -15,6 +15,41 @@ public import FontaineWintenberger.Mathlib.FieldTheory.SeparableEmbeddings
 The indexing type consists of finite-field embeddings with the prescribed
 restriction. Fixing-group torsors remove repeated coset representatives.
 No normality or stability of either intermediate field is required.
+
+## Main definitions
+
+* `embeddingRestrictionFiber`: The embeddings of the upper field with a prescribed restriction to
+  the lower field.
+* `fixingRestrictionMap`: Right multiplication by the lower fixing group gives the restriction
+  fiber; this is a map of embeddings, not a quotient model.
+* `restrictedNormalClosureEmbedding`: Every closure embedding lands in the finite normal closure;
+  this is supplied by the canonical normal-closure construction.
+* `normalClosureRestrictionFiberEquiv`: The finite ambient and intrinsic closure fibers are
+  canonically bijective through the field equivalences.
+
+## Main results
+
+* `fixingRestrictionMap_surjective`: Every upper embedding with the given lower restriction has an
+  ambient automorphism representative in the required fixing coset.
+* `fixingRestrictionMap_fiber_card`: Each restriction fiber is a right torsor for the upper fixing
+  subgroup, so all multiplicities are proved equal to its size.
+* `sum_fixingRestrictionMap`: Summing any function over distinct embeddings removes exactly the
+  proved fixing-group multiplicity, even for infinite extended-real values.
+* `sum_embeddingOrder_fixing_restrictions`: The repeated-representative sum for an arbitrary finite
+  tower, without any total-ramification condition and including the infinite endpoint.
+* `embeddingOrder_eq_sum_restrictionFiber`: Tate's exact average over distinct restriction
+  embeddings in an arbitrary finite separable tower.
+* `embeddingOrder_restriction_eq_sum`: The distinct-fiber formula applies to any finite embedding,
+  by its extension to the finite normal ambient field.
+* `embeddingRamificationIdx_isomorphic_square`: The local ramification index is unchanged by a
+  commuting square of source and target field isomorphisms.
+* `normalClosureRestriction_le`: Restricting two nested fields to their finite normal closure
+  preserves their inclusion.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §1 (extensions arithmétiquement profinies).
 -/
 
 @[expose] public section

@@ -13,6 +13,21 @@ public import FontaineWintenberger.Ramification.Upper.Quotient
 
 Upper groups reindex the canonical real lower groups by the proved
 inverse Herbrand function. Normal restriction preserves this numbering.
+
+## Main definitions
+
+* `upperRamificationGroup`: Upper numbering of the ideal-inertia lower groups.
+
+## Main results
+
+* `fixedField_map_upperRamificationGroup`: Herbrand's upper quotient theorem for the fixed-field
+  restriction map.
+* `fixedField_quotient_upperRamificationGroup`: Upper quotient compatibility through the canonical
+  Galois quotient equivalence.
+
+## References
+
+* Serre, *Local Fields*, Chapter IV (ramification groups, Herbrand functions, the different).
 -/
 
 @[expose] public section

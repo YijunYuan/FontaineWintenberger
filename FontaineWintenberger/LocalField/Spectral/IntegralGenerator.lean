@@ -18,6 +18,26 @@ public import Mathlib.RingTheory.Nakayama
 
 The argument lifts a primitive residue element by Hensel, adds an uniformizer,
 and uses Nakayama to pass from residue generation to the entire integer ring.
+
+## Main results
+
+* `subalgebra_eq_top_of_residue_surjective`: Residue surjectivity and one uniformizer suffice to
+  generate a finite DVR extension.
+* `exists_monic_root_of_residue`: Lift a separable residue element to a simple root of a monic base
+  polynomial.
+* `irreducible_aeval_add_of_isRoot`: Adding an uniformizer to a simple root makes its polynomial
+  value an uniformizer.
+* `exists_integral_generator`: Finite extensions of Henselian DVRs with separable residue extension
+  are monogenic.
+* `adjoin_uniformizer_eq_top`: Every uniformizer generates when the map on residue fields is
+  surjective.
+* `spectralIntegerRing_exists_generator`: The spectral integer ring of a finite separable extension
+  is monogenic.
+
+## References
+
+* Serre, *Local Fields*, Chapters I–II (discrete valuation rings, completions, unramified and
+  totally ramified extensions).
 -/
 
 @[expose] public section

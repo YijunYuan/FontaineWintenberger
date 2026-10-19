@@ -15,6 +15,34 @@ public import FontaineWintenberger.APF.Tower.AlgebraicResidue
 
 Reduction of a deep coordinate identifies the residue field of the
 field of norms valuation ring with that of the algebraic extension.
+
+## Main definitions
+
+* `FieldOfNorms.residueReduction`: Reduction of the first coordinate, factored through its checked
+  quotient by the square of the maximal ideal.
+* `FieldOfNorms.residueToLayer`: The coordinate reduction descends through the maximal ideal to the
+  first-stage residue field.
+* `FieldOfNorms.residueLayerEquiv`: The field of norms residue field is identified with the deep
+  stage's residue field by the coordinate-reduction map.
+
+## Main results
+
+* `FieldOfNorms.truncation_surjective`: Each integral truncated coordinate is onto, by the
+  surjective norm tower and the proved reconstruction equivalence.
+* `FieldOfNorms.residueReduction_apply`: This reduction is the residue of the finite-field
+  coordinate.
+* `FieldOfNorms.residueReduction_surjective`: Coordinate reduction is onto the first-stage residue
+  field.
+* `FieldOfNorms.residueReduction_ker`: The kernel is exactly the maximal ideal of the field of norms
+  valuation ring, by the proved equality of its normalized valuation.
+* `FieldOfNorms.residueToLayer_residue`: The descended map acts on the residue of an integral
+  family.
+* `FieldOfNorms.residueLayerEquiv_residue`: The residue equivalence retains the finite coordinate.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §2–3 (le corps des normes, fonctorialité).
 -/
 
 @[expose] public section

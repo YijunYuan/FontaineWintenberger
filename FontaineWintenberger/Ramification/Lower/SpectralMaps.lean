@@ -13,6 +13,25 @@ public import FontaineWintenberger.Ramification.Lower.FixedField
 The exact restriction of the spectral norm produces local maps on the
 spectral integer rings, retaining the base residue algebra.
 The construction applies to algebraic extensions of arbitrary degree.
+
+## Main definitions
+
+* `spectralIntegerInclusion`: The field embedding restricts to the spectral integer rings as an
+  algebra map over the base integer ring.
+* `spectralResidueInclusion`: The residue map induced by the embedding retains the base residue
+  algebra.
+
+## Main results
+
+* `spectralValuation_hasExtension_tower`: The exact spectral norm restriction gives compatibility of
+  valuations in any algebraic field tower, including an infinite ambient extension.
+* `spectralIntegerInclusion_isLocalHom`: The integer-ring inclusion is local without any finiteness
+  or discreteness assumption on the ambient extension.
+* `spectralResidueInclusion_comp`: Residue inclusions compose along the field inclusions.
+
+## References
+
+* Serre, *Local Fields*, Chapter IV (ramification groups, Herbrand functions, the different).
 -/
 
 @[expose] public section

@@ -14,6 +14,22 @@ public import FontaineWintenberger.APF.Tower.Wild
 An infinite algebraic extension has arbitrarily large finite subextension
 degrees. On the APF wild tail these degrees are ramification indices,
 so the residue prime belongs to every fixed ideal power eventually.
+
+## Main results
+
+* `FiniteIntermediateField.exists_tail_finrank_ge`: The relative degrees above any finite
+  intermediate field tend to infinity when the algebraic extension is infinite.
+* `IsAPF.exists_finiteIntermediateField_ramificationIdx_unbounded`: On an APF wild tail, the
+  canonical ramification indices above every fixed finite intermediate field tend to infinity.
+* `IsAPF.exists_finiteIntermediateField_natCast_mem_maximalIdeal_pow`: The residue prime belongs to
+  every fixed power of the maximal ideal on a sufficiently large finite-layer tail.
+* `IsAPF.exists_finiteIntermediateField_natCast_mem_image_maximalIdeal_pow`: The image of the
+  residue prime in each finite field is eventually in the image of every maximal-ideal power.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §1 (extensions arithmétiquement profinies).
 -/
 
 @[expose] public section

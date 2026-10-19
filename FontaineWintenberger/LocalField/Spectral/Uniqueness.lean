@@ -13,6 +13,18 @@ public import FontaineWintenberger.LocalField.Spectral.IntegralGenerator
 
 Integral closedness gives inclusion into any compatible valuation ring. The
 one-dimensional valuation overring theorem and localness exclude a larger ring.
+
+## Main results
+
+* `spectralIntegerRing_eq_extension_valuationSubring`: The integral-closure construction equals any
+  compatible chosen valuation ring.
+* `extensionValuationSubring_exists_generator`: Monogenicity for any chosen compatible extension
+  valuation, with arbitrary perfect residue.
+
+## References
+
+* Serre, *Local Fields*, Chapters I–II (discrete valuation rings, completions, unramified and
+  totally ramified extensions).
 -/
 
 @[expose] public section

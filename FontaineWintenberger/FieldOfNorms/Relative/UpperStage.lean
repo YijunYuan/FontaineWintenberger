@@ -25,6 +25,44 @@ The integral coordinates need not be additive. Their polynomial is
 formed coefficient by coefficient; only its reduction is compared using the
 proved high-break ring homomorphism. The normalized discriminant
 value is then stable as soon as the precision exceeds that value.
+
+## Main definitions
+
+* `FiniteIntermediateField.HasFullUpper`: The high-break condition is the full relative upper
+  product, on the canonical separable embedding of the extension over `E`.
+* `FiniteIntermediateField.HasFullUpper.truncatedNorm`: The finite norm on integer quotients, whose
+  wildness, total ramification and first-bound hypotheses follow from the full upper product of the
+  infinite extension.
+* `FieldOfNorms.integralCoordinateAt`: Integral evaluation in any finite intermediate field, with no
+  chosen model.
+* `FieldOfNorms.highBreakProjection`: The high-break coordinate ring map.
+* `FieldOfNorms.coordinatePolynomial`: The polynomial of coordinates, formed by its finite
+  coefficient expansion.
+
+## Main results
+
+* `FiniteIntermediateField.hasFullUpper_iff_embedding`: The high-break condition is unchanged for
+  every choice of separable embedding over the finite field.
+* `FiniteIntermediateField.hasFullUpper_apfPsi_iff`: At the finite-base Herbrand parameter, the full
+  relative product is exactly containment of the absolute APF stage in the field.
+* `FiniteIntermediateField.hasFullUpper_iff_stage_le`: A positive relative upper parameter
+  corresponds to the positive absolute stage through the finite-base inverse Herbrand function.
+* `finrank_eq_prime_pow_of_apfFiniteStage_pos_le`: At every positive upper stage, all finite
+  oversteps have p-power degree.
+* `FiniteIntermediateField.HasFullUpper.of_le`: Decreasing a nonnegative upper parameter preserves
+  the full product.
+* `IsAPF.exists_finiteIntermediateField_fullUpper_tail`: Full relative upper products become
+  arbitrarily deep on an finite-field tail; this retains the product, rather than only its first
+  bound.
+* `FiniteIntermediateField.HasFullUpper.residue_surjective`: A positive full relative product forces
+  every finite overstep to have surjective residue inclusion.
+* `FiniteIntermediateField.HasFullUpper.finrank_eq_prime_pow`: Every finite overstep above a
+  positive full relative product has p-power degree, on the finite carriers.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §2–3 (le corps des normes, fonctorialité).
 -/
 
 @[expose] public section

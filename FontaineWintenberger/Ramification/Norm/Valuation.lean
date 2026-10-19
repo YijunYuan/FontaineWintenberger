@@ -15,6 +15,25 @@ public import Mathlib.RingTheory.Ideal.Norm.RelNorm
 
 The relative norm of the maximal ideal gives normalized norm
 valuations without a normality or finite residue-field assumption.
+
+## Main results
+
+* `addVal_intNorm_uniformizer`: The norm of an integral uniformizer has valuation equal to the
+  canonical residue degree.
+* `addVal_intNorm`: Normalized integral norm valuations multiply by the residue degree, including
+  zero.
+* `intValuation_intNorm`: The canonical normalized multiplicative valuations satisfy the same norm
+  identity on the integral rings.
+* `normalizedValuation_norm`: The normalized valuation of the field norm, for arbitrary finite
+  separable fraction-field extensions of finite local DVR extensions.
+* `extensionValuationSubring_normalizedValuation_norm`: The chosen extension valuation ring gives
+  the field norm identity with the residue-field degree.
+* `extensionValuationSubring_normalizedValuation_norm_of_residueDegree_one`: Norms preserve
+  normalized valuations when the residue degree is one.
+
+## References
+
+* Serre, *Local Fields*, Chapter IV (ramification groups, Herbrand functions, the different).
 -/
 
 @[expose] public section

@@ -15,6 +15,22 @@ public import FontaineWintenberger.Ramification.Norm.Valuation
 A totally ramified p-power extension with a norm addition congruence
 at a stated precision has norms representing every base element to that
 precision. Finite perfect-residue digits supply the preimage.
+
+## Main results
+
+* `irreducible_intNorm_of_inertiaDeg_eq_one`: Residue degree one makes the norm of every integral
+  uniformizer a base uniformizer.
+* `intNorm_sum_sub_sum_intNorm_mem_maximalIdeal_pow`: Repeated norm addition congruences give the
+  same finite-sum congruence.
+* `exists_intNorm_sub_mem_maximalIdeal_pow`: Finite perfect-residue digits make norms surjective
+  modulo any precision at which their addition congruence has been proved.
+* `extensionValuationSubring_exists_intNorm_sub_mem_maximalIdeal_pow`: Finite-precision norm
+  approximation for the chosen extension integers, with total ramification and p-power degree on the
+  fields.
+
+## References
+
+* Serre, *Local Fields*, Chapter IV (ramification groups, Herbrand functions, the different).
 -/
 
 @[expose] public section

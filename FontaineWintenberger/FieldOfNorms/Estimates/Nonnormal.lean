@@ -16,6 +16,24 @@ public import FontaineWintenberger.APF.Elementary.TameCompositum
 Tame base change scales both input precision and the Herbrand modulus
 by the same ramification index. Descent therefore preserves the intrinsic
 modulus on the integer rings, without a normality assumption.
+
+## Main results
+
+* `spectralIntegerInclusion_sub_mem_pow_ramificationIdx`: Finite-layer integer inclusions multiply
+  integral precision by the ramification index of the same extension on its own integer rings.
+* `spectralIntegerInclusion_sub_mem_wild_compositum_pow`: The inclusion into the tame compositum
+  multiplies integral precision by the same ramification index used in Herbrand scaling.
+* `intNorm_sub_congruence_of_totallyRamified_fixedField`: Tame base change and ceiling descent give
+  the intrinsic Herbrand modulus for the fixed field, including the trivial extension.
+* `intNorm_sub_congruence_of_totallyRamified_intermediateField`: The intermediate field need not be
+  normal: its own total ramification and prime-power degree give the norm continuity modulus.
+* `intNorm_sub_congruence_of_totallyRamified`: Every finite separable totally ramified prime-power
+  extension has its intrinsic Herbrand norm modulus, over an arbitrary perfect residue field.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §2–3 (le corps des normes, fonctorialité).
 -/
 
 @[expose] public section

@@ -12,6 +12,33 @@ public import FontaineWintenberger.Ramification.Lower.Teichmuller
 
 In characteristic `p`, nilpotence of the maximal ideal makes the
 canonical Teichmüller section an unital ring homomorphism.
+
+## Main definitions
+
+* `truncatedResidueCoefficients`: The canonical unital coefficient section in the truncated local
+  ring.
+
+## Main results
+
+* `isAdicComplete_of_isNilpotent_ideal`: A nilpotent ideal gives the discrete, hence complete, adic
+  filtration.
+* `residueTeichmuller_eq_pow_of_nilpotent`: In the nilpotent range, every lift of the inverse
+  Frobenius coordinate has exactly the canonical Teichmüller power, with no limiting error.
+* `residueTeichmuller_add_of_isNilpotent`: Nilpotence removes the mixed-characteristic error in
+  additivity of Teichmüller representatives.
+* `truncatedResidueCoefficients_eq_residueTeichmuller`: Compatibility with the existing canonical
+  representatives, for any already installed proof of completeness.
+* `residue_truncatedResidueCoefficients`: The coefficient section is a section of the residue map.
+* `residue_comp_truncatedResidueCoefficients`: Equality of maps, rather than only equality of
+  values, for the splitting of the quotient.
+* `truncatedResidueCoefficients_unique`: There is only one unital residue-field section into the
+  truncated ring.
+* `truncatedResidueCoefficients_eq_pow`: The finite inverse-Frobenius formula, with arbitrary
+  nilpotence cutoff, exponent and lift.
+
+## References
+
+* Serre, *Local Fields*, Chapter IV (ramification groups, Herbrand functions, the different).
 -/
 
 @[expose] public section

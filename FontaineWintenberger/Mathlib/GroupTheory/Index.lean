@@ -14,6 +14,23 @@ public import Mathlib.Algebra.Group.Subgroup.Pointwise
 ## Finite-index restriction and normal products
 
 ## Relative indices of normal products
+
+## Main results
+
+* `finiteIndex_iff_comap_of_range`: A finite-index image detects finite index of every subgroup by
+  preimage.
+* `comap_sup_eq_of_normal_right_of_le_range`: One factor in the range suffices to pull back a normal
+  product.
+* `relIndex_sup_sup_normal`: Adding a common normal factor changes neither of these relative coset
+  sets.
+* `sup_inf_eq_sup_inf_of_le_of_normal`: Intersecting a normal product with a containing subgroup
+  gives its product there.
+* `relIndex_sup_sup_eq_inf`: The relative index of two normal products is the index of their
+  intersection.
+
+## References
+
+* Mathlib; this file is an upstream candidate and has no project-specific reference.
 -/
 
 @[expose] public section

@@ -22,6 +22,37 @@ topology. The limit is mathlib's `ProfiniteGrp.limit`.
 
 The absolute group uses mathlib's separable closure. Finite and
 infinite restriction are the existing ordinary algebra-automorphism maps.
+
+## Main definitions
+
+* `finiteUpperRamificationGroupMap`: Ordinary finite restriction, restricted to the upper subgroups.
+* `finiteUpperRamificationGroupFunctor`: The finite upper groups and their ordinary restriction
+  maps.
+* `upperRamificationToLimit`: The canonical map from infinite upper automorphisms to the upper
+  inverse limit.
+* `upperRamificationLimitForget`: Forget upper membership while retaining the existing canonical
+  compatible Galois tuple.
+* `upperRamificationEquivToLimit`: The upper group is canonically the existing inverse limit of its
+  finite groups.
+* `absoluteUpperRamificationGroup`: Absolute upper numbering inside the automorphism group of the
+  separable closure.
+* `absoluteUpperImageEquivToLimit`: The absolute upper image is canonically the inverse limit of the
+  finite upper groups.
+
+## Main results
+
+* `upperRamificationEquivToLimit_apply_val`: Every coordinate of the canonical equivalence is
+  ordinary finite restriction.
+* `absolute_map_upperRamificationGroup`: Absolute upper projection onto every finite Galois
+  subextension.
+* `absolute_restrict_map_upperRamificationGroupInfinite`: Absolute upper projection onto every
+  algebraic Galois subextension.
+* `absoluteUpperImageEquivToLimit_apply_val`: The absolute-image equivalence retains the ordinary
+  restriction in every finite coordinate.
+
+## References
+
+* Serre, *Local Fields*, Chapter IV (ramification groups, Herbrand functions, the different).
 -/
 
 @[expose] public section

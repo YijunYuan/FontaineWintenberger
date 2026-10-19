@@ -13,6 +13,20 @@ public import FontaineWintenberger.LocalField.Spectral.Tower
 
 The compatible norm valuation gives the local map of unit balls.
 Their finite module extension descends to the residue fields.
+
+## Main results
+
+* `normedAlgebra_residueField_finiteDimensional`: The residue extension of a finite compatible
+  normed extension is finite.
+* `normedAlgebra_residueField_perfectField`: Perfectness propagates to the residue field; its
+  cardinality is unrestricted.
+* `normedAlgebra_isPerfectResidueLocalField`: A finite separable normed extension of a local field
+  is again a local field, with the same residue characteristic.
+
+## References
+
+* Serre, *Local Fields*, Chapters I–II (discrete valuation rings, completions, unramified and
+  totally ramified extensions).
 -/
 
 @[expose] public section

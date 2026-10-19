@@ -23,6 +23,22 @@ composes through a finite tower by transitivity of integral norms.
 The integral break gives the exact trace-ideal precision. Euclidean division
 shows that this precision dominates the nonnegative ceiling of `(p-1)b/p`
 for every lower bound `b` on the same intrinsic first ramification bound.
+
+## Main results
+
+* `spectralIntegerRing_prime_degree_norm_add_congruence`: A prime-degree producer supplies the
+  ideal-power addition congruence used in the tower step, at the exact trace-ideal precision.
+* `mul_div_le_prime_norm_precision`: The exact prime-step integer precision dominates the real
+  source bound.
+* `ceil_mul_div_le_prime_norm_precision`: A real lower bound on an integral prime break gives a
+  common integer precision, including negative lower bounds.
+* `spectralIntegerRing_prime_norm_add_congruence_of_bound`: Prime-degree norm congruence at every
+  common intrinsic lower bound.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §1 (extensions arithmétiquement profinies).
 -/
 
 @[expose] public section

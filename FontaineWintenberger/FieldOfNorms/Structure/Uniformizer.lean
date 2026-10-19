@@ -15,6 +15,32 @@ public import FontaineWintenberger.FieldOfNorms.Basic.Ring
 An uniformizer class in the first finite quotient lifts
 through the surjective norm tower. Reconstruction supplies a family
 on the field of norms carrier with normalized value one.
+
+## Main definitions
+
+* `FieldOfNorms.uniformizer`: A chosen norm-compatible family with normalized value one.
+* `FieldOfNorms.uniformizerInteger`: The reconstructed family as an element of its valuation ring.
+
+## Main results
+
+* `FieldOfNorms.exists_valuation_eq_exp_neg_one`: A compatible norm family has normalized value one.
+* `FieldOfNorms.uniformizer_ne_zero`: The reconstructed uniformizer is a nonzero norm family.
+* `FieldOfNorms.uniformizer_zpow_valuation`: All integer powers have their exact normalized values.
+* `FieldOfNorms.valuation_surjective`: The stable valuation attains every normalized integer value
+  and zero.
+* `FieldOfNorms.fieldValuation_surjective`: Bundling the map as a field valuation preserves its
+  proved surjectivity.
+* `FieldOfNorms.fieldValuation_valueGroup_eq_top`: The value group of the field valuation is the
+  entire integer group.
+* `FieldOfNorms.valued_v`: The valuation of the `Valued` instance is the field valuation,
+  definitionally.
+* `FieldOfNorms.uniformizer_isUniformizer`: The family is an uniformizer for the same field
+  valuation.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §2–3 (le corps des normes, fonctorialité).
 -/
 
 @[expose] public section

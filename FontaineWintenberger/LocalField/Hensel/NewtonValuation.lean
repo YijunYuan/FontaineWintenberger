@@ -14,6 +14,23 @@ public import FontaineWintenberger.LocalField.Spectral.CompatibleNorm
 The compatible norm preserves the uniformity and the
 valuation ring. Its comparison equivalence transports the proved Newton
 construction back to the supplied valuation, including the exact distance.
+
+## Main results
+
+* `discreteValued_hensel_nonunit`: Newton lifting for the supplied discrete valuation and its
+  integer ring, without any unit-derivative or residue-field finiteness assumption.
+* `discreteValued_hensel_nonunit_additive`: The associated additive valuation formulation: the
+  residual value exceeds twice the derivative value, and the root has exactly their difference as
+  its distance value.
+* `discreteValued_hensel_nonunit_ambient`: The Newton root is unique among all ambient field
+  elements.
+* `discreteValued_hensel_nonunit_ambient_additive`: Additive Newton statement with uniqueness over
+  the entire field, including exact distance and derivative-value preservation.
+
+## References
+
+* Serre, *Local Fields*, Chapters I–II (discrete valuation rings, completions, unramified and
+  totally ramified extensions).
 -/
 
 @[expose] public section

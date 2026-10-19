@@ -16,6 +16,29 @@ public import Mathlib.NumberTheory.RamificationInertia.Galois
 The full field automorphism action on the spectral integers has the
 base integers as its invariant ring. Mathlib's ideal inertia theorem then
 identifies the order of the zero lower group with the canonical local index.
+
+## Main definitions
+
+* `localResidueGaloisHom`: The residue automorphism induced by an automorphism of a local algebra.
+* `localResidueGaloisEquiv`: The residue automorphism group is the quotient by the zero lower group.
+
+## Main results
+
+* `hasSeparableResidueFieldsAt_maximalIdeal`: Perfect local residue fields supply Mathlib's
+  prime-wise separability interface.
+* `card_lowerRamificationGroup_zero`: Zero lower inertia has the canonical local ramification index
+  as its order.
+* `localResidueGaloisHom_surjective`: The reduction homomorphism is onto the residue automorphism
+  group.
+* `ker_localResidueGaloisHom`: The residue reduction kernel is exactly the intrinsic zero lower
+  group.
+* `localResidue_normal`: Normality of the local residue-field extension.
+* `spectralIntegerRing_card_lower_zero`: Inertia order for the full Galois action on the spectral
+  integers.
+
+## References
+
+* Serre, *Local Fields*, Chapter IV (ramification groups, Herbrand functions, the different).
 -/
 
 @[expose] public section

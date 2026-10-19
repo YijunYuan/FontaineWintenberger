@@ -13,6 +13,19 @@ public import Mathlib.RingTheory.RamificationInertia.Ramification
 
 We identify Mathlib's local-length ramification index with the exponent of the
 mapped maximal ideal, then obtain the normalized valuation scaling formula.
+
+## Main results
+
+* `exists_uniformizer_factor_ramificationIdx`: A mapped uniformizer has an
+  unit-times-uniformizer-power factorization of canonical index.
+* `map_maximalIdeal_eq_pow_ramificationIdx`: The exponent of the mapped maximal ideal is Mathlib's
+  canonical local-length index.
+* `addVal_algebraMap`: Normalized integral valuations scale by the canonical ramification index,
+  including at zero.
+
+## References
+
+* Serre, *Local Fields*, Chapter IV (ramification groups, Herbrand functions, the different).
 -/
 
 @[expose] public section

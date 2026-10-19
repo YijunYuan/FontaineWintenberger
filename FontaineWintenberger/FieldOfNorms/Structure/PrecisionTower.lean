@@ -18,6 +18,40 @@ The abstract APF extension supplies an increasing cofinal sequence
 of finite subfields with growing norm precision. Every stage contains
 the wild and stable-valuation witnesses and the residue prime lies in
 the required maximal-ideal power.
+
+## Main definitions
+
+* `deepFiniteTowerBound`: The deep first-bound parameter at the growing integer precision.
+* `deepFiniteTower`: A choice of the proved deep finite tower, with no tower hypothesis.
+* `deepFiniteTowerQuotient`: The integer-ring quotient at the stage's growing precision.
+* `deepFiniteTowerRelativeDegree`: The exponent of the finite relative degree, chosen from the
+  proved wild tail.
+* `deepFiniteTowerNorm`: Every later finite intermediate field has a quotient norm at this stage's
+  precision; the map is induced by the integer norm.
+* `deepFiniteTowerTransition`: The norms induce the ring transition maps between tower stages.
+
+## Main results
+
+* `IsAPF.exists_monotone_cofinal_finiteIntermediateFields_ge`: Finite composita enlarge any
+  prescribed sequence of finite intermediate fields inside a monotone cofinal sequence of the APF
+  extension.
+* `ceil_deepFiniteTowerBound`: The chosen real first bound gives exactly the required integer
+  precision.
+* `IsAPF.exists_deep_finiteTower`: An infinite abstract APF extension has an increasing cofinal
+  tower with growing precision, the stable valuation, an entire wild tail, and all later relative
+  first bounds.
+* `deepFiniteTower_monotone`: The selected deep tower is increasing.
+* `le_deepFiniteTower`: Every selected stage contains the specified finite intermediate field.
+* `deepFiniteTower_cofinal`: The selected tower is cofinal among all finite subfields.
+* `FieldOfNorms.valuation_eq_deepFiniteTower`: Every selected finite coordinate computes the stable
+  valuation.
+* `natCast_mem_deepFiniteTower_maximalIdeal_pow`: The residue prime is in the required ideal power
+  at every selected stage.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §2–3 (le corps des normes, fonctorialité).
 -/
 
 @[expose] public section

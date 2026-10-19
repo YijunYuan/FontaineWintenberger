@@ -16,6 +16,27 @@ public import FontaineWintenberger.Ramification.Norm.Tower
 The canonical field norms restrict to the spectral integer rings.
 Their original-field computation proves identity and composition without
 introducing another inverse-limit carrier.
+
+## Main definitions
+
+* `integerNorm`: The integral norm for an inclusion of finite intermediate fields.
+
+## Main results
+
+* `coe_integerNorm`: The integral norm is the field norm under inclusion.
+* `integerNorm_self`: The integral norm of the identity field inclusion is the identity.
+* `integerNorm_integerNorm`: Integral norms compose because their field norms compose.
+* `integerNorm_mem_maximalIdeal_pow`: The integral norm preserves every nonnegative maximal-ideal
+  precision, on all finite separable layers including nonnormal ones.
+* `integerNorm_add_congruence_tower`: The integral norm addition congruence composes in a
+  finite-layer triple, consuming the proved integral-norm tower theorem.
+* `integerNorm_add_congruence_of_chain`: Norm congruences at a common precision compose along an
+  finite chain of intermediate fields.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §2–3 (le corps des normes, fonctorialité).
 -/
 
 @[expose] public section

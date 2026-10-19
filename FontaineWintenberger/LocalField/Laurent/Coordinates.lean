@@ -15,6 +15,41 @@ public import Mathlib.Topology.Algebra.Valued.WithZeroMulInt
 
 Evaluation in the valuation ring is bijective by residue-digit
 recursion. Its fraction-field extension preserves the valuation.
+
+## Main definitions
+
+* `residueDigit`: The residue digit in the coefficient section.
+* `residueQuotient`: The quotient after subtracting the residue digit.
+* `residueRemainder`: Repeated subtraction and division by the uniformizer.
+* `residueExpansion`: The power series obtained from the residue-digit recursion.
+* `powerSeriesUniformizerEquiv`: The residue-digit evaluation isomorphism for the given coefficient
+  section and uniformizer.
+* `valuedPowerSeriesEquiv`: Coordinates in the inherited valuation ring for every normalized
+  uniformizer, with precisely the prescribed coefficient section.
+* `laurentUniformizerEquiv`: Canonical extension of the power-series coordinate isomorphism to the
+  existing Laurent-series field and field of fractions.
+
+## Main results
+
+* `exists_residue_quotient`: Subtracting the residue digit leaves a multiple of the uniformizer in
+  the integer ring.
+* `residueQuotient_spec`: The digit and quotient satisfy the subtraction identity.
+* `residueExpansion_remainder`: The finite residue-digit expansion has exactly the integral
+  remainder multiplied by the corresponding power of the uniformizer.
+* `tendsto_uniformizer_pow_mul`: Multiplication by arbitrary elements of the integer ring does not
+  spoil convergence of uniformizer powers in its linear topology.
+* `tendsto_residueExpansion_partialSums`: The partial sums of the residue expansion converge to the
+  element of the complete ring.
+* `eval₂_residueExpansion`: Evaluation of the residue expansion is the element.
+* `powerSeries_eval₂_surjective`: Every integral element is represented by the power series produced
+  by residue-digit recursion, without assuming an expansion certificate.
+* `powerSeries_eval₂_ne_zero`: The first nonzero coefficient factors out an uniformizer power and
+  leaves an unit, so evaluation cannot annihilate a nonzero power series.
+
+## References
+
+* Serre, *Local Fields*, Chapters I–II (discrete valuation rings, completions, unramified and
+  totally ramified extensions).
 -/
 
 @[expose] public section

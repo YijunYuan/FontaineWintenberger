@@ -18,6 +18,30 @@ public import FontaineWintenberger.Ramification.Lower.SpectralMaps
 The full zero-level APF index is the residue degree, retaining the
 residue factor omitted from the inertia-relative APF index. The zero
 stage therefore stabilizes residue degrees in the extension.
+
+## Main results
+
+* `apfSubgroup_index_zero_eq_residueDegree_of_finiteGalois`: The full zero index in a finite Galois
+  overfield equals the residue degree of the intermediate field.
+* `apfSubgroup_index_zero_eq_residueDegree`: The full zero APF index of any specified separable
+  embedding is the residue degree of the finite separable extension.
+* `apfSubgroup_zero_eq_of_apfFiniteStage_le`: Beyond the zero stage, the zero APF product is
+  unchanged.
+* `residueDegree_eq_zeroStage_of_apfFiniteStage_le`: The residue degree over K is constant beyond
+  the finite zero stage of an APF extension.
+* `spectralResidueInclusion_zeroStage_surjective`: The residue inclusion from the zero stage onto a
+  finite stage above it is surjective.
+* `spectralResidueInclusion_surjective_of_zeroStage_le`: Finite inclusions beyond the zero stage
+  induce surjective residue maps, without normality of either field.
+* `IsAPF.exists_finiteIntermediateField_residueDegree_stable`: In the abstract APF extension,
+  residue degrees stabilize above a finite intermediate field pulled back from its zero stage.
+* `IsAPF.exists_finiteIntermediateField_residueInclusion_surjective`: The abstract APF extension has
+  a finite residue-stable tail: every inclusion on that tail induces a surjection on residues.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §1 (extensions arithmétiquement profinies).
 -/
 
 @[expose] public section

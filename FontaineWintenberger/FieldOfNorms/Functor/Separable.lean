@@ -24,6 +24,30 @@ preservation and separability without normality over the base.
 
 The range factorization transports the relative Galois
 extension and its action to every finite embedding.
+
+## Main definitions
+
+* `FieldOfNorms.autEquivOfMap`: The relative action identifies the Galois groups for an arbitrary
+  finite embedding, by its source-to-range isomorphism.
+
+## Main results
+
+* `FieldOfNorms.inclusion_isScalarTower`: The three finite-inclusion field homomorphisms form a
+  scalar tower, by composition on the norm-compatible families.
+* `FieldOfNorms.finiteDimensional_isSeparable_finrank_inclusion`: A finite normal closure proves
+  finiteness, separability and preservation of the full degree for the inclusion field map.
+* `FieldOfNorms.finiteDimensional`: The finite-inclusion norm-field extension is finite-dimensional.
+* `FieldOfNorms.isSeparable`: The finite-inclusion norm-field extension is separable.
+* `FieldOfNorms.finrank`: The finite-inclusion norm-field extension has the full degree.
+* `FieldOfNorms.finiteDimensional_isSeparable_finrank_map`: The range factorization transports
+  finite dimension, separability and the full degree to every finite separable algebra embedding.
+* `FieldOfNorms.isGalois_map`: A finite Galois range extension gives a Galois extension for exactly
+  the arbitrary-embedding norm-field homomorphism.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §2–3 (le corps des normes, fonctorialité).
 -/
 
 @[expose] public section

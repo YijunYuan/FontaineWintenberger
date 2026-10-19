@@ -23,6 +23,33 @@ defined by its integral of the real lower-group cardinalities.
 
 The integral-defined function is strictly increasing and onto its
 half-line. Its inverse is obtained from this proved order isomorphism.
+
+## Main definitions
+
+* `truncatedRamificationOrder`: The intrinsic extended order capped at the nonnegative part of `t +
+  1`.
+* `herbrandFunction`: The Herbrand function, integrating real lower-group cardinalities.
+* `herbrandSum`: The finite-sum expression, to be compared with the defining integral.
+* `herbrandOrderIso`: The Herbrand integral induces an order isomorphism of the half-line.
+* `inverseHerbrandFunction`: Inverse Herbrand function; outside the domain the argument is clamped
+  to `-1`.
+
+## Main results
+
+* `hasDerivAt_truncatedRamificationOrder`: Away from the integer breaks, a capped order has
+  derivative its lower-group indicator.
+* `hasDerivAt_herbrandSum`: The finite sum has the lower-cardinality ratio as derivative away from
+  breaks.
+* `integral_card_lower_eq_herbrandSum`: Equality with the defining integral on nonnegative indices.
+* `herbrandFunction_eq_sum`: The finite sum is proved equal to the integral on its entire domain.
+* `hasDerivAt_herbrandFunction`: The integral-defined Herbrand function has the cardinality-ratio
+  derivative.
+* `herbrandFunction_lower_bound`: The identity summand gives a linear lower bound with a positive
+  finite denominator.
+
+## References
+
+* Serre, *Local Fields*, Chapter IV (ramification groups, Herbrand functions, the different).
 -/
 
 @[expose] public section

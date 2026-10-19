@@ -24,6 +24,28 @@ so their proved moduli compose along the wild prime chains.
 The cyclic prime field chain supplies every step. Composing its
 proved norm moduli and Herbrand functions gives continuity for the
 finite-layer norm, without a continuity hypothesis in the endpoint.
+
+## Main definitions
+
+* `finitePhi`
+
+## Main results
+
+* `apfPhi_finiteBase_comp_of_normedAlgebra`: The Herbrand moduli compose on the finite normed bases,
+  in the reverse order to their inverse Herbrand functions.
+* `integerNorm_prime_sub_congruence`: Prime Herbrand continuity applies to the finite-layer norm
+  maps and integer rings used by the inverse system.
+* `apfPhi_tower`: Actual Herbrand moduli compose through the inclusions of three finite intermediate
+  fields, with all relative scalar structures explicitly fixed.
+* `integerNorm_sub_congruence_tower`: The integral norms compose arbitrary proved input and output
+  precisions through a triple of finite fields.
+* `integerNorm_sub_congruence_of_wild_field`: The norm on every finite step above wild inertia has
+  its intrinsic Herbrand modulus.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §2–3 (le corps des normes, fonctorialité).
 -/
 
 @[expose] public section

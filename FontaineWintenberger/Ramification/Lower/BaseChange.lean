@@ -13,6 +13,24 @@ public import FontaineWintenberger.Ramification.Lower.GaloisGroup
 
 Compatible norms identify both spectral constructions with the same
 unit ball. The identity intertwines the fixing-subgroup actions.
+
+## Main definitions
+
+* `finiteBase_spectralIntegerRingEquiv`: The identity on field elements identifies the two integer
+  rings.
+
+## Main results
+
+* `spectralIntegerRing_eq_normedUnitBall`: The spectral integer subring is the unit ball of any
+  compatible field norm.
+* `finiteBase_spectralIntegerRing_eq`: Both base fields construct the same integer subring of the
+  top field.
+* `finiteBase_spectralIntegerRingEquiv_smul`: The fixing-subgroup equivalence uses the very same
+  action on the top integer ring.
+
+## References
+
+* Serre, *Local Fields*, Chapter IV (ramification groups, Herbrand functions, the different).
 -/
 
 @[expose] public section

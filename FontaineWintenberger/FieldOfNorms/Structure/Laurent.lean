@@ -16,6 +16,34 @@ public import FontaineWintenberger.LocalField.Laurent.Coordinates
 The coefficient embedding and its induced residue isomorphism
 identify the field of norms field with Laurent series, for every
 normalized uniformizer.
+
+## Main definitions
+
+* `FieldOfNorms.powerSeriesEquiv`: Evaluation in the integer ring, using the constructed constants
+  and precisely the residue isomorphism induced by them.
+* `FieldOfNorms.laurentEquiv`: The canonical Laurent-coordinate field isomorphism on the same field
+  of norms field, for every chosen normalized uniformizer.
+
+## Main results
+
+* `FieldOfNorms.powerSeriesEquiv_C`: Integral constants are exactly the coefficient section.
+* `FieldOfNorms.powerSeriesEquiv_X`: The integral parameter represents precisely the chosen
+  uniformizer.
+* `FieldOfNorms.laurentEquiv_powerSeries`: The Laurent isomorphism extends the integral evaluation.
+* `FieldOfNorms.laurentEquiv_C`: The field constants are the field embedding, including its
+  inverse-Frobenius normalization.
+* `FieldOfNorms.laurentEquiv_X`: The Laurent parameter is exactly the chosen norm family.
+* `FieldOfNorms.laurentEquiv_valuation`: Exact preservation of the stable field of norms valuation
+  on every Laurent series, including negative orders and zero.
+* `FieldOfNorms.uniformContinuous_laurentEquiv`: The coordinate map is uniformly continuous for
+  precisely the already constructed stable-valuation uniformity on the field.
+* `FieldOfNorms.uniformContinuous_laurentEquiv_symm`: The inverse also preserves the valuation
+  uniformities.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §2–3 (le corps des normes, fonctorialité).
 -/
 
 @[expose] public section

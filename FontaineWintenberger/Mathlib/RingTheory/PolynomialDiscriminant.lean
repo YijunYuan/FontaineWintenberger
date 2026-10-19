@@ -25,6 +25,29 @@ Integral monic division and multiplicativity of the existing resultant
 isolate the squared difference of two specified roots. The remaining factor
 is integral, so the discriminant has at least twice their distance's
 additive valuation.
+
+## Main results
+
+* `monic_discr_resultant`: The signed discriminant is the padded derivative resultant, including the
+  constant monic polynomial.
+* `Polynomial.Monic.discr_map`: Monic polynomial discriminants commute with arbitrary coefficient
+  maps, including maps to rings with zero divisors.
+* `exists_mul_add_mul_eq_discr`: The Sylvester adjugate produces integral coefficients for the
+  discriminant Bezout identity; no division by the derivative is used.
+* `monic_derivative_resultant`: Padding the derivative degree does not change a monic resultant,
+  even when leading derivative coefficients vanish in positive characteristic.
+* `monic_discr_ne_zero_iff`: Nonvanishing of the existing monic discriminant is precisely
+  separability, in every characteristic and including degree one.
+* `monic_root_valuation_le_one`: Every root in the valued field of a monic integral polynomial
+  belongs to its valuation ring.
+* `valuation_discr_le_max`: Evaluating the integral discriminant Bezout identity bounds at least one
+  of the polynomial and derivative values, over any valued field.
+* `valuation_discr_le_derivative`: A sufficiently small residual forces the derivative to have
+  valuation at least the discriminant's valuation, without an unit-derivative premise.
+
+## References
+
+* Mathlib; this file is an upstream candidate and has no project-specific reference.
 -/
 
 @[expose] public section

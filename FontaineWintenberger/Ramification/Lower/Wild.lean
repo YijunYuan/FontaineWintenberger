@@ -23,6 +23,22 @@ taking the residue-characteristic power raises every positive depth.
 Each proper subgroup is contained in a maximal subgroup, which is normal
 of index `p`. Recursion in the finite subgroup lattice gives a finite chain
 of inclusions, represented by the canonical reflexive transitive closure.
+
+## Main results
+
+* `smul_sub_mem_maximalIdeal_pow_add`: The lower congruence action gains the input's ideal-power
+  order.
+* `pow_mem_lowerRamificationGroup_succ`: Taking the residue-characteristic power raises every
+  positive lower depth.
+* `pow_pow_mem_lowerRamificationGroup`: Iterated residue-characteristic powers reach arbitrarily
+  deep lower groups.
+* `lowerRamificationGroup_one_isPGroup`: The first wild ramification group is a finite `p`-group.
+* `wild_subgroup_prime_chain`: Every relative subgroup inclusion inside wild inertia has a finite
+  refinement by normal steps of index the residue characteristic.
+
+## References
+
+* Serre, *Local Fields*, Chapter IV (ramification groups, Herbrand functions, the different).
 -/
 
 @[expose] public section

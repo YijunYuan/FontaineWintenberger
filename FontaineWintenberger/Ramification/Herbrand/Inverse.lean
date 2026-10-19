@@ -14,6 +14,21 @@ public import Mathlib.Analysis.Calculus.Deriv.Inverse
 The derivative of the proved inverse is the reciprocal of the
 lower-cardinality slope. Lagrange's formula identifies this ratio with
 the relative index of the upper groups.
+
+## Main results
+
+* `upperRamificationGroup_relIndex_eq_div`: The upper subgroup relative index is the cardinality
+  ratio.
+* `exists_inverseHerbrandFunction_finite_derivative_breaks`: Inverting the derivative leaves only
+  finitely many exceptional upper parameters.
+* `inverseHerbrandFunction_eq_integral_div`: The inverse is the integral of the reciprocal
+  lower-cardinality slope.
+* `inverseHerbrandFunction_eq_integral_relIndex`: The inverse integral uses the relative indices of
+  upper subgroups.
+
+## References
+
+* Serre, *Local Fields*, Chapter IV (ramification groups, Herbrand functions, the different).
 -/
 
 @[expose] public section

@@ -15,6 +15,20 @@ public import FontaineWintenberger.Ramification.Infinite.Restriction
 Ordinary absolute restriction is onto, with the fixing subgroup as
 kernel. Its upper images identify both APF openness and the inertia
 index with those inside the abstract extension's own Galois group.
+
+## Main results
+
+* `isAPF_iff_upperInfinite_finiteIndex`: APF is finite index of every upper group inside the
+  abstract Galois group.
+* `isAPF_iff_upperInfinite_isOpen`: The Krull-topological openness criterion for an abstract Galois
+  extension.
+* `apfIndex_eq_upperInfiniteRelIndex`: The intrinsic index agrees with the upper index, including
+  infinite indices.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §1 (extensions arithmétiquement profinies).
 -/
 
 @[expose] public section

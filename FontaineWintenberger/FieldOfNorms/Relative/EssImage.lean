@@ -33,6 +33,34 @@ finite norm field.
 Unique reconstruction of finite subfields gives a directed family.
 Its intermediate-field supremum has precisely the prescribed image
 under the same canonical relative field of norms embedding.
+
+## Main definitions
+
+* `exists_relFieldOfNorms_algEquiv`: The algebraic essential image with no prescribed closure: the
+  standard separable closure supplies that choice.
+
+## Main results
+
+* `FieldOfNorms.mem_range_inclusion_fixedField_iff`: The fixed-family descent applies to every
+  subgroup of the finite Galois group, with its restricted action.
+* `FieldOfNorms.exists_fixedField_inclusion_range`: Every subfield of a finite Galois norm field is
+  the image of the field fixed by its subgroup.
+* `RelFieldOfNorms.of_map_subfield`: Transporting a finite subfield of a stage into the ambient
+  extension gives exactly its relative field of norms image.
+* `RelFieldOfNorms.exists_finite_subfield_preimage`: Every finite subfield of the relative field of
+  norms is the canonical image of a finite intermediate field.
+* `RelFieldOfNorms.finiteImage_le_iff`: Finite images preserve and reflect inclusion.
+* `RelFieldOfNorms.finiteImage_injective`: Equal canonical images determine equal finite fields.
+* `RelFieldOfNorms.existsUnique_finite_subfield_preimage`: Reconstruction gives an unique finite
+  subfield, and its image is the canonical image inside the same union.
+* `exists_finite_fieldOfNorms_algEquiv_of_separableClosure`: Every finite separable extension of the
+  norm field is isomorphic over that same field to a finite norm-field stage in the prescribed
+  separable closure.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §2–3 (le corps des normes, fonctorialité).
 -/
 
 @[expose] public section

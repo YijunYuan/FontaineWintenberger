@@ -21,6 +21,29 @@ the fixed-field integers at the relative Herbrand parameter.
 
 The lower quotient theorem and subgroup compatibility give exact finite
 cardinality identities. These supply the slopes in Herbrand transitivity.
+
+## Main results
+
+* `mem_lowerRamificationGroupReal_iff_le_toNat`: Finite intrinsic order gives the source's weak real
+  lower-index bound.
+* `fixedField_map_lowerRamificationGroupReal`: Herbrand's lower quotient formula, for normal
+  fixed-field restriction.
+* `fixedField_quotient_lowerRamificationGroupReal`: The same lower quotient formula through the
+  canonical Galois quotient equivalence.
+* `fixedField_card_lowerRamificationGroupReal`: Exact cardinalities of lower groups under
+  fixed-field restriction.
+* `fixedField_card_lowerRamificationGroup_zero`: The inertia cardinalities in the normal fixed-field
+  tower multiply.
+* `fixedField_herbrand_slope_mul`: The chain-rule slope is the ambient lower-group cardinality
+  ratio.
+* `fixedField_exists_herbrand_comp_derivative_breaks`: The composite has the ambient Herbrand slope
+  outside finitely many points.
+* `fixedField_herbrandFunction_transitivity`: Herbrand transitivity, also for the identity extension
+  below the half-line.
+
+## References
+
+* Serre, *Local Fields*, Chapter IV (ramification groups, Herbrand functions, the different).
 -/
 
 @[expose] public section

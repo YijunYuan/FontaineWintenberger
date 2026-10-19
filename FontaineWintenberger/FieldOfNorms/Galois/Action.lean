@@ -31,6 +31,34 @@ The action preserves the coordinates and valuation, has continuous
 orbits, and has exactly the pointwise fixer of the intermediate field as kernel.
 
 This is the restriction to the base norm field in Wintenberger, Remark 3.2.4.
+
+## Main definitions
+
+* `FieldOfNorms.absoluteAut`: The absolute Galois group acts on the norm field through its ordinary
+  restriction to the given normal APF extension.
+
+## Main results
+
+* `FieldOfNorms.coord_mapEquiv_of_mem_fixingSubgroup`: A finite-field fixer fixes that finite
+  coordinate of every norm-compatible family, without a normality hypothesis.
+* `FieldOfNorms.valuation_sub_le_of_mem_deep_fixingSubgroup`: Fixing a deep finite field gives its
+  prescribed valuation precision, uniformly for all integral norm families.
+* `FieldOfNorms.continuous_aut_apply_of_integral`: Every integral family has a continuous orbit
+  under the Krull topology, with its inherited valuation topology.
+* `FieldOfNorms.continuous_aut_apply`: Every norm-field family has a continuous orbit under the
+  Krull topology and the valuation topology.
+* `FieldOfNorms.absoluteAut_apply`: The absolute base action factors through the Galois restriction.
+* `FieldOfNorms.coe_coord_absoluteAut`: The coordinate formula, viewed in the same separable
+  closure.
+* `FieldOfNorms.absoluteAut_valuation`: Absolute Galois transport preserves the normalized
+  valuation.
+* `FieldOfNorms.continuous_absoluteAut_apply`: Every absolute Galois orbit is continuous for the
+  Krull and norm-field valuation topologies.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §2–3 (le corps des normes, fonctorialité).
 -/
 
 @[expose] public section

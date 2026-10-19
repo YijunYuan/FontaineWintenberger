@@ -22,6 +22,30 @@ public import Mathlib.Order.SuccPred.Archimedean
 The eventual intrinsic inertia index is the ramification index of the
 field. This is valid for finite separable extensions without normality or total
 ramification, and also for their compatible normed integer rings.
+
+## Main results
+
+* `fixingSubgroup_inertiaRelIndex_pos`: Inertia has positive finite index relative to the
+  finite-base fixing subgroup.
+* `apfIndex_le_fixingSubgroup_inertiaRelIndex`: The finite-base inertia fixing index bounds every
+  nonnegative APF index.
+* `exists_apfIndex_finite_constant`: Monotonicity and a finite upper bound force the finite-base
+  index to stabilize.
+* `exists_apfPsi_finite_affine`: The finite-base Herbrand integral is affine on an eventual
+  constant-index tail.
+* `intermediate_spectral_ramificationIdx_eq_relIndex`: The own spectral ramification index of a
+  nonnormal intermediate field is the inertia-relative fixing-subgroup index.
+* `exists_intermediate_apfIndex_eq_ramificationIdx`: The intrinsic APF index of an intermediate
+  field eventually equals its own-ring ramification index.
+* `exists_apfIndex_eq_spectral_ramificationIdx`: Every finite separable extension has intrinsic
+  inertia index equal to its spectral ramification index throughout an eventual tail.
+* `exists_apfPsi_spectral_ramificationIdx_affine`: Integrating the eventual index gives the
+  finite-extension Herbrand tail with its spectral ramification index as slope.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §1 (extensions arithmétiquement profinies).
 -/
 
 @[expose] public section

@@ -43,6 +43,34 @@ infinity and negative indices.
 We use mathlib's canonical adic valuation of the maximal ideal. Its valuation
 ring is the intrinsic valuation subring. The lower groups therefore
 agree with the normalized valuation bounds on the ambient field.
+
+## Main definitions
+
+* `lowerRamificationGroup`: The integer lower group attached to an ideal.
+* `ramificationOrder`: Serre's unshifted order: the infimum of the valuations of all integral
+  displacements.
+* `lowerRamificationGroupReal`: Real lower numbering, extending canonical integer ideal-inertia
+  groups by ceilings.
+
+## Main results
+
+* `inertia_normal`: An invariant ideal has normal inertia.
+* `lowerRamificationGroup_normal`: Lower groups are normal when the ambient action preserves the
+  ideal.
+* `smul_maximalIdeal`: Every ring automorphism preserves the unique maximal ideal of a local ring.
+* `lowerRamificationGroup_zero_eq_ker_residue`: The zero lower group is exactly the kernel of the
+  residue-field action.
+* `mem_maximalIdeal_pow_iff_addVal`: A power of the maximal ideal is a closed ball for the
+  normalized additive valuation, including at zero and at exponent zero.
+* `addVal_smul`: Ring automorphisms preserve the canonical normalized integral valuation.
+* `mem_lowerRamificationGroup_iff_addVal`: The ideal-inertia definition is the normalized valuation
+  definition.
+* `mem_lowerRamificationGroup_nat_iff_addVal`: Natural lower indices have the source's unshifted
+  valuation bound `n + 1`.
+
+## References
+
+* Serre, *Local Fields*, Chapter IV (ramification groups, Herbrand functions, the different).
 -/
 
 @[expose] public section

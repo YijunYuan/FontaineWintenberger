@@ -16,6 +16,22 @@ their integer rings with the integer rings used over the relative base.
 The commuting identity on field elements transports the norms,
 ramification indices and ideal-power estimates without a norm on the
 ambient separable extension.
+
+## Main results
+
+* `integerNorm_sub_congruence_of_totallyRamified`: The finite-layer norm has the intrinsic relative
+  Herbrand modulus on every totally ramified prime-power step, including the identity step.
+* `exists_integerNorm_add_congruence_of_totallyRamified`: The additive norm defect has the precision
+  given by the first bound of a nontrivial totally ramified prime-power step.
+* `integerNorm_add_sub_eq_zero_of_finrank_eq_one`: A degree-one inclusion is an equality of the
+  finite intermediate fields, so its norm has exactly zero additive defect.
+* `integerNorm_add_congruence_of_le_apfRamificationBound`: Every finite real lower bound for the
+  first bound controls the additive norm defect.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §2–3 (le corps des normes, fonctorialité).
 -/
 
 @[expose] public section

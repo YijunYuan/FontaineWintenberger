@@ -15,6 +15,18 @@ public import Mathlib.Order.Atoms.Finite
 Each proper subgroup is contained in a maximal subgroup, which is normal
 of index `p`. Recursion in the finite subgroup lattice gives a finite chain
 of inclusions, represented by the canonical reflexive transitive closure.
+
+## Main results
+
+* `exists_normal_index_prime_le`: A maximal subgroup containing a given proper subgroup of a finite
+  p-group is a normal subgroup of index `p`.
+* `subgroup_prime_chain_of_isPGroup`: A finite p-group has normal index-prime steps between any two
+  of its subgroups.
+* `subgroup_prime_chain`: Relative prime-step refinement inside any finite p-group.
+
+## References
+
+* Mathlib; this file is an upstream candidate and has no project-specific reference.
 -/
 
 @[expose] public section

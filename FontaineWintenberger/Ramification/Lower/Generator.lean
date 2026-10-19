@@ -16,6 +16,22 @@ public import FontaineWintenberger.Ramification.Lower.GaloisGroup
 The intrinsic ideal-inertia groups and order function can be evaluated on a
 single algebra generator. Monogenicity is supplied by the integral-generator
 producer, rather than assumed for the finite-extension specialization.
+
+## Main results
+
+* `mem_inertia_iff_generator`: Congruences on a generator detect ideal inertia.
+* `ramificationOrder_eq_generator`: The infimum over all integers is attained at any integral
+  algebra generator.
+* `mem_lowerRamificationGroup_iff_generator`: Integer lower membership is a single normalized
+  integral valuation inequality.
+* `spectralIntegerRing_exists_order_generator`: Monogenicity supplies a generator on which every
+  intrinsic order is attained.
+* `spectralIntegerRing_exists_galois_order_generator`: The same proved generator computes
+  ramification for the full field automorphism group.
+
+## References
+
+* Serre, *Local Fields*, Chapter IV (ramification groups, Herbrand functions, the different).
 -/
 
 @[expose] public section

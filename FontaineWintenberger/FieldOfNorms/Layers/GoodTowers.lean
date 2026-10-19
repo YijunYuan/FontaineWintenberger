@@ -13,6 +13,25 @@ public import FontaineWintenberger.FieldOfNorms.Layers.NormPairs
 The simultaneous tensor descent of Wintenberger, paragraph 3.1.1, gives
 cofinal simultaneous goodness for the finite fields and their
 canonical pullbacks. These are the stages used for covariant composition.
+
+## Main results
+
+* `isGoodFiniteLayer_of_tensor`: A multiplication isomorphism over a field equal to the pullback
+  proves intrinsic goodness, independently of its scalar presentation.
+* `FiniteIntermediateField.pullback_tower`: Iterated pullback is the composite pullback.
+* `FiniteIntermediateField.pullbackLayer_tower`: The finite-layer indices themselves agree under
+  iterated pullback.
+* `FiniteIntermediateField.pullbackTo_tower`: Both routes around the inclusion square agree on each
+  element; equality of pullbacks only changes its membership proof.
+* `exists_goodFiniteLayer_tower_ge`: Simultaneous intrinsic good stages are cofinal in the finite
+  fields of a finite separable tower.
+* `exists_goodFiniteLayer_tower_ge_pair`: Any two finite fields admit a common upper simultaneous
+  good stage.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §2–3 (le corps des normes, fonctorialité).
 -/
 
 @[expose] public section

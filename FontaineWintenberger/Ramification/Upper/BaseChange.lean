@@ -15,6 +15,26 @@ public import FontaineWintenberger.Ramification.Upper.CosetMax
 The integer ring over a finite intermediate base is the same subring.
 The canonical fixing-subgroup equivalence therefore transports displacement
 orders and lower groups to the ordinary automorphism group over that base.
+
+## Main results
+
+* `finiteBase_ramificationOrder`: The order over the intermediate base is the displacement order.
+* `finiteBase_lowerReal_map_fixingSubgroupEquiv`: Real lower groups transport through the
+  fixing-subgroup equivalence.
+* `finiteBase_lower_map_fixingSubgroupEquiv`: Integer lower groups use the same canonical
+  ideal-inertia filtration.
+* `finiteBase_lowerReal_map_restrictScalars`: Inside the automorphism group, the lower group is the
+  intersection.
+* `finiteBase_lower_map_restrictScalars`: Integer lower numbering is compatible with the restriction
+  of scalars.
+* `finiteBase_lower_zero_eq_top`: If the fixing group lies in the inertia, the own-ring
+  intermediate-base action has full inertia.
+* `finiteBase_upper_map_fixingSubgroupEquiv`: Upper groups transport through the identity of integer
+  subrings.
+
+## References
+
+* Serre, *Local Fields*, Chapter IV (ramification groups, Herbrand functions, the different).
 -/
 
 @[expose] public section

@@ -15,6 +15,40 @@ public import FontaineWintenberger.FieldOfNorms.Relative.Krull
 The same canonical relative field of norms is a separable closure. Its
 Krull equivalence, followed by separable-closure comparisons,
 therefore identifies the absolute Galois groups with their Krull topologies.
+
+## Main definitions
+
+* `krullAutCongr`: The existing automorphism conjugacy as a Krull homeomorphism.
+* `separableClosureEquiv`: The closure comparison, chosen over the base.
+* `RelFieldOfNorms.separableClosureEquiv`: The relative field of norms is compared to the canonical
+  separable closure using its proved separable-closure structure.
+* `RelFieldOfNorms.absoluteGaloisEquiv`: The corollary for the closure and the canonical separable
+  closure of the norm field.
+* `FieldOfNorms.absoluteGaloisEquiv`: The absolute Galois equivalence on the project's canonical
+  separable-closure automorphism groups, with their existing Krull topologies.
+* `fieldOfNormsAbsoluteGaloisEquiv`: The absolute Galois equivalence with no supplied closure or
+  embedding data: the canonical separable closure of the field is itself a separable closure of the
+  base via the composite algebra.
+
+## Main results
+
+* `autCongr_mem_fixingSubgroup_iff`: Conjugation by a field isomorphism pulls back a finite-field
+  fixer to the fixer of its inverse image.
+* `continuous_autCongr_krull`: The existing algebraic automorphism conjugacy is continuous for the
+  Krull topologies, without a normality assumption.
+* `krullAutCongr_toMulEquiv`: The topological comparison retains Mathlib's algebraic conjugacy.
+* `krullAutCongr_apply`: The same conjugation formula holds on every field element.
+* `closure_isSepClosure`: A separable closure containing the extension is a separable closure of
+  that extension too.
+* `RelFieldOfNorms.absoluteGaloisEquiv_apply`: The comparison agrees on the same union with the
+  norm-field automorphism, rather than an independently constructed action.
+* `FieldOfNorms.absoluteGaloisEquiv_apply`: The canonical absolute-group equivalence retains
+  precisely the union map after conjugating the closure.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §2–3 (le corps des normes, fonctorialité).
 -/
 
 @[expose] public section

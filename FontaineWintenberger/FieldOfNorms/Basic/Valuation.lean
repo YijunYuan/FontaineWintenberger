@@ -25,6 +25,32 @@ therefore has a single coordinate-independent normalized valuation.
 
 The existing stable valuation is computed at every finite field above
 the maximal unramified subfield, as in Wintenberger, paragraph 2.1.2.
+
+## Main definitions
+
+* `FieldOfNorms.coordinateValuation`: Evaluate the multiplicative limit and then use the normalized
+  valuation of that finite field.
+* `FieldOfNorms.valuation`: The stable normalized multiplicative valuation on the single field of
+  norms carrier.
+
+## Main results
+
+* `normalizedValuation_norm_of_residueInclusion_surjective`: Field norms preserve normalized
+  valuations whenever their residue inclusion is surjective.
+* `FieldOfNorms.exists_coordinateValuation_stable`: The normalized coordinate valuations agree on an
+  APF finite tail.
+* `FieldOfNorms.exists_valuation_eq_coordinateValuation`: The same normalized valuation is computed
+  by every sufficiently large finite coordinate.
+* `FieldOfNorms.valuation_eq_zero_iff`: The stable normalized valuation detects zero on the field of
+  norms.
+* `FieldOfNorms.valuation_eq_coordinate_of_maximalUnramified_le`: The same stable valuation is
+  computed at every finite intermediate field above the maximal unramified subfield, not merely
+  above a chosen stable witness.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §2–3 (le corps des normes, fonctorialité).
 -/
 
 @[expose] public section

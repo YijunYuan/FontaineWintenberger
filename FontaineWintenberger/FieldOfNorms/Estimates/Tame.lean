@@ -16,6 +16,18 @@ public import FontaineWintenberger.Ramification.Norm.Approximation
 The tame compositum preserves the nonnormal field norm.
 The proved first-bound scaling and normalized valuation restriction cancel
 the same ramification index in the precision estimate.
+
+## Main results
+
+* `mem_maximalIdeal_pow_of_algebraMap_mem_ceil`: Integer ceiling precision descends through a local
+  DVR map, using its canonical ramification index, including zero elements.
+* `exists_intNorm_add_congruence_of_totallyRamified_fixedField`: The nonnormal p-power norm
+  satisfies the quantitative addition estimate.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §2–3 (le corps des normes, fonctorialité).
 -/
 
 @[expose] public section

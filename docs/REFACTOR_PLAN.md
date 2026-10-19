@@ -571,6 +571,12 @@ FontaineWintenberger/
 - 代价：`Functor/Galois.lean`、`Galois/Action.lean`、`Relative/EssImage.lean` 中原先"仅乘法"的 section 现在带 APF 假设（`mapEquiv` 是环同构）；相应 `omit` 改写。
 - `scripts/check_aggregates.py` + CI 步骤：每个文件被其层的聚合文件 import、分层 import 顺序、根文件 import 全部聚合。
 
+### D/E 收尾（分支 `refactor`，2026-10-20）
+- **模块文档模板**：`scripts/d1_module_docstrings.py`（幂等）为 149 个文件的模块文档追加 `## Main definitions` / `## Main results` / `## References`：条目取自文件顶层 `def`/`class`/`structure`/`theorem` 及其 docstring 首句（同名只列一次，`instance` 不列），References 按层给默认出处（Serre I–II / Serre IV / Wintenberger §1 / §2–3），已有 `## References` 的文件保留原文。`LocalField/Basic.lean`、`Mathlib/FieldTheory/AbsoluteGaloisGroup.lean` 的 Main 段为手写，脚本跳过。聚合文件 `FontaineWintenberger/<Layer>.lean` 不加。
+- **README**：五个目标 ↔ `Main.lean` 声明名的对照表、目录布局、构建方式。
+- **CI**：`scripts/check_aggregates.py`（聚合覆盖 + 分层 import 顺序）加入 `lean_action_ci.yml` 的 build job。
+- 未做：`isSepClosure` 泛化（C 阶段遗留，不影响编译时间）；`absoluteUpperRamificationGroup`/`apfSubgroup` 改到 `G_K` 上（F6 遗留）。
+
 ### F5 设计细化（原计划，供对照）
 1. **`FieldOfNorms K L`**：`def FieldOfNorms := WithZero (normCompatibleUnits K L)`；`instance : CommGroupWithZero := inferInstanceAs …`（无条件）；`instance : Nontrivial`、`Inhabited`。`coord E : FieldOfNorms K L →*₀ E` 替代 `normLimitEval`。
 2. **加法与域**：`normLimitAdd` 的定义只依赖 `[IsAPF K L]`（`p` 仅被线程传递，`Convergence.lean` 中唯一实质使用是 `p ∈ 𝔪^n` 的发散性，来自 `PrimeValuation`）。目标：

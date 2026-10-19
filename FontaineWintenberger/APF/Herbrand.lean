@@ -16,6 +16,30 @@ The positive finite inertia indices define the integral. Extending its
 slope by one below zero gives a primitive on the real line; its order
 isomorphism supplies the inverse. On the half-line both functions have
 the prescribed normalization.
+
+## Main definitions
+
+* `apfHerbrandSlope`: The intrinsic index, extended by one on the negative half-line.
+* `apfPsi`: The inverse Herbrand integral, with its identity continuation below zero.
+* `apfHerbrandOrderIso`: The order isomorphism is obtained from strict monotonicity and
+  surjectivity.
+* `apfPhi`: The inverse of the APF Herbrand integral.
+
+## Main results
+
+* `apfHerbrandSlope_of_nonpos`
+* `IsAPF.one_le_apfHerbrandSlope`
+* `IsAPF.monotone_apfHerbrandSlope`
+* `IsAPF.intervalIntegrable_apfHerbrandSlope`
+* `apfPsi_of_nonpos`
+* `apfPsi_zero`
+* `apfPsi_eq_integral_index`
+* `IsAPF.continuous_apfPsi`
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §1 (extensions arithmétiquement profinies).
 -/
 
 @[expose] public section

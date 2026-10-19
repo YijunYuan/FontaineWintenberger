@@ -23,6 +23,36 @@ overfield then gives the full finite Hom correspondence.
 Finite relative embeddings commute with composition. Inside a common
 finite Galois overfield, the proved Galois Hom correspondence and
 fixed fields reflect factorization through each intermediate field.
+
+## Main definitions
+
+* `FieldOfNorms.mapAlgHom`: The map on relative finite embeddings is an algebra homomorphism for the
+  norm field, by the embedding composition law.
+* `FieldOfNorms.algHomEquiv`: The canonical full finite Hom equivalence needs only the infinite APF
+  base; all finite-extension APF and infinitude facts are produced.
+
+## Main results
+
+* `moduleFinite_relativeEmbedding_fieldRange`: Finiteness of the target over the common base
+  produces finiteness over the image of every relative embedding.
+* `isSeparable_relativeEmbedding_fieldRange`: Separability of the target produces separability over
+  the same image of every relative embedding.
+* `FieldOfNorms.mapEquiv_fixes_inclusion_iff`: The action reflects the intermediate-field
+  stabilizer.
+* `FieldOfNorms.mapEquiv_eq_on_inclusion_iff`: Equality of the norm-field restrictions reflects
+  equality of restrictions on the intermediate field.
+* `FieldOfNorms.mapAlgHom_eq_of_extend`: Extending an embedding to a Galois automorphism gives
+  exactly the map on norm families, rather than a separate Hom map.
+* `FieldOfNorms.mapAlgHom_injective_of_isGalois`: The finite Hom map is faithful inside a common
+  finite Galois overfield.
+* `FieldOfNorms.mapAlgHom_surjective_of_isGalois`: Every norm-field embedding into the Galois norm
+  field comes from an embedding, by extending to a norm-field automorphism.
+* `FieldOfNorms.mapAlgHom_postcomp_aut`: Automorphisms act on the finite Hom map by composition.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §2–3 (le corps des normes, fonctorialité).
 -/
 
 @[expose] public section

@@ -21,6 +21,29 @@ fixing subgroup of an arbitrary intermediate field and its inertia coset index.
 
 An embedding into the separable closure transports fixing subgroups
 and upper groups, so the finite nonnormal formulas apply to the fields.
+
+## Main results
+
+* `apfSubgroup_map_eq_comap_sup_upper`: The APF product of a nonnormal finite intermediate field is
+  a restriction preimage.
+* `fixingSubgroup_sup_upper_inf_zero`: Inertia intersection of the finite fixing-subgroup product.
+* `apfInertiaIndex_map_eq_subgroupRelIndex`: The intrinsic APF inertia index of an arbitrary finite
+  intermediate field.
+* `apfIndex_eq_subgroupRelIndex`: The abstract finite field has the same index, without choosing a
+  normality instance.
+* `apfPsi_eq_subgroup_herbrand_comp_inverse`: The non-Galois finite APF integral is the subgroup
+  change of parameter.
+* `apfPhi_eq_herbrand_comp_subgroup_inverse`: The inverse change of parameter uses the same finite
+  overfield and subgroup.
+* `fixingSubgroup_map_autCongr`: Conjugation by a field isomorphism carries the fixing subgroup to
+  that of the image intermediate field.
+* `apfIndex_eq_subgroupRelIndex_of_finiteGalois`: The intrinsic index is computed in any finite
+  Galois overfield, without normality of the intermediate field.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §1 (extensions arithmétiquement profinies).
 -/
 
 @[expose] public section

@@ -16,6 +16,21 @@ public import FontaineWintenberger.LocalField.Spectral.FiniteExtension
 
 Normal prime-index steps in the fixing groups become cyclic
 prime-degree field extensions through Galois correspondence.
+
+## Main results
+
+* `isGalois_extendScalars_of_fixing_normal`: Relative normality of the fixing groups makes the
+  intermediate-field extension Galois.
+* `cyclic_prime_extendScalars_of_fixing_step`: A normal prime-index fixing-group step supplies the
+  Galois and cyclic field step with its relative degree.
+* `relative_prime_field_chain`: The intermediate fields over a p-group fixing field have a finite
+  tower whose relative extensions are cyclic Galois of prime degree.
+* `wild_relative_prime_field_chain`: The wild fixed field has a cyclic prime-degree tower to every
+  intermediate field containing it.
+
+## References
+
+* Serre, *Local Fields*, Chapter IV (ramification groups, Herbrand functions, the different).
 -/
 
 @[expose] public section

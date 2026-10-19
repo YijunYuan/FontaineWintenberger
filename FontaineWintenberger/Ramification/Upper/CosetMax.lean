@@ -15,6 +15,23 @@ public import FontaineWintenberger.Ramification.Herbrand.Affine
 The strict product rule identifies a maximal coset representative's
 displacements with truncated subgroup orders. Tate's fixed-field
 average then gives the Herbrand value, including maximum zero.
+
+## Main results
+
+* `ramificationOrder_mul_eq_min_of_coset_max`: At a maximal representative, multiplication truncates
+  the subgroup order.
+* `truncatedRamificationOrder_eq_coset_order`: A finite maximal coset order supplies exactly the cap
+  in the Herbrand sum.
+* `exists_fixedField_ramificationOrder_max`: Every nonidentity restriction fiber has an attained
+  finite maximal order.
+* `fixedField_order_sub_one_eq_herbrand`: Tate's average at a maximal representative is the integral
+  Herbrand value.
+* `exists_fixedField_order_eq_herbrand`: The coset-maximum formula on every nonidentity restriction
+  fiber.
+
+## References
+
+* Serre, *Local Fields*, Chapter IV (ramification groups, Herbrand functions, the different).
 -/
 
 @[expose] public section

@@ -14,6 +14,35 @@ public import FontaineWintenberger.Ramification.Different.Hilbert
 The trace-containment test uses the canonical different and the trace
 map. Scaling by a nonzero base-field element converts containment in a
 principal fractional ideal to containment in the codifferent.
+
+## Main definitions
+
+* `intTraceIdeal`: The trace ideal is the image of the given ideal under integral trace, with its
+  canonical base-module structure.
+
+## Main results
+
+* `trace_integral_iff_le_codifferent`: A fractional ideal has integral traces exactly when it is
+  contained in the inverse different.
+* `trace_principal_iff_le_mul_codifferent`: Trace containment in a principal base fractional ideal
+  is equivalent to containment in that ideal times the codifferent.
+* `trace_principal_iff_mul_different_le`: Multiplying by the different clears the codifferent in the
+  trace-containment test.
+* `intTrace_mem_principal_iff_mul_different_le`: The integral trace sends an integral ideal into a
+  principal base ideal exactly when its product with the different is contained in the extended base
+  ideal.
+* `ideal_eq_pow_emultiplicity`: A nonzero DVR ideal is the power given by its canonical maximal
+  ideal multiplicity.
+* `intTraceIdeal_pow_le_pow_iff`: The exact power-containment criterion for the trace image, using
+  the canonical ramification index and different multiplicity.
+* `intTraceIdeal_pow`: The trace ideal of every nonnegative maximal-ideal power, with the exact
+  floor exponent and no residue-field finiteness or Galois hypothesis.
+* `extensionValuationSubring_intTraceIdeal_pow`: The exact trace-ideal formula on every compatible
+  extension valuation ring, over an arbitrary residue field.
+
+## References
+
+* Serre, *Local Fields*, Chapter IV (ramification groups, Herbrand functions, the different).
 -/
 
 @[expose] public section

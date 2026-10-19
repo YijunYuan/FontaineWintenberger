@@ -14,6 +14,38 @@ public import FontaineWintenberger.FieldOfNorms.Layers.Descent
 The finite fields used in the covariant field-of-norms construction are
 finite intermediate fields. Their coefficient fields are their
 pullbacks to the base; cofinality is proved by finite tensor descent.
+
+## Main definitions
+
+* `FiniteIntermediateField.pullback`: The pullback of a finite field along the base inclusion.
+* `FiniteIntermediateField.pullbackTo`: The inclusion of the pullback into the finite field.
+* `FiniteIntermediateField.overPullback`: The finite field, as an intermediate field over its
+  pullback.
+* `FiniteIntermediateField.tensorMap`: The multiplication map over the pullback field.
+* `IsGoodFiniteLayer`: A finite field is good when its canonical multiplication map is bijective.
+* `goodFiniteLayerTensorEquiv`: The canonical tensor isomorphism of a good finite field.
+* `FiniteIntermediateField.pullbackLayer`: The pullback, as an index in the finite-layer system.
+* `goodFinitePairTensorEquiv`: An inclusion of good finite fields is the tensor base change of the
+  corresponding inclusion of their pullbacks.
+
+## Main results
+
+* `FiniteIntermediateField.pullback_mono`: Pullbacks preserve inclusions of the finite fields.
+* `FiniteIntermediateField.pullback_eq_of_inf`: The coefficient field supplied by finite descent
+  equals the pullback; the auxiliary presentation introduces no different finite field.
+* `isGoodFiniteLayer_of_descent`: Changing a descended presentation to its equal pullback and finite
+  field preserves the canonical tensor bijection.
+* `exists_goodFiniteLayer_ge`: Good finite fields are cofinal; goodness is proved from finite tensor
+  descent, rather than assumed as part of the interface.
+* `exists_goodFiniteLayer_ge_pair`: Two finite fields have a common upper good finite field.
+* `finrank_goodFiniteLayer`: Goodness gives the finite relative degree.
+* `linearDisjoint_goodFiniteLayer`: Goodness gives linear disjointness over the pullback.
+* `goodFinitePairTensorEquiv_tmul`: The pair isomorphism is the multiplication map on elements.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §2–3 (le corps des normes, fonctorialité).
 -/
 
 @[expose] public section

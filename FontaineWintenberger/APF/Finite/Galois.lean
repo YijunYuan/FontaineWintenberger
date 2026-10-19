@@ -24,6 +24,22 @@ therefore recover the proved finite Herbrand functions on their own rings.
 Absolute restriction has the fixing subgroup as kernel, and its
 upper image is the finite upper group. Thus the public supremum is
 computed by the finite extension's own upper filtration.
+
+## Main results
+
+* `apfIndex_eq_upperRelIndex`: The intrinsic abstract-extension index equals the finite upper
+  relative index.
+* `apfPsi_eq_inverseHerbrandFunction`: The APF integral is the finite inverse Herbrand function.
+* `apfPhi_eq_herbrandFunction`: The inverse of the APF integral is the finite Herbrand function.
+* `apfSubgroup_fieldRange_eq_top_iff_finite_upper_eq_top`: The full-group condition is intrinsic to
+  the abstract finite extension, independently of its separable embedding.
+* `apfRamificationBound_eq_sSup_finite_upper`: The public extended-real bound is exactly the
+  supremum where the finite upper group is full.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §1 (extensions arithmétiquement profinies).
 -/
 
 @[expose] public section

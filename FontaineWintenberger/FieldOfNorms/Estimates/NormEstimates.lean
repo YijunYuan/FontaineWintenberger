@@ -15,6 +15,20 @@ public import FontaineWintenberger.APF.Elementary.PrimeDegree
 A finite Galois closure supplies the tame reduction; canonical
 integer-ring equivalences transport its proved estimate to the
 field. Finite perfect-residue digits then supply norm approximation.
+
+## Main results
+
+* `exists_intNorm_add_congruence_of_totallyRamified_intermediateField`: The intermediate field may
+  be nonnormal; its own integer-ring total ramification supplies the tame norm estimate.
+* `exists_intNorm_add_congruence_of_totallyRamified`: The arbitrary totally ramified p-power
+  extension has the quantitative norm addition estimate.
+* `exists_intNorm_estimates_of_totallyRamified`: Both norm estimates for every nontrivial finite
+  separable totally ramified p-power extension, with arbitrary perfect residue field.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §2–3 (le corps des normes, fonctorialité).
 -/
 
 @[expose] public section

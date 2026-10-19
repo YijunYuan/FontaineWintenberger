@@ -13,6 +13,25 @@ public import Mathlib.Topology.Algebra.Valued.WithZeroMulInt
 # Continuous Laurent maps and ordinary power-series substitution
 
 The topology on Laurent series is its valuation topology.
+
+## Main results
+
+* `continuous_ofPowerSeries_valued`: The usual inclusion is continuous into the Laurent valuation
+  topology.
+* `continuous_powerSeries_subst`: Ordinary substitution is continuous for the coefficientwise
+  topology.
+* `map_ofPowerSeries_eq_subst`: A continuous coefficient-fixing Laurent homomorphism acts on every
+  power series by ordinary substitution at the image of the parameter.
+* `comp_apply_parameter`: Composition of the Laurent maps reverses the order of their parameter
+  power series: the parameter of `F.comp G` is the series of `G` substituted at that of `F`.
+* `iterate_ofPowerSeries_eq_subst_iterate`: Ordinary function iteration of the Laurent map restricts
+  to ordinary function iteration of the usual power-series substitution.
+* `iterate_apply_parameter_eq_subst_iterate`: The parameter image of every iterate uses the same
+  canonical substitution.
+
+## References
+
+* Mathlib; this file is an upstream candidate and has no project-specific reference.
 -/
 
 @[expose] public section

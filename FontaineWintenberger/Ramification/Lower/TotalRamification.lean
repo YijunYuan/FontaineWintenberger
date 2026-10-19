@@ -14,6 +14,15 @@ public import FontaineWintenberger.Ramification.Lower.Tower
 The residue map factors through the intermediate residue
 field. Its surjectivity is equivalent to surjectivity of both factors,
 which gives total ramification of every step of a totally ramified tower.
+
+## Main results
+
+* `ramificationIdx_eq_finrank_tower_iff`: Total ramification of a local DVR tower is equivalent to
+  total ramification of both steps.
+
+## References
+
+* Serre, *Local Fields*, Chapter IV (ramification groups, Herbrand functions, the different).
 -/
 
 @[expose] public section

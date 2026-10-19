@@ -13,6 +13,16 @@ public import FontaineWintenberger.Ramification.Upper.Transport
 
 Mathlib's local residue algebra equivalence applies to the canonical
 integer-ring equivalences, preserving the base residue field.
+
+## Main results
+
+* `spectral_residueDegree_algEquiv`: A field isomorphism preserves the canonical residue degree.
+* `extensionValuationSubring_residueDegree_eq_spectral`: Any compatible extension valuation has the
+  same residue degree as the spectral valuation on the finite separable field.
+
+## References
+
+* Serre, *Local Fields*, Chapter IV (ramification groups, Herbrand functions, the different).
 -/
 
 @[expose] public section

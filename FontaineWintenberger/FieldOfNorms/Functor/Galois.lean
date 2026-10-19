@@ -28,6 +28,45 @@ of the ambient extension is not needed.
 Fixed norm families descend through stable good fields and
 finite norms. The faithful action then supplies the
 finite Galois extension and its degree by finite Artin theory.
+
+## Main definitions
+
+* `FieldOfNorms.uniformizerCoordinateInteger`: Every coordinate of the norm-family uniformizer is
+  integral.
+* `galoisNormCoordinate`: The unique preimage lies in the pullback field.
+* `galoisGoodUpper`: A chosen stable good target field dominates each finite field through its
+  pullback.
+* `galoisCoordinate`: The norm of the descended coordinate defines a coordinate at every finite
+  field, before any compatibility is assumed.
+* `galoisNormDescent`: Reconstruction produces an element of the norm limit, using compatibility
+  just proved for all finite fields.
+* `FieldOfNorms.autRestrictScalars`: The relative action is the norm-field action after the
+  restriction of scalars.
+* `FieldOfNorms.galoisAction`: The canonical action on the target field.
+* `FieldOfNorms.autEquiv`: The relative action identifies the two Galois groups.
+
+## Main results
+
+* `FieldOfNorms.coord_fixed_of_mapEquiv_fixed`: At a stable finite intermediate field, fixed norm
+  families have fixed coordinates.
+* `FieldOfNorms.uniformizerCoordinateInteger_irreducible`: Above the maximal unramified field the
+  coordinate is an uniformizer.
+* `FiniteIntermediateField.residue_eq_of_mapEquiv_fixed`: The constants force the restriction to a
+  stable field to act trivially on its entire residue field.
+* `FiniteIntermediateField.aut_eq_of_mapEquiv_fixed`: Fixing the norm families makes the restriction
+  on every stable field above the maximal tame part the identity.
+* `FieldOfNorms.mapEquiv_eq_self_iff`: Norm families distinguish all automorphisms, without
+  normality of the infinite separable APF extension.
+* `FieldOfNorms.aut_injective`: The automorphism homomorphism on the norm field is injective.
+* `galoisStableGoodFiniteLayers_cofinal`: Stable good finite fields are a cofinal subsystem of the
+  target.
+* `existsUnique_galoisNormCoordinate`: A fixed family has an unique pullback coordinate at every
+  stable finite field.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §2–3 (le corps des normes, fonctorialité).
 -/
 
 @[expose] public section

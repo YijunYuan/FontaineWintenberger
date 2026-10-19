@@ -14,6 +14,20 @@ public import FontaineWintenberger.APF.Elementary.PrimeDegree
 
 Controlled trace representatives and the different compute the
 prime-step modulus of continuity of the integral norm.
+
+## Main results
+
+* `ceil_prime_herbrand_piece_le_precision`: Euclidean division bounds the prime-step Herbrand piece
+  by the integer norm and trace precisions simultaneously.
+* `exists_spectralIntegerRing_prime_norm_sub_precision`: The prime-step norm-difference precision is
+  the minimum of the norm precision and the trace ideal of the controlled error.
+* `spectralIntegerRing_prime_norm_sub_congruence`: The integral norm in a totally ramified Galois
+  prime step has the intrinsic Herbrand modulus of continuity.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §1 (extensions arithmétiquement profinies).
 -/
 
 @[expose] public section

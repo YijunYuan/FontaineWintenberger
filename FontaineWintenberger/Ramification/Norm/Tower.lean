@@ -15,6 +15,19 @@ public import FontaineWintenberger.Ramification.Norm.Valuation
 The normalized norm valuation preserves every nonnegative precision.
 An addition congruence consequently respects input congruence and
 composes through a finite tower by transitivity of integral norms.
+
+## Main results
+
+* `intNorm_mem_maximalIdeal_pow`: Integral norms preserve any fixed nonnegative ideal-power
+  precision.
+* `intNorm_sub_mem_maximalIdeal_pow_of_add_congruence`: A proved addition congruence for the norm
+  makes it respect the same input precision.
+* `intNorm_add_congruence_tower`: The tower step composes norm addition congruences at a common
+  precision; the conclusions for the steps are supplied by their producers.
+
+## References
+
+* Serre, *Local Fields*, Chapter IV (ramification groups, Herbrand functions, the different).
 -/
 
 @[expose] public section

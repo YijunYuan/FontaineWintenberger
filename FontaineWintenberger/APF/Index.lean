@@ -25,6 +25,33 @@ their relative index. An embedding into the separable closure therefore
 defines an index for an abstract extension, independent of that embedding.
 
 ## Relative index factors in nested APF extensions
+
+## Main definitions
+
+* `apfInertiaSubgroup`: The subgroup in the APF inertia-relative index.
+* `apfInertiaIndex`: The inertia-relative index; positivity for APF extensions is proved below.
+* `apfIndex`: The inertia-relative index, independent of the separable embedding.
+* `apfTowerIndexFactor`: The relative index between the two inertia-product subgroups.
+
+## Main results
+
+* `apfInertiaSubgroup_antitone_extension`: The larger extension has the smaller inertia-product
+  subgroup.
+* `apfInertiaIndex_eq_mul_towerIndexFactor`: Multiplication of the relative indices gives the APF
+  index factorization.
+* `apfTowerIndexFactor_eq_inertiaRelIndex`: The relative factor is intrinsically computed inside the
+  intermediate inertia subgroup.
+* `IsAPFSubextension.towerIndexFactor_pos`: APF gives positive finite factors, including a nonnormal
+  intermediate extension.
+* `IsAPFSubextension.towerIndexFactor_monotoneOn`: The intrinsic finite relative factor is
+  nondecreasing with the upper parameter.
+* `apfIndex_eq_mul_towerIndexFactor`: The public intrinsic APF indices retain the tower
+  factorization.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §1 (extensions arithmétiquement profinies).
 -/
 
 @[expose] public section

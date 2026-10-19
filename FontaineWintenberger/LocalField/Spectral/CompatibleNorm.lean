@@ -14,6 +14,33 @@ public import Mathlib.RingTheory.Valuation.Discrete.RankOne
 Mathlib's rank-one norm keeps the valued uniform space. We identify
 its valuation ring with the intrinsic ring and transfer the DVR
 structure, without any hypothesis that the residue field is finite.
+
+## Main definitions
+
+* `discreteValuedNormedField`: The nontrivial normed structure obtained from the given discrete
+  valuation.
+
+## Main results
+
+* `discreteValued_valuationSubring`: Norm and valuation give exactly the same intrinsic integer
+  ring.
+* `discreteValued_uniformSpace`: The normed structure keeps the uniformity definitionally.
+* `discreteValued_completeSpace`: Completeness is completeness for the compatible norm, with no
+  transport axiom.
+* `discreteValued_isCompleteDiscreteValuedField`: The bundled hypothesis for the norm attached to a
+  complete discrete valuation.
+* `discreteValued_henselianLocalRing`: Henselianity for the valuation ring.
+* `discreteValued_norm_hasExtension`: Extension compatibility survives replacing the valuation by
+  its compatible norm.
+* `discreteValued_extension_isDiscreteValuationRing`: DVR structure for the chosen extension of a
+  source-valued complete field.
+* `discreteValued_extension_exists_generator`: Integral generation over the ring for any compatible
+  chosen extension.
+
+## References
+
+* Serre, *Local Fields*, Chapters I–II (discrete valuation rings, completions, unramified and
+  totally ramified extensions).
 -/
 
 @[expose] public section

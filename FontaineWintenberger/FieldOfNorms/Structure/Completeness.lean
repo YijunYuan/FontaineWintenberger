@@ -15,6 +15,26 @@ public import FontaineWintenberger.Mathlib.Topology.ValuedCompleteness
 
 The exact valuation kernels identify the inherited integral-ring uniformity
 with the canonical complete discrete-product inverse limit.
+
+## Main results
+
+* `nhds_zero_hasBasis_integer_closedBall`: A value-one element gives the integer closed-ball basis
+  for the canonical valuation topology; the radii are represented in its value group.
+* `FieldOfNorms.integral_nhds_zero_hasBasis`: The inherited topology on the valuation ring has
+  exactly the integer closed-ball basis of the existing stable valuation.
+* `FieldOfNorms.truncationHom_comap_nhds_zero`: The truncation isomorphism pulls back precisely the
+  valuation-ring neighborhoods, with the canonical discrete-product uniformity.
+* `FieldOfNorms.truncationHom_isUniformInducing`: The exact truncation map induces the
+  valuation-ring uniformity from the same canonical discrete-product inverse limit.
+* `FieldOfNorms.integral_completeSpace`: The inherited valuation ring is complete; its uniformity is
+  identified with the complete truncated inverse limit.
+* `FieldOfNorms.t2Space`: The field has a Hausdorff valuation uniformity.
+* `FieldOfNorms.integral_t2Space`: Its valuation ring carries the inherited Hausdorff topology.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §2–3 (le corps des normes, fonctorialité).
 -/
 
 @[expose] public section

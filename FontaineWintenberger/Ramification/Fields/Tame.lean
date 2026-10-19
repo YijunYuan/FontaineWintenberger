@@ -17,6 +17,27 @@ public import FontaineWintenberger.Ramification.Upper.FixedField
 
 Positive upper groups lie in the first lower group. Its fixed field
 has trivial positive upper groups and prime-to-p ramification index.
+
+## Main results
+
+* `upperRamificationGroup_le_lower_one`: Every positive upper group lies in the first lower group.
+* `lowerRamificationGroup_subgroup_zero_eq_top`: Restricting the inertia action to any subgroup of
+  inertia gives full inertia for that restricted action.
+* `inverseHerbrandFunction_eq_card_inertia_mul`: Trivial positive upper groups give the linear
+  inverse Herbrand function, by its proved integral formula.
+* `wild_fixedField_top_ramificationIdx_eq_finrank`: The restricted integers witness total
+  ramification above the wild fixed field; the relative field degree is the fixed-field degree.
+* `wild_fixedField_upper_eq_bot`: The wild fixed field has trivial positive upper groups.
+* `wild_fixedField_ramificationIdx_eq_relIndex`: Its ramification index is the index of wild inertia
+  in inertia.
+* `wild_fixedField_inverseHerbrandFunction`: The inverse Herbrand function of the tame field is
+  multiplication by its ramification index on the nonnegative half-line.
+* `wild_fixedField_ramificationIdx_coprime`: The tame field has prime-to-p ramification index even
+  when its unramified degree has a p-part.
+
+## References
+
+* Serre, *Local Fields*, Chapter IV (ramification groups, Herbrand functions, the different).
 -/
 
 @[expose] public section

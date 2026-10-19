@@ -20,6 +20,22 @@ The spectral unit ball of an algebraic extension is the integral closure of the
 base unit ball. Completeness makes the spectral norm multiplicative, yielding
 an intrinsic valuation subring invariant under the full automorphism group.
 No finite residue-field hypothesis is used.
+
+## Main definitions
+
+* `spectralValuation`: The valuation of an algebraic extension supplied by the spectral norm.
+* `spectralIntegerRing`: The intrinsic valuation ring of the extended spectral valuation.
+
+## Main results
+
+* `isIntegral_iff_spectralNorm_le_one`: The spectral unit ball is the integral closure of the base
+  unit ball.
+* `smul_spectralIntegerRing`: The full algebra automorphism group preserves the spectral valuation
+  ring.
+
+## References
+
+* Mathlib; this file is an upstream candidate and has no project-specific reference.
 -/
 
 @[expose] public section

@@ -23,6 +23,34 @@ closure isomorphism, together with the absolute upper group.
 ## The finite-base APF inertia index identity
 
 ## Actual Herbrand integrals compose across finite base change
+
+## Main definitions
+
+* `baseChangedSeparableEmbedding`: The old-base embedding induced by a new-base separable-closure
+  embedding.
+
+## Main results
+
+* `le_baseChangedSeparableEmbedding_fieldRange`: The induced embedding contains the new scalar
+  field.
+* `comap_fixingSubgroup_baseChangedEmbedding`: Closure base change identifies the two fixing
+  subgroups.
+* `absoluteGaloisBaseChange_range`: The closure homomorphism has exactly the subgroup fixing the new
+  base as image.
+* `absoluteGaloisBaseChange_range_finiteIndex`: The absolute fixing subgroup has finite index for a
+  finite new base.
+* `comap_absoluteUpper_finiteBase`: The upper-group preimage under finite base change has the
+  intrinsic new parameter.
+* `comap_apfSubgroup_finiteBase`: The APF product over the new base is the preimage of the old-base
+  product.
+* `isAPF_finiteBase_iff`: Public abstract APF is invariant under a finite change of the base.
+* `comap_apfInertiaSubgroup_finiteBase`: The inertia product over the new base is the old product
+  preimage.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §1 (extensions arithmétiquement profinies).
 -/
 
 @[expose] public section

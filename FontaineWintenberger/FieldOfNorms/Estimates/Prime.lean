@@ -17,6 +17,16 @@ public import FontaineWintenberger.Ramification.Upper.Transport
 The spectral integer rings agree with the own-ring constructions.
 Their norm maps agree through the field norm, so the proved cyclic
 prime congruence applies to the same finite-layer maps used in the norm chain.
+
+## Main results
+
+* `integerNorm_prime_add_congruence_of_bound`: Prime-step congruence for the same finite-layer
+  integral norm, with the same intrinsic first bound and the spectral integers.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §2–3 (le corps des normes, fonctorialité).
 -/
 
 @[expose] public section

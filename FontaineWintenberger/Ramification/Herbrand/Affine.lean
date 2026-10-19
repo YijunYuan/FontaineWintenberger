@@ -13,6 +13,28 @@ public import FontaineWintenberger.Ramification.Herbrand.Basic
 The slopes on integer intervals count the next lower group. Eventual
 triviality gives a final affine ray, hence a finite partition for a finite
 faithful action.
+
+## Main results
+
+* `truncatedRamificationOrder_affine`: Each capped order is affine on an integer interval, with the
+  next lower-group indicator slope.
+* `herbrandFunction_affine`: Explicit affine formula on every nonnegative integer interval.
+* `herbrandFunction_affine_of_lower_eq_bot`: An interval of trivial lower groups has the final
+  affine slope.
+* `exists_herbrandFunction_affine_tail`: A finite faithful action has a final affine ray with an
+  integer starting point.
+* `inverseHerbrandFunction_affine`: The inverse has the reciprocal positive slope on each image
+  interval.
+* `exists_herbrand_affine_tails`: The same finite cutoff works for both the function and its
+  inverse.
+* `herbrandFunction_finite_affine_partition`: A finite family of explicit affine pieces covers the
+  whole half-line.
+* `inverseHerbrandFunction_finite_affine_partition`: The corresponding finitely many image intervals
+  give explicit inverse affine pieces.
+
+## References
+
+* Serre, *Local Fields*, Chapter IV (ramification groups, Herbrand functions, the different).
 -/
 
 @[expose] public section

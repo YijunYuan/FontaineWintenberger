@@ -13,6 +13,35 @@ public import FontaineWintenberger.FieldOfNorms.Basic.Ring
 # The integral field of norms and its truncated coordinates
 
 The valuation ring is identified with the deep truncated inverse limit.
+
+## Main definitions
+
+* `FieldOfNorms.integralCoordinate`: Integral evaluation uses each finite intermediate field's
+  integer ring.
+* `FieldOfNorms.truncation`: The integral family has a ring-valued coordinate at the deep stage's
+  specified precision.
+* `FieldOfNorms.truncationHom`: Quotient coordinates define the ring map on the valuation ring into
+  the compatible truncated-family subring.
+* `deepIntegralReconstruction`: The reconstruction, with its proved integrality, is an element of
+  the canonical valuation ring.
+* `FieldOfNorms.truncationEquiv`: The integral field of norms is the complete truncated
+  inverse-limit ring, with the norm reconstruction as inverse.
+
+## Main results
+
+* `FieldOfNorms.add_deep_sub_mem`: The sum is additive at each selected deep stage's own precision.
+* `FieldOfNorms.truncation_apply`: The ring coordinate is exactly the finite-field quotient class.
+* `FieldOfNorms.truncation_compatible`: The quotient coordinates obey the norm transitions.
+* `FieldOfNorms.truncationHom_deepIntegralReconstruction`: Truncating the reconstructed family
+  retains all the originally prescribed quotient coordinates.
+* `deepIntegralReconstruction_truncationHom`: Reconstructing the quotient coordinates returns the
+  same integral family, rather than a new model of its field.
+* `FieldOfNorms.truncation_eq_zero_iff`: The exact quotient kernel is the valuation ball.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §2–3 (le corps des normes, fonctorialité).
 -/
 
 @[expose] public section

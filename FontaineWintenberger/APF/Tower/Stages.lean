@@ -33,6 +33,30 @@ The finite-base closure homomorphism carries a stage
 containment to a full relative APF product. Its Herbrand parameter
 therefore bounds the extended first ramification bound from below. The
 extended-real statement includes trivial finite steps.
+
+## Main definitions
+
+* `apfFiniteStage`: The fixed field of the APF product.
+
+## Main results
+
+* `exists_absoluteUpper_le_fixingSubgroup_of_finite`: Absolute upper groups eventually fix every
+  finite subfield.
+* `fixingSubgroup_apfFiniteStage`: Closedness gives the exact fixing subgroup, without a finiteness
+  shortcut.
+* `apfFiniteStage_le`: Each stage lies inside the separable subextension.
+* `finiteDimensional_apfFiniteStage`: APF openness proves finite degree of every stage.
+* `apfFiniteStage_mono`: The finite-stage fields increase with the upper parameter.
+* `exists_le_apfFiniteStage`: Every finite subfield occurs in a stage.
+* `exists_finiteIntermediateField_map_eq_apfFiniteStage`: The stage pulls back to a finite
+  intermediate field of the abstract L, with a proved equality of its embedded image.
+* `IsAPF.exists_finiteIntermediateField_ge_map_eq_apfFiniteStage`: The pulled-back stages are
+  cofinal among finite subfields of an arbitrary abstract separable APF extension.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §1 (extensions arithmétiquement profinies).
 -/
 
 @[expose] public section

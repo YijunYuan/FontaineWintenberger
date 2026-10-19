@@ -13,6 +13,39 @@ public import FontaineWintenberger.Ramification.Embedding.Basic
 The order is the infimum on the valuation ring. Perfect residue
 digits compute it on every uniformizer, without a completeness, finite residue
 field, or finite-order automorphism hypothesis.
+
+## Main definitions
+
+* `integerRamificationNumber`: The signed displacement order on the DVR.
+* `valuationIntegerAut`: A valuation-preserving automorphism restricts to the same valuation ring;
+  its inverse preserves that ring by the same equality.
+* `valuedRamificationNumber`: The intrinsic signed ramification number of an arbitrary
+  valuation-preserving field automorphism.
+* `normalizedAdditiveValue`: The canonical normalized additive field valuation, with its infinite
+  value at zero, written in the standard extended reals.
+
+## Main results
+
+* `exists_addVal_eq_ramificationOrder`: The integral displacement infimum is attained, including at
+  infinity.
+* `residueAut_eq_refl_iff`: The residue automorphism is trivial precisely when every integral
+  displacement belongs to the maximal ideal.
+* `integerRamificationNumber_eq_uniformizer`: Inertia makes every uniformizer compute the same
+  intrinsic order.
+* `valuationIntegerAut_eq_one_iff`: The same-field automorphism is determined by its restriction to
+  the valuation ring, using its field of fractions.
+* `normalizedAdditiveValue_coe`: The canonical additive field value extends the canonical integral
+  valuation of the ring.
+* `normalizedAdditiveValue_div`: Division by a nonzero field element subtracts its normalized
+  additive value, also when the numerator vanishes.
+* `ramificationOrder_eq_iInf_normalizedAdditiveValue`: The field-valued infimum is the integral
+  displacement order, since the canonical normalized field value extends `addVal`.
+* `valuedRamificationNumber_eq_iInf`: The intrinsic signed number is exactly the normalized field
+  infimum minus one, on the valuation ring and field.
+
+## References
+
+* Serre, *Local Fields*, Chapter IV (ramification groups, Herbrand functions, the different).
 -/
 
 @[expose] public section

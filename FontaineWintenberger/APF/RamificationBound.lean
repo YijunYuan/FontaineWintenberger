@@ -15,6 +15,25 @@ public import Mathlib.Data.EReal.Basic
 The supremum lives in the extended reals. Its defining set contains
 `-1`, and for the trivial extension it is unbounded, giving positive infinity.
 Conjugacy makes the bound independent of the separable embedding.
+
+## Main definitions
+
+* `apfRamificationBound`: The supremum, including positive infinity for an unbounded set.
+
+## Main results
+
+* `apfSubgroup_fieldRange_index_eq`
+* `apfSubgroup_fieldRange_eq_top_iff`
+* `apfRamificationBound_eq_embedding`
+* `le_apfRamificationBound`
+* `neg_one_le_apfRamificationBound`
+* `apfRamificationBound_algEquiv`
+* `apfRamificationBound_self`
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §1 (extensions arithmétiquement profinies).
 -/
 
 @[expose] public section

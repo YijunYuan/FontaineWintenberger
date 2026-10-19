@@ -21,6 +21,37 @@ The transition maps are field norms on finite extensions.
 Any cofinal set of finite fields determines and constructs
 the same zero-adjoined unit field of norms. This supplies the covariant finite
 functor before its additive and topological properties.
+
+## Main definitions
+
+* `FieldOfNorms.normCompatibleUnits`: The subgroup of norm-compatible families of units over all
+  finite intermediate fields.
+* `FieldOfNorms`: The single multiplicative carrier for the field of norms: its unit limit with an
+  absorbing zero adjoined.
+* `recZeroCoe`: Case analysis on the carrier: zero or a coerced unit family.
+* `FieldOfNorms.coord`: Evaluation at a finite intermediate field, extended by zero.
+* `FieldOfNorms.ofCofinal`: The canonical extension of compatible cofinal coordinates.
+
+## Main results
+
+* `FieldOfNorms.coord_eq_zero_iff`: Every individual evaluation detects zero, even though it need
+  not be injective.
+* `FieldOfNorms.ext`: The evaluations jointly distinguish all elements of the multiplicative limit.
+* `FieldOfNorms.coord_norm`: The coordinates satisfy the finite-layer norm equations.
+* `existsUnique_fieldOfNorms_of_compatible`: Every compatible field family is represented uniquely
+  by the single zero-adjoined unit limit.
+* `FieldOfNorms.ext_cofinal`: Evaluations on any cofinal set already distinguish elements of the
+  zero-adjoined unit limit.
+* `existsUnique_fieldOfNorms_of_compatible_cofinal`: Any compatible cofinal coordinate family
+  extends uniquely to the same field of norms, using finite field norms.
+* `FieldOfNorms.coord_ofCofinal`: Every prescribed cofinal coordinate is retained exactly.
+* `FieldOfNorms.coord_ofCofinal_of_le`: Any finite field is computed from any prescribed cofinal
+  upper field by its norm, independently of the choice.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §2–3 (le corps des normes, fonctorialité).
 -/
 
 @[expose] public section

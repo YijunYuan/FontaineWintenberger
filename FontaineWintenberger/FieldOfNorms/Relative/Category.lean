@@ -15,6 +15,19 @@ public import Mathlib.FieldTheory.Separable
 The category is the canonical full subcategory of commutative algebras whose
 underlying rings are fields and whose elements are separable over the base.
 Its morphisms are exactly the algebra homomorphisms.
+
+## Main definitions
+
+* `separableFieldProperty`: Separable field algebras form a property of the commutative algebra.
+* `SeparableExtensionCat`: The canonical full subcategory of separable algebraic field extensions.
+* `of`: Regard a separable field extension as an object of its canonical category.
+* `homEquiv`: The morphisms of the full subcategory are exactly the algebra maps.
+* `isoOfAlgEquiv`: An algebra isomorphism gives the same categorical field isomorphism.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §2–3 (le corps des normes, fonctorialité).
 -/
 
 @[expose] public section

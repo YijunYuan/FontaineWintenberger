@@ -15,6 +15,32 @@ public import Mathlib.RingTheory.Teichmuller
 
 The canonical section is Mathlib's Teichmüller limit, applied to the
 perfection of the residue field. No finite residue field is assumed.
+
+## Main definitions
+
+* `residueTeichmuller`: The canonical multiplicative representatives of the perfect residue field,
+  constructed by Mathlib's Teichmüller limit.
+* `spectralTeichmuller`: The canonical multiplicative representatives in the finite spectral integer
+  ring, with arbitrary perfect residue field.
+
+## Main results
+
+* `residue_comp_monoidHom_injective`: Reduction is injective on multiplicative maps from a perfect
+  monoid into the adically complete ring.
+* `residue_residueTeichmuller`: The canonical representatives reduce to the residue class.
+* `residueTeichmuller_unique`: There is only one multiplicative section of the reduction.
+* `residueTeichmuller_pow`: The canonical representatives commute with every natural power, in
+  particular with Frobenius.
+* `residueTeichmuller_zero`: Zero and one are the zero and one representatives.
+* `residueTeichmuller_frobenius`: Frobenius is preserved, for every residue prime including two.
+* `residueTeichmuller_sModEq`: The canonical section is the same canonical limit of powers of
+  arbitrary lifts of inverse Frobenius coordinates used in the construction.
+* `residueTeichmuller_naturality`: Every local ring map commutes with canonical multiplicative
+  representatives; continuity is supplied by adic uniqueness itself.
+
+## References
+
+* Serre, *Local Fields*, Chapter IV (ramification groups, Herbrand functions, the different).
 -/
 
 @[expose] public section

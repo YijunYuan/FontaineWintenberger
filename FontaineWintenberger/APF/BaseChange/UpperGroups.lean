@@ -37,6 +37,37 @@ surjective scalar-change equivalence. The own-ring actions are preserved.
 
 Finite upper conditions are tested on the cofinal old-base normal overfields.
 Every finite comparison uses the scalar-tower and integer-ring actions.
+
+## Main definitions
+
+* `finiteTowerAutEquivImage`: Changing from the abstract scalar field to its image preserves
+  automorphisms.
+* `finiteTower_spectralIntegerRingEquiv`: The field identity gives the integer-ring equivalence for
+  scalar change.
+
+## Main results
+
+* `finiteBase_upperRamificationGroup_of_finiteGalois`: Finite base change for the own-ring upper
+  groups, with no normality of the base.
+* `finiteBase_upperRamificationGroup`: Finite base change for the own-ring upper groups, with no
+  normality of the base.
+* `finiteTower_spectralIntegerRing_eq`: The own spectral constructions over an embedded field and
+  its image agree as subrings.
+* `finiteTower_spectralIntegerRingEquiv_smul`: Scalar change and integer-ring identification
+  preserve the field action.
+* `finiteTower_upper_map_autEquivImage`: Scalar change transports the own-ring upper group to the
+  image-base upper group.
+* `finiteTower_fixingSubtype_comp`: The canonical image-base automorphism equivalence restricts to
+  the field map.
+* `finiteTower_range_restrictScalarsHom`: The restriction-of-scalars image is the subgroup fixing
+  the embedded scalar field.
+* `finiteTower_upper_map_restrictScalars`: Finite base change for the abstract embedded base, mapped
+  to its fixing subgroup.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §1 (extensions arithmétiquement profinies).
 -/
 
 @[expose] public section

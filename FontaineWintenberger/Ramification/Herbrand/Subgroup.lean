@@ -20,6 +20,27 @@ its Herbrand function on the same valuation ring as the ambient action.
 
 The least integer lower failure and the Herbrand inverse supply a
 finite, attained, nonnegative upper break, without prime degree or normality.
+
+## Main results
+
+* `card_lowerRamificationGroupReal_subgroup`: The subgroup lower group has the cardinality of the
+  ambient intersection.
+* `card_lowerRamificationGroup_zero_subgroup`: The inertia group of the restricted action is the
+  intersection.
+* `subgroup_upperRelIndex_mul_card`: The cardinality identity underlying the nonnormal subgroup
+  change of parameter.
+* `subgroup_herbrand_slope_mul`: The subgroup cardinalities give the chain-rule slope.
+* `subgroup_upperRelIndex_pos`: Indices of these subgroups are positive because the ambient group is
+  finite.
+* `subgroup_upperRelIndex_monotoneOn`: The finite subgroup index increases with the upper parameter.
+* `intervalIntegrable_subgroup_upperRelIndex`: The subgroup index is integrable on every nonnegative
+  compact interval.
+* `exists_subgroup_herbrand_comp_derivative_breaks`: The nonnormal subgroup composite has the
+  finite-index slope off finitely many points.
+
+## References
+
+* Serre, *Local Fields*, Chapter IV (ramification groups, Herbrand functions, the different).
 -/
 
 @[expose] public section

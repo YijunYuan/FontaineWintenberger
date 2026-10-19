@@ -15,6 +15,21 @@ public import FontaineWintenberger.Ramification.Lower.Inertia
 The intrinsic sum over nonidentity automorphisms equals the finite sum of
 lower-group cardinalities minus one. The bound is obtained from the
 eventual triviality theorem for a finite faithful action.
+
+## Main results
+
+* `sum_ramificationOrder_eq_sum_lower_card`: Double-counting the nonidentity lower-group elements,
+  for any bound on the intrinsic nonidentity orders.
+* `exists_sum_ramificationOrder_eq_sum_lower_card`: Eventual triviality supplies a cutoff for the
+  cardinal sum.
+* `spectralIntegerRing_different_order_eq_sum_ramificationOrder`: Hilbert's nonidentity-order
+  formula for the different and full Galois group; the integral generator is proved to exist.
+* `spectralIntegerRing_different_order_eq_sum_lower_card`: Hilbert's cardinal formula with a finite
+  cutoff, beyond which all lower groups are trivial.
+
+## References
+
+* Serre, *Local Fields*, Chapter IV (ramification groups, Herbrand functions, the different).
 -/
 
 @[expose] public section

@@ -19,6 +19,29 @@ to the valuation unit ball of any complete nontrivially normed
 ultrametric field.
 Division is performed in the ambient field. No unit condition on
 the derivative and no residue-field finiteness hypothesis are imposed.
+
+## Main definitions
+
+* `T_gen`: `T` is an auxiliary value that is used to control the behavior of the polynomial `F`.
+* `ih_gen`: Newton approximations in the valuation unit ball satisfy successive values of `ih`.
+* `newton_correction`: Division is in `K`; its norm bound proves that the correction belongs to `O`.
+* `ih_n`: The derivative norm is unchanged and the residual is squared at each Newton step.
+* `newton_seq_aux`
+* `newton_seq_gen`
+
+## Main results
+
+* `unitBall_polynomial_norm_sub_le`: Integral polynomial evaluation is nonexpanding on the valuation
+  unit ball.
+* `unitBall_polynomial_norm_sub_eq_of_norm_lt_derivative`: In the derivative ball, Taylor's linear
+  term determines the exact change in norm.
+* `unitBall_hensel_nonunit`: Newton--Hensel lifting in the unit ball of a complete ultrametric
+  field.
+
+## References
+
+* Serre, *Local Fields*, Chapters I–II (discrete valuation rings, completions, unramified and
+  totally ramified extensions).
 -/
 
 @[expose] public section

@@ -17,6 +17,29 @@ public import Mathlib.LinearAlgebra.Dimension.Localization
 The finite-flat degree identity has a single term for a finite local DVR
 extension. Its residue-degree-one consequence makes every uniformizer an
 integral generator. All indices are Mathlib's canonical ideal indices.
+
+## Main results
+
+* `local_inertiaDeg_eq_finrank_residueField`: Canonical local inertia degree is the residue-field
+  degree.
+* `local_ramificationIdx_mul_inertiaDeg`: The fundamental degree identity for a finite injective
+  local map of DVRs.
+* `local_ramificationIdx_mul_finrank_residueField`: The fundamental degree identity expressed on the
+  canonical local residue fields.
+* `ramificationIdx_eq_finrank_iff_residue_surjective`: Total ramification by degree is equivalent to
+  surjectivity of the residue map.
+* `adjoin_uniformizer_eq_top_of_ramificationIdx_eq_finrank`: Every uniformizer generates a totally
+  ramified finite local DVR extension.
+* `local_ramificationIdx_mul_residueDegree_eq_finrank`: The local fundamental degree identity on the
+  fraction fields.
+* `adjoin_uniformizer_eq_top_of_ramificationIdx_eq_field_finrank`: Total ramification on the field
+  degree makes every integral uniformizer a generator.
+* `extensionValuationSubring_ramificationIdx_mul_residueDegree`: The chosen extension valuation ring
+  satisfies the fundamental degree identity.
+
+## References
+
+* Serre, *Local Fields*, Chapter IV (ramification groups, Herbrand functions, the different).
 -/
 
 @[expose] public section

@@ -17,6 +17,18 @@ public import FontaineWintenberger.Ramification.Lower.SpectralMaps
 Every intermediate base above the wild fixed field has full inertia in its
 own integer ring. The ordinary inertia-cardinality theorem therefore
 gives its total-ramification degree.
+
+## Main results
+
+* `wildField_lower_zero_eq_top`: Every base above the wild fixed field has full own-ring inertia.
+* `wildField_top_ramificationIdx_eq_finrank`: The ramification index over every intermediate base
+  above the wild fixed field is its relative field degree.
+* `wildField_step_ramificationIdx_eq_finrank`: Every intermediate step above the wild fixed field is
+  totally ramified on its own spectral integers and ordinary relative degree.
+
+## References
+
+* Serre, *Local Fields*, Chapter IV (ramification groups, Herbrand functions, the different).
 -/
 
 @[expose] public section

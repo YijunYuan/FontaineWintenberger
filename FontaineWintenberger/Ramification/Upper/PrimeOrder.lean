@@ -14,6 +14,29 @@ public import Mathlib.GroupTheory.SpecificGroups.Cyclic.Subgroup
 
 Every subgroup of a prime-order Galois group is trivial or full. The
 lower groups consequently give the same order to every nonidentity element.
+
+## Main results
+
+* `ramificationOrder_eq_of_prime_card`: Prime group order makes all nonidentity intrinsic
+  ramification orders equal, directly through the ideal-inertia subgroups.
+* `exists_common_ramificationOrder_of_prime_card`: A finite faithful prime-order action supplies a
+  finite common order, rather than an order certificate assumed from the caller.
+* `exists_common_ramificationOrder_succ_of_prime_card`: A full zero lower group makes the common
+  order a positive integer.
+* `lowerRamificationGroup_nat_of_common_order`: A common nonidentity order computes every
+  nonnegative lower group.
+* `lowerRamificationGroupReal_of_common_order`: Real lower numbering keeps the weak endpoint at the
+  common break.
+* `herbrandFunction_common_break`: At a nonnegative common break the Herbrand function fixes the
+  break.
+* `upperRamificationGroup_of_common_order`: The weak common lower break is also the weak common
+  upper break.
+* `sum_ramificationOrder_of_common_order`: Summing the common nonidentity orders uses precisely
+  `card G - 1` terms.
+
+## References
+
+* Serre, *Local Fields*, Chapter IV (ramification groups, Herbrand functions, the different).
 -/
 
 @[expose] public section

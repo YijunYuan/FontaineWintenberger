@@ -19,6 +19,27 @@ The order of the different in a tower is additive with the canonical
 ramification-index weight. Hilbert's formula and the subgroup Herbrand
 identity compute the upper orbit index without assuming a normal subfield
 or a totally ramified Galois closure.
+
+## Main results
+
+* `maximalIdeal_emultiplicity_mul`: The canonical order of a product of DVR ideals is the sum of its
+  orders, including the zero ideal.
+* `maximalIdeal_emultiplicity_ne_top`: A nonzero DVR ideal has finite canonical order.
+* `maximalIdeal_emultiplicity_map`: Extending a DVR ideal multiplies its canonical order by the
+  canonical ramification index.
+* `differentIdeal_order_tower`: The different-order transitivity formula, with its inertia-order
+  weight rather than the full relative Galois degree.
+* `differentIdeal_order_toNat_tower`: All three differents are nonzero in a finite separable tower,
+  so the order-transitivity equality also holds in the natural numbers.
+* `herbrandFunction_nat_mul_card`: At an integer, the Herbrand integral is the finite sum of the
+  positive lower-group cardinalities divided by the inertia order.
+* `upperOrbitIndex_le_fixingIndex`: Upper orbits never outnumber the embedding cosets.
+* `subgroup_upperRelIndex_deficit_integral`: The subgroup Herbrand identity gives the finite-cutoff
+  integral of the inertia-relative orbit deficit, for the subgroup action.
+
+## References
+
+* Serre, *Local Fields*, Chapter IV (ramification groups, Herbrand functions, the different).
 -/
 
 @[expose] public section

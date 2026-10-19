@@ -14,6 +14,19 @@ public import Mathlib.FieldTheory.IsSepClosed
 The canonical normal-extension lifting theorem gives automorphisms
 extending embeddings of intermediate fields. Separably closed targets receive
 every separable algebraic extension through the existing lifting theorem.
+
+## Main results
+
+* `exists_aut_extends_intermediate_embedding`: An embedding of an intermediate field extends to an
+  automorphism of the normal algebraic ambient field.
+* `exists_aut_extends_separableClosure_embedding`: The preceding extension theorem applies to the
+  canonical separable closure without a supplied normality or extension certificate.
+* `nonempty_separablyClosed_embeddings`: Every separable algebraic extension embeds into any
+  separably closed extension of its base.
+
+## References
+
+* Mathlib; this file is an upstream candidate and has no project-specific reference.
 -/
 
 @[expose] public section

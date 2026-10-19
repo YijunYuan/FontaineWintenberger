@@ -19,6 +19,27 @@ public import Mathlib.FieldTheory.LinearDisjoint
 The relative inertia cardinality and ramification-index tower give
 the ramification index of any fixed field, without normality of its fixing
 subgroup. Coprimality then supplies the wild compositum reduction.
+
+## Main results
+
+* `fixedField_ramificationIdx_eq_relIndex`: The ramification index of any fixed field is its
+  inertia-relative fixing-group index.
+* `fixedField_sup_inertia_eq_top`: Total ramification of the nonnormal fixed field makes inertia
+  transitive on its embeddings.
+* `fixedField_ramificationIdx_eq_finrank_iff`: Total ramification of the fixed field is exactly
+  transitivity of the inertia action, without a normality hypothesis.
+* `fixedField_sup_wild_eq_top`: Wild inertia is transitive on the embeddings of a totally ramified
+  p-power-degree fixed field, including nonnormal fixed fields.
+* `fixedField_wild_linearDisjoint`: The tame fixed field is linearly disjoint from every totally
+  ramified p-power-degree fixed field.
+* `fixedField_wild_compositum_finrank`: The compositum over the tame fixed field retains the full
+  degree of the nonnormal wild field.
+* `fixedField_wild_norm_baseChange`: The norm from the tame compositum is the norm under the base
+  inclusion.
+
+## References
+
+* Serre, *Local Fields*, Chapter IV (ramification groups, Herbrand functions, the different).
 -/
 
 @[expose] public section

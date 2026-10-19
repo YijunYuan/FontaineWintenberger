@@ -33,6 +33,41 @@ Ambient finite-image transports descend to the same relative field of norms.
 They extend the absolute base action and preserve its rational valuation.
 
 Reference: Wintenberger, Remark 3.2.4.
+
+## Main definitions
+
+* `RelFieldOfNorms.absoluteLayerField`: The ambient image, retaining its underlying subfield.
+* `RelFieldOfNorms.absoluteLayer`: The finite image index over the same normal base.
+* `RelFieldOfNorms.absoluteLayerEquiv`: Restrict the ambient automorphism to its image field.
+* `RelFieldOfNorms.stageEquiv`: A field isomorphism between finite indices gives their norm-field
+  isomorphism.
+* `RelFieldOfNorms.absoluteStageMap`: The ambient restriction gives the existing isomorphism of norm
+  fields.
+* `RelFieldOfNorms.absoluteMap`: The compatible finite-stage transports act on the same relative
+  field of norms.
+* `RelFieldOfNorms.absoluteAut`: The ambient transports form an automorphism action on the same
+  union.
+
+## Main results
+
+* `RelFieldOfNorms.absoluteImage_contains`: Normality makes every ambient image contain the same
+  base field.
+* `RelFieldOfNorms.absoluteLayer_finite`: Semilinear transport along the base automorphism preserves
+  finite degree.
+* `coe_relFieldOfNormsAbsoluteLayerEquiv`: The restricted map is the automorphism in the ambient
+  field.
+* `mem_relFieldOfNormsAbsoluteLayer`: Membership in the image index is ambient image membership.
+* `RelFieldOfNorms.absoluteLayer_mono`: Ambient transport preserves inclusions of the finite
+  overfields.
+* `RelFieldOfNorms.absoluteLayer_one`: The identity ambient automorphism leaves every finite image
+  index unchanged.
+* `RelFieldOfNorms.absoluteLayer_mul`: Ambient multiplication gives the iterated finite image.
+* `RelFieldOfNorms.stageEquiv_apply`: The indexed isomorphism is the norm-family transport.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §2–3 (le corps des normes, fonctorialité).
 -/
 
 @[expose] public section

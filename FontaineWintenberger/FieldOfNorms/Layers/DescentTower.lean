@@ -12,6 +12,42 @@ public import FontaineWintenberger.FieldOfNorms.Layers.Descent
 
 Finite coefficient fields in a finite separable tower can be chosen
 simultaneously good for both levels, as in Wintenberger, paragraph 3.1.1.
+
+## Main definitions
+
+* `tensorEquivOfLinearDisjoint`: The multiplication map is an isomorphism when linearly disjoint
+  finite fields generate the ambient extension.
+* `finiteDescentIntersection`: The intersection with an embedded middle field, viewed inside that
+  field.
+* `finiteDescentIntersectionTo`: The canonical inclusion of the middle intersection into the upper
+  field.
+* `finiteDescentIntersectionTensorEquiv`: The intersection descends the middle field by the
+  canonical map.
+* `finiteDescentUpperTensorEquiv`: The upper canonical tensor map is an isomorphism.
+
+## Main results
+
+* `injective_tensor_lift_of_linearDisjoint`: Linear disjointness makes the canonical tensor map
+  injective.
+* `linearDisjoint_finiteDescentIntersection`: Restricting the disjoint field to the middle
+  intersection preserves linear disjointness with the base.
+* `surjective_finiteDescentIntersection_tensor_lift`: Containing the middle primitive element makes
+  the lower canonical tensor map onto.
+* `finrank_finiteDescentIntersection`: The middle field degree is the degree of the finite
+  intersection.
+* `surjective_finiteDescentUpper_tensor_lift`: The upper canonical multiplication map remains onto
+  after replacing the base by the middle field.
+* `finrank_finiteDescentUpper`: Equality of lower and total degrees forces the upper degree, as in
+  the simultaneous descent argument.
+* `finiteDescentUpperTensorEquiv_tmul`: The upper isomorphism uses the multiplication map on
+  elements.
+* `finiteDescentIntersection_map`: Viewed in the ambient field, the constructed middle field is
+  exactly the intersection of the finite field and the middle field.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §2–3 (le corps des normes, fonctorialité).
 -/
 
 @[expose] public section

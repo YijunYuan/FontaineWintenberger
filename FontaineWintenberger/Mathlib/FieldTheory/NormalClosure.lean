@@ -13,6 +13,23 @@ public import Mathlib.FieldTheory.Normal.Closure
 Mathlib's compositum of all embedding images is finite for a finite
 field, without normality of the ambient field. We prove its invariance
 under ambient automorphisms and retain their restrictions.
+
+## Main definitions
+
+* `normalClosureRestrict`: Restriction of the ambient automorphism to the image compositum.
+
+## Main results
+
+* `map_normalClosure_le`: All embedding images remain in their compositum after any ambient
+  embedding.
+* `map_normalClosure_eq`: The finite-image compositum is stable under every automorphism, with no
+  normality hypothesis on the ambient field.
+* `exists_finite_aut_stable`: A finite field is contained in a finite field stable under all
+  automorphisms; finiteness comes from the canonical existing construction.
+
+## References
+
+* Mathlib; this file is an upstream candidate and has no project-specific reference.
 -/
 
 @[expose] public section

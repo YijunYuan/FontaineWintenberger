@@ -22,6 +22,31 @@ lift satisfying every finite restriction condition.
 The image of a finite Galois subextension is a finite Galois
 subextension. Ordinary restrictions commute with the restricted field
 isomorphism, so the finite own-ring transport identifies every upper condition.
+
+## Main definitions
+
+* `finiteGaloisLift`: The image in the ambient field of a finite Galois subfield of an intermediate
+  field.
+* `finiteGaloisLiftEquiv`: The canonical inclusion isomorphism onto the lifted subfield.
+* `finiteGaloisMap`: The image of a finite Galois intermediate field.
+* `finiteGaloisMapEquiv`: The canonical isomorphism onto this image.
+
+## Main results
+
+* `restrictNormal_finiteGaloisLift`: Ordinary restriction commutes with the canonical inclusion
+  isomorphism.
+* `exists_lift_finite_infinite_upper_restrictions`: A finite list of prescribed subextension
+  restrictions is realized inside the upper group.
+* `exists_lift_infinite_upper_restriction`: Every upper automorphism of an arbitrary Galois
+  subextension has an upper lift.
+* `restrictNormalHom_map_upperRamificationGroupInfinite`: Ordinary infinite Galois restriction maps
+  upper groups onto upper groups.
+* `restrictNormal_finiteGaloisMap`: Conjugation commutes with ordinary restriction to the finite
+  image.
+
+## References
+
+* Serre, *Local Fields*, Chapter IV (ramification groups, Herbrand functions, the different).
 -/
 
 @[expose] public section

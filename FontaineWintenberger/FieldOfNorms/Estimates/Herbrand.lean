@@ -15,6 +15,22 @@ public import FontaineWintenberger.Mathlib.FieldTheory.FiniteIntermediateField
 
 Embedding invariance transports the existing inertia-index comparison.
 The inverse comparison gives one input precision for every finite subextension.
+
+## Main results
+
+* `apfPsi_le_of_algHom`: The intrinsic Herbrand integral increases along every embedding into an
+  abstract APF extension.
+* `apfPhi_le_of_algHom`: Inverting the integral comparison reverses the extension-field inequality
+  for nonnegative parameters.
+* `le_ceil_apfPhi_of_apfPsi_le`: A single intrinsic APF precision controls the inverse Herbrand
+  function of every embedded subextension.
+* `FiniteIntermediateField.le_ceil_apfPhi_of_apfPsi_le`: Uniform precision for the relative finite
+  fields, with the canonical spectral norm on their finite base.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §2–3 (le corps des normes, fonctorialité).
 -/
 
 @[expose] public section

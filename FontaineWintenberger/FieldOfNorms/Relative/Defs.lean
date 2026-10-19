@@ -34,6 +34,38 @@ algebra isomorphism of their same canonical norm-field unions. The inverse
 is induced by the inverse, using the union-map laws.
 
 Reference: Wintenberger, §§3.2.1 and 3.2.6.
+
+## Main definitions
+
+* `RelFieldOfNorms.transition`: The transition homomorphism is the existing finite-inclusion map.
+* `RelFieldOfNorms`: The single canonical directed colimit of the finite norm fields.
+* `RelFieldOfNorms.of`: The canonical structural embedding of a finite-stage norm field.
+* `RelFieldOfNorms.baseToStage`: The finite-inclusion map from the base norm field to a stage.
+* `RelFieldOfNorms.baseHom`: The canonical base embedding into the same directed union.
+* `RelFieldOfNorms.ofAlgHom`: The finite-stage embedding as an algebra homomorphism over the base.
+* `RelFieldOfNorms.valueMap`: Rational rescaling of the existing integer valuation group, with zero
+  preserved.
+* `RelFieldOfNorms.stageExponent`: The positive scaling exponent of the finite map from the base.
+
+## Main results
+
+* `RelFieldOfNorms.stage_infinite`: No intermediate field of `M/L` is finite over `K` when `L/K` is
+  infinite.
+* `RelFieldOfNorms.ambient_infinite`: An ambient extension of the infinite extension is infinite
+  over `K`.
+* `RelFieldOfNorms.transition_self`: The identity law is retained at the finite stage.
+* `RelFieldOfNorms.transition_comp`: Composition retains the finite norm-family maps in the same
+  tower.
+* `RelFieldOfNorms.of_injective`: Every finite-stage structural map is injective.
+* `RelFieldOfNorms.of_transition`: Structural embeddings identify each transition with its source.
+* `RelFieldOfNorms.exists_stage`: Every union element is represented by a finite-stage family.
+* `RelFieldOfNorms.exists_finiteStage`: Any finite family of union elements lies in one finite
+  stage.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §2–3 (le corps des normes, fonctorialité).
 -/
 
 @[expose] public section

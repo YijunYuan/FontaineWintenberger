@@ -19,6 +19,32 @@ The inverse limit is the intersection of the canonical ring equalizers
 inside the coefficient product. Surjective transition maps give
 surjective projections without any finiteness assumption on the rings.
 The discrete product uniformity supplies Hausdorffness and completeness.
+
+## Main definitions
+
+* `subring`: The compatible-family subring is the intersection of the canonical equalizer subrings
+  in the product.
+* `projection`: Evaluation on the compatible-family subring.
+* `transition`: The finite composite of the adjacent transition homomorphisms.
+* `liftSequence`
+
+## Main results
+
+* `compatible`: Adjacent compatibility holds on the family.
+* `transition_succ_left`: Removing the first adjacent map from a finite downward composite.
+* `transition_projection`: Every finite transition evaluates the compatible family.
+* `projection_surjective`: Every projection is onto by recursive lifting along the surjective
+  adjacent maps.
+* `isClosed_subring`: The compatible-family subring is closed in the product of the discrete
+  coefficient rings.
+* `completeSpace`: Completeness belongs to the inherited discrete-product uniformity on the subring,
+  without a separate completion.
+* `t2Space`: The same inherited uniformity is Hausdorff.
+* `continuous_projection`: The coordinate projections are continuous.
+
+## References
+
+* Mathlib; this file is an upstream candidate and has no project-specific reference.
 -/
 
 @[expose] public section

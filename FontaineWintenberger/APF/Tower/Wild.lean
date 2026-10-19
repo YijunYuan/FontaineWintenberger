@@ -18,6 +18,29 @@ A finite APF stage supplies a tail of the finite intermediate fields
 whose residue maps are surjective and whose degrees are powers of
 the residue characteristic. No normality of the infinite extension or its
 finite intermediate fields is assumed.
+
+## Main results
+
+* `relIndex_sup_eq_relIndex_of_normal_right`: The coset index in a product with a normal subgroup is
+  its intersection index inside that subgroup; the other factor need not be normal.
+* `relIndex_eq_prime_pow_of_le_sup`: Every intermediate index in a finite normal p-group product is
+  a power of p, without normality of the three intervening subgroups.
+* `finrank_eq_prime_pow_of_apfFiniteStage_one_le`: Above the upper-one stage, every finite
+  subextension step has p-power degree.
+* `FiniteIntermediateField.ramificationIdx_eq_finrank_of_residueInclusion_surjective`: Surjectivity
+  of the residue inclusion makes the finite step totally ramified, using its spectral integer-ring
+  map.
+* `IsAPF.exists_finiteIntermediateField_residue_surjective_and_degree_prime_pow`: A finite
+  intermediate field in the abstract APF extension gives surjective residue maps and p-power degrees
+  on every finite step above it, including nonnormal steps.
+* `IsAPF.exists_finiteIntermediateField_wild_tail`: Every separable APF extension has a finite wild
+  tail: all residue inclusions are onto, all degrees are powers of the residue characteristic, and
+  every step is totally ramified on its spectral integer rings.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §1 (extensions arithmétiquement profinies).
 -/
 
 @[expose] public section

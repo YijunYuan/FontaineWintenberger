@@ -16,6 +16,28 @@ public import Mathlib.Algebra.CharP.Reduced
 The unit ratio of an automorphism applied to an uniformizer gives a residue
 unit. On inertia this is multiplicative, and its kernel is the first
 lower ramification group.
+
+## Main definitions
+
+* `uniformizerRatio`: The unit by which a ring automorphism multiplies an uniformizer.
+* `tameInertiaHom`: The tame inertia homomorphism to units of the residue field.
+* `tameInertiaQuotientEquiv`: The tame quotient is the finite residue-unit image.
+
+## Main results
+
+* `residue_smul_eq_of_mem_lower_zero`: Inertia fixes every residue class.
+* `tameInertiaHom_eq`: The tame residue homomorphism is independent of the chosen uniformizer.
+* `uniformizer_mul_mem_pow_two`: An uniformizer multiple has the next ideal-power order exactly when
+  its remaining factor has the preceding order.
+* `ker_tameInertiaHom`: The residue-unit kernel is precisely the first lower group inside inertia.
+* `isCyclic_tameInertiaQuotient`: Tame inertia is cyclic, even when the perfect residue field is
+  infinite.
+* `coprime_card_tameInertiaQuotient`: The order of the tame inertia quotient is prime to the residue
+  characteristic.
+
+## References
+
+* Serre, *Local Fields*, Chapter IV (ramification groups, Herbrand functions, the different).
 -/
 
 @[expose] public section

@@ -31,6 +31,31 @@ A positive interval of the Herbrand integral gives an uniform lower
 bound for the strictness ratio whenever the intrinsic index has bounded
 growth across intervals of a fixed positive length. This implements
 blueprint `fw:apf-bounded-index-growth` for an abstract separable extension.
+
+## Main definitions
+
+* `apfStrictnessRatio`: The ratio, embedded in the nonnegative extended reals.
+* `apfStrictnessConstant`: The strictness constant, with the empty infimum equal to infinity.
+* `IsStrictlyAPF`: Strict arithmetic profiniteness of an abstract separable extension (Wintenberger
+  1.2.1): APF, and the ratio `ψ_{L/K}(u) / (G_K^0 : G_L^0 G_K^u)` stays bounded below as `u → ∞`.
+
+## Main results
+
+* `isStrictlyAPF_iff_constant_pos`: The positivity criterion, including the infinite first-bound
+  endpoint.
+* `IsAPF.window_mul_index_le_apfPsi`: A nonnegative interval of the Herbrand integral controls its
+  endpoint by the intrinsic index at the interval's left endpoint.
+* `IsAPF.apfPsi_div_index_ge_of_boundedGrowth`: Bounded growth across an interval of fixed positive
+  length gives the strictness-ratio lower bound after an explicit finite cutoff.
+* `IsAPF.eventually_le_apfStrictnessRatio_of_boundedGrowth`: The ratio has a positive constant
+  eventual lower bound under bounded growth of the intrinsic index.
+* `isStrictlyAPF_of_apfIndex_boundedGrowth`: Eventual bounded growth of the APF index implies strict
+  APF for an abstract separable extension, without any residue-field hypothesis.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §1 (extensions arithmétiquement profinies).
 -/
 
 @[expose] public section

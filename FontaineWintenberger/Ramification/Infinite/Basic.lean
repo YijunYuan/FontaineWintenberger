@@ -17,6 +17,26 @@ The upper groups are intersections of preimages of the finite
 upper groups under ordinary restriction, with the existing Krull topology.
 
 ## Testing infinite upper groups on cofinal finite intermediate fields
+
+## Main definitions
+
+* `upperRamificationGroupInfinite`: Infinite upper numbering in the Galois group, using ordinary
+  finite restrictions.
+
+## Main results
+
+* `exists_lift_finite_upper_conditions`: Finitely many upper conditions can be lifted together with
+  one prescribed finite restriction.
+* `exists_lift_upperRamificationGroupInfinite`: Compactness lifts every finite upper automorphism
+  through all finite upper conditions.
+* `map_upperRamificationGroupInfinite`: Every finite upper group is the image of the infinite upper
+  group.
+* `mem_upperRamificationGroupInfinite_iff_cofinal`: A cofinal family of finite intermediate fields
+  tests all infinite upper conditions.
+
+## References
+
+* Serre, *Local Fields*, Chapter IV (ramification groups, Herbrand functions, the different).
 -/
 
 @[expose] public section

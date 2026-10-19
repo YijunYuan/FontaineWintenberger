@@ -50,6 +50,42 @@ with the subgroup whose base restriction is a norm-field action.
 The restriction square and relative kernel comparison are retained.
 
 Reference: Wintenberger, Remark 3.2.4.
+
+## Main definitions
+
+* `RelFieldOfNorms.galoisSubgroup`: The target, inside ring automorphisms of the same union.
+* `RelFieldOfNorms.galoisRestrictionFun`: The automorphism supplied by the subgroup membership
+  theorem.
+* `RelFieldOfNorms.galoisRestriction`: The base restriction, as a group homomorphism.
+* `RelFieldOfNorms.galoisRelativeHom`: Forgetting the base algebra gives a member of the target.
+* `RelFieldOfNorms.galoisRelativeKernelEquiv`: The relative algebra automorphism group is precisely
+  the kernel.
+* `RelFieldOfNorms.galoisKernelEquiv`: The relative Galois group identifies with that same kernel.
+* `RelFieldOfNorms.ambientGaloisHom`: The ambient action takes values in the semilinear subgroup.
+* `RelFieldOfNorms.ambientGaloisEquiv`: Wintenberger’s ambient Galois group isomorphism for the
+  union.
+
+## Main results
+
+* `RelFieldOfNorms.mem_galoisSubgroup`: Membership means a commuting square with an automorphism.
+* `RelFieldOfNorms.galoisSubgroup_base_unique`: The base square determines its automorphism
+  uniquely.
+* `RelFieldOfNorms.mem_galoisSubgroup_iff_stable_image`: The existential square is exactly
+  preservation of the base image and membership of its transported restriction in the action image.
+* `RelFieldOfNorms.galoisRestrictionFun_base`: The chosen automorphism has the base square on every
+  element.
+* `RelFieldOfNorms.galoisRestrictionFun_mul`: The restriction preserves multiplication in the
+  canonical homomorphism domain structure.
+* `RelFieldOfNorms.galoisRestriction_base`: The restriction retains the base square on every
+  element.
+* `RelFieldOfNorms.galoisRestriction_eq_iff`: The automorphism is determined by its base square.
+* `RelFieldOfNorms.mem_galoisRestriction_ker_iff`: The kernel consists exactly of automorphisms
+  fixing the base pointwise.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §2–3 (le corps des normes, fonctorialité).
 -/
 
 @[expose] public section

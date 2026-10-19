@@ -17,6 +17,15 @@ public import FontaineWintenberger.APF.BaseChange.Bounds
 The cyclic prime-degree chain, its proved total ramification and
 its common intrinsic first bound supply every prime-step congruence.
 Composition uses the finite-layer integral norm maps.
+
+## Main results
+
+* `integerNorm_add_congruence_of_wild_field`: The norm congruence above the wild fixed field.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §2–3 (le corps des normes, fonctorialité).
 -/
 
 @[expose] public section

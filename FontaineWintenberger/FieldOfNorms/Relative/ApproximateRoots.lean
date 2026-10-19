@@ -17,6 +17,39 @@ public import FontaineWintenberger.FieldOfNorms.Relative.Defs
 A full upper stage and a finite root adjunction give a good
 coordinate. The surjective high-break quotient map then lifts that
 root to an integral element of the norm field.
+
+## Main definitions
+
+* `rootFiniteLayer`: The finite root field over a finite field, retained as an index in the target
+  extension.
+* `FieldOfNorms.integerInclusion`: The finite norm-field inclusion restricts to the valuation rings,
+  by its proved positive integral valuation scaling.
+
+## Main results
+
+* `FiniteIntermediateField.pullback_rootFiniteLayer`: The canonical pullback of the root field is
+  exactly the coefficient field, by the linear-disjoint intersection.
+* `isGoodFiniteLayer_rootFiniteLayer`: Linear disjointness and primitive generation make the root
+  field a good finite coordinate.
+* `linearDisjoint_adjoin_of_injective_algHom`: The linear disjointness of a simple field can be
+  checked after any injective ambient field embedding, by transporting its power basis and
+  reflecting linear independence.
+* `fieldRange_rootCompositum`: The root compositum has the same field range as root adjunction to
+  the scalar image in a common ambient field.
+* `embeddingRamificationIdx_le_finrank_of_tower`: The relative index of a finite-field inclusion is
+  at most its relative degree, by the local fundamental degree formula.
+* `fullUpper_commonClosure_of_embedding`: A proved full-upper product is full in any chosen common
+  separable closure with the scalar embedding.
+* `linearDisjoint_root_of_fullUpper_abstract`: The common-closure root-disjointness theorem applies
+  to the abstract field: its field range has precisely its scalar image, so linear disjointness is
+  reflected without replacing the field.
+* `upperProduct_rootCompositum_fieldRange_eq`: The full source subgroup product for the abstract
+  root compositum, on the automorphisms of the common closure.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §2–3 (le corps des normes, fonctorialité).
 -/
 
 @[expose] public section

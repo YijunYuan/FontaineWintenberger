@@ -14,6 +14,17 @@ public import Mathlib.Topology.Algebra.IsUniformGroup.Basic
 The inherited valuation-ring uniformity determines completeness of the
 valued field. A Cauchy filter is eventually contained in a translate
 of the complete valuation ring.
+
+## Main results
+
+* `completeSpace_of_completeSpace_valuationSubring`: Completeness of the valuation ring for its
+  inherited uniformity implies completeness of the valued field.
+* `completeSpace_iff_completeSpace_valuationSubring`: For the valuation uniformity, the field is
+  complete exactly when its valuation ring with the inherited subtype uniformity is complete.
+
+## References
+
+* Mathlib; this file is an upstream candidate and has no project-specific reference.
 -/
 
 @[expose] public section

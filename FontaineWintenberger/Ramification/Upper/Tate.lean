@@ -31,6 +31,27 @@ basis and the Galois degree theorem, so no factorization certificate is assumed.
 The twisted minimal polynomial is proved to be the product over subgroup
 conjugates. Its valuation sum is compared with the intrinsic order using the
 proved generator formula and canonical ramification-index scaling.
+
+## Main results
+
+* `generator_sub_dvd_aut_sub`: The displacement of a generator divides every displacement.
+* `generator_sub_dvd_aeval_map`: Coefficient displacements give one divisibility in Tate's argument.
+* `aeval_map_minpoly_dvd_generator_sub`: Monic minimal-polynomial division gives the reverse
+  divisibility in Tate's argument.
+* `associated_generator_sub_aeval_map_minpoly`: Tate's two integral displacements are associated,
+  including when both vanish.
+* `addVal_generator_sub_eq_aeval_map_minpoly`: The two Tate displacements have equal normalized
+  valuation, also at zero.
+* `map_minpoly_eq_prod_conjugates`: The ring minimal polynomial of a Galois generator is its
+  conjugate product.
+* `adjoin_singleton_eq_top_over_intermediate`: A generator over the smaller base also generates over
+  an intermediate algebra.
+* `map_minpoly_eq_prod_twisted`: Compatibility with a lifted automorphism twists the conjugate
+  product.
+
+## References
+
+* Serre, *Local Fields*, Chapter IV (ramification groups, Herbrand functions, the different).
 -/
 
 @[expose] public section

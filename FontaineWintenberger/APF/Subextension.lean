@@ -21,6 +21,28 @@ public import Mathlib.Order.Filter.ENNReal
 
 The fixing-subgroup index is the field degree, even when the
 intermediate fields have infinite degree over the base.
+
+## Main results
+
+* `apfPsi_le_towerIndexFactor_mul`: The monotone tower factor bounds the whole integral up to the
+  endpoint.
+* `apfStrictnessRatio_le_of_le`: The strictness ratio decreases when the extension field increases.
+* `IsStrictlyAPF.of_le`: Strict APF descends to every subextension, without a normality assumption.
+* `apfRamificationBound_le_of_le`: The extended ramification bound increases when the extension
+  field decreases.
+* `apfStrictnessConstant_le_of_le`: The extended strictness constant increases on subextensions
+  above a positive first bound.
+* `IsStrictlyAPF.of_algHom`: Strict APF descends along every algebra embedding of abstract separable
+  extensions.
+* `apfRamificationBound_le_of_algHom`: The public extended first bound is monotone under every
+  separable-extension embedding.
+* `apfStrictnessConstant_le_of_algHom`: The public extended strictness constant is monotone above a
+  positive first bound.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §1 (extensions arithmétiquement profinies).
 -/
 
 @[expose] public section

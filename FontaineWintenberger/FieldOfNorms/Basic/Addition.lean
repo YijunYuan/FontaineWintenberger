@@ -41,6 +41,35 @@ coordinate errors on the fields.
 
 Actual Herbrand continuity transports deep coordinate errors to a fixed finite
 base before its Hausdorff separation is used.
+
+## Main definitions
+
+* `normSumNet`: The norm-sum net over all finite fields containing E.
+* `FieldOfNorms.add`: Addition on the multiplicative field of norms carrier, characterized by the
+  norm-sum limits at every finite base.
+
+## Main results
+
+* `norm_normSumNet`: Norm transitivity compares the same norm-sum net at two fixed bases.
+* `tendsto_normSumNet_of_upper`: A limit at a larger finite base descends by its continuous norm,
+  because the corresponding index is an entire tail of the smaller-base net.
+* `norm_of_normSumNet_tendsto`: Uniqueness in the Hausdorff finite fields makes the norm-sum limits
+  compatible under every finite-layer norm.
+* `exists_tendsto_normSumNet_of_upper_tail`: Convergence above one finite intermediate field gives
+  convergence at every finite base by descent from its compositum with that layer.
+* `existsUnique_fieldOfNorms_of_normSumNet_tendsto`: When the norm-sum nets converge, their unique
+  limits are represented by the same zero-adjoined unit field of norms.
+* `IsAPF.exists_finiteIntermediateField_coord_mem_of_le_one`: The proved stable coordinate valuation
+  makes integral norm families integral on one finite tail, simultaneously for every family.
+* `FieldOfNorms.coord_mem_of_valuation_le_one`: Every coordinate is integral if the same stable
+  field of norms valuation is integral: integral norms descend from a common tail.
+* `FieldOfNorms.valuation_le_one_iff`: The integral part of the stable valuation is exactly the
+  families with integral coordinates in every finite field.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §2–3 (le corps des normes, fonctorialité).
 -/
 
 @[expose] public section

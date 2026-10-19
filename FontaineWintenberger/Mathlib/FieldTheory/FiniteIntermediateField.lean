@@ -35,6 +35,37 @@ Their norm-sum limits and stable valuations are preserved.
 An algebraic field extension is the directed union of its finite intermediate
 fields. Compatible algebra homomorphisms on these fields therefore give an unique
 algebra homomorphism on the extension.
+
+## Main definitions
+
+* `FiniteIntermediateField`: All finite intermediate fields, including nonnormal ones.
+* `bottom`: The bottom finite intermediate field is the image of the base field.
+* `sup`: Finite composita supply upper bounds for the full finite-layer index set.
+* `norm`: The canonical norm for an inclusion of finite intermediate fields.
+* `normUnits`: The norm on units.
+* `map`: The image of a finite intermediate field under a specified field embedding.
+* `equivMap`: The embedding restricts to the finite image field.
+* `mapOrderIso`: A field isomorphism gives the order isomorphism on finite intermediate fields.
+
+## Main results
+
+* `FiniteIntermediateField.tendsto_Ici_inclusion`: Every further finite-field tail is cofinal in the
+  norm-sum index.
+* `FiniteIntermediateField.map_Ici_inclusion_atTop`: Passing to any finite-field tail preserves the
+  entire tail filter.
+* `equivMap_norm`: Relative field norms commute with two compatible restrictions of the field
+  isomorphism, with no normality hypothesis.
+* `FiniteIntermediateField.tendsto_mapIci`: A field isomorphism takes the finite upper-tail filter
+  to the corresponding upper-tail filter.
+* `directed_toSubalgebra`: The finite intermediate fields form a directed family of subalgebras.
+* `exists_mem`: Every element of an algebraic extension lies in a finite intermediate field.
+* `iSup_toSubalgebra_eq_top`: The directed supremum of all finite intermediate fields is the
+  extension.
+* `liftAlgHom_apply`: The glued map agrees with the supplied map on every finite intermediate field.
+
+## References
+
+* Mathlib; this file is an upstream candidate and has no project-specific reference.
 -/
 
 @[expose] public section

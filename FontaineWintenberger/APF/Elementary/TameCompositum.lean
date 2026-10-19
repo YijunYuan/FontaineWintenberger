@@ -26,6 +26,30 @@ product condition give the scaling, including a zero first break.
 The compositum of an intermediate field with the wild fixed field
 is the wild fixed field over that intermediate base. All fields, own integer
 rings, and Herbrand functions in these comparisons are the ones.
+
+## Main results
+
+* `exists_apfRamificationBound_wild_compositum`: The intrinsic first bounds before and after the
+  tame compositum are finite and differ by the tame ramification index.
+* `exists_apfRamificationBound_wild_compositum_of_totallyRamified`: A nontrivial totally ramified
+  p-power subextension satisfies the same intrinsic first-bound scaling, using proved wild-inertia
+  transitivity.
+* `wild_compositum_extendScalars_eq_fixedField`: The tame compositum, over any intermediate base, is
+  its own wild fixed field.
+* `wild_fixedField_apfPsi`: The tame fixed field has the linear APF integral.
+* `wild_compositum_apfPsi_over_right`: Over the right-hand base the compositum has its tame
+  ramification index as its Herbrand slope.
+* `wild_compositum_ramificationIdx_eq`: Wild-inertia transitivity identifies the tame ramification
+  indices in the two towers, with no normality assumption on `F`.
+* `wild_compositum_apfPsi_over_right_of_sup_eq_top`: Over the right-hand base, the tame slope equals
+  the ramification index of the wild fixed field.
+* `wild_compositum_apfPsi_scaling`: The two finite-base compositions give the full inverse Herbrand
+  scaling for the same compositum and intermediate field.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §1 (extensions arithmétiquement profinies).
 -/
 
 @[expose] public section

@@ -17,6 +17,30 @@ public import FontaineWintenberger.APF.BaseChange.Strict
 Tate averages, maximal fixing cosets, intrinsic Herbrand bounds and strict
 pair comparisons use the finite spectral integer rings. Intermediate
 fields need neither be normal nor be preserved by the chosen automorphism.
+
+## Main results
+
+* `min_integralEmbeddingOrder_le`: Three ring maps satisfy the ultrametric inequality on their full
+  integral displacement infima.
+* `integralEmbeddingOrder_eq_min_of_ne`: Distinct displacement orders force equality in the pair
+  ultrametric inequality, without automorphism or stability hypotheses.
+* `generator_pair_sub_dvd`: A generator controls displacements of two arbitrary algebra maps,
+  including maps with different images.
+* `generator_pair_sub_dvd_eval_map`: Coefficient displacements give the first divisibility of the
+  arbitrary-embedding Tate identity in the ambient integer ring.
+* `eval_map_minpoly_dvd_generator_pair_sub`: Monic division proves the reverse Tate divisibility for
+  an embedding into the ambient ring; the intermediate field need not be stable.
+* `associated_generator_pair_sub_eval_map_minpoly`: Both arbitrary-embedding Tate displacements are
+  associated, including the zero and identical-embedding cases.
+* `addVal_generator_pair_sub_eq_eval_map_minpoly`: Tate's arbitrary-map displacements have equal
+  normalized valuation; no extension-stability or automorphism premise is present.
+* `eval_map_minpoly_eq_prod_displacements_embedding`: The Galois product can be twisted into the
+  ambient ring by an automorphism which need not preserve the intermediate field.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §1 (extensions arithmétiquement profinies).
 -/
 
 @[expose] public section

@@ -15,6 +15,29 @@ public import Mathlib.Topology.Instances.Matrix
 
 The determinant of the multiplication matrix is continuous over
 the complete finite-dimensional base. Discrete ideal powers are balls.
+
+## Main results
+
+* `continuous_algebraNorm_of_finiteDimensional`: The relative field norm is continuous for the
+  compatible norms, by the finite multiplication matrix over the complete base.
+* `FiniteIntermediateField.continuous_norm`: Continuity of the finite-layer norm, with the canonical
+  spectral norms on the two finite fields.
+* `norm_uniformizer_pos_lt_one`: An uniformizer of the norm unit ball has norm strictly between zero
+  and one.
+* `mem_maximalIdeal_pow_iff_norm_le`: The canonical norm topology identifies an ideal power with the
+  corresponding uniformizer-radius closed ball, including exponent zero.
+* `image_maximalIdeal_pow_eq_closedBall`: The image of the ideal power in its field is exactly the
+  corresponding closed norm ball.
+* `isClosed_image_maximalIdeal_pow`: Every ideal power has closed image in the field.
+* `nhds_zero_hasBasis_maximalIdeal_pow`: The discrete ideal powers form a neighborhood basis at zero
+  for the field norm.
+* `isComplete_image_maximalIdeal_pow`: Closed ideal powers are complete inside the complete field;
+  no residue-field compactness is used.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §2–3 (le corps des normes, fonctorialité).
 -/
 
 @[expose] public section

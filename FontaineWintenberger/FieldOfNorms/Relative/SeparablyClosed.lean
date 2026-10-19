@@ -16,6 +16,31 @@ public import Mathlib.RingTheory.Polynomial.ScaleRoots
 
 Finite-coordinate approximations and discriminant root extraction
 supply roots in the same canonical directed union of norm fields.
+
+## Main results
+
+* `FieldOfNorms.fieldValuation_hasExtension_inclusion`: Positive finite-map scaling makes the target
+  valuation an extension of the valuation, on their same field map.
+* `exists_finite_fieldOfNorms_exact_root`: A monic integral separable polynomial has an exact root
+  in an finite norm field in the prescribed common separable closure.
+* `separable_scaleRoots_of_monic`: Scaling by a nonzero element preserves separability, by the
+  injective scaling of the root multiset in the separable closure.
+* `exists_integral_scaleRoots_of_uniformizer`: A positive power of the supplied normalized
+  uniformizer scales every coefficient of a monic polynomial into the same valuation ring.
+* `aeval_div_eq_zero_of_scaleRoots`: A root of the scaled polynomial gives a root of the polynomial
+  after division by the same nonzero scalar.
+* `exists_finite_fieldOfNorms_root_of_monic`: Positive uniformizer scaling reduces every monic
+  separable polynomial to the proved integral case, then divides its root by the same nonzero scalar
+  in the finite norm field.
+* `RelFieldOfNorms.exists_root_of_monic`: Every nonconstant monic separable polynomial over the same
+  canonical relative field of norms has a root there.
+* `RelFieldOfNorms.isSepClosed`: The relative field of norms is separably closed, by the proved root
+  construction and Mathlib's monic irreducible root criterion.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §2–3 (le corps des normes, fonctorialité).
 -/
 
 @[expose] public section

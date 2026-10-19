@@ -15,6 +15,36 @@ public import FontaineWintenberger.Ramification.Norm.Approximation
 At the precision supplied by the finite ramification bound, the
 integer norm descends to a ring homomorphism on the
 maximal-ideal quotients. Perfect-residue digits prove its surjectivity.
+
+## Main definitions
+
+* `truncatedAddVal`: The canonical normalized additive value, truncated at the quotient precision.
+* `truncatedNorm`: The integer norm descends to the maximal-ideal quotients at every precision
+  proved by the finite ramification bound.
+
+## Main results
+
+* `exists_integerNorm_sub_mem_of_le_apfRamificationBound`: Finite perfect-residue digits approximate
+  every integer by the norm at the supplied ramification precision.
+* `truncatedNorm_surjective`: Finite perfect-residue digits supply a preimage of every class under
+  the truncated norm.
+* `addVal_integerNorm_of_totallyRamified`: Total ramification makes the integer norm preserve the
+  exact canonical normalized additive valuation, including at zero.
+* `truncatedNorm_truncatedAddVal_mk`: The image of every integral representative has its exact
+  truncated normalized valuation under the truncated norm.
+* `truncatedNorm_truncatedAddVal`: Across the two precisions, the quotient norm preserves exactly
+  the normalized valuation truncated at the target precision.
+* `truncatedNorm_comp`: Norm transitivity gives exact composition of the truncated ring maps across
+  every tower of the stated precisions.
+* `truncatedNorm_self`: For the identity inclusion the quotient norm is the ordinary canonical
+  reduction of precision.
+* `exists_surjective_truncatedNorm_self`: Every equal-field norm gives a surjective quotient
+  reduction at arbitrary precisions, without any numerical hypothesis on the infinite first bound.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §2–3 (le corps des normes, fonctorialité).
 -/
 
 @[expose] public section

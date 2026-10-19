@@ -33,7 +33,7 @@ extension.
    characteristic `p`, with residue field the residue field of `L`
    (`FieldOfNorms.residueFieldEquiv`).
 4. **Theorem 3.1.2 and Corollary 3.2.3.** The field of norms is fully faithful on finite
-   separable extensions of `L` (`FieldOfNorms.finiteHomEquiv`), and
+   separable extensions of `L` (`FieldOfNorms.homEquiv`), and
    `G_L ≃ G_{X_K(L)}` as topological groups (`FieldOfNorms.absoluteGaloisGroupEquiv`).
 5. **Remark 3.2.4.** For `L/K` Galois, `Gal(L/K)` acts on `X_K(L)` (`FieldOfNorms.aut`), and
    `G_K` acts on `X_K(L)^sep` extending this action, identifying `G_K` with the subgroup of

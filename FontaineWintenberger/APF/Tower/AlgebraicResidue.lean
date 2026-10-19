@@ -17,6 +17,45 @@ become isomorphisms on the APF residue-stable tail.
 
 The finite-layer representative argument generalizes the diagonal-layer
 argument in `FalseTateExtension.Padic.FiniteGaloisStructure`.
+
+## Main definitions
+
+* `integralClosureSpectralEquiv`: The canonical integral closure and the spectral integer ring are
+  identified by the identity in the algebraic field.
+* `integralClosureInclusion`: The field embedding on canonical integral closures.
+* `integralClosureResidueInclusion`: The residue map on canonical integral closures.
+* `integralClosureSpectralResidueEquiv`: The canonical closure and spectral integer descriptions
+  induce the same intrinsic residue field over the base residue field.
+* `integralClosureResidueFromLayer`: The finite spectral residue inclusion into the canonical
+  integral-closure residue field of the extension.
+* `apfResidueLayer`: The residue-stable finite intermediate field supplied by the proved APF
+  theorem.
+* `integralClosureResidueEquiv`: The finite inclusion is the residue-field isomorphism; no
+  residue-field equivalence is assumed.
+
+## Main results
+
+* `mem_or_inv_mem_integralClosure`: For every field element, it or its inverse is integral.
+* `mem_integralClosure_inclusion_iff`: Pulling back the canonical integral closure gives exactly the
+  integral closure, without normality or finiteness assumptions.
+* `mem_integralClosure_embedding_iff_spectral`: The intersection with an embedded algebraic subfield
+  is exactly its spectral integer ring, including every finite intermediate field.
+* `integralClosureSpectralEquiv_inclusion`: Canonical closure inclusions and spectral integer
+  inclusions form the commuting square inside the fields.
+* `integralClosureInclusion_maximalIdeal_comap`: The maximal ideal contracts to exactly the maximal
+  ideal along each field embedding.
+* `integralClosureSpectralResidueEquiv_inclusion`: The residue inclusions commute with the
+  identity-valued canonical identifications of integer rings.
+* `exists_finiteIntermediateField_spectralResidue_preimage`: Every infinite residue class is
+  represented in a finite subfield of the algebraic extension.
+* `IsAPF.exists_finiteIntermediateField_spectralResidueInclusion_bijective`: Every sufficiently
+  large finite intermediate field maps bijectively onto the residue field of the algebraic
+  extension.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §1 (extensions arithmétiquement profinies).
 -/
 
 @[expose] public section

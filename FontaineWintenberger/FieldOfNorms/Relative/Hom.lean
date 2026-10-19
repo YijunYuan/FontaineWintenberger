@@ -27,6 +27,37 @@ Passing to their units gives the canonical automorphism-group correspondence,
 with the finite-image formula and rational valuation preservation.
 
 Reference: Wintenberger, Theorem 3.2.2(ii), and its automorphism consequence.
+
+## Main definitions
+
+* `RelFieldOfNorms.homEquiv`: The canonical full Hom equivalence is the union functor.
+* `RelFieldOfNorms.endHom`: The union functor preserves the endomorphism monoid.
+* `RelFieldOfNorms.endEquiv`: Full faithfulness identifies the endomorphism monoids.
+* `RelFieldOfNorms.autEquiv`: The canonical automorphism-group correspondence on the fields.
+
+## Main results
+
+* `exists_algHom_factor_of_basis_mem_range`: Containment of the images of a finite basis gives
+  canonical factorization through the embedded target field.
+* `RelFieldOfNorms.exists_algHom_factor`: A finite algebraic Hom into the relative field of norms
+  factors through one finite stage.
+* `RelFieldOfNorms.exists_finite_preimage`: Every Hom from a finite norm field to the union comes
+  from a field embedding into a finite target layer.
+* `RelFieldOfNorms.of_finiteHom_inclusion`: Enlarging the target layer leaves the induced map into
+  the same relative field of norms unchanged.
+* `RelFieldOfNorms.finiteHom_faithful`: Equality of maps into the union reflects equality of the
+  finite-source embeddings, even when their target stages differ.
+* `RelFieldOfNorms.finiteHom_inclusion`: Restricting a finite embedding to a smaller source stage
+  gives the same finite Hom evaluated after the transition map.
+* `RelFieldOfNorms.exists_hom`: A Hom of the norm-field unions determines an algebra embedding whose
+  finite restrictions realize all its finite-stage maps.
+* `RelFieldOfNorms.algMap_of_factor`: A finite-stage factorization computes the induced union map by
+  the same finite Hom, independently of the chosen containing stage.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §2–3 (le corps des normes, fonctorialité).
 -/
 
 @[expose] public section

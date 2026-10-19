@@ -24,6 +24,36 @@ public import Mathlib.Data.EReal.Operations
 The raw order uses the integer-ring maps. Dividing by their
 ramification index normalizes it in the field, independently of the
 finite ambient field. No normality or finite-residue assumption is used.
+
+## Main definitions
+
+* `integralEmbeddingOrder`: The displacement infimum for two maps into a DVR.
+* `embeddingRamificationIdx`: The canonical local-length index of the integer map of an embedding.
+* `embeddingIntegralOrder`: The raw order is computed on the spectral integer rings.
+* `embeddingRamificationOrder`: The pair order normalized in the field, including infinity.
+* `embeddingPairField`: The finite compositum of the two images in the separable closure.
+* `embeddingPairLeft`: The first embedding factored through the compositum.
+* `embeddingPairRight`: The second embedding factored through the compositum.
+* `closureEmbeddingOrder`: Closure-pair order computed in its finite image compositum.
+
+## Main results
+
+* `forall_sub_mem_iff_generator`: Congruence of two algebra maps is detected on any algebra
+  generator.
+* `integralEmbeddingOrder_eq_generator`: An integral algebra generator attains the displacement
+  infimum.
+* `forall_sub_mem_pow_iff_uniformizer`: Equal residue maps and an uniformizer congruence control
+  every integral element.
+* `integralEmbeddingOrder_eq_uniformizer`: The raw pair order is attained on every uniformizer when
+  the residue maps agree.
+* `addVal_spectralIntegerInclusion`: Normalized integral values restrict by the relative index.
+* `embeddingRamificationIdx_comp`: The relative index multiplies under composition of embeddings.
+* `embeddingRamificationIdx_eq`: The relative index is independent of the chosen source embedding.
+* `embeddingRamificationOrder_aut`: The general embedding order retains the full automorphism order.
+
+## References
+
+* Serre, *Local Fields*, Chapter IV (ramification groups, Herbrand functions, the different).
 -/
 
 @[expose] public section

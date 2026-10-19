@@ -18,6 +18,35 @@ public import Mathlib.RingTheory.Norm.Transitivity
 
 The middle subsets in the product expansion form free orbits under left
 translation. Each orbit contributes a trace of an integral element.
+
+## Main definitions
+
+* `middleSubsets`
+* `freeOrbitEquiv`
+* `subsetMonomial`
+
+## Main results
+
+* `exists_prod_add_sub_eq_sum_smul`: For a prime-order action, the defect of multiplicativity across
+  addition is a transfer of an element of the same ring.
+* `exists_prod_add_sub_eq_sum_smul_mem`: The transfer representative stays in any stable ideal
+  containing one input.
+* `spectralIntegerRing_algebraMap_intNorm_eq_prod`: The integral norm on the spectral integers is
+  the product over the full field Galois action.
+* `spectralIntegerRing_algebraMap_intTrace_eq_sum`: The integral trace is the transfer under the
+  same field action.
+* `spectralIntegerRing_exists_intNorm_add_sub_eq_intTrace`: The integral norm defect in prime degree
+  is the trace of an element of the same integral closure.
+* `spectralIntegerRing_exists_intNorm_add_sub_eq_intTrace_mem_pow`: The prime-degree trace
+  representative retains every prescribed maximal-ideal power of the first input.
+* `spectralIntegerRing_intNorm_sub_sub_mem_intTraceIdeal_pow`: The difference of two integral norms
+  has a controlled trace error after the norm of their difference is removed.
+* `spectralIntegerRing_intNorm_add_sub_mem_intTraceIdeal`: The congruence uses the trace ideal,
+  without a residue-field finiteness, total-ramification, or characteristic-zero assumption.
+
+## References
+
+* Serre, *Local Fields*, Chapter IV (ramification groups, Herbrand functions, the different).
 -/
 
 @[expose] public section

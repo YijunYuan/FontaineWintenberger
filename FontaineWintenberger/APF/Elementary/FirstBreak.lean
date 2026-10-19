@@ -15,6 +15,19 @@ public import FontaineWintenberger.Ramification.Fields.Nonnormal
 
 A proper fixing subgroup with full inertia product has a finite
 nonnegative first break. The intrinsic extended supremum equals that break.
+
+## Main results
+
+* `exists_apfRamificationBound_eq_coe_of_fixingSubgroup`: A proper fixing subgroup with full inertia
+  product supplies a finite attained intrinsic first bound, without normality of the subfield.
+* `exists_apfRamificationBound_eq_coe_of_totallyRamified`: Every nontrivial totally ramified
+  intermediate field has a finite nonnegative intrinsic first bound, attained in the upper
+  filtration.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §1 (extensions arithmétiquement profinies).
 -/
 
 @[expose] public section

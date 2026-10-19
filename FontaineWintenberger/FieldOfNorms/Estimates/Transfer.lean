@@ -18,6 +18,48 @@ public import FontaineWintenberger.APF.Tower.Stages
 
 Finite embedding comparisons retain their valuation rings and finite
 ambient fields, including fields not stable under the automorphism.
+
+## Main definitions
+
+* `FieldOfNorms.integerAut`: The norm-field automorphism restricts to its valuation ring, using its
+  proved preservation of the same stable valuation.
+* `FieldOfNorms.ramificationNumber`: The signed intrinsic ramification number of the action, with
+  infinity retained in the standard extended reals.
+* `FieldOfNorms.residueAut`: The canonical residue automorphism induced by the action on its
+  valuation ring.
+* `algebraicResidueAut`: The automorphism acts on the intrinsic residue field through its map on the
+  integral closure of the base integers.
+* `FiniteIntermediateField.autPairField`: The finite compositum of a layer and its moved image
+  inside the abstract extension.
+* `FiniteIntermediateField.autPairLeft`: The inclusion of the finite intermediate field into its
+  pair field.
+* `FiniteIntermediateField.autPairRight`: The moved embedding into the same finite compositum.
+* `FiniteIntermediateField.ramificationNumber`: The intrinsic signed number of the finite
+  restriction, computed in the finite image compositum, even when the layer is not stable.
+
+## Main results
+
+* `FieldOfNorms.integerAut_eq_valuationIntegerAut`: Restricting the action agrees with the general
+  valuation-preserving restriction on the valuation ring.
+* `FieldOfNorms.ramificationNumber_eq_valuedRamificationNumber`: The generic intrinsic number
+  specializes to the existing norm-field number, with the same field, valuation and automorphism.
+* `FieldOfNorms.integerAut_eq_one_iff`: Restriction to the valuation ring retains the proved
+  faithfulness of the norm-field action.
+* `FieldOfNorms.ramificationNumber_eq_top_iff`: Infinity occurs precisely at the identity
+  automorphism.
+* `FieldOfNorms.ramificationNumber_exists_real`: Every nonidentity automorphism has a finite real
+  ramification number; no stabilizing finite-layer order is assumed.
+* `FieldOfNorms.residueAut_eq_refl_iff`: Triviality of the residue action is precisely congruence of
+  all integral elements modulo the maximal ideal.
+* `FieldOfNorms.ramificationNumber_eq_uniformizer`: For an inertial action, every uniformizer
+  computes its intrinsic ramification number; this includes the identity and infinity.
+* `FieldOfNorms.ramificationNumber_eq_uniformizer_ratio`: The general valued-field uniformizer ratio
+  computes the existing intrinsic norm-field number on its same field.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §2–3 (le corps des normes, fonctorialité).
 -/
 
 @[expose] public section

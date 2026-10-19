@@ -17,6 +17,27 @@ public import Mathlib.FieldTheory.PolynomialGaloisGroup
 The faithful action on the root set bounds the splitting
 degree by the degree factorial. Integral root separation then bounds the
 upper ramification groups of the splitting field.
+
+## Main results
+
+* `finrank_splittingField_le_factorial`: The splitting degree is at most the degree factorial, by
+  the faithful permutation action on the root set.
+* `finrank_le_factorial_of_isSplittingField`: The factorial bound applies to every splitting field,
+  with its base-field algebra.
+* `herbrandFunction_le_self`: Every lower-cardinality ratio is at most one, so the Herbrand integral
+  lies below its argument.
+* `le_inverseHerbrandFunction`: The inverse of the Herbrand integral lies above every index.
+* `spectral_ramificationIdx_le_finrank`: The canonical ramification index is at most the extension
+  degree.
+* `addVal_discr_ne_top`: A separable monic integral polynomial has finite DVR discriminant value.
+* `upperRamificationGroup_fixes_integral_polynomial_root`: At an index above the discriminant value
+  times the ramification index, every upper automorphism fixes every root.
+* `upperRamificationGroup_splittingField_eq_bot`: The splitting field has trivial upper group above
+  the degree factorial times the normalized discriminant value.
+
+## References
+
+* Serre, *Local Fields*, Chapter IV (ramification groups, Herbrand functions, the different).
 -/
 
 @[expose] public section

@@ -32,6 +32,31 @@ isomorphism, and is equivariant for conjugation of automorphisms.
 
 Each field keeps its own spectral integers. The canonical field-range
 isomorphism identifies the ordinary restriction maps pointwise.
+
+## Main definitions
+
+* `intermediateDecompositionRestriction`
+* `spectralIntegerRingEquiv`: A field isomorphism restricts canonically to the spectral integer
+  rings.
+
+## Main results
+
+* `restrictNormal_mem_intermediate_decomposition`: Ordinary field restriction preserves the
+  restricted intermediate integer ring.
+* `intermediate_map_upperRamificationGroup`: The quotient theorem on an arbitrary Galois
+  intermediate field's pullback ring.
+* `restrictNormalHom_map_upperRamificationGroup`: Ordinary field restriction maps spectral upper
+  groups onto spectral upper groups.
+* `spectralIntegerRingEquiv_smul`: The integer-ring equivalence intertwines the field actions under
+  conjugation.
+* `restrictNormalHom_map_upperRamificationGroup_tower`: Ordinary restriction preserves upper groups
+  in every finite Galois field tower.
+* `finGaloisGroupMap_map_upperRamificationGroup`: Mathlib's finite Galois transition maps preserve
+  the upper groups.
+
+## References
+
+* Serre, *Local Fields*, Chapter IV (ramification groups, Herbrand functions, the different).
 -/
 
 @[expose] public section

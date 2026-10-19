@@ -13,6 +13,28 @@ public import FontaineWintenberger.Ramification.Fields.Nonnormal
 
 The inertia fixed field is unramified over the base, and its
 residue inclusion into the top field is an isomorphism.
+
+## Main definitions
+
+* `inertiaFixedFieldResidueEquiv`: The canonical residue map of the inertia fixed field is an
+  residue-field isomorphism over the base residue field.
+
+## Main results
+
+* `inertia_fixedField_ramificationIdx`: The field fixed by the zero lower group has ramification
+  index one over the base.
+* `inertia_fixedField_top_ramificationIdx`: The restricted inertia action has every inertia element,
+  and hence its order is the top relative ramification index.
+* `inertia_fixedField_top_ramificationIdx_eq_finrank`: The integer ring is totally ramified over the
+  inertia fixed-field integers.
+* `inertia_fixedField_top_ramificationIdx_eq_field_finrank`: The same relative index is the degree
+  of the field extension.
+* `inertia_fixedField_residue_surjective`: The residue inclusion from the inertia fixed field is
+  onto.
+
+## References
+
+* Serre, *Local Fields*, Chapter IV (ramification groups, Herbrand functions, the different).
 -/
 
 @[expose] public section

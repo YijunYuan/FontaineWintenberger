@@ -20,6 +20,38 @@ remain conjugate over the APF field. Its minimal polynomial
 therefore keeps its degree, giving the tensor isomorphism. The same
 subgroup product, restricted to the root field, gives the finite-base first
 ramification bound.
+
+## Main definitions
+
+* `rootFieldToCompositum`: Inclusion of the root field into the simple compositum; the map sends
+  every element to that very same element.
+* `rootAdjunctionTensorMap`: The multiplication map on the two fields.
+* `rootAdjunctionTensorEquivOfFullUpper`: The multiplication isomorphism, with all conclusions
+  proved from the full upper stage rather than supplied as certificates.
+* `rootAdjunctionTensorEquivCommonClosure`: Canonical multiplication identifies the tensor of the
+  same fields with their same simple compositum in the chosen closure.
+
+## Main results
+
+* `exists_fixing_aut_root_of_fullUpper`: Every conjugate of a root is attained by an automorphism
+  fixing the field when its upper product is full.
+* `minpoly_natDegree_eq_of_fullUpper`: The minimal polynomial keeps its degree under root adjunction
+  to a field with full upper product.
+* `minpoly_map_eq_of_fullUpper`: The mapped minimal polynomial equals the minimal polynomial over
+  the APF field, by the proved degree equality.
+* `linearDisjoint_root_of_fullUpper`: The finite root field is linearly disjoint from the APF field,
+  with no normality hypothesis on either field.
+* `finrank_root_adjunction_eq_of_fullUpper`: The simple compositum has exactly the root-field
+  degree.
+* `finrank_root_adjunction_le_polynomial_degree`: The root field has degree at most the polynomial.
+* `rootAdjunctionTensorMap_bijective_of_fullUpper`: The canonical multiplication map is bijective,
+  using the proved minimal-polynomial descent and the primitive root.
+* `absoluteUpper_le_root_fixingSubgroup`: The absolute upper group fixes the whole root field.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §2–3 (le corps des normes, fonctorialité).
 -/
 
 @[expose] public section

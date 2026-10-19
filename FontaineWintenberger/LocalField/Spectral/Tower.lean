@@ -17,6 +17,23 @@ Normed algebra maps preserve the field norm, so the norm valuations
 are compatible. An intermediate field keeps the ambient norm and uniformity;
 finite-dimensional completeness and the chosen-extension integer theorems
 therefore apply directly to its unit ball.
+
+## Main results
+
+* `completeSpace_of_finiteDimensional`: Finite intermediate fields are complete for their inherited
+  uniformity.
+* `normedAlgebra_unitBall_isDiscreteValuationRing`: DVR structure for the norm unit ball of a chosen
+  normed field extension.
+* `normedAlgebra_unitBall_henselianLocalRing`: Henselianity for that norm unit ball.
+* `normedAlgebra_unitBall_exists_generator`: The norm unit ball is generated over the base unit
+  ball.
+* `normedAlgebra_isCompleteDiscreteValuedField`: A finite separable normed extension of a complete
+  discretely valued field is again one.
+
+## References
+
+* Serre, *Local Fields*, Chapters I–II (discrete valuation rings, completions, unramified and
+  totally ramified extensions).
 -/
 
 @[expose] public section

@@ -16,6 +16,39 @@ public import FontaineWintenberger.FieldOfNorms.Basic.Addition
 Compatible classes are represented by integers of the finite
 fields. Their norms converge at each fixed finite base and recover
 one family on the zero-adjoined multiplicative field of norms.
+
+## Main definitions
+
+* `deepNormInverseLimit`: The deep quotient tower specialized to the canonical compatible-family
+  subring.
+* `deepNormRepresentative`: An integral representative of each quotient coordinate.
+* `deepNormSequence`: Norms of integral representatives into one fixed finite tower field.
+* `deepNormCoordinate`: The fixed-base limit, chosen from the proved convergence of representatives.
+* `deepNormFamilyIndex`: A proved cofinal index for any specified finite intermediate field.
+* `deepNormFamily`: The original-field family obtained by norm descent of the proved fixed-base
+  limits.
+* `deepNormReconstruction`: Reconstruction is the proved integral family on the field of norms
+  carrier.
+
+## Main results
+
+* `deepNormInverseLimit_transition`: Finite composites in the canonical sequential inverse limit are
+  the norms.
+* `deepNormInverseLimit_compatible`: Every pair of coordinates of the compatible subring satisfies
+  the norm.
+* `deepNormRepresentative_norm_sub_mem`: Any integral representatives obey the required norm
+  congruences.
+* `deepNormSequence_of_le`: On its tail the fixed-base norm sequence is the norm without reindexing.
+* `deepNormSequence_mem`: Every term of the fixed-base norm sequence remains integral.
+* `deepNormSequence_cauchy`: Representative norm sequences are Cauchy in each fixed finite field.
+* `exists_tendsto_deepNormSequence`: Completeness of the finite field gives a norm-sequence limit.
+* `tendsto_deepNormCoordinate`: The defining representative norms converge to the selected
+  original-field limit.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §2–3 (le corps des normes, fonctorialité).
 -/
 
 @[expose] public section

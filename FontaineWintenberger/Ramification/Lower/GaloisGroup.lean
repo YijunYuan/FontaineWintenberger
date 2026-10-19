@@ -15,6 +15,22 @@ public import FontaineWintenberger.Ramification.Lower.Basic
 The proved equality of the decomposition group with the full automorphism
 group transports the intrinsic action, lower groups and order without changing
 any ambient field automorphism or integral displacement.
+
+## Main definitions
+
+* `spectralDecompositionEquiv`: Inclusion identifies the spectral decomposition subgroup with the
+  full group.
+
+## Main results
+
+* `coe_spectralIntegerRing_galois_smul`
+* `spectralIntegerRing_galois_mem_lower_iff`
+* `spectralIntegerRing_galois_order`
+* `spectralIntegerRing_galois_normalizedValuation`
+
+## References
+
+* Serre, *Local Fields*, Chapter IV (ramification groups, Herbrand functions, the different).
 -/
 
 @[expose] public section

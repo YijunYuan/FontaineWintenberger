@@ -16,6 +16,46 @@ public import FontaineWintenberger.Ramification.Lower.TruncatedCoefficients
 
 Compatible tail coordinates extend through finite composita and field
 norms to the zero-adjoined multiplicative field of norms carrier.
+
+## Main definitions
+
+* `FieldOfNorms.ofTail`: The unique extension of a compatible cofinal tail.
+* `residueDegree`: The exponent of the finite degree over the maximal tame part, supplied by the
+  proved original-field wild-tail theorem.
+* `residueRoot`: The source-normalized residue root, transported from the intrinsic residue field to
+  the maximal unramified field.
+* `residueIntegralCoordinate`: The coordinate is already in the finite integer ring, by the
+  inclusion from the maximal unramified part.
+* `residueCoordinateEquiv`: The coordinate reduction has the source's inverse-Frobenius degree
+  normalization.
+* `residueCoordinate`: The finite coordinate prescribed by the source: the inverse Frobenius degree
+  root's canonical representative already lies in K₀.
+* `residueConstants`: The source-normalized multiplicative constants on the same field of norms
+  carrier, extending the proved compatible finite tail.
+* `deepResidueEquiv`: The quotient projection identifies the finite residue field with the residue
+  field of the deep truncated ring.
+
+## Main results
+
+* `FiniteIntermediateField.norm_inclusion`: The norm of an element from the smaller finite field is
+  its power by the relative field degree.
+* `FieldOfNorms.ext_tail`: Evaluations on the cofinal tail above any finite intermediate field
+  already distinguish elements of the field of norms carrier.
+* `existsUnique_fieldOfNorms_of_compatible_tail`: A compatible family on a cofinal finite-layer tail
+  extends uniquely to an element of the multiplicative field of norms.
+* `FieldOfNorms.coord_ofTail`: The extension retains every specified tail coordinate.
+* `FieldOfNorms.coord_ofTail_of_le`: At any finite intermediate field, the extension is a finite
+  norm from the finite compositum with the specified starting field.
+* `residueDegree_spec`: The chosen exponent computes the relative field degree.
+* `residueRoot_pow`: Transported back to the intrinsic residue field, the source root has precisely
+  the prescribed p-power degree as its exponent.
+* `residue_residueIntegralCoordinate`: Reduction of the integral coordinate is the finite residue
+  inclusion applied to the prescribed inverse Frobenius root.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §2–3 (le corps des normes, fonctorialité).
 -/
 
 @[expose] public section

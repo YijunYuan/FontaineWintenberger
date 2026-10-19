@@ -15,6 +15,38 @@ public import FontaineWintenberger.Ramification.Upper.Tate
 Normal restriction lands in the decomposition subgroup of the
 restricted valuation ring. Its existing intrinsic action supplies the
 fixed-field order in Tate's coset identity.
+
+## Main definitions
+
+* `fixedFieldDecompositionRestriction`: Restriction into the intrinsic decomposition group of the
+  fixed-field integers.
+* `fixedFieldDecompositionQuotientEquiv`: The intrinsic decomposition group is the prescribed Galois
+  quotient.
+* `fixedFieldRestrictionFiberEquiv`: Left translation identifies the restriction fiber with the
+  subgroup.
+
+## Main results
+
+* `restrictNormal_mem_fixedField_decomposition`: Normal field restriction preserves the restricted
+  integer ring.
+* `coe_fixedFieldDecompositionRestriction`: The restricted automorphism is precisely the ordinary
+  field restriction.
+* `coe_fixedFieldDecompositionRestriction_smul`: The intrinsic restricted integer action agrees with
+  the ambient field action.
+* `fixedField_decompositionSubgroup_eq_top`: Every fixed-field automorphism preserves its integer
+  ring.
+* `fixedFieldDecompositionRestriction_surjective`: Every intrinsic fixed-field decomposition
+  automorphism is a field restriction.
+* `fixedFieldDecompositionRestriction_ker`: The intrinsic restriction map has exactly the prescribed
+  normal subgroup as kernel.
+* `fixedFieldDecompositionRestriction_algebraMap`: Restriction intertwines the intrinsic actions on
+  the two integer rings.
+* `fixedFieldDecomposition_order`: Passing to the induced integer algebra automorphism preserves the
+  intrinsic order.
+
+## References
+
+* Serre, *Local Fields*, Chapter IV (ramification groups, Herbrand functions, the different).
 -/
 
 @[expose] public section

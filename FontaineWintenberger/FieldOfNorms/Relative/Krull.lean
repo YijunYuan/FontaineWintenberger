@@ -17,6 +17,35 @@ subfields of the relative field of norms. Full faithfulness identifies their poi
 fixing subgroups, giving a homeomorphism for the Krull topologies.
 
 Reference: Wintenberger, Corollary 3.2.3, finite-fixer argument.
+
+## Main definitions
+
+* `RelFieldOfNorms.finiteImage`: The finite norm-field image inside the same relative field of
+  norms.
+* `RelFieldOfNorms.krullEquiv`: The automorphism correspondence as a Krull-topological group
+  isomorphism.
+
+## Main results
+
+* `RelFieldOfNorms.map_eq_on_stage_iff`: Equality of union maps on one finite stage reflects and is
+  reflected by equality of the finite restrictions.
+* `RelFieldOfNorms.finiteImage_finite`: Each finite image is a finite extension of the base norm
+  field.
+* `mem_relFieldOfNormsFiniteImage`: The image has exactly the stage representatives as its elements.
+* `RelFieldOfNorms.autEquiv_mem_fixingSubgroup_iff`: Full faithfulness identifies the finite
+  pointwise fixing subgroups.
+* `RelFieldOfNorms.exists_finiteImage_ge`: Every finite target subfield lies in one finite image.
+* `continuous_relFieldOfNormsAutEquiv`: The norm-union automorphism correspondence is
+  Krull-continuous.
+* `continuous_relFieldOfNormsAutEquiv_symm`: The inverse correspondence is continuous for the same
+  Krull topologies.
+* `RelFieldOfNorms.krullEquiv_toMulEquiv`: The topological comparison retains exactly the algebraic
+  correspondence.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §2–3 (le corps des normes, fonctorialité).
 -/
 
 @[expose] public section

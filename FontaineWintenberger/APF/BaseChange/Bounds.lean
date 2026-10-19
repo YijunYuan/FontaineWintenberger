@@ -21,6 +21,34 @@ public import Mathlib.Order.Hom.WithTopBot
 Normal products intersect the fixing subgroup by the modular identity.
 The own-ring upper-group base change then sends every old admissible parameter
 to a new one. The extended order isomorphism preserves their supremum.
+
+## Main definitions
+
+* `apfHerbrandERealOrderIso`: The canonical Herbrand order isomorphism extended by its two infinite
+  endpoints.
+
+## Main results
+
+* `IsAPF.le_apfHerbrandERealOrderIso`: The lower bound extends honestly to both infinite endpoints.
+* `apfSubgroup_finiteBase_eq_top`: Every old admissible upper parameter gives a new admissible
+  parameter.
+* `apfHerbrandERealOrderIso_bound_le`: The extended old ramification bound maps below the new-base
+  bound.
+* `apfRamificationBound_le_finiteBase`: Changing a finite base increases the extended first
+  ramification bound.
+* `apfStrictnessConstant_le_finiteBase`: Above a positive old first bound the extended strictness
+  constant increases under finite base.
+* `finiteOverfield_fixing_sup_upper_eq_top`: Every old finite-overfield product parameter is
+  admissible over the intermediate base on its own spectral integer ring.
+* `apfHerbrandERealOrderIso_bound_le_of_finiteGalois`: The extended old first bound maps below the
+  new-base bound in any finite Galois overfield, including both infinite endpoints.
+* `apfRamificationBound_le_finiteBase_of_finiteGalois`: Finite base change increases the same
+  intrinsic first bound.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §1 (extensions arithmétiquement profinies).
 -/
 
 @[expose] public section

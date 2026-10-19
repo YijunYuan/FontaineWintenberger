@@ -43,6 +43,33 @@ for precisely the constructed addition on the same field of norms carrier.
 Subtraction has arbitrarily precise finite-coordinate approximations.
 Consequently cofinally many exact finite displacement valuations determine
 the valuation on the norm-field carrier.
+
+## Main definitions
+
+* `FieldOfNorms.fieldValuation`: The same stable map, now bundled as a field valuation for the
+  constructed field.
+
+## Main results
+
+* `FieldOfNorms.add_assoc`: Associativity of the field of norms addition follows from four
+  coordinate approximations and separation at a fixed finite base.
+* `FieldOfNorms.valuation_sum_le_one`: Finite sums of integral families remain integral for the
+  already constructed additive structure.
+* `FieldOfNorms.coord_sum_sub_mem`: Every finite sum of families approximates the ordinary sum of
+  its coordinates on a finite tail at each prescribed precision.
+* `FieldOfNorms.coord_nsmul_sub_mem`: Repeated addition approximates ordinary coordinate repeated
+  addition.
+* `FieldOfNorms.natCast_prime_eq_zero`: The residue prime vanishes in the field of norms semiring,
+  by coordinate approximation and ramification divergence.
+* `FieldOfNorms.pred_nsmul_add_eq_zero`: The (p-1)-fold sum is an additive inverse, including p=2.
+* `FieldOfNorms.field_toCommSemiring`: The field structure extends the semiring structure
+  definitionally: there is a single addition, `natCast` and `nsmul` on the carrier.
+* `FieldOfNorms.field_add`: The field addition is definitionally the field of norms sum operation.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §2–3 (le corps des normes, fonctorialité).
 -/
 
 @[expose] public section

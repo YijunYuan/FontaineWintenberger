@@ -14,6 +14,18 @@ public import Mathlib.FieldTheory.Perfect
 Iterated Frobenius in the perfect residue field and ordinary
 uniformizer division give finite power-digit expansions. No infinite
 choice of representatives, residue finiteness, or completeness is used.
+
+## Main results
+
+* `exists_pow_digit_uniformizer`: A residue Frobenius root lifts to one uniformizer digit.
+* `exists_pow_digits_uniformizer`: Every finite precision has a finite power-digit expansion with an
+  explicit uniformizer-power remainder.
+* `exists_pow_digits_sub_mem_maximalIdeal_pow`: The finite power-digit sum approximates the input to
+  the stated maximal-ideal power, over an arbitrary perfect residue field.
+
+## References
+
+* Serre, *Local Fields*, Chapter IV (ramification groups, Herbrand functions, the different).
 -/
 
 @[expose] public section

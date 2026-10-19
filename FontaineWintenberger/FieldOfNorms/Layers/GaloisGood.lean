@@ -15,6 +15,29 @@ public import Mathlib.FieldTheory.PrimitiveElement
 
 Finite image composita give cofinal stable fields. Their
 relative automorphisms and fixed fields determine the canonical tensor map.
+
+## Main definitions
+
+* `galoisFiniteLayerRestrict`: Restriction of the relative Galois group to a stable finite field,
+  over its pullback to the source.
+
+## Main results
+
+* `galoisFiniteLayerRestrict_fixedField`: The fixed field of the restriction range is exactly the
+  pullback, represented as the bottom field over that very pullback.
+* `galoisFiniteLayerRestrict_injective`: A primitive element makes the restriction faithful.
+* `finrank_galois_stableFiniteLayer`: Finite Artin theory computes the degree over the pullback.
+* `isGoodFiniteLayer_of_galois_stable`: Stability and a primitive element prove goodness of the
+  canonical tensor map, rather than assuming a descent presentation.
+* `exists_galois_stable_goodFiniteLayer_ge`: Finite image composita containing a primitive element
+  give cofinal Galois-stable good fields, without normality over K.
+* `exists_galois_stable_goodFiniteLayer_ge_pair`: Two finite fields have a common stable good upper
+  field.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §2–3 (le corps des normes, fonctorialité).
 -/
 
 @[expose] public section

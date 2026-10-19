@@ -21,6 +21,33 @@ public import Mathlib.Order.Filter.AtTopBot.Map
 
 All comparisons use the norm and scalar maps on the finite new base.
 The chosen common separable closure serves only to identify restrictions.
+
+## Main definitions
+
+* `closureEquiv`: The isomorphism of closures over the abstract new base.
+* `rebaseFiniteGaloisLayer`: Rebase an old-base finite Galois layer, without changing its carrier.
+* `closureHom`: The common-closure homomorphism preserves field automorphisms.
+* `embedding`: The old-base embedding induced from a new-base separable embedding.
+
+## Main results
+
+* `IsAPF.liminf_comp_apfPsi`: The Herbrand order isomorphism preserves the lower limit at infinity.
+* `IsAPF.apfStrictnessRatio_finiteBase`: Composition and inertia index factorization give the exact
+  ratio identity.
+* `IsAPF.exists_liminf_finiteBase_mul`: The finite-base strictness lower limits differ by a proved
+  positive finite multiplier.
+* `isStrictlyAPF_finiteBase_iff`: Strict APF for arbitrary abstract separable extensions is
+  invariant under finite base change.
+* `isSepClosure`: The old closure is also a separable closure of the abstract finite base.
+* `exists_layer`: Old-base normal overfields are cofinal over the abstract new base.
+* `range_restrictScalars`: Scalar restriction on the common closure has precisely the fixing
+  subgroup as range.
+* `mem_upper_iff_cofinal`: All new-base upper conditions are tested on old-base normal overfields.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §1 (extensions arithmétiquement profinies).
 -/
 
 @[expose] public section

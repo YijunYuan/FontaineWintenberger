@@ -16,6 +16,16 @@ public import Mathlib.RingTheory.DiscreteValuationRing.TFAE
 The spectral unit ball is the integral closure of the base unit ball.
 Integral-closure finiteness and the valuation-ring structure prove it is a DVR,
 without any finiteness hypothesis on the residue field.
+
+## Main results
+
+* `spectralIntegerRing_finrank`
+* `spectralIntegerRing_not_isField`
+
+## References
+
+* Serre, *Local Fields*, Chapters I–II (discrete valuation rings, completions, unramified and
+  totally ramified extensions).
 -/
 
 @[expose] public section

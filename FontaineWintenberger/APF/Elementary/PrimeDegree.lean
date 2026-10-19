@@ -38,6 +38,28 @@ the full intrinsic profile of a totally ramified prime-degree subextension.
 
 The middle subsets in the product expansion form free orbits under left
 translation. Each orbit contributes a trace of an integral element.
+
+## Main results
+
+* `spectralIntegerRing_lower_zero_eq_top_of_totallyRamified`: Total ramification makes the full
+  Galois action inertial.
+* `spectralIntegerRing_exists_common_break_of_prime_degree`: The common break is produced from prime
+  field degree and total ramification.
+* `spectralIntegerRing_different_order_of_common_order`: Hilbert's different formula specializes to
+  the common-order formula.
+* `apfRamificationBound_eq_common_break`: The public extended APF bound is the common upper break.
+* `spectralIntegerRing_intTraceIdeal_of_common_break`: The trace ideal at a common break, with its
+  exact floor exponent.
+* `spectralIntegerRing_intTrace_order_bound`: The trace bound in normalized additive valuation,
+  after clearing its positive denominator.
+* `spectralIntegerRing_prime_degree_ramification`: Prime degree and total ramification produce the
+  break, public APF bound, different, trace ideal, and trace valuation estimate together.
+* `spectral_ramificationIdx_algEquiv`: Field isomorphisms preserve the canonical ramification index.
+
+## References
+
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §1 (extensions arithmétiquement profinies).
 -/
 
 @[expose] public section
