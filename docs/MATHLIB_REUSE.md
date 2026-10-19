@@ -1,6 +1,6 @@
 # Mathlib reuse ledger
 
-Pinned Mathlib: `f0b4c8150aa0dbc758aff1291410c5ae335aff3a` (Lean `v4.35.0`). This file records what
+Pinned Mathlib: `1e75e9dd53d483fa01eff9ac7d4ea0472ce9d1fa` (Lean `v4.35.0`). This file records what
 the project takes from Mathlib directly, what it wraps and should stop wrapping, and what it has
 proved that belongs upstream. Keep it current when the pin moves.
 

@@ -47,7 +47,7 @@ lake build
 ```
 
 Lean is pinned to `leanprover/lean4:v4.35.0`. Mathlib is pinned to
-`f0b4c8150aa0dbc758aff1291410c5ae335aff3a`; all transitive dependency commits
+`1e75e9dd53d483fa01eff9ac7d4ea0472ce9d1fa`; all transitive dependency commits
 are recorded in `lake-manifest.json`. The library contains no `sorry` and builds without
 warnings under Mathlib's standard linter set; every file compiles in under a minute.
 
