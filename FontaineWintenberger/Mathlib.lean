@@ -15,7 +15,9 @@ public import FontaineWintenberger.Mathlib.FieldTheory.RelIndex
 public import FontaineWintenberger.Mathlib.FieldTheory.SeparableEmbeddings
 public import FontaineWintenberger.Mathlib.GroupTheory.Index
 public import FontaineWintenberger.Mathlib.GroupTheory.PrimeChain
+public import FontaineWintenberger.Mathlib.RingTheory.DiscreteValuationRing
 public import FontaineWintenberger.Mathlib.RingTheory.PolynomialDiscriminant
 public import FontaineWintenberger.Mathlib.RingTheory.SequentialInverseLimit
+public import FontaineWintenberger.Mathlib.Topology.CompactGroupSup
 public import FontaineWintenberger.Mathlib.Topology.LaurentSubstitution
 public import FontaineWintenberger.Mathlib.Topology.ValuedCompleteness

@@ -18,6 +18,7 @@ public import FontaineWintenberger.Ramification.Fields.Tame
 public import FontaineWintenberger.Ramification.Fields.Wild
 public import FontaineWintenberger.Ramification.Herbrand.Affine
 public import FontaineWintenberger.Ramification.Herbrand.Basic
+public import FontaineWintenberger.Ramification.Herbrand.Interval
 public import FontaineWintenberger.Ramification.Herbrand.Inverse
 public import FontaineWintenberger.Ramification.Herbrand.Subgroup
 public import FontaineWintenberger.Ramification.Infinite.Basic
@@ -27,6 +28,7 @@ public import FontaineWintenberger.Ramification.Infinite.SplittingField
 public import FontaineWintenberger.Ramification.Lower.BaseChange
 public import FontaineWintenberger.Ramification.Lower.Basic
 public import FontaineWintenberger.Ramification.Lower.Degree
+public import FontaineWintenberger.Ramification.Lower.FiniteResidue
 public import FontaineWintenberger.Ramification.Lower.FixedField
 public import FontaineWintenberger.Ramification.Lower.GaloisGroup
 public import FontaineWintenberger.Ramification.Lower.Generator

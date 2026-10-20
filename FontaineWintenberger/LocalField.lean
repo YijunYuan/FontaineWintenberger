@@ -16,4 +16,5 @@ public import FontaineWintenberger.LocalField.Spectral.FiniteExtension
 public import FontaineWintenberger.LocalField.Spectral.Henselian
 public import FontaineWintenberger.LocalField.Spectral.IntegralGenerator
 public import FontaineWintenberger.LocalField.Spectral.Tower
+public import FontaineWintenberger.LocalField.Spectral.Transport
 public import FontaineWintenberger.LocalField.Spectral.Uniqueness
