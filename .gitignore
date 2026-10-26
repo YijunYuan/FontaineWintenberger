@@ -8,7 +8,5 @@ blueprint/build/
 *.toc
 *.bbl
 *.blg
-Wintenberger.pdf
-instruction.pdf
 *.pdf
 __pycache__/
