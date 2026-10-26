@@ -6,8 +6,8 @@ Authors: Yijun Yuan
 module
 
 public import FontaineWintenberger.LocalField.Basic
-public import FontaineWintenberger.Ramification.Upper.FixedField
 public import FontaineWintenberger.Ramification.Herbrand.Affine
+public import FontaineWintenberger.Ramification.Upper.FixedField
 
 /-!
 # The largest intrinsic ramification order in a restriction coset

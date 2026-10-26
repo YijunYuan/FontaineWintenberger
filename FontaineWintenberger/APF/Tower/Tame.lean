@@ -5,10 +5,10 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
-public import FontaineWintenberger.APF.Tower.Wild
 public import FontaineWintenberger.APF.Finite.Slope
 public import FontaineWintenberger.APF.Tower.AlgebraicResidue
+public import FontaineWintenberger.APF.Tower.Wild
+public import FontaineWintenberger.LocalField.Basic
 
 /-!
 # The maximal unramified and tame parts of an APF extension

@@ -13,14 +13,10 @@ public import Mathlib.Topology.Algebra.OpenSubgroup
 /-!
 # Arithmetically profinite extensions
 
-## APF openness for arbitrary separable intermediate fields
-
 The fixing subgroup of the extension need not be normal. Normality of the
 absolute upper groups identifies the subgroup supremum with the
 product. Compactness makes its finite-index condition equivalent
 to openness, including finite and trivial extensions.
-
-## APF for abstract separable extensions
 
 Embeddings into the separable closure exist and are conjugate under its
 Galois group. Normality of the absolute upper groups makes APF independent of
@@ -74,6 +70,7 @@ noncomputable def apfSubgroup (L : IntermediateField K (SeparableClosure K)) (u 
 /-- Arithmetic profiniteness for an arbitrary separable extension inside the fixed separable
 closure: `G_K^u · G_L` is open in `G_K` for every `u ≥ -1` (Wintenberger 1.2.1). -/
 class IsAPFSubextension (L : IntermediateField K (SeparableClosure K)) : Prop where
+  /-- Every product of the fixing subgroup with an absolute upper ramification group is open. -/
   isOpen_apfSubgroup : ∀ u : ℝ, -1 ≤ u →
     IsOpen (apfSubgroup K L u : Set (SeparableClosure K ≃ₐ[K] SeparableClosure K))
 
@@ -211,6 +208,7 @@ theorem isAPFSubextension_fieldRange_iff (i j : L →ₐ[K] SeparableClosure K) 
 /-- Arithmetic profiniteness of an abstract separable field extension `L/K`
 (Wintenberger 1.2.1): the image of every `K`-embedding `L → K^sep` is an APF subextension. -/
 class IsAPF (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L] : Prop where
+  /-- The image of each embedding into the separable closure is an APF subextension. -/
   isAPFSubextension (i : L →ₐ[K] SeparableClosure K) : IsAPFSubextension K i.fieldRange
 
 attribute [instance] IsAPF.isAPFSubextension

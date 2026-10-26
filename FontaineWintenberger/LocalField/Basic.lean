@@ -5,12 +5,12 @@ Authors: Yijun Yuan
 -/
 module
 
-public import Mathlib.Topology.Algebra.Valued.NormedValued
-public import Mathlib.Topology.Algebra.Valued.ValuedField
+public import Mathlib.Algebra.CharP.Basic
+public import Mathlib.FieldTheory.Perfect
 public import Mathlib.RingTheory.DiscreteValuationRing.Basic
 public import Mathlib.RingTheory.Valuation.Discrete.RankOne
-public import Mathlib.FieldTheory.Perfect
-public import Mathlib.Algebra.CharP.Basic
+public import Mathlib.Topology.Algebra.Valued.NormedValued
+public import Mathlib.Topology.Algebra.Valued.ValuedField
 
 /-!
 # Local fields in the sense of Wintenberger
@@ -19,18 +19,25 @@ Throughout Wintenberger's paper a *local field* is a field complete for a discre
 residue field is perfect of characteristic `p > 0`; the residue field is never assumed finite.
 This file packages those standing hypotheses into two `Prop` classes.
 
-The field is presented by its norm (`NontriviallyNormedField`) because Mathlib's spectral-norm
-machinery, which supplies the canonical norm on algebraic extensions, is stated for normed fields.
-The ring of integers `𝒪[K]` and residue field `𝓀[K]` are scoped notations of this namespace for
-`(NormedField.valuation K).valuationSubring` and its residue field; they are definitionally
-Mathlib's `Valued.integer K` and `Valued.ResidueField K`.
-
 ## Main definitions
 
 * `IsCompleteDiscreteValuedField K`: `K` is nonarchimedean, complete and `𝒪[K]` is a discrete
   valuation ring.
 * `IsPerfectResidueLocalField K`: in addition `𝓀[K]` is perfect of prime characteristic.
 * `residueChar K`: the residue characteristic `p = ringChar 𝓀[K]`.
+
+## Notation
+
+* `𝒪[K]`: the valuation ring `(NormedField.valuation K).valuationSubring`.
+* `𝓀[K]`: its residue field.
+
+Both notations are scoped to `FontaineWintenberger` and agree definitionally with Mathlib's
+`Valued.integer K` and `Valued.ResidueField K`.
+
+## Implementation notes
+
+The field is presented by its norm (`NontriviallyNormedField`) because Mathlib's spectral-norm
+machinery, which supplies the canonical norm on algebraic extensions, is stated for normed fields.
 
 ## References
 

@@ -16,7 +16,7 @@ public import Mathlib.RingTheory.Nakayama
 /-!
 # Integral generators of finite extensions of complete discrete valuation fields
 
-The argument lifts a primitive residue element by Hensel, adds an uniformizer,
+The argument lifts a primitive residue element by Hensel, adds a uniformizer,
 and uses Nakayama to pass from residue generation to the entire integer ring.
 
 ## Main results
@@ -25,8 +25,8 @@ and uses Nakayama to pass from residue generation to the entire integer ring.
   generate a finite DVR extension.
 * `exists_monic_root_of_residue`: Lift a separable residue element to a simple root of a monic base
   polynomial.
-* `irreducible_aeval_add_of_isRoot`: Adding an uniformizer to a simple root makes its polynomial
-  value an uniformizer.
+* `irreducible_aeval_add_of_isRoot`: Adding a uniformizer to a simple root makes its polynomial
+  value a uniformizer.
 * `exists_integral_generator`: Finite extensions of Henselian DVRs with separable residue extension
   are monogenic.
 * `adjoin_uniformizer_eq_top`: Every uniformizer generates when the map on residue fields is
@@ -124,7 +124,7 @@ theorem exists_monic_root_of_residue [Module.Finite R S]
     simpa only [g, Polynomial.derivative_map, Polynomial.eval_map_algebraMap] using hu
 
 omit [IsDomain R] [IsDiscreteValuationRing R] in
-/-- Adding an uniformizer to a simple root makes its polynomial value an uniformizer. -/
+/-- Adding a uniformizer to a simple root makes its polynomial value a uniformizer. -/
 theorem irreducible_aeval_add_of_isRoot {f : Polynomial R} {a z : S}
     (ha : Polynomial.aeval a f = 0) (hder : IsUnit (Polynomial.aeval a f.derivative))
     (hz : Irreducible z) : Irreducible (Polynomial.aeval (a + z) f) := by

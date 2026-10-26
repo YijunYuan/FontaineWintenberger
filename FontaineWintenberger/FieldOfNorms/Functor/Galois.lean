@@ -5,13 +5,13 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.FieldOfNorms.Basic.Valuation
+public import FontaineWintenberger.FieldOfNorms.Functor.Map
+public import FontaineWintenberger.FieldOfNorms.Layers.GaloisGood
+public import FontaineWintenberger.FieldOfNorms.Structure.ResidueEmbedding
 public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Mathlib.FieldTheory.NormalClosure
-public import FontaineWintenberger.FieldOfNorms.Functor.Map
-public import FontaineWintenberger.FieldOfNorms.Structure.ResidueEmbedding
-public import FontaineWintenberger.FieldOfNorms.Basic.Valuation
 public import FontaineWintenberger.Ramification.Embedding.Basic
-public import FontaineWintenberger.FieldOfNorms.Layers.GaloisGood
 public import Mathlib.FieldTheory.Galois.IsGaloisGroup
 
 /-!
@@ -62,6 +62,12 @@ finite Galois extension and its degree by finite Artin theory.
   target.
 * `existsUnique_galoisNormCoordinate`: A fixed family has an unique pullback coordinate at every
   stable finite field.
+
+## Notation
+
+The following notation is local to this file.
+
+* `p` denotes the residue characteristic `residueChar K`.
 
 ## References
 

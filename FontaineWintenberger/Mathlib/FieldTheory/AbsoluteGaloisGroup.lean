@@ -5,10 +5,10 @@ Authors: Yijun Yuan
 -/
 module
 
+public import Mathlib.Algebra.CharP.Reduced
 public import Mathlib.FieldTheory.AbsoluteGaloisGroup
 public import Mathlib.FieldTheory.Galois.Profinite
 public import Mathlib.FieldTheory.PurelyInseparable.Basic
-public import Mathlib.Algebra.CharP.Reduced
 public import Mathlib.Topology.Algebra.Group.Neighborhood
 
 /-!
@@ -26,6 +26,10 @@ compact even when `K` is imperfect (where `K^al/K` is not Galois).
 * `Field.absoluteGaloisGroup.restrictSep`: the restriction homomorphism.
 * `Field.absoluteGaloisGroup.sepEquiv : absoluteGaloisGroup K ≃ₜ* Gal(SeparableClosure K/K)`.
 * `instance : CompactSpace (absoluteGaloisGroup K)`.
+
+## Notation
+
+The local notation `G_K` denotes `Field.absoluteGaloisGroup K`.
 -/
 
 @[expose] public section

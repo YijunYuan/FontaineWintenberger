@@ -5,36 +5,22 @@ Authors: Yijun Yuan
 -/
 module
 
+public import Mathlib.Algebra.Algebra.Subalgebra.Directed
 public import Mathlib.FieldTheory.IntermediateField.Adjoin.Basic
-public import Mathlib.RingTheory.Norm.Transitivity
 public import Mathlib.Order.Filter.AtTopBot.Basic
 public import Mathlib.Order.Filter.AtTopBot.Map
-public import Mathlib.Algebra.Algebra.Subalgebra.Directed
+public import Mathlib.RingTheory.Norm.Transitivity
 
 /-!
 # Finite intermediate fields of a field extension
 
-## The multiplicative field of norms over all finite intermediate fields
+This file defines the directed family of finite intermediate fields of an extension, the norm
+maps for inclusions, and reindexing along algebra embeddings. No normality assumption is needed.
+The upper tails are cofinal, and algebra isomorphisms preserve their filters.
 
-No normality or APF assumption is needed for this multiplicative construction.
-The transition maps are field norms on finite extensions.
-
-## Addition on the multiplicative field of norms
-
-The norm-sum nets are indexed by all finite intermediate fields above
-a fixed field. Uniform Herbrand control transfers their deep-tail
-norm defects to a Cauchy estimate in that complete finite field.
-
-## Isomorphisms of the norm fields
-
-Field isomorphisms reindex the finite norm families.
-Their norm-sum limits and stable valuations are preserved.
-
-## Gluing algebra homomorphisms on the finite intermediate fields
-
-An algebraic field extension is the directed union of its finite intermediate
-fields. Compatible algebra homomorphisms on these fields therefore give an unique
-algebra homomorphism on the extension.
+An algebraic field extension is the directed union of its finite intermediate fields.
+Compatible algebra homomorphisms on these fields therefore glue to a unique algebra homomorphism
+on the extension.
 
 ## Main definitions
 
@@ -62,10 +48,6 @@ algebra homomorphism on the extension.
 * `iSup_toSubalgebra_eq_top`: The directed supremum of all finite intermediate fields is the
   extension.
 * `liftAlgHom_apply`: The glued map agrees with the supplied map on every finite intermediate field.
-
-## References
-
-* Mathlib; this file is an upstream candidate and has no project-specific reference.
 -/
 
 @[expose] public section
@@ -93,8 +75,8 @@ theorem bottom_le (E : FiniteIntermediateField K L) : bottom ≤ E :=
   (show (⊥ : IntermediateField K L) ≤ E.val from bot_le)
 
 /-- Finite composita supply upper bounds for the full finite-layer index set. -/
-def sup (E F : FiniteIntermediateField K L) : FiniteIntermediateField K L := ⟨E.val ⊔ F.val,
-    inferInstance⟩
+def sup (E F : FiniteIntermediateField K L) : FiniteIntermediateField K L :=
+  ⟨E.val ⊔ F.val, inferInstance⟩
 
 theorem le_sup_left (E F : FiniteIntermediateField K L) : E ≤ sup E F :=
   (show E.val ≤ E.val ⊔ F.val from _root_.le_sup_left)
@@ -137,8 +119,8 @@ theorem normUnits_val (E F : FiniteIntermediateField K L) (h : E ≤ F) (x : F.v
     (normUnits E F h x : E.val) = norm E F h (x : F.val) := rfl
 
 @[simp]
-theorem normUnits_self (E : FiniteIntermediateField K L) (x : E.valˣ) : normUnits E E le_rfl x = x
-    :=
+theorem normUnits_self (E : FiniteIntermediateField K L) (x : E.valˣ) :
+    normUnits E E le_rfl x = x :=
   Units.ext (norm_self E (x : E.val))
 
 theorem normUnits_normUnits (E F G : FiniteIntermediateField K L) (hEF : E ≤ F) (hFG : F ≤ G)
@@ -161,10 +143,10 @@ section Nets
 variable (K L : Type*) [Field K] [Field L] [Algebra K L]
 
 instance FiniteIntermediateField.instNonempty : Nonempty (FiniteIntermediateField K L) :=
-    ⟨FiniteIntermediateField.bottom⟩
+  ⟨FiniteIntermediateField.bottom⟩
 
-instance FiniteIntermediateField.instIsDirectedOrder : IsDirectedOrder (FiniteIntermediateField K
-    L) :=
+instance FiniteIntermediateField.instIsDirectedOrder :
+    IsDirectedOrder (FiniteIntermediateField K L) :=
   ⟨fun E F => ⟨FiniteIntermediateField.sup E F, FiniteIntermediateField.le_sup_left E F,
     FiniteIntermediateField.le_sup_right E F⟩⟩
 
@@ -172,11 +154,12 @@ instance FiniteIntermediateField.instIciIsDirectedOrder (E : FiniteIntermediateF
     IsDirectedOrder (Set.Ici E) :=
   ⟨fun F G => ⟨⟨FiniteIntermediateField.sup F.val G.val,
     F.property.trans (FiniteIntermediateField.le_sup_left F.val G.val)⟩,
-    FiniteIntermediateField.le_sup_left F.val G.val, FiniteIntermediateField.le_sup_right F.val
-        G.val⟩⟩
+    FiniteIntermediateField.le_sup_left F.val G.val,
+    FiniteIntermediateField.le_sup_right F.val G.val⟩⟩
+
 /-- Every further finite-field tail is cofinal in the norm-sum index. -/
-theorem FiniteIntermediateField.tendsto_Ici_inclusion (E F : FiniteIntermediateField K L) (hEF : E
-    ≤ F) :
+theorem FiniteIntermediateField.tendsto_Ici_inclusion (E F : FiniteIntermediateField K L)
+    (hEF : E ≤ F) :
     Tendsto (fun G : Set.Ici F => (⟨G.val, hEF.trans G.property⟩ : Set.Ici E)) atTop atTop := by
   apply tendsto_atTop.mpr
   intro T
@@ -185,8 +168,8 @@ theorem FiniteIntermediateField.tendsto_Ici_inclusion (E F : FiniteIntermediateF
   exact (FiniteIntermediateField.le_sup_right F T.val).trans hG
 
 /-- Passing to any finite-field tail preserves the entire tail filter. -/
-theorem FiniteIntermediateField.map_Ici_inclusion_atTop (E F : FiniteIntermediateField K L) (hEF :
-    E ≤ F) :
+theorem FiniteIntermediateField.map_Ici_inclusion_atTop (E F : FiniteIntermediateField K L)
+    (hEF : E ≤ F) :
     map (fun G : Set.Ici F => (⟨G.val, hEF.trans G.property⟩ : Set.Ici E)) atTop = atTop := by
   apply le_antisymm (FiniteIntermediateField.tendsto_Ici_inclusion K L E F hEF)
   intro s hs
@@ -204,6 +187,7 @@ noncomputable section
 
 variable {K L M N : Type*} [Field K] [Field L] [Field M] [Field N]
     [Algebra K L] [Algebra K M] [Algebra K N]
+
 namespace FiniteIntermediateField
 
 /-- The image of a finite intermediate field under a specified field embedding. -/
@@ -268,10 +252,10 @@ theorem equivMap_norm (i : L →ₐ[K] M) (E F : FiniteIntermediateField K L)
     (equivMap i F).toRingEquiv he x
 
 end FiniteIntermediateField
+
 /-- The finite-layer map restricted to the upper tail. -/
-def FiniteIntermediateField.mapIci (i : L →ₐ[K] M) (E : FiniteIntermediateField K L) (F : Set.Ici
-    E) :
-    Set.Ici (FiniteIntermediateField.map i E) :=
+def FiniteIntermediateField.mapIci (i : L →ₐ[K] M) (E : FiniteIntermediateField K L)
+    (F : Set.Ici E) : Set.Ici (FiniteIntermediateField.map i E) :=
   ⟨FiniteIntermediateField.map i F.val, FiniteIntermediateField.map_mono i F.property⟩
 
 /-- A field isomorphism takes the finite upper-tail filter to

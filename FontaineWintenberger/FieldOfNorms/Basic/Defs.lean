@@ -61,6 +61,7 @@ namespace FontaineWintenberger
 noncomputable section
 
 variable (K L : Type*) [Field K] [Field L] [Algebra K L]
+
 /-- The subgroup of norm-compatible families of units over all finite intermediate fields. -/
 def FieldOfNorms.normCompatibleUnits : Subgroup (∀ E : FiniteIntermediateField K L, E.valˣ) where
   carrier := {x | ∀ (E F : FiniteIntermediateField K L) (h : E ≤ F),
@@ -90,8 +91,9 @@ instance FieldOfNorms.instNontrivial : Nontrivial (FieldOfNorms K L) :=
   inferInstanceAs (Nontrivial (WithZero (FieldOfNorms.normCompatibleUnits K L)))
 
 /-- The coercion of a norm-compatible unit family into the carrier. -/
-instance FieldOfNorms.instCoeTC : CoeTC (FieldOfNorms.normCompatibleUnits K L) (FieldOfNorms K L)
-    := ⟨WithZero.coe⟩
+instance FieldOfNorms.instCoeTC :
+    CoeTC (FieldOfNorms.normCompatibleUnits K L) (FieldOfNorms K L) where
+  coe := WithZero.coe
 
 namespace FieldOfNorms
 
@@ -123,7 +125,7 @@ theorem coe_one : ((1 : FieldOfNorms.normCompatibleUnits K L) : FieldOfNorms K L
 @[simp]
 theorem coe_inv (x : FieldOfNorms.normCompatibleUnits K L) :
     ((x⁻¹ : FieldOfNorms.normCompatibleUnits K L) : FieldOfNorms K L) = (x : FieldOfNorms K L)⁻¹ :=
-        rfl
+  rfl
 
 /-- Case analysis on the carrier: zero or a coerced unit family. -/
 @[elab_as_elim, induction_eliminator, cases_eliminator]

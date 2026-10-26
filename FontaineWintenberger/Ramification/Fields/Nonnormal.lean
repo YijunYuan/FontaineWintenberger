@@ -6,11 +6,11 @@ Authors: Yijun Yuan
 module
 
 public import FontaineWintenberger.LocalField.Basic
+public import FontaineWintenberger.Mathlib.FieldTheory.RelIndex
+public import FontaineWintenberger.Mathlib.GroupTheory.Index
 public import FontaineWintenberger.Ramification.Fields.Tame
 public import FontaineWintenberger.Ramification.Herbrand.Subgroup
 public import FontaineWintenberger.Ramification.Lower.Tower
-public import FontaineWintenberger.Mathlib.GroupTheory.Index
-public import FontaineWintenberger.Mathlib.FieldTheory.RelIndex
 public import Mathlib.FieldTheory.LinearDisjoint
 
 /-!

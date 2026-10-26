@@ -5,9 +5,9 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
-public import FontaineWintenberger.FieldOfNorms.Structure.ResidueEmbedding
 public import FontaineWintenberger.FieldOfNorms.Structure.Completeness
+public import FontaineWintenberger.FieldOfNorms.Structure.ResidueEmbedding
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.LocalField.Laurent.Coordinates
 
 /-!
@@ -39,6 +39,13 @@ normalized uniformizer.
   precisely the already constructed stable-valuation uniformity on the field.
 * `FieldOfNorms.uniformContinuous_laurentEquiv_symm`: The inverse also preserves the valuation
   uniformities.
+
+## Notation
+
+The following notation is local to this file.
+
+* `p` denotes the residue characteristic `residueChar K`.
+* `κL` denotes the residue field of the integral closure of `𝒪[K]` in `L`.
 
 ## References
 

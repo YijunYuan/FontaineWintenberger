@@ -5,9 +5,9 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.APF.Elementary.PrimeDegree
 public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.Norm.Tower
-public import FontaineWintenberger.APF.Elementary.PrimeDegree
 
 /-!
 # Norm differences at the Herbrand precision

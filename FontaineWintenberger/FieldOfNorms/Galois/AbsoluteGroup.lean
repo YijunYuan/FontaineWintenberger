@@ -5,9 +5,9 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
-public import FontaineWintenberger.FieldOfNorms.Relative.SeparablyClosed
 public import FontaineWintenberger.FieldOfNorms.Relative.Krull
+public import FontaineWintenberger.FieldOfNorms.Relative.SeparablyClosed
+public import FontaineWintenberger.LocalField.Basic
 
 /-!
 # The absolute Galois equivalence of the norm field
@@ -43,6 +43,14 @@ therefore identifies the absolute Galois groups with their Krull topologies.
   norm-field automorphism, rather than an independently constructed action.
 * `FieldOfNorms.absoluteGaloisEquivOfSepClosure_apply`: The canonical absolute-group equivalence
   retains precisely the union map after conjugating the closure.
+
+## Notation
+
+The following notation is local to this file.
+
+* `p` denotes the residue characteristic `residueChar K`.
+* `X` denotes `FieldOfNorms K L`.
+* `U` denotes `RelFieldOfNorms K L Ω`.
 
 ## References
 

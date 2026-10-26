@@ -5,23 +5,19 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
-public import FontaineWintenberger.APF.Elementary.FirstBreak
-public import FontaineWintenberger.APF.BaseChange.UpperGroups
-public import FontaineWintenberger.Ramification.Fields.Wild
 public import FontaineWintenberger.APF.BaseChange.Strict
+public import FontaineWintenberger.APF.BaseChange.UpperGroups
+public import FontaineWintenberger.APF.Elementary.FirstBreak
 public import FontaineWintenberger.APF.Finite.Slope
+public import FontaineWintenberger.LocalField.Basic
+public import FontaineWintenberger.Ramification.Fields.Wild
 
 /-!
 # The tame compositum and its Herbrand scaling
 
-## First-bound scaling by the tame fixed field
-
 The same intrinsic first bound is compared before and after the
 wild-fixed-field compositum. Positive upper groups and the subgroup
 product condition give the scaling, including a zero first break.
-
-## Herbrand scaling for the tame compositum
 
 The compositum of an intermediate field with the wild fixed field
 is the wild fixed field over that intermediate base. All fields, own integer

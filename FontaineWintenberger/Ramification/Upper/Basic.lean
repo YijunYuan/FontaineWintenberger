@@ -97,7 +97,7 @@ local notation "B₀" => spectralIntegerRing K L
 local notation "D₀" => ValuationSubring.decompositionSubgroup K A₀
 local notation "ρ" => fixedFieldDecompositionRestriction K L H
 
-/-- Herbrand's upper quotient theorem for the fixed-field restriction map. -/
+/-- **Herbrand's upper quotient theorem** for the fixed-field restriction map. -/
 theorem fixedField_map_upperRamificationGroup (u : ℝ) (hu : -1 ≤ u) :
     letI := intermediate_spectral_isDiscreteValuationRing K L F₀
     (upperRamificationGroup (R := B₀) G₀ u).map ρ =

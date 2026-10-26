@@ -6,10 +6,10 @@ Authors: Yijun Yuan
 module
 
 public import FontaineWintenberger.LocalField.Basic
-public import FontaineWintenberger.Ramification.Lower.Index
 public import FontaineWintenberger.LocalField.Spectral.CompatibleNorm
-public import Mathlib.RingTheory.RamificationInertia.Basic
+public import FontaineWintenberger.Ramification.Lower.Index
 public import Mathlib.LinearAlgebra.Dimension.Localization
+public import Mathlib.RingTheory.RamificationInertia.Basic
 
 /-!
 # Degree and total ramification for DVR extensions
@@ -172,12 +172,12 @@ variable [Algebra.IsSeparable K L]
 variable {ΓL : Type*} [LinearOrderedCommGroupWithZero ΓL] (w : Valuation L ΓL)
 variable [val.v.HasExtension w]
 
-noncomputable local instance : Valuation.RankOne val.v :=
+private noncomputable local instance : Valuation.RankOne val.v :=
   Valuation.IsRankOneDiscrete.rankOne val.v (e := 2) (by norm_num)
 
-noncomputable local instance : NontriviallyNormedField K := discreteValuedNormedField K ΓK
+private noncomputable local instance : NontriviallyNormedField K := discreteValuedNormedField K ΓK
 
-local instance : IsUltrametricDist K :=
+private local instance : IsUltrametricDist K :=
   IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
     (Valued.isNonarchimedean_norm K ΓK)
 

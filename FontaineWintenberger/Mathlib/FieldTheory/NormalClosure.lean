@@ -26,10 +26,6 @@ under ambient automorphisms and retain their restrictions.
   normality hypothesis on the ambient field.
 * `exists_finite_aut_stable`: A finite field is contained in a finite field stable under all
   automorphisms; finiteness comes from the canonical existing construction.
-
-## References
-
-* Mathlib; this file is an upstream candidate and has no project-specific reference.
 -/
 
 @[expose] public section

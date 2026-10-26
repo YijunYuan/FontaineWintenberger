@@ -6,8 +6,8 @@ Authors: Yijun Yuan
 module
 
 public import FontaineWintenberger.LocalField.Basic
-public import FontaineWintenberger.Ramification.Lower.Index
 public import FontaineWintenberger.LocalField.Spectral.Uniqueness
+public import FontaineWintenberger.Ramification.Lower.Index
 public import Mathlib.NumberTheory.RamificationInertia.Valuation
 public import Mathlib.RingTheory.Flat.TorsionFree
 public import Mathlib.RingTheory.Valuation.Extension

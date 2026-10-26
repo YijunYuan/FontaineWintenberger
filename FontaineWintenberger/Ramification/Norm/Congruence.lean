@@ -7,10 +7,10 @@ module
 
 public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.Different.TraceIdeal
+public import Mathlib.Algebra.BigOperators.Ring.Finset
+public import Mathlib.Algebra.Group.Action.Pointwise.Finset
 public import Mathlib.GroupTheory.GroupAction.Quotient
 public import Mathlib.GroupTheory.GroupAction.SubMulAction
-public import Mathlib.Algebra.Group.Action.Pointwise.Finset
-public import Mathlib.Algebra.BigOperators.Ring.Finset
 public import Mathlib.RingTheory.Norm.Transitivity
 
 /-!
@@ -18,12 +18,6 @@ public import Mathlib.RingTheory.Norm.Transitivity
 
 The middle subsets in the product expansion form free orbits under left
 translation. Each orbit contributes a trace of an integral element.
-
-## Main definitions
-
-* `middleSubsets`
-* `freeOrbitEquiv`
-* `subsetMonomial`
 
 ## Main results
 
@@ -57,6 +51,7 @@ open scoped Pointwise
 
 noncomputable section
 
+/-- The nonempty proper subsets of a finite group, with its left translation action. -/
 private def middleSubsets (G : Type*) [Group G] [Fintype G] [DecidableEq G] :
     SubMulAction G (Finset G) where
   carrier := {s | s.Nonempty ∧ s ≠ Finset.univ}
@@ -87,6 +82,7 @@ private theorem middleSubsets_stabilizer_eq_bot (G : Type*)
     rw [hval] at hx
     simpa only [smul_eq_mul, inv_mul_cancel_right] using hx
 
+/-- A free group action identifies the group with each of its orbits. -/
 private def freeOrbitEquiv (G X : Type*) [Group G] [MulAction G X]
     (hfree : ∀ x : X, MulAction.stabilizer G x = ⊥) (x : X) :
     G ≃ MulAction.orbit G x :=
@@ -130,6 +126,7 @@ private theorem sum_eq_sum_smul_of_free (G X B : Type*)
       intro g _
       exact (map_sum (MulSemiringAction.toRingHom G B g) (fun q : Q => f q.out) Finset.univ).symm
 
+/-- The term indexed by a subset in the expansion of the product of the translates of `α + β`. -/
 private def subsetMonomial (G B : Type*) [Group G] [Fintype G] [DecidableEq G]
     [CommRing B] [MulSemiringAction G B] (α β : B) (s : Finset G) : B :=
   (∏ g ∈ s, g • α) * ∏ g ∈ Finset.univ \ s, g • β

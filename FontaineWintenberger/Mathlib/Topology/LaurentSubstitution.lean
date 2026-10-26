@@ -5,8 +5,8 @@ Authors: Yijun Yuan
 -/
 module
 
-public import Mathlib.RingTheory.PowerSeries.Substitution
 public import Mathlib.RingTheory.LaurentSeries
+public import Mathlib.RingTheory.PowerSeries.Substitution
 public import Mathlib.Topology.Algebra.Valued.WithZeroMulInt
 
 /-!
@@ -28,10 +28,6 @@ The topology on Laurent series is its valuation topology.
   to ordinary function iteration of the usual power-series substitution.
 * `iterate_apply_parameter_eq_subst_iterate`: The parameter image of every iterate uses the same
   canonical substitution.
-
-## References
-
-* Mathlib; this file is an upstream candidate and has no project-specific reference.
 -/
 
 @[expose] public section
@@ -151,8 +147,8 @@ theorem iterate_ofPowerSeries_eq_subst_iterate
     (hX : F (HahnSeries.single (1 : ℤ) (1 : k)) = HahnSeries.ofPowerSeries ℤ k g)
     (A : PowerSeries k) (n : ℕ) :
     (F : LaurentSeries k → LaurentSeries k)^[n] (HahnSeries.ofPowerSeries ℤ k A) =
-      HahnSeries.ofPowerSeries ℤ k ((PowerSeries.subst g : PowerSeries k → PowerSeries k)^[n] A) :=
-          by
+      HahnSeries.ofPowerSeries ℤ k
+        ((PowerSeries.subst g : PowerSeries k → PowerSeries k)^[n] A) := by
   induction n with
   | zero => rfl
   | succ n ih =>

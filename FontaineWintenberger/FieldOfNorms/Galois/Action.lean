@@ -5,12 +5,12 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
-public import FontaineWintenberger.FieldOfNorms.Structure.Completeness
-public import FontaineWintenberger.FieldOfNorms.Functor.Map
 public import FontaineWintenberger.FieldOfNorms.Functor.Galois
-public import Mathlib.FieldTheory.KrullTopology
+public import FontaineWintenberger.FieldOfNorms.Functor.Map
+public import FontaineWintenberger.FieldOfNorms.Structure.Completeness
+public import FontaineWintenberger.LocalField.Basic
 public import Mathlib.FieldTheory.Galois.Profinite
+public import Mathlib.FieldTheory.KrullTopology
 
 /-!
 # The absolute Galois action on the field of norms
@@ -20,8 +20,6 @@ public import Mathlib.FieldTheory.Galois.Profinite
 Finite-field fixers give uniform precision on every integral norm
 family through the truncated-coordinate ring homomorphism. Therefore
 all automorphism orbits are continuous for the same valuation topology.
-
-Reference: the continuity used in Yuan, Lemma 5.3, page 12.
 
 ## The absolute base action on the norm field
 
@@ -54,6 +52,12 @@ This is the restriction to the base norm field in Wintenberger, Remark 3.2.4.
   valuation.
 * `FieldOfNorms.continuous_absoluteAut_apply`: Every absolute Galois orbit is continuous for the
   Krull and norm-field valuation topologies.
+
+## Notation
+
+The following notation is local to this file.
+
+* `p` denotes the residue characteristic `residueChar K`.
 
 ## References
 
@@ -177,7 +181,7 @@ theorem FieldOfNorms.continuous_aut_apply_of_integral :
     exact hv.trans_le hb
   change Tendsto (fun σ : L ≃ₐ[K] L => FieldOfNorms.aut K L σ x)
     (nhds σ₀) (nhds (FieldOfNorms.aut K L σ₀ x))
-  simpa only [sub_add_cancel, zero_add] using
+  simpa only [sub_add_cancel, _root_.zero_add] using
     hz.add_const (FieldOfNorms.aut K L σ₀ x)
 
 /-- Every norm-field family has a continuous orbit under the

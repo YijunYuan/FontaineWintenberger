@@ -6,9 +6,9 @@ Authors: Yijun Yuan
 module
 
 public import FontaineWintenberger.Ramification.Lower.Basic
-public import Mathlib.MeasureTheory.Integral.DivergenceTheorem
 public import Mathlib.Analysis.Calculus.Deriv.Add
 public import Mathlib.Analysis.Calculus.Deriv.Mul
+public import Mathlib.MeasureTheory.Integral.DivergenceTheorem
 
 /-!
 # The Herbrand function
@@ -26,8 +26,8 @@ half-line. Its inverse is obtained from this proved order isomorphism.
 
 ## Main definitions
 
-* `truncatedRamificationOrder`: The intrinsic extended order capped at the nonnegative part of `t +
-  1`.
+* `truncatedRamificationOrder`: The intrinsic extended order capped at the nonnegative part of
+  `t + 1`.
 * `herbrandFunction`: The Herbrand function, integrating real lower-group cardinalities.
 * `herbrandSum`: The finite-sum expression, to be compared with the defining integral.
 * `herbrandOrderIso`: The Herbrand integral induces an order isomorphism of the half-line.

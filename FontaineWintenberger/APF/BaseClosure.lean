@@ -5,19 +5,15 @@ Authors: Yijun Yuan
 -/
 module
 
-public import Mathlib.FieldTheory.IsSepClosed
 public import Mathlib.FieldTheory.Galois.Basic
 public import Mathlib.FieldTheory.Galois.GaloisClosure
+public import Mathlib.FieldTheory.IsSepClosed
 
 /-!
 # Separable closures after base change
 
-## The separable closure after changing the base field
-
 The common closure and its automorphism groups are identified using
 Mathlib's separable-closure uniqueness and fixing-subgroup equivalence.
-
-## Cofinal finite Galois layers after finite base change
 
 Normal closure is taken inside the separable closure. Changing the
 base preserves the carrier of a finite intermediate field containing the new base.

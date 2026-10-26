@@ -5,8 +5,8 @@ Authors: Yijun Yuan
 -/
 module
 
-public import Mathlib.Topology.Algebra.Valued.ValuationTopology
 public import Mathlib.Topology.Algebra.IsUniformGroup.Basic
+public import Mathlib.Topology.Algebra.Valued.ValuationTopology
 
 /-!
 # Completeness from the valuation ring
@@ -21,10 +21,6 @@ of the complete valuation ring.
   inherited uniformity implies completeness of the valued field.
 * `completeSpace_iff_completeSpace_valuationSubring`: For the valuation uniformity, the field is
   complete exactly when its valuation ring with the inherited subtype uniformity is complete.
-
-## References
-
-* Mathlib; this file is an upstream candidate and has no project-specific reference.
 -/
 
 @[expose] public section

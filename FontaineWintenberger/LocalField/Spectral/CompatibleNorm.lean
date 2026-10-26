@@ -50,7 +50,8 @@ namespace FontaineWintenberger
 variable (K : Type*) [Field K] (Γ : Type*) [LinearOrderedCommGroupWithZero Γ]
 variable [val : Valued K Γ] [Valuation.IsRankOneDiscrete val.v]
 
-noncomputable local instance discrete_rankOne : Valuation.RankOne val.v :=
+/-- The rank-one structure on a discrete valuation, using base `2` for the associated norm. -/
+noncomputable local instance discreteRankOne : Valuation.RankOne val.v :=
   Valuation.IsRankOneDiscrete.rankOne val.v (e := 2) (by norm_num)
 
 /-- The nontrivial normed structure obtained from the given discrete valuation. -/
@@ -58,7 +59,9 @@ noncomputable local instance discrete_rankOne : Valuation.RankOne val.v :=
 noncomputable def discreteValuedNormedField : NontriviallyNormedField K :=
   Valued.toNontriviallyNormedField K Γ
 
-noncomputable local instance : NontriviallyNormedField K := discreteValuedNormedField K Γ
+/-- Use the norm associated to the discrete valuation for the local comparison statements. -/
+noncomputable local instance instDiscreteValuedNormedField : NontriviallyNormedField K :=
+  discreteValuedNormedField K Γ
 
 local instance : IsUltrametricDist K :=
   IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr

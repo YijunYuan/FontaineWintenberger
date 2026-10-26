@@ -6,12 +6,12 @@ Authors: Yijun Yuan
 module
 
 public import FontaineWintenberger.Mathlib.Analysis.UniformContinuity
-public import Mathlib.RingTheory.PowerSeries.Evaluation
 public import Mathlib.RingTheory.LaurentSeries
+public import Mathlib.RingTheory.PowerSeries.Evaluation
 public import Mathlib.Topology.Algebra.Valued.WithZeroMulInt
 
 /-!
-# Laurent coordinates from a coefficient section and an uniformizer
+# Laurent coordinates from a coefficient section and a uniformizer
 
 Evaluation in the valuation ring is bijective by residue-digit
 recursion. Its fraction-field extension preserves the valuation.
@@ -43,8 +43,8 @@ recursion. Its fraction-field extension preserves the valuation.
 * `eval₂_residueExpansion`: Evaluation of the residue expansion is the element.
 * `powerSeries_eval₂_surjective`: Every integral element is represented by the power series produced
   by residue-digit recursion, without assuming an expansion certificate.
-* `powerSeries_eval₂_ne_zero`: The first nonzero coefficient factors out an uniformizer power and
-  leaves an unit, so evaluation cannot annihilate a nonzero power series.
+* `powerSeries_eval₂_ne_zero`: The first nonzero coefficient factors out a uniformizer power and
+  leaves a unit, so evaluation cannot annihilate a nonzero power series.
 
 ## References
 
@@ -164,8 +164,8 @@ theorem powerSeries_eval₂_surjective : Function.Surjective (PowerSeries.eval�
     eval₂_residueExpansion c e hc π hπ hπtop x⟩
 
 include hπ hπtop in
-/-- The first nonzero coefficient factors out an uniformizer power and leaves
-an unit, so evaluation cannot annihilate a nonzero power series. -/
+/-- The first nonzero coefficient factors out a uniformizer power and leaves
+a unit, so evaluation cannot annihilate a nonzero power series. -/
 theorem powerSeries_eval₂_ne_zero (f : PowerSeries k) (hf : f ≠ 0) :
     PowerSeries.eval₂ c π f ≠ 0 := by
   let φ := PowerSeries.eval₂Hom (continuous_of_discreteTopology : Continuous c) hπtop

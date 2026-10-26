@@ -5,34 +5,19 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.FieldOfNorms.Galois.Action
 public import FontaineWintenberger.FieldOfNorms.Relative.Defs
+public import FontaineWintenberger.LocalField.Basic
 
 /-!
 # The ambient Galois action on the relative field of norms
 
-## The ambient action on the relative field of norms
+For a Galois APF extension `L/K`, ambient automorphisms transport finite extensions of `L`
+to finite extensions of `L`. The induced maps on their norm fields descend to the relative
+field of norms, giving the action in Wintenberger, Remark 3.2.4.
 
-Normality of the base intermediate field makes ambient automorphisms
-transport its finite overfields to finite overfields. The resulting
-norm-field maps act on the same directed union.
-
-Reference: the finite-subextension action in Wintenberger, Remark 3.2.4.
-
-## Valuations under finite-stage isomorphisms
-
-A commuting base square identifies the positive normalization
-exponents, so the same stage isomorphism preserves rational valuations.
-
-Reference: Wintenberger, Remark 3.2.4, the finite-stage valuation argument.
-
-## The ambient action on the relative field of norms
-
-Ambient finite-image transports descend to the same relative field of norms.
-They extend the absolute base action and preserve its rational valuation.
-
-Reference: Wintenberger, Remark 3.2.4.
+The action extends the action on the base norm field and preserves the rational valuation.
+Valuation preservation follows by comparing the normalization exponents of finite stages.
 
 ## Main definitions
 
@@ -45,7 +30,7 @@ Reference: Wintenberger, Remark 3.2.4.
   fields.
 * `RelFieldOfNorms.absoluteMap`: The compatible finite-stage transports act on the same relative
   field of norms.
-* `RelFieldOfNorms.absoluteAut`: **Remark 3.2.4 (ii).** For `L/K` Galois inside a separable closure
+* `RelFieldOfNorms.absoluteAut`: **Remark 3.2.4.** For `L/K` Galois inside a separable closure
   `Ω` of `K`, the group `Gal(Ω/K)` acts on `X_{L/K}(Ω) = X_K(L)^sep` by ring automorphisms,
   extending the action of `Gal(L/K)` on `X_K(L)`.
 
@@ -64,6 +49,12 @@ Reference: Wintenberger, Remark 3.2.4.
   index unchanged.
 * `RelFieldOfNorms.absoluteLayer_mul`: Ambient multiplication gives the iterated finite image.
 * `RelFieldOfNorms.stageEquiv_apply`: The indexed isomorphism is the norm-family transport.
+
+## Notation
+
+The following notation is local to this file.
+
+* `p` denotes the residue characteristic `residueChar K`.
 
 ## References
 
@@ -278,8 +269,7 @@ theorem RelFieldOfNorms.absoluteStageMap_base
 /-- Ambient stage transport commutes with every finite inclusion. -/
 theorem RelFieldOfNorms.absoluteStageMap_transition
     (σ : Ω ≃ₐ[K] Ω)
-    (N P : FiniteIntermediateField L (Ω)) (hNP : N ≤ P) (x : FieldOfNorms K N.val)
-        :
+    (N P : FiniteIntermediateField L (Ω)) (hNP : N ≤ P) (x : FieldOfNorms K N.val) :
     RelFieldOfNorms.absoluteStageMap K L σ P
         (RelFieldOfNorms.transition K L (Ω) N P hNP x) =
       RelFieldOfNorms.transition K L (Ω)
@@ -505,7 +495,7 @@ theorem RelFieldOfNorms.absoluteMap_mul_apply
         (fun y => RelFieldOfNorms.absoluteMap K L σ
           (RelFieldOfNorms.absoluteMap K L τ y)) hx))
 
-/-- **Remark 3.2.4 (ii).** For `L/K` Galois inside a separable closure `Ω` of `K`, the group
+/-- **Remark 3.2.4.** For `L/K` Galois inside a separable closure `Ω` of `K`, the group
 `Gal(Ω/K)` acts on `X_{L/K}(Ω) = X_K(L)^sep` by ring automorphisms, extending the action of
 `Gal(L/K)` on `X_K(L)`. -/
 def RelFieldOfNorms.absoluteAut :

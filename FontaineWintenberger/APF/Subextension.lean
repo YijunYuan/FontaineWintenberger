@@ -5,19 +5,15 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
+public import FontaineWintenberger.APF.BaseClosure
 public import FontaineWintenberger.APF.Index
 public import FontaineWintenberger.APF.Strict
-public import FontaineWintenberger.APF.BaseClosure
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Mathlib.FieldTheory.RelIndex
 public import Mathlib.Order.Filter.ENNReal
 
 /-!
 # APF and strict APF under finite extension
-
-## Strict APF descent through index factors
-
-## APF under finite extension
 
 The fixing-subgroup index is the field degree, even when the
 intermediate fields have infinite degree over the base.
@@ -245,7 +241,7 @@ theorem inertiaFixingRelIndex_pos (hMN : M ≤ N)
   Nat.pos_of_ne_zero (Subgroup.relIndex_inter_ne_zero
     (Nat.ne_of_gt (fixingSubgroup_relIndex_pos K M N hMN)) _)
 
-/-- Finite extension gives an uniform finite upper bound for the tower factor. -/
+/-- Finite extension gives a uniform finite upper bound for the tower factor. -/
 theorem apfTowerIndexFactor_le_inertiaFixingRelIndex (hMN : M ≤ N)
     [FiniteDimensional M (IntermediateField.extendScalars hMN)] (u : ℝ) :
     apfTowerIndexFactor K M N u ≤

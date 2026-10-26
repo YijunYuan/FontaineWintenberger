@@ -5,14 +5,14 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
-public import FontaineWintenberger.FieldOfNorms.Functor.Separable
 public import FontaineWintenberger.FieldOfNorms.Functor.Map
+public import FontaineWintenberger.FieldOfNorms.Functor.Separable
+public import FontaineWintenberger.LocalField.Basic
 public import Mathlib.Algebra.Colimit.DirectLimit
+public import Mathlib.Algebra.Field.ULift
+public import Mathlib.Algebra.Order.GroupWithZero.Canonical
 public import Mathlib.Algebra.Polynomial.Lifts
 public import Mathlib.Data.Fintype.Order
-public import Mathlib.Algebra.Order.GroupWithZero.Canonical
-public import Mathlib.Algebra.Field.ULift
 
 /-!
 # The relative field of norms
@@ -61,6 +61,12 @@ Reference: Wintenberger, §§3.2.1 and 3.2.6.
 * `RelFieldOfNorms.exists_stage`: Every union element is represented by a finite-stage family.
 * `RelFieldOfNorms.exists_finiteStage`: Any finite family of union elements lies in one finite
   stage.
+
+## Notation
+
+The following notation is local to this file.
+
+* `p` denotes the residue characteristic `residueChar K`.
 
 ## References
 

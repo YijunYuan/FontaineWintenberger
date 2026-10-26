@@ -5,11 +5,11 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
+public import FontaineWintenberger.APF.BaseChange.Bounds
 public import FontaineWintenberger.FieldOfNorms.Estimates.Prime
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.Fields.PrimeTower
 public import FontaineWintenberger.Ramification.Fields.Wild
-public import FontaineWintenberger.APF.BaseChange.Bounds
 
 /-!
 # Norm congruences on fields above wild inertia
@@ -21,6 +21,12 @@ Composition uses the finite-layer integral norm maps.
 ## Main results
 
 * `integerNorm_add_congruence_of_wild_field`: The norm congruence above the wild fixed field.
+
+## Notation
+
+The following notation is local to this file.
+
+* `P` denotes the first lower ramification group of `Ω/K` (the wild inertia group).
 
 ## References
 

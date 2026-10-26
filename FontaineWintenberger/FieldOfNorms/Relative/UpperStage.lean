@@ -5,9 +5,9 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
-public import FontaineWintenberger.FieldOfNorms.Structure.Residue
 public import FontaineWintenberger.APF.Tower.Stages
+public import FontaineWintenberger.FieldOfNorms.Structure.Residue
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Mathlib.RingTheory.PolynomialDiscriminant
 
 /-!
@@ -59,6 +59,13 @@ value is then stable as soon as the precision exceeds that value.
 * `FiniteIntermediateField.HasFullUpper.finrank_eq_prime_pow`: Every finite overstep above a
   positive full relative product has p-power degree, on the finite carriers.
 
+## Notation
+
+The following notation is local to this file.
+
+* `p` denotes the residue characteristic `residueChar K`.
+* `Oₓ` denotes the valuation ring of `FieldOfNorms K L`.
+
 ## References
 
 * Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
@@ -76,10 +83,12 @@ variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
 local notation "p" => residueChar K
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
-local instance FiniteIntermediateField.instNontriviallyNormedField (E : FiniteIntermediateField K
-    L) :
+/-- The spectral norm makes a finite intermediate field a nontrivially normed field. -/
+local instance FiniteIntermediateField.instNontriviallyNormedField
+    (E : FiniteIntermediateField K L) :
     NontriviallyNormedField E.val :=
   spectralNorm.nontriviallyNormedField K E.val
+/-- A finite intermediate field with its spectral norm is a normed algebra over the base. -/
 local instance FiniteIntermediateField.instNormedAlgebra (E : FiniteIntermediateField K L) :
     NormedAlgebra K E.val :=
   spectralNorm.normedAlgebra K E.val

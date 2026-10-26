@@ -7,8 +7,8 @@ module
 
 public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.Lower.Degree
-public import FontaineWintenberger.Ramification.Upper.Tate
 public import FontaineWintenberger.Ramification.Lower.Generator
+public import FontaineWintenberger.Ramification.Upper.Tate
 public import Mathlib.FieldTheory.IntermediateField.Adjoin.Algebra
 public import Mathlib.RingTheory.DedekindDomain.Different
 public import Mathlib.RingTheory.Multiplicity

@@ -5,8 +5,8 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.APF.BaseChange.EmbeddingComparison
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Mathlib.FieldTheory.SeparableEmbeddings
 
 /-!
@@ -18,7 +18,7 @@ No normality or stability of either intermediate field is required.
 
 ## Main definitions
 
-* `embeddingRestrictionFiber`: The embeddings of the upper field with a prescribed restriction to
+* `EmbeddingRestrictionFiber`: The embeddings of the upper field with a prescribed restriction to
   the lower field.
 * `fixingRestrictionMap`: Right multiplication by the lower fixing group gives the restriction
   fiber; this is a map of embeddings, not a quotient model.
@@ -66,13 +66,13 @@ variable {K Ω : Type*} [Field K] [Field Ω] [Algebra K Ω]
 
 /-- The embeddings of the upper field with a prescribed
 restriction to the lower field. -/
-def embeddingRestrictionFiber {E F : IntermediateField K Ω} (hEF : E ≤ F)
+def EmbeddingRestrictionFiber {E F : IntermediateField K Ω} (hEF : E ≤ F)
     (f : E →ₐ[K] Ω) :=
   {τ : F →ₐ[K] Ω // τ.comp (IntermediateField.inclusion hEF) = f}
 
 instance embeddingRestrictionFiber_finite {E F : IntermediateField K Ω}
     [FiniteDimensional K F] (hEF : E ≤ F)
-    (f : E →ₐ[K] Ω) : Finite (embeddingRestrictionFiber hEF f) :=
+    (f : E →ₐ[K] Ω) : Finite (EmbeddingRestrictionFiber hEF f) :=
   inferInstanceAs (Finite {τ : F →ₐ[K] Ω // τ.comp (IntermediateField.inclusion hEF) = f})
 
 variable [FiniteDimensional K Ω] [Normal K Ω]
@@ -81,7 +81,7 @@ variable [FiniteDimensional K Ω] [Normal K Ω]
 restriction fiber; this is a map of embeddings, not a quotient model. -/
 def fixingRestrictionMap {E F : IntermediateField K Ω} (hEF : E ≤ F)
     (s : Ω ≃ₐ[K] Ω) (d : E.fixingSubgroup) :
-    embeddingRestrictionFiber hEF (s.toAlgHom.comp E.val) :=
+    EmbeddingRestrictionFiber hEF (s.toAlgHom.comp E.val) :=
   ⟨(s * d.1).toAlgHom.comp F.val, by
     ext x
     change s (d.1 (x : Ω)) = s (x : Ω)
@@ -110,7 +110,7 @@ omit [FiniteDimensional K Ω] in
 /-- Each restriction fiber is a right torsor for the upper
 fixing subgroup, so all multiplicities are proved equal to its size. -/
 theorem fixingRestrictionMap_fiber_card {E F : IntermediateField K Ω} (hEF : E ≤ F)
-    (s : Ω ≃ₐ[K] Ω) (τ : embeddingRestrictionFiber hEF (s.toAlgHom.comp E.val)) :
+    (s : Ω ≃ₐ[K] Ω) (τ : EmbeddingRestrictionFiber hEF (s.toAlgHom.comp E.val)) :
     Nat.card {d : E.fixingSubgroup // fixingRestrictionMap hEF s d = τ} =
       Nat.card F.fixingSubgroup := by
   classical
@@ -151,14 +151,14 @@ theorem fixingRestrictionMap_fiber_card {E F : IntermediateField K Ω} (hEF : E 
 /-- Summing any function over distinct embeddings removes exactly the
 proved fixing-group multiplicity, even for infinite extended-real values. -/
 theorem sum_fixingRestrictionMap {E F : IntermediateField K Ω} (hEF : E ≤ F)
-    (s : Ω ≃ₐ[K] Ω) (a : embeddingRestrictionFiber hEF (s.toAlgHom.comp E.val) → ℝ≥0∞) :
+    (s : Ω ≃ₐ[K] Ω) (a : EmbeddingRestrictionFiber hEF (s.toAlgHom.comp E.val) → ℝ≥0∞) :
     letI := Fintype.ofFinite E.fixingSubgroup
-    letI := Fintype.ofFinite (embeddingRestrictionFiber hEF (s.toAlgHom.comp E.val))
+    letI := Fintype.ofFinite (EmbeddingRestrictionFiber hEF (s.toAlgHom.comp E.val))
     (∑ d : E.fixingSubgroup, a (fixingRestrictionMap hEF s d)) =
       Nat.card F.fixingSubgroup * ∑ τ, a τ := by
   classical
   let := Fintype.ofFinite E.fixingSubgroup
-  let := Fintype.ofFinite (embeddingRestrictionFiber hEF (s.toAlgHom.comp E.val))
+  let := Fintype.ofFinite (EmbeddingRestrictionFiber hEF (s.toAlgHom.comp E.val))
   rw [← Fintype.sum_fiberwise' (fixingRestrictionMap hEF s) a]
   simp only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
   simp_rw [← Nat.card_eq_fintype_card, fixingRestrictionMap_fiber_card hEF s]
@@ -198,22 +198,22 @@ theorem sum_embeddingOrder_fixing_restrictions
 arbitrary finite separable tower. Neither field need be stable under `s`. -/
 theorem embeddingOrder_eq_sum_restrictionFiber
     (E F : IntermediateField K Ω) (hEF : E ≤ F) (s : G) :
-    letI := Fintype.ofFinite (embeddingRestrictionFiber hEF (s.toAlgHom.comp E.val))
+    letI := Fintype.ofFinite (EmbeddingRestrictionFiber hEF (s.toAlgHom.comp E.val))
     embeddingRamificationOrder K (s.toAlgHom.comp E.val) E.val =
-      (∑ τ : embeddingRestrictionFiber hEF (s.toAlgHom.comp E.val),
+      (∑ τ : EmbeddingRestrictionFiber hEF (s.toAlgHom.comp E.val),
         embeddingRamificationOrder K τ.1 F.val) /
           embeddingRamificationIdx K (IntermediateField.inclusion hEF) := by
   classical
   let := Fintype.ofFinite E.fixingSubgroup
   let := Fintype.ofFinite F.fixingSubgroup
-  let := Fintype.ofFinite (embeddingRestrictionFiber hEF (s.toAlgHom.comp E.val))
+  let := Fintype.ofFinite (EmbeddingRestrictionFiber hEF (s.toAlgHom.comp E.val))
   have hdup := sum_fixingRestrictionMap hEF s
     (fun τ => embeddingRamificationOrder K τ.1 F.val)
   have hsum := sum_embeddingOrder_fixing_restrictions K Ω E F hEF s
   have hc0 : (Nat.card F.fixingSubgroup : ℝ≥0∞) ≠ 0 := by
     exact_mod_cast (Nat.card_pos (α := F.fixingSubgroup)).ne'
   have hcard : (Nat.card F.fixingSubgroup : ℝ≥0∞) ≠ ⊤ := ENNReal.natCast_ne_top _
-  have hdist : (∑ τ : embeddingRestrictionFiber hEF (s.toAlgHom.comp E.val),
+  have hdist : (∑ τ : EmbeddingRestrictionFiber hEF (s.toAlgHom.comp E.val),
       embeddingRamificationOrder K τ.1 F.val) =
         (∑ d : E.fixingSubgroup, (ramificationOrder (R := O) G (s * d.1) : ℝ≥0∞)) /
           embeddingRamificationIdx K F.val := by
@@ -235,9 +235,9 @@ by its extension to the finite normal ambient field. -/
 theorem embeddingOrder_restriction_eq_sum
     (E F : IntermediateField K Ω) (hEF : E ≤ F) (σ : F →ₐ[K] Ω) :
     letI := Fintype.ofFinite
-      (embeddingRestrictionFiber hEF (σ.comp (IntermediateField.inclusion hEF)))
+      (EmbeddingRestrictionFiber hEF (σ.comp (IntermediateField.inclusion hEF)))
     embeddingRamificationOrder K (σ.comp (IntermediateField.inclusion hEF)) E.val =
-      (∑ τ : embeddingRestrictionFiber hEF (σ.comp (IntermediateField.inclusion hEF)),
+      (∑ τ : EmbeddingRestrictionFiber hEF (σ.comp (IntermediateField.inclusion hEF)),
         embeddingRamificationOrder K τ.1 F.val) /
           embeddingRamificationIdx K (IntermediateField.inclusion hEF) := by
   obtain ⟨s, hs⟩ := exists_aut_extends_intermediate_embedding K Ω F σ
@@ -314,10 +314,10 @@ theorem coe_restrictedNormalClosureEmbedding (τ : F →ₐ[K] SeparableClosure 
 /-- The finite ambient and intrinsic closure fibers are canonically
 bijective through the field equivalences. -/
 def normalClosureRestrictionFiberEquiv (σ : F →ₐ[K] SeparableClosure K) :
-    embeddingRestrictionFiber (normalClosureRestriction_le K E F hEF)
+    EmbeddingRestrictionFiber (normalClosureRestriction_le K E F hEF)
       ((restrictedNormalClosureEmbedding K F σ).comp
         (IntermediateField.inclusion (normalClosureRestriction_le K E F hEF))) ≃
-      embeddingRestrictionFiber hEF (σ.comp (IntermediateField.inclusion hEF)) := by
+      EmbeddingRestrictionFiber hEF (σ.comp (IntermediateField.inclusion hEF)) := by
   let h₀ := normalClosureRestriction_le K E F hEF
   have hcomm := normalClosureRestriction_inclusion K E F hEF
   have harg (x : E) : IntermediateField.inclusion h₀ (eE x) =
@@ -360,7 +360,7 @@ def normalClosureRestrictionFiberEquiv (σ : F →ₐ[K] SeparableClosure K) :
 
 @[simp]
 theorem normalClosureRestrictionFiberEquiv_apply (σ : F →ₐ[K] SeparableClosure K)
-    (τ : embeddingRestrictionFiber (normalClosureRestriction_le K E F hEF)
+    (τ : EmbeddingRestrictionFiber (normalClosureRestriction_le K E F hEF)
       ((restrictedNormalClosureEmbedding K F σ).comp
         (IntermediateField.inclusion (normalClosureRestriction_le K E F hEF)))) :
     (normalClosureRestrictionFiberEquiv K E F hEF σ τ).1 =
@@ -413,15 +413,15 @@ Its contract retains all embeddings and has no finite-ambient choice. -/
 theorem closureEmbeddingOrder_restriction_eq_sum
     (σ : F →ₐ[K] SeparableClosure K) :
     letI := Fintype.ofFinite
-      (embeddingRestrictionFiber hEF (σ.comp (IntermediateField.inclusion hEF)))
+      (EmbeddingRestrictionFiber hEF (σ.comp (IntermediateField.inclusion hEF)))
     closureEmbeddingOrder K (σ.comp (IntermediateField.inclusion hEF)) E.val =
-      (∑ τ : embeddingRestrictionFiber hEF (σ.comp (IntermediateField.inclusion hEF)),
+      (∑ τ : EmbeddingRestrictionFiber hEF (σ.comp (IntermediateField.inclusion hEF)),
         closureEmbeddingOrder K τ.1 F.val) /
           embeddingRamificationIdx K (IntermediateField.inclusion hEF) := by
   classical
   let σ₀ := restrictedNormalClosureEmbedding K F σ
-  let Ξ := embeddingRestrictionFiber hEF (σ.comp (IntermediateField.inclusion hEF))
-  let Ξ₀ := embeddingRestrictionFiber h₀ (σ₀.comp (IntermediateField.inclusion h₀))
+  let Ξ := EmbeddingRestrictionFiber hEF (σ.comp (IntermediateField.inclusion hEF))
+  let Ξ₀ := EmbeddingRestrictionFiber h₀ (σ₀.comp (IntermediateField.inclusion h₀))
   let ξ := normalClosureRestrictionFiberEquiv K E F hEF σ
   let := Fintype.ofFinite Ξ
   let := Fintype.ofFinite Ξ₀
@@ -449,14 +449,14 @@ cleared. All terms are nonnegative shifted numbers, so infinity is retained. -/
 theorem closureEmbeddingNumber_restriction_mul_index_eq_sum
     (σ : F →ₐ[K] SeparableClosure K) :
     letI := Fintype.ofFinite
-      (embeddingRestrictionFiber hEF (σ.comp (IntermediateField.inclusion hEF)))
+      (EmbeddingRestrictionFiber hEF (σ.comp (IntermediateField.inclusion hEF)))
     (embeddingRamificationIdx K (IntermediateField.inclusion hEF) : EReal) *
       (closureEmbeddingNumber K (σ.comp (IntermediateField.inclusion hEF)) E.val + 1) =
-        ∑ τ : embeddingRestrictionFiber hEF (σ.comp (IntermediateField.inclusion hEF)),
+        ∑ τ : EmbeddingRestrictionFiber hEF (σ.comp (IntermediateField.inclusion hEF)),
           (closureEmbeddingNumber K τ.1 F.val + 1) := by
   classical
   let := Fintype.ofFinite
-    (embeddingRestrictionFiber hEF (σ.comp (IntermediateField.inclusion hEF)))
+    (EmbeddingRestrictionFiber hEF (σ.comp (IntermediateField.inclusion hEF)))
   have h := congrArg (fun r : ℝ≥0∞ =>
     r * embeddingRamificationIdx K (IntermediateField.inclusion hEF))
       (closureEmbeddingOrder_restriction_eq_sum K E F hEF σ)
@@ -466,7 +466,7 @@ theorem closureEmbeddingNumber_restriction_mul_index_eq_sum
   have h' := congrArg (fun r : ℝ≥0∞ => (r : EReal)) h
   let c : ℝ≥0∞ →+ EReal :=
     ⟨⟨(↑), EReal.coe_ennreal_zero⟩, EReal.coe_ennreal_add⟩
-  have hsum := map_sum c (fun τ : embeddingRestrictionFiber hEF
+  have hsum := map_sum c (fun τ : EmbeddingRestrictionFiber hEF
     (σ.comp (IntermediateField.inclusion hEF)) => closureEmbeddingOrder K τ.1 F.val) Finset.univ
   rw [EReal.coe_ennreal_mul, ENNReal.toEReal_natCast] at h'
   have h'' := h'.trans hsum

@@ -5,8 +5,8 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.APF.Index
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.Infinite.Restriction
 
 /-!

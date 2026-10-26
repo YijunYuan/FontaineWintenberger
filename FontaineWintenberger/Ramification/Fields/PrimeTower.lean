@@ -6,10 +6,10 @@ Authors: Yijun Yuan
 module
 
 public import FontaineWintenberger.LocalField.Basic
-public import FontaineWintenberger.Mathlib.FieldTheory.RelIndex
-public import FontaineWintenberger.Ramification.Lower.Wild
-public import FontaineWintenberger.Ramification.Lower.GaloisGroup
 public import FontaineWintenberger.LocalField.Spectral.FiniteExtension
+public import FontaineWintenberger.Mathlib.FieldTheory.RelIndex
+public import FontaineWintenberger.Ramification.Lower.GaloisGroup
+public import FontaineWintenberger.Ramification.Lower.Wild
 
 /-!
 # Cyclic prime-degree intermediate-field towers

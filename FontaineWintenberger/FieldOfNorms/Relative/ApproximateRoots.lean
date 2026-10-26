@@ -5,11 +5,11 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
-public import FontaineWintenberger.FieldOfNorms.Relative.UpperStage
-public import FontaineWintenberger.FieldOfNorms.Layers.RootDescent
 public import FontaineWintenberger.FieldOfNorms.Functor.Separable
+public import FontaineWintenberger.FieldOfNorms.Layers.RootDescent
 public import FontaineWintenberger.FieldOfNorms.Relative.Defs
+public import FontaineWintenberger.FieldOfNorms.Relative.UpperStage
+public import FontaineWintenberger.LocalField.Basic
 
 /-!
 # Approximate roots on the finite norm fields
@@ -45,6 +45,15 @@ root to an integral element of the norm field.
   reflected without replacing the field.
 * `upperProduct_rootCompositum_fieldRange_eq`: The full source subgroup product for the abstract
   root compositum, on the automorphisms of the common closure.
+
+## Notation
+
+The following notation is local to this file.
+
+* `p` denotes the residue characteristic `residueChar K`.
+* `Oₗ` denotes the valuation ring of `FieldOfNorms K L`.
+* `Oₘ` denotes the valuation ring of `FieldOfNorms K M`.
+* `Oₓ` denotes the valuation ring of `FieldOfNorms K L`.
 
 ## References
 

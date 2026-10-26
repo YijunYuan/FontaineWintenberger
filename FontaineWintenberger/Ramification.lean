@@ -56,3 +56,10 @@ public import FontaineWintenberger.Ramification.Upper.Quotient
 public import FontaineWintenberger.Ramification.Upper.ResidueEquiv
 public import FontaineWintenberger.Ramification.Upper.Tate
 public import FontaineWintenberger.Ramification.Upper.Transport
+
+/-!
+# Ramification of local-field extensions
+
+This module collects lower and upper ramification groups, Herbrand functions, the different,
+and norm estimates for finite and infinite extensions, following Serre's *Local Fields*.
+-/

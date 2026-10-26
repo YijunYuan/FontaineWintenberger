@@ -5,12 +5,12 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.APF.Tower.Residue
+public import FontaineWintenberger.APF.Tower.Tame
 public import FontaineWintenberger.FieldOfNorms.Basic.Defs
 public import FontaineWintenberger.FieldOfNorms.Estimates.Integral
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.Norm.Valuation
-public import FontaineWintenberger.APF.Tower.Tame
 
 /-!
 # The valuation of the field of norms

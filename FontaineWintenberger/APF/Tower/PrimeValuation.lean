@@ -5,8 +5,8 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.APF.Tower.Wild
+public import FontaineWintenberger.LocalField.Basic
 
 /-!
 # Unbounded finite ramification and the residue prime

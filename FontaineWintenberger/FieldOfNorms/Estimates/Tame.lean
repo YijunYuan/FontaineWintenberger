@@ -5,9 +5,9 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
-public import FontaineWintenberger.FieldOfNorms.Estimates.Wild
 public import FontaineWintenberger.APF.Elementary.TameCompositum
+public import FontaineWintenberger.FieldOfNorms.Estimates.Wild
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.Norm.Approximation
 
 /-!
@@ -23,6 +23,18 @@ the same ramification index in the precision estimate.
   DVR map, using its canonical ramification index, including zero elements.
 * `exists_intNorm_add_congruence_of_totallyRamified_fixedField`: The nonnormal p-power norm
   satisfies the quantitative addition estimate.
+
+## Notation
+
+The following notation is local to this file.
+
+* `p` denotes the residue characteristic `residueChar K`.
+* `F` denotes the fixed field of the given subgroup `H`.
+* `S` denotes the spectral integer ring of `F`.
+* `P` denotes the first lower ramification group of `Ω/K` (the wild inertia group).
+* `A` denotes the fixed field of wild inertia `P`.
+* `T` denotes the spectral integer ring of `A`.
+* `e` denotes the ramification index of `T` over `𝒪[K]`.
 
 ## References
 

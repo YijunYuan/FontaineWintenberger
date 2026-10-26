@@ -7,10 +7,10 @@ module
 
 public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.Different.Hilbert
-public import FontaineWintenberger.Ramification.Herbrand.Subgroup
 public import FontaineWintenberger.Ramification.Herbrand.Affine
-public import FontaineWintenberger.Ramification.Lower.Tower
+public import FontaineWintenberger.Ramification.Herbrand.Subgroup
 public import FontaineWintenberger.Ramification.Lower.FixedField
+public import FontaineWintenberger.Ramification.Lower.Tower
 
 /-!
 # The different and upper orbits of arbitrary subextensions
@@ -58,8 +58,8 @@ variable (B : Type*) [CommRing B] [IsDomain B] [IsDiscreteValuationRing B]
 including the zero ideal. -/
 theorem maximalIdeal_emultiplicity_mul (I J : Ideal B) :
     emultiplicity (IsLocalRing.maximalIdeal B) (I * J) =
-      emultiplicity (IsLocalRing.maximalIdeal B) I + emultiplicity (IsLocalRing.maximalIdeal B) J :=
-          by
+      emultiplicity (IsLocalRing.maximalIdeal B) I +
+        emultiplicity (IsLocalRing.maximalIdeal B) J := by
   obtain ⟨x, rfl⟩ := (inferInstance : I.IsPrincipal).principal
   obtain ⟨y, rfl⟩ := (inferInstance : J.IsPrincipal).principal
   rw [Ideal.span_singleton_mul_span_singleton, maximalIdeal_emultiplicity_span,

@@ -5,11 +5,11 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
-public import FontaineWintenberger.APF.Tower.Stages
 public import FontaineWintenberger.APF.Tower.PrimeValuation
+public import FontaineWintenberger.APF.Tower.Stages
 public import FontaineWintenberger.FieldOfNorms.Basic.Valuation
 public import FontaineWintenberger.FieldOfNorms.Estimates.Truncated
+public import FontaineWintenberger.LocalField.Basic
 
 /-!
 # Deep cofinal finite towers
@@ -23,7 +23,7 @@ the required maximal-ideal power.
 
 * `deepFiniteTowerBound`: The deep first-bound parameter at the growing integer precision.
 * `deepFiniteTower`: A choice of the proved deep finite tower, with no tower hypothesis.
-* `deepFiniteTowerQuotient`: The integer-ring quotient at the stage's growing precision.
+* `DeepFiniteTowerQuotient`: The integer-ring quotient at the stage's growing precision.
 * `deepFiniteTowerRelativeDegree`: The exponent of the finite relative degree, chosen from the
   proved wild tail.
 * `deepFiniteTowerNorm`: Every later finite intermediate field has a quotient norm at this stage's
@@ -47,6 +47,13 @@ the required maximal-ideal power.
   valuation.
 * `natCast_mem_deepFiniteTower_maximalIdeal_pow`: The residue prime is in the required ideal power
   at every selected stage.
+
+## Notation
+
+The following notation is local to this file.
+
+* `p` denotes the residue characteristic `residueChar K`.
+* `𝔈` denotes the chosen deep finite tower `deepFiniteTower K L D`.
 
 ## References
 
@@ -224,29 +231,29 @@ theorem deepFiniteTower_relativeFirstBound_ge (n : ℕ) (F : FiniteIntermediateF
   (IsAPF.exists_deep_finiteTower K L D).choose_spec.2.2.2.2.2.2 n F hEF
 
 /-- The integer-ring quotient at the stage's growing precision. -/
-abbrev deepFiniteTowerQuotient (n : ℕ) :=
+abbrev DeepFiniteTowerQuotient (n : ℕ) :=
   spectralIntegerRing K (𝔈 n).val ⧸
     IsLocalRing.maximalIdeal (spectralIntegerRing K (𝔈 n).val) ^ (n + 2)
 
 instance deepFiniteTowerQuotient_nontrivial (n : ℕ) :
-    Nontrivial (deepFiniteTowerQuotient K L D n) :=
+    Nontrivial (DeepFiniteTowerQuotient K L D n) :=
   Ideal.Quotient.nontrivial_iff.mpr
     (ne_top_of_le_ne_top (IsLocalRing.maximalIdeal.isMaximal _).ne_top
       (Ideal.pow_le_self (by omega)))
 
 instance deepFiniteTowerQuotient_isLocalRing (n : ℕ) :
-    IsLocalRing (deepFiniteTowerQuotient K L D n) :=
+    IsLocalRing (DeepFiniteTowerQuotient K L D n) :=
   IsLocalRing.of_surjective' (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective
 
 instance deepFiniteTowerQuotient_charP (n : ℕ) :
-    CharP (deepFiniteTowerQuotient K L D n) p := by
+    CharP (DeepFiniteTowerQuotient K L D n) p := by
   apply (CharP.charP_iff_prime_eq_zero (Fact.out : Nat.Prime p)).mpr
   rw [← map_natCast (Ideal.Quotient.mk _), Ideal.Quotient.eq_zero_iff_mem]
   exact natCast_mem_deepFiniteTower_maximalIdeal_pow K L D n
 
 /-- The quotient's maximal ideal vanishes to its stated precision. -/
 theorem deepFiniteTowerQuotient_maximalIdeal_pow (n : ℕ) :
-    IsLocalRing.maximalIdeal (deepFiniteTowerQuotient K L D n) ^ (n + 2) = ⊥ := by
+    IsLocalRing.maximalIdeal (DeepFiniteTowerQuotient K L D n) ^ (n + 2) = ⊥ := by
   rw [← IsLocalRing.map_maximalIdeal_of_surjective
     (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective, ← Ideal.map_pow,
     Ideal.map_quotient_self]
@@ -268,7 +275,7 @@ stage's precision; the map is induced by the integer norm. -/
 def deepFiniteTowerNorm (n : ℕ) (F : FiniteIntermediateField K L) (hEF : 𝔈 n ≤ F)
     (s : ℕ) (hs : n + 2 ≤ s) :
     (spectralIntegerRing K F.val ⧸ IsLocalRing.maximalIdeal (spectralIntegerRing K F.val) ^ s) →+*
-      deepFiniteTowerQuotient K L D n :=
+      DeepFiniteTowerQuotient K L D n :=
   FiniteIntermediateField.truncatedNorm (𝔈 n) F hEF
     (deepFiniteTowerRelativeDegree K L D n F hEF)
     (deepFiniteTowerBound K n)
@@ -316,8 +323,8 @@ theorem deepFiniteTower_integerNorm_add_congruence (n : ℕ) (F : FiniteIntermed
 
 /-- The norms induce the ring transition maps between tower stages. -/
 def deepFiniteTowerTransition (n m : ℕ) (hnm : n ≤ m) :
-    deepFiniteTowerQuotient K L D m →+*
-      deepFiniteTowerQuotient K L D n :=
+    DeepFiniteTowerQuotient K L D m →+*
+      DeepFiniteTowerQuotient K L D n :=
   deepFiniteTowerNorm K L D n (𝔈 m)
     (deepFiniteTower_monotone K L D hnm) (m + 2) (by omega)
 
@@ -348,7 +355,7 @@ theorem deepFiniteTowerTransition_comp (i n m : ℕ) (hin : i ≤ n) (hnm : n �
 @[simp]
 theorem deepFiniteTowerTransition_self (n : ℕ) :
     deepFiniteTowerTransition K L D n n le_rfl =
-      RingHom.id (deepFiniteTowerQuotient K L D n) := by
+      RingHom.id (DeepFiniteTowerQuotient K L D n) := by
   apply Ideal.Quotient.ringHom_ext
   ext x
   simp only [RingHom.comp_apply, deepFiniteTowerTransition_mk,
@@ -357,7 +364,7 @@ theorem deepFiniteTowerTransition_self (n : ℕ) :
 /-- The quotient transitions preserve normalized valuation truncated
 at the target precision, including zero and the identity step. -/
 theorem deepFiniteTowerTransition_truncatedAddVal (n m : ℕ) (hnm : n ≤ m)
-    (x : deepFiniteTowerQuotient K L D m) :
+    (x : DeepFiniteTowerQuotient K L D m) :
     truncatedAddVal (spectralIntegerRing K (𝔈 n).val) (n + 2)
         (deepFiniteTowerTransition K L D n m hnm x) =
       min (truncatedAddVal (spectralIntegerRing K (𝔈 m).val) (m + 2) x)

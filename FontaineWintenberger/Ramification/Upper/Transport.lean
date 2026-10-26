@@ -35,7 +35,8 @@ isomorphism identifies the ordinary restriction maps pointwise.
 
 ## Main definitions
 
-* `intermediateDecompositionRestriction`
+* `intermediateDecompositionRestriction`: Restriction of field automorphisms to the decomposition
+  subgroup of an intermediate field's valuation ring.
 * `spectralIntegerRingEquiv`: A field isomorphism restricts canonically to the spectral integer
   rings.
 
@@ -148,6 +149,8 @@ theorem restrictNormal_mem_intermediate_decomposition (s : L ≃ₐ[K] L) :
   subst F
   exact restrictNormal_mem_fixedField_decomposition K L H s
 
+/-- Restriction of field automorphisms to the decomposition subgroup of an intermediate field's
+valuation ring. -/
 noncomputable def intermediateDecompositionRestriction : (L ≃ₐ[K] L) →* D₀ :=
   (AlgEquiv.restrictNormalHom F).codRestrict _
     (restrictNormal_mem_intermediate_decomposition K L F)

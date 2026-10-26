@@ -5,8 +5,8 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.APF.Defs
+public import FontaineWintenberger.LocalField.Basic
 public import Mathlib.Data.EReal.Basic
 
 /-!
@@ -18,7 +18,8 @@ Conjugacy makes the bound independent of the separable embedding.
 
 ## Main definitions
 
-* `apfRamificationBound`: The supremum, including positive infinity for an unbounded set.
+* `apfRamificationBound`: The supremum of upper parameters for which the APF subgroup is the
+  whole absolute Galois group, with value `⊤` when these parameters are unbounded.
 
 ## Main results
 
@@ -57,7 +58,8 @@ theorem apfSubgroup_fieldRange_eq_top_iff (i j : L →ₐ[K] SeparableClosure K)
   rw [← Subgroup.index_eq_one, ← Subgroup.index_eq_one,
     apfSubgroup_fieldRange_index_eq K L i j u]
 
-/-- The supremum, including positive infinity for an unbounded set. -/
+/-- Wintenberger's first ramification bound `i(L/K)`: the supremum of `u ≥ -1` such that
+`G_L G_K^u = G_K`, with value `⊤` when these parameters are unbounded. -/
 noncomputable def apfRamificationBound : EReal :=
   sSup {x : EReal | ∃ u : ℝ, -1 ≤ u ∧
     apfSubgroup K (IsSepClosed.lift : L →ₐ[K] SeparableClosure K).fieldRange u = ⊤ ∧

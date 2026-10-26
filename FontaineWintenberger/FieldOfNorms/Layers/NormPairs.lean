@@ -5,8 +5,8 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.FieldOfNorms.Layers.DescentTower
 public import FontaineWintenberger.FieldOfNorms.Layers.Descent
+public import FontaineWintenberger.FieldOfNorms.Layers.DescentTower
 
 /-!
 # Norm identities on good finite fields

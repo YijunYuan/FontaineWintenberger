@@ -7,16 +7,16 @@ module
 
 public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.Lower.Generator
-public import FontaineWintenberger.Ramification.Lower.Tower
 public import FontaineWintenberger.Ramification.Lower.ResidueDigits
 public import FontaineWintenberger.Ramification.Lower.SpectralMaps
 public import FontaineWintenberger.Ramification.Lower.Teichmuller
-public import Mathlib.Basic.Real.ENatENNReal
+public import FontaineWintenberger.Ramification.Lower.Tower
 public import Mathlib.Basic.ENNReal.Inv
-public import Mathlib.LinearAlgebra.SModEq.Pow
-public import Mathlib.FieldTheory.SeparableClosure
-public import Mathlib.FieldTheory.IntermediateField.Adjoin.Basic
+public import Mathlib.Basic.Real.ENatENNReal
 public import Mathlib.Data.EReal.Operations
+public import Mathlib.FieldTheory.IntermediateField.Adjoin.Basic
+public import Mathlib.FieldTheory.SeparableClosure
+public import Mathlib.LinearAlgebra.SModEq.Pow
 
 /-!
 # Ramification orders of pairs of finite-field embeddings
@@ -35,6 +35,8 @@ finite ambient field. No normality or finite-residue assumption is used.
 * `embeddingPairLeft`: The first embedding factored through the compositum.
 * `embeddingPairRight`: The second embedding factored through the compositum.
 * `closureEmbeddingOrder`: Closure-pair order computed in its finite image compositum.
+* `embeddingRamificationNumber`, `closureEmbeddingNumber`: Wintenberger's signed ramification
+  numbers, obtained by subtracting one from the corresponding orders.
 
 ## Main results
 
@@ -42,7 +44,7 @@ finite ambient field. No normality or finite-residue assumption is used.
   generator.
 * `integralEmbeddingOrder_eq_generator`: An integral algebra generator attains the displacement
   infimum.
-* `forall_sub_mem_pow_iff_uniformizer`: Equal residue maps and an uniformizer congruence control
+* `forall_sub_mem_pow_iff_uniformizer`: Equal residue maps and a uniformizer congruence control
   every integral element.
 * `integralEmbeddingOrder_eq_uniformizer`: The raw pair order is attained on every uniformizer when
   the residue maps agree.
@@ -54,6 +56,8 @@ finite ambient field. No normality or finite-residue assumption is used.
 ## References
 
 * Serre, *Local Fields*, Chapter IV (ramification groups, Herbrand functions, the different).
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §1.1.1.
 -/
 
 @[expose] public section
@@ -140,7 +144,7 @@ variable (f g : S →+* T) [IsLocalHom g]
 variable (p : ℕ) [Fact p.Prime] [CharP (ResidueField S) p]
     [PerfectField (ResidueField S)]
 
-/-- Equal residue maps and an uniformizer congruence control every integral element. -/
+/-- Equal residue maps and a uniformizer congruence control every integral element. -/
 theorem forall_sub_mem_pow_iff_uniformizer
     (hp : (p : T) ∈ IsLocalRing.maximalIdeal T)
     (hres : ∀ a : S, f a - g a ∈ IsLocalRing.maximalIdeal T)
@@ -641,8 +645,8 @@ variable {E N : Type*} [Field E] [Field N] [Algebra K E] [Algebra K N]
     [FiniteDimensional K E] [FiniteDimensional K N]
     [Algebra.IsSeparable K E] [Algebra.IsSeparable K N]
 
-/-- Wintenberger's signed number: the normalized order minus one,
-using standard extended reals so that zero order gives minus one. -/
+/-- Wintenberger's signed ramification number: the normalized order minus one
+(Wintenberger 1.1.1). Equal embeddings have number `⊤`; distinct residue maps give `-1`. -/
 def embeddingRamificationNumber (σ τ : E →ₐ[K] N) : EReal :=
   (embeddingRamificationOrder K σ τ : EReal) - 1
 

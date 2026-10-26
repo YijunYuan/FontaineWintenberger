@@ -20,10 +20,6 @@ identity includes infinite degree and index, both represented by zero.
   intermediate base.
 * `fixingSubgroup_relIndex_pos`: A finite extension of the intermediate field gives a nonzero fixing
   index.
-
-## References
-
-* Mathlib; this file is an upstream candidate and has no project-specific reference.
 -/
 
 @[expose] public section

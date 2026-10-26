@@ -5,8 +5,8 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.FieldOfNorms.Estimates.FiniteLayer
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.Norm.Approximation
 
 /-!
@@ -40,6 +40,12 @@ maximal-ideal quotients. Perfect-residue digits prove its surjectivity.
   reduction of precision.
 * `exists_surjective_truncatedNorm_self`: Every equal-field norm gives a surjective quotient
   reduction at arbitrary precisions, without any numerical hypothesis on the infinite first bound.
+
+## Notation
+
+The following notation is local to this file.
+
+* `p` denotes the residue characteristic `residueChar K`.
 
 ## References
 

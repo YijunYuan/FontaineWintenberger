@@ -5,13 +5,13 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.APF.BaseChange.EmbeddingFiniteBase
-public import FontaineWintenberger.Ramification.Embedding.Valued
-public import FontaineWintenberger.FieldOfNorms.Functor.Galois
+public import FontaineWintenberger.APF.Tower.Stages
 public import FontaineWintenberger.FieldOfNorms.Basic.Ring
 public import FontaineWintenberger.FieldOfNorms.Estimates.Herbrand
-public import FontaineWintenberger.APF.Tower.Stages
+public import FontaineWintenberger.FieldOfNorms.Functor.Galois
+public import FontaineWintenberger.LocalField.Basic
+public import FontaineWintenberger.Ramification.Embedding.Valued
 
 /-!
 # Ramification transfer on the norm field
@@ -55,6 +55,12 @@ ambient fields, including fields not stable under the automorphism.
   computes its intrinsic ramification number; this includes the identity and infinity.
 * `FieldOfNorms.ramificationNumber_eq_uniformizer_ratio`: The general valued-field uniformizer ratio
   computes the existing intrinsic norm-field number on its same field.
+
+## Notation
+
+The following notation is local to this file.
+
+* `p` denotes the residue characteristic `residueChar K`.
 
 ## References
 

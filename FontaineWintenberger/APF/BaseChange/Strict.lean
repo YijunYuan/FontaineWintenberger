@@ -5,19 +5,15 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.APF.BaseChange.Basic
 public import FontaineWintenberger.APF.Finite.Slope
 public import FontaineWintenberger.APF.Strict
-public import Mathlib.Order.Filter.ENNReal
+public import FontaineWintenberger.LocalField.Basic
 public import Mathlib.Order.Filter.AtTopBot.Map
+public import Mathlib.Order.Filter.ENNReal
 
 /-!
 # Strict APF under finite base change
-
-## Strict APF under finite base change
-
-## Finite base change with the abstract normed scalar field
 
 All comparisons use the norm and scalar maps on the finite new base.
 The chosen common separable closure serves only to identify restrictions.
@@ -79,19 +75,21 @@ variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField 
     [PerfectField 𝓀[K]]
 variable (M : IntermediateField K (SeparableClosure K)) [FiniteDimensional K M]
 
-noncomputable local instance : NontriviallyNormedField M :=
+/-- The spectral norm on the finite base for the strict APF comparison. -/
+noncomputable local instance baseChangeStrictNormedField : NontriviallyNormedField M :=
   spectralNorm.nontriviallyNormedField K M
-noncomputable local instance : NormedAlgebra K M := spectralNorm.normedAlgebra K M
+/-- The normed algebra structure on the finite base for the strict APF comparison. -/
+noncomputable local instance baseChangeStrictNormedAlgebra : NormedAlgebra K M :=
+  spectralNorm.normedAlgebra K M
 local instance : IsUltrametricDist M :=
   IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
     (isNonarchimedean_spectralNorm (K := K) (L := M))
 local instance : CompleteSpace M := spectralNorm.completeSpace K M
 local instance : IsCompleteDiscreteValuedField M :=
   normedAlgebra_isCompleteDiscreteValuedField K M
-noncomputable local instance : Algebra M (SeparableClosure M) :=
+/-- The canonical separable-closure algebra for the strict APF comparison. -/
+noncomputable local instance baseChangeStrictClosureAlgebra : Algebra M (SeparableClosure M) :=
   (separableClosure M (AlgebraicClosure M)).algebra'
-
-
 
 variable (N : Type*) [Field N] [Algebra K N] [Algebra M N] [IsScalarTower K M N]
     [Algebra.IsSeparable K N]

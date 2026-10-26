@@ -5,19 +5,15 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.APF.Finite.Galois
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.Herbrand.Subgroup
 
 /-!
 # APF functions of finite nonnormal extensions
 
-## Finite non-Galois APF change of parameter
-
 Ordinary restriction to a finite Galois overfield identifies the
 fixing subgroup of an arbitrary intermediate field and its inertia coset index.
-
-## Intrinsic APF functions in an arbitrary finite Galois overfield
 
 An embedding into the separable closure transports fixing subgroups
 and upper groups, so the finite nonnormal formulas apply to the fields.

@@ -21,3 +21,10 @@ public import FontaineWintenberger.Mathlib.RingTheory.SequentialInverseLimit
 public import FontaineWintenberger.Mathlib.Topology.CompactGroupSup
 public import FontaineWintenberger.Mathlib.Topology.LaurentSubstitution
 public import FontaineWintenberger.Mathlib.Topology.ValuedCompleteness
+
+/-!
+# General algebraic and topological results
+
+This module collects results on field extensions, subgroup indices, valuations, and inverse
+limits. These files depend only on Mathlib and are candidates for upstreaming.
+-/

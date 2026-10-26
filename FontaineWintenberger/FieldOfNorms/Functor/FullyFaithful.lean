@@ -5,32 +5,28 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.FieldOfNorms.Functor.Separable
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Mathlib.FieldTheory.SeparableEmbeddings
 
 /-!
 # Full faithfulness of the field of norms functor
 
-## Full faithfulness for finite separable norm-field maps
+The field of norms functor is fully faithful on finite separable extensions of an infinite
+APF extension, the finite case of Wintenberger, Theorem 3.2.2 (ii).
 
-The relative Galois equivalences and their original-family formulas
-reflect stabilizers. Extending embeddings to a common finite Galois
-overfield then gives the full finite Hom correspondence.
-
-## Full faithfulness of the finite separable norm-field functor
-
-Finite relative embeddings commute with composition. Inside a common
-finite Galois overfield, the proved Galois Hom correspondence and
-fixed fields reflect factorization through each intermediate field.
+Relative embeddings induce algebra homomorphisms of norm fields and respect composition.
+After passing to a common finite Galois extension, the Galois correspondence identifies
+stabilizers and detects factorization through intermediate fields. This gives the bijection
+on algebra homomorphisms.
 
 ## Main definitions
 
 * `FieldOfNorms.mapAlgHom`: The map on relative finite embeddings is an algebra homomorphism for the
   norm field, by the embedding composition law.
-* `FieldOfNorms.algHomEquiv`: **Theorem 3.1.2.** For finite separable extensions `M`, `N` of the APF
-  extension `L/K`, the field of norms is fully faithful: `Hom_L(M, N) ≃ Hom_{X_K(L)}(X_K(M),
-  X_K(N))`.
+* `FieldOfNorms.algHomEquiv`: **Theorem 3.2.2 (ii).** For finite separable extensions `M`, `N` of
+  the APF extension `L/K`, the field of norms is fully faithful:
+  `Hom_L(M, N) ≃ Hom_{X_K(L)}(X_K(M), X_K(N))`.
 
 ## Main results
 
@@ -49,6 +45,12 @@ fixed fields reflect factorization through each intermediate field.
 * `FieldOfNorms.mapAlgHom_surjective_of_isGalois`: Every norm-field embedding into the Galois norm
   field comes from an embedding, by extending to a norm-field automorphism.
 * `FieldOfNorms.mapAlgHom_postcomp_aut`: Automorphisms act on the finite Hom map by composition.
+
+## Notation
+
+The following notation is local to this file.
+
+* `p` denotes the residue characteristic `residueChar K`.
 
 ## References
 
@@ -673,7 +675,7 @@ theorem FieldOfNorms.mapAlgHom_bijective
     FieldOfNorms.mapAlgHom_surjective_of_isGalois_top K L M N P
 ⟩
 
-/-- **Theorem 3.1.2.** For finite separable extensions `M`, `N` of the APF extension `L/K`, the
+/-- **Theorem 3.2.2 (ii).** For finite separable extensions `M`, `N` of the APF extension `L/K`, the
 field of norms is fully faithful: `Hom_L(M, N) ≃ Hom_{X_K(L)}(X_K(M), X_K(N))`. -/
 def FieldOfNorms.algHomEquiv [IsAPF K L] [Fact (¬ Module.Finite K L)] :
     let hM : IsAPF K M := (isAPF_finite_extension_iff K M L).mpr ‹_›

@@ -5,8 +5,8 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.APF.Tower.Residue
+public import FontaineWintenberger.LocalField.Basic
 
 /-!
 # The intrinsic residue field of an algebraic APF extension
@@ -65,7 +65,6 @@ noncomputable section
 namespace FontaineWintenberger
 
 variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-
 
 section Algebraic
 

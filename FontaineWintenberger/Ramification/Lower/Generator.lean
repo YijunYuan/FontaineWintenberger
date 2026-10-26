@@ -6,8 +6,8 @@ Authors: Yijun Yuan
 module
 
 public import FontaineWintenberger.LocalField.Basic
-public import FontaineWintenberger.Ramification.Lower.Basic
 public import FontaineWintenberger.LocalField.Spectral.IntegralGenerator
+public import FontaineWintenberger.Ramification.Lower.Basic
 public import FontaineWintenberger.Ramification.Lower.GaloisGroup
 
 /-!

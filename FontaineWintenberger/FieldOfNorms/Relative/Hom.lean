@@ -5,10 +5,10 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.FieldOfNorms.Functor.FullyFaithful
-public import FontaineWintenberger.Mathlib.FieldTheory.FiniteIntermediateField
 public import FontaineWintenberger.FieldOfNorms.Relative.Defs
+public import FontaineWintenberger.LocalField.Basic
+public import FontaineWintenberger.Mathlib.FieldTheory.FiniteIntermediateField
 public import Mathlib.Algebra.Group.Units.Equiv
 
 /-!
@@ -53,6 +53,12 @@ Reference: Wintenberger, Theorem 3.2.2(ii), and its automorphism consequence.
   finite restrictions realize all its finite-stage maps.
 * `RelFieldOfNorms.algMap_of_factor`: A finite-stage factorization computes the induced union map by
   the same finite Hom, independently of the chosen containing stage.
+
+## Notation
+
+The following notation is local to this file.
+
+* `p` denotes the residue characteristic `residueChar K`.
 
 ## References
 

@@ -5,20 +5,16 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.APF.Elementary.PrimeDegree
 public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.Norm.Tower
-public import FontaineWintenberger.APF.Elementary.PrimeDegree
 
 /-!
 # Norm precision in prime degree
 
-## Finite-precision norm congruences in towers
-
 The normalized norm valuation preserves every nonnegative precision.
 An addition congruence consequently respects input congruence and
 composes through a finite tower by transitivity of integral norms.
-
-## The common integer precision of prime-degree norms
 
 The integral break gives the exact trace-ideal precision. Euclidean division
 shows that this precision dominates the nonnegative ceiling of `(p-1)b/p`

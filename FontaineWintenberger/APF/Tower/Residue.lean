@@ -5,12 +5,12 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
-public import FontaineWintenberger.APF.Tower.Stages
 public import FontaineWintenberger.APF.Finite.Nonnormal
+public import FontaineWintenberger.APF.Tower.Stages
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.Different.Subextension
-public import FontaineWintenberger.Ramification.Upper.ResidueEquiv
 public import FontaineWintenberger.Ramification.Lower.SpectralMaps
+public import FontaineWintenberger.Ramification.Upper.ResidueEquiv
 
 /-!
 # Residue degrees of APF finite stages
@@ -52,7 +52,6 @@ namespace FontaineWintenberger
 
 variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
     [PerfectField 𝓀[K]]
-
 
 /-- The full zero index in a finite Galois overfield equals the
 residue degree of the intermediate field. -/

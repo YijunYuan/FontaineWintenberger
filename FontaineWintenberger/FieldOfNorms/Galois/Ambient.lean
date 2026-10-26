@@ -5,51 +5,20 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.FieldOfNorms.Galois.Action
-public import FontaineWintenberger.FieldOfNorms.Relative.Hom
 public import FontaineWintenberger.FieldOfNorms.Galois.RelAction
+public import FontaineWintenberger.FieldOfNorms.Relative.Hom
+public import FontaineWintenberger.LocalField.Basic
 
 /-!
 # The ambient Galois group of the relative field of norms
 
-## The ambient Galois group and the norm-union automorphism subgroup
+For a Galois APF extension `L/K` in a separable closure `Ω`, the action on
+`RelFieldOfNorms K L Ω` identifies `Gal(Ω/K)` with the subgroup of automorphisms whose
+restriction to `FieldOfNorms K L` comes from `Gal(L/K)`, as in Wintenberger, Remark 3.2.4.
 
-The target is the subgroup of ring automorphisms of the same union
-whose restriction to the base image is a norm-field action.
-Faithfulness gives an unique base restriction; its kernel consists
-of the base-algebra automorphisms.
-
-Reference: Wintenberger, Remark 3.2.4.
-
-## The base automorphism selected by a norm-union automorphism
-
-The checked subgroup membership theorem supplies a base
-automorphism and its exact square on the norm field.
-
-Reference: Wintenberger, Remark 3.2.4.
-
-## The base automorphism selected by a norm-union automorphism
-
-The checked subgroup membership theorem supplies a base
-automorphism and its exact square on the norm field.
-
-Reference: Wintenberger, Remark 3.2.4.
-
-## Relative automorphisms of the norm union
-
-Forgetting the base algebra gives a canonical homomorphism into the
-norm-union target subgroup.
-
-Reference: Wintenberger, Remark 3.2.4.
-
-## The ambient Galois group of the relative field of norms
-
-The same-union action identifies the absolute Galois group
-with the subgroup whose base restriction is a norm-field action.
-The restriction square and relative kernel comparison are retained.
-
-Reference: Wintenberger, Remark 3.2.4.
+Faithfulness determines the base restriction uniquely. The kernel of restriction consists
+of the automorphisms over the base norm field and is identified with `Gal(Ω/L)`.
 
 ## Main definitions
 
@@ -63,7 +32,7 @@ Reference: Wintenberger, Remark 3.2.4.
   the kernel.
 * `RelFieldOfNorms.galoisKernelEquiv`: The relative Galois group identifies with that same kernel.
 * `RelFieldOfNorms.ambientGaloisHom`: The ambient action takes values in the semilinear subgroup.
-* `RelFieldOfNorms.ambientGaloisEquiv`: **Remark 3.2.4 (iii).** The action of `Gal(Ω/K)` on
+* `RelFieldOfNorms.ambientGaloisEquiv`: **Remark 3.2.4.** The action of `Gal(Ω/K)` on
   `X_K(L)^sep` identifies `Gal(Ω/K)` with `RelFieldOfNorms.galoisSubgroup`, the automorphisms of
   `X_K(L)^sep` that restrict to `X_K(L)` through the action of some element of `Gal(L/K)`.
 
@@ -83,6 +52,22 @@ Reference: Wintenberger, Remark 3.2.4.
 * `RelFieldOfNorms.galoisRestriction_eq_iff`: The automorphism is determined by its base square.
 * `RelFieldOfNorms.mem_galoisRestriction_ker_iff`: The kernel consists exactly of automorphisms
   fixing the base pointwise.
+
+## Notation
+
+The following notation is local to this file.
+
+* `p` denotes the residue characteristic `residueChar K`.
+* `X` denotes `FieldOfNorms K L`.
+* `U` denotes `RelFieldOfNorms K L Ω`.
+* `ι` denotes the base embedding `RelFieldOfNorms.baseHom K L Ω`.
+* `ρ` denotes the action `FieldOfNorms.aut K L`.
+* `S` denotes the subgroup `RelFieldOfNorms.galoisSubgroup K L`.
+* `f` denotes the restriction function `RelFieldOfNorms.galoisRestrictionFun K L`.
+* `r` denotes the restriction homomorphism `RelFieldOfNorms.galoisRestriction K L`.
+* `A` denotes the action `RelFieldOfNorms.absoluteAut K L`.
+* `κ` denotes the kernel equivalence `RelFieldOfNorms.galoisKernelEquiv K L`.
+* `Φ` denotes the ambient homomorphism `RelFieldOfNorms.ambientGaloisHom K L`.
 
 ## References
 
@@ -523,7 +508,7 @@ theorem RelFieldOfNorms.ambientGaloisHom_surjective :
   exact ((Φ).map_mul (τ.restrictScalars K) σ).trans
     ((congrArg (fun z : S => z * Φ σ) hrel).trans (inv_mul_cancel_right β (Φ σ)))
 
-/-- **Remark 3.2.4 (iii).** The action of `Gal(Ω/K)` on `X_K(L)^sep` identifies `Gal(Ω/K)` with
+/-- **Remark 3.2.4.** The action of `Gal(Ω/K)` on `X_K(L)^sep` identifies `Gal(Ω/K)` with
 `RelFieldOfNorms.galoisSubgroup`, the automorphisms of `X_K(L)^sep` that restrict to `X_K(L)`
 through the action of some element of `Gal(L/K)`. -/
 def RelFieldOfNorms.ambientGaloisEquiv :

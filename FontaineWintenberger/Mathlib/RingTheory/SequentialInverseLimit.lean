@@ -5,8 +5,8 @@ Authors: Yijun Yuan
 -/
 module
 
-public import Mathlib.Algebra.Ring.Subring.Basic
 public import Mathlib.Algebra.Ring.Pi
+public import Mathlib.Algebra.Ring.Subring.Basic
 public import Mathlib.Data.Nat.Init
 public import Mathlib.RingTheory.Ideal.Maps
 public import Mathlib.Topology.Algebra.Ring.Basic
@@ -26,7 +26,6 @@ The discrete product uniformity supplies Hausdorffness and completeness.
   in the product.
 * `projection`: Evaluation on the compatible-family subring.
 * `transition`: The finite composite of the adjacent transition homomorphisms.
-* `liftSequence`
 
 ## Main results
 
@@ -41,10 +40,6 @@ The discrete product uniformity supplies Hausdorffness and completeness.
   without a separate completion.
 * `t2Space`: The same inherited uniformity is Hausdorff.
 * `continuous_projection`: The coordinate projections are continuous.
-
-## References
-
-* Mathlib; this file is an upstream candidate and has no project-specific reference.
 -/
 
 @[expose] public section
@@ -120,6 +115,7 @@ theorem transition_projection (i j : ℕ) (hij : i ≤ j) (a : subring B q) :
       rw [transition_succ B q i j hj, RingHom.comp_apply, compatible]
       exact ih
 
+/-- Extend a prescribed coordinate to a compatible sequence by recursively lifting it. -/
 private def liftSequence (hs : ∀ n, Function.Surjective (q n)) (n : ℕ) (b : B n) :
     ∀ i, B i :=
   Nat.rec (transition B q 0 n (Nat.zero_le n) b)

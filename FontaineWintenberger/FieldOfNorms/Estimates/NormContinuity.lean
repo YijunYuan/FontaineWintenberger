@@ -5,25 +5,17 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
-public import FontaineWintenberger.FieldOfNorms.Estimates.Wild
-public import FontaineWintenberger.APF.Elementary.NormContinuity
 public import FontaineWintenberger.APF.BaseChange.Strict
+public import FontaineWintenberger.APF.Elementary.NormContinuity
+public import FontaineWintenberger.FieldOfNorms.Estimates.Wild
+public import FontaineWintenberger.LocalField.Basic
 
 /-!
 # Norm continuity at Herbrand precision
 
-## Finite-layer norm continuity at Herbrand precision
-
-Prime norm continuity transports to the finite-layer integer norms.
-The inverse Herbrand functions compose in the towers,
-so their proved moduli compose along the wild prime chains.
-
-## Herbrand norm continuity on the wild finite tower
-
-The cyclic prime field chain supplies every step. Composing its
-proved norm moduli and Herbrand functions gives continuity for the
-finite-layer norm, without a continuity hypothesis in the endpoint.
+The integer norm is continuous with the modulus given by the Herbrand function. The prime-degree
+estimate passes to finite intermediate fields; composition of Herbrand functions then extends
+it along a tower of cyclic prime-degree extensions above wild inertia.
 
 ## Main definitions
 
@@ -41,6 +33,12 @@ finite-layer norm, without a continuity hypothesis in the endpoint.
   precisions through a triple of finite fields.
 * `integerNorm_sub_congruence_of_wild_field`: The norm on every finite step above wild inertia has
   its intrinsic Herbrand modulus.
+
+## Notation
+
+The following notation is local to this file.
+
+* `P` denotes the first lower ramification group of `Ω/K` (the wild inertia group).
 
 ## References
 
@@ -248,6 +246,7 @@ theorem integerNorm_sub_congruence_tower (E F G : FiniteIntermediateField K Ω)
   simpa only [integerNorm_integerNorm] using
     hE (integerNorm F G hFG x) (integerNorm F G hFG y) (hF x y hxy)
 
+/-- The Herbrand function for the extension between two finite intermediate fields. -/
 private def finitePhi (E F : FiniteIntermediateField K Ω) (hEF : E ≤ F) (r : ℝ) : ℝ := by
   let : Algebra E.val F.val := (IntermediateField.inclusion hEF).toRingHom.toAlgebra
   have : IsScalarTower K E.val F.val := IsScalarTower.of_algebraMap_eq' rfl

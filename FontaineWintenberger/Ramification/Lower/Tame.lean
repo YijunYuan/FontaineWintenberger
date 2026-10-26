@@ -6,9 +6,9 @@ Authors: Yijun Yuan
 module
 
 public import FontaineWintenberger.Ramification.Lower.Uniformizer
-public import Mathlib.RingTheory.IntegralDomain
-public import Mathlib.GroupTheory.Perm.Cycle.Type
 public import Mathlib.Algebra.CharP.Reduced
+public import Mathlib.GroupTheory.Perm.Cycle.Type
+public import Mathlib.RingTheory.IntegralDomain
 
 /-!
 # The tame inertia homomorphism

@@ -5,8 +5,8 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.APF.BaseChange.EmbeddingComparison
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Mathlib.FieldTheory.SeparableEmbeddings
 
 /-!
@@ -23,14 +23,14 @@ embedding numbers without assuming a valuation transport certificate.
 * `exists_aut_comp_intermediate`: An embedding of an intermediate field extends to an automorphism
   of an ordinary normal ambient field, by Mathlib's lift.
 * `apfRamificationBound_le_embeddingPairNumber`: The first bound controls every pair of embeddings
-  of an finite field, without assuming that either image is stable.
+  of a finite field, without assuming that either image is stable.
 * `apfRelativeBound_le_embeddingPairNumber_of_normedAlgebra`: The relative first bound over the
   abstract normed base controls the same pair number over the old base.
 * `apfRelativeBound_le_pairNumber_of_normedAlgebra`: Ambient embeddings agreeing on the normed
   finite base are separated by its relative first bound, even when that base image is moved by
   either ambient automorphism.
 * `embeddingNumber_eq_restriction_of_lt_bound`: Ordinary total ramification and the relative first
-  bound of an finite base force rigidity of every extension embedding.
+  bound of a finite base force rigidity of every extension embedding.
 
 ## References
 

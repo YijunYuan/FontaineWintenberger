@@ -5,18 +5,14 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.APF.BaseChange.Strict
 public import FontaineWintenberger.APF.BaseChange.UpperGroups
 public import FontaineWintenberger.APF.Subextension
+public import FontaineWintenberger.LocalField.Basic
 public import Mathlib.Order.Hom.WithTopBot
 
 /-!
 # Ramification bounds after finite base change
-
-## Extended finite-base ramification and strictness bounds
-
-## First bounds after finite base change in any finite Galois overfield
 
 Normal products intersect the fixing subgroup by the modular identity.
 The own-ring upper-group base change then sends every old admissible parameter
@@ -102,20 +98,21 @@ variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField 
     [PerfectField 𝓀[K]]
 variable (M : IntermediateField K (SeparableClosure K)) [FiniteDimensional K M]
 
-noncomputable local instance : NontriviallyNormedField M :=
+/-- The spectral norm on the finite base for ramification-bound comparison. -/
+noncomputable local instance baseChangeBoundsNormedField : NontriviallyNormedField M :=
   spectralNorm.nontriviallyNormedField K M
-noncomputable local instance : NormedAlgebra K M := spectralNorm.normedAlgebra K M
+/-- The normed algebra structure on the finite base for ramification bounds. -/
+noncomputable local instance baseChangeBoundsNormedAlgebra : NormedAlgebra K M :=
+  spectralNorm.normedAlgebra K M
 local instance : IsUltrametricDist M :=
   IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
     (isNonarchimedean_spectralNorm (K := K) (L := M))
 local instance : CompleteSpace M := spectralNorm.completeSpace K M
 local instance : IsCompleteDiscreteValuedField M :=
   normedAlgebra_isCompleteDiscreteValuedField K M
-noncomputable local instance : Algebra M (SeparableClosure M) :=
+/-- The canonical separable-closure algebra for ramification-bound comparison. -/
+noncomputable local instance baseChangeBoundsClosureAlgebra : Algebra M (SeparableClosure M) :=
   (separableClosure M (AlgebraicClosure M)).algebra'
-
-
-
 
 variable (N : Type*) [Field N] [Algebra K N] [Algebra M N] [IsScalarTower K M N]
     [Algebra.IsSeparable K N]

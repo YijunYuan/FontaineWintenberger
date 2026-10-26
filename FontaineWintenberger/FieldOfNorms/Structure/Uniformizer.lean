@@ -5,9 +5,9 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
-public import FontaineWintenberger.FieldOfNorms.Structure.Reconstruction
 public import FontaineWintenberger.FieldOfNorms.Basic.Ring
+public import FontaineWintenberger.FieldOfNorms.Structure.Reconstruction
+public import FontaineWintenberger.LocalField.Basic
 
 /-!
 # A norm-family uniformizer
@@ -37,6 +37,12 @@ on the field of norms carrier with normalized value one.
 * `FieldOfNorms.uniformizer_isUniformizer`: The family is an uniformizer for the same field
   valuation.
 
+## Notation
+
+The following notation is local to this file.
+
+* `p` denotes the residue characteristic `residueChar K`.
+
 ## References
 
 * Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
@@ -61,7 +67,7 @@ theorem FieldOfNorms.exists_valuation_eq_exp_neg_one [IsAPF K L]
     ∃ πX : FieldOfNorms K L, FieldOfNorms.valuation K L πX = WithZero.exp (-1 : ℤ) := by
   let D : FiniteIntermediateField K L := FiniteIntermediateField.bottom
   let E := deepFiniteTower K L D
-  let B := deepFiniteTowerQuotient K L D
+  let B := DeepFiniteTowerQuotient K L D
   let q (n : ℕ) := deepFiniteTowerTransition K L D n (n + 1) (Nat.le_succ n)
   let R := spectralIntegerRing K (E 0).val
   obtain ⟨π, hπ⟩ := IsDiscreteValuationRing.exists_irreducible R

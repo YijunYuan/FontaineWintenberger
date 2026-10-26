@@ -5,8 +5,8 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.Mathlib.Analysis.SpectralIntegers
 public import FontaineWintenberger.LocalField.Basic
+public import FontaineWintenberger.Mathlib.Analysis.SpectralIntegers
 public import FontaineWintenberger.Ramification.Lower.Basic
 
 /-!
@@ -51,7 +51,7 @@ noncomputable def spectralDecompositionEquiv : D ≃* (L ≃ₐ[K] L) where
   right_inv _ := rfl
   map_mul' _ _ := rfl
 
-noncomputable instance spectralIntegerRing_galoisAction : MulSemiringAction (L ≃ₐ[K] L) OL :=
+noncomputable instance spectralIntegerRingGaloisAction : MulSemiringAction (L ≃ₐ[K] L) OL :=
   MulSemiringAction.compHom OL (spectralDecompositionEquiv K L).symm.toMonoidHom
 
 @[simp]

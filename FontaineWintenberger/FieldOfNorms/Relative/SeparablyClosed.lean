@@ -5,9 +5,9 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.FieldOfNorms.Relative.ApproximateRoots
 public import FontaineWintenberger.FieldOfNorms.Structure.Completeness
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.LocalField.Hensel.RootExtraction
 public import Mathlib.RingTheory.Polynomial.ScaleRoots
 
@@ -36,6 +36,14 @@ supply roots in the same canonical directed union of norm fields.
   canonical relative field of norms has a root there.
 * `RelFieldOfNorms.isSepClosed`: The relative field of norms is separably closed, by the proved root
   construction and Mathlib's monic irreducible root criterion.
+
+## Notation
+
+The following notation is local to this file.
+
+* `p` denotes the residue characteristic `residueChar K`.
+* `Oₓ` denotes the valuation ring of `FieldOfNorms K L`.
+* `U` denotes `RelFieldOfNorms K L Ω`.
 
 ## References
 
@@ -97,7 +105,7 @@ variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 local notation "Oₓ" => Valuation.valuationSubring
   (FieldOfNorms.fieldValuation K L)
 
-/-- A monic integral separable polynomial has an exact root in an
+/-- A monic integral separable polynomial has an exact root in a
 finite norm field in the prescribed common separable closure.
 All approximation and valuation-extension hypotheses of Newton--Krasner
 extraction are produced on the fields. -/

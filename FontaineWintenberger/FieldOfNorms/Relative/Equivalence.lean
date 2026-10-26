@@ -5,13 +5,13 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.FieldOfNorms.Relative.Category
-public import FontaineWintenberger.FieldOfNorms.Relative.Hom
-public import FontaineWintenberger.FieldOfNorms.Relative.EssImage
 public import FontaineWintenberger.FieldOfNorms.Relative.Defs
-public import Mathlib.CategoryTheory.Functor.FullyFaithful
+public import FontaineWintenberger.FieldOfNorms.Relative.EssImage
+public import FontaineWintenberger.FieldOfNorms.Relative.Hom
+public import FontaineWintenberger.LocalField.Basic
 public import Mathlib.CategoryTheory.Equivalence
+public import Mathlib.CategoryTheory.Functor.FullyFaithful
 
 /-!
 # Equivalence of separable extension categories
@@ -62,6 +62,12 @@ Reference: Wintenberger, Theorem 3.2.2.
   functor's essential image when the field is replaced by an universe-lifted isomorphic copy.
 * `RelFieldOfNorms.functorEssSurj`: Every canonical separable target object is the value of an
   extension.
+
+## Notation
+
+The following notation is local to this file.
+
+* `p` denotes the residue characteristic `residueChar K`.
 
 ## References
 

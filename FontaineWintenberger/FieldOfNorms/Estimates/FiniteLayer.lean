@@ -5,8 +5,8 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.FieldOfNorms.Estimates.Nonnormal
+public import FontaineWintenberger.LocalField.Basic
 
 /-!
 # Estimates for the finite-layer integral norms
@@ -27,6 +27,12 @@ ambient separable extension.
   finite intermediate fields, so its norm has exactly zero additive defect.
 * `integerNorm_add_congruence_of_le_apfRamificationBound`: Every finite real lower bound for the
   first bound controls the additive norm defect.
+
+## Notation
+
+The following notation is local to this file.
+
+* `p` denotes the residue characteristic `residueChar K`.
 
 ## References
 

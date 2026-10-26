@@ -5,10 +5,10 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
-public import FontaineWintenberger.FieldOfNorms.Estimates.NormEstimates
-public import FontaineWintenberger.FieldOfNorms.Estimates.NormContinuity
 public import FontaineWintenberger.APF.Elementary.TameCompositum
+public import FontaineWintenberger.FieldOfNorms.Estimates.NormContinuity
+public import FontaineWintenberger.FieldOfNorms.Estimates.NormEstimates
+public import FontaineWintenberger.LocalField.Basic
 
 /-!
 # Herbrand continuity for the nonnormal norm
@@ -29,6 +29,16 @@ modulus on the integer rings, without a normality assumption.
   normal: its own total ramification and prime-power degree give the norm continuity modulus.
 * `intNorm_sub_congruence_of_totallyRamified`: Every finite separable totally ramified prime-power
   extension has its intrinsic Herbrand norm modulus, over an arbitrary perfect residue field.
+
+## Notation
+
+The following notation is local to this file.
+
+* `G` denotes the Galois group `Ω ≃ₐ[K] Ω`.
+* `P` denotes the first lower ramification group of `Ω/K` (the wild inertia group).
+* `A` denotes the fixed field of wild inertia `P`.
+* `e` denotes the ramification index of the spectral integer ring of `A` over `𝒪[K]`.
+* `S` denotes the spectral integer ring `spectralIntegerRing K L`.
 
 ## References
 

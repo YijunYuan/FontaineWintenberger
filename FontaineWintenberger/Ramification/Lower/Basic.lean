@@ -5,15 +5,15 @@ Authors: Yijun Yuan
 -/
 module
 
+public import Mathlib.Algebra.Order.Floor.Ring
+public import Mathlib.Basic.ENNReal.Real
+public import Mathlib.Basic.Real.ENatENNReal
+public import Mathlib.RingTheory.DiscreteValuationRing.Basic
 public import Mathlib.RingTheory.Ideal.Pointwise
 public import Mathlib.RingTheory.LocalRing.ResidueField.Basic
 public import Mathlib.RingTheory.LocalRing.RingHom.Basic
-public import Mathlib.RingTheory.Valuation.RamificationGroup
-public import Mathlib.RingTheory.DiscreteValuationRing.Basic
-public import Mathlib.Algebra.Order.Floor.Ring
-public import Mathlib.Basic.Real.ENatENNReal
-public import Mathlib.Basic.ENNReal.Real
 public import Mathlib.RingTheory.Valuation.Discrete.IsDiscreteValuationRing
+public import Mathlib.RingTheory.Valuation.RamificationGroup
 
 /-!
 # Lower ramification groups

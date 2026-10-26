@@ -5,19 +5,15 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
-public import FontaineWintenberger.APF.Herbrand
 public import FontaineWintenberger.APF.Elementary.PrimeDegree
+public import FontaineWintenberger.APF.Herbrand
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.Fields.Nonnormal
 public import FontaineWintenberger.Ramification.Lower.BaseChange
 public import Mathlib.Order.SuccPred.Archimedean
 
 /-!
 # Eventual slopes of finite APF extensions
-
-## Finite APF indices stabilize and their integral is eventually affine
-
-## The eventual ramification slope of a finite extension
 
 The eventual intrinsic inertia index is the ramification index of the
 field. This is valid for finite separable extensions without normality or total

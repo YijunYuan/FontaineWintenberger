@@ -5,36 +5,28 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
-public import FontaineWintenberger.Ramification.Different.TraceIdeal
-public import FontaineWintenberger.Ramification.Upper.PrimeOrder
+public import FontaineWintenberger.APF.BaseClosure
 public import FontaineWintenberger.APF.Finite.Galois
 public import FontaineWintenberger.APF.Finite.Nonnormal
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.Different.Subextension
+public import FontaineWintenberger.Ramification.Different.TraceIdeal
 public import FontaineWintenberger.Ramification.Lower.SpectralMaps
-public import FontaineWintenberger.APF.BaseClosure
 public import FontaineWintenberger.Ramification.Norm.Congruence
+public import FontaineWintenberger.Ramification.Upper.PrimeOrder
 
 /-!
 # Ramification of prime-degree extensions
 
-## The common intrinsic order in prime degree
-
 Every subgroup of a prime-order Galois group is trivial or full. The
 lower groups consequently give the same order to every nonidentity element.
-
-## Intrinsic ramification of prime-degree extensions
 
 The different and total ramification determine the unique finite
 upper break of an arbitrary separable prime-degree extension.
 
-## Intrinsic APF indices of prime-degree nonnormal extensions
-
 The finite upper orbit index equals the intrinsic APF inertia index
 with its residue-degree factor. The different therefore determines
 the full intrinsic profile of a totally ramified prime-degree subextension.
-
-## Norm congruence in prime degree
 
 The middle subsets in the product expansion form free orbits under left
 translation. Each orbit contributes a trace of an integral element.

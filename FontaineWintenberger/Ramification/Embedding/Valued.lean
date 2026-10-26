@@ -46,6 +46,8 @@ field, or finite-order automorphism hypothesis.
 ## References
 
 * Serre, *Local Fields*, Chapter IV (ramification groups, Herbrand functions, the different).
+* Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
+  applications*, §1.1.1.
 -/
 
 @[expose] public section

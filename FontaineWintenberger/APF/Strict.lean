@@ -5,45 +5,39 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.APF.Herbrand
 public import FontaineWintenberger.APF.RamificationBound
+public import FontaineWintenberger.LocalField.Basic
 public import Mathlib.Order.LiminfLimsup
 
 /-!
 # Strictly APF extensions
 
-## Strict APF and the extended strictness constant
-
 The lower limit and infimum use nonnegative extended reals. In particular the
 empty tail at an infinite ramification bound has infimum infinity. This case
 is proved directly from the upper groups and their intrinsic indices.
-
-## Positivity of the intrinsic APF strictness constant
 
 A positive finite first bound controls every bounded interval, because the
 APF index is positive and monotone. A positive lower limit controls
 the remaining tail. The infinite first bound uses its proved empty-infimum case.
 
-## Bounded growth of the intrinsic APF index
-
-A positive interval of the Herbrand integral gives an uniform lower
+A positive interval of the Herbrand integral gives a uniform lower
 bound for the strictness ratio whenever the intrinsic index has bounded
-growth across intervals of a fixed positive length. This implements
-blueprint `fw:apf-bounded-index-growth` for an abstract separable extension.
+growth across intervals of a fixed positive length.
 
 ## Main definitions
 
 * `apfStrictnessRatio`: The ratio, embedded in the nonnegative extended reals.
 * `apfStrictnessConstant`: The strictness constant, with the empty infimum equal to infinity.
 * `IsStrictlyAPF`: Strict arithmetic profiniteness of an abstract separable extension (Wintenberger
-  1.2.1): APF, and the ratio `ψ_{L/K}(u) / (G_K^0 : G_L^0 G_K^u)` stays bounded below as `u → ∞`.
+  1.2.1): APF, and the ratio `ψ_{L/K}(u) / (G_K^0 : G_L^0 G_K^u)` has a positive lower limit
+  as `u → ∞`.
 
 ## Main results
 
 * `isStrictlyAPF_iff`: **Wintenberger 1.2.1**, strict version: `L/K` is strictly APF iff it is APF
-  and the ratios `ψ_{L/K}(u) / (G_K^0 : G_K^u G_L)` are bounded below by a positive constant as `u →
-  ∞`.
+  and the ratios `ψ_{L/K}(u) / (G_K^0 : G_L^0 G_K^u)` are eventually bounded below by a positive
+  constant as `u → ∞`.
 * `isStrictlyAPF_iff_constant_pos`: The positivity criterion, including the infinite first-bound
   endpoint.
 * `IsAPF.window_mul_index_le_apfPsi`: A nonnegative interval of the Herbrand integral controls its
@@ -54,6 +48,12 @@ blueprint `fw:apf-bounded-index-growth` for an abstract separable extension.
   eventual lower bound under bounded growth of the intrinsic index.
 * `isStrictlyAPF_of_apfIndex_boundedGrowth`: Eventual bounded growth of the APF index implies strict
   APF for an abstract separable extension, without any residue-field hypothesis.
+
+## Implementation notes
+
+The definition of `apfStrictnessConstant` extends Wintenberger's formula to every separable
+extension. The positivity criterion assumes a positive first ramification bound, as in §1.2.1;
+the extended-real formulation also includes an infinite bound.
 
 ## References
 
@@ -105,21 +105,23 @@ theorem apfPhi_eq_self_of_bound_eq_top (h : apfRamificationBound K L = ⊤)
     [IsAPF K L] (u : ℝ) : apfPhi K L u = u := by
   simpa only [apfPsi_eq_self_of_bound_eq_top K L h] using apfPhi_apfPsi K L u
 
-/-- The ratio, embedded in the nonnegative extended reals. -/
+/-- The ratio of the inverse Herbrand function to the APF inertia index, viewed in `ℝ≥0∞`. -/
 noncomputable def apfStrictnessRatio (u : ℝ) : ℝ≥0∞ :=
   ENNReal.ofReal (apfPsi K L u / (apfIndex K L u : ℝ))
 
-/-- The strictness constant, with the empty infimum equal to infinity. -/
+/-- Wintenberger's strictness constant: the infimum of `apfStrictnessRatio` over parameters
+at least `apfRamificationBound K L`. The empty infimum is `∞` when the bound is infinite. -/
 noncomputable def apfStrictnessConstant : ℝ≥0∞ :=
   ⨅ u : ℝ, ⨅ (_ : apfRamificationBound K L ≤ (u : EReal)), apfStrictnessRatio K L u
 
 /-- Strict arithmetic profiniteness of an abstract separable extension (Wintenberger 1.2.1):
-APF, and the ratio `ψ_{L/K}(u) / (G_K^0 : G_L^0 G_K^u)` stays bounded below as `u → ∞`. -/
+APF, and the ratio `ψ_{L/K}(u) / (G_K^0 : G_L^0 G_K^u)` has a positive lower limit as `u → ∞`. -/
 class IsStrictlyAPF : Prop extends IsAPF K L where
+  /-- The strictness ratio has a positive lower limit at infinity. -/
   liminf_pos : 0 < liminf (apfStrictnessRatio K L) atTop
 
 /-- **Wintenberger 1.2.1**, strict version: `L/K` is strictly APF iff it is APF and the ratios
-`ψ_{L/K}(u) / (G_K^0 : G_K^u G_L)` are bounded below by a positive constant as `u → ∞`. -/
+`ψ_{L/K}(u) / (G_K^0 : G_L^0 G_K^u)` are bounded below by a positive constant as `u → ∞`. -/
 theorem isStrictlyAPF_iff :
     IsStrictlyAPF K L ↔ IsAPF K L ∧ 0 < liminf (apfStrictnessRatio K L) atTop :=
   ⟨fun h => ⟨h.toIsAPF, h.liminf_pos⟩, fun h => { toIsAPF := h.1, liminf_pos := h.2 }⟩

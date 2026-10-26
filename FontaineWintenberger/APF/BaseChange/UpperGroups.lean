@@ -5,35 +5,23 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
-public import FontaineWintenberger.APF.Finite.Nonnormal
-public import FontaineWintenberger.Ramification.Upper.BaseChange
 public import FontaineWintenberger.APF.BaseClosure
+public import FontaineWintenberger.APF.Finite.Nonnormal
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.LocalField.Residue.Basic
 public import FontaineWintenberger.Ramification.Infinite.Basic
 public import FontaineWintenberger.Ramification.Infinite.Restriction
+public import FontaineWintenberger.Ramification.Upper.BaseChange
 
 /-!
 # Upper ramification groups after finite base change
 
-## Upper ramification groups after finite base change
-
 The two spectral constructions give the same integer subring. The
 fixing-subgroup equivalence acts by the field automorphisms, so the
 subgroup change of parameter transports to the group over the new base.
-
-## Upper ramification groups after finite base change
-
-The two spectral constructions give the same integer subring. The
-fixing-subgroup equivalence acts by the field automorphisms, so the
-subgroup change of parameter transports to the group over the new base.
-
-## Finite upper base change for an abstract embedded base
 
 The scalar tower and its field image are identified by the canonical
 surjective scalar-change equivalence. The own-ring actions are preserved.
-
-## Absolute upper ramification after finite base change
 
 Finite upper conditions are tested on the cofinal old-base normal overfields.
 Every finite comparison uses the scalar-tower and integer-ring actions.
@@ -42,7 +30,7 @@ Every finite comparison uses the scalar-tower and integer-ring actions.
 
 * `finiteTowerAutEquivImage`: Changing from the abstract scalar field to its image preserves
   automorphisms.
-* `finiteTower_spectralIntegerRingEquiv`: The field identity gives the integer-ring equivalence for
+* `finiteTowerSpectralIntegerRingEquiv`: The field identity gives the integer-ring equivalence for
   scalar change.
 
 ## Main results
@@ -53,7 +41,7 @@ Every finite comparison uses the scalar-tower and integer-ring actions.
   normality of the base.
 * `finiteTower_spectralIntegerRing_eq`: The own spectral constructions over an embedded field and
   its image agree as subrings.
-* `finiteTower_spectralIntegerRingEquiv_smul`: Scalar change and integer-ring identification
+* `finiteTowerSpectralIntegerRingEquiv_smul`: Scalar change and integer-ring identification
   preserve the field action.
 * `finiteTower_upper_map_autEquivImage`: Scalar change transports the own-ring upper group to the
   image-base upper group.
@@ -83,7 +71,6 @@ variable (M : IntermediateField K E)
 local instance finiteOverfieldBase_completeSpace : CompleteSpace M :=
     IntermediateField.completeSpace_of_finiteDimensional M
 
-
 local instance finiteOverfieldBase_discreteValuationRing : IsCompleteDiscreteValuedField M :=
   normedAlgebra_isCompleteDiscreteValuedField K M
 
@@ -112,10 +99,13 @@ namespace FontaineWintenberger
 variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
 variable (E : FiniteGaloisIntermediateField K (SeparableClosure K))
 
-noncomputable local instance : NontriviallyNormedField E :=
+/-- The spectral norm on a finite Galois layer for upper ramification groups. -/
+noncomputable local instance finiteUpperNormedField : NontriviallyNormedField E :=
   spectralNorm.nontriviallyNormedField K E
 
-noncomputable local instance : NormedAlgebra K E := spectralNorm.normedAlgebra K E
+/-- The spectral norm makes the finite Galois layer a normed algebra over `K`. -/
+noncomputable local instance finiteUpperNormedAlgebra : NormedAlgebra K E :=
+  spectralNorm.normedAlgebra K E
 
 local instance : IsUltrametricDist E :=
   IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
@@ -124,7 +114,6 @@ local instance : IsUltrametricDist E :=
 variable (M : IntermediateField K E)
 
 local instance : CompleteSpace M := IntermediateField.completeSpace_of_finiteDimensional M
-
 
 local instance : IsCompleteDiscreteValuedField M :=
   normedAlgebra_isCompleteDiscreteValuedField K M
@@ -146,9 +135,12 @@ namespace FontaineWintenberger
 variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
 variable (E : FiniteGaloisIntermediateField K (SeparableClosure K))
 
-noncomputable local instance : NontriviallyNormedField E :=
+/-- The spectral norm on a finite Galois layer containing an abstract base. -/
+noncomputable local instance finiteTowerNormedField : NontriviallyNormedField E :=
   spectralNorm.nontriviallyNormedField K E
-noncomputable local instance : NormedAlgebra K E := spectralNorm.normedAlgebra K E
+/-- The normed algebra structure over `K` on the finite Galois layer. -/
+noncomputable local instance finiteTowerNormedAlgebra : NormedAlgebra K E :=
+  spectralNorm.normedAlgebra K E
 local instance : IsUltrametricDist E :=
   IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
     (isNonarchimedean_spectralNorm (K := K) (L := E))
@@ -161,21 +153,26 @@ local instance : FiniteDimensional M E := Module.Finite.right K M E
 
 local instance : Algebra.IsAlgebraic M E := Algebra.IsAlgebraic.tower_top (K := K) M
 
-noncomputable local instance : NormedAlgebra M E := spectralNorm.normedAlgebra' K M E
+/-- The compatible normed algebra structure over the abstract finite base. -/
+noncomputable local instance finiteTowerRelativeNormedAlgebra : NormedAlgebra M E :=
+  spectralNorm.normedAlgebra' K M E
 
 local notation "S₀" => AlgHom.fieldRange (IsScalarTower.toAlgHom K M E)
 local notation "e₀" => AlgHom.equivFieldRange (IsScalarTower.toAlgHom K M E)
 
-noncomputable local instance : Algebra M S₀ := (e₀).toAlgHom.toRingHom.toAlgebra
+/-- The algebra structure on the image of the abstract finite base. -/
+noncomputable local instance finiteTowerImageAlgebra : Algebra M S₀ :=
+  (e₀).toAlgHom.toRingHom.toAlgebra
 local instance : IsScalarTower K M S₀ := IsScalarTower.of_algHom (e₀).toAlgHom
 local instance : IsScalarTower M S₀ E := IsScalarTower.of_algebraMap_eq (fun _ => rfl)
 local instance : FiniteDimensional S₀ E := Module.Finite.right K S₀ E
 local instance : Algebra.IsAlgebraic S₀ E := Algebra.IsAlgebraic.tower_top (K := K) S₀
 local instance : CompleteSpace S₀ := IntermediateField.completeSpace_of_finiteDimensional S₀
 
-noncomputable local instance :
+/-- The action over the image of the finite base on its spectral integer ring. -/
+noncomputable local instance finiteTowerImageGaloisAction :
     MulSemiringAction (E ≃ₐ[S₀] E) (spectralIntegerRing S₀ E) :=
-  spectralIntegerRing_galoisAction S₀ E
+  spectralIntegerRingGaloisAction S₀ E
 
 /-- Changing from the abstract scalar field to its image preserves automorphisms. -/
 noncomputable def finiteTowerAutEquivImage : (E ≃ₐ[M] E) ≃* (E ≃ₐ[S₀] E) :=
@@ -188,19 +185,18 @@ theorem finiteTower_spectralIntegerRing_eq :
     (spectralIntegerRing_eq_normedUnitBall S₀ E).symm
 
 /-- The field identity gives the integer-ring equivalence for scalar change. -/
-noncomputable def finiteTower_spectralIntegerRingEquiv :
+noncomputable def finiteTowerSpectralIntegerRingEquiv :
     spectralIntegerRing M E ≃+* spectralIntegerRing S₀ E :=
   RingEquiv.subringCongr
     (congrArg ValuationSubring.toSubring (finiteTower_spectralIntegerRing_eq K E M))
 
 /-- Scalar change and integer-ring identification preserve the field action. -/
-theorem finiteTower_spectralIntegerRingEquiv_smul (g : E ≃ₐ[M] E)
+theorem finiteTowerSpectralIntegerRingEquiv_smul (g : E ≃ₐ[M] E)
     (x : spectralIntegerRing M E) :
-    finiteTower_spectralIntegerRingEquiv K E M (g • x) =
-      finiteTowerAutEquivImage K E M g • finiteTower_spectralIntegerRingEquiv K E M x := by
+    finiteTowerSpectralIntegerRingEquiv K E M (g • x) =
+      finiteTowerAutEquivImage K E M g • finiteTowerSpectralIntegerRingEquiv K E M x := by
   apply Subtype.ext
   rfl
-
 
 local instance : IsDiscreteValuationRing (spectralIntegerRing M E) := by
   rw [spectralIntegerRing_eq_normedUnitBall M E,
@@ -218,8 +214,8 @@ theorem finiteTower_upper_map_autEquivImage {v : ℝ} (hv : -1 ≤ v) :
         (finiteTowerAutEquivImage K E M).toMonoidHom =
       upperRamificationGroup (R := spectralIntegerRing S₀ E) (E ≃ₐ[S₀] E) v :=
   upperRamificationGroup_map_equivariant
-    (finiteTower_spectralIntegerRingEquiv K E M) (finiteTowerAutEquivImage K E M)
-    (finiteTower_spectralIntegerRingEquiv_smul K E M) hv
+    (finiteTowerSpectralIntegerRingEquiv K E M) (finiteTowerAutEquivImage K E M)
+    (finiteTowerSpectralIntegerRingEquiv_smul K E M) hv
 
 omit [IsCompleteDiscreteValuedField K] [IsUltrametricDist M] [CompleteSpace M]
      in
@@ -314,9 +310,12 @@ variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField 
     [PerfectField 𝓀[K]]
 variable (M : IntermediateField K (SeparableClosure K)) [FiniteDimensional K M]
 
-noncomputable local instance : NontriviallyNormedField M :=
+/-- The spectral norm on the finite base for absolute upper ramification groups. -/
+noncomputable local instance absoluteUpperBaseNormedField : NontriviallyNormedField M :=
   spectralNorm.nontriviallyNormedField K M
-noncomputable local instance : NormedAlgebra K M := spectralNorm.normedAlgebra K M
+/-- The normed algebra structure on the finite base for absolute upper groups. -/
+noncomputable local instance absoluteUpperBaseNormedAlgebra : NormedAlgebra K M :=
+  spectralNorm.normedAlgebra K M
 local instance : IsUltrametricDist M :=
   IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
     (isNonarchimedean_spectralNorm (K := K) (L := M))

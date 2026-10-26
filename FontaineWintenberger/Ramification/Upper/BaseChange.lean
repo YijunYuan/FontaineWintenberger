@@ -6,8 +6,8 @@ Authors: Yijun Yuan
 module
 
 public import FontaineWintenberger.Ramification.Lower.BaseChange
-public import FontaineWintenberger.Ramification.Upper.Transport
 public import FontaineWintenberger.Ramification.Upper.CosetMax
+public import FontaineWintenberger.Ramification.Upper.Transport
 
 /-!
 # Lower ramification for intermediate-field automorphisms
@@ -59,8 +59,8 @@ theorem finiteBase_ramificationOrder (g : M.fixingSubgroup) :
     ramificationOrder (R := spectralIntegerRing M E) (E ≃ₐ[M] E)
         (M.fixingSubgroupEquiv g) =
       ramificationOrder (R := spectralIntegerRing K E) (E ≃ₐ[K] E) g.1 := by
-  rw [ramificationOrder_equivariant (finiteBase_spectralIntegerRingEquiv K E M)
-    M.fixingSubgroupEquiv (finiteBase_spectralIntegerRingEquiv_smul K E M)]
+  rw [ramificationOrder_equivariant (finiteBaseSpectralIntegerRingEquiv K E M)
+    M.fixingSubgroupEquiv (finiteBaseSpectralIntegerRingEquiv_smul K E M)]
   rfl
 
 /-- Real lower groups transport through the fixing-subgroup equivalence. -/
@@ -72,8 +72,8 @@ theorem finiteBase_lowerReal_map_fixingSubgroupEquiv (t : ℝ) :
         (IsLocalRing.maximalIdeal (spectralIntegerRing M E)) t := by
   rw [lowerRamificationGroupReal_subgroupOf]
   exact lowerRamificationGroupReal_map_equivariant
-    (finiteBase_spectralIntegerRingEquiv K E M) M.fixingSubgroupEquiv
-    (finiteBase_spectralIntegerRingEquiv_smul K E M) t
+    (finiteBaseSpectralIntegerRingEquiv K E M) M.fixingSubgroupEquiv
+    (finiteBaseSpectralIntegerRingEquiv_smul K E M) t
 
 /-- Integer lower groups use the same canonical ideal-inertia filtration. -/
 theorem finiteBase_lower_map_fixingSubgroupEquiv (n : ℤ) :
@@ -128,7 +128,7 @@ theorem finiteBase_upper_map_fixingSubgroupEquiv {v : ℝ} (hv : -1 ≤ v) :
         M.fixingSubgroupEquiv.toMonoidHom =
       upperRamificationGroup (R := spectralIntegerRing M E) (E ≃ₐ[M] E) v :=
   upperRamificationGroup_map_equivariant
-    (finiteBase_spectralIntegerRingEquiv K E M) M.fixingSubgroupEquiv
-    (finiteBase_spectralIntegerRingEquiv_smul K E M) hv
+    (finiteBaseSpectralIntegerRingEquiv K E M) M.fixingSubgroupEquiv
+    (finiteBaseSpectralIntegerRingEquiv_smul K E M) hv
 
 end FontaineWintenberger

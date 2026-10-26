@@ -5,44 +5,21 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
-public import FontaineWintenberger.FieldOfNorms.Basic.Addition
 public import FontaineWintenberger.APF.Tower.PrimeValuation
+public import FontaineWintenberger.FieldOfNorms.Basic.Addition
+public import FontaineWintenberger.LocalField.Basic
 public import Mathlib.Algebra.Ring.MinimalAxioms
 
 /-!
 # The field of norms as a valued field
 
-## Algebraic laws of the field of norms addition
+The addition constructed from norm-sum limits satisfies the ring laws by coordinate
+approximation and separation at a fixed finite field. Diverging ramification bounds force the
+residue characteristic `p` to vanish; the `(p - 1)`-fold sum then gives additive inverses.
 
-Asymptotic coordinate approximation and fixed-base separation prove the laws
-of the operation already constructed from norm-sum limits.
-
-## Finite sums and their coordinate approximations
-
-The named additive structure uses precisely the sum operation constructed
-from finite-field fields of norms.
-
-## The field of norms as a commutative semiring
-
-The named structure preserves its multiplicative data and uses the
-addition already constructed from fields of norms.
-
-## The field structure on the field of norms carrier
-
-Ramification divergence kills the residue prime. The resulting
-additive inverses complete the existing multiplication to a field.
-
-## The stable norm valuation on the constructed field
-
-The existing multiplicative valuation satisfies the ultrametric inequality
-for precisely the constructed addition on the same field of norms carrier.
-
-## Valuations of differences from finite coordinates
-
-Subtraction has arbitrarily precise finite-coordinate approximations.
-Consequently cofinally many exact finite displacement valuations determine
-the valuation on the norm-field carrier.
+Together with the multiplicative structure and stable coordinate valuation, this makes the
+field of norms a valued field of characteristic `p`, as in Wintenberger, Theorem 2.1.3 (ii).
+The file also proves coordinate estimates for finite sums and differences.
 
 ## Main definitions
 
@@ -65,6 +42,12 @@ the valuation on the norm-field carrier.
 * `FieldOfNorms.field_toCommSemiring`: The field structure extends the semiring structure
   definitionally: there is a single addition, `natCast` and `nsmul` on the carrier.
 * `FieldOfNorms.field_add`: The field addition is definitionally the field of norms sum operation.
+
+## Notation
+
+The following notation is local to this file.
+
+* `p` denotes the residue characteristic `residueChar K`.
 
 ## References
 
@@ -112,13 +95,13 @@ theorem FieldOfNorms.add_assoc [IsAPF K L] (α β γ : FieldOfNorms K L) :
 /-- The zero and the constructed addition form a commutative monoid
 on the same carrier. Low priority: when `L/K` is infinite the `Field` instance supplies the
 same structure, and instance search should go through it so that all paths agree syntactically. -/
-instance (priority := low) FieldOfNorms.instAddCommMonoid [IsAPF K L] : AddCommMonoid (FieldOfNorms
-    K L) where
+instance (priority := low) FieldOfNorms.instAddCommMonoid [IsAPF K L] :
+    AddCommMonoid (FieldOfNorms K L) where
   zero := 0
   add := FieldOfNorms.add K L
   add_assoc := FieldOfNorms.add_assoc K L
-  zero_add := FieldOfNorms.add_zero_left K L
-  add_zero := FieldOfNorms.add_zero_right K L
+  zero_add := FieldOfNorms.zero_add K L
+  add_zero := FieldOfNorms.add_zero K L
   add_comm := FieldOfNorms.add_comm K L
   nsmul := @nsmulRec (FieldOfNorms K L) inferInstance ⟨FieldOfNorms.add K L⟩
 
@@ -198,18 +181,18 @@ variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
 /-- The field of norms addition and multiplication give a named
 commutative semiring, preserving the multiplicative structure. -/
-instance (priority := low) FieldOfNorms.instCommSemiring [IsAPF K L] : CommSemiring (FieldOfNorms K
-    L) :=
-  {
-    (inferInstance : CommMonoidWithZero (FieldOfNorms K L)), FieldOfNorms.instAddCommMonoid K L with
-    left_distrib := FieldOfNorms.left_distrib K L
-    right_distrib := fun a b c => by
-      change FieldOfNorms.add K L a b * c =
-        FieldOfNorms.add K L (a * c) (b * c)
-      rw [mul_comm _ c, FieldOfNorms.left_distrib, mul_comm c a, mul_comm c b]
-    natCast := fun n => n • (1 : FieldOfNorms K L)
-    natCast_zero := zero_nsmul _
-    natCast_succ := fun n => AddMonoid.nsmul_succ n _ }
+instance (priority := low) FieldOfNorms.instCommSemiring [IsAPF K L] :
+    CommSemiring (FieldOfNorms K L) where
+  __ := (inferInstance : CommMonoidWithZero (FieldOfNorms K L))
+  __ := FieldOfNorms.instAddCommMonoid K L
+  left_distrib := FieldOfNorms.mul_add K L
+  right_distrib := fun a b c => by
+    change FieldOfNorms.add K L a b * c =
+      FieldOfNorms.add K L (a * c) (b * c)
+    rw [mul_comm _ c, FieldOfNorms.mul_add, mul_comm c a, mul_comm c b]
+  natCast := fun n => n • (1 : FieldOfNorms K L)
+  natCast_zero := zero_nsmul _
+  natCast_succ := fun n => AddMonoid.nsmul_succ n _
 
 end FontaineWintenberger
 
@@ -251,18 +234,20 @@ theorem FieldOfNorms.pred_nsmul_add_eq_zero [IsAPF K L]
 
 /-- The multiplicative field of norms is a field under the
 addition. Every additive inverse is its (p-1)-fold sum. -/
-instance FieldOfNorms.instNeg [IsAPF K L] [Fact (¬ Module.Finite K L)] : Neg (FieldOfNorms K L) :=
-  ⟨fun α => (p - 1) • α⟩
+instance FieldOfNorms.instNeg [IsAPF K L] [Fact (¬ Module.Finite K L)] :
+    Neg (FieldOfNorms K L) where
+  neg α := (p - 1) • α
 
-/-- **Wintenberger 2.1.1.** The field of norms `X_K(L)` of an infinite APF extension is a field. -/
+/-- **Theorem 2.1.3 (ii).** The field of norms of an infinite APF extension is a field. -/
 instance FieldOfNorms.instField [IsAPF K L] [Fact (¬ Module.Finite K L)] :
-    Field (FieldOfNorms K L) :=
-  { FieldOfNorms.instCommSemiring K L, FieldOfNorms.instCommGroupWithZero K L, FieldOfNorms.instNeg
-      K L with
-    neg_add_cancel := FieldOfNorms.pred_nsmul_add_eq_zero K L
-    zsmul := zsmulRec
-    nnqsmul := _
-    qsmul := _ }
+    Field (FieldOfNorms K L) where
+  __ := FieldOfNorms.instCommSemiring K L
+  __ := FieldOfNorms.instCommGroupWithZero K L
+  __ := FieldOfNorms.instNeg K L
+  neg_add_cancel := FieldOfNorms.pred_nsmul_add_eq_zero K L
+  zsmul := zsmulRec
+  nnqsmul := _
+  qsmul := _
 
 /-- The field structure extends the semiring structure definitionally: there is a single
 addition, `natCast` and `nsmul` on the carrier. -/
@@ -271,7 +256,7 @@ theorem FieldOfNorms.field_toCommSemiring [IsAPF K L] [Fact (¬ Module.Finite K 
         FieldOfNorms.instCommSemiring K L :=
   rfl
 
-/-- **Theorem 2.1.3 (i).** The field of norms has characteristic `p`, the residue characteristic
+/-- **Theorem 2.1.3 (ii).** The field of norms has characteristic `p`, the residue characteristic
 of `K`. -/
 instance FieldOfNorms.instCharP [IsAPF K L] [Fact (¬ Module.Finite K L)] :
     CharP (FieldOfNorms K L) p := by
@@ -310,9 +295,9 @@ theorem FieldOfNorms.valuation_add_le_max [IsAPF K L] (α β : FieldOfNorms K L)
     FieldOfNorms.valuation K L (FieldOfNorms.add K L α β) ≤
       max (FieldOfNorms.valuation K L α) (FieldOfNorms.valuation K L β) := by
   by_cases hα : α = 0
-  · simp only [hα, FieldOfNorms.add_zero_left, _root_.map_zero, zero_le, max_eq_right, le_refl]
+  · simp only [hα, FieldOfNorms.zero_add, _root_.map_zero, zero_le, max_eq_right, le_refl]
   by_cases hβ : β = 0
-  · simp only [hβ, FieldOfNorms.add_zero_right, _root_.map_zero, zero_le, max_eq_left, le_refl]
+  · simp only [hβ, FieldOfNorms.add_zero, _root_.map_zero, zero_le, max_eq_left, le_refl]
   let w := FieldOfNorms.valuation K L
   have hαw : w α ≠ 0 := fun h => hα ((FieldOfNorms.valuation_eq_zero_iff K L α).mp h)
   have hβw : w β ≠ 0 := fun h => hβ ((FieldOfNorms.valuation_eq_zero_iff K L β).mp h)
@@ -331,7 +316,7 @@ theorem FieldOfNorms.valuation_add_le_max [IsAPF K L] (α β : FieldOfNorms K L)
   have hδα : δ * (α / δ) = α := by simp [div_eq_mul_inv, mul_left_comm, hδ]
   have hδβ : δ * (β / δ) = β := by simp [div_eq_mul_inv, mul_left_comm, hδ]
   have hsum := FieldOfNorms.valuation_add_le_one K L (α / δ) (β / δ) ha hb
-  have heq := FieldOfNorms.left_distrib K L δ (α / δ) (β / δ)
+  have heq := FieldOfNorms.mul_add K L δ (α / δ) (β / δ)
   rw [hδα, hδβ] at heq
   change w (FieldOfNorms.add K L α β) ≤ max (w α) (w β)
   rw [← heq, _root_.map_mul, ← hmax]
@@ -340,9 +325,9 @@ theorem FieldOfNorms.valuation_add_le_max [IsAPF K L] (α β : FieldOfNorms K L)
 /-- The same stable map, now bundled as a field valuation for the
 constructed field. No new map or alternate field carrier is introduced. -/
 def FieldOfNorms.fieldValuation [IsAPF K L] [Fact (¬ Module.Finite K L)] :
-    Valuation (FieldOfNorms K L) (WithZero (Multiplicative ℤ)) :=
-  { FieldOfNorms.valuation K L with
-    map_add_le_max' := FieldOfNorms.valuation_add_le_max K L }
+    Valuation (FieldOfNorms K L) (WithZero (Multiplicative ℤ)) where
+  __ := FieldOfNorms.valuation K L
+  map_add_le_max' := FieldOfNorms.valuation_add_le_max K L
 
 /-- Bundling the field valuation preserves exactly the existing stable map. -/
 @[simp]
@@ -350,7 +335,7 @@ theorem FieldOfNorms.fieldValuation_apply [IsAPF K L]
     [Fact (¬ Module.Finite K L)] (α : FieldOfNorms K L) :
     FieldOfNorms.fieldValuation K L α = FieldOfNorms.valuation K L α := rfl
 
-/-- **Wintenberger 2.1.1.** The field of norms is a valued field with value group `ℤ`, the
+/-- **Theorem 2.1.3 (ii).** The field of norms is a valued field with value group `ℤ`, the
 valuation being the stable normalized valuation of the coordinates. -/
 instance FieldOfNorms.instValued [IsAPF K L] [Fact (¬ Module.Finite K L)] :
     Valued (FieldOfNorms K L) (WithZero (Multiplicative ℤ)) :=

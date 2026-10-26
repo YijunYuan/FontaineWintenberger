@@ -5,11 +5,11 @@ Authors: Yijun Yuan
 -/
 module
 
-public import Mathlib.RingTheory.Polynomial.Resultant.Basic
 public import Mathlib.FieldTheory.Separable
+public import Mathlib.RingTheory.Polynomial.Resultant.Basic
+public import Mathlib.RingTheory.Valuation.Extension
 public import Mathlib.RingTheory.Valuation.Integral
 public import Mathlib.RingTheory.Valuation.ValuationSubring
-public import Mathlib.RingTheory.Valuation.Extension
 
 /-!
 # Discriminants of monic polynomials over valuation rings
@@ -43,11 +43,7 @@ additive valuation.
 * `valuation_discr_le_max`: Evaluating the integral discriminant Bezout identity bounds at least one
   of the polynomial and derivative values, over any valued field.
 * `valuation_discr_le_derivative`: A sufficiently small residual forces the derivative to have
-  valuation at least the discriminant's valuation, without an unit-derivative premise.
-
-## References
-
-* Mathlib; this file is an upstream candidate and has no project-specific reference.
+  valuation at least the discriminant's valuation, without a unit-derivative premise.
 -/
 
 @[expose] public section
@@ -151,7 +147,7 @@ theorem valuation_discr_le_max (f : v.valuationSubring[X]) (hf : f.Monic)
     exact mul_le_of_le_one_left' (B.eval z).property
 
 /-- A sufficiently small residual forces the derivative to have valuation
-at least the discriminant's valuation, without an unit-derivative premise. -/
+at least the discriminant's valuation, without a unit-derivative premise. -/
 theorem valuation_discr_le_derivative (f : v.valuationSubring[X]) (hf : f.Monic)
     (hdegree : 0 < f.natDegree) (z : v.valuationSubring)
     (hz : v ((f.eval z : v.valuationSubring) : C) < v (f.discr : C)) :

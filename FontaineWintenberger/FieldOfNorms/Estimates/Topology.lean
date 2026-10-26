@@ -5,8 +5,8 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.FieldOfNorms.Estimates.Integral
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.LocalField.Spectral.Tower
 public import Mathlib.Topology.Instances.Matrix
 

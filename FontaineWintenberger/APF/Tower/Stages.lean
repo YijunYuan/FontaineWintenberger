@@ -5,29 +5,23 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
-public import FontaineWintenberger.APF.Defs
-public import FontaineWintenberger.APF.BaseClosure
-public import FontaineWintenberger.Mathlib.FieldTheory.FiniteIntermediateField
 public import FontaineWintenberger.APF.BaseChange.Strict
+public import FontaineWintenberger.APF.BaseClosure
+public import FontaineWintenberger.APF.Defs
 public import FontaineWintenberger.APF.RamificationBound
+public import FontaineWintenberger.LocalField.Basic
+public import FontaineWintenberger.Mathlib.FieldTheory.FiniteIntermediateField
 
 /-!
 # Finite stages of an APF extension
-
-## Finite stages of an APF extension
 
 The closed APF product has a finite fixed field. These stages
 are increasing and cofinal. Restricting the inverse of a separable
 embedding gives finite subfields of the abstract extension.
 
-## Countable cofinal finite intermediate fields of an APF extension
-
 The APF fixed fields at integer parameters pull back to a monotone
 cofinal sequence in the abstract extension. No finite-residue or
 normality assumption is used.
-
-## Cofinal growth of the relative first ramification bounds
 
 The finite-base closure homomorphism carries a stage
 containment to a full relative APF product. Its Herbrand parameter
@@ -66,7 +60,6 @@ noncomputable section
 namespace FontaineWintenberger
 
 variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
-
 
 /-- Absolute upper groups eventually fix every finite subfield. -/
 theorem exists_absoluteUpper_le_fixingSubgroup_of_finite

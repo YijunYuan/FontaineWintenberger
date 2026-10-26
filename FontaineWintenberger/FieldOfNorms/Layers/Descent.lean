@@ -6,9 +6,9 @@ Authors: Yijun Yuan
 module
 
 public import FontaineWintenberger.Mathlib.FieldTheory.FiniteIntermediateField
+public import Mathlib.FieldTheory.LinearDisjoint
 public import Mathlib.FieldTheory.Minpoly.Field
 public import Mathlib.FieldTheory.PrimitiveElement
-public import Mathlib.FieldTheory.LinearDisjoint
 public import Mathlib.LinearAlgebra.Charpoly.BaseChange
 
 /-!

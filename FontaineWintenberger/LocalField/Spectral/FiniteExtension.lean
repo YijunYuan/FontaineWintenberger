@@ -19,8 +19,12 @@ without any finiteness hypothesis on the residue field.
 
 ## Main results
 
-* `spectralIntegerRing_finrank`
-* `spectralIntegerRing_not_isField`
+* `spectralIntegerRing_finrank`: the rank of the integer ring equals the extension degree.
+* `spectralIntegerRing_not_isField`: the integer ring of the extension is not a field.
+
+## Notation
+
+The local notation `OL` denotes `spectralIntegerRing K L`.
 
 ## References
 
@@ -38,19 +42,20 @@ variable [Algebra.IsSeparable K L]
 
 local notation "OL" => spectralIntegerRing K L
 
-
 instance spectralIntegerRing_moduleFinite : Module.Finite 𝒪[K] OL :=
   IsIntegralClosure.finite (A := 𝒪[K]) (K := K) (L := L) (C := OL)
 
 instance spectralIntegerRing_moduleFree : Module.Free 𝒪[K] OL :=
   IsIntegralClosure.module_free 𝒪[K] K L OL
 
+/-- The rank of the extension's integer ring equals the degree of the field extension. -/
 theorem spectralIntegerRing_finrank : Module.finrank 𝒪[K] OL = Module.finrank K L :=
   IsIntegralClosure.rank 𝒪[K] K L OL
 
 instance spectralIntegerRing_isNoetherianRing : IsNoetherianRing OL :=
   IsNoetherianRing.of_finite 𝒪[K] OL
 
+/-- The integer ring of a finite separable extension has a nonzero maximal ideal. -/
 theorem spectralIntegerRing_not_isField : ¬ IsField OL := by
   rw [IsLocalRing.isField_iff_maximalIdeal_eq]
   intro hm

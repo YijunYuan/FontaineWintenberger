@@ -5,10 +5,10 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
-public import FontaineWintenberger.FieldOfNorms.Structure.PrecisionTower
-public import FontaineWintenberger.Mathlib.RingTheory.SequentialInverseLimit
 public import FontaineWintenberger.FieldOfNorms.Basic.Addition
+public import FontaineWintenberger.FieldOfNorms.Structure.PrecisionTower
+public import FontaineWintenberger.LocalField.Basic
+public import FontaineWintenberger.Mathlib.RingTheory.SequentialInverseLimit
 
 /-!
 # Reconstruction from the deep truncated norm tower
@@ -45,6 +45,15 @@ one family on the zero-adjoined multiplicative field of norms.
 * `tendsto_deepNormCoordinate`: The defining representative norms converge to the selected
   original-field limit.
 
+## Notation
+
+The following notation is local to this file.
+
+* `p` denotes the residue characteristic `residueChar K`.
+* `𝔈` denotes the chosen deep finite tower `deepFiniteTower K L D`.
+* `𝔅` denotes its quotient rings `DeepFiniteTowerQuotient K L D`.
+* `𝒜` denotes the compatible-family subring `deepNormInverseLimit K L D`.
+
 ## References
 
 * Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
@@ -66,7 +75,7 @@ variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 variable [IsAPF K L] [Fact (¬ Module.Finite K L)] (D : FiniteIntermediateField K L)
 
 local notation "𝔈" => deepFiniteTower K L D
-local notation "𝔅" => deepFiniteTowerQuotient K L D
+local notation "𝔅" => DeepFiniteTowerQuotient K L D
 
 /-- The deep quotient tower specialized to the canonical compatible-family subring. -/
 abbrev deepNormInverseLimit :=

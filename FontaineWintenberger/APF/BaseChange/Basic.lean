@@ -5,24 +5,18 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.APF.BaseChange.UpperGroups
-public import FontaineWintenberger.Mathlib.GroupTheory.Index
 public import FontaineWintenberger.APF.Index
+public import FontaineWintenberger.LocalField.Basic
+public import FontaineWintenberger.Mathlib.GroupTheory.Index
 public import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
 public import Mathlib.Topology.Order.Monotone
 
 /-!
 # APF under finite base change
 
-## APF under finite base change
-
 The fixing subgroup of an abstract extension is transported through the
 closure isomorphism, together with the absolute upper group.
-
-## The finite-base APF inertia index identity
-
-## Actual Herbrand integrals compose across finite base change
 
 ## Main definitions
 
@@ -60,7 +54,8 @@ namespace FontaineWintenberger
 section Embeddings
 
 variable (K : Type*) [Field K] (M : IntermediateField K (SeparableClosure K))
-noncomputable local instance : Algebra M (SeparableClosure M) :=
+/-- The canonical algebra structure on the separable closure of the new base. -/
+noncomputable local instance baseChangeEmbeddingAlgebra : Algebra M (SeparableClosure M) :=
   (separableClosure M (AlgebraicClosure M)).algebra'
 
 variable {N : Type*} [Field N] [Algebra K N] [Algebra M N] [IsScalarTower K M N]
@@ -124,16 +119,20 @@ variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField 
     [PerfectField 𝓀[K]]
 variable (M : IntermediateField K (SeparableClosure K)) [FiniteDimensional K M]
 
-noncomputable local instance : NontriviallyNormedField M :=
+/-- The spectral norm on the finite base for the APF base-change criterion. -/
+noncomputable local instance baseChangeNormedField : NontriviallyNormedField M :=
   spectralNorm.nontriviallyNormedField K M
-noncomputable local instance : NormedAlgebra K M := spectralNorm.normedAlgebra K M
+/-- The spectral norm makes the finite base a normed algebra over `K`. -/
+noncomputable local instance baseChangeNormedAlgebra : NormedAlgebra K M :=
+  spectralNorm.normedAlgebra K M
 local instance : IsUltrametricDist M :=
   IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
     (isNonarchimedean_spectralNorm (K := K) (L := M))
 local instance : CompleteSpace M := spectralNorm.completeSpace K M
 local instance : IsCompleteDiscreteValuedField M :=
   normedAlgebra_isCompleteDiscreteValuedField K M
-noncomputable local instance : Algebra M (SeparableClosure M) :=
+/-- The canonical algebra structure on the separable closure of the finite base. -/
+noncomputable local instance baseChangeClosureAlgebra : Algebra M (SeparableClosure M) :=
   (separableClosure M (AlgebraicClosure M)).algebra'
 
 local notation "ρ" =>
@@ -204,16 +203,20 @@ variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField 
     [PerfectField 𝓀[K]]
 variable (M : IntermediateField K (SeparableClosure K)) [FiniteDimensional K M]
 
-noncomputable local instance : NontriviallyNormedField M :=
+/-- The spectral norm on the finite base for the APF index comparison. -/
+noncomputable local instance baseChangeIndexNormedField : NontriviallyNormedField M :=
   spectralNorm.nontriviallyNormedField K M
-noncomputable local instance : NormedAlgebra K M := spectralNorm.normedAlgebra K M
+/-- The normed algebra structure on the finite base for the APF index comparison. -/
+noncomputable local instance baseChangeIndexNormedAlgebra : NormedAlgebra K M :=
+  spectralNorm.normedAlgebra K M
 local instance : IsUltrametricDist M :=
   IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
     (isNonarchimedean_spectralNorm (K := K) (L := M))
 local instance : CompleteSpace M := spectralNorm.completeSpace K M
 local instance : IsCompleteDiscreteValuedField M :=
   normedAlgebra_isCompleteDiscreteValuedField K M
-noncomputable local instance : Algebra M (SeparableClosure M) :=
+/-- The canonical separable-closure algebra for the APF index comparison. -/
+noncomputable local instance baseChangeIndexClosureAlgebra : Algebra M (SeparableClosure M) :=
   (separableClosure M (AlgebraicClosure M)).algebra'
 
 local notation "ρ" =>
@@ -256,7 +259,6 @@ theorem apfIndex_finiteBase_eq_towerIndexFactor (i : N →ₐ[M] SeparableClosur
       absoluteUpperRamificationGroup K 0)
     (M.fixingSubgroup ⊓ absoluteUpperRamificationGroup K 0)
     (absoluteUpperRamificationGroup K u)).symm
-
 
 /-- The public intrinsic indices factor through the finite base, without APF on N. -/
 theorem apfIndex_eq_mul_finiteBase {u : ℝ} (hu : 0 ≤ u) :
@@ -309,18 +311,21 @@ variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField 
     [PerfectField 𝓀[K]]
 variable (M : IntermediateField K (SeparableClosure K)) [FiniteDimensional K M]
 
-noncomputable local instance : NontriviallyNormedField M :=
+/-- The spectral norm on the finite base for composition of Herbrand functions. -/
+noncomputable local instance baseChangeHerbrandNormedField : NontriviallyNormedField M :=
   spectralNorm.nontriviallyNormedField K M
-noncomputable local instance : NormedAlgebra K M := spectralNorm.normedAlgebra K M
+/-- The normed algebra structure on the finite base for Herbrand composition. -/
+noncomputable local instance baseChangeHerbrandNormedAlgebra : NormedAlgebra K M :=
+  spectralNorm.normedAlgebra K M
 local instance : IsUltrametricDist M :=
   IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
     (isNonarchimedean_spectralNorm (K := K) (L := M))
 local instance : CompleteSpace M := spectralNorm.completeSpace K M
 local instance : IsCompleteDiscreteValuedField M :=
   normedAlgebra_isCompleteDiscreteValuedField K M
-noncomputable local instance : Algebra M (SeparableClosure M) :=
+/-- The canonical separable-closure algebra for Herbrand composition. -/
+noncomputable local instance baseChangeHerbrandClosureAlgebra : Algebra M (SeparableClosure M) :=
   (separableClosure M (AlgebraicClosure M)).algebra'
-
 
 variable (N : Type*) [Field N] [Algebra K N] [Algebra M N] [IsScalarTower K M N]
     [Algebra.IsSeparable K N]

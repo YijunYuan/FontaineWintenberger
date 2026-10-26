@@ -5,9 +5,9 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
-public import FontaineWintenberger.FieldOfNorms.Estimates.Tame
 public import FontaineWintenberger.APF.Elementary.PrimeDegree
+public import FontaineWintenberger.FieldOfNorms.Estimates.Tame
+public import FontaineWintenberger.LocalField.Basic
 
 /-!
 # Norm estimates for the arbitrary finite separable extension
@@ -24,6 +24,13 @@ field. Finite perfect-residue digits then supply norm approximation.
   extension has the quantitative norm addition estimate.
 * `exists_intNorm_estimates_of_totallyRamified`: Both norm estimates for every nontrivial finite
   separable totally ramified p-power extension, with arbitrary perfect residue field.
+
+## Notation
+
+The following notation is local to this file.
+
+* `p` denotes the residue characteristic `residueChar K`.
+* `S` denotes the spectral integer ring `spectralIntegerRing K L`.
 
 ## References
 

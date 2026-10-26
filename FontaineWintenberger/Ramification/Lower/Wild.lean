@@ -5,8 +5,8 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.Ramification.Lower.Basic
 public import FontaineWintenberger.Mathlib.GroupTheory.PrimeChain
+public import FontaineWintenberger.Ramification.Lower.Basic
 public import Mathlib.GroupTheory.PGroup
 
 /-!

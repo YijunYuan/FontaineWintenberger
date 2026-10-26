@@ -7,8 +7,8 @@ module
 
 public import FontaineWintenberger.Ramification.Lower.Generator
 public import FontaineWintenberger.Ramification.Lower.Index
-public import Mathlib.FieldTheory.Minpoly.IsIntegrallyClosed
 public import Mathlib.FieldTheory.Galois.IsGaloisGroup
+public import Mathlib.FieldTheory.Minpoly.IsIntegrallyClosed
 public import Mathlib.RingTheory.Invariant.Basic
 
 /-!

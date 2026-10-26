@@ -5,15 +5,15 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
-public import FontaineWintenberger.FieldOfNorms.Basic.Ring
-public import FontaineWintenberger.FieldOfNorms.Structure.Completeness
-public import FontaineWintenberger.Ramification.Upper.Transport
-public import FontaineWintenberger.Ramification.Embedding.Basic
-public import FontaineWintenberger.Mathlib.Analysis.UniformContinuity
-public import FontaineWintenberger.FieldOfNorms.Layers.NormPairs
 public import FontaineWintenberger.FieldOfNorms.Basic.Defs
+public import FontaineWintenberger.FieldOfNorms.Basic.Ring
 public import FontaineWintenberger.FieldOfNorms.Layers.GoodTowers
+public import FontaineWintenberger.FieldOfNorms.Layers.NormPairs
+public import FontaineWintenberger.FieldOfNorms.Structure.Completeness
+public import FontaineWintenberger.LocalField.Basic
+public import FontaineWintenberger.Mathlib.Analysis.UniformContinuity
+public import FontaineWintenberger.Ramification.Embedding.Basic
+public import FontaineWintenberger.Ramification.Upper.Transport
 public import Mathlib.LinearAlgebra.TensorProduct.Map
 
 /-!
@@ -32,7 +32,7 @@ For an APF extension `L/K` the field of norms `X_K(L)` is functorial in `L`: a `
 * `FieldOfNorms.mapEquiv`: The ring isomorphism `X_K(L) ≃+* X_K(M)` induced by a `K`-isomorphism `e
   : L ≃ₐ[K] M`: the coordinate at a finite intermediate field `E` of `M` is `e` applied to the
   coordinate at `e⁻¹(E)`.
-* `FieldOfNorms.aut`: **Remark 3.2.4 (i).** The action of `Aut(L/K)` on `X_K(L)` by ring
+* `FieldOfNorms.aut`: **Remark 3.2.4.** The action of `Aut(L/K)` on `X_K(L)` by ring
   automorphisms.
 * `FieldOfNorms.pullbackCoord`: The coordinate of a norm family of `M` at the pullback `D ∩ M` of a
   finite intermediate field `D` of `N`, pushed into `D`.
@@ -342,7 +342,7 @@ theorem FieldOfNorms.uniformContinuous_mapEquiv (e : L ≃ₐ[K] M) :
   exact FieldOfNorms.valuation_mapEquiv e x
 
 variable (K L) in
-/-- **Remark 3.2.4 (i).** The action of `Aut(L/K)` on `X_K(L)` by ring automorphisms. -/
+/-- **Remark 3.2.4.** The action of `Aut(L/K)` on `X_K(L)` by ring automorphisms. -/
 def FieldOfNorms.aut : (L ≃ₐ[K] L) →* (FieldOfNorms K L ≃+* FieldOfNorms K L) where
   toFun := FieldOfNorms.mapEquiv
   map_one' := RingEquiv.ext fun x => FieldOfNorms.mapEquiv_refl x
@@ -395,8 +395,7 @@ theorem FiniteIntermediateField.pullbackLayer_self (D : FiniteIntermediateField 
 /-- The pullback coordinate for the identity is the
 coordinate itself. -/
 @[simp]
-theorem FieldOfNorms.pullbackCoord_self (D : FiniteIntermediateField K M) (x : FieldOfNorms K M)
-    :
+theorem FieldOfNorms.pullbackCoord_self (D : FiniteIntermediateField K M) (x : FieldOfNorms K M) :
     FieldOfNorms.pullbackCoord K M M D x = FieldOfNorms.coord K M D x := by
   apply Subtype.ext
   change (FieldOfNorms.coord K M (FiniteIntermediateField.pullbackLayer K M D) x : M) =
@@ -614,8 +613,7 @@ theorem FieldOfNorms.coe_coord_inclusion (D : FiniteIntermediateField K N)
 
 /-- A good field on both stable tails computes one fixed positive
 finite valuation exponent for every norm family, including zero. -/
-theorem FieldOfNorms.exists_goodFiniteLayer_valuation_inclusion
-    :
+theorem FieldOfNorms.exists_goodFiniteLayer_valuation_inclusion :
     ∃ D : FiniteIntermediateField K N, IsGoodFiniteLayer K M D ∧
       0 < embeddingRamificationIdx K (FiniteIntermediateField.pullbackTo K M D) ∧
       ∀ x : FieldOfNorms K M,
@@ -1123,8 +1121,7 @@ theorem FieldOfNorms.coe_coord_map (τ : L →ₐ[K] M)
 /-- One good target field gives the positive finite ramification
 exponent for every norm family, including zero. -/
 theorem FieldOfNorms.exists_goodFiniteLayer_valuation_map (τ : L →ₐ[K] M)
-    [Module.Finite τ.fieldRange M] [Algebra.IsSeparable τ.fieldRange M]
-    :
+    [Module.Finite τ.fieldRange M] [Algebra.IsSeparable τ.fieldRange M] :
     ∃ D : FiniteIntermediateField K M, IsGoodFiniteLayer K τ.fieldRange D ∧
       0 < embeddingRamificationIdx K (FiniteIntermediateField.pullbackTo K τ.fieldRange D) ∧
       ∀ x : FieldOfNorms K L,
@@ -1140,8 +1137,7 @@ theorem FieldOfNorms.exists_goodFiniteLayer_valuation_map (τ : L →ₐ[K] M)
 
 /-- The map has a proved fixed positive integral valuation exponent. -/
 theorem FieldOfNorms.exists_valuation_map_eq_pow (τ : L →ₐ[K] M)
-    [Module.Finite τ.fieldRange M] [Algebra.IsSeparable τ.fieldRange M]
-    :
+    [Module.Finite τ.fieldRange M] [Algebra.IsSeparable τ.fieldRange M] :
     ∃ e : ℕ, 0 < e ∧ ∀ x : FieldOfNorms K L,
       FieldOfNorms.valuation K M (FieldOfNorms.map τ x) =
         FieldOfNorms.valuation K L x ^ e := by

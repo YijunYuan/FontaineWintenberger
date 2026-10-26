@@ -5,21 +5,17 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.APF.Herbrand
-public import FontaineWintenberger.Ramification.Herbrand.Inverse
 public import FontaineWintenberger.APF.RamificationBound
+public import FontaineWintenberger.LocalField.Basic
+public import FontaineWintenberger.Ramification.Herbrand.Inverse
 
 /-!
 # APF functions of finite Galois extensions
 
-## Finite Galois specialization of the APF functions
-
 Ordinary restriction and its kernel identify the APF subgroup as the
 preimage of the finite upper group. Relative indices and their integrals
 therefore recover the proved finite Herbrand functions on their own rings.
-
-## The finite Galois meaning of the APF ramification bound
 
 Absolute restriction has the fixing subgroup as kernel, and its
 upper image is the finite upper group. Thus the public supremum is

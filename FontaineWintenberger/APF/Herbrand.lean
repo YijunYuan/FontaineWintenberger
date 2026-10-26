@@ -5,8 +5,8 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.APF.Index
+public import FontaineWintenberger.LocalField.Basic
 public import Mathlib.MeasureTheory.Integral.DominatedConvergence
 
 /-!
@@ -130,7 +130,7 @@ theorem IsAPF.surjective_apfPsi [IsAPF K L] : Function.Surjective (apfPsi K L) :
     exact min_le_left u 0
   · exact (le_max_left u 0).trans (IsAPF.le_apfPsi K L (max u 0))
 
-/-- The order isomorphism is obtained from strict monotonicity and surjectivity. -/
+/-- The inverse Herbrand function `apfPsi K L` as an order isomorphism of the real line. -/
 noncomputable def apfHerbrandOrderIso [IsAPF K L] : ℝ ≃o ℝ :=
   StrictMono.orderIsoOfSurjective (apfPsi K L) (IsAPF.strictMono_apfPsi K L)
     (IsAPF.surjective_apfPsi K L)

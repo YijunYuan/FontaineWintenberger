@@ -5,15 +5,14 @@ Authors: Yijun Yuan
 -/
 module
 
-public import Mathlib.GroupTheory.Index
 public import Mathlib.Algebra.Group.Subgroup.Pointwise
+public import Mathlib.GroupTheory.Index
 
 /-!
 # Indices of subgroup products
 
-## Finite-index restriction and normal products
-
-## Relative indices of normal products
+This file relates finite index to preimages of subgroups and computes relative indices after
+adjoining a common normal subgroup.
 
 ## Main results
 
@@ -27,10 +26,6 @@ public import Mathlib.Algebra.Group.Subgroup.Pointwise
   gives its product there.
 * `relIndex_sup_sup_eq_inf`: The relative index of two normal products is the index of their
   intersection.
-
-## References
-
-* Mathlib; this file is an upstream candidate and has no project-specific reference.
 -/
 
 @[expose] public section

@@ -5,11 +5,11 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.APF.BaseChange.Strict
+public import FontaineWintenberger.APF.Finite.Nonnormal
 public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.Embedding.Basic
 public import FontaineWintenberger.Ramification.Upper.CosetMax
-public import FontaineWintenberger.APF.Finite.Nonnormal
-public import FontaineWintenberger.APF.BaseChange.Strict
 
 /-!
 # Nonnormal finite embedding comparisons
@@ -967,7 +967,7 @@ theorem embeddingNumber_rebase
       (spectralIntegerRing_eq_normedUnitBall E F').symm
   let rF : A ≃+* A' := RingEquiv.subringCongr
     (congrArg ValuationSubring.toSubring hA)
-  let rΩ : B ≃+* B' := finiteBase_spectralIntegerRingEquiv K Ω E
+  let rΩ : B ≃+* B' := finiteBaseSpectralIntegerRingEquiv K Ω E
   let : Algebra A B := (spectralIntegerInclusion K F.val).toRingHom.toAlgebra
   let : Algebra A' B' := (spectralIntegerInclusion E F'.val).toRingHom.toAlgebra
   let : FaithfulSMul A B := (faithfulSMul_iff_algebraMap_injective A B).mpr (by

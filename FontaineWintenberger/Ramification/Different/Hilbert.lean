@@ -82,8 +82,8 @@ theorem sum_ramificationOrder_eq_sum_lower_card {N : ℕ}
       simp only [hmem, ← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul, mul_one]
       have hfilter : ((Finset.univ.erase (1 : G)).filter
           (fun g => g ∈ lowerRamificationGroup G (maximalIdeal B) n)) =
-          (Finset.univ.filter (fun g => g ∈ lowerRamificationGroup G (maximalIdeal B) n)).erase 1 :=
-              by
+          (Finset.univ.filter
+            (fun g => g ∈ lowerRamificationGroup G (maximalIdeal B) n)).erase 1 := by
         ext g
         simp
       rw [hfilter, Finset.card_erase_of_mem (by simp)]
@@ -115,13 +115,12 @@ section Spectral
 
 variable (K : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedField K]
 variable (L : Type*) [Field L] [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
-variable [PerfectField (ResidueField
-  𝒪[K])]
+variable [PerfectField (ResidueField 𝒪[K])]
 
 local notation "OL" => spectralIntegerRing K L
 local notation "G₀" => L ≃ₐ[K] L
 
-/-- Hilbert's nonidentity-order formula for the different and full
+/-- **Hilbert's different formula** in terms of nonidentity automorphisms of the full
 Galois group; the integral generator is proved to exist. -/
 theorem spectralIntegerRing_different_order_eq_sum_ramificationOrder [DecidableEq G₀] :
     emultiplicity (IsLocalRing.maximalIdeal OL) (differentIdeal 𝒪[K] OL) =
@@ -130,15 +129,15 @@ theorem spectralIntegerRing_different_order_eq_sum_ramificationOrder [DecidableE
   obtain ⟨θ, hθ⟩ := spectralIntegerRing_exists_generator K L
   exact differentIdeal_order_eq_sum_ramificationOrder 𝒪[K] OL K L G₀ hθ
 
-/-- Hilbert's cardinal formula with a finite cutoff, beyond which all
-lower groups are trivial. -/
+/-- **Hilbert's different formula** in terms of lower-group cardinalities, with a finite cutoff
+beyond which all lower groups are trivial. -/
 theorem spectralIntegerRing_different_order_eq_sum_lower_card :
     ∃ N : ℕ,
       (∀ n : ℕ, N ≤ n → lowerRamificationGroup G₀ (IsLocalRing.maximalIdeal OL) n = ⊥) ∧
       emultiplicity (IsLocalRing.maximalIdeal OL) (differentIdeal 𝒪[K] OL) =
         ∑ n ∈ Finset.range N,
-          ((Nat.card (lowerRamificationGroup G₀ (IsLocalRing.maximalIdeal OL) n) - 1 : ℕ) : ℕ∞) :=
-              by
+          ((Nat.card (lowerRamificationGroup G₀
+            (IsLocalRing.maximalIdeal OL) n) - 1 : ℕ) : ℕ∞) := by
   classical
   obtain ⟨N, hN, hsum⟩ := exists_sum_ramificationOrder_eq_sum_lower_card (B := OL) G₀
   exact ⟨N, hN, (spectralIntegerRing_different_order_eq_sum_ramificationOrder K L).trans hsum⟩

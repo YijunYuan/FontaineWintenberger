@@ -5,8 +5,8 @@ Authors: Yijun Yuan
 -/
 module
 
-public import Mathlib.FieldTheory.Normal.Basic
 public import Mathlib.FieldTheory.IsSepClosed
+public import Mathlib.FieldTheory.Normal.Basic
 
 /-!
 # Extension of embeddings in the separable closure
@@ -23,10 +23,6 @@ every separable algebraic extension through the existing lifting theorem.
   canonical separable closure without a supplied normality or extension certificate.
 * `nonempty_separablyClosed_embeddings`: Every separable algebraic extension embeds into any
   separably closed extension of its base.
-
-## References
-
-* Mathlib; this file is an upstream candidate and has no project-specific reference.
 -/
 
 @[expose] public section

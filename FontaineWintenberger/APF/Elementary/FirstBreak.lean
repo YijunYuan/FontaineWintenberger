@@ -5,10 +5,10 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.APF.Finite.Nonnormal
-public import FontaineWintenberger.Ramification.Herbrand.Subgroup
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.Fields.Nonnormal
+public import FontaineWintenberger.Ramification.Herbrand.Subgroup
 
 /-!
 # The finite attained first bound of a totally ramified subextension

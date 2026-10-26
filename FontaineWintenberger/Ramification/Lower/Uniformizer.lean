@@ -6,8 +6,8 @@ Authors: Yijun Yuan
 module
 
 public import FontaineWintenberger.Ramification.Lower.Basic
-public import Mathlib.FieldTheory.Perfect
 public import Mathlib.Algebra.Polynomial.Taylor
+public import Mathlib.FieldTheory.Perfect
 
 /-!
 # The uniformizer criterion over an arbitrary perfect residue field

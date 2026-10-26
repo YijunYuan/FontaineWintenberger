@@ -5,42 +5,23 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
+public import FontaineWintenberger.APF.Tower.Stages
+public import FontaineWintenberger.APF.Tower.Wild
 public import FontaineWintenberger.FieldOfNorms.Basic.Valuation
+public import FontaineWintenberger.FieldOfNorms.Estimates.FiniteLayer
 public import FontaineWintenberger.FieldOfNorms.Estimates.Herbrand
 public import FontaineWintenberger.FieldOfNorms.Estimates.Topology
-public import FontaineWintenberger.APF.Tower.Wild
-public import FontaineWintenberger.APF.Tower.Stages
-public import FontaineWintenberger.FieldOfNorms.Estimates.FiniteLayer
+public import FontaineWintenberger.LocalField.Basic
 
 /-!
 # Addition on the field of norms
 
-## Addition on the multiplicative field of norms
+Addition is defined by limits of norms of coordinate sums. For each fixed finite intermediate
+field, Herbrand estimates make the norm-sum net Cauchy in that complete field. Multiplicative
+scaling extends convergence from integral elements to arbitrary norm families.
 
-The norm-sum nets are indexed by all finite intermediate fields above
-a fixed field. Uniform Herbrand control transfers their deep-tail
-norm defects to a Cauchy estimate in that complete finite field.
-
-## Convergence of the norm-sum nets
-
-Deep finite-layer estimates and the intrinsic Herbrand modulus prove
-the Cauchy property in each complete finite field.
-
-## The field of norms addition operation
-
-Multiplicative scaling of the proved integral convergence constructs addition
-on the multiplicative carrier.
-
-## Asymptotic coordinate approximation of the field of norms addition
-
-The existing normalized valuations control multiplicative scaling of integral
-coordinate errors on the fields.
-
-## Separation of the norm families by deep coordinate precision
-
-Actual Herbrand continuity transports deep coordinate errors to a fixed finite
-base before its Hausdorff separation is used.
+The resulting sum has asymptotic coordinate approximations. Herbrand continuity transports
+errors to a fixed finite field, where Hausdorff separation proves uniqueness.
 
 ## Main definitions
 
@@ -66,6 +47,12 @@ base before its Hausdorff separation is used.
 * `FieldOfNorms.valuation_le_one_iff`: The integral part of the stable valuation is exactly the
   families with integral coordinates in every finite field.
 
+## Notation
+
+The following notation is local to this file.
+
+* `p` denotes the residue characteristic `residueChar K`.
+
 ## References
 
 * Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
@@ -83,6 +70,7 @@ open Filter
 section FiniteIntermediateFieldNets
 
 variable (K L : Type*) [Field K] [Field L] [Algebra K L]
+
 /-- The norm-sum net over all finite fields containing E. -/
 def normSumNet (E : FiniteIntermediateField K L) (α β : FieldOfNorms K L) (F : Set.Ici E) : E.val :=
   FiniteIntermediateField.norm E F.val F.property
@@ -637,7 +625,7 @@ theorem FieldOfNorms.add_comm [IsAPF K L] (α β : FieldOfNorms K L) :
   exact FieldOfNorms.tendsto_normSumNet_add K L β α E
 
 /-- The zero is the left identity for the field of norms addition. -/
-theorem FieldOfNorms.add_zero_left [IsAPF K L] (α : FieldOfNorms K L) :
+theorem FieldOfNorms.zero_add [IsAPF K L] (α : FieldOfNorms K L) :
     FieldOfNorms.add K L 0 α = α := by
   symm
   apply FieldOfNorms.eq_add_of_tendsto K L 0 α α
@@ -649,13 +637,13 @@ theorem FieldOfNorms.add_zero_left [IsAPF K L] (α : FieldOfNorms K L) :
   exact tendsto_const_nhds
 
 /-- The zero is the right identity for the field of norms addition. -/
-theorem FieldOfNorms.add_zero_right [IsAPF K L] (α : FieldOfNorms K L) :
+theorem FieldOfNorms.add_zero [IsAPF K L] (α : FieldOfNorms K L) :
     FieldOfNorms.add K L α 0 = α := by
-  rw [FieldOfNorms.add_comm, FieldOfNorms.add_zero_left]
+  rw [FieldOfNorms.add_comm, FieldOfNorms.zero_add]
 
 /-- Exact norm multiplicativity gives distributivity of the
 multiplication over the field of norms addition. -/
-theorem FieldOfNorms.left_distrib [IsAPF K L] (δ α β : FieldOfNorms K L) :
+theorem FieldOfNorms.mul_add [IsAPF K L] (δ α β : FieldOfNorms K L) :
     δ * FieldOfNorms.add K L α β =
       FieldOfNorms.add K L (δ * α) (δ * β) := by
   apply FieldOfNorms.eq_add_of_tendsto K L (δ * α) (δ * β)
@@ -776,7 +764,7 @@ theorem FieldOfNorms.add_sub_mem [IsAPF K L] (α β : FieldOfNorms K L) :
   apply (ValuationSubring.mem_image_maximalIdeal_pow_iff_normalizedValuation
     (spectralIntegerRing K E.val) _ n).mpr
   have hs := congrArg (FieldOfNorms.coord K L E)
-    (FieldOfNorms.left_distrib K L δ (α / δ) (β / δ))
+    (FieldOfNorms.mul_add K L δ (α / δ) (β / δ))
   rw [_root_.map_mul, hδα, hδβ] at hs
   have hαE : FieldOfNorms.coord K L E δ * FieldOfNorms.coord K L E (α / δ) =
       FieldOfNorms.coord K L E α := by rw [← _root_.map_mul, hδα]

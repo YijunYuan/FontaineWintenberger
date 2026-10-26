@@ -5,9 +5,9 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
-public import FontaineWintenberger.FieldOfNorms.Estimates.Integral
 public import FontaineWintenberger.APF.Elementary.NormPrecision
+public import FontaineWintenberger.FieldOfNorms.Estimates.Integral
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Ramification.Lower.BaseChange
 public import FontaineWintenberger.Ramification.Upper.Transport
 

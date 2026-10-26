@@ -5,13 +5,13 @@ Authors: Yijun Yuan
 -/
 module
 
-public import Mathlib.Analysis.Normed.Unbundled.SpectralNorm
-public import Mathlib.Topology.Algebra.Valued.NormedValued
-public import Mathlib.RingTheory.Valuation.RamificationGroup
 public import Mathlib.Algebra.Ring.Subring.IntPolynomial
+public import Mathlib.Analysis.Normed.Unbundled.SpectralNorm
 public import Mathlib.FieldTheory.Minpoly.IsIntegrallyClosed
-public import Mathlib.RingTheory.Valuation.Integral
 public import Mathlib.RingTheory.Valuation.Extension
+public import Mathlib.RingTheory.Valuation.Integral
+public import Mathlib.RingTheory.Valuation.RamificationGroup
+public import Mathlib.Topology.Algebra.Valued.NormedValued
 
 /-!
 # Integral elements and the spectral valuation
@@ -33,9 +33,9 @@ No finite residue-field hypothesis is used.
 * `smul_spectralIntegerRing`: The full algebra automorphism group preserves the spectral valuation
   ring.
 
-## References
+## Notation
 
-* Mathlib; this file is an upstream candidate and has no project-specific reference.
+The local notation `OK` denotes the valuation ring of the norm on `K`.
 -/
 
 @[expose] public section

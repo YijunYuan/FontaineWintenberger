@@ -16,7 +16,7 @@ unit ball. The identity intertwines the fixing-subgroup actions.
 
 ## Main definitions
 
-* `finiteBase_spectralIntegerRingEquiv`: The identity on field elements identifies the two integer
+* `finiteBaseSpectralIntegerRingEquiv`: The identity on field elements identifies the two integer
   rings.
 
 ## Main results
@@ -25,7 +25,7 @@ unit ball. The identity intertwines the fixing-subgroup actions.
   compatible field norm.
 * `finiteBase_spectralIntegerRing_eq`: Both base fields construct the same integer subring of the
   top field.
-* `finiteBase_spectralIntegerRingEquiv_smul`: The fixing-subgroup equivalence uses the very same
+* `finiteBaseSpectralIntegerRingEquiv_smul`: The fixing-subgroup equivalence uses the very same
   action on the top integer ring.
 
 ## References
@@ -66,20 +66,20 @@ theorem finiteBase_spectralIntegerRing_eq :
     (spectralIntegerRing_eq_normedUnitBall M E).symm
 
 /-- The identity on field elements identifies the two integer rings. -/
-noncomputable def finiteBase_spectralIntegerRingEquiv :
+noncomputable def finiteBaseSpectralIntegerRingEquiv :
     spectralIntegerRing K E ≃+* spectralIntegerRing M E :=
   RingEquiv.subringCongr
     (congrArg ValuationSubring.toSubring (finiteBase_spectralIntegerRing_eq K E M))
 
 @[simp]
-theorem coe_finiteBase_spectralIntegerRingEquiv (x : spectralIntegerRing K E) :
-    (finiteBase_spectralIntegerRingEquiv K E M x : E) = x := rfl
+theorem coe_finiteBaseSpectralIntegerRingEquiv (x : spectralIntegerRing K E) :
+    (finiteBaseSpectralIntegerRingEquiv K E M x : E) = x := rfl
 
 /-- The fixing-subgroup equivalence uses the very same action on the top integer ring. -/
-theorem finiteBase_spectralIntegerRingEquiv_smul (g : M.fixingSubgroup)
+theorem finiteBaseSpectralIntegerRingEquiv_smul (g : M.fixingSubgroup)
     (x : spectralIntegerRing K E) :
-    finiteBase_spectralIntegerRingEquiv K E M (g • x) =
-      M.fixingSubgroupEquiv g • finiteBase_spectralIntegerRingEquiv K E M x := by
+    finiteBaseSpectralIntegerRingEquiv K E M (g • x) =
+      M.fixingSubgroupEquiv g • finiteBaseSpectralIntegerRingEquiv K E M x := by
   apply Subtype.ext
   rfl
 

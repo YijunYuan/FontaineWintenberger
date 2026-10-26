@@ -5,8 +5,8 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.FieldOfNorms.Relative.Hom
+public import FontaineWintenberger.LocalField.Basic
 public import Mathlib.FieldTheory.KrullTopology
 
 /-!
@@ -41,6 +41,12 @@ Reference: Wintenberger, Corollary 3.2.3, finite-fixer argument.
   Krull topologies.
 * `RelFieldOfNorms.krullEquiv_toMulEquiv`: The topological comparison retains exactly the algebraic
   correspondence.
+
+## Notation
+
+The following notation is local to this file.
+
+* `p` denotes the residue characteristic `residueChar K`.
 
 ## References
 

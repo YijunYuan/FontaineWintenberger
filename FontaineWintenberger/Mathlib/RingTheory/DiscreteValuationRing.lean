@@ -5,8 +5,8 @@ Authors: Yijun Yuan
 -/
 module
 
-public import Mathlib.RingTheory.Valuation.Discrete.IsDiscreteValuationRing
 public import Mathlib.RingTheory.DiscreteValuationRing.Basic
+public import Mathlib.RingTheory.Valuation.Discrete.IsDiscreteValuationRing
 
 /-!
 # Uniformizers detected by the normalized valuation

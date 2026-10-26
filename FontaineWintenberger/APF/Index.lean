@@ -5,26 +5,20 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.APF.Defs
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Mathlib.GroupTheory.Index
 
 /-!
 # The APF index
 
-## The finite positive indices in the APF Herbrand integrand
-
 The denominator subgroup is the product inside absolute inertia.
 Arithmetic profiniteness proves that its relative index is finite and
 positive; the resulting natural-number function is nondecreasing.
 
-## The intrinsic inertia index of a separable extension
-
 Conjugation preserves both the inertia subgroup and the APF subgroup, hence
 their relative index. An embedding into the separable closure therefore
 defines an index for an abstract extension, independent of that embedding.
-
-## Relative index factors in nested APF extensions
 
 ## Main definitions
 

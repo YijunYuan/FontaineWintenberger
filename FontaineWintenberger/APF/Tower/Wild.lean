@@ -5,10 +5,10 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.APF.Tower.Residue
-public import FontaineWintenberger.Ramification.Fields.Tame
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Mathlib.FieldTheory.RelIndex
+public import FontaineWintenberger.Ramification.Fields.Tame
 public import Mathlib.FieldTheory.Relrank
 
 /-!

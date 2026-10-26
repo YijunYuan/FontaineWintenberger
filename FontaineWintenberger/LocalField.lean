@@ -18,3 +18,10 @@ public import FontaineWintenberger.LocalField.Spectral.IntegralGenerator
 public import FontaineWintenberger.LocalField.Spectral.Tower
 public import FontaineWintenberger.LocalField.Spectral.Transport
 public import FontaineWintenberger.LocalField.Spectral.Uniqueness
+
+/-!
+# Local fields and their finite extensions
+
+This module collects the local-field hypotheses, compatible valuations and spectral norms,
+Hensel lifting, residue fields, and Laurent-series coordinates used by the field of norms.
+-/

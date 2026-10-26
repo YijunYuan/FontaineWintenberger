@@ -5,9 +5,9 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
-public import FontaineWintenberger.APF.Subextension
 public import FontaineWintenberger.APF.BaseChange.Strict
+public import FontaineWintenberger.APF.Subextension
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Mathlib.FieldTheory.FiniteIntermediateField
 
 /-!

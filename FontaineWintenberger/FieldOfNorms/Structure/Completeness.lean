@@ -5,9 +5,9 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.FieldOfNorms.Structure.Truncation
 public import FontaineWintenberger.FieldOfNorms.Structure.Uniformizer
+public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Mathlib.Topology.ValuedCompleteness
 
 /-!
@@ -30,6 +30,14 @@ with the canonical complete discrete-product inverse limit.
   identified with the complete truncated inverse limit.
 * `FieldOfNorms.t2Space`: The field has a Hausdorff valuation uniformity.
 * `FieldOfNorms.integral_t2Space`: Its valuation ring carries the inherited Hausdorff topology.
+
+## Notation
+
+The following notation is local to this file.
+
+* `p` denotes the residue characteristic `residueChar K`.
+* `𝔅` denotes its quotient rings `DeepFiniteTowerQuotient K L D`.
+* `𝒜` denotes the compatible-family subring `deepNormInverseLimit K L D`.
 
 ## References
 
@@ -101,7 +109,7 @@ local notation "p" => residueChar K
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 variable [IsAPF K L] [Fact (¬ Module.Finite K L)] (D : FiniteIntermediateField K L)
 
-local notation "𝔅" => deepFiniteTowerQuotient K L D
+local notation "𝔅" => DeepFiniteTowerQuotient K L D
 local notation "𝒜" => deepNormInverseLimit K L D
 
 /-- The inherited topology on the valuation ring has exactly

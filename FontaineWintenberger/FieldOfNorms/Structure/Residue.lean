@@ -5,10 +5,10 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
+public import FontaineWintenberger.APF.Tower.AlgebraicResidue
 public import FontaineWintenberger.FieldOfNorms.Structure.Truncation
 public import FontaineWintenberger.FieldOfNorms.Structure.Uniformizer
-public import FontaineWintenberger.APF.Tower.AlgebraicResidue
+public import FontaineWintenberger.LocalField.Basic
 
 /-!
 # The residue field of the field of norms
@@ -39,6 +39,15 @@ field of norms valuation ring with that of the algebraic extension.
   family.
 * `FieldOfNorms.residueLayerEquiv_residue`: The residue equivalence retains the finite coordinate.
 
+## Notation
+
+The following notation is local to this file.
+
+* `p` denotes the residue characteristic `residueChar K`.
+* `𝔈` denotes the chosen deep finite tower `deepFiniteTower K L D`.
+* `𝔅` denotes its quotient rings `DeepFiniteTowerQuotient K L D`.
+* `𝒜` denotes the compatible-family subring `deepNormInverseLimit K L D`.
+
 ## References
 
 * Wintenberger, *Le corps des normes de certaines extensions infinies de corps locaux;
@@ -58,7 +67,7 @@ variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 variable [IsAPF K L] [Fact (¬ Module.Finite K L)] (D : FiniteIntermediateField K L)
 
 local notation "𝔈" => deepFiniteTower K L D
-local notation "𝔅" => deepFiniteTowerQuotient K L D
+local notation "𝔅" => DeepFiniteTowerQuotient K L D
 local notation "𝒜" => deepNormInverseLimit K L D
 
 /-- Each integral truncated coordinate is onto, by the

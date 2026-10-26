@@ -52,3 +52,10 @@ public import FontaineWintenberger.FieldOfNorms.Structure.Residue
 public import FontaineWintenberger.FieldOfNorms.Structure.ResidueEmbedding
 public import FontaineWintenberger.FieldOfNorms.Structure.Truncation
 public import FontaineWintenberger.FieldOfNorms.Structure.Uniformizer
+
+/-!
+# The field of norms and its Galois theory
+
+This module collects the construction and local-field structure of the field of norms, its
+functoriality, and the equivalence of separable extensions, following §§2–3 of Wintenberger's paper.
+-/

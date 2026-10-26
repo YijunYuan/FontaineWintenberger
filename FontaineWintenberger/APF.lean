@@ -38,3 +38,10 @@ public import FontaineWintenberger.APF.Tower.Stages
 public import FontaineWintenberger.APF.Tower.Tame
 public import FontaineWintenberger.APF.Tower.TotallyRamified
 public import FontaineWintenberger.APF.Tower.Wild
+
+/-!
+# Arithmetically profinite extensions
+
+This module collects APF and strictly APF extensions, their Herbrand functions, finite base
+change, and towers of elementary extensions, following §1 of Wintenberger's paper.
+-/

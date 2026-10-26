@@ -5,8 +5,8 @@ Authors: Yijun Yuan
 -/
 module
 
-public import Mathlib.GroupTheory.PGroup
 public import Mathlib.GroupTheory.Nilpotent
+public import Mathlib.GroupTheory.PGroup
 public import Mathlib.Order.Atoms.Finite
 
 /-!
@@ -23,10 +23,6 @@ of inclusions, represented by the canonical reflexive transitive closure.
 * `subgroup_prime_chain_of_isPGroup`: A finite p-group has normal index-prime steps between any two
   of its subgroups.
 * `subgroup_prime_chain`: Relative prime-step refinement inside any finite p-group.
-
-## References
-
-* Mathlib; this file is an upstream candidate and has no project-specific reference.
 -/
 
 @[expose] public section

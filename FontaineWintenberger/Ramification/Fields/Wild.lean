@@ -6,10 +6,10 @@ Authors: Yijun Yuan
 module
 
 public import FontaineWintenberger.LocalField.Basic
-public import FontaineWintenberger.Ramification.Upper.BaseChange
 public import FontaineWintenberger.Ramification.Fields.Tame
-public import FontaineWintenberger.Ramification.Lower.TotalRamification
 public import FontaineWintenberger.Ramification.Lower.SpectralMaps
+public import FontaineWintenberger.Ramification.Lower.TotalRamification
+public import FontaineWintenberger.Ramification.Upper.BaseChange
 
 /-!
 # Total ramification throughout the wild tower

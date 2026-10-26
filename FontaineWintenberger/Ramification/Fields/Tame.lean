@@ -6,11 +6,11 @@ Authors: Yijun Yuan
 module
 
 public import FontaineWintenberger.LocalField.Basic
+public import FontaineWintenberger.Ramification.Herbrand.Inverse
 public import FontaineWintenberger.Ramification.Lower.Tame
 public import FontaineWintenberger.Ramification.Lower.Wild
-public import FontaineWintenberger.Ramification.Upper.Transport
-public import FontaineWintenberger.Ramification.Herbrand.Inverse
 public import FontaineWintenberger.Ramification.Upper.FixedField
+public import FontaineWintenberger.Ramification.Upper.Transport
 
 /-!
 # The field fixed by wild inertia

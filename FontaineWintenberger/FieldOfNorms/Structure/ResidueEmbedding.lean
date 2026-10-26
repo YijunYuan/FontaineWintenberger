@@ -5,10 +5,10 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
-public import FontaineWintenberger.FieldOfNorms.Structure.Residue
-public import FontaineWintenberger.Ramification.Lower.Teichmuller
 public import FontaineWintenberger.APF.Tower.Tame
+public import FontaineWintenberger.FieldOfNorms.Structure.Residue
+public import FontaineWintenberger.LocalField.Basic
+public import FontaineWintenberger.Ramification.Lower.Teichmuller
 public import FontaineWintenberger.Ramification.Lower.TruncatedCoefficients
 
 /-!
@@ -51,6 +51,17 @@ norms to the zero-adjoined multiplicative field of norms carrier.
   the prescribed p-power degree as its exponent.
 * `residue_residueIntegralCoordinate`: Reduction of the integral coordinate is the finite residue
   inclusion applied to the prescribed inverse Frobenius root.
+
+## Notation
+
+The following notation is local to this file.
+
+* `p` denotes the residue characteristic `residueChar K`.
+* `K₀` denotes the maximal unramified subextension `apfMaximalUnramified K L`.
+* `K₁` denotes the maximal tame subextension `apfMaximalTame K L`.
+* `κL` denotes the residue field of the integral closure of `𝒪[K]` in `L`.
+* `𝔈` denotes the deep finite tower `deepFiniteTower K L K₁` above the maximal tame field.
+* `𝔅` denotes its quotient rings `DeepFiniteTowerQuotient K L K₁`.
 
 ## References
 
@@ -245,8 +256,7 @@ def residueCoordinateEquiv (E : FiniteIntermediateField K L) (hE : K₁ ≤ E) :
 /-- The normalization is exactly reduction of the integral
 coordinate, including the finite-stage inverse Frobenius twist. -/
 @[simp]
-theorem residueCoordinateEquiv_apply (E : FiniteIntermediateField K L) (hE : K₁ ≤ E) (x : κL)
-    :
+theorem residueCoordinateEquiv_apply (E : FiniteIntermediateField K L) (hE : K₁ ≤ E) (x : κL) :
     residueCoordinateEquiv K L E hE x =
       IsLocalRing.residue _ (residueIntegralCoordinate K L E hE x) :=
   (residue_residueIntegralCoordinate K L E hE x).symm
@@ -391,7 +401,7 @@ theorem residueConstants_valuation_le_one (x : κL) :
 variable [Fact (¬ Module.Finite K L)]
 
 local notation "𝔈" => deepFiniteTower K L K₁
-local notation "𝔅" => deepFiniteTowerQuotient K L K₁
+local notation "𝔅" => DeepFiniteTowerQuotient K L K₁
 
 /-- The quotient projection identifies the finite residue
 field with the residue field of the deep truncated ring. -/
@@ -537,7 +547,7 @@ theorem FieldOfNorms.residueLayerEquiv_residueConstantsInteger (x : κL) :
     FieldOfNorms.integralCoordinate_residueConstantsInteger,
     residueCoordinateEquiv_apply]
 
-/-- **Theorem 2.1.3 (iii).** The residue field of `X_K(L)` is the residue field `k_L` of `L`
+/-- **Theorem 2.1.3 (ii).** The residue field of `X_K(L)` is the residue field `k_L` of `L`
 (the residue field of the integral closure of `𝒪_K` in `L`); the isomorphism is induced by the
 constants `residueConstants`. -/
 def FieldOfNorms.residueEquiv :

@@ -5,10 +5,10 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
-public import FontaineWintenberger.FieldOfNorms.Functor.Galois
 public import FontaineWintenberger.APF.Subextension
+public import FontaineWintenberger.FieldOfNorms.Functor.Galois
 public import FontaineWintenberger.FieldOfNorms.Functor.Map
+public import FontaineWintenberger.LocalField.Basic
 public import Mathlib.FieldTheory.Galois.Basic
 public import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
 
@@ -43,6 +43,12 @@ extension and its action to every finite embedding.
   finite dimension, separability and the full degree to every finite separable algebra embedding.
 * `FieldOfNorms.isGalois_map`: A finite Galois range extension gives a Galois extension for exactly
   the arbitrary-embedding norm-field homomorphism.
+
+## Notation
+
+The following notation is local to this file.
+
+* `p` denotes the residue characteristic `residueChar K`.
 
 ## References
 

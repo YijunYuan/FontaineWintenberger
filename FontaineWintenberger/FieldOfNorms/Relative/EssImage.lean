@@ -5,13 +5,13 @@ Authors: Yijun Yuan
 -/
 module
 
-public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.FieldOfNorms.Relative.Hom
 public import FontaineWintenberger.FieldOfNorms.Relative.Krull
 public import FontaineWintenberger.FieldOfNorms.Relative.SeparablyClosed
+public import FontaineWintenberger.LocalField.Basic
+public import Mathlib.FieldTheory.IntermediateField.Adjoin.Algebra
 public import Mathlib.FieldTheory.IsSepClosed
 public import Mathlib.FieldTheory.Normal.Closure
-public import Mathlib.FieldTheory.IntermediateField.Adjoin.Algebra
 
 /-!
 # The essential image of the field of norms functor
@@ -25,7 +25,7 @@ subfield, without requiring the target union to be separably closed.
 ## Finite essential image of the norm-field functor
 
 The proved separable closure of the norm field and reconstruction
-of its finite subfields realize every finite separable target as an
+of its finite subfields realize every finite separable target as a
 finite norm field.
 
 ## Algebraic essential image of the relative field of norms
@@ -56,6 +56,12 @@ under the same canonical relative field of norms embedding.
 * `exists_finite_fieldOfNorms_algEquiv_of_separableClosure`: Every finite separable extension of the
   norm field is isomorphic over that same field to a finite norm-field stage in the prescribed
   separable closure.
+
+## Notation
+
+The following notation is local to this file.
+
+* `p` denotes the residue characteristic `residueChar K`.
 
 ## References
 
@@ -524,9 +530,13 @@ theorem exists_relFieldOfNorms_algEquiv_of_separableClosure :
 
 /-- The algebraic essential image with no prescribed
 closure: the standard separable closure supplies that choice. -/
-abbrev exists_relFieldOfNorms_algEquiv :=
+theorem exists_relFieldOfNorms_algEquiv
+    (F : Type*) [Field F] [Algebra (FieldOfNorms K L) F]
+    [Algebra.IsSeparable (FieldOfNorms K L) F] :
+    ∃ M : IntermediateField L (SeparableClosure L),
+      Nonempty (RelFieldOfNorms K L M ≃ₐ[FieldOfNorms K L] F) :=
   exists_relFieldOfNorms_algEquiv_of_separableClosure
-    K L (SeparableClosure L)
+    K L (SeparableClosure L) F
 
 end Reconstruction
 
