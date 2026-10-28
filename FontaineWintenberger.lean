@@ -15,10 +15,10 @@ public import FontaineWintenberger.Ramification
 # The field of norms (Fontaine–Wintenberger)
 
 Formalization of Wintenberger, *Le corps des normes de certaines extensions infinies de corps
-locaux; applications*. The five main statements, for a complete discretely valued field `K`
+locaux; applications*. The main statements, for a complete discretely valued field `K`
 with perfect residue field (`IsPerfectResidueLocalField K`) and a separable extension `L/K`.
 The field-of-norms statements assume that `L/K` is infinite and APF; the ambient Galois action
-in the last item also assumes that `L/K` is Galois.
+in item 5 also assumes that `L/K` is Galois.
 
 1. **Arithmetically profinite extensions** (1.2.1): `IsAPF K L`, `isAPF_iff_isOpen_apfSubgroup`;
    `IsStrictlyAPF K L`, `isStrictlyAPF_iff`.
@@ -31,4 +31,17 @@ in the last item also assumes that `L/K` is Galois.
    `FieldOfNorms.absoluteGaloisEquiv : Gal(L^sep/L) ≃ₜ* Gal(X_K(L)^sep/X_K(L))`.
 5. **Remark 3.2.4**: `FieldOfNorms.aut`, `RelFieldOfNorms.absoluteAut`,
    `RelFieldOfNorms.ambientGaloisEquiv`, for any separable closure `[IsSepClosure K Ω]`.
+6. **The elementary tower (§1.4.1)**: `apfElementaryStage`, `apfElementaryLevel`,
+   `isElementaryStep_apfElementaryStage`, `iSup_apfElementaryStage`,
+   `tendsto_apfElementaryLevel`; the formulas `apfRamificationBound_eq_apfElementaryLevel`
+   and `apfStrictnessConstant_eq_iInf_apfElementaryLevel` assume a positive first bound.
+   `isStrictlyAPF_iff_apfElementaryLevel_div_finrank` also allows an initial tame part.
+   `apfFiniteElementaryStage` and `apfStrictnessConstant_eq_iInf_apfFiniteElementaryLevel`
+   handle finite terminating towers.
+7. **Remark 1.4.2**: `isAPF_iSup_iff_tendsto_of_elementary_tower`, the weighted formula
+   `apfPhi_eq_sum_of_isElementaryStep`, and the canonical identification
+   `apfElementaryStage_iSup_eq_of_isElementaryStep`; finite towers are identified by
+   `exists_apfFiniteElementaryStage_eq_of_isElementaryStep`.
+8. **Corollary 3.3.6**: `RelFieldOfNorms.map_normUpperRamificationGroup` compares upper
+   ramification through `RelFieldOfNorms.autEquiv`, for any Galois extension `M/K` containing `L`.
 -/

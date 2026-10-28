@@ -28,7 +28,11 @@ public import FontaineWintenberger.FieldOfNorms.Functor.Separable
 public import FontaineWintenberger.FieldOfNorms.Galois.AbsoluteGroup
 public import FontaineWintenberger.FieldOfNorms.Galois.Action
 public import FontaineWintenberger.FieldOfNorms.Galois.Ambient
+public import FontaineWintenberger.FieldOfNorms.Galois.Filtration
+public import FontaineWintenberger.FieldOfNorms.Galois.Ramification
 public import FontaineWintenberger.FieldOfNorms.Galois.RelAction
+public import FontaineWintenberger.FieldOfNorms.Galois.Upper
+public import FontaineWintenberger.FieldOfNorms.Galois.UpperLimit
 public import FontaineWintenberger.FieldOfNorms.Layers.Descent
 public import FontaineWintenberger.FieldOfNorms.Layers.DescentTower
 public import FontaineWintenberger.FieldOfNorms.Layers.GaloisGood

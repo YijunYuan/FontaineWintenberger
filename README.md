@@ -6,7 +6,7 @@ Lean 4 + Mathlib formalization of Wintenberger,
 extensions, the field of norms `X_K(L)`, and its Galois-theoretic properties. The
 ramification-theoretic foundations follow Serre, *Local Fields*, Chapter IV.
 
-## The five targets
+## Main results
 
 Each result lives in its own module, as in Mathlib; the root file `FontaineWintenberger.lean`
 lists them. Throughout, `K` is a complete discretely valued field with perfect residue field of
@@ -21,8 +21,26 @@ infinite and APF. The ambient Galois action in target 5 also assumes that `L/K` 
 | 3. Theorem 2.1.3 | `CompleteSpace` (`Structure/Completeness`), `FieldOfNorms.instIsDiscreteValuationRing` (`Structure/Uniformizer`), `FieldOfNorms.residueEquiv : 𝓀[L] ≃+* 𝓀[X_K(L)]` (`Structure/ResidueEmbedding`) |
 | 4. Theorem 3.2.2(ii) and Corollary 3.2.3 | For finite separable extensions `M`, `N` of `L`: `FieldOfNorms.algHomEquiv : (M →ₐ[L] N) ≃ (X_K(M) →ₐ[X_K(L)] X_K(N))` (`Functor/FullyFaithful`); `FieldOfNorms.absoluteGaloisEquiv : Gal(L^sep/L) ≃ₜ* Gal(X_K(L)^sep/X_K(L))` (`Galois/AbsoluteGroup`) |
 | 5. Remark 3.2.4 | `FieldOfNorms.aut` (`Functor/Map`); for any separable closure `Ω` of `K` containing `L`: `RelFieldOfNorms.absoluteAut : Gal(Ω/K) →* RingAut (X_{L/K}(Ω))` (`Galois/RelAction`), `RelFieldOfNorms.ambientGaloisEquiv : Gal(Ω/K) ≃* galoisSubgroup` (`Galois/Ambient`) |
+| 6. The elementary tower (§1.4.1) | `apfElementaryStage`, `isElementaryStep_apfElementaryStage`, `iSup_apfElementaryStage`, `tendsto_apfElementaryLevel`; when `i(L/K) > 0`, `apfRamificationBound_eq_apfElementaryLevel` and `apfStrictnessConstant_eq_iInf_apfElementaryLevel` (`APF/Tower/Canonical`) |
+| 7. The elementary-tower criterion (Remark 1.4.2) | `isAPF_iSup_iff_tendsto_of_elementary_tower`, `apfPhi_eq_sum_of_isElementaryStep` (`APF/Tower/Criterion`); `apfElementaryStage_iSup_eq_of_isElementaryStep` and `apfElementaryLevel_iSup_eq_of_isElementaryStep` identify the given tower with the canonical tower (`APF/Tower/Characterization`) |
+| 8. Ramification comparison (Corollary 3.3.6) | `RelFieldOfNorms.map_normUpperRamificationGroup`: the norm-field upper group at `apfPsi K L u` maps to `Gᵘ ∩ H` through the existing Galois correspondence (`Galois/Filtration`) |
 
-Paths in targets 2–5 are relative to `FontaineWintenberger/FieldOfNorms/`.
+Paths in targets 2–5 and 8 are relative to `FontaineWintenberger/FieldOfNorms/`;
+the `APF/` paths are relative to `FontaineWintenberger/`.
+
+The infinite elementary tower is indexed from zero at the maximal tame field: our
+`apfElementaryStage n` and `apfElementaryLevel n` are Wintenberger's `K_{n+1}` and
+`i_{n+1}`. The general strictness criterion is
+`isStrictlyAPF_iff_apfElementaryLevel_div_finrank` (`APF/Tower/Strict`), including an
+initial unramified or tame part. Finite extensions use `apfFiniteElementaryStage`,
+whose terminal field is `L`; their strictness formula is
+`apfStrictnessConstant_eq_iInf_apfFiniteElementaryLevel` (`APF/Tower/FiniteElementary`).
+`exists_apfFiniteElementaryStage_eq_of_isElementaryStep`
+(`APF/Tower/FiniteCharacterization`) identifies any given finite elementary tower with
+this canonical tower, including the case with no elementary steps.
+The transformed upper levels in Remark 1.4.2 are proved equal to the
+weighted sum of elementary-level increments. Corollary 3.3.6 allows any Galois
+extension `M/K` containing `L`; it does not require `L/K` to be Galois.
 
 ## Layout
 

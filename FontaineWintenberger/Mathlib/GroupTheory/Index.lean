@@ -20,6 +20,8 @@ adjoining a common normal subgroup.
   preimage.
 * `comap_sup_eq_of_normal_right_of_le_range`: One factor in the range suffices to pull back a normal
   product.
+* `relIndex_eq_index_of_sup_eq_top`: A full product with a normal subgroup identifies its relative
+  coset index with the absolute index.
 * `relIndex_sup_sup_normal`: Adding a common normal factor changes neither of these relative coset
   sets.
 * `sup_inf_eq_sup_inf_of_le_of_normal`: Intersecting a normal product with a containing subgroup
@@ -66,6 +68,44 @@ end Subgroup
 namespace Subgroup
 
 variable {G : Type*} [Group G] (A B U : Subgroup G) [U.Normal]
+
+/-- If a subgroup and a normal subgroup generate the whole group, restricting the coset
+space to the normal subgroup does not change its cardinality. -/
+theorem relIndex_eq_index_of_sup_eq_top (h : A ⊔ U = ⊤) : A.relIndex U = A.index := by
+  have key (x y : U) : QuotientGroup.leftRel (A.subgroupOf U) x y ↔
+      QuotientGroup.leftRel A (x : G) (y : G) := by
+    simp only [QuotientGroup.leftRel_apply, mem_subgroupOf, coe_mul, coe_inv]
+  let f : U ⧸ A.subgroupOf U → G ⧸ A :=
+    Quotient.map' Subtype.val (fun x y ha ↦ (key x y).mp ha)
+  have hinj : Function.Injective f := by
+    refine Quotient.ind₂' ?_
+    intro a b hab
+    exact Quotient.sound ((key a b).mpr (Quotient.exact hab))
+  have hsurj : Function.Surjective f := by
+    refine Quotient.ind' ?_
+    intro g
+    have hg : g ∈ U ⊔ A := by rw [sup_comm, h]; trivial
+    obtain ⟨u, hu, a, ha, rfl⟩ := mem_sup_of_normal_left.mp hg
+    refine ⟨Quotient.mk'' (⟨u, hu⟩ : U), ?_⟩
+    change (QuotientGroup.mk u : G ⧸ A) = QuotientGroup.mk (u * a)
+    exact QuotientGroup.eq.mpr (by simpa using ha)
+  exact Nat.card_congr (Equiv.ofBijective f ⟨hinj, hsurj⟩)
+
+/-- Restricting cosets of a normal product to the normal factor preserves the relative
+index of the other factor. -/
+theorem relIndex_sup_left_of_normal_right : A.relIndex (A ⊔ U) = A.relIndex U := by
+  let f := quotientSubgroupOfEmbeddingOfLE A (show U ≤ A ⊔ U from le_sup_right)
+  have hsurj : Function.Surjective f := by
+    refine Quotient.ind' ?_
+    intro g
+    have hg : (g : G) ∈ U ⊔ A := by simpa only [sup_comm] using g.property
+    obtain ⟨u, hu, a, ha, he⟩ := mem_sup_of_normal_left.mp hg
+    refine ⟨QuotientGroup.mk (⟨u, hu⟩ : U), ?_⟩
+    apply QuotientGroup.eq.mpr
+    change u⁻¹ * (g : G) ∈ A
+    rw [← he]
+    simpa using ha
+  exact (Nat.card_congr (Equiv.ofBijective f ⟨f.injective, hsurj⟩)).symm
 
 /-- Adding a common normal factor changes neither of these relative coset sets. -/
 theorem relIndex_sup_sup_normal :

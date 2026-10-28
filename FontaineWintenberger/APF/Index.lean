@@ -29,6 +29,8 @@ defines an index for an abstract extension, independent of that embedding.
 
 ## Main results
 
+* `apfIndex_eq_index_of_apfSubgroup_zero_eq_top`: A full inertia product identifies the intrinsic
+  inertia-relative index with the index of the full APF product.
 * `apfInertiaSubgroup_antitone_extension`: The larger extension has the smaller inertia-product
   subgroup.
 * `apfInertiaIndex_eq_mul_towerIndexFactor`: Multiplication of the relative indices gives the APF
@@ -172,6 +174,39 @@ noncomputable def apfIndex (u : ℝ) : ℕ :=
 theorem apfIndex_eq_embedding (i : L →ₐ[K] SeparableClosure K) (u : ℝ) :
     apfIndex K L u = apfInertiaIndex K i.fieldRange u :=
   apfInertiaIndex_fieldRange_eq K L _ i u
+
+/-- For an extension with full inertia product, the intrinsic inertia index equals the
+index of the full APF product. No normality of the extension is required. -/
+theorem apfIndex_eq_index_of_apfSubgroup_zero_eq_top
+    (i : L →ₐ[K] SeparableClosure K) (hzero : apfSubgroup K i.fieldRange 0 = ⊤)
+    {u : ℝ} (hu : 0 ≤ u) : apfIndex K L u = (apfSubgroup K i.fieldRange u).index := by
+  rw [apfIndex_eq_embedding K L i, apfInertiaIndex,
+    apfInertiaSubgroup_eq_inf K i.fieldRange u hu, Subgroup.inf_relIndex_right]
+  apply Subgroup.relIndex_eq_index_of_sup_eq_top
+  have hU : absoluteUpperRamificationGroup K u ≤ absoluteUpperRamificationGroup K 0 :=
+    upperRamificationGroupInfinite_antitoneOn K (SeparableClosure K)
+      (by norm_num) (by change -1 ≤ u; linarith) hu
+  simpa only [apfSubgroup, sup_assoc, sup_eq_right.mpr hU] using hzero
+
+/-- The index of the full APF product is its inertia-relative index times the fixed
+index at zero. This retains the finite unramified degree factor. -/
+theorem apfSubgroup_index_eq_index_zero_mul_apfIndex
+    (i : L →ₐ[K] SeparableClosure K) {u : ℝ} (hu : 0 ≤ u) :
+    (apfSubgroup K i.fieldRange u).index =
+      (apfSubgroup K i.fieldRange 0).index * apfIndex K L u := by
+  rw [apfIndex_eq_embedding K L i, apfInertiaIndex,
+    apfInertiaSubgroup_eq_inf K i.fieldRange u hu, Subgroup.inf_relIndex_right]
+  have hU : absoluteUpperRamificationGroup K u ≤ absoluteUpperRamificationGroup K 0 :=
+    upperRamificationGroupInfinite_antitoneOn K (SeparableClosure K)
+      (by norm_num) (by change -1 ≤ u; linarith) hu
+  have hsup : apfSubgroup K i.fieldRange u ⊔ absoluteUpperRamificationGroup K 0 =
+      apfSubgroup K i.fieldRange 0 := by
+    simp only [apfSubgroup, sup_assoc, sup_eq_right.mpr hU]
+  have hidx := Subgroup.relIndex_mul_index (sup_le_sup_left hU i.fieldRange.fixingSubgroup)
+  change (apfSubgroup K i.fieldRange u).relIndex (apfSubgroup K i.fieldRange 0) *
+    (apfSubgroup K i.fieldRange 0).index = (apfSubgroup K i.fieldRange u).index at hidx
+  rw [← hsup, Subgroup.relIndex_sup_left_of_normal_right, hsup] at hidx
+  exact hidx.symm.trans (Nat.mul_comm _ _)
 
 @[simp]
 theorem apfIndex_zero : apfIndex K L 0 = 1 :=

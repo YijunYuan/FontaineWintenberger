@@ -15,6 +15,7 @@ public import FontaineWintenberger.Mathlib.FieldTheory.RelIndex
 public import FontaineWintenberger.Mathlib.FieldTheory.SeparableEmbeddings
 public import FontaineWintenberger.Mathlib.GroupTheory.Index
 public import FontaineWintenberger.Mathlib.GroupTheory.PrimeChain
+public import FontaineWintenberger.Mathlib.Order.RightJumps
 public import FontaineWintenberger.Mathlib.RingTheory.DiscreteValuationRing
 public import FontaineWintenberger.Mathlib.RingTheory.PolynomialDiscriminant
 public import FontaineWintenberger.Mathlib.RingTheory.SequentialInverseLimit

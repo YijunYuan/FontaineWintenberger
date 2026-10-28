@@ -22,8 +22,10 @@ public import FontaineWintenberger.Ramification.Herbrand.Interval
 public import FontaineWintenberger.Ramification.Herbrand.Inverse
 public import FontaineWintenberger.Ramification.Herbrand.Subgroup
 public import FontaineWintenberger.Ramification.Infinite.Basic
+public import FontaineWintenberger.Ramification.Infinite.FiniteRestriction
 public import FontaineWintenberger.Ramification.Infinite.Limit
 public import FontaineWintenberger.Ramification.Infinite.Restriction
+public import FontaineWintenberger.Ramification.Infinite.ScalarTower
 public import FontaineWintenberger.Ramification.Infinite.SplittingField
 public import FontaineWintenberger.Ramification.Lower.BaseChange
 public import FontaineWintenberger.Ramification.Lower.Basic
@@ -51,6 +53,8 @@ public import FontaineWintenberger.Ramification.Upper.BaseChange
 public import FontaineWintenberger.Ramification.Upper.Basic
 public import FontaineWintenberger.Ramification.Upper.CosetMax
 public import FontaineWintenberger.Ramification.Upper.FixedField
+public import FontaineWintenberger.Ramification.Upper.LocallyConstant
+public import FontaineWintenberger.Ramification.Upper.Order
 public import FontaineWintenberger.Ramification.Upper.PrimeOrder
 public import FontaineWintenberger.Ramification.Upper.Quotient
 public import FontaineWintenberger.Ramification.Upper.ResidueEquiv
