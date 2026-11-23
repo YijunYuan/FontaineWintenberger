@@ -161,21 +161,15 @@ instance FiniteIntermediateField.instIciIsDirectedOrder (E : FiniteIntermediateF
 theorem FiniteIntermediateField.tendsto_Ici_inclusion (E F : FiniteIntermediateField K L)
     (hEF : E ≤ F) :
     Tendsto (fun G : Set.Ici F => (⟨G.val, hEF.trans G.property⟩ : Set.Ici E)) atTop atTop := by
-  apply tendsto_atTop.mpr
-  intro T
-  refine eventually_atTop.mpr ⟨⟨FiniteIntermediateField.sup F T.val,
-    FiniteIntermediateField.le_sup_left F T.val⟩, fun G hG => ?_⟩
-  exact (FiniteIntermediateField.le_sup_right F T.val).trans hG
+  exact tendsto_Ici_atTop.mpr (map_val_Ici_atTop F).le
 
 /-- Passing to any finite-field tail preserves the entire tail filter. -/
 theorem FiniteIntermediateField.map_Ici_inclusion_atTop (E F : FiniteIntermediateField K L)
     (hEF : E ≤ F) :
     map (fun G : Set.Ici F => (⟨G.val, hEF.trans G.property⟩ : Set.Ici E)) atTop = atTop := by
-  apply le_antisymm (FiniteIntermediateField.tendsto_Ici_inclusion K L E F hEF)
-  intro s hs
-  obtain ⟨a, ha⟩ := eventually_atTop.mp hs
-  refine eventually_atTop.mpr ⟨⟨a.val, hEF.trans a.property⟩, fun b hb => ?_⟩
-  exact ha ⟨b.val, a.property.trans (show a.val ≤ b.val from hb)⟩ hb
+  apply Filter.map_injective (Subtype.val_injective (p := (· ∈ Set.Ici E)))
+  rw [Filter.map_map, map_val_Ici_atTop E]
+  exact map_val_Ici_atTop F
 
 end Nets
 
@@ -262,12 +256,8 @@ def FiniteIntermediateField.mapIci (i : L →ₐ[K] M) (E : FiniteIntermediateFi
 the corresponding upper-tail filter. -/
 theorem FiniteIntermediateField.tendsto_mapIci (e : L ≃ₐ[K] M) (E : FiniteIntermediateField K L) :
     Filter.Tendsto (FiniteIntermediateField.mapIci e.toAlgHom E) Filter.atTop Filter.atTop := by
-  apply Filter.tendsto_Ici_atTop.mpr
-  have hv : Filter.Tendsto (Subtype.val : Set.Ici E → FiniteIntermediateField K L)
-      Filter.atTop Filter.atTop :=
-    Filter.tendsto_Ici_atTop.mp (Filter.tendsto_id :
-      Filter.Tendsto (id : Set.Ici E → Set.Ici E) Filter.atTop Filter.atTop)
-  exact (FiniteIntermediateField.mapOrderIso e).tendsto_atTop.comp hv
+  exact Filter.tendsto_Ici_atTop.mpr <|
+    (FiniteIntermediateField.mapOrderIso e).tendsto_atTop.comp (Filter.map_val_Ici_atTop E).le
 
 end
 

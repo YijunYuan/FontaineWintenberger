@@ -67,7 +67,7 @@ theorem trace_integral_iff_le_codifferent (I : FractionalIdeal B⁰ L) :
     (∀ x ∈ I, Algebra.trace K L x ∈ (1 : Submodule A K)) ↔
       I ≤ (differentIdeal A B : FractionalIdeal B⁰ L)⁻¹ := by
   rw [coeIdeal_differentIdeal A K L B, inv_inv,
-    ← FractionalIdeal.coe_le_coe, FractionalIdeal.coe_dual_one,
+    ← FractionalIdeal.coeToSubmodule_le_coeToSubmodule, FractionalIdeal.coeToSubmodule_dual_one,
     Submodule.le_traceDual_iff_map_le_one, mul_one]
   exact Iff.symm Submodule.map_le_iff_le_comap
 
@@ -103,12 +103,12 @@ theorem trace_principal_iff_le_mul_codifferent (I : FractionalIdeal B⁰ L)
     · intro h z hz
       obtain ⟨x, hx, rfl⟩ := FractionalIdeal.mem_singleton_mul.mp hz
       rw [htrace]
-      simpa only [← FractionalIdeal.mem_coe, FractionalIdeal.coe_one] using
+      simpa only [← FractionalIdeal.mem_coeToSubmodule, FractionalIdeal.coeToSubmodule_one] using
         (mem_principal_iff_inv_mul A K ha).mp (h x hx)
     · intro h x hx
       apply (mem_principal_iff_inv_mul A K ha).mpr
       rw [← htrace]
-      simpa only [← FractionalIdeal.mem_coe, FractionalIdeal.coe_one] using
+      simpa only [← FractionalIdeal.mem_coeToSubmodule, FractionalIdeal.coeToSubmodule_one] using
         h _ (FractionalIdeal.mem_singleton_mul.mpr ⟨x, hx, rfl⟩)
   rw [hscale, trace_integral_iff_le_codifferent A B K L,
     FractionalIdeal.spanSingleton_mul_le_iff, FractionalIdeal.le_spanSingleton_mul_iff]

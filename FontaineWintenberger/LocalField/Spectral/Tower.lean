@@ -48,7 +48,7 @@ instance valuation_hasExtension :
     (valuation (K := K)).HasExtension (valuation (K := L)) where
   val_isEquiv_comap := by
     intro x y
-    simp only [Valuation.comap_apply, valuation_apply, nnnorm_algebraMap, nnnorm_one, mul_one]
+    simp only [Valuation.comap_apply, valuation_apply, nnNorm_algebraMap, nnNorm_one, mul_one]
 
 end NormedField
 
@@ -64,7 +64,7 @@ instance normedAlgebraAmbient (F : IntermediateField K L) : NormedAlgebra F L wh
 
 /-- Finite intermediate fields are complete for their inherited uniformity. -/
 theorem completeSpace_of_finiteDimensional [CompleteSpace K] [FiniteDimensional K L]
-    (F : IntermediateField K L) : CompleteSpace F := FiniteDimensional.complete K F
+    (F : IntermediateField K L) : CompleteSpace F := FiniteDimensional.completeSpace K F
 
 end IntermediateField
 
@@ -97,7 +97,7 @@ theorem normedAlgebra_isCompleteDiscreteValuedField (K L : Type*) [NontriviallyN
     [IsCompleteDiscreteValuedField K] [NontriviallyNormedField L] [IsUltrametricDist L]
     [NormedAlgebra K L] [FiniteDimensional K L] [Algebra.IsSeparable K L] :
     IsCompleteDiscreteValuedField L :=
-  have : CompleteSpace L := FiniteDimensional.complete K L
+  have : CompleteSpace L := FiniteDimensional.completeSpace K L
   have := normedAlgebra_unitBall_isDiscreteValuationRing K L
   {}
 

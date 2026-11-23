@@ -48,6 +48,7 @@ public import FontaineWintenberger.APF.Tower.FiniteProfile
 public import FontaineWintenberger.APF.Tower.Herbrand
 public import FontaineWintenberger.APF.Tower.Initial
 public import FontaineWintenberger.APF.Tower.PrimeValuation
+public import FontaineWintenberger.APF.Tower.RelativeHerbrand
 public import FontaineWintenberger.APF.Tower.Residue
 public import FontaineWintenberger.APF.Tower.Stages
 public import FontaineWintenberger.APF.Tower.Strict

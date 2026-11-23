@@ -9,6 +9,7 @@ public import FontaineWintenberger.APF.BaseChange.Strict
 public import FontaineWintenberger.APF.BaseClosure
 public import FontaineWintenberger.APF.Defs
 public import FontaineWintenberger.APF.RamificationBound
+public import FontaineWintenberger.APF.Tower.RelativeHerbrand
 public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Mathlib.FieldTheory.FiniteIntermediateField
 
@@ -266,14 +267,7 @@ first bound on the finite fields and their canonical spectral norm. -/
 theorem apfPsi_le_relativeFirstBound_of_apfFiniteStage_le
     (E F : FiniteIntermediateField K L) (hEF : E ≤ F) (j : L →ₐ[K] SeparableClosure K)
     {u : ℝ} (hu : 0 ≤ u) (hstage : apfFiniteStage K j.fieldRange u ≤ E.val.map j) :
-    letI := spectralNorm.nontriviallyNormedField K E.val
-    letI := spectralNorm.normedAlgebra K E.val
-    letI := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
-      (isNonarchimedean_spectralNorm (K := K) (L := E.val))
-    letI := spectralNorm.completeSpace K E.val
-    letI := normedAlgebra_isCompleteDiscreteValuedField K E.val
-    (apfPsi K E.val u : EReal) ≤
-      apfRamificationBound E.val (IntermediateField.extendScalars hEF) := by
+    (apfPsi K E.val u : EReal) ≤ FiniteIntermediateField.relativeRamificationBound hEF := by
   let := spectralNorm.nontriviallyNormedField K E.val
   let := spectralNorm.normedAlgebra K E.val
   let := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
@@ -318,13 +312,7 @@ finite-layer tail of the abstract separable APF extension. Trivial
 steps retain their extended bound `∞`. -/
 theorem IsAPF.exists_finiteIntermediateField_relativeFirstBound_ge [IsAPF K L] (c : ℝ) :
     ∃ T : FiniteIntermediateField K L, ∀ E F : FiniteIntermediateField K L, T ≤ E → ∀ hEF : E ≤ F,
-      letI := spectralNorm.nontriviallyNormedField K E.val
-      letI := spectralNorm.normedAlgebra K E.val
-      letI := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
-        (isNonarchimedean_spectralNorm (K := K) (L := E.val))
-      letI := spectralNorm.completeSpace K E.val
-      letI := normedAlgebra_isCompleteDiscreteValuedField K E.val
-      (c : EReal) ≤ apfRamificationBound E.val (IntermediateField.extendScalars hEF) := by
+      (c : EReal) ≤ FiniteIntermediateField.relativeRamificationBound hEF := by
   let j : L →ₐ[K] SeparableClosure K := IsSepClosed.lift
   let u := max c 0
   have hu : 0 ≤ u := le_max_right _ _

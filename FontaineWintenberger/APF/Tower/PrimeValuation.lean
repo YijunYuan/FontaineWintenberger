@@ -7,6 +7,7 @@ module
 
 public import FontaineWintenberger.APF.Tower.Wild
 public import FontaineWintenberger.LocalField.Basic
+public import FontaineWintenberger.Ramification.Embedding.Basic
 
 /-!
 # Unbounded finite ramification and the residue prime
@@ -80,12 +81,7 @@ theorem IsAPF.exists_finiteIntermediateField_ramificationIdx_unbounded [IsAPF K 
     ∃ W : FiniteIntermediateField K L, ∀ D : FiniteIntermediateField K L, W ≤ D → ∀ n : ℕ,
       ∃ T : FiniteIntermediateField K L, ∃ hDT : D ≤ T, ∀ E : FiniteIntermediateField K L, ∀ hTE :
           T ≤ E,
-        letI : Algebra D.val E.val :=
-          (IntermediateField.inclusion (hDT.trans hTE)).toRingHom.toAlgebra
-        letI : IsScalarTower K D.val E.val := IsScalarTower.of_algebraMap_eq' rfl
-        letI := spectralValuation_hasExtension_tower K (E := D.val) (L := E.val)
-        n ≤ (IsLocalRing.maximalIdeal (spectralIntegerRing K E.val)).ramificationIdx
-          (spectralIntegerRing K D.val) := by
+        n ≤ embeddingRamificationIdx K (IntermediateField.inclusion (hDT.trans hTE)) := by
   obtain ⟨W, hW⟩ := IsAPF.exists_finiteIntermediateField_wild_tail K L
   refine ⟨W, fun D hWD n => ?_⟩
   obtain ⟨T, hDT, hT⟩ := FiniteIntermediateField.exists_tail_finrank_ge K L D n

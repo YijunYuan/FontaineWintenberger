@@ -124,23 +124,18 @@ local notation "p" => residueChar K
 variable [IsAPF K L] [IsAPF K P]
     [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K P)]
 
+attribute [local instance] FieldOfNorms.inclusionAlgebra in
 /-- Every subfield of a finite Galois norm field is the
 image of the field fixed by its subgroup. -/
-theorem FieldOfNorms.exists_fixedField_inclusion_range :
-    letI := (FieldOfNorms.inclusion K L P).toAlgebra
-    ∀ D : IntermediateField (FieldOfNorms K L) (FieldOfNorms K P),
-      ∃ H : Subgroup (P ≃ₐ[L] P),
-        letI : IsScalarTower K (IntermediateField.fixedField H) P :=
-          IsScalarTower.of_algebraMap_eq' rfl
-        letI : Algebra.IsAlgebraic K (IntermediateField.fixedField H) :=
-          inferInstanceAs (Algebra.IsAlgebraic K
-            ((IntermediateField.fixedField H).restrictScalars K))
-        Set.range (FieldOfNorms.inclusion K (IntermediateField.fixedField H) P) =
-          (D : Set (FieldOfNorms K P)) := by
+theorem FieldOfNorms.exists_fixedField_inclusion_range
+    (D : IntermediateField (FieldOfNorms K L) (FieldOfNorms K P)) :
+    ∃ H : Subgroup (P ≃ₐ[L] P),
+      Set.range (α := FieldOfNorms K P)
+        (RelFieldOfNorms.stageInclusion K L P ⟨IntermediateField.fixedField H, inferInstance⟩) =
+        (D : Set (FieldOfNorms K P)) := by
   let := (FieldOfNorms.inclusion K L P).toAlgebra
   let := FieldOfNorms.galoisAction K L P
   have := FieldOfNorms.isGaloisGroup K L P
-  intro D
   let H := fixingSubgroup (P ≃ₐ[L] P) (D : Set (FieldOfNorms K P))
   refine ⟨H, ?_⟩
   let : IsScalarTower K (IntermediateField.fixedField H) P :=
@@ -152,6 +147,7 @@ theorem FieldOfNorms.exists_fixedField_inclusion_range :
     IsGaloisGroup.fixedPoints_fixingSubgroup (P ≃ₐ[L] P) (FieldOfNorms K L)
       (FieldOfNorms K P) D
   ext β
+  change β ∈ Set.range (FieldOfNorms.inclusion K (IntermediateField.fixedField H) P) ↔ β ∈ D
   rw [FieldOfNorms.mem_range_inclusion_fixedField_iff]
   change β ∈ (FixedPoints.intermediateField H :
     IntermediateField (FieldOfNorms K L) (FieldOfNorms K P)) ↔ β ∈ D
@@ -174,17 +170,11 @@ variable [IsAPF K L] [Fact (¬ Module.Finite K L)]
 the ambient extension gives exactly its relative field of norms image. -/
 theorem RelFieldOfNorms.of_map_subfield (P : FiniteIntermediateField L Ω)
     (Q : FiniteIntermediateField L P.val) (α : FieldOfNorms K Q.val) :
-    letI : IsScalarTower K Q.val P.val := IsScalarTower.of_algebraMap_eq' rfl
-    letI : Algebra.IsAlgebraic K Q.val :=
-      inferInstanceAs (Algebra.IsAlgebraic K (Q.val.restrictScalars K))
-    letI : Module.Finite Q.val P.val := Module.Finite.right L Q.val P.val
-    letI : Algebra.IsSeparable Q.val P.val :=
-      Algebra.isSeparable_tower_top_of_isSeparable L Q.val P.val
     RelFieldOfNorms.of K L Ω (FiniteIntermediateField.map P.val.val Q)
-        (FieldOfNorms.mapEquiv
+        (FieldOfNorms.mapFun
           ((FiniteIntermediateField.equivMap P.val.val Q).restrictScalars K) α) =
       RelFieldOfNorms.of K L Ω P
-        (FieldOfNorms.inclusion K Q.val P.val α) := by
+        (RelFieldOfNorms.stageInclusion K L P.val Q α) := by
   let : IsScalarTower K Q.val P.val := IsScalarTower.of_algebraMap_eq' rfl
   let : Algebra.IsAlgebraic K Q.val :=
     inferInstanceAs (Algebra.IsAlgebraic K (Q.val.restrictScalars K))

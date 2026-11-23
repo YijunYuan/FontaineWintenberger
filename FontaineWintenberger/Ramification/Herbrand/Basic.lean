@@ -203,8 +203,8 @@ noncomputable def herbrandSum (t : ℝ) : ℝ :=
     Nat.card (lowerRamificationGroup G (IsLocalRing.maximalIdeal R) 0) - 1
 
 open scoped Classical in
+attribute [local instance] Fintype.ofFinite in
 theorem sum_truncatedRamificationOrder_zero :
-    letI := Fintype.ofFinite G
     (∑ g : G, truncatedRamificationOrder (R := R) G g 0) =
       (Nat.card (lowerRamificationGroup G (IsLocalRing.maximalIdeal R) 0) : ℝ) := by
   let := Fintype.ofFinite G

@@ -125,7 +125,7 @@ theorem exists_root_near_of_discr (f : Polynomial 𝒪[K]) (hf : f.Monic)
     ∃ a : L, aeval a f = 0 ∧ ‖a - z‖ < ‖f.discr‖ ∧
       ∀ b : L, aeval b f = 0 → ‖b - z‖ < ‖f.discr‖ → b = a := by
   let : IsUltrametricDist L := IsUltrametricDist.of_normedAlgebra K
-  let : CompleteSpace L := FiniteDimensional.complete K L
+  let : CompleteSpace L := FiniteDimensional.completeSpace K L
   let : (NormedField.valuation (K := K)).HasExtension (NormedField.valuation (K := L)) :=
     normedAlgebra_valuation_hasExtension
   let OL := 𝒪[L]

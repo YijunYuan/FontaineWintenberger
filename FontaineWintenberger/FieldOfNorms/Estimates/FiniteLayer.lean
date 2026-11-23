@@ -7,6 +7,8 @@ module
 
 public import FontaineWintenberger.FieldOfNorms.Estimates.Nonnormal
 public import FontaineWintenberger.LocalField.Basic
+public import FontaineWintenberger.APF.Tower.RelativeHerbrand
+public import FontaineWintenberger.Ramification.Embedding.Basic
 
 /-!
 # Estimates for the finite-layer integral norms
@@ -97,6 +99,9 @@ private theorem add_sub_mem_pow_of_norm_commutes
 
 namespace FiniteIntermediateField
 
+attribute [local instance] instNontriviallyNormedField instNormedAlgebra instIsUltrametricDist
+  instCompleteSpace instIsPerfectResidueLocalField
+
 variable {K L : Type*} [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
     [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
@@ -106,41 +111,20 @@ local notation "p" => residueChar K
 Herbrand modulus on every totally ramified prime-power step, including
 the identity step. No norm on the ambient separable extension is chosen. -/
 theorem integerNorm_sub_congruence_of_totallyRamified
-    (E F : FiniteIntermediateField K L) (hEF : E ≤ F) :
-    letI : Algebra E.val F.val := (IntermediateField.inclusion hEF).toRingHom.toAlgebra
-    letI : IsScalarTower K E.val F.val := IsScalarTower.of_algebraMap_eq' rfl
-    letI := spectralValuation_hasExtension_tower K (E := E.val) (L := F.val)
-    letI := spectralNorm.nontriviallyNormedField K E.val
-    letI := spectralNorm.normedAlgebra K E.val
-    letI := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
-      (isNonarchimedean_spectralNorm (K := K) (L := E.val))
-    letI := spectralNorm.completeSpace K E.val
-    letI := normedAlgebra_isPerfectResidueLocalField K E.val
-    let F' := IntermediateField.extendScalars hEF
-    letI : FiniteDimensional K F' := F.property
-    letI : FiniteDimensional E.val F' := Module.Finite.right K E.val F'
-    ∀ (_ : (IsLocalRing.maximalIdeal (spectralIntegerRing K F.val)).ramificationIdx
-          (spectralIntegerRing K E.val) = Module.finrank E.val F')
-      (n : ℕ) (_ : Module.finrank E.val F' = p ^ n)
-      (r : ℕ) (x y : spectralIntegerRing K F.val),
-      x - y ∈ IsLocalRing.maximalIdeal (spectralIntegerRing K F.val) ^ r →
-        integerNorm E F hEF x - integerNorm E F hEF y ∈
-          IsLocalRing.maximalIdeal (spectralIntegerRing K E.val) ^
-            ⌈apfPhi E.val F' (r : ℝ)⌉₊ := by
+    (E F : FiniteIntermediateField K L) (hEF : E ≤ F)
+    (he : IsTotallyRamifiedInclusion hEF) (n : ℕ) (hd : E.val.relfinrank F.val = p ^ n)
+    (r : ℕ) (x y : spectralIntegerRing K F.val)
+    (hxy : x - y ∈ IsLocalRing.maximalIdeal (spectralIntegerRing K F.val) ^ r) :
+    integerNorm E F hEF x - integerNorm E F hEF y ∈
+      IsLocalRing.maximalIdeal (spectralIntegerRing K E.val) ^
+        ⌈relativePhi hEF (r : ℝ)⌉₊ := by
   let : Algebra E.val F.val := (IntermediateField.inclusion hEF).toRingHom.toAlgebra
   let : IsScalarTower K E.val F.val := IsScalarTower.of_algebraMap_eq' rfl
   let := spectralValuation_hasExtension_tower K (E := E.val) (L := F.val)
-  let := spectralNorm.nontriviallyNormedField K E.val
-  let := spectralNorm.normedAlgebra K E.val
-  let := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
-    (isNonarchimedean_spectralNorm (K := K) (L := E.val))
-  let := spectralNorm.completeSpace K E.val
-  let := normedAlgebra_isPerfectResidueLocalField K E.val
   let F' := IntermediateField.extendScalars hEF
   let : FiniteDimensional K F' := F.property
   let : FiniteDimensional E.val F' := Module.Finite.right K E.val F'
-  dsimp only
-  intro he n hd r x y hxy
+  rw [IntermediateField.relfinrank_eq_finrank_of_le hEF] at hd
   let : IsScalarTower K E.val F' := IsScalarTower.of_algebraMap_eq' rfl
   have : Algebra.IsSeparable K F' := inferInstanceAs (Algebra.IsSeparable K F.val)
   let : NontriviallyNormedField F' := spectralNorm.nontriviallyNormedField K F'
@@ -187,42 +171,21 @@ theorem integerNorm_sub_congruence_of_totallyRamified
 /-- The additive norm defect has the precision given by
 the first bound of a nontrivial totally ramified prime-power step. -/
 theorem exists_integerNorm_add_congruence_of_totallyRamified
-    (E F : FiniteIntermediateField K L) (hEF : E ≤ F) :
-    letI : Algebra E.val F.val := (IntermediateField.inclusion hEF).toRingHom.toAlgebra
-    letI : IsScalarTower K E.val F.val := IsScalarTower.of_algebraMap_eq' rfl
-    letI := spectralValuation_hasExtension_tower K (E := E.val) (L := F.val)
-    letI := spectralNorm.nontriviallyNormedField K E.val
-    letI := spectralNorm.normedAlgebra K E.val
-    letI := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
-      (isNonarchimedean_spectralNorm (K := K) (L := E.val))
-    letI := spectralNorm.completeSpace K E.val
-    letI := normedAlgebra_isPerfectResidueLocalField K E.val
-    let F' := IntermediateField.extendScalars hEF
-    letI : FiniteDimensional K F' := F.property
-    letI : FiniteDimensional E.val F' := Module.Finite.right K E.val F'
-    ∀ (_ : (IsLocalRing.maximalIdeal (spectralIntegerRing K F.val)).ramificationIdx
-          (spectralIntegerRing K E.val) = Module.finrank E.val F')
-      (n : ℕ) (_ : Module.finrank E.val F' = p ^ n)
-      (_ : 1 < Module.finrank E.val F'),
-      ∃ b : ℝ, 0 ≤ b ∧ apfRamificationBound E.val F' = (b : EReal) ∧
-        ∀ x y : spectralIntegerRing K F.val,
-          integerNorm E F hEF (x + y) - integerNorm E F hEF x - integerNorm E F hEF y ∈
-            IsLocalRing.maximalIdeal (spectralIntegerRing K E.val) ^
-              ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊ := by
+    (E F : FiniteIntermediateField K L) (hEF : E ≤ F)
+    (he : IsTotallyRamifiedInclusion hEF) (n : ℕ) (hd : E.val.relfinrank F.val = p ^ n)
+    (hdegree : 1 < E.val.relfinrank F.val) :
+    ∃ b : ℝ, 0 ≤ b ∧ relativeRamificationBound hEF = (b : EReal) ∧
+      ∀ x y : spectralIntegerRing K F.val,
+        integerNorm E F hEF (x + y) - integerNorm E F hEF x - integerNorm E F hEF y ∈
+          IsLocalRing.maximalIdeal (spectralIntegerRing K E.val) ^
+            ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊ := by
   let : Algebra E.val F.val := (IntermediateField.inclusion hEF).toRingHom.toAlgebra
   let : IsScalarTower K E.val F.val := IsScalarTower.of_algebraMap_eq' rfl
   let := spectralValuation_hasExtension_tower K (E := E.val) (L := F.val)
-  let := spectralNorm.nontriviallyNormedField K E.val
-  let := spectralNorm.normedAlgebra K E.val
-  let := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
-    (isNonarchimedean_spectralNorm (K := K) (L := E.val))
-  let := spectralNorm.completeSpace K E.val
-  let := normedAlgebra_isPerfectResidueLocalField K E.val
   let F' := IntermediateField.extendScalars hEF
   let : FiniteDimensional K F' := F.property
   let : FiniteDimensional E.val F' := Module.Finite.right K E.val F'
-  dsimp only
-  intro he n hd hdegree
+  rw [IntermediateField.relfinrank_eq_finrank_of_le hEF] at hd hdegree
   let : IsScalarTower K E.val F' := IsScalarTower.of_algebraMap_eq' rfl
   have : Algebra.IsSeparable K F' := inferInstanceAs (Algebra.IsSeparable K F.val)
   let : NontriviallyNormedField F' := spectralNorm.nontriviallyNormedField K F'
@@ -271,58 +234,27 @@ theorem integerNorm_add_sub_eq_zero_of_finrank_eq_one
     (hd : Module.finrank E.val (IntermediateField.extendScalars hEF) = 1)
     (x y : spectralIntegerRing K F.val) :
     integerNorm E F hEF (x + y) - integerNorm E F hEF x - integerNorm E F hEF y = 0 := by
-  let F' := IntermediateField.extendScalars hEF
-  have : FiniteDimensional K F' := F.property
-  have : FiniteDimensional E.val F' := Module.Finite.right K E.val F'
-  have hdim : Module.finrank K E.val = Module.finrank K F.val := by
-    change Module.finrank E.val F' = 1 at hd
-    have h := Module.finrank_mul_finrank K E.val F'
-    rw [hd, mul_one] at h
-    exact h
-  have hef : E = F := Subtype.ext (IntermediateField.eq_of_le_of_finrank_eq hEF hdim)
-  subst F
+  rw [← IntermediateField.relfinrank_eq_finrank_of_le hEF] at hd
+  obtain rfl := le_antisymm hEF (IntermediateField.relfinrank_eq_one_iff.mp hd)
   simp only [integerNorm_self, add_sub_cancel_left, sub_self]
 
 /-- Every finite real lower bound for the first bound controls the
 additive norm defect. The identity step has infinite first bound
 and zero defect, so all finite precisions are covered uniformly. -/
 theorem integerNorm_add_congruence_of_le_apfRamificationBound
-    (E F : FiniteIntermediateField K L) (hEF : E ≤ F) :
-    letI : Algebra E.val F.val := (IntermediateField.inclusion hEF).toRingHom.toAlgebra
-    letI : IsScalarTower K E.val F.val := IsScalarTower.of_algebraMap_eq' rfl
-    letI := spectralValuation_hasExtension_tower K (E := E.val) (L := F.val)
-    letI := spectralNorm.nontriviallyNormedField K E.val
-    letI := spectralNorm.normedAlgebra K E.val
-    letI := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
-      (isNonarchimedean_spectralNorm (K := K) (L := E.val))
-    letI := spectralNorm.completeSpace K E.val
-    letI := normedAlgebra_isPerfectResidueLocalField K E.val
-    let F' := IntermediateField.extendScalars hEF
-    letI : FiniteDimensional K F' := F.property
-    letI : FiniteDimensional E.val F' := Module.Finite.right K E.val F'
-    ∀ (_ : (IsLocalRing.maximalIdeal (spectralIntegerRing K F.val)).ramificationIdx
-          (spectralIntegerRing K E.val) = Module.finrank E.val F')
-      (n : ℕ) (_ : Module.finrank E.val F' = p ^ n)
-      (b : ℝ) (_ : (b : EReal) ≤ apfRamificationBound E.val F')
-      (x y : spectralIntegerRing K F.val),
-      integerNorm E F hEF (x + y) - integerNorm E F hEF x - integerNorm E F hEF y ∈
-        IsLocalRing.maximalIdeal (spectralIntegerRing K E.val) ^
-          ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊ := by
+    (E F : FiniteIntermediateField K L) (hEF : E ≤ F)
+    (he : IsTotallyRamifiedInclusion hEF) (n : ℕ) (hd : E.val.relfinrank F.val = p ^ n)
+    (b : ℝ) (hb : (b : EReal) ≤ relativeRamificationBound hEF) (x y : spectralIntegerRing K F.val) :
+    integerNorm E F hEF (x + y) - integerNorm E F hEF x - integerNorm E F hEF y ∈
+      IsLocalRing.maximalIdeal (spectralIntegerRing K E.val) ^
+        ⌈((p - 1 : ℕ) : ℝ) / p * b⌉₊ := by
   let : Algebra E.val F.val := (IntermediateField.inclusion hEF).toRingHom.toAlgebra
   let : IsScalarTower K E.val F.val := IsScalarTower.of_algebraMap_eq' rfl
   let := spectralValuation_hasExtension_tower K (E := E.val) (L := F.val)
-  let := spectralNorm.nontriviallyNormedField K E.val
-  let := spectralNorm.normedAlgebra K E.val
-  let := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
-    (isNonarchimedean_spectralNorm (K := K) (L := E.val))
-  let := spectralNorm.completeSpace K E.val
-  let := normedAlgebra_isPerfectResidueLocalField K E.val
   let F' := IntermediateField.extendScalars hEF
   let : FiniteDimensional K F' := F.property
   let : FiniteDimensional E.val F' := Module.Finite.right K E.val F'
-  dsimp only
-  intro he n hd b hb x y
-  by_cases hdegree : 1 < Module.finrank E.val F'
+  by_cases hdegree : 1 < E.val.relfinrank F.val
   · obtain ⟨c, _, hc, hadd⟩ :=
       exists_integerNorm_add_congruence_of_totallyRamified E F hEF he n hd hdegree
     have hbc : b ≤ c := by exact_mod_cast (hb.trans_eq hc)
@@ -330,9 +262,9 @@ theorem integerNorm_add_congruence_of_le_apfRamificationBound
       (mul_le_mul_of_nonneg_left hbc
         (div_nonneg (Nat.cast_nonneg (p - 1)) (Nat.cast_nonneg p))))
     exact hadd x y
-  · have hd1 : Module.finrank E.val F' = 1 := by
-      have hpos := Module.finrank_pos (R := E.val) (M := F')
-      omega
+  · rw [IntermediateField.relfinrank_eq_finrank_of_le hEF] at hdegree
+    have hd1 : Module.finrank E.val F' = 1 :=
+      le_antisymm (le_of_not_gt hdegree) (Module.finrank_pos (R := E.val) (M := F'))
     rw [integerNorm_add_sub_eq_zero_of_finrank_eq_one E F hEF hd1]
     exact Ideal.zero_mem _
 

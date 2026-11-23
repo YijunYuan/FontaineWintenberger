@@ -148,12 +148,11 @@ theorem fixingRestrictionMap_fiber_card {E F : IntermediateField K Ω} (hEF : E 
       exact mul_inv_cancel_left _ _
   exact (Nat.card_congr (Equiv.ofBijective φ hφ)).symm
 
+attribute [local instance] Fintype.ofFinite in
 /-- Summing any function over distinct embeddings removes exactly the
 proved fixing-group multiplicity, even for infinite extended-real values. -/
 theorem sum_fixingRestrictionMap {E F : IntermediateField K Ω} (hEF : E ≤ F)
     (s : Ω ≃ₐ[K] Ω) (a : EmbeddingRestrictionFiber hEF (s.toAlgHom.comp E.val) → ℝ≥0∞) :
-    letI := Fintype.ofFinite E.fixingSubgroup
-    letI := Fintype.ofFinite (EmbeddingRestrictionFiber hEF (s.toAlgHom.comp E.val))
     (∑ d : E.fixingSubgroup, a (fixingRestrictionMap hEF s d)) =
       Nat.card F.fixingSubgroup * ∑ τ, a τ := by
   classical
@@ -174,11 +173,11 @@ variable (K Ω : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField 
 local notation "G" => Ω ≃ₐ[K] Ω
 local notation "O" => spectralIntegerRing K Ω
 
+attribute [local instance] Fintype.ofFinite in
 /-- The repeated-representative sum for an arbitrary finite tower, without
 any total-ramification condition and including the infinite endpoint. -/
 theorem sum_embeddingOrder_fixing_restrictions
     (E F : IntermediateField K Ω) (hEF : E ≤ F) (s : G) :
-    letI := Fintype.ofFinite E.fixingSubgroup
     (∑ d : E.fixingSubgroup,
       embeddingRamificationOrder K ((s * d.1).toAlgHom.comp F.val) F.val) =
       Nat.card F.fixingSubgroup *
@@ -194,11 +193,11 @@ theorem sum_embeddingOrder_fixing_restrictions
     (fun t : G => (ramificationOrder (R := O) G t : ℝ≥0∞)) s]
   simp only [nsmul_eq_mul, Nat.card_eq_fintype_card]
 
+attribute [local instance] Fintype.ofFinite in
 /-- Tate's exact average over distinct restriction embeddings in an
 arbitrary finite separable tower. Neither field need be stable under `s`. -/
 theorem embeddingOrder_eq_sum_restrictionFiber
     (E F : IntermediateField K Ω) (hEF : E ≤ F) (s : G) :
-    letI := Fintype.ofFinite (EmbeddingRestrictionFiber hEF (s.toAlgHom.comp E.val))
     embeddingRamificationOrder K (s.toAlgHom.comp E.val) E.val =
       (∑ τ : EmbeddingRestrictionFiber hEF (s.toAlgHom.comp E.val),
         embeddingRamificationOrder K τ.1 F.val) /
@@ -230,12 +229,11 @@ theorem embeddingOrder_eq_sum_restrictionFiber
   rw [ENNReal.mul_inv (Or.inr (ENNReal.natCast_ne_top _))
     (Or.inl (ENNReal.natCast_ne_top _)), mul_comm]
 
+attribute [local instance] Fintype.ofFinite in
 /-- The distinct-fiber formula applies to any finite embedding,
 by its extension to the finite normal ambient field. -/
 theorem embeddingOrder_restriction_eq_sum
     (E F : IntermediateField K Ω) (hEF : E ≤ F) (σ : F →ₐ[K] Ω) :
-    letI := Fintype.ofFinite
-      (EmbeddingRestrictionFiber hEF (σ.comp (IntermediateField.inclusion hEF)))
     embeddingRamificationOrder K (σ.comp (IntermediateField.inclusion hEF)) E.val =
       (∑ τ : EmbeddingRestrictionFiber hEF (σ.comp (IntermediateField.inclusion hEF)),
         embeddingRamificationOrder K τ.1 F.val) /
@@ -408,12 +406,11 @@ theorem embeddingRamificationIdx_normalClosureRestriction :
   exact embeddingRamificationIdx_isomorphic_square K eE eF _ _
     (normalClosureRestriction_inclusion K E F hEF)
 
+attribute [local instance] Fintype.ofFinite in
 /-- The full distinct-fiber Tate formula in the separable closure.
 Its contract retains all embeddings and has no finite-ambient choice. -/
 theorem closureEmbeddingOrder_restriction_eq_sum
     (σ : F →ₐ[K] SeparableClosure K) :
-    letI := Fintype.ofFinite
-      (EmbeddingRestrictionFiber hEF (σ.comp (IntermediateField.inclusion hEF)))
     closureEmbeddingOrder K (σ.comp (IntermediateField.inclusion hEF)) E.val =
       (∑ τ : EmbeddingRestrictionFiber hEF (σ.comp (IntermediateField.inclusion hEF)),
         closureEmbeddingOrder K τ.1 F.val) /
@@ -444,12 +441,11 @@ theorem closureEmbeddingOrder_restriction_eq_sum
   rw [hsum, hbase, ← embeddingRamificationIdx_normalClosureRestriction K E F hEF]
   exact embeddingOrder_restriction_eq_sum K Ω E₀ F₀ h₀ σ₀
 
+attribute [local instance] Fintype.ofFinite in
 /-- The signed distinct-fiber identity, with its positive index
 cleared. All terms are nonnegative shifted numbers, so infinity is retained. -/
 theorem closureEmbeddingNumber_restriction_mul_index_eq_sum
     (σ : F →ₐ[K] SeparableClosure K) :
-    letI := Fintype.ofFinite
-      (EmbeddingRestrictionFiber hEF (σ.comp (IntermediateField.inclusion hEF)))
     (embeddingRamificationIdx K (IntermediateField.inclusion hEF) : EReal) *
       (closureEmbeddingNumber K (σ.comp (IntermediateField.inclusion hEF)) E.val + 1) =
         ∑ τ : EmbeddingRestrictionFiber hEF (σ.comp (IntermediateField.inclusion hEF)),

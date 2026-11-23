@@ -122,15 +122,7 @@ theorem ker_localResidueGaloisHom :
       lowerRamificationGroup G (IsLocalRing.maximalIdeal S) 0 := by
   ext g
   rw [MonoidHom.mem_ker, lowerRamificationGroup_zero_eq_ker_residue, MonoidHom.mem_ker]
-  constructor
-  · intro hg
-    ext x
-    obtain ⟨x, rfl⟩ := IsLocalRing.residue_surjective x
-    exact congrArg (fun σ => σ (IsLocalRing.residue S x)) hg
-  · intro hg
-    ext x
-    obtain ⟨x, rfl⟩ := IsLocalRing.residue_surjective x
-    exact congrArg (fun σ => σ (IsLocalRing.residue S x)) hg
+  exact AlgEquiv.toRingEquiv_injective.eq_iff.symm
 
 /-- The residue automorphism group is the quotient by the zero lower group. -/
 noncomputable def localResidueGaloisEquiv :

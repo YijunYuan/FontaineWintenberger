@@ -196,22 +196,8 @@ theorem RelFieldOfNorms.objectMapOf_valuation (t : M →ₐ[L] N)
 
 /-- The value on a finite field is its canonical terminal norm field. -/
 def RelFieldOfNorms.objectFiniteAlgEquiv [Module.Finite L M] :
-    letI : Algebra.IsSeparable K M := Algebra.IsSeparable.trans K L M
-    letI : IsAPF K M := (isAPF_finite_extension_iff K M L).mpr ‹_›
-    letI : Fact (¬ Module.Finite K M) := ⟨RelFieldOfNorms.ambient_infinite K L M⟩
-    letI : IsAPF K M := (isAPF_finite_extension_iff K M L).mpr ‹_›
-    letI : Fact (¬ Module.Finite K M) := ⟨RelFieldOfNorms.ambient_infinite K L M⟩
-    letI := (FieldOfNorms.inclusion K L M
-).toAlgebra
     (RelFieldOfNorms.objectOf.{u, v, w} K L M).obj ≃ₐ[FieldOfNorms K L]
-      FieldOfNorms K M := by
-  letI : Algebra.IsSeparable K M := Algebra.IsSeparable.trans K L M
-  letI : IsAPF K M := (isAPF_finite_extension_iff K M L).mpr ‹_›
-  letI : Fact (¬ Module.Finite K M) := ⟨RelFieldOfNorms.ambient_infinite K L M⟩
-  letI : IsAPF K M := (isAPF_finite_extension_iff K M L).mpr ‹_›
-  letI : Fact (¬ Module.Finite K M) := ⟨RelFieldOfNorms.ambient_infinite K L M⟩
-  letI := (FieldOfNorms.inclusion K L M
-).toAlgebra
+      FieldOfNorms.FiniteExtension K L M := by
   dsimp only [RelFieldOfNorms.objectOf]
   exact RelFieldOfNorms.finiteAlgEquiv K L M
 

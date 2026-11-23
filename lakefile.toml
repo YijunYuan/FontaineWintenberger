@@ -7,7 +7,7 @@ packagesDir = ".lake/packages"
 [[require]]
 name = "mathlib"
 git = "https://github.com/leanprover-community/mathlib4.git"
-rev = "1e75e9dd53d483fa01eff9ac7d4ea0472ce9d1fa"
+rev = "v4.36.0"
 
 [[lean_lib]]
 name = "FontaineWintenberger"

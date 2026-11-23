@@ -649,15 +649,11 @@ theorem apfMaximalTame_wild_tail [IsAPF K L]
     (E F : FiniteIntermediateField K L) (hE : apfMaximalTame K L ≤ E) (hEF : E ≤ F) :
     Function.Surjective
         (spectralResidueInclusion K (IntermediateField.inclusion hEF)) ∧
-      (∃ n : ℕ, Module.finrank E.val (IntermediateField.extendScalars hEF) = p ^ n) ∧
-      letI : Algebra E.val F.val := (IntermediateField.inclusion hEF).toRingHom.toAlgebra
-      letI : IsScalarTower K E.val F.val := IsScalarTower.of_algebraMap_eq' rfl
-      letI := spectralValuation_hasExtension_tower K (E := E.val) (L := F.val)
-      (IsLocalRing.maximalIdeal (spectralIntegerRing K F.val)).ramificationIdx
-          (spectralIntegerRing K E.val) =
-        Module.finrank E.val (IntermediateField.extendScalars hEF) := by
+      (∃ n : ℕ, E.val.relfinrank F.val = p ^ n) ∧
+      IsTotallyRamifiedInclusion hEF := by
   have hs := spectralResidueInclusion_surjective_of_apfMaximalUnramified_le K L E F
     ((apfMaximalUnramified_le_maximalTame K L).trans hE) hEF
+  rw [IntermediateField.relfinrank_eq_finrank_of_le hEF]
   exact ⟨hs, finrank_eq_prime_pow_of_apfMaximalTame_le K L E F hE hEF,
     FiniteIntermediateField.ramificationIdx_eq_finrank_of_residueInclusion_surjective K L E F hEF
         hs⟩

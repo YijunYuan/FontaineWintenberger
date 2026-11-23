@@ -106,14 +106,6 @@ instance intermediateField_isSeparable_of_tower [Algebra.IsSeparable K L]
     [Algebra.IsSeparable L M] (E : IntermediateField L M) : Algebra.IsSeparable K E :=
   Algebra.IsSeparable.trans K L E
 
-/-- An ambient extension of the infinite extension is infinite over `K`. -/
-theorem RelFieldOfNorms.ambient_infinite [Fact (¬ Module.Finite K L)] :
-    ¬ Module.Finite K M := by
-  intro h
-  let : Module.Finite K M := h
-  exact (Fact.out : ¬ Module.Finite K L) (FiniteDimensional.of_injective
-    (IsScalarTower.toAlgHom K L M).toLinearMap (algebraMap L M).injective)
-
 end Fields
 
 variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
@@ -549,19 +541,12 @@ theorem RelFieldOfNorms.topEquiv_apply
 
 /-- The same finite union is canonically the norm field of the ambient extension. -/
 def RelFieldOfNorms.finiteEquiv :
-    letI : Algebra.IsSeparable K M := Algebra.IsSeparable.trans K L M
-    letI : IsAPF K M := (isAPF_finite_extension_iff K M L).mpr ‹_›
-    letI : Fact (¬ Module.Finite K M) := ⟨RelFieldOfNorms.ambient_infinite K L M⟩
-    letI : IsAPF K M := (isAPF_finite_extension_iff K M L).mpr ‹_›
-    letI : Fact (¬ Module.Finite K M) := ⟨RelFieldOfNorms.ambient_infinite K L M⟩
-    RelFieldOfNorms K L M ≃+* FieldOfNorms K M := by
+    RelFieldOfNorms K L M ≃+* FieldOfNorms.FiniteExtension K L M := by
   letI : Algebra.IsSeparable K M := Algebra.IsSeparable.trans K L M
   letI : IsAPF K M := (isAPF_finite_extension_iff K M L).mpr ‹_›
   letI : Fact (¬ Module.Finite K M) := ⟨RelFieldOfNorms.ambient_infinite K L M⟩
   letI : Algebra.IsSeparable K (RelFieldOfNorms.top L M).val :=
     Algebra.IsSeparable.trans K L (RelFieldOfNorms.top L M).val
-  letI : IsAPF K M := (isAPF_finite_extension_iff K M L).mpr ‹_›
-  letI : Fact (¬ Module.Finite K M) := ⟨RelFieldOfNorms.ambient_infinite K L M⟩
   exact (RelFieldOfNorms.topEquiv K L M).symm.trans
     (FieldOfNorms.mapEquiv
       ((IntermediateField.topEquiv :
@@ -571,12 +556,9 @@ def RelFieldOfNorms.finiteEquiv :
 @[simp]
 theorem RelFieldOfNorms.finiteEquiv_of_top
     (x : FieldOfNorms K (RelFieldOfNorms.top L M).val) :
-    letI : Algebra.IsSeparable K M := Algebra.IsSeparable.trans K L M
-    letI : IsAPF K M := (isAPF_finite_extension_iff K M L).mpr ‹_›
-    letI : Fact (¬ Module.Finite K M) := ⟨RelFieldOfNorms.ambient_infinite K L M⟩
     RelFieldOfNorms.finiteEquiv K L M
         (RelFieldOfNorms.of K L M (RelFieldOfNorms.top L M) x) =
-      FieldOfNorms.mapEquiv ((IntermediateField.topEquiv :
+      FieldOfNorms.mapFun ((IntermediateField.topEquiv :
         (⊤ : IntermediateField L M) ≃ₐ[L] M).restrictScalars K) x := by
   let : Algebra.IsSeparable K M := Algebra.IsSeparable.trans K L M
   let : IsAPF K M := (isAPF_finite_extension_iff K M L).mpr ‹_›
@@ -586,20 +568,25 @@ theorem RelFieldOfNorms.finiteEquiv_of_top
     ((RelFieldOfNorms.topEquiv K L M).symm
       (RelFieldOfNorms.topEquiv K L M x)) = _
   rw [RingEquiv.symm_apply_apply]
+  rfl
+
+/-- The norm-field inclusion from a finite stage into the finite ambient extension. -/
+abbrev RelFieldOfNorms.stageInclusion (N : FiniteIntermediateField L M) :
+    FieldOfNorms K N.val →+* FieldOfNorms.FiniteExtension K L M :=
+  letI : IsScalarTower K N.val M := IsScalarTower.of_algebraMap_eq' rfl
+  letI : Module.Finite N.val M := Module.Finite.right L N.val M
+  letI : Algebra.IsSeparable N.val M := Algebra.isSeparable_tower_top_of_isSeparable L N.val M
+  letI : Algebra.IsSeparable K M := Algebra.IsSeparable.trans K L M
+  letI : IsAPF K M := (isAPF_finite_extension_iff K M L).mpr ‹_›
+  letI : Fact (¬ Module.Finite K M) := ⟨RelFieldOfNorms.ambient_infinite K L M⟩
+  FieldOfNorms.inclusion K N.val M
 
 /-- The finite comparison retains every finite-inclusion map. -/
 theorem RelFieldOfNorms.finiteEquiv_of (N : FiniteIntermediateField L M) (x : FieldOfNorms K N.val)
     :
-    letI : Module.Finite N.val M := Module.Finite.right L N.val M
-    letI : Algebra.IsSeparable N.val M :=
-      Algebra.isSeparable_tower_top_of_isSeparable L N.val M
-    letI : IsScalarTower K N.val M := IsScalarTower.of_algebraMap_eq' rfl
-    letI : Algebra.IsSeparable K M := Algebra.IsSeparable.trans K L M
-    letI : IsAPF K M := (isAPF_finite_extension_iff K M L).mpr ‹_›
-    letI : Fact (¬ Module.Finite K M) := ⟨RelFieldOfNorms.ambient_infinite K L M⟩
     RelFieldOfNorms.finiteEquiv K L M
         (RelFieldOfNorms.of K L M N x) =
-      FieldOfNorms.inclusion K N.val M x := by
+      RelFieldOfNorms.stageInclusion K L M N x := by
   let : Algebra.IsSeparable K M := Algebra.IsSeparable.trans K L M
   let : IsAPF K M := (isAPF_finite_extension_iff K M L).mpr ‹_›
   let : Fact (¬ Module.Finite K M) := ⟨RelFieldOfNorms.ambient_infinite K L M⟩
@@ -621,40 +608,36 @@ theorem RelFieldOfNorms.finiteEquiv_of (N : FiniteIntermediateField L M) (x : Fi
     show N.val ≤ (⊤ : IntermediateField L M) from le_top
   rw [← RelFieldOfNorms.of_transition K L M N
     (RelFieldOfNorms.top L M) hNT x, RelFieldOfNorms.finiteEquiv_of_top]
-  simpa only [FieldOfNorms.mapEquiv_refl, RelFieldOfNorms.transition]
-    using FieldOfNorms.mapEquiv_inclusion
+  have h := FieldOfNorms.mapEquiv_inclusion
     (AlgEquiv.refl : N.val ≃ₐ[K] N.val)
     ((IntermediateField.topEquiv :
       (⊤ : IntermediateField L M) ≃ₐ[L] M).restrictScalars K) (fun _ => rfl) x
+  rw [FieldOfNorms.mapEquiv_refl] at h
+  exact h
 
 /-- The same finite comparison commutes with the base inclusion. -/
 theorem RelFieldOfNorms.finiteEquiv_base (x : FieldOfNorms K L) :
-    letI : Algebra.IsSeparable K M := Algebra.IsSeparable.trans K L M
-    letI : IsAPF K M := (isAPF_finite_extension_iff K M L).mpr ‹_›
-    letI : Fact (¬ Module.Finite K M) := ⟨RelFieldOfNorms.ambient_infinite K L M⟩
     RelFieldOfNorms.finiteEquiv K L M
         (RelFieldOfNorms.baseHom K L M x) =
-      FieldOfNorms.inclusion K L M x := by
+      algebraMap (FieldOfNorms K L) (FieldOfNorms.FiniteExtension K L M) x := by
   let : Algebra.IsSeparable K M := Algebra.IsSeparable.trans K L M
   let : IsAPF K M := (isAPF_finite_extension_iff K M L).mpr ‹_›
   let : Fact (¬ Module.Finite K M) := ⟨RelFieldOfNorms.ambient_infinite K L M⟩
   rw [← RelFieldOfNorms.of_base K L M (RelFieldOfNorms.top L M) x,
     RelFieldOfNorms.finiteEquiv_of_top]
-  simpa only [FieldOfNorms.mapEquiv_refl, RelFieldOfNorms.baseToStage]
-    using FieldOfNorms.mapEquiv_inclusion
+  have h := FieldOfNorms.mapEquiv_inclusion
     (AlgEquiv.refl : L ≃ₐ[K] L)
     ((IntermediateField.topEquiv :
       (⊤ : IntermediateField L M) ≃ₐ[L] M).restrictScalars K) (fun _ => rfl) x
+  rw [FieldOfNorms.mapEquiv_refl] at h
+  exact h
 
 /-- The finite comparison retains the rational normalization over the base. -/
 theorem RelFieldOfNorms.finiteEquiv_valuation
     (z : RelFieldOfNorms K L M) :
-    letI : Algebra.IsSeparable K M := Algebra.IsSeparable.trans K L M
-    letI : IsAPF K M := (isAPF_finite_extension_iff K M L).mpr ‹_›
-    letI : Fact (¬ Module.Finite K M) := ⟨RelFieldOfNorms.ambient_infinite K L M⟩
     RelFieldOfNorms.valueMap
         (RelFieldOfNorms.stageExponent K L M (RelFieldOfNorms.top L M))
-        (FieldOfNorms.valuation K M
+        (FieldOfNorms.FiniteExtension.valuation K L M
           (RelFieldOfNorms.finiteEquiv K L M z)) =
       RelFieldOfNorms.valuation K L M z := by
   let : Algebra.IsSeparable K M := Algebra.IsSeparable.trans K L M
@@ -664,26 +647,18 @@ theorem RelFieldOfNorms.finiteEquiv_valuation
     Algebra.IsSeparable.trans K L (RelFieldOfNorms.top L M).val
   obtain ⟨x, rfl⟩ :=
     (RelFieldOfNorms.of_top_bijective K L M).surjective z
-  rw [RelFieldOfNorms.finiteEquiv_of_top, FieldOfNorms.valuation_mapEquiv,
-    RelFieldOfNorms.valuation_of, RelFieldOfNorms.stageValuation_apply]
+  rw [RelFieldOfNorms.finiteEquiv_of_top, RelFieldOfNorms.valuation_of,
+    RelFieldOfNorms.stageValuation_apply]
+  exact congrArg (RelFieldOfNorms.valueMap _) (FieldOfNorms.valuation_mapFun K
+    ((IntermediateField.topEquiv : (⊤ : IntermediateField L M) ≃ₐ[L] M).restrictScalars K) x)
 
 /-- Finite comparison over the same base and its finite-inclusion algebra. -/
 def RelFieldOfNorms.finiteAlgEquiv :
-    letI : Algebra.IsSeparable K M := Algebra.IsSeparable.trans K L M
-    letI : IsAPF K M := (isAPF_finite_extension_iff K M L).mpr ‹_›
-    letI : Fact (¬ Module.Finite K M) := ⟨RelFieldOfNorms.ambient_infinite K L M⟩
-    letI : IsAPF K M := (isAPF_finite_extension_iff K M L).mpr ‹_›
-    letI : Fact (¬ Module.Finite K M) := ⟨RelFieldOfNorms.ambient_infinite K L M⟩
-    letI := (FieldOfNorms.inclusion K L M
-).toAlgebra
-    RelFieldOfNorms K L M ≃ₐ[FieldOfNorms K L] FieldOfNorms K M := by
+    RelFieldOfNorms K L M ≃ₐ[FieldOfNorms K L] FieldOfNorms.FiniteExtension K L M := by
   letI : Algebra.IsSeparable K M := Algebra.IsSeparable.trans K L M
   letI : IsAPF K M := (isAPF_finite_extension_iff K M L).mpr ‹_›
   letI : Fact (¬ Module.Finite K M) := ⟨RelFieldOfNorms.ambient_infinite K L M⟩
-  letI : IsAPF K M := (isAPF_finite_extension_iff K M L).mpr ‹_›
-  letI : Fact (¬ Module.Finite K M) := ⟨RelFieldOfNorms.ambient_infinite K L M⟩
-  letI := (FieldOfNorms.inclusion K L M
-).toAlgebra
+  letI := (FieldOfNorms.inclusion K L M).toAlgebra
   exact { RelFieldOfNorms.finiteEquiv K L M with
     commutes' := RelFieldOfNorms.finiteEquiv_base K L M }
 

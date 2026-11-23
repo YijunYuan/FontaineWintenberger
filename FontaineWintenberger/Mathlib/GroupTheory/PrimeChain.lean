@@ -53,11 +53,8 @@ theorem subgroup_prime_chain_of_isPGroup (K H : Subgroup G) (hK : IsPGroup p K) 
     by_cases heq : H = K
     · subst H
       exact Relation.ReflTransGen.refl
-    have hproper : H.subgroupOf K ≠ ⊤ := by
-      intro h
-      have hm := congrArg (fun S : Subgroup K => S.map K.subtype) h
-      rw [Subgroup.map_subgroupOf_eq_of_le hHK, Subgroup.map_top, K.range_subtype] at hm
-      exact heq hm
+    have hproper : H.subgroupOf K ≠ ⊤ :=
+      fun h => heq (le_antisymm hHK (Subgroup.subgroupOf_eq_top.mp h))
     obtain ⟨M, hHM, hM, hnormal, hindex⟩ :=
       exists_normal_index_prime_le hK (H.subgroupOf K) hproper
     let N := M.map K.subtype
@@ -67,9 +64,8 @@ theorem subgroup_prime_chain_of_isPGroup (K H : Subgroup G) (hK : IsPGroup p K) 
     have hHN : H ≤ N := by
       rw [← Subgroup.map_subgroupOf_eq_of_le hHK]
       exact Subgroup.map_mono hHM
-    have hNM : N.subgroupOf K = M := by
-      apply Subgroup.map_injective K.subtype_injective
-      rw [Subgroup.map_subgroupOf_eq_of_le hNK.le]
+    have hNM : N.subgroupOf K = M :=
+      Subgroup.comap_map_eq_self_of_injective K.subtype_injective M
     apply Relation.ReflTransGen.head (b := N)
     · exact ⟨hNK.le, hNM ▸ hnormal, hNM ▸ hindex⟩
     · exact ih N hNK (hK.of_injective (Subgroup.inclusion hNK.le)

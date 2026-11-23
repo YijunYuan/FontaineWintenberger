@@ -8,6 +8,7 @@ module
 public import FontaineWintenberger.APF.Tower.Residue
 public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.Mathlib.FieldTheory.RelIndex
+public import FontaineWintenberger.Ramification.Embedding.Basic
 public import FontaineWintenberger.Ramification.Fields.Tame
 public import Mathlib.FieldTheory.Relrank
 
@@ -183,12 +184,7 @@ theorem FiniteIntermediateField.ramificationIdx_eq_finrank_of_residueInclusion_s
     (E F : FiniteIntermediateField K L) (hEF : E ≤ F)
     (hs : Function.Surjective
       (spectralResidueInclusion K (IntermediateField.inclusion hEF))) :
-    letI : Algebra E.val F.val := (IntermediateField.inclusion hEF).toRingHom.toAlgebra
-    letI : IsScalarTower K E.val F.val := IsScalarTower.of_algebraMap_eq' rfl
-    letI := spectralValuation_hasExtension_tower K (E := E.val) (L := F.val)
-    (IsLocalRing.maximalIdeal (spectralIntegerRing K F.val)).ramificationIdx
-        (spectralIntegerRing K E.val) =
-      Module.finrank E.val (IntermediateField.extendScalars hEF) := by
+    IsTotallyRamifiedInclusion (E := E.val) (F := F.val) hEF := by
   let : Algebra E.val F.val := (IntermediateField.inclusion hEF).toRingHom.toAlgebra
   have : IsScalarTower K E.val F.val := IsScalarTower.of_algebraMap_eq' rfl
   have : FiniteDimensional E.val F.val := Module.Finite.right K E.val F.val
@@ -253,16 +249,12 @@ theorem IsAPF.exists_finiteIntermediateField_wild_tail [IsAPF K L] :
     ∃ T : FiniteIntermediateField K L, ∀ E F : FiniteIntermediateField K L, T ≤ E → ∀ hEF : E ≤ F,
       Function.Surjective
           (spectralResidueInclusion K (IntermediateField.inclusion hEF)) ∧
-        (∃ n : ℕ, Module.finrank E.val (IntermediateField.extendScalars hEF) = p ^ n) ∧
-        letI : Algebra E.val F.val := (IntermediateField.inclusion hEF).toRingHom.toAlgebra
-        letI : IsScalarTower K E.val F.val := IsScalarTower.of_algebraMap_eq' rfl
-        letI := spectralValuation_hasExtension_tower K (E := E.val) (L := F.val)
-        (IsLocalRing.maximalIdeal (spectralIntegerRing K F.val)).ramificationIdx
-            (spectralIntegerRing K E.val) =
-          Module.finrank E.val (IntermediateField.extendScalars hEF) := by
+        (∃ n : ℕ, E.val.relfinrank F.val = p ^ n) ∧
+        IsTotallyRamifiedInclusion hEF := by
   obtain ⟨T, hT⟩ := IsAPF.exists_finiteIntermediateField_residue_surjective_and_degree_prime_pow K L
   refine ⟨T, fun E F hE hEF ↦ ?_⟩
   obtain ⟨hs, hn⟩ := hT E F hE hEF
+  rw [IntermediateField.relfinrank_eq_finrank_of_le hEF]
   exact ⟨hs, hn, FiniteIntermediateField.ramificationIdx_eq_finrank_of_residueInclusion_surjective
       K L
     E F hEF hs⟩

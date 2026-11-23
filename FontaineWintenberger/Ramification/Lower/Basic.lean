@@ -159,20 +159,12 @@ theorem lowerRamificationGroup_zero_eq_ker_residue :
     lowerRamificationGroup G (IsLocalRing.maximalIdeal R) 0 =
       (MulSemiringAction.toRingAut G (IsLocalRing.ResidueField R)).ker := by
   ext g
-  rw [lowerRamificationGroup_zero, Ideal.mem_inertia, MonoidHom.mem_ker]
-  constructor
-  · intro hg
-    ext a
-    obtain ⟨x, rfl⟩ := IsLocalRing.residue_surjective a
-    change g • IsLocalRing.residue R x = IsLocalRing.residue R x
-    rw [← IsLocalRing.ResidueField.residue_smul, ← sub_eq_zero, ← map_sub]
-    exact (IsLocalRing.residue_eq_zero_iff _).mpr (hg x)
-  · intro hg x
-    apply (IsLocalRing.residue_eq_zero_iff _).mp
-    rw [map_sub, IsLocalRing.ResidueField.residue_smul]
-    have h := congrArg (fun e : RingAut (IsLocalRing.ResidueField R) =>
-      e (IsLocalRing.residue R x)) hg
-    exact sub_eq_zero.mpr h
+  rw [lowerRamificationGroup_zero, Ideal.mem_inertia, MonoidHom.mem_ker, DFunLike.ext_iff]
+  change (∀ x : R, g • x - x ∈ IsLocalRing.maximalIdeal R) ↔
+    ∀ x : IsLocalRing.ResidueField R, g • x = x
+  rw [(IsLocalRing.residue_surjective (R := R)).forall]
+  simp only [← IsLocalRing.residue_eq_zero_iff, map_sub,
+    IsLocalRing.ResidueField.residue_smul, sub_eq_zero]
 
 end LocalRing
 
@@ -191,18 +183,14 @@ instance decompositionSubgroupSMul (A : ValuationSubring L) :
 attribute [instance 1100] decompositionSubgroupSMul
 
 /-- The decomposition subgroup acts faithfully on its valuation subring:
-every field element or its inverse belongs to the subring. -/
+field homomorphisms are determined by their restriction to the valuation subring. -/
 instance decompositionSubgroup_faithfulSMul (A : ValuationSubring L) :
     FaithfulSMul (A.decompositionSubgroup K) A where
   eq_of_smul_eq_smul {g h} he := by
     apply Subtype.ext
-    apply AlgEquiv.ext
-    intro x
-    rcases A.mem_or_inv_mem x with hx | hx
-    · exact congrArg Subtype.val (he ⟨x, hx⟩)
-    · have hi := congrArg Subtype.val (he ⟨x⁻¹, hx⟩)
-      change (g : L ≃ₐ[K] L) (x⁻¹) = (h : L ≃ₐ[K] L) (x⁻¹) at hi
-      simpa only [map_inv₀, inv_inj] using hi
+    apply AlgEquiv.toRingEquiv_injective
+    apply RingEquiv.toRingHom_injective
+    exact IsFractionRing.ringHom_ext (fun x : A => congrArg Subtype.val (he x))
 
 /-- Lower ramification groups for the intrinsic action of the decomposition
 subgroup on a valuation subring. -/

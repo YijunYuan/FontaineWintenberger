@@ -62,6 +62,56 @@ noncomputable section
 
 namespace FontaineWintenberger
 
+section FiniteAmbient
+
+variable (K L M : Type*) [Field K] [Field L] [Field M]
+    [Algebra K L] [Algebra K M] [Algebra L M] [IsScalarTower K L M]
+
+/-- An ambient extension of the infinite extension is infinite over `K`. -/
+theorem RelFieldOfNorms.ambient_infinite [Fact (¬ Module.Finite K L)] :
+    ¬ Module.Finite K M := by
+  intro h
+  let : Module.Finite K M := h
+  exact (Fact.out : ¬ Module.Finite K L) (FiniteDimensional.of_injective
+    (IsScalarTower.toAlgHom K L M).toLinearMap (algebraMap L M).injective)
+
+end FiniteAmbient
+
+section FiniteExtension
+
+/-- The norm field of `M`, regarded as an extension of the norm field of `L`. The base
+parameter records the scalar action through the finite inclusion. -/
+def FieldOfNorms.FiniteExtension (K _L M : Type*) [Field K] [Field M] [Algebra K M] :=
+  FieldOfNorms K M
+
+variable (K L M : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
+    [Field L] [Field M] [Algebra K L] [Algebra K M] [Algebra L M] [IsScalarTower K L M]
+    [Algebra.IsSeparable K L] [Algebra.IsSeparable L M] [Module.Finite L M]
+    [IsAPF K L] [Fact (¬ Module.Finite K L)]
+
+instance FieldOfNorms.FiniteExtension.instField : Field (FieldOfNorms.FiniteExtension K L M) :=
+  letI : Algebra.IsSeparable K M := Algebra.IsSeparable.trans K L M
+  letI : IsAPF K M := (isAPF_finite_extension_iff K M L).mpr ‹_›
+  letI : Fact (¬ Module.Finite K M) := ⟨RelFieldOfNorms.ambient_infinite K L M⟩
+  inferInstanceAs (Field (FieldOfNorms K M))
+
+instance FieldOfNorms.FiniteExtension.instAlgebra :
+    Algebra (FieldOfNorms K L) (FieldOfNorms.FiniteExtension K L M) :=
+  letI : Algebra.IsSeparable K M := Algebra.IsSeparable.trans K L M
+  letI : IsAPF K M := (isAPF_finite_extension_iff K M L).mpr ‹_›
+  letI : Fact (¬ Module.Finite K M) := ⟨RelFieldOfNorms.ambient_infinite K L M⟩
+  FieldOfNorms.inclusionAlgebra K L M
+
+/-- The canonical valuation on the norm field of a finite extension of the APF base. -/
+abbrev FieldOfNorms.FiniteExtension.valuation :
+    FieldOfNorms.FiniteExtension K L M →*₀ WithZero (Multiplicative ℤ) :=
+  letI : Algebra.IsSeparable K M := Algebra.IsSeparable.trans K L M
+  letI : IsAPF K M := (isAPF_finite_extension_iff K M L).mpr ‹_›
+  letI : Fact (¬ Module.Finite K M) := ⟨RelFieldOfNorms.ambient_infinite K L M⟩
+  FieldOfNorms.valuation K M
+
+end FiniteExtension
+
 section ScalarTower
 
 variable (K M N P : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
@@ -75,6 +125,7 @@ variable (K M N P : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalFie
 
 local notation "p" => residueChar K
 
+attribute [local instance] FieldOfNorms.inclusionAlgebra in
 /-- The three finite-inclusion field homomorphisms form a
 scalar tower, by composition on the norm-compatible families. -/
 theorem FieldOfNorms.inclusion_isScalarTower
@@ -83,15 +134,9 @@ theorem FieldOfNorms.inclusion_isScalarTower
     [Fact (¬ Module.Finite K P)] :
     letI : Module.Finite M P := Module.Finite.trans N P
     letI : Algebra.IsSeparable M P := Algebra.IsSeparable.trans M N P
-    letI := (FieldOfNorms.inclusion K M N).toAlgebra
-    letI := (FieldOfNorms.inclusion K M P).toAlgebra
-    letI := (FieldOfNorms.inclusion K N P).toAlgebra
     IsScalarTower (FieldOfNorms K M) (FieldOfNorms K N) (FieldOfNorms K P) := by
   let : Module.Finite M P := Module.Finite.trans N P
   let : Algebra.IsSeparable M P := Algebra.IsSeparable.trans M N P
-  let := (FieldOfNorms.inclusion K M N).toAlgebra
-  let := (FieldOfNorms.inclusion K M P).toAlgebra
-  let := (FieldOfNorms.inclusion K N P).toAlgebra
   apply IsScalarTower.of_algebraMap_eq
   intro x
   exact (FieldOfNorms.inclusion_inclusion K M N P x).symm

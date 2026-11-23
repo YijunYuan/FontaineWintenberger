@@ -485,40 +485,17 @@ theorem exists_comp_derivative [IsAPF K N] :
     ∃ S : Set ℝ, S.Countable ∧ ∀ u : ℝ, 0 < u → u ∉ S →
       HasDerivAt ((apfPsi M N) ∘ (apfPsi K M)) (apfHerbrandSlope K N u) u := by
   have := isAPF_of_finite K M
-  have hNM : IsAPF M N := (isAPF_iff K M).mp ‹_›
-  obtain ⟨S₁, hS₁, hd₁⟩ := IsAPF.exists_apfPsi_derivative_countable K M
-  obtain ⟨S₂, hS₂, hd₂⟩ := IsAPF.exists_apfPsi_derivative_countable M N
-  refine ⟨S₁ ∪ (apfPsi K M ⁻¹' S₂),
-    hS₁.union (hS₂.preimage (IsAPF.strictMono_apfPsi K M).injective), ?_⟩
-  intro u hu hnot
-  have hn₁ : u ∉ S₁ := fun h => hnot (Or.inl h)
-  have hn₂ : apfPsi K M u ∉ S₂ := fun h => hnot (Or.inr h)
-  have hψ : 0 ≤ apfPsi K M u := hu.le.trans (IsAPF.le_apfPsi K M u)
-  have hd := (hd₂ (apfPsi K M u) hn₂).comp u (hd₁ u hn₁)
-  have he : (apfIndex M N (apfPsi K M u) : ℝ) * (apfIndex K M u : ℝ) =
-      (apfIndex K N u : ℝ) := by
-    have he' := congrArg (fun n : ℕ => (n : ℝ)) (index_mul K M (N := N) hu.le)
-    simpa only [Nat.cast_mul, mul_comm] using he'.symm
-  simpa only [apfHerbrandSlope, max_eq_left hu.le, max_eq_left hψ, he] using hd
+  have : IsAPF M N := (isAPF_iff K M).mp ‹_›
+  exact IsAPF.exists_comp_derivative_of_index_mul K M N
+    (index_mul K M (N := N))
 
 /-- Genuine Herbrand integrals compose over the normed finite base on all real
 parameters. -/
 theorem psi_comp [IsAPF K N] (u : ℝ) :
     apfPsi M N (apfPsi K M u) = apfPsi K N u := by
+  have := isAPF_of_finite K M
   have : IsAPF M N := (isAPF_iff K M).mp ‹_›
-  by_cases hu : 0 ≤ u
-  · obtain ⟨S, hS, hd⟩ := exists_comp_derivative K M (N := N)
-    have hcont : ContinuousOn ((apfPsi M N) ∘ (apfPsi K M)) (Set.Icc 0 u) :=
-      ((IsAPF.continuous_apfPsi M N).comp
-        (IsAPF.continuous_apfPsi K M)).continuousOn
-    have h := MeasureTheory.integral_eq_of_hasDerivAt_off_countable_of_le
-      ((apfPsi M N) ∘ (apfPsi K M)) (apfHerbrandSlope K N) hu hS hcont
-      (fun v hv => hd v hv.1.1 hv.2)
-      (IsAPF.intervalIntegrable_apfHerbrandSlope K N 0 u)
-    conv_rhs => rw [apfPsi]
-    simpa only [Function.comp_apply, apfPsi_zero, sub_zero] using h.symm
-  · rw [apfPsi_of_nonpos K M (le_of_not_ge hu),
-      apfPsi_of_nonpos M N (le_of_not_ge hu), apfPsi_of_nonpos K N (le_of_not_ge hu)]
+  exact IsAPF.apfPsi_comp_of_index_mul K M N (index_mul K M (N := N)) u
 
 /-- The strictness ratios satisfy the finite-base identity. -/
 theorem ratio [IsAPF K N] {u : ℝ} (hu : 0 ≤ u) :

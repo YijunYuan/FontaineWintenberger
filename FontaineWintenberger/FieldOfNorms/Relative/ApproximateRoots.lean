@@ -381,6 +381,15 @@ attribute [local instance]
   FiniteIntermediateField.instIsPerfectResidueLocalField
   FiniteIntermediateField.instIsSeparable
 
+local instance (D : FiniteIntermediateField K M) :
+    NontriviallyNormedField (FiniteIntermediateField.pullback K L D) :=
+  spectralNorm.nontriviallyNormedField K (FiniteIntermediateField.pullback K L D)
+
+local instance (D : FiniteIntermediateField K M) :
+    IsCompleteDiscreteValuedField (FiniteIntermediateField.pullback K L D) :=
+  FiniteIntermediateField.instIsCompleteDiscreteValuedField K L
+    (FiniteIntermediateField.pullbackLayer K L D)
+
 omit [Module.Finite L M] [IsAPF K L] [IsAPF K M]
   [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)] in
 /-- A fixing-subgroup inclusion in the pullback closure gives the
@@ -389,13 +398,6 @@ finite-base inverse Herbrand parameter. -/
 theorem FiniteIntermediateField.hasFullUpper_of_pullback_fixing_le (D : FiniteIntermediateField K
     M) :
     let C := FiniteIntermediateField.pullback K L D
-    letI := spectralNorm.nontriviallyNormedField K C
-    letI := spectralNorm.normedAlgebra K C
-    letI : IsUltrametricDist C :=
-      IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
-        (isNonarchimedean_spectralNorm (K := K) (L := C))
-    letI := spectralNorm.completeSpace K C
-    letI := normedAlgebra_isPerfectResidueLocalField K C
     letI : Algebra.IsSeparable C D.val := Algebra.isSeparable_tower_top_of_isSeparable K C D.val
     ∀ (i : M →ₐ[C] SeparableClosure C) {b : ℝ}, -1 ≤ b →
       (i.comp (IsScalarTower.toAlgHom C D.val M)).fieldRange.fixingSubgroup ≤
@@ -592,6 +594,10 @@ attribute [local instance]
   FiniteIntermediateField.instIsPerfectResidueLocalField
   FiniteIntermediateField.instIsSeparable
 
+local instance (M : IntermediateField L Ω) : Algebra.IsSeparable K M :=
+  letI : IsScalarTower K M Ω := IsScalarTower.to₁₃₄ K L M Ω
+  Algebra.isSeparable_tower_bot_of_isSeparable K M Ω
+
 /-- The good root coordinate has the full relative upper
 product at the depth. The root-field fixing inclusion discharges
 the finite-base criterion on this same index. -/
@@ -605,8 +611,6 @@ theorem exists_good_fullUpper_rootFiniteLayer
         𝒪[E.val] f.discr).toNat ≤ b)
     (hE : E.HasFullUpper K L b) (x : Ω) (hx : aeval x f = 0) :
     let M := IntermediateField.adjoin L {x}
-    letI : IsScalarTower K M Ω := IsScalarTower.to₁₃₄ K L M Ω
-    letI : Algebra.IsSeparable K M := Algebra.isSeparable_tower_bot_of_isSeparable K M Ω
     let xM : M := ⟨x, IntermediateField.mem_adjoin_simple_self L x⟩
     ∃ D : FiniteIntermediateField K M, FiniteIntermediateField.pullback K L D = E.val ∧
       IsGoodFiniteLayer K L D ∧ xM ∈ D.val ∧ Module.finrank L M ≤ f.natDegree ∧

@@ -70,14 +70,9 @@ theorem conjugate_eq_of_norm_sub_lt {a a' b : Ω} {δ : ℝ}
     (hsep : ∀ c : Ω, IsConjRoot K a c → a ≠ c → δ ≤ ‖a - c‖)
     (ha : ‖a - b‖ < δ) (ha' : ‖a' - b‖ < δ) (hc : IsConjRoot K a a') : a' = a := by
   by_contra hne
-  have hbound : ‖a - a'‖ < δ := by
-    calc
-      _ = ‖(a - b) - (a' - b)‖ := by congr 1; ring
-      _ ≤ max ‖a - b‖ ‖a' - b‖ := by
-        simpa only [sub_eq_add_neg, norm_neg] using
-          IsUltrametricDist.norm_add_le_max (a - b) (-(a' - b))
-      _ < δ := max_lt ha ha'
-  exact (not_lt_of_ge (hsep a' hc (Ne.symm hne))) hbound
+  apply (not_lt_of_ge (hsep a' hc (Ne.symm hne)))
+  rw [← dist_eq_norm_sub] at ha ha' ⊢
+  exact (IsUltrametricDist.dist_triangle_max a b a').trans_lt (max_lt ha ((dist_comm b a') ▸ ha'))
 
 /-- The inclusion is the unique nearby embedding of the
 simple intermediate field. -/

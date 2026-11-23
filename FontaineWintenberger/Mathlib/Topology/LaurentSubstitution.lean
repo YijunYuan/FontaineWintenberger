@@ -57,21 +57,12 @@ theorem continuous_ofPowerSeries_valued :
   have hγ := ht.eventually
     ((Valued.hasBasis_nhds_zero (LaurentSeries k) ℤᵐ⁰).mem_of_mem (i := γ) trivial)
   obtain ⟨N, hN⟩ := eventually_atTop.mp hγ
-  have hcoeff : ∀ M : ℕ, ∀ᶠ A : PowerSeries k in 𝓝 0,
-      ∀ n < M, A.coeff n = 0 := by
-    intro M
-    induction M with
-    | zero => exact Filter.Eventually.of_forall (by simp)
-    | succ M ih =>
-      have hc : ∀ᶠ A : PowerSeries k in 𝓝 0, A.coeff M = 0 := by
-        have ho : ({0} : Set k) ∈ 𝓝 ((PowerSeries.coeff M) (0 : PowerSeries k)) := by
-          simp
-        exact (PowerSeries.WithPiTopology.continuous_coeff k M).continuousAt.eventually ho
-      filter_upwards [ih, hc] with A hA hM n hn
-      rcases Nat.lt_succ_iff_lt_or_eq.mp hn with hn | rfl
-      · exact hA n hn
-      · exact hM
-  filter_upwards [hcoeff N] with A hA
+  have hcoeff : ∀ᶠ A : PowerSeries k in 𝓝 0, ∀ n < N, A.coeff n = 0 := by
+    apply (Filter.eventually_all_finite (Set.finite_Iio N)).mpr
+    intro n _
+    exact (PowerSeries.WithPiTopology.continuous_coeff k n).continuousAt.eventually
+      (show ({0} : Set k) ∈ 𝓝 ((PowerSeries.coeff n) (0 : PowerSeries k)) by simp)
+  filter_upwards [hcoeff] with A hA
   apply lt_of_le_of_lt _ (hN N le_rfl)
   apply (Valuation.restrict_le_iff Valued.v).mpr
   change Valued.v (A : LaurentSeries k) ≤
@@ -149,11 +140,9 @@ theorem iterate_ofPowerSeries_eq_subst_iterate
     (F : LaurentSeries k → LaurentSeries k)^[n] (HahnSeries.ofPowerSeries ℤ k A) =
       HahnSeries.ofPowerSeries ℤ k
         ((PowerSeries.subst g : PowerSeries k → PowerSeries k)^[n] A) := by
-  induction n with
-  | zero => rfl
-  | succ n ih =>
-    rw [Function.iterate_succ_apply', ih, map_ofPowerSeries_eq_subst F hF hC g hg hX,
-      Function.iterate_succ_apply']
+  have h : Function.Semiconj (HahnSeries.ofPowerSeries ℤ k) (PowerSeries.subst g) F :=
+    fun a => (map_ofPowerSeries_eq_subst F hF hC g hg hX a).symm
+  exact (h.iterate_right n A).symm
 
 /-- The parameter image of every iterate uses the same canonical substitution. -/
 theorem iterate_apply_parameter_eq_subst_iterate

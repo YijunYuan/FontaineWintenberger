@@ -57,7 +57,7 @@ variable (E : Type*) [NontriviallyNormedField E] [NormedAlgebra K E] [IsUltramet
     [Algebra.IsAlgebraic K E]
 variable (M : IntermediateField K E) [FiniteDimensional K M]
 
-local instance : CompleteSpace M := FiniteDimensional.complete K M
+local instance : CompleteSpace M := FiniteDimensional.completeSpace K M
 
 /-- Both base fields construct the same integer subring of the top field. -/
 theorem finiteBase_spectralIntegerRing_eq :

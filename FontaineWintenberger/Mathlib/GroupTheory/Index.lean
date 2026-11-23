@@ -111,15 +111,8 @@ theorem relIndex_sup_left_of_normal_right : A.relIndex (A ⊔ U) = A.relIndex U 
 theorem relIndex_sup_sup_normal :
     (A ⊔ U).relIndex (B ⊔ U) = (A ⊔ U).relIndex B := by
   let q := QuotientGroup.mk' U
-  have hker : q.ker = U := QuotientGroup.ker_mk' U
-  have hpre : (A.map q).comap q = A ⊔ U := by
-    rw [comap_map_eq, hker]
-  have hm := relIndex_map_map q A B
-  rw [hker] at hm
-  calc
-    (A ⊔ U).relIndex (B ⊔ U) = (A.map q).relIndex (B.map q) := hm.symm
-    _ = ((A.map q).comap q).relIndex B := (relIndex_comap (A.map q) q B).symm
-    _ = (A ⊔ U).relIndex B := by rw [hpre]
+  simpa only [relIndex_map_map, comap_map_eq, q, QuotientGroup.ker_mk'] using
+    (relIndex_comap (A.map q) q B).symm
 
 /-- Intersecting a normal product with a containing subgroup gives its product there. -/
 theorem sup_inf_eq_sup_inf_of_le_of_normal (hAB : A ≤ B) :
