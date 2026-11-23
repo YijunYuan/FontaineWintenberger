@@ -262,10 +262,7 @@ variable {M : Type*} [Field M] [Algebra K M] [Algebra.IsSeparable K M]
 (Wintenberger 1.2.3 (iii)). -/
 theorem IsAPF.of_algHom [hL : IsAPF K L] (f : M →ₐ[K] L) : IsAPF K M := by
   obtain ⟨i⟩ := nonempty_separableClosure_embeddings K L
-  have hr : (i.comp f).fieldRange ≤ i.fieldRange := by
-    intro x hx
-    obtain ⟨a, ha⟩ := AlgHom.mem_fieldRange.mp hx
-    exact AlgHom.mem_fieldRange.mpr ⟨f a, ha⟩
+  have hr : (i.comp f).fieldRange ≤ i.fieldRange := AlgHom.range_comp_le_range f i
   have := hL.isAPFSubextension i
   exact (isAPF_iff_embedding K M (i.comp f)).mpr (IsAPFSubextension.of_le K hr)
 

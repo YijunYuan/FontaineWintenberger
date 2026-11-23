@@ -132,10 +132,7 @@ theorem IsStrictlyAPF.of_algHom [IsStrictlyAPF K L] (f : P →ₐ[K] L) :
     IsStrictlyAPF K P := by
   obtain ⟨i⟩ := nonempty_separableClosure_embeddings K L
   let j := i.comp f
-  have hj : j.fieldRange ≤ i.fieldRange := by
-    intro x hx
-    obtain ⟨y, hy⟩ := AlgHom.mem_fieldRange.mp hx
-    exact AlgHom.mem_fieldRange.mpr ⟨f y, hy⟩
+  have hj : j.fieldRange ≤ i.fieldRange := AlgHom.range_comp_le_range f i
   have hi := (isStrictlyAPF_algEquiv K L i.equivFieldRange).mp ‹_›
   exact (isStrictlyAPF_algEquiv K P j.equivFieldRange).mpr
     (IsStrictlyAPF.of_le K j.fieldRange i.fieldRange hj)
@@ -145,10 +142,7 @@ theorem apfRamificationBound_le_of_algHom (f : P →ₐ[K] L) :
     apfRamificationBound K L ≤ apfRamificationBound K P := by
   obtain ⟨i⟩ := nonempty_separableClosure_embeddings K L
   let j := i.comp f
-  have hj : j.fieldRange ≤ i.fieldRange := by
-    intro x hx
-    obtain ⟨y, hy⟩ := AlgHom.mem_fieldRange.mp hx
-    exact AlgHom.mem_fieldRange.mpr ⟨f y, hy⟩
+  have hj : j.fieldRange ≤ i.fieldRange := AlgHom.range_comp_le_range f i
   rw [apfRamificationBound_algEquiv K L i.equivFieldRange,
     apfRamificationBound_algEquiv K P j.equivFieldRange]
   exact apfRamificationBound_le_of_le K j.fieldRange i.fieldRange hj
@@ -159,10 +153,7 @@ theorem apfStrictnessConstant_le_of_algHom [IsAPF K L] (f : P →ₐ[K] L)
     apfStrictnessConstant K L ≤ apfStrictnessConstant K P := by
   obtain ⟨i⟩ := nonempty_separableClosure_embeddings K L
   let j := i.comp f
-  have hj : j.fieldRange ≤ i.fieldRange := by
-    intro x hx
-    obtain ⟨y, hy⟩ := AlgHom.mem_fieldRange.mp hx
-    exact AlgHom.mem_fieldRange.mpr ⟨f y, hy⟩
+  have hj : j.fieldRange ≤ i.fieldRange := AlgHom.range_comp_le_range f i
   have hi' : (0 : EReal) < apfRamificationBound K i.fieldRange := by
     rwa [← apfRamificationBound_algEquiv K L i.equivFieldRange]
   rw [apfStrictnessConstant_algEquiv K L i.equivFieldRange,
@@ -189,15 +180,13 @@ variable {L P : Type*} [Field L] [Field P] [Algebra K L] [Algebra K P]
 theorem finiteDimensional_fieldRange_extendScalars (i : L →ₐ[K] SeparableClosure K) :
     FiniteDimensional (i.comp (IsScalarTower.toAlgHom K P L)).fieldRange
       (IntermediateField.extendScalars
-        (show (i.comp (IsScalarTower.toAlgHom K P L)).fieldRange ≤ i.fieldRange from by
-          rintro x ⟨y, rfl⟩
-          exact ⟨algebraMap P L y, rfl⟩)) := by
+        (show (i.comp (IsScalarTower.toAlgHom K P L)).fieldRange ≤ i.fieldRange from
+          AlgHom.range_comp_le_range (IsScalarTower.toAlgHom K P L) i)) := by
   let j := i.comp (IsScalarTower.toAlgHom K P L)
   let σ := j.equivFieldRange.toRingEquiv.toRingHom
-  let f : L →ₛₗ[σ] (IntermediateField.extendScalars
-      (show j.fieldRange ≤ i.fieldRange from by
-        rintro x ⟨y, rfl⟩
-        exact ⟨algebraMap P L y, rfl⟩)) :=
+  have hj : j.fieldRange ≤ i.fieldRange :=
+    AlgHom.range_comp_le_range (IsScalarTower.toAlgHom K P L) i
+  let f : L →ₛₗ[σ] (IntermediateField.extendScalars hj) :=
     { toFun := fun x => ⟨i x, ⟨x, rfl⟩⟩
       map_add' := fun x y => Subtype.ext (i.map_add x y)
       map_smul' := fun c x => Subtype.ext (by
@@ -334,9 +323,8 @@ variable (L P : Type*) [Field L] [Field P] [Algebra K L] [Algebra K P]
 theorem isAPF_finite_extension_iff : IsAPF K L ↔ IsAPF K P := by
   obtain ⟨i⟩ := nonempty_separableClosure_embeddings K L
   let j := i.comp (IsScalarTower.toAlgHom K P L)
-  have hMN : j.fieldRange ≤ i.fieldRange := by
-    rintro x ⟨y, rfl⟩
-    exact ⟨algebraMap P L y, rfl⟩
+  have hMN : j.fieldRange ≤ i.fieldRange :=
+    AlgHom.range_comp_le_range (IsScalarTower.toAlgHom K P L) i
   have : FiniteDimensional j.fieldRange (IntermediateField.extendScalars hMN) :=
     finiteDimensional_fieldRange_extendScalars K i
   rw [isAPF_algEquiv K i.equivFieldRange, isAPF_algEquiv K j.equivFieldRange,
@@ -348,9 +336,8 @@ theorem isStrictlyAPF_finite_extension_iff :
     IsStrictlyAPF K L ↔ IsStrictlyAPF K P := by
   obtain ⟨i⟩ := nonempty_separableClosure_embeddings K L
   let j := i.comp (IsScalarTower.toAlgHom K P L)
-  have hMN : j.fieldRange ≤ i.fieldRange := by
-    rintro x ⟨y, rfl⟩
-    exact ⟨algebraMap P L y, rfl⟩
+  have hMN : j.fieldRange ≤ i.fieldRange :=
+    AlgHom.range_comp_le_range (IsScalarTower.toAlgHom K P L) i
   have : FiniteDimensional j.fieldRange (IntermediateField.extendScalars hMN) :=
     finiteDimensional_fieldRange_extendScalars K i
   rw [isStrictlyAPF_algEquiv K L i.equivFieldRange,

@@ -7,6 +7,7 @@ module
 
 public import Mathlib.Algebra.Algebra.Subalgebra.Directed
 public import Mathlib.FieldTheory.IntermediateField.Adjoin.Basic
+public import Mathlib.FieldTheory.Relrank
 public import Mathlib.Order.Filter.AtTopBot.Basic
 public import Mathlib.Order.Filter.AtTopBot.Map
 public import Mathlib.RingTheory.Norm.Transitivity
@@ -209,6 +210,21 @@ theorem map_map (i : L →ₐ[K] M) (j : M →ₐ[K] N) (E : FiniteIntermediateF
     map j (map i E) = map (j.comp i) E := by
   apply Subtype.ext
   exact IntermediateField.map_map E.val i j
+
+variable (K L) in
+/-- An embedding of the upper field preserves the relative degree of a finite inclusion. -/
+theorem fieldRange_finrank {Ω : Type*} [Field Ω] [Algebra K Ω]
+    (E F : FiniteIntermediateField K L) (hEF : E ≤ F) (i : F.val →ₐ[K] Ω) :
+    (i.comp (IntermediateField.inclusion hEF)).fieldRange.relfinrank i.fieldRange =
+      E.val.relfinrank F.val := by
+  let E' := IntermediateField.restrict hEF
+  calc
+    _ = E'.relfinrank ⊤ := by
+      rw [← AlgHom.map_fieldRange, i.fieldRange_eq_map, IntermediateField.relfinrank_map_map]
+      rfl
+    _ = (IntermediateField.lift E').relfinrank (IntermediateField.lift (F := F.val) ⊤) :=
+      (IntermediateField.relfinrank_map_map E' ⊤ F.val.val).symm
+    _ = _ := by rw [IntermediateField.lift_restrict, IntermediateField.lift_top]
 
 /-- A field isomorphism gives the order isomorphism on finite intermediate fields. -/
 def mapOrderIso (e : L ≃ₐ[K] M) : FiniteIntermediateField K L ≃o FiniteIntermediateField K M where

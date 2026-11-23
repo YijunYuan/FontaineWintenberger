@@ -10,7 +10,6 @@ public import FontaineWintenberger.APF.RamificationBound
 public import FontaineWintenberger.LocalField.Residue.Basic
 public import FontaineWintenberger.LocalField.Spectral.Tower
 public import FontaineWintenberger.Mathlib.FieldTheory.FiniteIntermediateField
-public import Mathlib.FieldTheory.Relrank
 
 /-!
 # Relative Herbrand invariants of finite intermediate fields
@@ -72,11 +71,6 @@ variable {K L : Type*} [NontriviallyNormedField K] [IsCompleteDiscreteValuedFiel
 /-- The first ramification bound of the finite extension defined by an inclusion. -/
 abbrev relativeRamificationBound {E F : FiniteIntermediateField K L} (hEF : E ≤ F) : EReal :=
   apfRamificationBound E.val (IntermediateField.extendScalars hEF)
-
-/-- The Herbrand function of a finite inclusion with the spectral norm on its base. -/
-abbrev relativePsi {E F : FiniteIntermediateField K L} (hEF : E ≤ F) : ℝ → ℝ :=
-  letI := Algebra.isSeparable_tower_top_of_isSeparable K E.val L
-  apfPsi E.val (IntermediateField.extendScalars hEF)
 
 /-- The inverse Herbrand function of a finite inclusion, using the spectral norm on its base. -/
 abbrev relativePhi {E F : FiniteIntermediateField K L} (hEF : E ≤ F) : ℝ → ℝ :=

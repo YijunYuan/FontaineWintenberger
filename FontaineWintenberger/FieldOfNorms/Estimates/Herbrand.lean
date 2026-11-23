@@ -52,9 +52,7 @@ theorem apfPsi_le_of_algHom [IsAPF K L] (f : M →ₐ[K] L)
     {u : ℝ} (hu : 0 ≤ u) : apfPsi K M u ≤ apfPsi K L u := by
   let j : L →ₐ[K] SeparableClosure K := IsSepClosed.lift
   let i := j.comp f
-  have hij : i.fieldRange ≤ j.fieldRange := by
-    rintro x ⟨y, rfl⟩
-    exact ⟨f y, rfl⟩
+  have hij : i.fieldRange ≤ j.fieldRange := AlgHom.range_comp_le_range f j
   rw [apfPsi_algEquiv K M i.equivFieldRange, apfPsi_algEquiv K L j.equivFieldRange]
   have := (isAPF_algEquiv K j.equivFieldRange).mp ‹_›
   exact apfPsi_mono_extension K i.fieldRange j.fieldRange hij hu

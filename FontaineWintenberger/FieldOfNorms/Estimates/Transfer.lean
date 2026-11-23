@@ -780,24 +780,20 @@ theorem exists_finiteGalois_embedding_restrictions (σ : L ≃ₐ[K] L)
   rw [hr] at h ⊢
   exact h
 
-/-- The field range of a composite embedding lies in the field range of its last map. -/
-theorem fieldRange_comp_le {k A B C : Type*} [Field k] [Field A] [Field B] [Field C]
-    [Algebra k A] [Algebra k B] [Algebra k C] (i : B →ₐ[k] C) (j : A →ₐ[k] B) :
-    (i.comp j).fieldRange ≤ i.fieldRange :=
-  fun _ ⟨x, hx⟩ => ⟨j x, hx⟩
-
 /-- The finite image inclusion has exactly the local index. -/
 theorem FiniteIntermediateField.fieldRange_ramificationIdx
     {Ω : Type*} [Field Ω] [Algebra K Ω] [FiniteDimensional K Ω]
     [Algebra.IsSeparable K Ω] (E F : FiniteIntermediateField K L) (hEF : E ≤ F)
     (i : F.val →ₐ[K] Ω) :
     embeddingRamificationIdx K (IntermediateField.inclusion
-      (fieldRange_comp_le i (IntermediateField.inclusion hEF))) =
+      (E := (i.comp (IntermediateField.inclusion hEF)).fieldRange) (F := i.fieldRange)
+      (AlgHom.range_comp_le_range (IntermediateField.inclusion hEF) i)) =
       embeddingRamificationIdx K (IntermediateField.inclusion hEF) := by
   let : FiniteDimensional K i.fieldRange := Module.Finite.equiv i.equivFieldRange.toLinearEquiv
   let iE := i.comp (IntermediateField.inclusion hEF)
   let : FiniteDimensional K iE.fieldRange := Module.Finite.equiv iE.equivFieldRange.toLinearEquiv
-  let hmap := fieldRange_comp_le i (IntermediateField.inclusion hEF)
+  have hmap : iE.fieldRange ≤ i.fieldRange :=
+    AlgHom.range_comp_le_range (IntermediateField.inclusion hEF) i
   let eE := iE.equivFieldRange
   let eF := i.equivFieldRange
   have hcomm : (IntermediateField.inclusion hmap).comp eE.toAlgHom =
@@ -809,37 +805,6 @@ theorem FiniteIntermediateField.fieldRange_ramificationIdx
   rw [embeddingRamificationIdx_algEquiv, one_mul, hcomm] at ha
   rw [embeddingRamificationIdx_algEquiv, mul_one] at hb
   exact ha.symm.trans hb
-
-omit [IsPerfectResidueLocalField K] in
-/-- The relative degree of the finite image step is the degree. -/
-theorem FiniteIntermediateField.fieldRange_finrank
-    {Ω : Type*} [Field Ω] [Algebra K Ω] [FiniteDimensional K Ω]
-    [Algebra.IsSeparable K Ω] (E F : FiniteIntermediateField K L) (hEF : E ≤ F)
-    (i : F.val →ₐ[K] Ω) :
-    (i.comp (IntermediateField.inclusion hEF)).fieldRange.relfinrank i.fieldRange =
-      E.val.relfinrank F.val := by
-  let : FiniteDimensional K i.fieldRange := Module.Finite.equiv i.equivFieldRange.toLinearEquiv
-  let iE := i.comp (IntermediateField.inclusion hEF)
-  let : FiniteDimensional K iE.fieldRange := Module.Finite.equiv iE.equivFieldRange.toLinearEquiv
-  let hmap := fieldRange_comp_le i (IntermediateField.inclusion hEF)
-  let F' := IntermediateField.extendScalars hEF
-  let D' := IntermediateField.extendScalars hmap
-  let : FiniteDimensional K F' := inferInstanceAs (FiniteDimensional K F.val)
-  let : FiniteDimensional E.val F' := Module.Finite.right K E.val F'
-  let : FiniteDimensional K D' := inferInstanceAs (FiniteDimensional K i.fieldRange)
-  let : FiniteDimensional iE.fieldRange D' := Module.Finite.right K iE.fieldRange D'
-  have ht := Module.finrank_mul_finrank K E.val F'
-  have ht' := Module.finrank_mul_finrank K iE.fieldRange D'
-  have hE := iE.equivFieldRange.toLinearEquiv.finrank_eq
-  have hF := i.equivFieldRange.toLinearEquiv.finrank_eq
-  have hpos : 0 < Module.finrank K E.val := Module.finrank_pos
-  change Module.finrank K E.val * Module.finrank E.val F' = Module.finrank K F.val at ht
-  change Module.finrank K iE.fieldRange * Module.finrank iE.fieldRange D' =
-    Module.finrank K i.fieldRange at ht'
-  rw [← hE, ← hF] at ht'
-  rw [IntermediateField.relfinrank_eq_finrank_of_le hmap,
-    IntermediateField.relfinrank_eq_finrank_of_le hEF]
-  nlinarith [ht, ht', hpos]
 
 /-- On every finite step above the tame part, strictness
 below the relative first bound forces equality of the intrinsic
@@ -867,7 +832,8 @@ theorem FiniteIntermediateField.ramificationNumber_eq_of_lt_relativeFirstBound
   let : FiniteDimensional K i.fieldRange := Module.Finite.equiv i.equivFieldRange.toLinearEquiv
   let iE := i.comp (IntermediateField.inclusion hEF)
   let : FiniteDimensional K iE.fieldRange := Module.Finite.equiv iE.equivFieldRange.toLinearEquiv
-  let hmap := fieldRange_comp_le i (IntermediateField.inclusion hEF)
+  have hmap : iE.fieldRange ≤ i.fieldRange :=
+    AlgHom.range_comp_le_range (IntermediateField.inclusion hEF) i
   have hFmodel : FiniteIntermediateField.ramificationNumber K L σ F =
       embeddingRamificationNumber K (s.toAlgHom.comp i) i := hmodel F le_rfl
   have hFnum := hFmodel.trans (embeddingNumber_precomp_algEquiv K i.equivFieldRange
@@ -879,16 +845,13 @@ theorem FiniteIntermediateField.ramificationNumber_eq_of_lt_relativeFirstBound
     apply hσE
     apply (FiniteIntermediateField.ramificationNumber_eq_top_iff K L σ E).mp
     rw [hEnum, h, embeddingRamificationNumber_self]
-  have htotal : embeddingRamificationIdx K (IntermediateField.inclusion hEF) =
-      Module.finrank E.val (IntermediateField.extendScalars hEF) :=
+  have htotal : IsTotallyRamifiedInclusion hEF :=
     (apfMaximalTame_wild_tail K L E F hE hEF).2.2
-  have htotal' : embeddingRamificationIdx K (IntermediateField.inclusion hmap) =
-      Module.finrank iE.fieldRange (IntermediateField.extendScalars hmap) :=
-    (FiniteIntermediateField.fieldRange_ramificationIdx K L E F hEF i).trans
-      (htotal.trans (by
-        simpa only [IntermediateField.relfinrank_eq_finrank_of_le hmap,
-          IntermediateField.relfinrank_eq_finrank_of_le hEF] using
-          (FiniteIntermediateField.fieldRange_finrank K L E F hEF i).symm))
+  have htotal' : IsTotallyRamifiedInclusion hmap := by
+    rw [isTotallyRamifiedInclusion_iff_relfinrank,
+      FiniteIntermediateField.fieldRange_ramificationIdx K L E F hEF i,
+      FiniteIntermediateField.fieldRange_finrank K L E F hEF i]
+    exact (isTotallyRamifiedInclusion_iff_relfinrank hEF).mp htotal
   have hM : ∀ m : E.val, (i.equivFieldRange (algebraMap E.val F.val m) : Ω) ∈ iE.fieldRange :=
     fun m => ⟨m, rfl⟩
   have hsmall' : embeddingRamificationNumber K (s.toAlgHom.comp iE.fieldRange.val)
