@@ -82,7 +82,7 @@ local instance tameNorm_residueField_charP :
       (IsLocalRing.ResidueField (spectralIntegerRing K Ω))).injective p
 
 local instance tameNorm_completeSpace (M : IntermediateField K Ω) : CompleteSpace M :=
-  FiniteDimensional.complete K M
+  FiniteDimensional.completeSpace K M
 local instance tameNorm_discreteValuationRing (M : IntermediateField K Ω) :
     IsCompleteDiscreteValuedField M :=
   normedAlgebra_isCompleteDiscreteValuedField K M

@@ -45,7 +45,7 @@ local notation "P" => lowerRamificationGroup (L ≃ₐ[K] L)
 
 variable (M : IntermediateField K L)
 
-local instance : CompleteSpace M := FiniteDimensional.complete K M
+local instance : CompleteSpace M := FiniteDimensional.completeSpace K M
 local instance : IsCompleteDiscreteValuedField M :=
   normedAlgebra_isCompleteDiscreteValuedField K M
 local instance : PerfectField 𝓀[M] :=

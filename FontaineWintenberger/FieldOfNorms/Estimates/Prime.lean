@@ -41,7 +41,7 @@ variable {K Ω : Type*} [NontriviallyNormedField K] [IsCompleteDiscreteValuedFie
     [Algebra.IsSeparable K Ω]
 
 local instance primeNorm_completeSpace (E : FiniteIntermediateField K Ω) : CompleteSpace E.val :=
-  FiniteDimensional.complete K E.val
+  FiniteDimensional.completeSpace K E.val
 local instance primeNorm_discreteValuationRing (E : FiniteIntermediateField K Ω) :
     IsCompleteDiscreteValuedField E.val :=
   normedAlgebra_isCompleteDiscreteValuedField K E.val

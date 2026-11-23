@@ -5,6 +5,8 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.APF.Tower.RelativeHerbrand
+
 public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.APF.BaseChange.EmbeddingFiniteBase
 public import FontaineWintenberger.APF.BaseChange.EmbeddingFiber
@@ -47,12 +49,16 @@ variable (M : Type*) [NontriviallyNormedField M] [IsUltrametricDist M]
 variable (F : Type*) [Field F] [Algebra K F] [Algebra M F] [IsScalarTower K M F]
     [FiniteDimensional K F] [Algebra.IsSeparable K F]
 
+/-- The relative Herbrand parameter in the given norm on a finite intermediate base. -/
+abbrev normedTowerPsi : ℝ → ℝ :=
+  letI := normedAlgebra_isCompleteDiscreteValuedField K M
+  letI := Algebra.isSeparable_tower_top_of_isSeparable K M F
+  apfPsi M F
+
 /-- The intrinsic relative function over the finite
 normed base is the absolute function composed with its inverse. -/
 theorem apfPsi_eq_absolute_comp_apfPhi_of_normedAlgebra (u : ℝ) :
-    letI := normedAlgebra_isCompleteDiscreteValuedField K M
-    letI := Algebra.isSeparable_tower_top_of_isSeparable K M F
-    apfPsi M F u = apfPsi K F (apfPhi K M u) := by
+    normedTowerPsi K M F u = apfPsi K F (apfPhi K M u) := by
   let := normedAlgebra_isCompleteDiscreteValuedField K M
   let := Algebra.isSeparable_tower_top_of_isSeparable K M F
   have h := IsAPF.apfPsi_finiteBase_comp_of_normedAlgebra K M F
@@ -78,13 +84,7 @@ local notation "jM" => IsScalarTower.toAlgHom K M Ω
 relative function, without changing the norm on the abstract smaller field. -/
 theorem apfPsi_base_eq_fixing_herbrand (i : F →ₐ[M] Ω)
     {u : ℝ} (hu : -1 ≤ u) :
-    letI := normedAlgebra_isCompleteDiscreteValuedField K M
-    letI := Algebra.isSeparable_tower_top_of_isSeparable K M F
-    letI : FiniteDimensional K (jM).fieldRange :=
-      Module.Finite.equiv (jM).equivFieldRange.toLinearEquiv
-    letI : FiniteDimensional K (i.restrictScalars K).fieldRange :=
-      Module.Finite.equiv (i.restrictScalars K).equivFieldRange.toLinearEquiv
-    apfPsi M F u =
+    normedTowerPsi K M F u =
       herbrandFunction (R := spectralIntegerRing K Ω) (i.restrictScalars
           K).fieldRange.fixingSubgroup
         (inverseHerbrandFunction (R := spectralIntegerRing K Ω) (jM).fieldRange.fixingSubgroup u) :=
@@ -109,11 +109,10 @@ gives the restriction inequality for arbitrary moved upper images. -/
 theorem embeddingNumber_restriction_le_apfPsi_of_normedAlgebra
     (i : F →ₐ[M] Ω) (s : Ω ≃ₐ[K] Ω)
     (hs : s.toAlgHom.comp jM ≠ jM) :
-    letI := normedAlgebra_isCompleteDiscreteValuedField K M
-    letI := Algebra.isSeparable_tower_top_of_isSeparable K M F
     embeddingRamificationNumber K (s.toAlgHom.comp (i.restrictScalars K))
         (i.restrictScalars K) ≤
-      (apfPsi M F (embeddingRamificationNumber K (s.toAlgHom.comp jM) jM).toReal : EReal) := by
+      (normedTowerPsi K M F
+        (embeddingRamificationNumber K (s.toAlgHom.comp jM) jM).toReal : EReal) := by
   let := normedAlgebra_isCompleteDiscreteValuedField K M
   let := Algebra.isSeparable_tower_top_of_isSeparable K M F
   let E₀ := (jM).fieldRange
@@ -179,24 +178,15 @@ satisfy the full relative Herbrand restriction bound. -/
 theorem closureEmbeddingNumber_restriction_le_apfPsi
     (σ : F →ₐ[K] SeparableClosure K)
     (hs : σ.comp (IntermediateField.inclusion hEF) ≠ E.val) :
-    letI := spectralNorm.nontriviallyNormedField K E
-    letI := spectralNorm.normedAlgebra K E
-    letI := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
-      (isNonarchimedean_spectralNorm (K := K) (L := E))
-    letI : CompleteSpace E := FiniteDimensional.complete K E
-    letI := normedAlgebra_isCompleteDiscreteValuedField K E
-    let F' := IntermediateField.extendScalars hEF
-    letI : FiniteDimensional K F' := inferInstanceAs (FiniteDimensional K F)
-    letI : Algebra.IsSeparable K F' := inferInstanceAs (Algebra.IsSeparable K F)
-    letI := Algebra.isSeparable_tower_top_of_isSeparable K E F'
     closureEmbeddingNumber K σ F.val ≤
-      (apfPsi E F' (closureEmbeddingNumber K
+      (FiniteIntermediateField.relativePsi (E := ⟨E, inferInstance⟩)
+        (F := ⟨F, inferInstance⟩) hEF (closureEmbeddingNumber K
         (σ.comp (IntermediateField.inclusion hEF)) E.val).toReal : EReal) := by
   let := spectralNorm.nontriviallyNormedField K E
   let := spectralNorm.normedAlgebra K E
   let := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
     (isNonarchimedean_spectralNorm (K := K) (L := E))
-  let : CompleteSpace E := FiniteDimensional.complete K E
+  let : CompleteSpace E := FiniteDimensional.completeSpace K E
   let := normedAlgebra_isCompleteDiscreteValuedField K E
   let F' := IntermediateField.extendScalars hEF
   let : FiniteDimensional K F' := inferInstanceAs (FiniteDimensional K F)

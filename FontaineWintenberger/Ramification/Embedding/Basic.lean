@@ -14,6 +14,7 @@ public import FontaineWintenberger.Ramification.Lower.Teichmuller
 public import Mathlib.Basic.Real.ENatENNReal
 public import Mathlib.Basic.ENNReal.Inv
 public import Mathlib.LinearAlgebra.SModEq.Pow
+public import Mathlib.FieldTheory.Relrank
 public import Mathlib.FieldTheory.SeparableClosure
 public import Mathlib.FieldTheory.IntermediateField.Adjoin.Basic
 public import Mathlib.Data.EReal.Operations
@@ -204,6 +205,23 @@ local notation "ON" => spectralIntegerRing K N
 def embeddingRamificationIdx (σ : E →ₐ[K] N) : ℕ :=
   letI : Algebra OE ON := (spectralIntegerInclusion K σ).toRingHom.toAlgebra
   (IsLocalRing.maximalIdeal ON).ramificationIdx OE
+
+/-- Total ramification of a particular inclusion of finite intermediate fields. -/
+abbrev IsTotallyRamifiedInclusion {K Ω : Type*} [NontriviallyNormedField K]
+    [IsPerfectResidueLocalField K] [Field Ω] [Algebra K Ω] [Algebra.IsSeparable K Ω]
+    {E F : IntermediateField K Ω} [FiniteDimensional K E] [FiniteDimensional K F]
+    (hEF : E ≤ F) : Prop :=
+  embeddingRamificationIdx K (IntermediateField.inclusion hEF) =
+    Module.finrank E (IntermediateField.extendScalars hEF)
+
+/-- The relative finite rank expresses the same total ramification condition. -/
+theorem isTotallyRamifiedInclusion_iff_relfinrank {K Ω : Type*} [NontriviallyNormedField K]
+    [IsPerfectResidueLocalField K] [Field Ω] [Algebra K Ω] [Algebra.IsSeparable K Ω]
+    {E F : IntermediateField K Ω} [FiniteDimensional K E] [FiniteDimensional K F]
+    (hEF : E ≤ F) :
+    IsTotallyRamifiedInclusion hEF ↔
+      embeddingRamificationIdx K (IntermediateField.inclusion hEF) = E.relfinrank F := by
+  rw [IntermediateField.relfinrank_eq_finrank_of_le hEF]
 
 /-- The raw order is computed on the spectral integer rings. -/
 def embeddingIntegralOrder (σ τ : E →ₐ[K] N) : ℕ∞ :=

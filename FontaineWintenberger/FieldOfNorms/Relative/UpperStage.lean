@@ -76,24 +76,10 @@ variable (K : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
 local notation "p" => residueChar K
 variable (L : Type*) [Field L] [Algebra K L] [Algebra.IsSeparable K L]
 
-local instance FiniteIntermediateField.instNontriviallyNormedField (E : FiniteIntermediateField K
-    L) :
-    NontriviallyNormedField E.val :=
-  spectralNorm.nontriviallyNormedField K E.val
-local instance FiniteIntermediateField.instNormedAlgebra (E : FiniteIntermediateField K L) :
-    NormedAlgebra K E.val :=
-  spectralNorm.normedAlgebra K E.val
-local instance FiniteIntermediateField.instIsUltrametricDist (E : FiniteIntermediateField K L) :
-    IsUltrametricDist E.val :=
-  IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
-    (isNonarchimedean_spectralNorm (K := K) (L := E.val))
-local instance FiniteIntermediateField.instCompleteSpace (E : FiniteIntermediateField K L) :
-    CompleteSpace E.val :=
-  spectralNorm.completeSpace K E.val
-local instance FiniteIntermediateField.instIsPerfectResidueLocalField (E : FiniteIntermediateField
-    K L) :
-    IsPerfectResidueLocalField E.val :=
-  normedAlgebra_isPerfectResidueLocalField K E.val
+attribute [local instance] FiniteIntermediateField.instNontriviallyNormedField
+  FiniteIntermediateField.instNormedAlgebra FiniteIntermediateField.instIsUltrametricDist
+  FiniteIntermediateField.instCompleteSpace FiniteIntermediateField.instIsPerfectResidueLocalField
+
 local instance FiniteIntermediateField.instIsSeparable (E : FiniteIntermediateField K L) :
     Algebra.IsSeparable E.val L :=
   Algebra.isSeparable_tower_top_of_isSeparable K E.val L
@@ -170,83 +156,16 @@ theorem FiniteIntermediateField.hasFullUpper_iff_stage_le (E : FiniteIntermediat
     simpa only [apfPhi_of_nonpos K E.val le_rfl] using h
   simpa only [apfPsi_apfPhi] using E.hasFullUpper_apfPsi_iff K L j hu
 
-section PositiveWild
-
-/-- At every positive upper stage, all finite oversteps
-have p-power degree. This extends the upper-one wild-tail argument without
-requiring either intermediate field to be normal. -/
+/-- Every finite step above a positive upper stage has p-power degree,
+since the positive upper group lies in wild inertia. -/
 theorem finrank_eq_prime_pow_of_apfFiniteStage_pos_le
     (L E F : IntermediateField K (SeparableClosure K)) [FiniteDimensional K F]
     (hFL : F ≤ L) (hEF : E ≤ F) {u : ℝ} (hu : 0 < u)
     (hstage : apfFiniteStage K L u ≤ E) :
     ∃ n : ℕ, Module.finrank E (IntermediateField.extendScalars hEF) = p ^ n := by
-  let Ω := finiteGaloisNormalClosure K F
-  let M := E.comap Ω.toIntermediateField.val
-  let N := F.comap Ω.toIntermediateField.val
-  have hFΩ : F ≤ Ω.toIntermediateField := le_finiteGaloisNormalClosure K F
-  have hEΩ : E ≤ Ω.toIntermediateField := hEF.trans hFΩ
-  have hM : M.map Ω.toIntermediateField.val = E := by
-    ext x
-    constructor
-    · rintro ⟨y, hy, rfl⟩
-      exact hy
-    · intro hx
-      exact ⟨⟨x, hEΩ hx⟩, hx, rfl⟩
-  have hN : N.map Ω.toIntermediateField.val = F := by
-    ext x
-    constructor
-    · rintro ⟨y, hy, rfl⟩
-      exact hy
-    · intro hx
-      exact ⟨⟨x, hFΩ hx⟩, hx, rfl⟩
-  let ρ : (SeparableClosure K ≃ₐ[K] SeparableClosure K) →* (Ω ≃ₐ[K] Ω) :=
-    AlgEquiv.restrictNormalHom Ω
-  let A := L.fixingSubgroup.map ρ
-  let B := N.fixingSubgroup
-  let C := M.fixingSubgroup
-  let U := upperRamificationGroup (R := spectralIntegerRing K Ω) (Ω ≃ₐ[K] Ω) u
-  have hρ : Function.Surjective ρ :=
-    AlgEquiv.restrictNormalHom_surjective (F := K) (K₁ := Ω) (SeparableClosure K)
-  have hfixE : E.fixingSubgroup = C.comap ρ := by
-    rw [← hM]
-    exact IntermediateField.map_fixingSubgroup (F := K) (E := Ω)
-      (E' := SeparableClosure K) (L := M)
-  have hfixF : F.fixingSubgroup = B.comap ρ := by
-    rw [← hN]
-    exact IntermediateField.map_fixingSubgroup (F := K) (E := Ω)
-      (E' := SeparableClosure K) (L := N)
-  have hmapE : E.fixingSubgroup.map ρ = C := by
-    rw [hfixE, Subgroup.map_comap_eq, MonoidHom.range_eq_top.mpr hρ, top_inf_eq]
-  have hmapF : F.fixingSubgroup.map ρ = B := by
-    rw [hfixF, Subgroup.map_comap_eq, MonoidHom.range_eq_top.mpr hρ, top_inf_eq]
-  have hAB : A ≤ B := by
-    rw [← hmapF]
-    exact Subgroup.map_mono (IntermediateField.fixingSubgroup_le hFL)
-  have hBC : B ≤ C :=
-    IntermediateField.fixingSubgroup_le (show M ≤ N from fun _ hx => hEF hx)
-  have hCU : C ≤ A ⊔ U := by
-    have hfix : E.fixingSubgroup ≤ apfSubgroup K L u :=
-      (IntermediateField.fixingSubgroup_le hstage).trans_eq
-        (fixingSubgroup_apfFiniteStage K L u)
-    have h := Subgroup.map_mono (f := ρ) hfix
-    rw [hmapE] at h
-    change C ≤ (L.fixingSubgroup ⊔ absoluteUpperRamificationGroup K u).map ρ at h
-    rw [Subgroup.map_sup, absolute_map_upperRamificationGroup K Ω u (by linarith)] at h
-    exact h
-  have hU : IsPGroup p U := by
-    let : CharP (IsLocalRing.ResidueField (spectralIntegerRing K Ω)) p :=
-      charP_of_injective_algebraMap
-        (algebraMap 𝓀[K]
-          (IsLocalRing.ResidueField (spectralIntegerRing K Ω))).injective p
-    exact (lowerRamificationGroup_one_isPGroup (Ω ≃ₐ[K] Ω) p).to_le
-      (upperRamificationGroup_le_lower_one (Ω ≃ₐ[K] Ω) hu)
-  obtain ⟨n, hn⟩ := relIndex_eq_prime_pow_of_le_sup p A B C U hU hAB hBC hCU
-  refine ⟨n, ?_⟩
-  rw [← fixingSubgroup_relIndex_eq_finrank K E F hEF, hfixF,
-    Subgroup.relIndex_comap, hmapE]
-  exact hn
-
-end PositiveWild
+  apply finrank_eq_prime_pow_of_apfTameStage_le K L E F hFL hEF
+  exact (IntermediateField.fixedField_le
+    (sup_le_sup_left (absoluteUpper_le_absoluteWildInertia K hu) L.fixingSubgroup)).trans hstage
 
 /-- Decreasing a nonnegative upper parameter preserves the full product. -/
 theorem FiniteIntermediateField.HasFullUpper.of_le {E : FiniteIntermediateField K L} {b c : ℝ}
@@ -336,7 +255,7 @@ specified full relative upper parameter, including the identity step. -/
 theorem FiniteIntermediateField.HasFullUpper.le_relativeFirstBound
     {E : FiniteIntermediateField K L} {b : ℝ} (hb : 0 ≤ b) (h : E.HasFullUpper K L b)
     (F : FiniteIntermediateField K L) (hEF : E ≤ F) :
-    (b : EReal) ≤ apfRamificationBound E.val (IntermediateField.extendScalars hEF) := by
+    (b : EReal) ≤ FiniteIntermediateField.relativeRamificationBound hEF := by
   let j : L →ₐ[K] SeparableClosure K := IsSepClosed.lift
   let u := apfPhi K E.val b
   have hu : 0 ≤ u := by
@@ -382,6 +301,16 @@ section Projections
 variable [IsAPF K L]
 variable {E : FiniteIntermediateField K L} {b : ℝ} (hb : 0 < b) (h : E.HasFullUpper K L b)
 
+/-- Full upper ramification supplies all the hypotheses of the truncated finite norm. -/
+theorem FiniteIntermediateField.HasFullUpper.truncatedNormConditions
+    (F : FiniteIntermediateField K L) (hEF : E ≤ F) :
+    FiniteIntermediateField.TruncatedNormConditions hEF
+      (h.finrank_eq_prime_pow K L hb F hEF).choose b :=
+  .of_finrank
+    (FiniteIntermediateField.ramificationIdx_eq_finrank_of_residueInclusion_surjective K L E F hEF
+      (h.residue_surjective K L hb F hEF))
+    (h.finrank_eq_prime_pow K L hb F hEF).choose_spec (h.le_relativeFirstBound K L hb.le F hEF)
+
 /-- The finite norm on integer quotients, whose wildness,
 total ramification and first-bound hypotheses follow from the full
 upper product of the infinite extension. -/
@@ -392,9 +321,7 @@ def FiniteIntermediateField.HasFullUpper.truncatedNorm (F : FiniteIntermediateFi
       spectralIntegerRing K E.val ⧸ IsLocalRing.maximalIdeal (spectralIntegerRing K E.val) ^ r := by
   let hd := h.finrank_eq_prime_pow K L hb F hEF
   exact FiniteIntermediateField.truncatedNorm E F hEF hd.choose b
-    (FiniteIntermediateField.ramificationIdx_eq_finrank_of_residueInclusion_surjective K L E F hEF
-      (h.residue_surjective K L hb F hEF)) hd.choose_spec
-    (h.le_relativeFirstBound K L hb.le F hEF) r s hrs hrb
+    (h.truncatedNormConditions K L hb F hEF) r s hrs hrb
 
 /-- The finite quotient map is the class of the integer norm. -/
 @[simp]
@@ -412,9 +339,7 @@ theorem FiniteIntermediateField.HasFullUpper.truncatedNorm_surjective
     Function.Surjective (h.truncatedNorm K L hb F hEF r s hrs hrb) := by
   let hd := h.finrank_eq_prime_pow K L hb F hEF
   exact FiniteIntermediateField.truncatedNorm_surjective E F hEF hd.choose b
-    (FiniteIntermediateField.ramificationIdx_eq_finrank_of_residueInclusion_surjective K L E F hEF
-      (h.residue_surjective K L hb F hEF)) hd.choose_spec
-    (h.le_relativeFirstBound K L hb.le F hEF) r s hrs hrb
+    (h.truncatedNormConditions K L hb F hEF) r s hrs hrb
 
 variable [Fact (¬ Module.Finite K L)]
 
@@ -532,10 +457,9 @@ theorem FieldOfNorms.integralCoordinateAt_one (E : FiniteIntermediateField K L) 
 /-- The polynomial of coordinates, formed by its finite
 coefficient expansion. No additive coordinate homomorphism is presumed. -/
 def FieldOfNorms.coordinatePolynomial (E : FiniteIntermediateField K L) :
-    Oₓ[X] → (spectralIntegerRing K E.val)[X] := by
-  intro f
-  exact ∑ i ∈ f.support,
-    monomial i (FieldOfNorms.integralCoordinateAt K L E (f.coeff i))
+    Oₓ[X] → (spectralIntegerRing K E.val)[X] :=
+  fun f => .ofCoeff (f.coeff.mapRange (FieldOfNorms.integralCoordinateAt K L E)
+    (FieldOfNorms.integralCoordinateAt_zero K L E))
 
 /-- Every coefficient is the finite coordinate of that same
 coefficient of the polynomial. -/
@@ -543,12 +467,7 @@ coefficient of the polynomial. -/
 theorem FieldOfNorms.coeff_coordinatePolynomial (E : FiniteIntermediateField K L) :
     ∀ (f : Oₓ[X]) (i : ℕ),
       (FieldOfNorms.coordinatePolynomial K L E f).coeff i =
-        FieldOfNorms.integralCoordinateAt K L E (f.coeff i) := by
-  classical
-  intro f i
-  by_cases hi : f.coeff i = 0
-  · simp [FieldOfNorms.coordinatePolynomial, coeff_monomial, mem_support_iff, hi]
-  · simp [FieldOfNorms.coordinatePolynomial, coeff_monomial, mem_support_iff, hi]
+        FieldOfNorms.integralCoordinateAt K L E (f.coeff i) := fun _ _ => rfl
 
 /-- The coordinate polynomial has exactly the monic degree. -/
 theorem FieldOfNorms.natDegree_coordinatePolynomial (E : FiniteIntermediateField K L) :

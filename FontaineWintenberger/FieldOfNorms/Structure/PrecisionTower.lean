@@ -115,22 +115,11 @@ theorem IsAPF.exists_deep_finiteTower [IsAPF K L]
         IsLocalRing.maximalIdeal (spectralIntegerRing K (E n).val) ^ (n + 2)) ∧
       (∀ A B : FiniteIntermediateField K L, E 0 ≤ A → ∀ hAB : A ≤ B,
         Function.Surjective (spectralResidueInclusion K (IntermediateField.inclusion hAB)) ∧
-          (∃ d : ℕ, Module.finrank A.val (IntermediateField.extendScalars hAB) = p ^ d) ∧
-          letI : Algebra A.val B.val := (IntermediateField.inclusion hAB).toRingHom.toAlgebra
-          letI : IsScalarTower K A.val B.val := IsScalarTower.of_algebraMap_eq' rfl
-          letI := spectralValuation_hasExtension_tower K (E := A.val) (L := B.val)
-          (IsLocalRing.maximalIdeal (spectralIntegerRing K B.val)).ramificationIdx
-            (spectralIntegerRing K A.val) =
-              Module.finrank A.val (IntermediateField.extendScalars hAB)) ∧
+          (∃ d : ℕ, A.val.relfinrank B.val = p ^ d) ∧
+          IsTotallyRamifiedInclusion hAB) ∧
       (∀ n (F : FiniteIntermediateField K L) (hEF : E n ≤ F),
-        letI := spectralNorm.nontriviallyNormedField K (E n).val
-        letI := spectralNorm.normedAlgebra K (E n).val
-        letI := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
-          (isNonarchimedean_spectralNorm (K := K) (L := (E n).val))
-        letI := spectralNorm.completeSpace K (E n).val
-        letI := normedAlgebra_isCompleteDiscreteValuedField K (E n).val
         (deepFiniteTowerBound K n : EReal) ≤
-          apfRamificationBound (E n).val (IntermediateField.extendScalars hEF)) := by
+          FiniteIntermediateField.relativeRamificationBound hEF) := by
   obtain ⟨W, hW⟩ := IsAPF.exists_finiteIntermediateField_wild_tail K L
   obtain ⟨V, hV⟩ := FieldOfNorms.exists_valuation_eq_coordinateValuation K L
   choose T hT using fun n : ℕ =>
@@ -198,29 +187,17 @@ theorem natCast_mem_deepFiniteTower_maximalIdeal_pow (n : ℕ) :
   (IsAPF.exists_deep_finiteTower K L D).choose_spec.2.2.2.2.1 n
 
 /-- The first selected finite stage begins an entire wild tail. -/
-theorem deepFiniteTower_wild_tail (A B : FiniteIntermediateField K L) (hEA : 𝔈 0 ≤ A) (hAB : A ≤ B)
-    :
+theorem deepFiniteTower_wild_tail (A B : FiniteIntermediateField K L)
+    (hEA : 𝔈 0 ≤ A) (hAB : A ≤ B) :
     Function.Surjective (spectralResidueInclusion K (IntermediateField.inclusion hAB)) ∧
-      (∃ d : ℕ, Module.finrank A.val (IntermediateField.extendScalars hAB) = p ^ d) ∧
-      letI : Algebra A.val B.val := (IntermediateField.inclusion hAB).toRingHom.toAlgebra
-      letI : IsScalarTower K A.val B.val := IsScalarTower.of_algebraMap_eq' rfl
-      letI := spectralValuation_hasExtension_tower K (E := A.val) (L := B.val)
-      (IsLocalRing.maximalIdeal (spectralIntegerRing K B.val)).ramificationIdx
-        (spectralIntegerRing K A.val) =
-          Module.finrank A.val (IntermediateField.extendScalars hAB) :=
+      (∃ d : ℕ, A.val.relfinrank B.val = p ^ d) ∧
+      IsTotallyRamifiedInclusion hAB :=
   (IsAPF.exists_deep_finiteTower K L D).choose_spec.2.2.2.2.2.1 A B hEA hAB
 
 /-- Every later finite extension has the requested first bound. -/
-theorem deepFiniteTower_relativeFirstBound_ge (n : ℕ) (F : FiniteIntermediateField K L) (hEF : 𝔈 n
-    ≤ F) :
-    letI := spectralNorm.nontriviallyNormedField K (𝔈 n).val
-    letI := spectralNorm.normedAlgebra K (𝔈 n).val
-    letI := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
-      (isNonarchimedean_spectralNorm (K := K) (L := (𝔈 n).val))
-    letI := spectralNorm.completeSpace K (𝔈 n).val
-    letI := normedAlgebra_isCompleteDiscreteValuedField K (𝔈 n).val
-    (deepFiniteTowerBound K n : EReal) ≤
-      apfRamificationBound (𝔈 n).val (IntermediateField.extendScalars hEF) :=
+theorem deepFiniteTower_relativeFirstBound_ge (n : ℕ) (F : FiniteIntermediateField K L)
+    (hEF : 𝔈 n ≤ F) :
+    (deepFiniteTowerBound K n : EReal) ≤ FiniteIntermediateField.relativeRamificationBound hEF :=
   (IsAPF.exists_deep_finiteTower K L D).choose_spec.2.2.2.2.2.2 n F hEF
 
 /-- The integer-ring quotient at the stage's growing precision. -/
@@ -258,10 +235,18 @@ def deepFiniteTowerRelativeDegree (n : ℕ) (F : FiniteIntermediateField K L) (h
 
 /-- The selected degree exponent computes the finite field degree. -/
 theorem deepFiniteTower_finrank (n : ℕ) (F : FiniteIntermediateField K L) (hEF : 𝔈 n ≤ F) :
-    Module.finrank (𝔈 n).val (IntermediateField.extendScalars hEF) =
+    (𝔈 n).val.relfinrank F.val =
       p ^ deepFiniteTowerRelativeDegree K L D n F hEF :=
   (deepFiniteTower_wild_tail K L D (𝔈 n) F
     (deepFiniteTower_monotone K L D (Nat.zero_le n)) hEF).2.1.choose_spec
+
+/-- The tower supplies all three finite-layer hypotheses at the selected precision. -/
+theorem deepFiniteTower_truncatedNormConditions (n : ℕ) (F : FiniteIntermediateField K L)
+    (hEF : 𝔈 n ≤ F) : FiniteIntermediateField.TruncatedNormConditions hEF
+      (deepFiniteTowerRelativeDegree K L D n F hEF) (deepFiniteTowerBound K n) :=
+  ⟨(deepFiniteTower_wild_tail K L D (𝔈 n) F
+      (deepFiniteTower_monotone K L D (Nat.zero_le n)) hEF).2.2,
+    deepFiniteTower_finrank K L D n F hEF, deepFiniteTower_relativeFirstBound_ge K L D n F hEF⟩
 
 /-- Every later finite intermediate field has a quotient norm at this
 stage's precision; the map is induced by the integer norm. -/
@@ -272,10 +257,7 @@ def deepFiniteTowerNorm (n : ℕ) (F : FiniteIntermediateField K L) (hEF : 𝔈 
   FiniteIntermediateField.truncatedNorm (𝔈 n) F hEF
     (deepFiniteTowerRelativeDegree K L D n F hEF)
     (deepFiniteTowerBound K n)
-    (deepFiniteTower_wild_tail K L D (𝔈 n) F
-      (deepFiniteTower_monotone K L D (Nat.zero_le n)) hEF).2.2
-    (deepFiniteTower_finrank K L D n F hEF)
-    (deepFiniteTower_relativeFirstBound_ge K L D n F hEF)
+    (deepFiniteTower_truncatedNormConditions K L D n F hEF)
     (n + 2) s hs (by rw [ceil_deepFiniteTowerBound])
 
 @[simp]
@@ -292,10 +274,7 @@ theorem deepFiniteTowerNorm_surjective (n : ℕ) (F : FiniteIntermediateField K 
   FiniteIntermediateField.truncatedNorm_surjective (𝔈 n) F hEF
     (deepFiniteTowerRelativeDegree K L D n F hEF)
     (deepFiniteTowerBound K n)
-    (deepFiniteTower_wild_tail K L D (𝔈 n) F
-      (deepFiniteTower_monotone K L D (Nat.zero_le n)) hEF).2.2
-    (deepFiniteTower_finrank K L D n F hEF)
-    (deepFiniteTower_relativeFirstBound_ge K L D n F hEF)
+    (deepFiniteTower_truncatedNormConditions K L D n F hEF)
     (n + 2) s hs (by rw [ceil_deepFiniteTowerBound])
 
 /-- Every later finite norm is additive to the tower stage's precision. -/

@@ -72,8 +72,8 @@ theorem subalgebra_eq_top_of_residue_surjective [Module.Finite R S] [FaithfulSMu
   obtain ⟨e, u, he⟩ := IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hπ0 hz
   apply top_unique
   change (⊤ : Submodule R S) ≤ A.toSubmodule
-  apply Submodule.le_of_le_smul_of_le_jacobson_bot Module.Finite.fg_top
-    (maximalIdeal_le_jacobson ⊥)
+  apply Submodule.le_of_le_smul_of_le_jacobson Module.Finite.fg_top
+    (ringJacobson_eq_maximalIdeal R).ge
   intro b _
   obtain ⟨a, ha, c, hc⟩ := hexp e b
   refine Submodule.mem_sup.mpr ⟨a, ha, z ^ e * c, ?_, hc.symm⟩

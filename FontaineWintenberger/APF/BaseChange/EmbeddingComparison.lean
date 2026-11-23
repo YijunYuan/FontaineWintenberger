@@ -240,10 +240,10 @@ theorem fixedField_spectralInteger_isGaloisGroup :
         exact map_mul (h : Ω ≃ₐ[K] Ω) (x : Ω) z }
   exact IsGaloisGroup.of_isFractionRing H A₀ B₀ F₀ Ω
 
+attribute [local instance] Fintype.ofFinite in
 /-- The arbitrary-embedding coset identity on finite spectral
 integers; in particular the fixed field need not be preserved. -/
 theorem embeddingIntegralOrder_fixedField_eq_sum (σ : Ω ≃ₐ[K] Ω) :
-    letI := Fintype.ofFinite H
     embeddingIntegralOrder K (σ.toAlgHom.comp (F₀).val) (F₀).val =
       ∑ h : H, ramificationOrder (R := B₀) (Ω ≃ₐ[K] Ω) (σ * h.1) := by
   let : Algebra A₀ B₀ := (spectralIntegerInclusion K (F₀).val).toRingHom.toAlgebra
@@ -268,10 +268,10 @@ theorem embeddingIntegralOrder_fixedField_eq_sum (σ : Ω ≃ₐ[K] Ω) :
   rw [embeddingIntegralOrder, hf, hg]
   exact integralEmbeddingOrder_eq_sum_coset (Ω ≃ₐ[K] Ω) H σ hx hy
 
+attribute [local instance] Fintype.ofFinite in
 /-- The normalized arbitrary-embedding average has the
 relative ramification index as its positive finite denominator. -/
 theorem embeddingRamificationOrder_fixedField_eq_sum_div (σ : Ω ≃ₐ[K] Ω) :
-    letI := Fintype.ofFinite H
     embeddingRamificationOrder K (σ.toAlgHom.comp (F₀).val) (F₀).val =
       (∑ h : H, (ramificationOrder (R := B₀) (Ω ≃ₐ[K] Ω) (σ * h.1) : ℝ≥0∞)) /
         embeddingRamificationIdx K (F₀).val := by
@@ -498,28 +498,64 @@ section RelativeParameter
 variable (K Ω : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
     [Field Ω] [Algebra K Ω] [FiniteDimensional K Ω] [IsGalois K Ω]
 
+
+section
+
+variable {K Ω}
+
+/-- The relative Herbrand function for the norm induced from the finite Galois ambient field. -/
+abbrev spectralRelativePsi {E F : IntermediateField K Ω} (hEF : E ≤ F) : ℝ → ℝ :=
+  letI := spectralNorm.nontriviallyNormedField K Ω
+  letI := spectralNorm.normedAlgebra K Ω
+  letI := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
+    (isNonarchimedean_spectralNorm (K := K) (L := Ω))
+  letI : CompleteSpace E := FiniteDimensional.completeSpace K E
+  letI := normedAlgebra_isCompleteDiscreteValuedField K E
+  letI := Algebra.isSeparable_tower_top_of_isSeparable K E Ω
+  apfPsi E (IntermediateField.extendScalars hEF)
+
+/-- The relative first break for the norm induced from the finite Galois ambient field. -/
+abbrev spectralRelativeRamificationBound {E F : IntermediateField K Ω} (hEF : E ≤ F) :
+    EReal :=
+  letI := spectralNorm.nontriviallyNormedField K Ω
+  letI := spectralNorm.normedAlgebra K Ω
+  letI := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
+    (isNonarchimedean_spectralNorm (K := K) (L := Ω))
+  letI : CompleteSpace E := FiniteDimensional.completeSpace K E
+  letI := normedAlgebra_isCompleteDiscreteValuedField K E
+  letI := Algebra.isSeparable_tower_top_of_isSeparable K E Ω
+  apfRamificationBound E (IntermediateField.extendScalars hEF)
+
+/-- The embedding number of a restriction viewed over its fixed base field. -/
+abbrev relativeRestrictionNumber {E F : IntermediateField K Ω} (hEF : E ≤ F)
+    (s : Ω ≃ₐ[E] Ω) : EReal :=
+  letI := spectralNorm.nontriviallyNormedField K Ω
+  letI := spectralNorm.normedAlgebra K Ω
+  letI := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
+    (isNonarchimedean_spectralNorm (K := K) (L := Ω))
+  letI : CompleteSpace E := FiniteDimensional.completeSpace K E
+  letI := normedAlgebra_isPerfectResidueLocalField K E
+  letI := Algebra.isSeparable_tower_top_of_isSeparable K E Ω
+  letI : FiniteDimensional E Ω := Module.Finite.right K E Ω
+  let F' := IntermediateField.extendScalars hEF
+  letI : FiniteDimensional K F' := inferInstanceAs (FiniteDimensional K F)
+  letI : FiniteDimensional E F' := Module.Finite.right K E F'
+  embeddingRamificationNumber E (s.toAlgHom.comp F'.val) F'.val
+
+end
+
 /-- The fixing-subgroup composite is the intrinsic relative APF function
 on the scalar extension of the finite intermediate field. -/
 theorem apfPsi_extendScalars_eq_fixing_herbrand
     (E F : IntermediateField K Ω) (hEF : E ≤ F) {u : ℝ} (hu : -1 ≤ u) :
-    letI := spectralNorm.nontriviallyNormedField K Ω
-    letI := spectralNorm.normedAlgebra K Ω
-    letI := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
-      (isNonarchimedean_spectralNorm (K := K) (L := Ω))
-    letI : CompleteSpace E := FiniteDimensional.complete K E
-    letI := normedAlgebra_isCompleteDiscreteValuedField K E
-    letI := Algebra.isSeparable_tower_top_of_isSeparable K E Ω
-    let F' := IntermediateField.extendScalars hEF
-    letI : FiniteDimensional K F' := inferInstanceAs (FiniteDimensional K F)
-    letI : FiniteDimensional E F' := Module.Finite.right K E F'
-    apfPsi E F' u =
+    spectralRelativePsi hEF u =
       herbrandFunction (R := spectralIntegerRing K Ω) F.fixingSubgroup
         (inverseHerbrandFunction (R := spectralIntegerRing K Ω) E.fixingSubgroup u) := by
   let := spectralNorm.nontriviallyNormedField K Ω
   let := spectralNorm.normedAlgebra K Ω
   let := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
     (isNonarchimedean_spectralNorm (K := K) (L := Ω))
-  let : CompleteSpace E := FiniteDimensional.complete K E
+  let : CompleteSpace E := FiniteDimensional.completeSpace K E
   let := normedAlgebra_isCompleteDiscreteValuedField K E
   let := Algebra.isSeparable_tower_top_of_isSeparable K E Ω
   let F' := IntermediateField.extendScalars hEF
@@ -530,7 +566,7 @@ theorem apfPsi_extendScalars_eq_fixing_herbrand
   have hcomp := IsAPF.apfPsi_finiteBase_comp_of_normedAlgebra K E F'
     (apfPhi K E u)
   rw [apfPsi_apfPhi] at hcomp
-  dsimp only
+  unfold spectralRelativePsi
   rw [hcomp]
   change apfPsi K F (apfPhi K E u) = _
   rw [apfPhi_eq_herbrand_comp_subgroup_inverse_of_finiteGalois K Ω E hu,
@@ -543,24 +579,14 @@ restriction, including fields not preserved by the ambient automorphism. -/
 theorem embeddingNumber_restriction_le_apfPsi
     (E F : IntermediateField K Ω) (hEF : E ≤ F) (s : Ω ≃ₐ[K] Ω)
     (hs : s.toAlgHom.comp E.val ≠ E.val) :
-    letI := spectralNorm.nontriviallyNormedField K Ω
-    letI := spectralNorm.normedAlgebra K Ω
-    letI := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
-      (isNonarchimedean_spectralNorm (K := K) (L := Ω))
-    letI : CompleteSpace E := FiniteDimensional.complete K E
-    letI := normedAlgebra_isCompleteDiscreteValuedField K E
-    letI := Algebra.isSeparable_tower_top_of_isSeparable K E Ω
-    let F' := IntermediateField.extendScalars hEF
-    letI : FiniteDimensional K F' := inferInstanceAs (FiniteDimensional K F)
-    letI : FiniteDimensional E F' := Module.Finite.right K E F'
     embeddingRamificationNumber K (s.toAlgHom.comp F.val) F.val ≤
-      (apfPsi E F'
+      (spectralRelativePsi hEF
         (embeddingRamificationNumber K (s.toAlgHom.comp E.val) E.val).toReal : EReal) := by
   let := spectralNorm.nontriviallyNormedField K Ω
   let := spectralNorm.normedAlgebra K Ω
   let := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
     (isNonarchimedean_spectralNorm (K := K) (L := Ω))
-  let : CompleteSpace E := FiniteDimensional.complete K E
+  let : CompleteSpace E := FiniteDimensional.completeSpace K E
   let := normedAlgebra_isCompleteDiscreteValuedField K E
   let := Algebra.isSeparable_tower_top_of_isSeparable K E Ω
   let F' := IntermediateField.extendScalars hEF
@@ -574,7 +600,6 @@ theorem embeddingNumber_restriction_le_apfPsi
     exact EReal.coe_le_coe_iff.mp
       (show ((-1 : ℝ) : EReal) ≤ (u : EReal) by
         simpa only [EReal.coe_neg, EReal.coe_one] using hbound)
-  dsimp only
   rw [apfPsi_extendScalars_eq_fixing_herbrand K Ω E F hEF hu]
   exact embeddingNumber_restriction_le_herbrand_composite K Ω E F hEF s hs
 
@@ -695,10 +720,20 @@ variable (K Ω : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField 
 local notation "G₃" => Ω ≃ₐ[K] Ω
 local notation "O₃" => spectralIntegerRing K Ω
 
+section
+
+variable {K Ω}
+
+/-- The normalized embedding order of an ambient automorphism on an intermediate field. -/
+abbrev restrictionOrder (E : IntermediateField K Ω) (s : Ω ≃ₐ[K] Ω) : ℝ≥0∞ :=
+  embeddingRamificationOrder K (s.toAlgHom.comp E.val) E.val
+
+end
+
+attribute [local instance] Fintype.ofFinite in
 /-- The finite embedding average over its full fixing subgroup. -/
 theorem embeddingOrder_intermediate_eq_sum_div
     (E : IntermediateField K Ω) (s : G₃) :
-    letI := Fintype.ofFinite E.fixingSubgroup
     embeddingRamificationOrder K (s.toAlgHom.comp E.val) E.val =
       (∑ h : E.fixingSubgroup, (ramificationOrder (R := O₃) G₃ (s * h.1) : ℝ≥0∞)) /
         embeddingRamificationIdx K E.val := by
@@ -707,10 +742,10 @@ theorem embeddingOrder_intermediate_eq_sum_div
   rw [IntermediateField.fixingSubgroup_fixedField]
   exact embeddingRamificationOrder_fixedField_eq_sum_div K Ω H s
 
+attribute [local instance] Fintype.ofFinite in
 /-- A nonidentity restriction has its finite real coset average. -/
 theorem embeddingOrder_toReal_eq_coset_average
     (E : IntermediateField K Ω) (s : G₃) (hs : s.toAlgHom.comp E.val ≠ E.val) :
-    letI := Fintype.ofFinite E.fixingSubgroup
     (embeddingRamificationOrder K (s.toAlgHom.comp E.val) E.val).toReal =
       (∑ h : E.fixingSubgroup,
         (ramificationOrder (R := O₃) G₃ (s * h.1) : ℝ≥0∞).toReal) /
@@ -728,16 +763,15 @@ theorem embeddingOrder_toReal_eq_coset_average
     rw [IsGalois.fixedField_fixingSubgroup E, he] at hc
     exact hc.symm
 
-/-- Ordinary total ramification gives an extension embedding whose
-number is at most the restricted number, by the finite Tate average. -/
-theorem exists_embedding_extension_number_le_of_totallyRamified
+attribute [local instance] Fintype.ofFinite in
+/-- Under ordinary total ramification, the true average over all extensions
+of a nonidentity embedding is its normalized order. -/
+theorem sum_embedding_extension_order_of_totallyRamified
     (E F : IntermediateField K Ω) (hEF : E ≤ F)
-    (htotal : embeddingRamificationIdx K (IntermediateField.inclusion hEF) =
-      Module.finrank E (IntermediateField.extendScalars hEF))
-    (s : G₃) (hs : s.toAlgHom.comp E.val ≠ E.val) :
-    ∃ d : E.fixingSubgroup,
-      embeddingRamificationNumber K ((s * d.1).toAlgHom.comp F.val) F.val ≤
-        embeddingRamificationNumber K (s.toAlgHom.comp E.val) E.val := by
+    (htotal : IsTotallyRamifiedInclusion hEF)
+    (s : Ω ≃ₐ[K] Ω) (hs : s.toAlgHom.comp E.val ≠ E.val) :
+    (∑ d : E.fixingSubgroup, (restrictionOrder F (s * d.1)).toReal) =
+      Nat.card E.fixingSubgroup * (restrictionOrder E s).toReal := by
   classical
   let D := E.fixingSubgroup
   let H := F.fixingSubgroup
@@ -764,14 +798,60 @@ theorem exists_embedding_extension_number_le_of_totallyRamified
     exact_mod_cast (show Fintype.card D * embeddingRamificationIdx K F.val =
       Fintype.card H * embeddingRamificationIdx K E.val by
         simpa only [Nat.card_eq_fintype_card] using hscaleNat)
-  obtain ⟨d, hd⟩ := exists_right_coset_average_le D H
-    (IntermediateField.fixingSubgroup_le hEF)
-    (fun g => (ramificationOrder (R := O₃) G₃ g : ℝ≥0∞).toReal) s
-    (embeddingRamificationIdx K E.val) (embeddingRamificationIdx K F.val)
-    (Nat.cast_pos.mpr (embeddingRamificationIdx_pos K E.val))
-    (Nat.cast_pos.mpr (embeddingRamificationIdx_pos K F.val)) hscale
+  have hsF (d : D) : (s * d.1).toAlgHom.comp F.val ≠ F.val := by
+    intro hf
+    apply hs
+    have heq := mul_subgroup_fixedField_comp K Ω D s d
+    rw [IsGalois.fixedField_fixingSubgroup E] at heq
+    exact heq.symm.trans
+      (congrArg (fun f : F →ₐ[K] Ω => f.comp (IntermediateField.inclusion hEF)) hf)
+  rw [Nat.card_eq_fintype_card]
+  unfold restrictionOrder
+  simp_rw [embeddingOrder_toReal_eq_coset_average K Ω F _ (hsF _)]
+  rw [← Finset.sum_div,
+    sum_sum_right_mul_subgroup D H (IntermediateField.fixingSubgroup_le hEF)
+      (fun g : Ω ≃ₐ[K] Ω =>
+        (ramificationOrder (R := spectralIntegerRing K Ω) (Ω ≃ₐ[K] Ω) g : ℝ≥0∞).toReal) s,
+    nsmul_eq_mul, embeddingOrder_toReal_eq_coset_average K Ω E s hs]
+  apply (div_eq_iff (Nat.cast_ne_zero.mpr (embeddingRamificationIdx_pos K F.val).ne')).mpr
+  have h := congrArg (fun a : ℝ => a * ∑ d : D,
+    (ramificationOrder (R := spectralIntegerRing K Ω) (Ω ≃ₐ[K] Ω) (s * d.1) : ℝ≥0∞).toReal)
+      hscale
+  field_simp [(Nat.cast_ne_zero.mpr (embeddingRamificationIdx_pos K E.val).ne' :
+    (embeddingRamificationIdx K E.val : ℝ) ≠ 0)]
+  nlinarith [h]
+
+attribute [local instance] Fintype.ofFinite in
+/-- The extension-order sum for an automorphism outside the fixing subgroup. -/
+theorem sum_embedding_extension_order_of_not_mem_fixingSubgroup
+    (E F : IntermediateField K Ω) (hEF : E ≤ F) (htotal : IsTotallyRamifiedInclusion hEF)
+    (s : Ω ≃ₐ[K] Ω) (hs : s ∉ E.fixingSubgroup) :
+    (∑ d : E.fixingSubgroup, (restrictionOrder F (s * d.1)).toReal) =
+      Nat.card E.fixingSubgroup * (restrictionOrder E s).toReal :=
+  sum_embedding_extension_order_of_totallyRamified K Ω E F hEF htotal s fun he =>
+    hs ((IntermediateField.mem_fixingSubgroup_iff _ _).mpr fun x hx =>
+      DFunLike.congr_fun he ⟨x, hx⟩)
+
+/-- Ordinary total ramification gives an extension embedding whose
+number is at most the restricted number, by the finite Tate average. -/
+theorem exists_embedding_extension_number_le_of_totallyRamified
+    (E F : IntermediateField K Ω) (hEF : E ≤ F)
+    (htotal : IsTotallyRamifiedInclusion hEF)
+    (s : G₃) (hs : s.toAlgHom.comp E.val ≠ E.val) :
+    ∃ d : E.fixingSubgroup,
+      embeddingRamificationNumber K ((s * d.1).toAlgHom.comp F.val) F.val ≤
+        embeddingRamificationNumber K (s.toAlgHom.comp E.val) E.val := by
+  classical
+  let := Fintype.ofFinite E.fixingSubgroup
+  let order (d : E.fixingSubgroup) :=
+    (embeddingRamificationOrder K ((s * d.1).toAlgHom.comp F.val) F.val).toReal
+  let baseOrder := (embeddingRamificationOrder K (s.toAlgHom.comp E.val) E.val).toReal
+  have hsum : ∑ d, order d ≤ ∑ _d : E.fixingSubgroup, baseOrder := by
+    simpa [order, baseOrder, restrictionOrder, Nat.card_eq_fintype_card] using
+      (sum_embedding_extension_order_of_totallyRamified K Ω E F hEF htotal s hs).le
+  obtain ⟨d, _, hd⟩ := Finset.exists_le_of_sum_le Finset.univ_nonempty hsum
   have hsE : (s * d.1).toAlgHom.comp E.val = s.toAlgHom.comp E.val := by
-    have h := mul_subgroup_fixedField_comp K Ω D s d
+    have h := mul_subgroup_fixedField_comp K Ω E.fixingSubgroup s d
     rw [IsGalois.fixedField_fixingSubgroup E] at h
     exact h
   have hsF : (s * d.1).toAlgHom.comp F.val ≠ F.val := by
@@ -780,16 +860,11 @@ theorem exists_embedding_extension_number_le_of_totallyRamified
     have hfE := congrArg (fun f : F →ₐ[K] Ω =>
       f.comp (IntermediateField.inclusion hEF)) hf
     exact hsE.symm.trans hfE
-  have havg : (embeddingRamificationOrder K ((s * d.1).toAlgHom.comp F.val) F.val).toReal ≤
-      (embeddingRamificationOrder K (s.toAlgHom.comp E.val) E.val).toReal := by
-    rw [embeddingOrder_toReal_eq_coset_average K Ω F (s * d.1) hsF,
-      embeddingOrder_toReal_eq_coset_average K Ω E s hs]
-    exact hd
   refine ⟨d, ?_⟩
   rw [embeddingRamificationNumber, embeddingRamificationNumber,
     ← EReal.coe_ennreal_toReal (embeddingRamificationOrder_lt_top K hsF).ne,
     ← EReal.coe_ennreal_toReal (embeddingRamificationOrder_lt_top K hs).ne]
-  exact EReal.sub_le_sub (EReal.coe_le_coe_iff.mpr havg) le_rfl
+  exact EReal.sub_le_sub (EReal.coe_le_coe_iff.mpr hd) le_rfl
 
 end FiniteAverages
 
@@ -931,32 +1006,20 @@ embedding number. Both integer rings are identified by their unit balls;
 the canonical local indices are proved equal through the commuting ring maps. -/
 theorem embeddingNumber_rebase
     (E F : IntermediateField K Ω) (hEF : E ≤ F) :
-    letI := spectralNorm.nontriviallyNormedField K Ω
-    letI := spectralNorm.normedAlgebra K Ω
-    letI := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
-      (isNonarchimedean_spectralNorm (K := K) (L := Ω))
-    letI : CompleteSpace E := FiniteDimensional.complete K E
-    letI := normedAlgebra_isPerfectResidueLocalField K E
-    letI := Algebra.isSeparable_tower_top_of_isSeparable K E Ω
-    letI : FiniteDimensional E Ω := Module.Finite.right K E Ω
-    let F' := IntermediateField.extendScalars hEF
-    letI : FiniteDimensional K F' := inferInstanceAs (FiniteDimensional K F)
-    letI : FiniteDimensional E F' := Module.Finite.right K E F'
     ∀ s : Ω ≃ₐ[E] Ω,
       embeddingRamificationNumber K ((s.restrictScalars K).toAlgHom.comp F.val) F.val =
-        embeddingRamificationNumber E (s.toAlgHom.comp F'.val) F'.val := by
+        relativeRestrictionNumber hEF s := by
   let := spectralNorm.nontriviallyNormedField K Ω
   let := spectralNorm.normedAlgebra K Ω
   let := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
     (isNonarchimedean_spectralNorm (K := K) (L := Ω))
-  let : CompleteSpace E := FiniteDimensional.complete K E
+  let : CompleteSpace E := FiniteDimensional.completeSpace K E
   let := normedAlgebra_isPerfectResidueLocalField K E
   let := Algebra.isSeparable_tower_top_of_isSeparable K E Ω
   let : FiniteDimensional E Ω := Module.Finite.right K E Ω
   let F' := IntermediateField.extendScalars hEF
   let : FiniteDimensional K F' := inferInstanceAs (FiniteDimensional K F)
   let : FiniteDimensional E F' := Module.Finite.right K E F'
-  dsimp only
   intro s
   let A := spectralIntegerRing K F
   let B := spectralIntegerRing K Ω
@@ -1001,6 +1064,7 @@ theorem embeddingNumber_rebase
         (spectralIntegerInclusion K ((s.restrictScalars K).toAlgHom.comp F.val) x -
           spectralIntegerInclusion K F.val x)
     rw [← he, addVal_ringEquiv]
+  unfold relativeRestrictionNumber
   rw [embeddingRamificationNumber, embeddingRamificationNumber,
     embeddingRamificationOrder, embeddingRamificationOrder, hraw,
     embeddingRamificationIdx_eq K ((s.restrictScalars K).toAlgHom.comp F.val) F.val,
@@ -1017,24 +1081,13 @@ variable (K Ω : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField 
 embedding, with its number computed on the old-base integer rings. -/
 theorem apfRelativeBound_le_embeddingNumber
     (E F : IntermediateField K Ω) (hEF : E ≤ F) :
-    letI := spectralNorm.nontriviallyNormedField K Ω
-    letI := spectralNorm.normedAlgebra K Ω
-    letI := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
-      (isNonarchimedean_spectralNorm (K := K) (L := Ω))
-    letI : CompleteSpace E := FiniteDimensional.complete K E
-    letI := normedAlgebra_isPerfectResidueLocalField K E
-    letI := Algebra.isSeparable_tower_top_of_isSeparable K E Ω
-    letI : FiniteDimensional E Ω := Module.Finite.right K E Ω
-    let F' := IntermediateField.extendScalars hEF
-    letI : FiniteDimensional K F' := inferInstanceAs (FiniteDimensional K F)
-    letI : FiniteDimensional E F' := Module.Finite.right K E F'
-    ∀ d : E.fixingSubgroup, apfRamificationBound E F' ≤
+    ∀ d : E.fixingSubgroup, spectralRelativeRamificationBound hEF ≤
       embeddingRamificationNumber K (d.1.toAlgHom.comp F.val) F.val := by
   let := spectralNorm.nontriviallyNormedField K Ω
   let := spectralNorm.normedAlgebra K Ω
   let := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
     (isNonarchimedean_spectralNorm (K := K) (L := Ω))
-  let : CompleteSpace E := FiniteDimensional.complete K E
+  let : CompleteSpace E := FiniteDimensional.completeSpace K E
   let := normedAlgebra_isPerfectResidueLocalField K E
   let := Algebra.isSeparable_tower_top_of_isSeparable K E Ω
   let : FiniteDimensional E Ω := Module.Finite.right K E Ω
@@ -1042,29 +1095,16 @@ theorem apfRelativeBound_le_embeddingNumber
   let : FiniteDimensional K F' := inferInstanceAs (FiniteDimensional K F)
   let : FiniteDimensional E F' := Module.Finite.right K E F'
   let : IsGalois E Ω := IsGalois.tower_top_of_isGalois K E Ω
-  dsimp only
   intro d
   have h := apfRamificationBound_le_embeddingNumber E Ω F' (E.fixingSubgroupEquiv d)
-  rw [← embeddingNumber_rebase K Ω E F hEF (E.fixingSubgroupEquiv d)] at h
-  exact h
+  exact h.trans_eq (embeddingNumber_rebase K Ω E F hEF (E.fixingSubgroupEquiv d)).symm
 
 /-- Two ambient maps with the same restriction to the smaller
 field are separated by at least the relative first bound. -/
 theorem apfRelativeBound_le_pairNumber
     (E F : IntermediateField K Ω) (hEF : E ≤ F)
     (s t : Ω ≃ₐ[K] Ω) (hst : s.toAlgHom.comp E.val = t.toAlgHom.comp E.val) :
-    letI := spectralNorm.nontriviallyNormedField K Ω
-    letI := spectralNorm.normedAlgebra K Ω
-    letI := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
-      (isNonarchimedean_spectralNorm (K := K) (L := Ω))
-    letI : CompleteSpace E := FiniteDimensional.complete K E
-    letI := normedAlgebra_isCompleteDiscreteValuedField K E
-    letI := Algebra.isSeparable_tower_top_of_isSeparable K E Ω
-    letI : FiniteDimensional E Ω := Module.Finite.right K E Ω
-    let F' := IntermediateField.extendScalars hEF
-    letI : FiniteDimensional K F' := inferInstanceAs (FiniteDimensional K F)
-    letI : FiniteDimensional E F' := Module.Finite.right K E F'
-    apfRamificationBound E F' ≤
+    spectralRelativeRamificationBound hEF ≤
       embeddingRamificationNumber K (s.toAlgHom.comp F.val) (t.toAlgHom.comp F.val) := by
   have hd : t⁻¹ * s ∈ E.fixingSubgroup := by
     apply (fixedField_comp_eq_iff_inv_mul_mem K Ω E.fixingSubgroup t s).mp
@@ -1088,86 +1128,15 @@ section TotalFiberAverage
 variable (K Ω : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
     [Field Ω] [Algebra K Ω] [FiniteDimensional K Ω] [IsGalois K Ω]
 
-/-- Under ordinary total ramification, the true average over all extensions
-of a nonidentity embedding is its normalized order. -/
-theorem sum_embedding_extension_order_of_totallyRamified
-    (E F : IntermediateField K Ω) (hEF : E ≤ F)
-    (htotal : embeddingRamificationIdx K (IntermediateField.inclusion hEF) =
-      Module.finrank E (IntermediateField.extendScalars hEF))
-    (s : Ω ≃ₐ[K] Ω) (hs : s.toAlgHom.comp E.val ≠ E.val) :
-    letI := Fintype.ofFinite E.fixingSubgroup
-    (∑ d : E.fixingSubgroup,
-      (embeddingRamificationOrder K ((s * d.1).toAlgHom.comp F.val) F.val).toReal) =
-      Fintype.card E.fixingSubgroup *
-        (embeddingRamificationOrder K (s.toAlgHom.comp E.val) E.val).toReal := by
-  classical
-  let D := E.fixingSubgroup
-  let H := F.fixingSubgroup
-  let := Fintype.ofFinite D
-  let := Fintype.ofFinite H
-  let F' := IntermediateField.extendScalars hEF
-  let : FiniteDimensional K F' := inferInstanceAs (FiniteDimensional K F)
-  let : FiniteDimensional E F' := Module.Finite.right K E F'
-  let : FiniteDimensional E Ω := Module.Finite.right K E Ω
-  have he := embeddingRamificationIdx_comp K (IntermediateField.inclusion hEF) F.val
-  change embeddingRamificationIdx K E.val =
-    embeddingRamificationIdx K (IntermediateField.inclusion hEF) *
-      embeddingRamificationIdx K F.val at he
-  rw [htotal] at he
-  have hc := Module.finrank_mul_finrank E F' Ω
-  change Module.finrank E F' * Module.finrank F Ω = Module.finrank E Ω at hc
-  have hscaleNat : Nat.card D * embeddingRamificationIdx K F.val =
-      Nat.card H * embeddingRamificationIdx K E.val := by
-    rw [IsGalois.card_fixingSubgroup_eq_finrank E,
-      IsGalois.card_fixingSubgroup_eq_finrank F]
-    nlinarith [he, hc]
-  have hscale : (Fintype.card D : ℝ) * embeddingRamificationIdx K F.val =
-      Fintype.card H * embeddingRamificationIdx K E.val := by
-    exact_mod_cast (show Fintype.card D * embeddingRamificationIdx K F.val =
-      Fintype.card H * embeddingRamificationIdx K E.val by
-        simpa only [Nat.card_eq_fintype_card] using hscaleNat)
-  have hsF (d : D) : (s * d.1).toAlgHom.comp F.val ≠ F.val := by
-    intro hf
-    apply hs
-    have heq := mul_subgroup_fixedField_comp K Ω D s d
-    rw [IsGalois.fixedField_fixingSubgroup E] at heq
-    exact heq.symm.trans
-      (congrArg (fun f : F →ₐ[K] Ω => f.comp (IntermediateField.inclusion hEF)) hf)
-  simp_rw [embeddingOrder_toReal_eq_coset_average K Ω F _ (hsF _)]
-  rw [← Finset.sum_div,
-    sum_sum_right_mul_subgroup D H (IntermediateField.fixingSubgroup_le hEF)
-      (fun g : Ω ≃ₐ[K] Ω =>
-        (ramificationOrder (R := spectralIntegerRing K Ω) (Ω ≃ₐ[K] Ω) g : ℝ≥0∞).toReal) s,
-    nsmul_eq_mul, embeddingOrder_toReal_eq_coset_average K Ω E s hs]
-  apply (div_eq_iff (Nat.cast_ne_zero.mpr (embeddingRamificationIdx_pos K F.val).ne')).mpr
-  have h := congrArg (fun a : ℝ => a * ∑ d : D,
-    (ramificationOrder (R := spectralIntegerRing K Ω) (Ω ≃ₐ[K] Ω) (s * d.1) : ℝ≥0∞).toReal)
-      hscale
-  field_simp [(Nat.cast_ne_zero.mpr (embeddingRamificationIdx_pos K E.val).ne' :
-    (embeddingRamificationIdx K E.val : ℝ) ≠ 0)]
-  nlinarith [h]
-
 /-- Below the relative first bound, ordinary total ramification
 forces every extension embedding to retain the restricted number. Neither
 intermediate field is required to be normal or stable. -/
 theorem embeddingNumber_eq_restriction_of_lt_relativeBound
     (E F : IntermediateField K Ω) (hEF : E ≤ F)
-    (htotal : embeddingRamificationIdx K (IntermediateField.inclusion hEF) =
-      Module.finrank E (IntermediateField.extendScalars hEF))
+    (htotal : IsTotallyRamifiedInclusion hEF)
     (s : Ω ≃ₐ[K] Ω) (hs : s.toAlgHom.comp E.val ≠ E.val) :
-    letI := spectralNorm.nontriviallyNormedField K Ω
-    letI := spectralNorm.normedAlgebra K Ω
-    letI := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
-      (isNonarchimedean_spectralNorm (K := K) (L := Ω))
-    letI : CompleteSpace E := FiniteDimensional.complete K E
-    letI := normedAlgebra_isCompleteDiscreteValuedField K E
-    letI := Algebra.isSeparable_tower_top_of_isSeparable K E Ω
-    letI : FiniteDimensional E Ω := Module.Finite.right K E Ω
-    let F' := IntermediateField.extendScalars hEF
-    letI : FiniteDimensional K F' := inferInstanceAs (FiniteDimensional K F)
-    letI : FiniteDimensional E F' := Module.Finite.right K E F'
     embeddingRamificationNumber K (s.toAlgHom.comp E.val) E.val <
-      apfRamificationBound E F' →
+      spectralRelativeRamificationBound hEF →
       embeddingRamificationNumber K (s.toAlgHom.comp F.val) F.val =
         embeddingRamificationNumber K (s.toAlgHom.comp E.val) E.val := by
   classical
@@ -1175,14 +1144,13 @@ theorem embeddingNumber_eq_restriction_of_lt_relativeBound
   let := spectralNorm.normedAlgebra K Ω
   let := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
     (isNonarchimedean_spectralNorm (K := K) (L := Ω))
-  let : CompleteSpace E := FiniteDimensional.complete K E
+  let : CompleteSpace E := FiniteDimensional.completeSpace K E
   let := normedAlgebra_isCompleteDiscreteValuedField K E
   let := Algebra.isSeparable_tower_top_of_isSeparable K E Ω
   let : FiniteDimensional E Ω := Module.Finite.right K E Ω
   let F' := IntermediateField.extendScalars hEF
   let : FiniteDimensional K F' := inferInstanceAs (FiniteDimensional K F)
   let : FiniteDimensional E F' := Module.Finite.right K E F'
-  dsimp only
   intro hsmall
   let D := E.fixingSubgroup
   let := Fintype.ofFinite D
@@ -1206,6 +1174,7 @@ theorem embeddingNumber_eq_restriction_of_lt_relativeBound
     have h := congrArg (fun a : EReal => a + 1) (hconst d)
     simpa only [embeddingRamificationNumber_add_one] using h
   have hsum := sum_embedding_extension_order_of_totallyRamified K Ω E F hEF htotal s hs
+  simp only [restrictionOrder, Nat.card_eq_fintype_card] at hsum
   simp_rw [hJ] at hsum
   simp only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul] at hsum
   have heq :

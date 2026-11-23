@@ -30,6 +30,7 @@ public import FontaineWintenberger.APF.Strict
 public import FontaineWintenberger.APF.Subextension
 public import FontaineWintenberger.APF.Tower.AlgebraicResidue
 public import FontaineWintenberger.APF.Tower.PrimeValuation
+public import FontaineWintenberger.APF.Tower.RelativeHerbrand
 public import FontaineWintenberger.APF.Tower.Residue
 public import FontaineWintenberger.APF.Tower.Stages
 public import FontaineWintenberger.APF.Tower.Tame

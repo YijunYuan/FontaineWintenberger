@@ -577,6 +577,11 @@ the coordinate at `D ∩ M`. -/
 def FieldOfNorms.inclusion : FieldOfNorms K M →+* FieldOfNorms K N :=
   { FieldOfNorms.inclusion₀ K M N with map_add' := FieldOfNorms.inclusion₀_add K M N }
 
+/-- The scalar action on norm fields induced by a finite separable inclusion. -/
+abbrev FieldOfNorms.inclusionAlgebra : Algebra (FieldOfNorms K M) (FieldOfNorms K N) :=
+  letI : Algebra.IsSeparable M N := Algebra.isSeparable_tower_top_of_isSeparable K M N
+  (FieldOfNorms.inclusion K M N).toAlgebra
+
 /-- The coordinate of the image family at a good finite intermediate field. -/
 @[simp]
 theorem FieldOfNorms.coord_inclusion (D : FiniteIntermediateField K N)

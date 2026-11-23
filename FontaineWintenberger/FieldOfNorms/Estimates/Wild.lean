@@ -40,7 +40,7 @@ variable {K Ω : Type*} [NontriviallyNormedField K] [IsCompleteDiscreteValuedFie
     [FiniteDimensional K Ω] [IsGalois K Ω]
 
 local instance wildNorm_completeSpace (E : FiniteIntermediateField K Ω) : CompleteSpace E.val :=
-  FiniteDimensional.complete K E.val
+  FiniteDimensional.completeSpace K E.val
 local instance wildNorm_discreteValuationRing (E : FiniteIntermediateField K Ω) :
     IsCompleteDiscreteValuedField E.val :=
   normedAlgebra_isCompleteDiscreteValuedField K E.val

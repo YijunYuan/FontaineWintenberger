@@ -38,23 +38,13 @@ theorem valuedRingEquiv_uniformContinuous {R S Γ₀ : Type*} [Field R] [Field S
     (Valued.hasBasis_nhds_zero R Γ₀).tendsto_iff (Valued.hasBasis_nhds_zero S Γ₀),
     true_and, forall_const]
   intro γ
-  obtain ⟨r, s, hr, hs, hrs⟩ := Valuation.exists_div_eq_of_unit (Valued.v : Valuation S Γ₀) γ
-  have hr₀ : r ≠ 0 := (Valued.v.ne_zero_iff).mp hr.ne'
-  have hs₀ : s ≠ 0 := (Valued.v.ne_zero_iff).mp hs.ne'
-  have hpre : e.symm (r / s) ≠ 0 := by
-    simpa only [map_ne_zero] using div_ne_zero hr₀ hs₀
-  let δ := Units.mk0 (Valued.v.restrict (e.symm (r / s)))
-    (Valued.v.restrict.ne_zero_iff.mpr hpre)
-  refine ⟨δ, ?_⟩
+  obtain ⟨y, hy⟩ : ∃ y : S, Valued.v.restrict y = γ.val :=
+    MonoidWithZeroHom.ValueGroup₀.restrict₀_surjective _ _
+  have hy₀ : y ≠ 0 := Valued.v.restrict.ne_zero_iff.mp (hy.trans_ne γ.ne_zero)
+  refine ⟨Units.mk0 (Valued.v.restrict (e.symm y)) (by simpa using hy₀), ?_⟩
   intro x hx
-  have hx' : (Valued.v x : Γ₀) < Valued.v (e.symm (r / s)) :=
-    Valued.v.restrict_lt_iff.mp hx
-  have ht : (Valued.v (r / s) : Γ₀) = Valued.v (e.symm (r / s)) := by
-    simpa only [RingEquiv.apply_symm_apply] using he (e.symm (r / s))
-  rw [← hrs, ← map_div₀]
-  apply Valued.v.restrict_lt_iff.mpr
-  change (Valued.v (e x) : Γ₀) < Valued.v (r / s)
-  rw [he, ht]
-  exact hx'
+  change Valued.v.restrict (e x) < γ.val
+  rw [← hy, Valued.v.restrict_lt_iff, he, ← e.apply_symm_apply y, he]
+  exact Valued.v.restrict_lt_iff.mp hx
 
 end FontaineWintenberger

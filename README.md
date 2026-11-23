@@ -46,9 +46,8 @@ lake exe cache get
 lake build
 ```
 
-Lean is pinned to `leanprover/lean4:v4.35.0`. Mathlib is pinned to
-`f0b4c8150aa0dbc758aff1291410c5ae335aff3a`; all transitive dependency commits
-are recorded in `lake-manifest.json`. The library contains no `sorry` and builds without
+Lean and Mathlib are pinned to `v4.36.0`. The exact dependency commits are recorded in
+`lake-manifest.json`. The library contains no `sorry` and builds without
 warnings under Mathlib's standard linter set; every file compiles in under a minute.
 
 See `CLAUDE.md` for the standing hypotheses and conventions, `docs/REFACTOR_PLAN.md` for the

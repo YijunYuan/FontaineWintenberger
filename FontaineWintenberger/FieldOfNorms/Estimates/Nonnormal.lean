@@ -118,7 +118,7 @@ local notation "e" => Ideal.ramificationIdx
   𝒪[K]
 
 local instance (E : IntermediateField K Ω) : CompleteSpace E :=
-  FiniteDimensional.complete K E
+  FiniteDimensional.completeSpace K E
 local instance (E : IntermediateField K Ω) :
     IsCompleteDiscreteValuedField E :=
   normedAlgebra_isCompleteDiscreteValuedField K E
@@ -202,7 +202,8 @@ theorem intNorm_sub_congruence_of_totallyRamified_fixedField
   have hxy' := spectralIntegerInclusion_sub_mem_wild_compositum_pow K Ω F hFP r x y hxy
   have hc := FiniteIntermediateField.integerNorm_sub_congruence_of_wild_field p E N hEN le_rfl
     (e * r) (J x) (J y) hxy'
-  rw [Nat.cast_mul, wild_compositum_apfPhi_scaling K Ω F hFP (Nat.cast_nonneg r)] at hc
+  rw [FiniteIntermediateField.finitePhi_eq_extendScalars, Nat.cast_mul,
+    wild_compositum_apfPhi_scaling K Ω F hFP (Nat.cast_nonneg r)] at hc
   have hnorm (z : S) : FiniteIntermediateField.integerNorm E N hEN (J z) =
       algebraMap R T (Algebra.intNorm R S z) := by
     apply Subtype.ext

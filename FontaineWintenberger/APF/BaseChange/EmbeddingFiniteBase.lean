@@ -57,20 +57,32 @@ variable {F Ω : Type*} [Field F] [Field Ω] [Algebra K F] [Algebra K Ω]
     [FiniteDimensional K F] [FiniteDimensional K Ω]
     [Algebra.IsSeparable K F] [Algebra.IsSeparable K Ω]
 
+/-- The first break over a normed intermediate base of a finite separable tower. -/
+abbrev normedTowerRamificationBound (F : Type*) [Field F] [Algebra K F] [Algebra M F]
+    [IsScalarTower K M F] [Algebra.IsSeparable K F] : EReal :=
+  letI := Algebra.isSeparable_tower_bot_of_isSeparable K M F
+  letI := normedAlgebra_isPerfectResidueLocalField K M
+  letI := Algebra.isSeparable_tower_top_of_isSeparable K M F
+  apfRamificationBound M F
+
+/-- The normalized pair number computed over the intermediate normed base. -/
+abbrev normedTowerEmbeddingNumber (σ τ : F →ₐ[M] Ω) : EReal :=
+  letI := Algebra.isSeparable_tower_bot_of_isSeparable K M Ω
+  letI := normedAlgebra_isPerfectResidueLocalField K M
+  letI := Algebra.isSeparable_tower_top_of_isSeparable K M F
+  letI := Algebra.isSeparable_tower_top_of_isSeparable K M Ω
+  letI : FiniteDimensional M F := Module.Finite.right K M F
+  letI : FiniteDimensional M Ω := Module.Finite.right K M Ω
+  embeddingRamificationNumber M σ τ
+
 /-- Forgetting a compatible finite base leaves the intrinsic
 embedding number unchanged. The abstract base retains its
 norm; both source and ambient integer rings are identified through their
 proved unit balls, and both local indices are transported. -/
 theorem embeddingNumber_restrictScalars_of_normedAlgebra :
-    letI := Algebra.isSeparable_tower_bot_of_isSeparable K M Ω
-    letI := normedAlgebra_isPerfectResidueLocalField K M
-    letI := Algebra.isSeparable_tower_top_of_isSeparable K M F
-    letI := Algebra.isSeparable_tower_top_of_isSeparable K M Ω
-    letI : FiniteDimensional M F := Module.Finite.right K M F
-    letI : FiniteDimensional M Ω := Module.Finite.right K M Ω
     ∀ σ τ : F →ₐ[M] Ω,
       embeddingRamificationNumber K (σ.restrictScalars K) (τ.restrictScalars K) =
-        embeddingRamificationNumber M σ τ := by
+        normedTowerEmbeddingNumber K M σ τ := by
   let := Algebra.isSeparable_tower_bot_of_isSeparable K M Ω
   let := normedAlgebra_isPerfectResidueLocalField K M
   let := Algebra.isSeparable_tower_top_of_isSeparable K M F
@@ -131,6 +143,7 @@ theorem embeddingNumber_restrictScalars_of_normedAlgebra :
         (spectralIntegerInclusion K (σ.restrictScalars K) x -
           spectralIntegerInclusion K (τ.restrictScalars K) x)
     rw [← he, addVal_ringEquiv]
+  unfold normedTowerEmbeddingNumber
   rw [embeddingRamificationNumber, embeddingRamificationNumber,
     embeddingRamificationOrder, embeddingRamificationOrder, hraw, hidx]
 
@@ -191,14 +204,8 @@ variable {F Ω : Type*} [Field F] [Field Ω] [Algebra K F] [Algebra K Ω]
 controls the same pair number over the old base. Every base norm,
 integer ring, separability and perfect-residue prerequisite is produced. -/
 theorem apfRelativeBound_le_embeddingPairNumber_of_normedAlgebra :
-    letI := Algebra.isSeparable_tower_bot_of_isSeparable K M Ω
-    letI := normedAlgebra_isPerfectResidueLocalField K M
-    letI := Algebra.isSeparable_tower_top_of_isSeparable K M F
-    letI := Algebra.isSeparable_tower_top_of_isSeparable K M Ω
-    letI : FiniteDimensional M F := Module.Finite.right K M F
-    letI : FiniteDimensional M Ω := Module.Finite.right K M Ω
     ∀ σ τ : F →ₐ[M] Ω,
-      apfRamificationBound M F ≤
+      normedTowerRamificationBound K M F ≤
         embeddingRamificationNumber K (σ.restrictScalars K) (τ.restrictScalars K) := by
   let := Algebra.isSeparable_tower_bot_of_isSeparable K M Ω
   let := normedAlgebra_isPerfectResidueLocalField K M
@@ -219,11 +226,7 @@ theorem apfRelativeBound_le_pairNumber_of_normedAlgebra
     (i : F →ₐ[K] Ω) (s t : Ω ≃ₐ[K] Ω)
     (hst : (s.toAlgHom.comp i).comp (IsScalarTower.toAlgHom K M F) =
       (t.toAlgHom.comp i).comp (IsScalarTower.toAlgHom K M F)) :
-    letI := Algebra.isSeparable_tower_bot_of_isSeparable K M F
-    letI := normedAlgebra_isPerfectResidueLocalField K M
-    letI := Algebra.isSeparable_tower_top_of_isSeparable K M F
-    letI : FiniteDimensional M F := Module.Finite.right K M F
-    apfRamificationBound M F ≤
+    normedTowerRamificationBound K M F ≤
       embeddingRamificationNumber K (s.toAlgHom.comp i) (t.toAlgHom.comp i) := by
   let := Algebra.isSeparable_tower_bot_of_isSeparable K M F
   let := normedAlgebra_isPerfectResidueLocalField K M
@@ -245,15 +248,10 @@ of that base need not be preserved by the ambient automorphism. -/
 theorem embeddingNumber_eq_restriction_of_lt_bound
     (E D : IntermediateField K Ω) (hED : E ≤ D)
     (e : F ≃ₐ[K] D) (hM : ∀ m : M, (e (algebraMap M F m) : Ω) ∈ E)
-    (htotal : embeddingRamificationIdx K (IntermediateField.inclusion hED) =
-      Module.finrank E (IntermediateField.extendScalars hED))
+    (htotal : IsTotallyRamifiedInclusion hED)
     (s : Ω ≃ₐ[K] Ω) (hs : s.toAlgHom.comp E.val ≠ E.val) :
-    letI := Algebra.isSeparable_tower_bot_of_isSeparable K M F
-    letI := normedAlgebra_isPerfectResidueLocalField K M
-    letI := Algebra.isSeparable_tower_top_of_isSeparable K M F
-    letI : FiniteDimensional M F := Module.Finite.right K M F
     embeddingRamificationNumber K (s.toAlgHom.comp E.val) E.val <
-      apfRamificationBound M F →
+      normedTowerRamificationBound K M F →
       embeddingRamificationNumber K (s.toAlgHom.comp D.val) D.val =
         embeddingRamificationNumber K (s.toAlgHom.comp E.val) E.val := by
   classical
@@ -296,6 +294,7 @@ theorem embeddingNumber_eq_restriction_of_lt_bound
     have h := congrArg (fun a : EReal => a + 1) (hconst d)
     simpa only [embeddingRamificationNumber_add_one] using h
   have hsum := sum_embedding_extension_order_of_totallyRamified K Ω E D hED htotal s hs
+  simp only [restrictionOrder, Nat.card_eq_fintype_card] at hsum
   simp_rw [hJ] at hsum
   simp only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul] at hsum
   have heq :

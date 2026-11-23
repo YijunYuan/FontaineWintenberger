@@ -301,6 +301,54 @@ theorem IsAPF.exists_apfPsi_derivative_countable [IsAPF K L] :
   intro u hu
   exact IsAPF.hasDerivAt_apfPsi K L (not_not.mp hu)
 
+variable (M : Type*) [NontriviallyNormedField M] [IsCompleteDiscreteValuedField M]
+variable (N : Type*) [Field N] [Algebra K M] [Algebra M N] [Algebra K N]
+    [Algebra.IsSeparable K M] [Algebra.IsSeparable M N] [Algebra.IsSeparable K N]
+    [IsAPF K M] [IsAPF M N]
+variable (hIndex : ∀ {u : ℝ}, 0 ≤ u →
+    apfIndex K N u = apfIndex K M u * apfIndex M N (apfPsi K M u))
+
+include hIndex
+
+/-- Multiplicativity of the indices gives the derivative of the composite Herbrand function
+outside a countable set on the positive half-line. -/
+theorem IsAPF.exists_comp_derivative_of_index_mul :
+    ∃ S : Set ℝ, S.Countable ∧ ∀ u : ℝ, 0 < u → u ∉ S →
+      HasDerivAt ((apfPsi M N) ∘ (apfPsi K M)) (apfHerbrandSlope K N u) u := by
+  obtain ⟨S₁, hS₁, hd₁⟩ := IsAPF.exists_apfPsi_derivative_countable K M
+  obtain ⟨S₂, hS₂, hd₂⟩ := IsAPF.exists_apfPsi_derivative_countable M N
+  refine ⟨S₁ ∪ (apfPsi K M ⁻¹' S₂),
+    hS₁.union (hS₂.preimage (IsAPF.strictMono_apfPsi K M).injective), ?_⟩
+  intro u hu hnot
+  have hn₁ : u ∉ S₁ := fun h => hnot (Or.inl h)
+  have hn₂ : apfPsi K M u ∉ S₂ := fun h => hnot (Or.inr h)
+  have hψ : 0 ≤ apfPsi K M u := hu.le.trans (IsAPF.le_apfPsi K M u)
+  have hd := (hd₂ (apfPsi K M u) hn₂).comp u (hd₁ u hn₁)
+  have he : (apfIndex M N (apfPsi K M u) : ℝ) * (apfIndex K M u : ℝ) =
+      (apfIndex K N u : ℝ) := by
+    have he' := congrArg (fun n : ℕ => (n : ℝ)) (hIndex hu.le)
+    simpa only [Nat.cast_mul, mul_comm] using he'.symm
+  simpa only [apfHerbrandSlope, max_eq_left hu.le, max_eq_left hψ, he] using hd
+
+/-- Multiplicativity of the indices on nonnegative parameters implies the composition
+formula for the Herbrand functions on the whole real line. -/
+theorem IsAPF.apfPsi_comp_of_index_mul [IsAPF K N] (u : ℝ) :
+    apfPsi M N (apfPsi K M u) = apfPsi K N u := by
+  by_cases hu : 0 ≤ u
+  · obtain ⟨S, hS, hd⟩ := IsAPF.exists_comp_derivative_of_index_mul K M N hIndex
+    have hcont : ContinuousOn ((apfPsi M N) ∘ (apfPsi K M)) (Set.Icc 0 u) :=
+      ((IsAPF.continuous_apfPsi M N).comp
+        (IsAPF.continuous_apfPsi K M)).continuousOn
+    have h := MeasureTheory.integral_eq_of_hasDerivAt_off_countable_of_le
+      ((apfPsi M N) ∘ (apfPsi K M)) (apfHerbrandSlope K N) hu hS hcont
+      (fun v hv => hd v hv.1.1 hv.2)
+      (IsAPF.intervalIntegrable_apfHerbrandSlope K N 0 u)
+    conv_rhs => rw [apfPsi]
+    simpa only [Function.comp_apply, apfPsi_zero, sub_zero] using h.symm
+  · rw [apfPsi_of_nonpos K M (le_of_not_ge hu),
+      apfPsi_of_nonpos M N (le_of_not_ge hu),
+      apfPsi_of_nonpos K N (le_of_not_ge hu)]
+
 end Calculus
 
 section FiniteBase
@@ -331,41 +379,16 @@ theorem IsAPF.exists_finiteBase_comp_derivative_countable [IsAPF K N] :
     ∃ S : Set ℝ, S.Countable ∧ ∀ u : ℝ, 0 < u → u ∉ S →
       HasDerivAt ((apfPsi M N) ∘ (apfPsi K M)) (apfHerbrandSlope K N u) u := by
   have := isAPF_of_finite K M
-  have hNM : IsAPF M N := (isAPF_finiteBase_iff K M).mp ‹_›
-  obtain ⟨S₁, hS₁, hd₁⟩ := IsAPF.exists_apfPsi_derivative_countable K M
-  obtain ⟨S₂, hS₂, hd₂⟩ := IsAPF.exists_apfPsi_derivative_countable M N
-  refine ⟨S₁ ∪ (apfPsi K M ⁻¹' S₂),
-    hS₁.union (hS₂.preimage (IsAPF.strictMono_apfPsi K M).injective), ?_⟩
-  intro u hu hnot
-  have hn₁ : u ∉ S₁ := fun h => hnot (Or.inl h)
-  have hn₂ : apfPsi K M u ∉ S₂ := fun h => hnot (Or.inr h)
-  have hψ : 0 ≤ apfPsi K M u := hu.le.trans (IsAPF.le_apfPsi K M u)
-  have hd := (hd₂ (apfPsi K M u) hn₂).comp u (hd₁ u hn₁)
-  have he : (apfIndex M N (apfPsi K M u) : ℝ) * (apfIndex K M u : ℝ) =
-      (apfIndex K N u : ℝ) := by
-    have he' := congrArg (fun n : ℕ => (n : ℝ))
-      (apfIndex_eq_mul_finiteBase K M (N := N) hu.le)
-    simpa only [Nat.cast_mul, mul_comm] using he'.symm
-  simpa only [apfHerbrandSlope, max_eq_left hu.le, max_eq_left hψ, he] using hd
+  have : IsAPF M N := (isAPF_finiteBase_iff K M).mp ‹_›
+  exact IsAPF.exists_comp_derivative_of_index_mul K M N
+    (apfIndex_eq_mul_finiteBase K M (N := N))
 
 /-- The Herbrand integral composes across any finite, possibly nonnormal base. -/
 theorem IsAPF.apfPsi_finiteBase_comp [IsAPF K N] (u : ℝ) :
     apfPsi M N (apfPsi K M u) = apfPsi K N u := by
+  have := isAPF_of_finite K M
   have : IsAPF M N := (isAPF_finiteBase_iff K M).mp ‹_›
-  by_cases hu : 0 ≤ u
-  · obtain ⟨S, hS, hd⟩ := IsAPF.exists_finiteBase_comp_derivative_countable K M N
-    have hcont : ContinuousOn ((apfPsi M N) ∘ (apfPsi K M)) (Set.Icc 0 u) :=
-      ((IsAPF.continuous_apfPsi M N).comp
-        (IsAPF.continuous_apfPsi K M)).continuousOn
-    have h := MeasureTheory.integral_eq_of_hasDerivAt_off_countable_of_le
-      ((apfPsi M N) ∘ (apfPsi K M)) (apfHerbrandSlope K N) hu hS hcont
-      (fun v hv => hd v hv.1.1 hv.2)
-      (IsAPF.intervalIntegrable_apfHerbrandSlope K N 0 u)
-    conv_rhs => rw [apfPsi]
-    simpa only [Function.comp_apply, apfPsi_zero, sub_zero] using h.symm
-  · rw [apfPsi_of_nonpos K M (le_of_not_ge hu),
-      apfPsi_of_nonpos M N (le_of_not_ge hu),
-      apfPsi_of_nonpos K N (le_of_not_ge hu)]
+  exact IsAPF.apfPsi_comp_of_index_mul K M N (apfIndex_eq_mul_finiteBase K M (N := N)) u
 
 end FiniteBase
 

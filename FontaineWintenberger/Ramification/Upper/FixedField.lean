@@ -187,10 +187,10 @@ theorem fixedFieldDecomposition_order
 
 variable [PerfectField 𝓀[K]]
 
+attribute [local instance] Fintype.ofFinite in
 /-- The scaled coset identity on the field restriction and intrinsic integer orders. -/
 theorem fixedField_ramificationIdx_mul_order_eq_sum (σ : L ≃ₐ[K] L) :
     letI := intermediate_spectral_isDiscreteValuationRing K L F₀
-    letI := Fintype.ofFinite H
     ((IsLocalRing.maximalIdeal B₀).ramificationIdx A₀ : ℕ∞) *
         (A₀).ramificationOrder K (fixedFieldDecompositionRestriction K L H σ) =
       ∑ h : H, ramificationOrder (R := B₀) (L ≃ₐ[K] L) (σ * h.1) := by
@@ -217,20 +217,20 @@ theorem fixedField_card_inertia :
   have := hasSeparableResidueFieldsAt_maximalIdeal A₀ B₀
   exact card_lowerRamificationGroup_zero A₀ B₀ H
 
+attribute [local instance] Fintype.ofFinite in
 /-- The scaled intrinsic coset identity with its inertia-cardinality denominator. -/
 theorem fixedField_card_inertia_mul_order_eq_sum (σ : L ≃ₐ[K] L) :
     letI := intermediate_spectral_isDiscreteValuationRing K L F₀
-    letI := Fintype.ofFinite H
     (Nat.card (lowerRamificationGroup H (IsLocalRing.maximalIdeal B₀) 0) : ℕ∞) *
         (A₀).ramificationOrder K (fixedFieldDecompositionRestriction K L H σ) =
       ∑ h : H, ramificationOrder (R := B₀) (L ≃ₐ[K] L) (σ * h.1) := by
   rw [fixedField_card_inertia K L H]
   exact fixedField_ramificationIdx_mul_order_eq_sum K L H σ
 
+attribute [local instance] Fintype.ofFinite in
 /-- Tate's coset average, in extended nonnegative reals so division is exact. -/
 theorem fixedField_order_eq_sum_div_ramificationIdx (σ : L ≃ₐ[K] L) :
     letI := intermediate_spectral_isDiscreteValuationRing K L F₀
-    letI := Fintype.ofFinite H
     ((A₀).ramificationOrder K (fixedFieldDecompositionRestriction K L H σ) : ℝ≥0∞) =
       (∑ h : H, (ramificationOrder (R := B₀) (L ≃ₐ[K] L) (σ * h.1) : ℝ≥0∞)) /
         (IsLocalRing.maximalIdeal B₀).ramificationIdx A₀ := by
@@ -244,21 +244,20 @@ theorem fixedField_order_eq_sum_div_ramificationIdx (σ : L ≃ₐ[K] L) :
     (fixedField_ramificationIdx_mul_order_eq_sum K L H σ)
   simpa only [map_mul, map_sum, ENat.toENNRealRingHom_apply, ENat.toENNReal_coe] using h
 
+attribute [local instance] Fintype.ofFinite in
 /-- The same average with the subgroup inertia as its denominator. -/
 theorem fixedField_order_eq_sum_div_card_inertia (σ : L ≃ₐ[K] L) :
     letI := intermediate_spectral_isDiscreteValuationRing K L F₀
-    letI := Fintype.ofFinite H
     ((A₀).ramificationOrder K (fixedFieldDecompositionRestriction K L H σ) : ℝ≥0∞) =
       (∑ h : H, (ramificationOrder (R := B₀) (L ≃ₐ[K] L) (σ * h.1) : ℝ≥0∞)) /
         Nat.card (lowerRamificationGroup H (IsLocalRing.maximalIdeal B₀) 0) := by
   rw [fixedField_card_inertia K L H]
   exact fixedField_order_eq_sum_div_ramificationIdx K L H σ
 
+attribute [local instance] Fintype.ofFinite in
 /-- The source's restriction-fiber average for every fixed-field automorphism. -/
 theorem fixedField_order_eq_fiber_sum_div_ramificationIdx (τ : D₀) :
     letI := intermediate_spectral_isDiscreteValuationRing K L F₀
-    letI := Fintype.ofFinite {s : L ≃ₐ[K] L //
-      fixedFieldDecompositionRestriction K L H s = τ}
     ((A₀).ramificationOrder K τ : ℝ≥0∞) =
       (∑ s : {s : L ≃ₐ[K] L // fixedFieldDecompositionRestriction K L H s = τ},
         (ramificationOrder (R := B₀) (L ≃ₐ[K] L) s.1 : ℝ≥0∞)) /
@@ -274,11 +273,10 @@ theorem fixedField_order_eq_fiber_sum_div_ramificationIdx (τ : D₀) :
   exact (fixedFieldRestrictionFiberEquiv K L H σ).sum_comp
     (fun s => (ramificationOrder (R := B₀) (L ≃ₐ[K] L) s.1 : ℝ≥0∞))
 
+attribute [local instance] Fintype.ofFinite in
 /-- The restriction-fiber average with the subgroup inertia denominator. -/
 theorem fixedField_order_eq_fiber_sum_div_card_inertia (τ : D₀) :
     letI := intermediate_spectral_isDiscreteValuationRing K L F₀
-    letI := Fintype.ofFinite {s : L ≃ₐ[K] L //
-      fixedFieldDecompositionRestriction K L H s = τ}
     ((A₀).ramificationOrder K τ : ℝ≥0∞) =
       (∑ s : {s : L ≃ₐ[K] L // fixedFieldDecompositionRestriction K L H s = τ},
         (ramificationOrder (R := B₀) (L ≃ₐ[K] L) s.1 : ℝ≥0∞)) /

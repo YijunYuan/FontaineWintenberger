@@ -200,7 +200,7 @@ variable (K L : Type*) [NontriviallyNormedField K] [IsCompleteDiscreteValuedFiel
     [PerfectField 𝓀[K]]
 
 local instance finiteOverfieldBounds_completeSpace (M : IntermediateField K L) :
-    CompleteSpace M := FiniteDimensional.complete K M
+    CompleteSpace M := FiniteDimensional.completeSpace K M
 local instance finiteOverfieldBounds_discreteValuationRing (M : IntermediateField K L) :
     IsCompleteDiscreteValuedField M :=
   normedAlgebra_isCompleteDiscreteValuedField K M

@@ -101,13 +101,13 @@ private def freeOrbitEquiv (G X : Type*) [Group G] [MulAction G X]
     · rintro ⟨y, g, rfl⟩
       exact ⟨g, rfl⟩)
 
+attribute [local instance] Fintype.ofFinite in
 private theorem sum_eq_sum_smul_of_free (G X B : Type*)
     [Group G] [Fintype G] [Finite X] [MulAction G X]
     [CommRing B] [MulSemiringAction G B]
     (hfree : ∀ x : X, MulAction.stabilizer G x = ⊥)
     (f : X → B) (hf : ∀ (g : G) (x : X), f (g • x) = g • f x)
     (I : Ideal B) (hfI : ∀ x : X, f x ∈ I) :
-    letI := Fintype.ofFinite X
     ∃ z ∈ I, (∑ x : X, f x) = ∑ g : G, g • z := by
   classical
   let := Fintype.ofFinite X

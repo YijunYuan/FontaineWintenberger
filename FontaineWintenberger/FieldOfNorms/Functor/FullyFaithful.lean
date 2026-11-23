@@ -98,6 +98,28 @@ theorem isSeparable_relativeEmbedding_fieldRange [Algebra.IsSeparable K N]
 
 end RelativeEmbeddings
 
+section RelativeHom
+
+variable (K L M N : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
+    [Field L] [Field M] [Field N] [Algebra K L] [Algebra K M] [Algebra K N]
+    [Algebra L M] [Algebra L N] [IsScalarTower K L M] [IsScalarTower K L N]
+    [Algebra.IsSeparable K L] [Algebra.IsSeparable K M] [Algebra.IsSeparable K N]
+    [Module.Finite L M] [Module.Finite L N] [IsAPF K L] [Fact (¬ Module.Finite K L)]
+
+attribute [local instance] FieldOfNorms.inclusionAlgebra in
+/-- Homomorphisms of norm fields over the norm field of the common base, with scalars
+acting through the finite inclusion maps. -/
+abbrev FieldOfNorms.RelativeHom : Type _ :=
+  letI : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
+  letI : Algebra.IsSeparable L N := Algebra.isSeparable_tower_top_of_isSeparable K L N
+  letI : IsAPF K M := (isAPF_finite_extension_iff K M L).mpr ‹_›
+  letI : IsAPF K N := (isAPF_finite_extension_iff K N L).mpr ‹_›
+  letI : Fact (¬ Module.Finite K M) := ⟨RelFieldOfNorms.ambient_infinite K L M⟩
+  letI : Fact (¬ Module.Finite K N) := ⟨RelFieldOfNorms.ambient_infinite K L N⟩
+  FieldOfNorms K M →ₐ[FieldOfNorms K L] FieldOfNorms K N
+
+end RelativeHom
+
 variable (K L M N : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalField K]
     [Field L] [Field M] [Field N] [Algebra K L] [Algebra K M] [Algebra K N]
     [Algebra L M] [Algebra L N] [Algebra M N]
@@ -188,11 +210,7 @@ def FieldOfNorms.mapAlgHom [Algebra.IsSeparable K L] [Module.Finite L M]
     [IsAPF K L] [IsAPF K M] [IsAPF K N]
     [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)]
     [Fact (¬ Module.Finite K N)] (φ : M →ₐ[L] N) :
-    letI : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
-    letI : Algebra.IsSeparable L N := Algebra.isSeparable_tower_top_of_isSeparable K L N
-    letI := (FieldOfNorms.inclusion K L M).toAlgebra
-    letI := (FieldOfNorms.inclusion K L N).toAlgebra
-    FieldOfNorms K M →ₐ[FieldOfNorms K L] FieldOfNorms K N := by
+    FieldOfNorms.RelativeHom K L M N := by
   let : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
   let : Algebra.IsSeparable L N := Algebra.isSeparable_tower_top_of_isSeparable K L N
   let := (FieldOfNorms.inclusion K L M).toAlgebra
@@ -232,10 +250,6 @@ theorem FieldOfNorms.mapAlgHom_eq_of_extend [Algebra.IsSeparable K L] [Module.Fi
     [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)]
     [Fact (¬ Module.Finite K N)] (φ : M →ₐ[L] N) (σ : N ≃ₐ[L] N)
     (hσ : ∀ m : M, σ (algebraMap M N m) = φ m) (x : FieldOfNorms K M) :
-    letI : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
-    letI : Algebra.IsSeparable L N := Algebra.isSeparable_tower_top_of_isSeparable K L N
-    letI := (FieldOfNorms.inclusion K L M).toAlgebra
-    letI := (FieldOfNorms.inclusion K L N).toAlgebra
     letI : Module.Finite M N := Module.Finite.right L M N
     letI : IsGalois M N := IsGalois.tower_top_of_isGalois L M N
     FieldOfNorms.mapAlgHom K L M N φ x =
@@ -273,10 +287,6 @@ theorem FieldOfNorms.mapAlgHom_injective_of_isGalois
     [IsAPF K L] [IsAPF K M] [IsAPF K N]
     [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)]
     [Fact (¬ Module.Finite K N)] :
-    letI : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
-    letI : Algebra.IsSeparable L N := Algebra.isSeparable_tower_top_of_isSeparable K L N
-    letI := (FieldOfNorms.inclusion K L M).toAlgebra
-    letI := (FieldOfNorms.inclusion K L N).toAlgebra
     Function.Injective
       (FieldOfNorms.mapAlgHom K L M N) := by
   let : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
@@ -314,10 +324,6 @@ theorem FieldOfNorms.mapAlgHom_surjective_of_isGalois
     [IsAPF K L] [IsAPF K M] [IsAPF K N]
     [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)]
     [Fact (¬ Module.Finite K N)] :
-    letI : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
-    letI : Algebra.IsSeparable L N := Algebra.isSeparable_tower_top_of_isSeparable K L N
-    letI := (FieldOfNorms.inclusion K L M).toAlgebra
-    letI := (FieldOfNorms.inclusion K L N).toAlgebra
     Function.Surjective
       (FieldOfNorms.mapAlgHom K L M N) := by
   let : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
@@ -358,10 +364,6 @@ theorem FieldOfNorms.mapAlgHom_postcomp_aut [Algebra.IsSeparable K L] [Module.Fi
     [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)]
     [Fact (¬ Module.Finite K N)] (φ : M →ₐ[L] N) (σ : N ≃ₐ[L] N)
     (x : FieldOfNorms K M) :
-    letI : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
-    letI : Algebra.IsSeparable L N := Algebra.isSeparable_tower_top_of_isSeparable K L N
-    letI := (FieldOfNorms.inclusion K L M).toAlgebra
-    letI := (FieldOfNorms.inclusion K L N).toAlgebra
     FieldOfNorms.mapAlgHom K L M N
         (σ.toAlgHom.comp φ) x =
       FieldOfNorms.mapEquiv (σ.restrictScalars K)
@@ -399,10 +401,6 @@ theorem FieldOfNorms.mapAlgHom_bijective_of_isGalois
     [IsAPF K L] [IsAPF K M] [IsAPF K N]
     [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)]
     [Fact (¬ Module.Finite K N)] :
-    letI : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
-    letI : Algebra.IsSeparable L N := Algebra.isSeparable_tower_top_of_isSeparable K L N
-    letI := (FieldOfNorms.inclusion K L M).toAlgebra
-    letI := (FieldOfNorms.inclusion K L N).toAlgebra
     Function.Bijective
       (FieldOfNorms.mapAlgHom K L M N) :=
   ⟨FieldOfNorms.mapAlgHom_injective_of_isGalois K L M N
@@ -468,6 +466,7 @@ variable (K L M N P : Type*) [NontriviallyNormedField K] [IsPerfectResidueLocalF
 
 local notation "p" => residueChar K
 
+attribute [local instance] FieldOfNorms.inclusionAlgebra in
 /-- Composition on relative finite Hom sets is the norm-family
 composition theorem with its image-field scalar structures. -/
 theorem FieldOfNorms.mapAlgHom_comp
@@ -475,12 +474,6 @@ theorem FieldOfNorms.mapAlgHom_comp
     [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)]
     [Fact (¬ Module.Finite K N)] [Fact (¬ Module.Finite K P)]
     (φ : M →ₐ[L] N) (ψ : N →ₐ[L] P) :
-    letI : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
-    letI : Algebra.IsSeparable L N := Algebra.isSeparable_tower_top_of_isSeparable K L N
-    letI : Algebra.IsSeparable L P := Algebra.isSeparable_tower_top_of_isSeparable K L P
-    letI := (FieldOfNorms.inclusion K L M).toAlgebra
-    letI := (FieldOfNorms.inclusion K L N).toAlgebra
-    letI := (FieldOfNorms.inclusion K L P).toAlgebra
     FieldOfNorms.mapAlgHom K L M P (ψ.comp φ) =
       (FieldOfNorms.mapAlgHom K L N P ψ).comp
         (FieldOfNorms.mapAlgHom K L M N φ) := by
@@ -516,10 +509,6 @@ theorem FieldOfNorms.mapAlgHom_algebraMap
     [IsAPF K L] [IsAPF K M] [IsAPF K N]
     [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)]
     [Fact (¬ Module.Finite K N)] (x : FieldOfNorms K M) :
-    letI : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
-    letI : Algebra.IsSeparable L N := Algebra.isSeparable_tower_top_of_isSeparable K L N
-    letI := (FieldOfNorms.inclusion K L M).toAlgebra
-    letI := (FieldOfNorms.inclusion K L N).toAlgebra
     letI : Module.Finite M N := Module.Finite.right L M N
     letI : Algebra.IsSeparable M N := Algebra.isSeparable_tower_top_of_isSeparable K M N
     FieldOfNorms.mapAlgHom K L M N
@@ -543,10 +532,6 @@ theorem FieldOfNorms.mapAlgHom_injective_of_isGalois_top
     [IsAPF K L] [IsAPF K M] [IsAPF K N] [IsAPF K P]
     [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)]
     [Fact (¬ Module.Finite K N)] [Fact (¬ Module.Finite K P)] :
-    letI : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
-    letI : Algebra.IsSeparable L N := Algebra.isSeparable_tower_top_of_isSeparable K L N
-    letI := (FieldOfNorms.inclusion K L M).toAlgebra
-    letI := (FieldOfNorms.inclusion K L N).toAlgebra
     Function.Injective
       (FieldOfNorms.mapAlgHom K L M N) := by
   let : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
@@ -578,10 +563,6 @@ theorem FieldOfNorms.mapAlgHom_surjective_of_isGalois_top
     [IsAPF K L] [IsAPF K M] [IsAPF K N] [IsAPF K P]
     [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)]
     [Fact (¬ Module.Finite K N)] [Fact (¬ Module.Finite K P)] :
-    letI : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
-    letI : Algebra.IsSeparable L N := Algebra.isSeparable_tower_top_of_isSeparable K L N
-    letI := (FieldOfNorms.inclusion K L M).toAlgebra
-    letI := (FieldOfNorms.inclusion K L N).toAlgebra
     Function.Surjective
       (FieldOfNorms.mapAlgHom K L M N) := by
   let : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
@@ -638,10 +619,6 @@ theorem FieldOfNorms.mapAlgHom_bijective
     [IsAPF K L] [IsAPF K M] [IsAPF K N]
     [Fact (¬ Module.Finite K L)] [Fact (¬ Module.Finite K M)]
     [Fact (¬ Module.Finite K N)] :
-    letI : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
-    letI : Algebra.IsSeparable L N := Algebra.isSeparable_tower_top_of_isSeparable K L N
-    letI := (FieldOfNorms.inclusion K L M).toAlgebra
-    letI := (FieldOfNorms.inclusion K L N).toAlgebra
     Function.Bijective
       (FieldOfNorms.mapAlgHom K L M N) := by
   let : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
@@ -676,39 +653,11 @@ theorem FieldOfNorms.mapAlgHom_bijective
 /-- **Theorem 3.1.2.** For finite separable extensions `M`, `N` of the APF extension `L/K`, the
 field of norms is fully faithful: `Hom_L(M, N) ≃ Hom_{X_K(L)}(X_K(M), X_K(N))`. -/
 def FieldOfNorms.algHomEquiv [IsAPF K L] [Fact (¬ Module.Finite K L)] :
-    let hM : IsAPF K M := (isAPF_finite_extension_iff K M L).mpr ‹_›
-    let hN : IsAPF K N := (isAPF_finite_extension_iff K N L).mpr ‹_›
-    have hInfiniteM : ¬ Module.Finite K M := by
-      intro h
-      let : Module.Finite K M := h
-      exact (Fact.out : ¬ Module.Finite K L) (FiniteDimensional.of_injective
-        (IsScalarTower.toAlgHom K L M).toLinearMap (algebraMap L M).injective)
-    haveI : Fact (¬ Module.Finite K M) := ⟨hInfiniteM⟩
-    have hInfiniteN : ¬ Module.Finite K N := by
-      intro h
-      let : Module.Finite K N := h
-      exact (Fact.out : ¬ Module.Finite K L) (FiniteDimensional.of_injective
-        (IsScalarTower.toAlgHom K L N).toLinearMap (algebraMap L N).injective)
-    haveI : Fact (¬ Module.Finite K N) := ⟨hInfiniteN⟩
-    letI : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
-    letI : Algebra.IsSeparable L N := Algebra.isSeparable_tower_top_of_isSeparable K L N
-    letI := (FieldOfNorms.inclusion K L M).toAlgebra
-    letI := (FieldOfNorms.inclusion K L N).toAlgebra
-    (M →ₐ[L] N) ≃ (FieldOfNorms K M →ₐ[FieldOfNorms K L] FieldOfNorms K N) := by
+    (M →ₐ[L] N) ≃ FieldOfNorms.RelativeHom K L M N := by
   haveI hM : IsAPF K M := (isAPF_finite_extension_iff K M L).mpr ‹_›
   haveI hN : IsAPF K N := (isAPF_finite_extension_iff K N L).mpr ‹_›
-  have hInfiniteM : ¬ Module.Finite K M := by
-    intro h
-    let : Module.Finite K M := h
-    exact (Fact.out : ¬ Module.Finite K L) (FiniteDimensional.of_injective
-      (IsScalarTower.toAlgHom K L M).toLinearMap (algebraMap L M).injective)
-  haveI : Fact (¬ Module.Finite K M) := ⟨hInfiniteM⟩
-  have hInfiniteN : ¬ Module.Finite K N := by
-    intro h
-    let : Module.Finite K N := h
-    exact (Fact.out : ¬ Module.Finite K L) (FiniteDimensional.of_injective
-      (IsScalarTower.toAlgHom K L N).toLinearMap (algebraMap L N).injective)
-  haveI : Fact (¬ Module.Finite K N) := ⟨hInfiniteN⟩
+  have : Fact (¬ Module.Finite K M) := ⟨RelFieldOfNorms.ambient_infinite K L M⟩
+  have : Fact (¬ Module.Finite K N) := ⟨RelFieldOfNorms.ambient_infinite K L N⟩
   let : Algebra.IsSeparable L M := Algebra.isSeparable_tower_top_of_isSeparable K L M
   let : Algebra.IsSeparable L N := Algebra.isSeparable_tower_top_of_isSeparable K L N
   let := (FieldOfNorms.inclusion K L M).toAlgebra

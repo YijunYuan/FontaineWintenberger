@@ -26,7 +26,6 @@ The discrete product uniformity supplies Hausdorffness and completeness.
   in the product.
 * `projection`: Evaluation on the compatible-family subring.
 * `transition`: The finite composite of the adjacent transition homomorphisms.
-* `liftSequence`
 
 ## Main results
 
@@ -84,7 +83,7 @@ theorem compatible (a : subring B q) (n : ℕ) :
 
 /-- The finite composite of the adjacent transition homomorphisms. -/
 def transition (i j : ℕ) (hij : i ≤ j) : B j →+* B i :=
-  Nat.leRecOn (C := fun j => B j →+* B i) hij
+  Nat.leRecOn (motive := fun j => B j →+* B i) hij
     (fun {j} f => f.comp (q j)) (RingHom.id (B i))
 
 @[simp]
@@ -120,44 +119,26 @@ theorem transition_projection (i j : ℕ) (hij : i ≤ j) (a : subring B q) :
       rw [transition_succ B q i j hj, RingHom.comp_apply, compatible]
       exact ih
 
-private def liftSequence (hs : ∀ n, Function.Surjective (q n)) (n : ℕ) (b : B n) :
-    ∀ i, B i :=
-  Nat.rec (transition B q 0 n (Nat.zero_le n) b)
-    (fun i a => if hi : i < n then transition B q (i + 1) n (by omega) b
-      else Function.surjInv (hs i) a)
-
-private theorem liftSequence_succ (hs : ∀ n, Function.Surjective (q n))
-    (n : ℕ) (b : B n) (i : ℕ) :
-    liftSequence B q hs n b (i + 1) =
-      if hi : i < n then transition B q (i + 1) n (by omega) b
-      else Function.surjInv (hs i) (liftSequence B q hs n b i) := rfl
-
-private theorem liftSequence_of_le (hs : ∀ n, Function.Surjective (q n))
-    (n : ℕ) (b : B n) (i : ℕ) (hi : i ≤ n) :
-    liftSequence B q hs n b i = transition B q i n hi b := by
-  cases i with
-  | zero => rfl
-  | succ i => rw [liftSequence_succ, dite_eq_left (by omega)]
-
-private theorem liftSequence_compatible (hs : ∀ n, Function.Surjective (q n))
-    (n : ℕ) (b : B n) (i : ℕ) :
-    q i (liftSequence B q hs n b (i + 1)) = liftSequence B q hs n b i := by
-  by_cases hi : i < n
-  · rw [liftSequence_succ, dite_eq_left hi,
-      liftSequence_of_le B q hs n b i (by omega)]
-    exact RingHom.congr_fun (transition_succ_left B q i n (by omega)) b
-  · rw [liftSequence_succ, dite_eq_right hi, Function.surjInv_eq (hs i)]
-
 /-- Every projection is onto by recursive lifting along the
 surjective adjacent maps. The coefficient rings need not be finite. -/
 theorem projection_surjective (hs : ∀ n, Function.Surjective (q n)) (n : ℕ) :
     Function.Surjective (projection B q n) := by
-  intro b
-  let a := liftSequence B q hs n b
-  refine ⟨⟨a, (mem_subring B q a).mpr (fun i => liftSequence_compatible B q hs n b i)⟩, ?_⟩
-  change liftSequence B q hs n b n = b
-  rw [liftSequence_of_le B q hs n b n le_rfl, transition_self]
-  rfl
+  induction n generalizing B with
+  | zero =>
+    intro b
+    let a : ∀ i, B i := Nat.rec b (fun i => Function.surjInv (hs i))
+    exact ⟨⟨a, (mem_subring B q a).mpr (fun i => Function.surjInv_eq (hs i) (a i))⟩, rfl⟩
+  | succ n ih =>
+    intro b
+    obtain ⟨a, ha⟩ := ih (fun i => B (i + 1)) (fun i => q (i + 1)) (fun i => hs (i + 1)) b
+    let t : ∀ i, B i
+      | 0 => q 0 (a.val 0)
+      | i + 1 => a.val i
+    refine ⟨⟨t, (mem_subring B q t).mpr ?_⟩, ha⟩
+    intro i
+    cases i with
+    | zero => rfl
+    | succ i => exact compatible _ _ a i
 
 section Uniformity
 
@@ -191,9 +172,7 @@ omit [∀ n, DiscreteUniformity (B n)] in
 /-- The coordinate projections are uniformly continuous for
 the same product-induced uniformity. -/
 theorem uniformContinuous_projection (n : ℕ) : UniformContinuous (projection B q n) := by
-  have h : UniformContinuous (fun a : ∀ i, B i => a n) :=
-    uniformContinuous_pi.mp uniformContinuous_id n
-  exact h.comp uniformContinuous_subtype_val
+  exact (Pi.uniformContinuous_proj B n).comp uniformContinuous_subtype_val
 
 /-- The kernels of the individual projections are a cofinal
 zero-neighborhood basis. Compatibility reduces finitely many coordinates

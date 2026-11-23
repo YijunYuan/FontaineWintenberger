@@ -5,6 +5,8 @@ Authors: Yijun Yuan
 -/
 module
 
+public import FontaineWintenberger.APF.Tower.RelativeHerbrand
+
 public import FontaineWintenberger.LocalField.Basic
 public import FontaineWintenberger.APF.Subextension
 public import FontaineWintenberger.APF.BaseChange.Strict
@@ -93,19 +95,9 @@ variable [PerfectField 𝓀[K]]
 /-- Uniform precision for the relative finite fields, with the
 canonical spectral norm on their finite base. -/
 theorem FiniteIntermediateField.le_ceil_apfPhi_of_apfPsi_le [IsAPF K L]
-    (E F : FiniteIntermediateField K L) (hEF : E ≤ F) :
-    letI := spectralNorm.nontriviallyNormedField K E.val
-    letI := spectralNorm.normedAlgebra K E.val
-    letI := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
-      (isNonarchimedean_spectralNorm (K := K) (L := E.val))
-    letI := spectralNorm.completeSpace K E.val
-    letI := normedAlgebra_isCompleteDiscreteValuedField K E.val
-    letI := Algebra.isSeparable_tower_top_of_isSeparable K E.val L
-    let F' := IntermediateField.extendScalars hEF
-    letI : FiniteDimensional K F' := F.property
-    letI : FiniteDimensional E.val F' := Module.Finite.right K E.val F'
-    ∀ (N s : ℕ), apfPsi E.val L (N : ℝ) ≤ (s : ℝ) →
-      N ≤ ⌈apfPhi E.val F' (s : ℝ)⌉₊ := by
+    (E F : FiniteIntermediateField K L) (hEF : E ≤ F) (N s : ℕ)
+    (hs : FiniteIntermediateField.ambientPsi E N ≤ s) :
+    N ≤ ⌈FiniteIntermediateField.relativePhi hEF s⌉₊ := by
   let := spectralNorm.nontriviallyNormedField K E.val
   let := spectralNorm.normedAlgebra K E.val
   let := IsUltrametricDist.isUltrametricDist_iff_isNonarchimedean_norm.mpr
@@ -116,8 +108,6 @@ theorem FiniteIntermediateField.le_ceil_apfPhi_of_apfPsi_le [IsAPF K L]
   let F' := IntermediateField.extendScalars hEF
   have : FiniteDimensional K F' := F.property
   have : FiniteDimensional E.val F' := Module.Finite.right K E.val F'
-  dsimp only
-  intro N s hs
   have hrelative : IsAPF E.val L :=
     (isAPF_finiteBase_iff_of_normedAlgebra K E.val L).mp ‹_›
   exact FontaineWintenberger.le_ceil_apfPhi_of_apfPsi_le E.val L F'.val N s hs

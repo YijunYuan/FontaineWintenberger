@@ -74,16 +74,17 @@ variable (M : Type*) [NontriviallyNormedField M] [IsUltrametricDist M]
 variable (N : Type*) [Field N] [Algebra K N] [Algebra M N]
     [IsScalarTower K M N] [FiniteDimensional K N] [Algebra.IsSeparable K N]
 
+/-- The inverse Herbrand function over the intermediate normed field of a finite tower. -/
+abbrev normedTowerPhi : ℝ → ℝ :=
+  letI := normedAlgebra_isCompleteDiscreteValuedField K M
+  letI := Algebra.isSeparable_tower_top_of_isSeparable K M N
+  letI : FiniteDimensional M N := Module.Finite.right K M N
+  apfPhi M N
+
 /-- The Herbrand moduli compose on the finite normed bases,
 in the reverse order to their inverse Herbrand functions. -/
 theorem apfPhi_finiteBase_comp_of_normedAlgebra (r : ℝ) :
-    letI := normedAlgebra_isCompleteDiscreteValuedField K M
-    letI := normedAlgebra_residueField_perfectField K M
-    letI := Algebra.isSeparable_tower_top_of_isSeparable K M N
-    letI : FiniteDimensional M N := Module.Finite.right K M N
-    apfPhi K M
-        (apfPhi M N r) =
-      apfPhi K N r := by
+    apfPhi K M (normedTowerPhi K M N r) = apfPhi K N r := by
   let := normedAlgebra_isCompleteDiscreteValuedField K M
   let := normedAlgebra_residueField_perfectField K M
   let := Algebra.isSeparable_tower_top_of_isSeparable K M N
@@ -107,21 +108,47 @@ variable {K Ω : Type*} [NontriviallyNormedField K] [IsCompleteDiscreteValuedFie
     [Algebra.IsSeparable K Ω]
 
 local instance (E : FiniteIntermediateField K Ω) : CompleteSpace E.val :=
-    FiniteDimensional.complete K E.val
+    FiniteDimensional.completeSpace K E.val
 local instance (E : FiniteIntermediateField K Ω) :
     IsCompleteDiscreteValuedField E.val :=
   normedAlgebra_isCompleteDiscreteValuedField K E.val
 local instance (E : FiniteIntermediateField K Ω) : PerfectField 𝓀[E.val] :=
   normedAlgebra_residueField_perfectField K E.val
 
+local instance {E F : FiniteIntermediateField K Ω} (hEF : E ≤ F) :
+    FiniteDimensional E.val (IntermediateField.extendScalars hEF) :=
+  letI : FiniteDimensional K (IntermediateField.extendScalars hEF) := F.property
+  Module.Finite.right K E.val (IntermediateField.extendScalars hEF)
+
+/-- The relative inverse Herbrand function with the norm inherited from the ambient field. -/
+def finitePhi (E F : FiniteIntermediateField K Ω) (hEF : E ≤ F) (r : ℝ) : ℝ := by
+  let : Algebra E.val F.val := (IntermediateField.inclusion hEF).toRingHom.toAlgebra
+  have : IsScalarTower K E.val F.val := IsScalarTower.of_algebraMap_eq' rfl
+  have : FiniteDimensional E.val F.val := Module.Finite.right K E.val F.val
+  have := Algebra.isSeparable_tower_top_of_isSeparable K E.val F.val
+  exact apfPhi E.val F.val r
+
+omit [PerfectField 𝓀[K]] in
+theorem finitePhi_eq_extendScalars (E F : FiniteIntermediateField K Ω) (hEF : E ≤ F) (r :
+    ℝ) :
+    let F' := IntermediateField.extendScalars hEF
+    finitePhi E F hEF r = apfPhi E.val F' r := by
+  let : Algebra E.val F.val := (IntermediateField.inclusion hEF).toRingHom.toAlgebra
+  have : IsScalarTower K E.val F.val := IsScalarTower.of_algebraMap_eq' rfl
+  have : FiniteDimensional E.val F.val := Module.Finite.right K E.val F.val
+  have := Algebra.isSeparable_tower_top_of_isSeparable K E.val F.val
+  let F' := IntermediateField.extendScalars hEF
+  have : FiniteDimensional K F' := F.property
+  have : FiniteDimensional E.val F' := Module.Finite.right K E.val F'
+  let e : F.val ≃ₐ[E.val] F' :=
+    { RingEquiv.refl F.val with commutes' := fun _ => rfl }
+  exact apfPhi_algEquiv E.val F.val e r
+
 /-- Prime Herbrand continuity applies to the finite-layer
 norm maps and integer rings used by the inverse system. -/
 theorem integerNorm_prime_sub_congruence
     (E F : FiniteIntermediateField K Ω) (hEF : E ≤ F) (p : ℕ) [Fact p.Prime] :
     let F' := IntermediateField.extendScalars hEF
-    letI : FiniteDimensional K F' := F.property
-    letI : FiniteDimensional E.val F' := Module.Finite.right K E.val F'
-    haveI : IsAPF E.val F' := isAPF_of_finite E.val F'
     ∀ (_ : IsGalois E.val F') (_ : Module.finrank E.val F' = p)
       (_ : (IsLocalRing.maximalIdeal (spectralIntegerRing E.val F')).ramificationIdx
         𝒪[E.val] = Module.finrank E.val F')
@@ -129,7 +156,7 @@ theorem integerNorm_prime_sub_congruence
       x - y ∈ IsLocalRing.maximalIdeal (spectralIntegerRing K F.val) ^ r →
         integerNorm E F hEF x - integerNorm E F hEF y ∈
           IsLocalRing.maximalIdeal (spectralIntegerRing K E.val) ^
-            ⌈apfPhi E.val F' (r : ℝ)⌉₊ := by
+            ⌈finitePhi E F hEF r⌉₊ := by
   dsimp only
   intro hgal hd he r x y hxy
   let F' := IntermediateField.extendScalars hEF
@@ -166,28 +193,14 @@ theorem integerNorm_prime_sub_congruence
     exact Algebra.algebraMap_intNorm
       (A := 𝒪[E.val])
       (B := T) (K := E.val) (L := F') (e z)
+  rw [finitePhi_eq_extendScalars]
   exact norm_sub_mem_pow_of_commutes f (integerNorm E F hEF)
     (Algebra.intNorm 𝒪[E.val] T) e hnorm s x y hc
 
 /-- Actual Herbrand moduli compose through the inclusions of
-three finite intermediate fields, with all relative scalar structures explicitly fixed. -/
+three finite intermediate fields with the norm inherited from their ambient field. -/
 theorem apfPhi_tower (E F G : FiniteIntermediateField K Ω) (hEF : E ≤ F) (hFG : F ≤ G) (r : ℝ) :
-    letI : Algebra E.val F.val := (IntermediateField.inclusion hEF).toRingHom.toAlgebra
-    letI : Algebra F.val G.val := (IntermediateField.inclusion hFG).toRingHom.toAlgebra
-    letI : Algebra E.val G.val := (IntermediateField.inclusion (hEF.trans hFG)).toRingHom.toAlgebra
-    letI : IsScalarTower K E.val F.val := IsScalarTower.of_algebraMap_eq' rfl
-    letI : IsScalarTower K E.val G.val := IsScalarTower.of_algebraMap_eq' rfl
-    letI : IsScalarTower K F.val G.val := IsScalarTower.of_algebraMap_eq' rfl
-    letI : IsScalarTower E.val F.val G.val := IsScalarTower.of_algebraMap_eq' rfl
-    letI : FiniteDimensional E.val F.val := Module.Finite.right K E.val F.val
-    letI : FiniteDimensional E.val G.val := Module.Finite.right K E.val G.val
-    letI : FiniteDimensional F.val G.val := Module.Finite.right K F.val G.val
-    letI := Algebra.isSeparable_tower_top_of_isSeparable K E.val F.val
-    letI := Algebra.isSeparable_tower_top_of_isSeparable K E.val G.val
-    letI := Algebra.isSeparable_tower_top_of_isSeparable K F.val G.val
-    apfPhi E.val F.val
-        (apfPhi F.val G.val r) =
-      apfPhi E.val G.val r := by
+    finitePhi E F hEF (finitePhi F G hFG r) = finitePhi E G (hEF.trans hFG) r := by
   let : Algebra E.val F.val := (IntermediateField.inclusion hEF).toRingHom.toAlgebra
   let : Algebra F.val G.val := (IntermediateField.inclusion hFG).toRingHom.toAlgebra
   let : Algebra E.val G.val := (IntermediateField.inclusion (hEF.trans hFG)).toRingHom.toAlgebra
@@ -221,7 +234,7 @@ variable {K Ω : Type*} [NontriviallyNormedField K] [IsCompleteDiscreteValuedFie
     [Algebra.IsSeparable K Ω]
 
 local instance (E : FiniteIntermediateField K Ω) : CompleteSpace E.val :=
-    FiniteDimensional.complete K E.val
+    FiniteDimensional.completeSpace K E.val
 local instance (E : FiniteIntermediateField K Ω) :
     IsCompleteDiscreteValuedField E.val :=
   normedAlgebra_isCompleteDiscreteValuedField K E.val
@@ -248,50 +261,20 @@ theorem integerNorm_sub_congruence_tower (E F G : FiniteIntermediateField K Ω)
   simpa only [integerNorm_integerNorm] using
     hE (integerNorm F G hFG x) (integerNorm F G hFG y) (hF x y hxy)
 
-private def finitePhi (E F : FiniteIntermediateField K Ω) (hEF : E ≤ F) (r : ℝ) : ℝ := by
-  let : Algebra E.val F.val := (IntermediateField.inclusion hEF).toRingHom.toAlgebra
-  have : IsScalarTower K E.val F.val := IsScalarTower.of_algebraMap_eq' rfl
-  have : FiniteDimensional E.val F.val := Module.Finite.right K E.val F.val
-  have := Algebra.isSeparable_tower_top_of_isSeparable K E.val F.val
-  exact apfPhi E.val F.val r
-
 omit [PerfectField 𝓀[K]] in
-private theorem finitePhi_self (E : FiniteIntermediateField K Ω) (r : ℝ) :
+theorem finitePhi_self (E : FiniteIntermediateField K Ω) (r : ℝ) :
     finitePhi E E le_rfl r = r := by
   change apfPhi E.val E.val r = r
   exact apfPhi_eq_self_of_bound_eq_top E.val E.val (apfRamificationBound_self E.val) r
 
 omit [PerfectField 𝓀[K]] in
-private theorem finitePhi_eq_extendScalars (E F : FiniteIntermediateField K Ω) (hEF : E ≤ F) (r :
-    ℝ) :
-    let F' := IntermediateField.extendScalars hEF
-    letI : FiniteDimensional K F' := F.property
-    letI : FiniteDimensional E.val F' := Module.Finite.right K E.val F'
-    finitePhi E F hEF r = apfPhi E.val F' r := by
-  let : Algebra E.val F.val := (IntermediateField.inclusion hEF).toRingHom.toAlgebra
-  have : IsScalarTower K E.val F.val := IsScalarTower.of_algebraMap_eq' rfl
-  have : FiniteDimensional E.val F.val := Module.Finite.right K E.val F.val
-  have := Algebra.isSeparable_tower_top_of_isSeparable K E.val F.val
-  let F' := IntermediateField.extendScalars hEF
-  have : FiniteDimensional K F' := F.property
-  have : FiniteDimensional E.val F' := Module.Finite.right K E.val F'
-  let e : F.val ≃ₐ[E.val] F' :=
-    { RingEquiv.refl F.val with commutes' := fun _ => rfl }
-  exact apfPhi_algEquiv E.val F.val e r
-
-omit [PerfectField 𝓀[K]] in
-private theorem finitePhi_mono (E F : FiniteIntermediateField K Ω) (hEF : E ≤ F) :
+theorem finitePhi_mono (E F : FiniteIntermediateField K Ω) (hEF : E ≤ F) :
     Monotone (finitePhi E F hEF) := by
   let : Algebra E.val F.val := (IntermediateField.inclusion hEF).toRingHom.toAlgebra
   have : IsScalarTower K E.val F.val := IsScalarTower.of_algebraMap_eq' rfl
   have : FiniteDimensional E.val F.val := Module.Finite.right K E.val F.val
   have := Algebra.isSeparable_tower_top_of_isSeparable K E.val F.val
   exact (strictMono_apfPhi E.val F.val).monotone
-
-private theorem finitePhi_comp (E F G : FiniteIntermediateField K Ω)
-    (hEF : E ≤ F) (hFG : F ≤ G) (r : ℝ) :
-    finitePhi E F hEF (finitePhi F G hFG r) = finitePhi E G (hEF.trans hFG) r := by
-  exact apfPhi_tower E F G hEF hFG r
 
 variable [FiniteDimensional K Ω] [IsGalois K Ω]
 
@@ -305,15 +288,11 @@ theorem integerNorm_sub_congruence_of_wild_field (p : ℕ) [Fact p.Prime]
     [CharP (IsLocalRing.ResidueField (spectralIntegerRing K Ω)) p]
     (E F : FiniteIntermediateField K Ω) (hEF : E ≤ F)
     (hE : IntermediateField.fixedField P ≤ E.val) :
-    let F' := IntermediateField.extendScalars hEF
-    letI : FiniteDimensional K F' := F.property
-    letI : FiniteDimensional E.val F' := Module.Finite.right K E.val F'
     ∀ (r : ℕ) (x y : spectralIntegerRing K F.val),
       x - y ∈ IsLocalRing.maximalIdeal (spectralIntegerRing K F.val) ^ r →
         integerNorm E F hEF x - integerNorm E F hEF y ∈
           IsLocalRing.maximalIdeal (spectralIntegerRing K E.val) ^
-            ⌈apfPhi E.val F' (r : ℝ)⌉₊ := by
-  dsimp only
+            ⌈finitePhi E F hEF r⌉₊ := by
   intro r x y hxy
   have hfix : E.val.fixingSubgroup ≤ P := by
     simpa only [IntermediateField.fixingSubgroup_fixedField] using
@@ -355,19 +334,16 @@ theorem integerNorm_sub_congruence_of_wild_field (p : ℕ) [Fact p.Prime]
             integerNorm A' B' hAB u - integerNorm A' B' hAB v ∈
               IsLocalRing.maximalIdeal (spectralIntegerRing K A) ^
                 ⌈finitePhi A' B' hAB (q : ℝ)⌉₊ := by
-          rw [finitePhi_eq_extendScalars]
           exact integerNorm_prime_sub_congruence A' B' hAB p hg hd he q u v huv
         have hstepnorm := integerNorm_sub_congruence_tower A' B' F hAB hBF r q
           ⌈finitePhi A' B' hAB (q : ℝ)⌉₊ hprime (htail r) x y hxy
         have hle : ⌈finitePhi A' F (hAB.trans hBF) (r : ℝ)⌉₊ ≤
             ⌈finitePhi A' B' hAB (q : ℝ)⌉₊ := by
           apply Nat.ceil_mono
-          rw [← finitePhi_comp A' B' F hAB hBF (r : ℝ)]
+          rw [← apfPhi_tower A' B' F hAB hBF (r : ℝ)]
           exact finitePhi_mono A' B' hAB (Nat.le_ceil _)
         exact Ideal.pow_le_pow_right hle hstepnorm
   obtain ⟨_, hn⟩ := hmain E.val hchain le_rfl
-  have ht := hn r x y hxy
-  rw [finitePhi_eq_extendScalars] at ht
-  exact ht
+  exact hn r x y hxy
 
 end FontaineWintenberger.FiniteIntermediateField

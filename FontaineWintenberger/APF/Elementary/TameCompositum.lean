@@ -102,7 +102,8 @@ local notation "e" => Ideal.ramificationIdx
   (IsLocalRing.maximalIdeal (spectralIntegerRing K A))
   𝒪[K]
 
-local instance wildFirstBound_completeSpace : CompleteSpace A := FiniteDimensional.complete K A
+local instance wildFirstBound_completeSpace : CompleteSpace A :=
+  FiniteDimensional.completeSpace K A
 local instance wildFirstBound_discreteValuationRing : IsCompleteDiscreteValuedField A :=
   normedAlgebra_isCompleteDiscreteValuedField K A
 local instance wildFirstBound_perfectField : PerfectField 𝓀[A] :=
@@ -316,7 +317,7 @@ local notation "e" => Ideal.ramificationIdx
   𝒪[K]
 
 local instance (E : IntermediateField K Ω) : CompleteSpace E :=
-  FiniteDimensional.complete K E
+  FiniteDimensional.completeSpace K E
 local instance (E : IntermediateField K Ω) :
     IsCompleteDiscreteValuedField E :=
   normedAlgebra_isCompleteDiscreteValuedField K E

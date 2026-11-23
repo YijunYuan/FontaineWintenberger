@@ -275,7 +275,7 @@ theorem absoluteUpper_le_root_fixingSubgroup
       (IsDiscreteValuationRing.addVal 𝒪[K] f.discr).toNat ≤ b)
     (x : SeparableClosure K) (hx : aeval x f = 0) :
     absoluteUpperRamificationGroup K b ≤ (IntermediateField.adjoin K {x}).fixingSubgroup := by
-  apply (IntermediateField.le_iff_le _ _).mp
+  apply (IntermediateField.le_fixedField_iff_le_fixingSubgroup _ _).mp
   apply IntermediateField.adjoin_simple_le_iff.mpr
   intro g
   exact absoluteUpperRamificationGroup_fixes_integral_polynomial_root K f hf hsep hb
